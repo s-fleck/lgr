@@ -34,8 +34,8 @@ test_that("test memory allocation", {
     for (i in 1:100) ml$fatal("blubb")
   })
 
-  expect_identical(nrow(ml$showdt(99, 1000)), 100L)
+  expect_identical(nrow(ml$showdt()), 100L)
   expect_output(ml$fatal("blubb"))
-  expect_identical(nrow(ml$showdt(99, 1000)), 101L)
+  expect_identical(nrow(ml$showdt()), 101L)
   expect_identical(nrow(ml$.__enclos_env__$private$data), 200L)
 })

@@ -10,6 +10,15 @@
 #' @export
 #'
 #' @examples
-formatter_simple <- function(x){
-  paste0(toupper(as.character(x[["level_name"]])), " [", x[["timestamp"]], "] ", x[["msg"]], collapse = "\n")
+formatter_simple <- function(
+  x,
+  log_levels
+){
+  paste0(
+    toupper(names(log_levels)[match(x[["level"]], log_levels)]),
+    " [",
+    x[["timestamp"]], "] ",
+    x[["msg"]],
+    collapse = "\n"
+  )
 }

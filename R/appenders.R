@@ -1,3 +1,8 @@
-appender_console <- function(x, formatter = formatter_simple){
-  cat(formatter(x))
+appender_console <- function(
+  x,
+  threshold,
+  formatter,
+  log_levels
+){
+  cat(formatter(x[x$level <= threshold], log_levels))
 }
