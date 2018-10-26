@@ -58,7 +58,7 @@ format.memlog_data <- function(
     else if (identical(tokens[[i]], "%u"))
       res[[i]] <- x$user
     else if (identical(tokens[[i]], "%p"))
-      res[[i]] <- x$pid
+      res[[i]] <- Sys.getpid()
     else if (identical(tokens[[i]], "%c"))
       res[[i]] <- x$caller
     else if (identical(tokens[[i]], "%m"))

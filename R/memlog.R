@@ -16,10 +16,9 @@ memlog <- R6::R6Class(
   public = list(
     initialize = function(
       timer   = Sys.time,
-      appenders = list(appender_console$new()),
+      appenders = list(appender_console_minimal$new()),
       formatter = format,
       user = whoami::email_address(whoami::fullname()),
-      pid = Sys.getpid(),
       log_levels = c(
         "fatal" = 1,
         "error" = 2,
@@ -31,15 +30,13 @@ memlog <- R6::R6Class(
       cache_size = 3e5
     ){
       stopifnot(
-        unique(unname(log_levels)) == unname(log_levels),
-        unique(names(log_levels)) == names(log_levels),
+        all_are_distinct(unname(log_levels)),
+        all_are_distinct(names(log_levels)),
         !any(log_levels == 0)
       )
 
-
       # fields ------------------------------------------------------------------
         private$id   <- 0L
-        private$pid   <- pid
         private$user  <- user
         private$timer <- timer
         private$log_levels <- log_levels
@@ -48,8 +45,6 @@ memlog <- R6::R6Class(
             id = rep(NA_real_, min(1000, cache_size)),
             level = 0,
             timestamp = timer(),
-            user = NA_character_,
-            pid = NA_integer_,
             caller = NA_character_,
             msg = NA_character_
           ),
@@ -58,6 +53,10 @@ memlog <- R6::R6Class(
         private$cache_size = cache_size
 
       # methods
+        if (inherits(appenders, "appender")){
+          appenders <- list(appenders)
+        }
+
         private$appenders <- appenders
         private$formatter <- formatter
 
@@ -71,19 +70,18 @@ memlog <- R6::R6Class(
             ...
           ){
             msg <- sprintf(msg, ...)
-            caller <- self$get_caller()
+            caller <- private$get_caller()
             force(caller)
 
             self$log(
               level = level,
               timestamp = private$timer(),
-              user = private$user,
-              pid = private$pid,
               caller = caller,
               msg = msg
             )
           }
         }
+
         for (i in seq_along(private$log_levels)){
           nm  <- names(private$log_levels)[[i]]
           lvl <- private$log_levels[[i]]
@@ -120,8 +118,6 @@ memlog <- R6::R6Class(
       log = function(
         level,
         timestamp,
-        user,
-        pid,
         caller,
         msg
       ){
@@ -130,37 +126,27 @@ memlog <- R6::R6Class(
         private$current_row <- private$current_row + 1L
         private$id <- private$id  + 1L
 
+        val <- list(id = private$id, level = level, timestamp = timestamp, caller = caller, msg = msg)
+
         data.table::set(
           private$data,
           private$current_row,
-          j = c("id", "level", "timestamp", "user", "pid", "caller", "msg"),
-          value = list(private$id, level, timestamp, user, pid, caller, msg)
+          j = c("id", "level", "timestamp",  "caller", "msg"),
+          value = val
         )
 
-        if (private$current_row >= nrow(private$data))  private$allocate(1000L)
+        # caching the last row for easy access brings significant speed
+        # improvement for the appender
+        private$last_row <- val
+
         for (appender in private$appenders) {
-          appender$append(private$data[private$current_row, ], ml = ml)
+          appender$append(self)
         }
+
+        if (private$current_row >= nrow(private$data))
+          private$allocate(1000L)
 
         invisible(msg)
-      },
-
-      get_caller = function(where = -2L){
-        res <- try(sys.call(where)[[1]])
-        if (is.null(res) || inherits(res, "try-error"))
-          "(shell)"
-        else if (grepl("::", res, fixed = TRUE))
-          deparse(res)
-        else {
-          res <- deparse(res)
-          ns <- format(findFunction(res)[[1]])
-          if (grepl("namespace", ns)){
-            paste0(sub(".*namespace:([^>]+)>.*", "\\1", ns), "::", res)
-          } else {
-            paste0(sub(".*environment:([^>]+)>.*", "\\1", ns), "::", res)
-          }
-
-        }
       },
 
     label_levels = function(x){
@@ -200,19 +186,31 @@ memlog <- R6::R6Class(
 
     get_log_levels = function(){
       private$log_levels
+    },
+
+    get_row = function(i = private$current_row){
+      private$data[i, ]
+    },
+
+    get_last_row = function(){
+      private$last_row
     }
+
   ),
 
   private = list(
     timer = NULL,
     current_row = 0L,
     id = 0L,
-    pid = Sys.getpid(),
     user = NA_character_,
     log_levels = NULL,
     threshold = 4L,
     appenders = NULL,
     formatter = NULL,
+    cache_size = NULL,
+    data = NULL,
+    last_row = NULL,
+
     allocate = function(n = 1000L){
       end   <- nrow(private$data)
       if (end >= private$cache_size){
@@ -224,8 +222,30 @@ memlog <- R6::R6Class(
         data.table::setattr(private$data, "class", c("memlog_data", "data.table", "data.frame"))
       }
     },
-    cache_size = NULL,
-    data = NULL
+
+    get_caller = function(
+      where = -2L
+    ){
+      res <- try(sys.call(where)[[1]], silent = TRUE)
+
+      if (is.null(res) || inherits(res, "try-error")){
+        "(shell)"
+
+      } else if (grepl("::", res, fixed = TRUE)){
+        deparse(res)
+
+      } else {
+        res <- deparse(res)
+        ns <- try(format(findFunction(res)[[1]]), silent = TRUE)
+        if (inherits(ns, "try-error")){
+          res
+        } else if (grepl("namespace", ns)){
+          paste0(sub(".*namespace:([^>]+)>.*", "\\1", ns), "::", res)
+        } else {
+          paste0(sub(".*environment:([^>]+)>.*", "\\1", ns), "::", res)
+        }
+      }
+    }
   ),
   lock_objects = FALSE
 )
