@@ -6,7 +6,7 @@ test_that("basic logging", {
   ts <- structure(1540486764.41946, class = c("POSIXct", "POSIXt"))
 
   testfun <- function(){
-    ml$log(level = 4L, timestamp = ts, msg = "test", user = "test_user", pid = 001, caller = "test_function")
+    ml$log(level = 4L, timestamp = ts, msg = "test", caller = "test_function")
   }
 
   expect_output({
@@ -22,7 +22,7 @@ test_that("basic logging", {
 
   fatalfun <- function() ml$fatal("test ftl")
   expect_output(fatalfun(), "FATAL")
-  expect_true(ml$showdt()[3]$caller == "fatalfun")
+  expect_true(grepl("fatalfun", ml$showdt()[3]$caller))
 })
 
 
