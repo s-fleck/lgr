@@ -12,3 +12,11 @@ LazyData: true
 Suggests: 
     testthat
 RoxygenNote: 6.1.0
+Collate: 
+    'utils-sfmisc.R'
+    'utils.R'
+    'format.R'
+    'appenders.R'
+    'formatters.R'
+    'memlog-package.R'
+    'memlog.R'

@@ -16,8 +16,8 @@ memlog <- R6::R6Class(
   public = list(
     initialize = function(
       timer   = Sys.time,
-      appenders = list(appender_console),
-      formatter = formatter_simple,
+      appenders = list(appender_console$new()),
+      formatter = format,
       user = whoami::email_address(whoami::fullname()),
       pid = Sys.getpid(),
       log_levels = c(
@@ -43,14 +43,17 @@ memlog <- R6::R6Class(
         private$user  <- user
         private$timer <- timer
         private$log_levels <- log_levels
-        private$data <- data.table::data.table(
-          id = rep(NA_real_, min(1000, cache_size)),
-          level = 0,
-          timestamp = timer(),
-          user = NA_character_,
-          pid = NA_integer_,
-          caller = NA_character_,
-          msg = NA_character_
+        private$data <- structure(
+          data.table::data.table(
+            id = rep(NA_real_, min(1000, cache_size)),
+            level = 0,
+            timestamp = timer(),
+            user = NA_character_,
+            pid = NA_integer_,
+            caller = NA_character_,
+            msg = NA_character_
+          ),
+          class = c("memlog_data", "data.table", "data.frame")
         )
         private$cache_size = cache_size
 
@@ -108,9 +111,10 @@ memlog <- R6::R6Class(
         }
       },
 
-      show = function(threshold = NULL, n = 20, formatter = private$formatter){
+      show = function(threshold = NULL, n = 20, ...){
         if (is.null(threshold)) threshold <- private$threshold
-        cat(formatter(tail(self$showdt(threshold), n), self))
+        dd <- tail(self$showdt(threshold), n)
+        self$print_data(dd, ..., ml = self)
       },
 
       log = function(
@@ -124,7 +128,7 @@ memlog <- R6::R6Class(
         if (!identical(length(msg), 1L)) stop("'msg' must be a vector of length 1")
 
         private$current_row <- private$current_row + 1L
-        private$id  <- private$id  + 1L
+        private$id <- private$id  + 1L
 
         data.table::set(
           private$data,
@@ -135,10 +139,7 @@ memlog <- R6::R6Class(
 
         if (private$current_row >= nrow(private$data))  private$allocate(1000L)
         for (appender in private$appenders) {
-          appender(
-            private$data[private$current_row, ],
-            ml = self
-          )
+          appender$append(private$data[private$current_row, ], ml = ml)
         }
 
         invisible(msg)
@@ -163,17 +164,43 @@ memlog <- R6::R6Class(
       },
 
     label_levels = function(x){
+      if (!is.numeric(x)) stop("Expected numeric 'x'")
       names(private$log_levels)[match(x, private$log_levels)]
     },
 
-    get_threshoold = function(){
+    unlabel_levels = function(x){
+      if (!is.character(x)) stop("Expected character 'x'")
+      private$log_levels[match(x, names(private$log_levels))]
+    },
+
+    get_threshold = function(){
       private$threshold
     },
 
-    format = function(x){
-      private$formatter(x, self)
-    }
+    set_threshold = function(x){
+      if (is_scalar_character(x)){
+        x <- self$unlabel_levels(x)
+      }
+      assert(
+        !is.na(x) && is_scalar_integerish(x),
+        "'x' must either the numeric or character representation of one of the following log levels: ",
+        paste(sprintf("%s (%s)", names(private$log_levels), private$log_levels), collapse = ", ")
+      )
 
+      private$threshold <- as.integer(x)
+    },
+
+    format_data = function(x, ..., ml = self){
+      private$formatter(x, ..., ml = ml)
+    },
+
+    print_data = function(x, ..., ml = self){
+      cat(self$format_data(x, ...,ml = ml), sep = "\n")
+    },
+
+    get_log_levels = function(){
+      private$log_levels
+    }
   ),
 
   private = list(
@@ -194,6 +221,7 @@ memlog <- R6::R6Class(
         n <- min(n, private$cache_size)
         alloc <- list(level = vector("integer", n))
         private$data <- data.table::rbindlist(list(private$data, alloc), fill = TRUE)
+        data.table::setattr(private$data, "class", c("memlog_data", "data.table", "data.frame"))
       }
     },
     cache_size = NULL,
