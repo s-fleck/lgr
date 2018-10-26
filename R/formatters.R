@@ -12,10 +12,10 @@
 #' @examples
 formatter_simple <- function(
   x,
-  log_levels
+  ml
 ){
   paste0(
-    toupper(names(log_levels)[match(x[["level"]], log_levels)]),
+    toupper(ml$label_levels(x$level)),
     " [",
     x[["timestamp"]], "] ",
     x[["msg"]],

@@ -1,3 +1,16 @@
+#' Title
+#'
+#' @param timer
+#' @param appenders
+#' @param formatter
+#' @param user
+#' @param pid
+#' @param log_levels
+#'
+#' @return
+#' @export
+#'
+#' @examples
 memlog <- R6::R6Class(
   "memlog",
   public = list(
@@ -106,6 +119,7 @@ memlog <- R6::R6Class(
         i <- private$used + 1L
         if (i > nrow(private$data))  private$allocate(100)
         if (is.null(caller))         caller <- self$get_caller()
+        if (!identical(length(msg), 1L)) stop("'msg' must be a vector of length 1")
 
         data.table::set(
           private$data,
@@ -119,9 +133,7 @@ memlog <- R6::R6Class(
         for (appender in private$appenders) {
           appender(
             private$data[i, ],
-            threshold  = private$threshold,
-            formatter  = private$formatter,
-            log_levels = private$log_levels
+            ml = self
           )
         }
 
@@ -137,7 +149,20 @@ memlog <- R6::R6Class(
           "(shell)"
         else
           res
-      }
+      },
+
+    label_levels = function(x){
+      names(private$log_levels)[match(x, private$log_levels)]
+    },
+
+    get_threshoold = function(){
+      private$threshold
+    },
+
+    format = function(x){
+      private$formatter(x, self)
+    }
+
   ),
 
   private = list(

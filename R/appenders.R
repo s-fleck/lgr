@@ -1,8 +1,6 @@
 appender_console <- function(
   x,
-  threshold,
-  formatter,
-  log_levels
+  ml
 ){
-  cat(formatter(x[x$level <= threshold], log_levels))
+  cat(ml$format(x))
 }
