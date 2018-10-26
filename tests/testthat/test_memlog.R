@@ -30,12 +30,18 @@ test_that("basic logging", {
 test_that("test memory allocation", {
   ml <- memlog$new()
 
-  expect_output({
-    for (i in 1:100) ml$fatal("blubb")
-  })
+  expect_output(replicate(1000L, ml$fatal("blubb")))
 
-  expect_identical(nrow(ml$showdt()), 100L)
+  expect_identical(nrow(ml$showdt()), 1000L)
   expect_output(ml$fatal("blubb"))
-  expect_identical(nrow(ml$showdt()), 101L)
-  expect_identical(nrow(ml$.__enclos_env__$private$data), 200L)
+  expect_identical(nrow(ml$showdt()), 1001L)
+  expect_identical(nrow(ml$.__enclos_env__$private$data), 2000L)
+})
+
+
+
+test_that("memory cycling works", {
+  ml <- memlog$new(cache_size = 10)
+  expect_output(replicate(12, ml$info("blubb")))
+  expect_equal(ml$showdt()$id, 3:12)
 })

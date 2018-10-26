@@ -27,7 +27,8 @@ memlog <- R6::R6Class(
         "info"  = 4,
         "debug" = 5,
         "trace" = 6
-      )
+      ),
+      cache_size = 3e5
     ){
       stopifnot(
         unique(unname(log_levels)) == unname(log_levels),
@@ -37,18 +38,21 @@ memlog <- R6::R6Class(
 
 
       # fields ------------------------------------------------------------------
+        private$id   <- 0L
         private$pid   <- pid
         private$user  <- user
         private$timer <- timer
         private$log_levels <- log_levels
         private$data <- data.table::data.table(
-          level = vector("integer", 100L),
+          id = rep(NA_real_, min(1000, cache_size)),
+          level = 0,
           timestamp = timer(),
           user = NA_character_,
           pid = NA_integer_,
           caller = NA_character_,
           msg = NA_character_
         )
+        private$cache_size = cache_size
 
       # methods
         private$appenders <- appenders
@@ -96,6 +100,7 @@ memlog <- R6::R6Class(
         if (is.null(threshold)) threshold <- private$threshold
         if (is.character(threshold)) threshold <- private$log_levels[[threshold]]
         res <- private$data[private$data$level <= threshold & private$data$level > 0, ]
+        res <- with(res, res[order(id), ])
         if (is.null(n)){
           res
         } else {
@@ -105,7 +110,7 @@ memlog <- R6::R6Class(
 
       show = function(threshold = NULL, n = 20, formatter = private$formatter){
         if (is.null(threshold)) threshold <- private$threshold
-        cat(formatter(tail(self$showdt(threshold), n), private$log_levels))
+        cat(formatter(tail(self$showdt(threshold), n), self))
       },
 
       log = function(
@@ -116,23 +121,22 @@ memlog <- R6::R6Class(
         caller,
         msg
       ){
-        i <- private$used + 1L
-        if (i > nrow(private$data))  private$allocate(100)
-        if (is.null(caller))         caller <- self$get_caller()
         if (!identical(length(msg), 1L)) stop("'msg' must be a vector of length 1")
+
+        private$current_row <- private$current_row + 1L
+        private$id  <- private$id  + 1L
 
         data.table::set(
           private$data,
-          i,
-          j = c("level", "timestamp", "user", "pid", "caller", "msg"),
-          value = list(level, timestamp, user, pid, caller, msg)
+          private$current_row,
+          j = c("id", "level", "timestamp", "user", "pid", "caller", "msg"),
+          value = list(private$id, level, timestamp, user, pid, caller, msg)
         )
 
-        private$used <- i
-
+        if (private$current_row >= nrow(private$data))  private$allocate(1000L)
         for (appender in private$appenders) {
           appender(
-            private$data[i, ],
+            private$data[private$current_row, ],
             ml = self
           )
         }
@@ -141,14 +145,21 @@ memlog <- R6::R6Class(
       },
 
       get_caller = function(where = -2L){
-        res <- tryCatch(
-          deparse(sys.call(where)[[1]]),
-          error = function(e) "NULL"
-        )
-        if (identical(res, "NULL"))
+        res <- try(sys.call(where)[[1]])
+        if (is.null(res) || inherits(res, "try-error"))
           "(shell)"
-        else
-          res
+        else if (grepl("::", res, fixed = TRUE))
+          deparse(res)
+        else {
+          res <- deparse(res)
+          ns <- format(findFunction(res)[[1]])
+          if (grepl("namespace", ns)){
+            paste0(sub(".*namespace:([^>]+)>.*", "\\1", ns), "::", res)
+          } else {
+            paste0(sub(".*environment:([^>]+)>.*", "\\1", ns), "::", res)
+          }
+
+        }
       },
 
     label_levels = function(x){
@@ -167,18 +178,25 @@ memlog <- R6::R6Class(
 
   private = list(
     timer = NULL,
-    used  = 0L,
+    current_row = 0L,
+    id = 0L,
     pid = Sys.getpid(),
     user = NA_character_,
     log_levels = NULL,
     threshold = 4L,
     appenders = NULL,
     formatter = NULL,
-    allocate = function(n = 100L){
+    allocate = function(n = 1000L){
       end   <- nrow(private$data)
-      alloc <- list(level = vector("integer", 100L))
-      private$data <- data.table::rbindlist(list(private$data, alloc), fill = TRUE)
+      if (end >= private$cache_size){
+        private$current_row <- 0L
+      } else {
+        n <- min(n, private$cache_size)
+        alloc <- list(level = vector("integer", n))
+        private$data <- data.table::rbindlist(list(private$data, alloc), fill = TRUE)
+      }
     },
+    cache_size = NULL,
     data = NULL
   ),
   lock_objects = FALSE
