@@ -144,6 +144,10 @@ memlog <- R6::R6Class(
       private$log_levels[match(x, names(private$log_levels))]
     },
 
+    get_user = function(){
+      private$user
+    },
+
     get_threshold = function(){
       private$threshold
     },
@@ -198,5 +202,3 @@ memlog <- R6::R6Class(
 
   lock_objects = FALSE
 )
-
-
