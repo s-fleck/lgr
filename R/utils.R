@@ -7,6 +7,7 @@
 
 
 
+
 assert_valid_threshold <- function(x, log_levels, msg = ""){
   assert(
     !is.na(x) && is_scalar_integerish(x),
@@ -15,8 +16,6 @@ assert_valid_threshold <- function(x, log_levels, msg = ""){
     paste(sprintf("%s (%s)", names(log_levels), log_levels), collapse = ", ")
   )
 }
-
-
 
 
 
@@ -48,4 +47,3 @@ get_caller <- function(
     }
   }
 }
-

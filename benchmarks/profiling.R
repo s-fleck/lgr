@@ -18,11 +18,11 @@ ml_col$fatal("blubb")
 
 sink("/dev/null")
 
-times[["flog"]] <- bench::system_time({for (i in 1:1e4) flog.info("blubb")})         # 15.20 s
-times[["nul"]] <- bench::system_time({for (i in 1:1e4) ml_nul$fatal("blubb")})       #  2.73 s
-times[["min"]] <- bench::system_time({for (i in 1:1e4) ml_min$fatal("blubb")})       #  4.17 s
-times[["std"]] <- bench::system_time({for (i in 1:1e4) ml_std$fatal("blubb")})       #  7.28 s
-times[["max"]] <- bench::system_time({for (i in 1:1e4) ml_col$fatal("blubb")})       #  12.9 s
+#times[["flog"]] <- bench::system_time({for (i in 1:1e4) flog.info("blubb")})         # 15.20 s
+times[["nul"]] <- bench::system_time({for (i in 1:1e4) ml_nul$fatal("blubb")})       #  2.84 s
+times[["min"]] <- bench::system_time({for (i in 1:1e4) ml_min$fatal("blubb")})       #  4.04 s
+times[["std"]] <- bench::system_time({for (i in 1:1e4) ml_std$fatal("blubb")})       #  6.29 s
+times[["max"]] <- bench::system_time({for (i in 1:1e4) ml_col$fatal("blubb")})       #  11.8 s
 
 
 sink()
@@ -31,7 +31,7 @@ sink()
 times
 
 
-
+stop()
 
 
 formatting

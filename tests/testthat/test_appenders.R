@@ -1,15 +1,6 @@
 context("appenders")
 
 
-test_that("appenders works as expected", {
-  ml <- memlog$new()
-  ml$fatal("test")
-  x <- ml$showdt()
-
-
-})
-
-
 
 
 test_that("appender_file works as expected", {
@@ -36,6 +27,7 @@ test_that("appender_console_minimal works as expected", {
   expect_true(grepl("foo", res[[1]]))
   expect_true(grepl("bar", res[[2]]))
 })
+
 
 
 
