@@ -4,7 +4,6 @@ context("appenders")
 test_that("appenders works as expected", {
   ml <- memlog$new()
   ml$fatal("test")
-
   x <- ml$showdt()
 
 
@@ -12,29 +11,40 @@ test_that("appenders works as expected", {
 
 
 
-tokenize_format <- function(
-  x,
-  valid_tokens = NULL
-){
-  pos <- unlist(gregexpr("%.", x))
 
-  if (identical(pos, -1L))
-    return(x)
-  pos <- sort(unique(c(1L, pos, pos + 2L, nchar(x) + 1L)))
-  res <- vector("character", length(x))
-  begin <- 1L
-  for(i in seq_len(length(pos) -1L)) {
-    res[[i]] <- substr(x, pos[[i]], pos[[i + 1]] - 1L)
-  }
+test_that("appender_file works as expected", {
+  tf <- tempfile()
 
-  if (!is.null(valid_tokens)){
-    placeholders <- grep("%", res, value = TRUE)
-    assert(
-      all(placeholders %in% valid_tokens),
-      "'format' contains unrecognised format specifications: ",
-      paste(sort(setdiff(placeholders, valid_tokens)), collapse = ", ")
-    )
-  }
+  ml <- memlog$new(appenders = appender_file$new(file = tf))
+  ml$fatal("foo")
+  ml$info("bar")
 
-  res
-}
+  res <- readLines(tf)
+  expect_true(grepl("foo", res[[1]]))
+  expect_true(grepl("bar", res[[2]]))
+})
+
+
+
+
+test_that("appender_console_minimal works as expected", {
+  ml <- memlog$new(appenders = appender_console$new())
+  res <- c(
+    capture.output(ml$fatal("foo")),
+    capture.output(ml$info("bar"))
+  )
+  expect_true(grepl("foo", res[[1]]))
+  expect_true(grepl("bar", res[[2]]))
+})
+
+
+
+test_that("appender_console_minimal works as expected", {
+  ml <- memlog$new(appenders = appender_console_minimal$new())
+  res <- c(
+    capture.output(ml$fatal("foo")),
+    capture.output(ml$info("bar"))
+  )
+  expect_true(grepl("foo", res[[1]]))
+  expect_true(grepl("bar", res[[2]]))
+})
