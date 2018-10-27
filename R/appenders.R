@@ -35,6 +35,7 @@ appender <- R6::R6Class(
 
 
 
+
 appender_format <- R6::R6Class(
   "appender_format",
   inherit = appender,
@@ -54,7 +55,7 @@ appender_format <- R6::R6Class(
     }
   ),
   private = list(
-    format_entry = function(x){
+    format_entry = function(x, ml){
       private$formatter(
         x,
         format = private$format,
@@ -83,7 +84,7 @@ appender_console <- R6::R6Class(
       x <- ml$get_collector()$get_last_value()
 
       if (x$level <= threshold){
-        cat(private$format_entry(x), "\n")
+        cat(private$format_entry(x, ml), "\n")
 
       } else {
         return(invisible(x$msg))
@@ -126,7 +127,7 @@ appender_file <- R6::R6Class(
       x <- ml$get_collector()$get_last_value()
 
       if (x$level <= threshold){
-        cat(private$format_entry(x), "\n", file = private$file, append = TRUE)
+        cat(private$format_entry(x, ml), "\n", file = private$file, append = TRUE)
 
       } else {
         return(invisible(x$msg))
