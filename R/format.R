@@ -14,11 +14,13 @@ format.memlog_data <- function(
   timestamp_format = "%Y-%m-%d %H:%M:%S",
   ml = NULL,
   colors = NULL,
+  pad_levels = "right",
   ...
 ){
   stopifnot(
     is_scalar_character(format),
-    is_scalar_character(timestamp_format)
+    is_scalar_character(timestamp_format),
+    is_scalar_character(pad_levels) || is.null(pad_levels)
   )
 
   # degenerate cases
@@ -28,6 +30,19 @@ format.memlog_data <- function(
   # init
     if (!is.null(ml)){
       lvls <- ml$label_levels(x$level)
+
+      if (!is.null(pad_levels)){
+        nchar_max <- max(nchar(names(ml$get_log_levels())))
+        diff <- nchar_max - nchar(lvls)
+        pad <- vapply(diff, function(i) paste(rep.int(" ", i), collapse = ""), character(1))
+
+        if (pad_levels == "right"){
+          lvls <- paste0(lvls, pad)
+        } else {
+          lvls <- paste0(pad, lvls)
+        }
+      }
+
       user <- ml$get_user() %||% NA_character_
     } else {
       lvls <- x$level
