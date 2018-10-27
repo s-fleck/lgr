@@ -36,6 +36,8 @@ appender <- R6::R6Class(
 
 
 
+# appender format ---------------------------------------------------------
+
 appender_format <- R6::R6Class(
   "appender_format",
   inherit = appender,
@@ -49,7 +51,7 @@ appender_format <- R6::R6Class(
     ){
       private$threshold <- threshold
       private$formatter <- formatter
-      private$format <- "%L [%t] %m"
+      private$format <- format
       private$timestamp_format <- "%Y-%m-%d %H:%M:%S"
       private$colors <- colors
     }
@@ -139,6 +141,72 @@ appender_file <- R6::R6Class(
     file = NULL
   )
 )
+
+
+
+
+# appender glue -----------------------------------------------------------
+
+
+appender_glue <- R6::R6Class(
+  "appender_glue",
+  inherit = appender,
+  public = list(
+    initialize = function(
+      threshold = NULL,
+      format = "{toupper(ml$label_levels(level))} [{format(timestamp, format = '%Y-%m-%d %H:%M:%S')}] {msg}",
+      colors = NULL
+    ){
+      assert_namespace("glue")
+      private$threshold <- threshold
+      private$format <- format
+      private$colors <- colors
+    },
+    append = function(ml){
+      threshold <- self$get_threshold(ml)
+      x <- ml$get_collector()$get_last_value()
+      private$format_entry(x, ml)
+    }
+  ),
+  private = list(
+    format_entry = function(x, ml){
+      do.call(glue::glue, c(list(private$format), as.list(x)))
+    },
+    formatter = NULL,
+    format = NULL,
+    timestamp_format = NULL,
+    colors = NULL
+  )
+)
+
+
+
+
+#' @export
+appender_console_glue <- R6::R6Class(
+  "appender_console_glue",
+  inherit = appender_glue,
+  public = list(
+    append = function(ml){
+      threshold <- self$get_threshold(ml)
+      x <- ml$get_collector()$get_last_value()
+
+      if (x$level <= threshold){
+        cat(private$format_entry(x, ml), "\n")
+
+      } else {
+        return(invisible(x$msg))
+      }
+      return(invisible(x$msg))
+    }
+  )
+)
+
+
+
+
+# appender minimal --------------------------------------------------------
+
 
 
 

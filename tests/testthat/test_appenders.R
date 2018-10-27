@@ -40,3 +40,17 @@ test_that("appender_console_minimal works as expected", {
   expect_true(grepl("foo", res[[1]]))
   expect_true(grepl("bar", res[[2]]))
 })
+
+
+
+test_that("appender_glue works as expected", {
+  ml  <- memlog$new(appenders = appender_glue$new())
+  expect_silent(ml$fatal("foo"))
+  expect_match(
+    ml$get_appenders()[[1]]$append(ml),
+    "FATAL .* foo"
+  )
+
+  ml  <- memlog$new(appenders = appender_console_glue$new())
+  expect_output(ml$fatal("foo"), "FATAL .* foo")
+})
