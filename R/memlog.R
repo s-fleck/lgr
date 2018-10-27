@@ -29,7 +29,17 @@ memlog <- R6::R6Class(
         "debug" = 5,
         "trace" = 6
       ),
-      string_formatter = sprintf
+      string_formatter = sprintf,
+      format = "%L [%t] %m",
+      timestamp_format = "%H:%M:%S",
+      colors = list(
+        "fatal" = function(x) colt::clt_emph2(colt::clt_error(x)),
+        "error" = colt::clt_error,
+        "warn"  = colt::clt_warning,
+        "info"  = colt::clt_info,
+        "debug" = colt::clt_chr,
+        "trace" = colt::clt_chr
+      )
     ){
       stopifnot(
         all_are_distinct(unname(log_levels)),
@@ -48,6 +58,9 @@ memlog <- R6::R6Class(
         private$collector <- collector
         private$appenders <- appenders
         self$set_string_formatter(string_formatter)
+        private$format <- format
+        private$timestamp_format <- timestamp_format
+        private$colors <- colors
         # init log functions ----------------------------------------------
 
 
@@ -80,7 +93,7 @@ memlog <- R6::R6Class(
         }
       },
 
-      showdt = function(threshold = NULL, n = NULL) {
+      showdt = function(n = NULL, threshold = Inf) {
         if (is.null(threshold)) threshold <- private$threshold
         if (is.character(threshold)) threshold <- private$log_levels[[threshold]]
         dd <- private$collector$get_data()
@@ -94,10 +107,26 @@ memlog <- R6::R6Class(
         }
       },
 
-      show = function(threshold = NULL, n = 20, ...){
-        if (is.null(threshold)) threshold <- private$threshold
+      show = function(
+        n = 20,
+        threshold = Inf,
+        ...
+      ){
+        if (is.null(threshold)) {
+          threshold <- private$threshold
+        }
         dd <- tail(self$showdt(threshold), n)
-        self$print_data(dd, ..., ml = self)
+
+        cat(
+          format(
+            dd,
+            format = private$format,
+            timestamp_format = private$timestamp_format,
+            colors = private$colors,
+            ml = self
+          ),
+          sep = "\n"
+        )
       },
 
       log = function(
@@ -172,10 +201,6 @@ memlog <- R6::R6Class(
 
     format_data = function(x, ..., ml = self){
       private$formatter(x, ..., ml = ml)
-    },
-
-    print_data = function(x, ..., ml = self){
-      cat(self$format_data(x, ...,ml = ml), sep = "\n")
     },
 
     get_log_levels = function(){
