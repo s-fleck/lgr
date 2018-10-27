@@ -16,6 +16,18 @@ ml_std$fatal("blubb")
 ml_col$fatal("blubb")
 
 
+for (i in 1:100){
+  l <- sample(c("fatal", "error", "warn", "info", "debug", "trace"), 1, prob = 1:6)
+  msg <- paste(i, sample(month.name, 5), sample(colors(), 5), collapse = " ", sep = " ")
+  ml_col[[l]](msg)
+}
+
+ml_col$show(100)
+ml_col$showdt()
+
+
+stop()
+
 sink("/dev/null")
 
 #times[["flog"]] <- bench::system_time({for (i in 1:1e4) flog.info("blubb")})         # 15.20 s
@@ -34,9 +46,10 @@ times
 stop()
 
 
-formatting
-ml$showdt()
-ml$show()
+
+
+
+
 
 
 
