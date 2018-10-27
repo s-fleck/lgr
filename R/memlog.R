@@ -17,8 +17,7 @@ memlog <- R6::R6Class(
         level = NA_integer_,
         timestamp = Sys.time,
         msg = NA_character_,
-        caller = get_caller,
-        .cache_size = 1e5
+        caller = get_caller
       ),
       appenders = list(appender_console_minimal$new()),
       user = whoami::email_address(whoami::fullname()),
@@ -29,7 +28,8 @@ memlog <- R6::R6Class(
         "info"  = 4,
         "debug" = 5,
         "trace" = 6
-      )
+      ),
+      string_formatter = sprintf
     ){
       stopifnot(
         all_are_distinct(unname(log_levels)),
@@ -47,9 +47,9 @@ memlog <- R6::R6Class(
         private$log_levels <- log_levels
         private$collector <- collector
         private$appenders <- appenders
-
-
+        self$set_string_formatter(string_formatter)
         # init log functions ----------------------------------------------
+
 
         make_logger <- function(
           level,
@@ -57,7 +57,7 @@ memlog <- R6::R6Class(
         ){
           force(level)
           function(msg, ...){
-            private$collector$log(msg = sprintf(msg, ...), level = level)
+            private$collector$log(msg = private$string_formatter(msg, ...), level = level)
             for (app in private$appenders){
               app$append(self)
             }
@@ -148,6 +148,11 @@ memlog <- R6::R6Class(
       private$threshold
     },
 
+    set_string_formatter = function(fun){
+      assert(is.function(fun))
+      private$string_formatter <- fun
+    },
+
     set_threshold = function(x){
       if (is_scalar_character(x)){
         x <- self$unlabel_levels(x)
@@ -173,14 +178,6 @@ memlog <- R6::R6Class(
       private$log_levels
     },
 
-    get_row = function(i = private$current_row){
-      private$data[i, ]
-    },
-
-    get_last_row = function(){
-      private$last_row
-    },
-
     get_appenders = function(){
       private$appenders
     },
@@ -195,7 +192,8 @@ memlog <- R6::R6Class(
     appenders = NULL,
     user = NA_character_,
     log_levels = NULL,
-    threshold = 4L
+    threshold = 4L,
+    string_formatter = NULL
   ),
 
   lock_objects = FALSE
