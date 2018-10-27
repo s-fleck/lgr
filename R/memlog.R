@@ -1,8 +1,6 @@
 #' Title
 #'
-#' @param timer
 #' @param appenders
-#' @param formatter
 #' @param user
 #' @param pid
 #' @param log_levels
@@ -15,9 +13,14 @@ memlog <- R6::R6Class(
   "memlog",
   public = list(
     initialize = function(
-      timer   = Sys.time,
+      collector = collector_dt$new(
+        level = NA_integer_,
+        timestamp = Sys.time,
+        msg = NA_character_,
+        caller = get_caller,
+        .cache_size = 1e5
+      ),
       appenders = list(appender_console_minimal$new()),
-      formatter = format,
       user = whoami::email_address(whoami::fullname()),
       log_levels = c(
         "fatal" = 1,
@@ -26,8 +29,7 @@ memlog <- R6::R6Class(
         "info"  = 4,
         "debug" = 5,
         "trace" = 6
-      ),
-      cache_size = 3e5
+      )
     ){
       stopifnot(
         all_are_distinct(unname(log_levels)),
@@ -35,51 +37,32 @@ memlog <- R6::R6Class(
         !any(log_levels == 0)
       )
 
-      # fields ------------------------------------------------------------------
-        private$id   <- 0L
+
+      # init --------------------------------------------------------------
+      if (inherits(appenders, "appender")) appenders <- list(appenders)
+
+
+      # fields ------------------------------------------------------------
         private$user  <- user
-        private$timer <- timer
         private$log_levels <- log_levels
-        private$data <- structure(
-          data.table::data.table(
-            id = rep(NA_real_, min(1000, cache_size)),
-            level = 0,
-            timestamp = timer(),
-            caller = NA_character_,
-            msg = NA_character_
-          ),
-          class = c("memlog_data", "data.table", "data.frame")
-        )
-        private$cache_size = cache_size
-
-      # methods
-        if (inherits(appenders, "appender")){
-          appenders <- list(appenders)
-        }
-
+        private$collector <- collector
         private$appenders <- appenders
-        private$formatter <- formatter
+
+
+        # init log functions ----------------------------------------------
 
         make_logger <- function(
-          level
+          level,
+          ...
         ){
           force(level)
-
-          function(
-            msg,
-            ...
-          ){
-            msg <- sprintf(msg, ...)
-            caller <- private$get_caller()
-            force(caller)
-
-            self$log(
-              level = level,
-              timestamp = private$timer(),
-              caller = caller,
-              msg = msg
-            )
+          function(msg, ...){
+            private$collector$log(msg = sprintf(msg, ...), level = level)
+            for (app in private$appenders){
+              app$append(self)
+            }
           }
+
         }
 
         for (i in seq_along(private$log_levels)){
@@ -100,12 +83,14 @@ memlog <- R6::R6Class(
       showdt = function(threshold = NULL, n = NULL) {
         if (is.null(threshold)) threshold <- private$threshold
         if (is.character(threshold)) threshold <- private$log_levels[[threshold]]
-        res <- private$data[private$data$level <= threshold & private$data$level > 0, ]
-        res <- with(res, res[order(id), ])
+        dd <- private$collector$get_data()
+        dd <- dd[dd$level <= threshold & dd$level > 0, ]
+        dd <- dd[order(dd$id), ]
+
         if (is.null(n)){
-          res
+          dd
         } else {
-          tail(res, n)
+          tail(dd, n)
         }
       },
 
@@ -194,59 +179,25 @@ memlog <- R6::R6Class(
 
     get_last_row = function(){
       private$last_row
-    }
+    },
 
+    get_appenders = function(){
+      private$appenders
+    },
+
+    get_collector = function(){
+      private$collector
+    }
   ),
 
   private = list(
-    timer = NULL,
-    current_row = 0L,
-    id = 0L,
+    collector = NULL,
+    appenders = NULL,
     user = NA_character_,
     log_levels = NULL,
-    threshold = 4L,
-    appenders = NULL,
-    formatter = NULL,
-    cache_size = NULL,
-    data = NULL,
-    last_row = NULL,
-
-    allocate = function(n = 1000L){
-      end   <- nrow(private$data)
-      if (end >= private$cache_size){
-        private$current_row <- 0L
-      } else {
-        n <- min(n, private$cache_size)
-        alloc <- list(level = vector("integer", n))
-        private$data <- data.table::rbindlist(list(private$data, alloc), fill = TRUE)
-        data.table::setattr(private$data, "class", c("memlog_data", "data.table", "data.frame"))
-      }
-    },
-
-    get_caller = function(
-      where = -2L
-    ){
-      res <- try(sys.call(where)[[1]], silent = TRUE)
-
-      if (is.null(res) || inherits(res, "try-error")){
-        "(shell)"
-
-      } else if (grepl("::", res, fixed = TRUE)){
-        deparse(res)
-
-      } else {
-        res <- deparse(res)
-        ns <- try(format(findFunction(res)[[1]]), silent = TRUE)
-        if (inherits(ns, "try-error")){
-          res
-        } else if (grepl("namespace", ns)){
-          paste0(sub(".*namespace:([^>]+)>.*", "\\1", ns), "::", res)
-        } else {
-          paste0(sub(".*environment:([^>]+)>.*", "\\1", ns), "::", res)
-        }
-      }
-    }
+    threshold = 4L
   ),
+
   lock_objects = FALSE
 )
 

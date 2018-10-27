@@ -6,7 +6,7 @@ test_that("basic logging", {
   ts <- structure(1540486764.41946, class = c("POSIXct", "POSIXt"))
 
   testfun <- function(){
-    ml$log(level = 4L, timestamp = ts, msg = "test", caller = "test_function")
+    ml$fatal("blubb")
   }
 
   expect_output({
@@ -27,21 +27,14 @@ test_that("basic logging", {
 
 
 
-test_that("test memory allocation", {
-  ml <- memlog$new()
-
-  expect_output(replicate(1000L, ml$fatal("blubb")))
-
-  expect_identical(nrow(ml$showdt()), 1000L)
-  expect_output(ml$fatal("blubb"))
-  expect_identical(nrow(ml$showdt()), 1001L)
-  expect_identical(nrow(ml$.__enclos_env__$private$data), 2000L)
-})
-
-
 
 test_that("memory cycling works", {
-  ml <- memlog$new(cache_size = 10)
-  expect_output(replicate(12, ml$info("blubb")))
+  ml <- memlog$new(collector = collector_dt$new(
+    level = NA_integer_,
+    msg = NA_character_,
+    .cache_size = 10)
+  )
+
+  expect_output(replicate(12, ml$info("blubb info")))
   expect_equal(ml$showdt()$id, 3:12)
 })

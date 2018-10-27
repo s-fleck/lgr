@@ -65,7 +65,7 @@ appender_console <- R6::R6Class(
 
     append = function(ml){
       threshold <- self$get_threshold(ml)
-      x <- ml$get_last_row()
+      x <- ml$get_collector()$get_last_value()
 
       if (x$level > threshold){
         return(invisible(x$msg))
@@ -128,15 +128,16 @@ appender_console_minimal <- R6::R6Class(
 
     append = function(ml){
       threshold <- self$get_threshold(ml)
-      x <- ml$get_last_row()
+      x <- ml$get_collector()$get_last_value()
 
-      if (x[[2]] > threshold){
+      if (x$level > threshold){
         return(invisible(x$msg))
       } else {
+
         cat(
-          toupper(ml$label_levels(x[[2]])),
-          " [", format(x[[3]], self$timestamp_format), "] ",
-          x[[5]],
+          toupper(ml$label_levels(x$level)),
+          " [", format(x$timestamp, self$timestamp_format), "] ",
+          x$msg,
           "\n",
           sep = ""
         )
@@ -163,25 +164,5 @@ appender_console_minimal <- R6::R6Class(
     format = NULL,
     timestamp_format = NULL,
     colors = NULL
-  )
-)
-
-
-
-
-#' @export
-console_appender_minimal <- appender_console_minimal$new()
-
-
-
-
-#' @export
-console_appender_color <- appender_console$new(
-  colors = list(
-    "fatal" = function(x) colt::clt_error(colt::clt_emph2(x)),
-    "error" = colt::clt_error,
-    "warn"  = colt::clt_warning,
-    "debug" = colt::clt_chr,
-    "trace" = colt::clt_chr_subtle
   )
 )

@@ -21,6 +21,8 @@ Collate:
     'utils.R'
     'format.R'
     'appenders.R'
+    'collectors.R'
     'formatters.R'
     'memlog-package.R'
     'memlog.R'
+    'zzz.R'

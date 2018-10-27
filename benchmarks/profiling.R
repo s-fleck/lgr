@@ -5,7 +5,7 @@ library(futile.logger)
 
 times <- list()
 
-ml_min <- memlog$new(appenders = console_appender_minimal)
+ml_min <- memlog$new(appenders = console_appender_slim)
 ml_std <- memlog$new(appenders = appender_console$new())
 ml_col <- memlog$new(appenders = console_appender_color)
 
@@ -23,6 +23,9 @@ times[[4]] <- bench::system_time({for (i in 1:1e4) ml_col$fatal("blubb")})      
 
 
 sink()
+
+ml_min$showdt()
+ml_std$showdt()
 
 
 times
