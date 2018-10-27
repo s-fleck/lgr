@@ -6,82 +6,7 @@
 #' @export
 appender <- R6::R6Class(
   "appender",
-  public = list(append = function() NULL )
-)
-
-
-
-
-#' @export
-appender_console <- function(
-  x,
-  ...,
-  ml
-){
-  cat(ml$format_data(x, ..., ml = ml))
-}
-
-
-
-
-#' @export
-appender_file <- R6::R6Class(
-  "appender_file",
-  inherit = appender,
   public = list(
-    append = NULL,
-    file = NULL,
-    format = NULL
-  )
-)
-
-
-
-
-#' @export
-appender_console <- R6::R6Class(
-  "appender_console",
-  inherit = appender,
-  public = list(
-    initialize = function(
-      threshold = NULL,
-      formatter = format.memlog_data,
-      format = "%L [%t] %m",
-      timestamp_format = "%Y-%m-%d %H:%M:%S",
-      colors = NULL
-    ){
-      assert(
-        is.null(threshold) ||
-        is_scalar_integerish(threshold) ||
-        is_scalar_character(threshold)
-      )
-
-      self$formatter <- formatter
-      self$format <- format
-      self$timestamp_format <- timestamp_format
-      self$colors <- colors
-      self$threshold <- threshold
-    },
-
-    append = function(ml){
-      threshold <- self$get_threshold(ml)
-      x <- ml$get_collector()$get_last_value()
-
-      if (x$level > threshold){
-        return(invisible(x$msg))
-      } else {
-        dd <- self$formatter(
-          x,
-          format = self$format,
-          timestamp_format = self$timestamp_format,
-          colors = self$colors,
-          ml = ml
-        )
-      }
-      cat(dd, "\n")
-      return(invisible(x$msg))
-    },
-
     get_threshold = function(
       ml
     ){
@@ -96,7 +21,48 @@ appender_console <- R6::R6Class(
       )
       threshold
     },
-    threshold = NULL,
+
+    set_threshold = function(x){
+      is.null(x) || assert_valid_threshold(x)
+      private$threshold <- x
+    }
+
+  ),
+  private = list(
+    threshold = NULL
+  )
+)
+
+
+
+appender_format <- R6::R6Class(
+  "appender_format",
+  inherit = appender,
+  public = list(
+    initialize = function(
+      threshold = NULL,
+      formatter = format.memlog_data,
+      format = "%L [%t] %m",
+      timestamp_format = "%Y-%m-%d %H:%M:%S",
+      colors = NULL
+    ){
+      private$threshold <- threshold
+      private$formatter <- formatter
+      private$format <- "%L [%t] %m"
+      private$timestamp_format <- "%Y-%m-%d %H:%M:%S"
+      private$colors <- colors
+    }
+  ),
+  private = list(
+    format_entry = function(x){
+      private$formatter(
+        x,
+        format = private$format,
+        timestamp_format = private$timestamp_format,
+        colors = private$colors,
+        ml = ml
+      )
+    },
     formatter = NULL,
     format = NULL,
     timestamp_format = NULL,
@@ -108,22 +74,90 @@ appender_console <- R6::R6Class(
 
 
 #' @export
-appender_console_minimal <- R6::R6Class(
+appender_console <- R6::R6Class(
   "appender_console",
+  inherit = appender_format,
+  public = list(
+    append = function(ml){
+      threshold <- self$get_threshold(ml)
+      x <- ml$get_collector()$get_last_value()
+
+      if (x$level <= threshold){
+        cat(private$format_entry(x), "\n")
+
+      } else {
+        return(invisible(x$msg))
+      }
+      return(invisible(x$msg))
+    }
+  )
+)
+
+
+
+
+#' @inheritParams cat
+#'
+#' @export
+appender_file <- R6::R6Class(
+  "appender_file",
+  inherit = appender_format,
+  public = list(
+    initialize = function(
+      file,
+      threshold = NULL,
+      formatter = format.memlog_data,
+      format = "%L [%t] %m",
+      timestamp_format = "%Y-%m-%d %H:%M:%S"
+    ){
+      self$set_file(file)
+      private$threshold <- threshold
+      private$formatter <- formatter
+      private$format <- "%L [%t] %m"
+      private$timestamp_format <- "%Y-%m-%d %H:%M:%S"
+    },
+
+    set_file = function(x){
+      private$file <- x
+    },
+
+    append = function(ml){
+      threshold <- self$get_threshold(ml)
+      x <- ml$get_collector()$get_last_value()
+
+      if (x$level <= threshold){
+        cat(private$format_entry(x), "\n", file = private$file, append = TRUE)
+
+      } else {
+        return(invisible(x$msg))
+      }
+      return(invisible(x$msg))
+    }
+  ),
+  private = list(
+    file = NULL
+  )
+)
+
+
+
+
+#' @export
+appender_console_minimal <- R6::R6Class(
+  "appender",
   inherit = appender,
   public = list(
     initialize = function(
       threshold = NULL,
       timestamp_format ="%Y-%m-%d %H:%M:%S"
     ){
-      assert(
-        is.null(threshold) ||
-        is_scalar_integerish(threshold) ||
-        is_scalar_character(threshold)
-      )
+      self$set_threshold(threshold)
+      self$set_timestamp_format(timestamp_format)
+    },
 
-      self$timestamp_format <- timestamp_format
-      self$threshold <- threshold
+    set_timestamp_format = function(x){
+      assert(is_scalar_character(x))
+      private$timestamp_format <- x
     },
 
     append = function(ml){
@@ -136,33 +170,16 @@ appender_console_minimal <- R6::R6Class(
 
         cat(
           toupper(ml$label_levels(x$level)),
-          " [", format(x$timestamp, self$timestamp_format), "] ",
+          " [", format(x$timestamp, private$timestamp_format), "] ",
           x$msg,
           "\n",
           sep = ""
         )
         return(invisible(x$msg))
       }
-    },
-
-    get_threshold = function(
-      ml
-    ){
-      threshold <- self$threshold %||% ml$get_threshold()
-      if(is.character(threshold)){
-        ml$unlabel_levels(threshold)
-      }
-      assert_valid_threshold(
-        threshold,
-        ml$get_log_levels(),
-        sprintf("Illegal threshold set for appender <%s>: ", class(self)[[1]])
-      )
-      threshold
-    },
-    threshold = NULL,
-    formatter = NULL,
-    format = NULL,
-    timestamp_format = NULL,
-    colors = NULL
+    }
+  ),
+  private = list(
+    timestamp_format = NULL
   )
 )
