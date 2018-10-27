@@ -17,12 +17,12 @@ ml <- memlog$new()
 
 
 #benchmark
-n <- 1e3
+n <- 1e2
 
 res <- mark(
   memlog   = {walk(1:n, function(i) capture.output(ml$info("blah blah blah %s", i)))},
   flog     = {walk(1:n, function(i) capture.output(flog.info("blah blah blah %s", i)))},
-  iterations = 100,
+  iterations = 10,
   check = FALSE
 )
 

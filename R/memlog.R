@@ -75,7 +75,6 @@ memlog <- R6::R6Class(
               app$append(self)
             }
           }
-
         }
 
         for (i in seq_along(private$log_levels)){
@@ -213,6 +212,32 @@ memlog <- R6::R6Class(
 
     get_collector = function(){
       private$collector
+    },
+
+    suspend = function(){
+      if (length(private$suspended_loggers) > 0){
+        warning("Logger is already suspended")
+      } else {
+        for (i in seq_along(private$log_levels)){
+          nm  <- names(private$log_levels)[[i]]
+          lvl <- private$log_levels[[i]]
+          private$suspended_loggers[[nm]] <- self[[nm]]
+          self[[nm]] <- function(...) NULL
+        }
+      }
+    },
+
+    unsuspend = function(){
+      if (length(private$suspended_loggers) < 1){
+        warning("Logger is not suspended")
+      }
+
+      for (i in seq_along(private$log_levels)){
+        nm  <- names(private$log_levels)[[i]]
+        lvl <- private$log_levels[[i]]
+        self[[nm]] <- private$suspended_loggers[[nm]]
+      }
+      private$suspended_loggers <- list()
     }
   ),
 
@@ -222,7 +247,8 @@ memlog <- R6::R6Class(
     user = NA_character_,
     log_levels = NULL,
     threshold = 4L,
-    string_formatter = NULL
+    string_formatter = NULL,
+    suspended_loggers = list()
   ),
 
   lock_objects = FALSE

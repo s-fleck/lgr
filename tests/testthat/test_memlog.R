@@ -38,3 +38,22 @@ test_that("memory cycling works", {
   expect_output(replicate(12, ml$info("blubb info")))
   expect_equal(ml$showdt()$id, 3:12)
 })
+
+
+
+test_that("suspending loggers works", {
+  ml_col <- memlog$new(appenders = console_appender_color)
+
+  expect_output(ml_col$fatal("blubb"), "FATAL")
+  x <- capture.output(ml_col$fatal("blubb"))
+  ml_col$suspend()
+  expect_identical(ml_col$fatal("blubb %s", "blah"), NULL)
+  ml_col$unsuspend()
+  y <- capture.output(ml_col$fatal("blubb"))
+
+  # ignore timestamp for comparison
+  x <- gsub("[.*]", x, "[time]")
+  y <- gsub("[.*]", x, "[time]")
+
+  expect_identical(x, y)
+})
