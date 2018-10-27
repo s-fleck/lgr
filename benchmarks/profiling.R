@@ -16,12 +16,6 @@ ml_std$fatal("blubb")
 ml_col$fatal("blubb")
 
 
-ml_col$fatal("blubb")
-ml_col$suspend()
-ml_col$fatal("blubb")
-ml_col$unsuspend()
-ml_col$fatal("blubb")
-
 for (i in 1:100){
   l <- sample(c("fatal", "error", "warn", "info", "debug", "trace"), 1, prob = 1:6)
   msg <- paste(i, sample(month.name, 5), sample(colors(), 5), collapse = " ", sep = " ")
@@ -36,31 +30,21 @@ stop()
 
 sink("/dev/null")
 
-#times[["flog"]] <- bench::system_time({for (i in 1:1e4) flog.info("blubb")})         # 15.20 s
+# Compare different appenders against futile.logger
+
+#times[["flog"]] <- bench::system_time({for (i in 1:1e4) flog.info("blubb")})        # 15.20 s
 times[["nul"]] <- bench::system_time({for (i in 1:1e4) ml_nul$fatal("blubb")})       #  2.84 s
 times[["min"]] <- bench::system_time({for (i in 1:1e4) ml_min$fatal("blubb")})       #  4.04 s
 times[["std"]] <- bench::system_time({for (i in 1:1e4) ml_std$fatal("blubb")})       #  6.29 s
-times[["max"]] <- bench::system_time({for (i in 1:1e4) ml_col$fatal("blubb")})       #  11.8 s
+times[["col"]] <- bench::system_time({for (i in 1:1e4) ml_col$fatal("blubb")})       #  11.8 s
 
 ml_col$suspend()
-times[["suspended"]] <- bench::system_time({for (i in 1:1e4) ml_col$fatal("blubb")})       #  11.8 s
-times[["forloop"]] <- bench::system_time({for (i in 1:1e4) NULL})       #  11.8 s
+times[["suspended"]] <- bench::system_time({for (i in 1:1e4) ml_col$fatal("blubb")})       #  26 ms
 ml_col$unsuspend()
 
+times[["forloop"]] <- bench::system_time({for (i in 1:1e4) NULL})       #  1.5 ms
 
 sink()
-
-
-times
-
-
-stop()
-
-
-
-
-
-
 
 
 
