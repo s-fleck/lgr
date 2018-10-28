@@ -9,7 +9,7 @@ Appender <- R6::R6Class(
 
   active = list(
     parent_memlog = function(value){
-      if (missing(value)) private$.parent_memlog
+      if (missing(value)) return(private$.parent_memlog)
       private$.parent_memlog <- value
     },
 
@@ -243,9 +243,6 @@ AppenderConsoleGlue <- R6::R6Class(
 # appender minimal --------------------------------------------------------
 
 
-
-
-
 #' @export
 AppenderConsoleMinimal <- R6::R6Class(
   "AppenderConsoleMinimal",
@@ -253,12 +250,13 @@ AppenderConsoleMinimal <- R6::R6Class(
   public = list(
     initialize = function(
       threshold = NULL,
-      timestamp_format ="%Y-%m-%d %H:%M:%S"
+      timestamp_format ="%Y-%m-%d %H:%M:%S",
+      colors = NULL
     ){
       self$threshold <- threshold
       self$timestamp_format <- timestamp_format
+      self$colors <- colors
     },
-
 
     append = function(){
       x <- private$.parent_memlog$collector$last_value
@@ -266,9 +264,16 @@ AppenderConsoleMinimal <- R6::R6Class(
       if (x$level > self$threshold){
         return(invisible(x$msg))
       } else {
+        pad <- max(nchar(names(private$.parent_memlog$log_levels)))
+        lvl <- pad_right(toupper(private$.parent_memlog$label_levels(x$level)), pad)
+
+        if (!identical(length(private$.colors), 0L)){
+          coln <- private$.parent_memlog$unlabel_levels(names(private$.colors))
+          lvl <- colorize_levels(lvl, x$level, private$.colors, coln )
+        }
 
         cat(
-          toupper(private$.parent_memlog$label_levels(x$level)),
+          lvl,
           " [", format(x$timestamp, private$.timestamp_format), "] ",
           x$msg,
           "\n",
@@ -281,15 +286,28 @@ AppenderConsoleMinimal <- R6::R6Class(
 
   active = list(
     timestamp_format = function(value){
+      if (missing(value)) return(private$.timestamp_format)
+
       assert(is_scalar_character(value))
       private$.timestamp_format <- value
+    },
+
+    colors = function(value){
+      if (missing(value)) return(private$.colors)
+      private$.colors <- value
     }
   ),
 
+
   private = list(
-    .timestamp_format = NULL
+    .timestamp_format = NULL,
+    .colors = NULL
   )
 )
+
+
+
+
 
 
 
@@ -299,3 +317,26 @@ AppenderConsoleMinimal <- R6::R6Class(
 # appender email ----------------------------------------------------------
 
 
+
+pad_left <- function(
+  x,
+  nchar = max(nchar(x)),
+  pad = " "
+){
+  diff <- nchar - nchar(x)
+  padding <-
+    vapply(diff, function(i) paste(rep.int(" ", i), collapse = ""), character(1))
+  lvls <- paste0(padding, x)
+}
+
+
+pad_right <- function(
+  x,
+  nchar = max(nchar(x)),
+  pad = " "
+){
+  diff <- nchar - nchar(x)
+  padding <-
+    vapply(diff, function(i) paste(rep.int(" ", i), collapse = ""), character(1))
+  paste0(x, padding)
+}

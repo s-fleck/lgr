@@ -120,9 +120,9 @@ Memlog <- R6::R6Class(
         cat(
           format(
             dd,
-            format = private$format,
-            timestamp_format = private$timestamp_format,
-            colors = private$colors,
+            format = self$format,
+            timestamp_format = self$timestamp_format,
+            colors = self$colors,
             ml = self
           ),
           sep = "\n"
@@ -252,7 +252,6 @@ Memlog <- R6::R6Class(
         private$.appenders <- NULL
         return(invisible())
       }
-
 
       if (inherits(value, "Appender"))
         value <- list(value)

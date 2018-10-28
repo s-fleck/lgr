@@ -1,21 +1,29 @@
 Type: Package
 Package: memlog
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: Advanced logging framework for R
+Version: 0.0.1.9000
+Authors@R: 
+    person(given = "Stefan",
+           family = "Fleck",
+           role = c("aut", "cre"),
+           email = "stefan.b.fleck@gmail.com")
+Maintainer: Stefan Fleck <stefan.b.fleck@gmail.com>
+Description: A flexible R6 based logging framework with
+    in-memory caching of logs
+License: MIT + file LICENSE
+URL: https://github.com/s-fleck/memlog
+BugReports: https://github.com/s-fleck/dint/memlog
 Imports:
-    data.table
+    data.table,
+    R6
 Suggests: 
+    glue,
     colt,
-    testthat,
     whoami
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.0
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.0.9000
 Collate: 
     'utils-sfmisc.R'
     'utils.R'

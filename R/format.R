@@ -54,7 +54,6 @@ format.memlog_data <- function(
       }
     }
 
-
   # tokenize
     tokens <- tokenize_format(
       format,
@@ -67,9 +66,9 @@ format.memlog_data <- function(
     for(i in seq_len(len)){
       res[[i]] <- switch(
         tokens[[i]],
-        "%n" = x$level,
-        "%l" = lvls,
-        "%L" = toupper(lvls),
+        "%n" = colorize_levels(x$level, x$level, colors, ml$unlabel_levels(names(colors))),
+        "%l" = colorize_levels(lvls, x$level, colors, ml$unlabel_levels(names(colors))),
+        "%L" = colorize_levels(toupper(lvls), x$level, colors, ml$unlabel_levels(names(colors))),
         "%t" = format(x$timestamp, format = timestamp_format),
         "%m" = x$msg,
         "%c" = x$caller %||% "(unknown function)",
@@ -79,15 +78,6 @@ format.memlog_data <- function(
       )
     }
     res <- do.call(paste0, res)
-
-  # colorize
-    if (!is.null(colors)){
-      color_levels <- ml$unlabel_levels(names(colors))
-      for (i in seq_along(colors)){
-        sel <- x$level == color_levels[[i]]
-        res[sel] <- colors[[i]](res[sel])
-      }
-    }
 
   res
 }
@@ -120,4 +110,32 @@ tokenize_format <- function(
   }
 
   res
+}
+
+
+
+#' @param x levels to be colored
+#' @param num_levels numeric version of x (to match against numeric color levels)
+#' @param colors named list of coloring functions. the names should be the levels in x
+#' @param num_levels_colors numeric version of the names of `colors` to be matched
+#'   against num_levels
+#'
+#' @return a `character` vector wit color ansi codes
+#' @nord
+#'
+colorize_levels <- function(
+  x,
+  num_levels,
+  colors,
+  num_levels_colors
+){
+  if (is.null(colors))
+    return(x)
+
+  for (i in seq_along(colors)){
+    sel <- num_levels == num_levels_colors[[i]]
+    x[sel] <- colors[[i]](x[sel])
+  }
+
+  x
 }
