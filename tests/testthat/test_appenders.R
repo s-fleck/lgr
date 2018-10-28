@@ -54,3 +54,17 @@ test_that("appenderGlue works as expected", {
   ml  <- Memlog$new(appenders = AppenderConsoleGlue$new())
   expect_output(ml$fatal("foo"), "FATAL .* foo")
 })
+
+
+
+test_that("appender print method works", {
+  ml <- Memlog$new()
+
+  ml$appenders[[1]]
+  print(ml$appenders[[1]], single_line_summary = TRUE)
+
+  ml
+
+
+  format(ml$appenders[[1]], single_line_summary = TRUE)
+})

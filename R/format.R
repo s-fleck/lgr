@@ -2,7 +2,7 @@
 #'
 #' @param x
 #' @param format
-#' @param timestamp_format
+#' @param timestamp_fmt
 #'
 #' @return
 #' @export
@@ -10,16 +10,16 @@
 #' @examples
 format.memlog_data <- function(
   x,
-  format = "%L [%t] %m",
-  timestamp_format = "%Y-%m-%d %H:%M:%S",
+  fmt = "%L [%t] %m",
+  timestamp_fmt = "%Y-%m-%d %H:%M:%S",
   ml = NULL,
   colors = NULL,
   pad_levels = "right",
   ...
 ){
   stopifnot(
-    is_scalar_character(format),
-    is_scalar_character(timestamp_format),
+    is_scalar_character(fmt),
+    is_scalar_character(timestamp_fmt),
     is_scalar_character(pad_levels) || is.null(pad_levels)
   )
 
@@ -56,7 +56,7 @@ format.memlog_data <- function(
 
   # tokenize
     tokens <- tokenize_format(
-      format,
+      fmt,
       valid_tokens = c("%t", "%u", "%p", "%c", "%m", "%l", "%L", "%n")
     )
 
@@ -69,7 +69,7 @@ format.memlog_data <- function(
         "%n" = colorize_levels(x$level, x$level, colors, ml$unlabel_levels(names(colors))),
         "%l" = colorize_levels(lvls, x$level, colors, ml$unlabel_levels(names(colors))),
         "%L" = colorize_levels(toupper(lvls), x$level, colors, ml$unlabel_levels(names(colors))),
-        "%t" = format(x$timestamp, format = timestamp_format),
+        "%t" = format(x$timestamp, format = timestamp_fmt),
         "%m" = x$msg,
         "%c" = x$caller %||% "(unknown function)",
         "%u" = user,

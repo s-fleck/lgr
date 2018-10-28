@@ -76,3 +76,50 @@ get_caller <- function(
     }
   }
 }
+
+
+
+class_fmt <- function(x, ignore = "R6"){
+  fmt_class(setdiff(class(x), ignore))
+}
+
+fmt_class <- function(x){
+  paste0("<", paste(x, collapse = "/"), ">")
+}
+
+
+style_accent <- colt::clt_chr_accent
+style_subtle <- colt::clt_chr_subtle
+
+
+
+
+#' Paste and Truncate
+#'
+#' @param x a vector
+#' @param width (maximum) width of result
+#' @inheritParams paste
+#'
+#' @return a `character` scalar
+#' @noRd
+#'
+#' @example
+#'   ptrunc(month.abb)
+#'   ptrunc(month.abb, month.name)
+#'
+ptrunc <- function(
+  ...,
+  width = 40L,
+  sep = ", ",
+  collapse = ", "
+){
+  assert(width > 7L, "The minimum supported width is 8")
+  x <- paste(..., sep = sep, collapse = collapse)
+
+  sel <- vapply(x, nchar, integer(1), USE.NAMES = FALSE) > width
+
+  x[sel] <- strtrim(x[sel], width = width - 4L)
+  x[sel] <- paste(gsub(",{0,1}\\s*$", "", x[sel]), "...")
+  x
+}
+

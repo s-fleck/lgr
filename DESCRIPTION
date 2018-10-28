@@ -33,4 +33,6 @@ Collate:
     'formatters.R'
     'memlog-package.R'
     'memlog.R'
+    'print.R'
+    'sls.R'
     'zzz.R'

@@ -31,8 +31,8 @@ test_that("active bindings", {
 
 
   expect_true(is.function(ml$string_formatter))
-  expect_true(is_scalar_character(ml$format))
-  expect_true(is_scalar_character(ml$timestamp_format))
+  expect_true(is_scalar_character(ml$fmt))
+  expect_true(is_scalar_character(ml$timestamp_fmt))
 })
 
 

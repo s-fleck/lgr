@@ -31,8 +31,8 @@ Memlog <- R6::R6Class(
       ),
       threshold = "info",
       string_formatter = sprintf,
-      format = "%L [%t] %m",
-      timestamp_format = "%H:%M:%S",
+      fmt = "%L [%t] %m",
+      timestamp_fmt = "%H:%M:%S",
       colors = list(
         "fatal" = function(x) colt::clt_emph2(colt::clt_error(x)),
         "error" = colt::clt_error,
@@ -54,8 +54,8 @@ Memlog <- R6::R6Class(
 
         self$user  <- user
         self$string_formatter <- string_formatter
-        self$format <- format
-        self$timestamp_format <- timestamp_format
+        self$fmt <- fmt
+        self$timestamp_fmt <- timestamp_fmt
         self$colors <- colors
 
 
@@ -120,8 +120,8 @@ Memlog <- R6::R6Class(
         cat(
           format(
             dd,
-            format = self$format,
-            timestamp_format = self$timestamp_format,
+            fmt = self$fmt,
+            timestamp_fmt = self$timestamp_fmt,
             colors = self$colors,
             ml = self
           ),

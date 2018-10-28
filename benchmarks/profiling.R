@@ -5,16 +5,21 @@ library(futile.logger)
 
 times <- list()
 
-ml_nul <- memlog$new(appenders = NULL)
-ml_min <- memlog$new(appenders = console_appender_slim)
-ml_std <- memlog$new(appenders = appender_console$new())
-ml_col <- memlog$new(appenders = console_appender_color)
+ml_nul <- Memlog$new(appenders = NULL)
+ml_min <- Memlog$new(appenders = AppenderConsoleMinimal$new())
+ml_std <- Memlog$new(appenders = AppenderConsole$new())
+ml_col <- Memlog$new(appenders = appender_console_color)
 
 ml_nul$fatal("blubb")
 ml_min$fatal("blubb")
 ml_std$fatal("blubb")
 ml_col$fatal("blubb")
 
+
+ml_min <- Memlog$new(appenders = AppenderConsoleMinimalColor$new())
+ml_min
+ml_min$fatal("blubb")
+ml_min$info("blubb")
 
 for (i in 1:100){
   l <- sample(c("fatal", "error", "warn", "info", "debug", "trace"), 1, prob = 1:6)
@@ -57,7 +62,7 @@ ml$debug("blubb")
 ml$trace("blubb")
 
 
-ml <- memlog$new()
+ml <- Memlog$new()
 ml$set_threshold("blubb")
 
 
@@ -65,16 +70,4 @@ ml$.__enclos_env__$private$appenders[[1]]$threshold <- "blubb"
 
 ml$debug("blubb")
 
-browser()
 
-cat(format.memlog_data(
-  x,
-  ml = ml,
-  colors = list(
-    "fatal" = function(x) colt::clt_error(colt::clt_emph2(x)),
-    "error" = colt::clt_error,
-    "warn" = colt::clt_warning,
-    "debug" = colt::clt_chr,
-    "trace" = colt::clt_chr_subtle
-  )
-))
