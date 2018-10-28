@@ -1,3 +1,24 @@
+guess_user <- function(fallback = "unknown user"){
+  if (requireNamespace("whoami", quietly = TRUE)){
+    res <-
+      whoami::email_address(
+        whoami::fullname(
+          whoami::gh_username(
+            whoami::username(
+              fallback
+    ))))
+  } else {
+    res <- try(Sys.info()$user)
+    if (inherits(res, "try-error") || is.null(res))
+      res <- fallback
+  }
+
+  res
+}
+
+
+
+
 `%||%` <- function (x, y){
   if (is.null(x))
     y

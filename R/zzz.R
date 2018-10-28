@@ -1,6 +1,5 @@
 # Loggers -----------------------------------------------------------------
-#' @export
-collector_default <- collector_dt$new(
+collector_default <- CollectorDefault$new(
   level = NA_integer_,
   timestamp = Sys.time,
   msg = NA_character_,
@@ -10,8 +9,7 @@ collector_default <- collector_dt$new(
 
 
 
-#' @export
-collector_slim <- collector_dt$new(
+collector_minimal<- CollectorDefault$new(
   level = NA_integer_,
   timestamp = Sys.time,
   msg = NA_character_,
@@ -26,13 +24,13 @@ collector_slim <- collector_dt$new(
 
 
 #' @export
-console_appender_slim <- appender_console_minimal$new()
+console_appender_slim <- AppenderConsoleMinimal$new()
 
 
 
 
 #' @export
-console_appender_color <- appender_console$new(
+console_appender_color <- AppenderConsole$new(
   colors = list(
     "fatal" = function(x) colt::clt_error(colt::clt_emph2(x)),
     "error" = colt::clt_error,

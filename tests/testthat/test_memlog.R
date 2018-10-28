@@ -1,6 +1,32 @@
 context("memlog")
 
 
+test_that("accessors", {
+  ml <- Memlog$new()
+
+  expect_silent(ml$threshold <- 5)
+  expect_identical(ml$threshold, 5L)
+  expect_silent(ml$threshold <- "fatal")
+  expect_identical(ml$threshold, 1L)
+  expect_error(ml$threshold <- "blubb", "fatal.*trace")
+
+
+  ml <- Memlog$new()
+
+  expect_silent(ml$threshold <- 5)
+  expect_identical(ml$threshold, 5L)
+  expect_silent(ml$threshold <- "fatal")
+  expect_identical(ml$threshold, 1L)
+  expect_error(ml$threshold <- "blubb", "fatal.*trace")
+
+
+
+
+
+
+})
+
+
 test_that("basic logging", {
   ml <- memlog$new()
   ts <- structure(1540486764.41946, class = c("POSIXct", "POSIXt"))

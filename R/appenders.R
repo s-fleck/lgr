@@ -4,8 +4,8 @@
 #' @include utils-sfmisc.R
 #'
 #' @export
-appender <- R6::R6Class(
-  "appender",
+Appender <- R6::R6Class(
+  "Appender",
   public = list(
     get_threshold = function(
       ml
@@ -38,9 +38,9 @@ appender <- R6::R6Class(
 
 # appender format ---------------------------------------------------------
 
-appender_format <- R6::R6Class(
-  "appender_format",
-  inherit = appender,
+AppenderFormat <- R6::R6Class(
+  "AppenderFormat",
+  inherit = Appender,
   public = list(
     initialize = function(
       threshold = NULL,
@@ -77,9 +77,9 @@ appender_format <- R6::R6Class(
 
 
 #' @export
-appender_console <- R6::R6Class(
-  "appender_console",
-  inherit = appender_format,
+AppenderConsole <- R6::R6Class(
+  "AppenderConsole",
+  inherit = AppenderFormat,
   public = list(
     append = function(ml){
       threshold <- self$get_threshold(ml)
@@ -102,9 +102,9 @@ appender_console <- R6::R6Class(
 #' @inheritParams cat
 #'
 #' @export
-appender_file <- R6::R6Class(
-  "appender_file",
-  inherit = appender_format,
+AppenderFile <- R6::R6Class(
+  "AppenderFile",
+  inherit = AppenderFormat,
   public = list(
     initialize = function(
       file,
@@ -148,9 +148,9 @@ appender_file <- R6::R6Class(
 # appender glue -----------------------------------------------------------
 
 
-appender_glue <- R6::R6Class(
-  "appender_glue",
-  inherit = appender,
+AppenderGlue <- R6::R6Class(
+  "AppenderGlue",
+  inherit = Appender,
   public = list(
     initialize = function(
       threshold = NULL,
@@ -183,9 +183,9 @@ appender_glue <- R6::R6Class(
 
 
 #' @export
-appender_console_glue <- R6::R6Class(
-  "appender_console_glue",
-  inherit = appender_glue,
+AppenderConsoleGlue <- R6::R6Class(
+  "AppenderConsoleGlue",
+  inherit = AppenderGlue,
   public = list(
     append = function(ml){
       threshold <- self$get_threshold(ml)
@@ -212,9 +212,9 @@ appender_console_glue <- R6::R6Class(
 
 
 #' @export
-appender_console_minimal <- R6::R6Class(
-  "appender",
-  inherit = appender,
+AppenderConsoleMinimal <- R6::R6Class(
+  "AppenderConsoleMinimal",
+  inherit = Appender,
   public = list(
     initialize = function(
       threshold = NULL,
@@ -252,3 +252,12 @@ appender_console_minimal <- R6::R6Class(
     timestamp_format = NULL
   )
 )
+
+
+
+# appender crash ----------------------------------------------------------
+
+
+# appender email ----------------------------------------------------------
+
+

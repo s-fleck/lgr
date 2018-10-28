@@ -9,18 +9,18 @@
 #' @export
 #'
 #' @examples
-memlog <- R6::R6Class(
-  "memlog",
+Memlog <- R6::R6Class(
+  "Memlog",
   public = list(
     initialize = function(
-      collector = collector_dt$new(
+      collector = CollectorDefault$new(
         level = NA_integer_,
         timestamp = Sys.time,
         msg = NA_character_,
         caller = get_caller
       ),
-      appenders = list(appender_console_minimal$new()),
-      user = whoami::email_address(whoami::fullname()),
+      appenders = list(AppenderConsoleMinimal$new()),
+      user = guess_user(),
       log_levels = c(
         "fatal" = 1,
         "error" = 2,
@@ -29,6 +29,7 @@ memlog <- R6::R6Class(
         "debug" = 5,
         "trace" = 6
       ),
+      threshold = "info",
       string_formatter = sprintf,
       format = "%L [%t] %m",
       timestamp_format = "%H:%M:%S",
@@ -48,19 +49,18 @@ memlog <- R6::R6Class(
       )
 
 
-      # init --------------------------------------------------------------
-      if (inherits(appenders, "appender")) appenders <- list(appenders)
-
 
       # fields ------------------------------------------------------------
-        private$user  <- user
-        private$log_levels <- log_levels
-        private$collector <- collector
-        private$appenders <- appenders
-        self$set_string_formatter(string_formatter)
-        private$format <- format
-        private$timestamp_format <- timestamp_format
-        private$colors <- colors
+        self$user  <- user
+        self$threshold <- threshold
+        self$appenders <- appenders
+        self$string_formatter <- string_formatter
+        self$format <- format
+        self$timestamp_format <- timestamp_format
+        self$colors <- colors
+
+        private$.collector  <- collector
+        private$.log_levels <- log_levels
         # init log functions ----------------------------------------------
 
 
@@ -164,63 +164,21 @@ memlog <- R6::R6Class(
 
     label_levels = function(x){
       if (!is.numeric(x)) stop("Expected numeric 'x'")
-      names(private$log_levels)[match(x, private$log_levels)]
+      names(private$.log_levels)[match(x, private$.log_levels)]
     },
 
     unlabel_levels = function(x){
       if (!is.character(x)) stop("Expected character 'x'")
-      private$log_levels[match(x, names(private$log_levels))]
-    },
-
-    get_user = function(){
-      private$user
-    },
-
-    get_threshold = function(){
-      private$threshold
-    },
-
-    set_string_formatter = function(fun){
-      assert(is.function(fun))
-      private$string_formatter <- fun
-    },
-
-    set_threshold = function(x){
-      if (is_scalar_character(x)){
-        x <- self$unlabel_levels(x)
-      }
-      assert(
-        !is.na(x) && is_scalar_integerish(x),
-        "'x' must either the numeric or character representation of one of the following log levels: ",
-        paste(sprintf("%s (%s)", names(private$log_levels), private$log_levels), collapse = ", ")
-      )
-
-      private$threshold <- as.integer(x)
-    },
-
-    format_data = function(x, ..., ml = self){
-      private$formatter(x, ..., ml = ml)
-    },
-
-    get_log_levels = function(){
-      private$log_levels
-    },
-
-    get_appenders = function(){
-      private$appenders
-    },
-
-    get_collector = function(){
-      private$collector
+      private$.log_levels[match(x, names(private$.log_levels))]
     },
 
     suspend = function(){
       if (length(private$suspended_loggers) > 0){
         warning("Logger is already suspended")
       } else {
-        for (i in seq_along(private$log_levels)){
-          nm  <- names(private$log_levels)[[i]]
-          lvl <- private$log_levels[[i]]
+        for (i in seq_along(self$log_levels)){
+          nm  <- names(self$log_levels)[[i]]
+          lvl <- self$log_levels[[i]]
           private$suspended_loggers[[nm]] <- self[[nm]]
           self[[nm]] <- function(...) NULL
         }
@@ -241,13 +199,64 @@ memlog <- R6::R6Class(
     }
   ),
 
+
+  active = list(
+    log_levels = function(value){
+      if (missing(value)) return(private$.log_levels)
+      stop("'log_levels' cannot be modified after a logger has been initialized")
+    },
+
+    collector = function(value){
+      if (missing(value)) {
+        return(private$.collectors)
+      } else {
+        stop("'collector' cannot be modified after a logger has been initialized")
+      }
+    },
+
+    appenders = function(value){
+      if (missing(value)) return(private$.appenders)
+      if (inherits(value, "appender"))
+        value <- list(value)
+      else if (
+        is.list(appenders) &&
+        all(vapply(appenders, inherits, logical(1), "Appender"))
+      ) {
+        # do nothing
+      } else {
+        stop("'appenders' must either be a single Appender or a list thereof")
+      }
+    },
+
+    user = function(value){
+      if (missing(value)) return(private$.user)
+      assert(is_scalar_character(user))
+      private$.user <- value
+    },
+
+    string_formatter = function(value){
+      if (missing(value)) return(private$.string_formatter)
+      assert(is.function(value))
+      private$.string_formatter <- value
+    },
+
+    threshold = function(value){
+      if (missing(value)) return(private$.threshold)
+      if (is_scalar_character(value)){
+        value <- self$unlabel_levels(value)
+      }
+      assert_valid_threshold(value, log_levels = self$log_levels)
+      private$.threshold <- as.integer(value)
+    }
+  ),
+
   private = list(
-    collector = NULL,
-    appenders = NULL,
-    user = NA_character_,
-    log_levels = NULL,
-    threshold = 4L,
-    string_formatter = NULL,
+    .collector = NULL,
+    .appenders = NULL,
+    .user = NA_character_,
+    .log_levels = NULL,
+    .threshold = 4L,
+    .string_formatter = NULL,
     suspended_loggers = list()
   ),
 

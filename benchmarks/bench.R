@@ -45,7 +45,7 @@ ml_sus <- memlog$new(appenders = console_appender_color)
 ml_sus$suspend()
 
 
-n <- 1e4
+n <- 1e3
 
 print(Sys.time())
 sink("/dev/null")

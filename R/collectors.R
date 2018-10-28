@@ -1,7 +1,7 @@
 #' @include utils.R utils-sfmisc.R
 #' @export
-collector_dt <- R6::R6Class(
-  "collector_dt",
+CollectorDefault <- R6::R6Class(
+  "CollectorDefault",
   public = list(
     initialize = function(
       ...,
