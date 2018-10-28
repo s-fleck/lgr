@@ -42,44 +42,43 @@ Memlog <- R6::R6Class(
         "trace" = colt::clt_chr
       )
     ){
-      stopifnot(
-        all_are_distinct(unname(log_levels)),
-        all_are_distinct(names(log_levels)),
-        !any(log_levels == 0)
-      )
 
 
 
       # fields ------------------------------------------------------------
-        self$user  <- user
+        # active
+        self$collector  <- collector
+        self$log_levels <- log_levels
         self$threshold <- threshold
         self$appenders <- appenders
+
+        self$user  <- user
         self$string_formatter <- string_formatter
         self$format <- format
         self$timestamp_format <- timestamp_format
         self$colors <- colors
 
-        private$.collector  <- collector
-        private$.log_levels <- log_levels
-        # init log functions ----------------------------------------------
 
-
+      # init log functions ----------------------------------------------
         make_logger <- function(
           level,
           ...
         ){
           force(level)
           function(msg, ...){
-            private$collector$log(msg = private$string_formatter(msg, ...), level = level)
-            for (app in private$appenders){
-              app$append(self)
+            private$.collector$log(
+              msg = private$.string_formatter(msg, ...),
+              level = level
+            )
+            for (app in private$.appenders){
+              app$append()
             }
           }
         }
 
-        for (i in seq_along(private$log_levels)){
-          nm  <- names(private$log_levels)[[i]]
-          lvl <- private$log_levels[[i]]
+        for (i in seq_along(private$.log_levels)){
+          nm  <- names(private$.log_levels)[[i]]
+          lvl <- private$.log_levels[[i]]
 
           if (nm %in% names(self)){
             stop(
@@ -90,12 +89,14 @@ Memlog <- R6::R6Class(
 
           self[[nm]] <- make_logger(lvl)
         }
+
+        invisible(self)
       },
 
       showdt = function(n = NULL, threshold = Inf) {
-        if (is.null(threshold)) threshold <- private$threshold
-        if (is.character(threshold)) threshold <- private$log_levels[[threshold]]
-        dd <- private$collector$get_data()
+        if (is.null(threshold)) threshold <- private$.threshold
+        if (is.character(threshold)) threshold <- private$.log_levels[[threshold]]
+        dd <- private$.collector$data
         dd <- dd[dd$level <= threshold & dd$level > 0, ]
         dd <- dd[order(dd$id), ]
 
@@ -112,7 +113,7 @@ Memlog <- R6::R6Class(
         ...
       ){
         if (is.null(threshold)) {
-          threshold <- private$threshold
+          threshold <- private$.threshold
         }
         dd <- tail(self$showdt(threshold), n)
 
@@ -152,8 +153,8 @@ Memlog <- R6::R6Class(
         # improvement for the appender
         private$last_row <- val
 
-        for (appender in private$appenders) {
-          appender$append(self)
+        for (appender in private$.appenders) {
+          appender$append()
         }
 
         if (private$current_row >= nrow(private$data))
@@ -190,9 +191,9 @@ Memlog <- R6::R6Class(
         warning("Logger is not suspended")
       }
 
-      for (i in seq_along(private$log_levels)){
-        nm  <- names(private$log_levels)[[i]]
-        lvl <- private$log_levels[[i]]
+      for (i in seq_along(private$.log_levels)){
+        nm  <- names(private$.log_levels)[[i]]
+        lvl <- private$.log_levels[[i]]
         self[[nm]] <- private$suspended_loggers[[nm]]
       }
       private$suspended_loggers <- list()
@@ -203,41 +204,23 @@ Memlog <- R6::R6Class(
   active = list(
     log_levels = function(value){
       if (missing(value)) return(private$.log_levels)
-      stop("'log_levels' cannot be modified after a logger has been initialized")
-    },
 
-    collector = function(value){
-      if (missing(value)) {
-        return(private$.collectors)
-      } else {
-        stop("'collector' cannot be modified after a logger has been initialized")
-      }
-    },
+      assert(
+        is.null(private$.log_levels),
+        stop("'log_levels' cannot be modified once they have been initialized")
+      )
 
-    appenders = function(value){
-      if (missing(value)) return(private$.appenders)
-      if (inherits(value, "appender"))
-        value <- list(value)
-      else if (
-        is.list(appenders) &&
-        all(vapply(appenders, inherits, logical(1), "Appender"))
-      ) {
-        # do nothing
-      } else {
-        stop("'appenders' must either be a single Appender or a list thereof")
-      }
-    },
+      stopifnot(
+        all_are_distinct(unname(value)),
+        all_are_distinct(names(value)),
+        !any(value == 0),
+        is_integerish(value),
+        identical(length(names(value)) , length(value))
+      )
 
-    user = function(value){
-      if (missing(value)) return(private$.user)
-      assert(is_scalar_character(user))
-      private$.user <- value
-    },
+      value <- setNames(as.integer(value), names(value))
 
-    string_formatter = function(value){
-      if (missing(value)) return(private$.string_formatter)
-      assert(is.function(value))
-      private$.string_formatter <- value
+      private$.log_levels <- value
     },
 
     threshold = function(value){
@@ -247,6 +230,48 @@ Memlog <- R6::R6Class(
       }
       assert_valid_threshold(value, log_levels = self$log_levels)
       private$.threshold <- as.integer(value)
+    },
+
+    collector = function(value){
+      if (missing(value)) {
+        return(private$.collector)
+      }
+
+      assert(
+        is.null(private$.collector),
+        stop("The 'collector' cannot be modified after it has been initialized")
+      )
+
+      private$.collector <- value
+    },
+
+    appenders = function(value){
+      if (missing(value)) return(private$.appenders)
+      if (inherits(value, "Appender"))
+        value <- list(value)
+
+      assert(
+        is.list(value) && all(vapply(value, inherits, TRUE, "Appender")),
+        "'appenders' must either be a single Appender or a list thereof"
+      )
+
+      walk(value, function(.x) .x$parent_memlog <- self)
+      private$.appenders <- value
+    },
+
+    user = function(value){
+      if (missing(value)) return(private$.user)
+      assert(
+        is_scalar_character(value),
+        "'user' must be a scalar character"
+      )
+      private$.user <- value
+    },
+
+    string_formatter = function(value){
+      if (missing(value)) return(private$.string_formatter)
+      assert(is.function(value))
+      private$.string_formatter <- value
     }
   ),
 

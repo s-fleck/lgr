@@ -30,7 +30,7 @@ console_appender_slim <- AppenderConsoleMinimal$new()
 
 
 #' @export
-console_appender_color <- AppenderConsole$new(
+appender_console_color <- AppenderConsole$new(
   colors = list(
     "fatal" = function(x) colt::clt_error(colt::clt_emph2(x)),
     "error" = colt::clt_error,

@@ -6,7 +6,7 @@ context("appenders")
 test_that("appender_file works as expected", {
   tf <- tempfile()
 
-  ml <- memlog$new(appenders = appender_file$new(file = tf))
+  ml <- Memlog$new(appenders = AppenderFile$new(file = tf))
   ml$fatal("foo")
   ml$info("bar")
 
@@ -19,7 +19,7 @@ test_that("appender_file works as expected", {
 
 
 test_that("appender_console_minimal works as expected", {
-  ml <- memlog$new(appenders = appender_console$new())
+  ml <- Memlog$new(appenders = AppenderConsole$new())
   res <- c(
     capture.output(ml$fatal("foo")),
     capture.output(ml$info("bar"))
@@ -32,7 +32,7 @@ test_that("appender_console_minimal works as expected", {
 
 
 test_that("appender_console_minimal works as expected", {
-  ml <- memlog$new(appenders = appender_console_minimal$new())
+  ml <- Memlog$new(appenders = AppenderConsoleMinimal$new())
   res <- c(
     capture.output(ml$fatal("foo")),
     capture.output(ml$info("bar"))
@@ -43,14 +43,14 @@ test_that("appender_console_minimal works as expected", {
 
 
 
-test_that("appender_glue works as expected", {
-  ml  <- memlog$new(appenders = appender_glue$new())
+test_that("appenderGlue works as expected", {
+  ml  <- Memlog$new(appenders = AppenderGlue$new())
   expect_silent(ml$fatal("foo"))
   expect_match(
-    ml$get_appenders()[[1]]$append(ml),
+    ml$appenders[[1]]$append(),
     "FATAL .* foo"
   )
 
-  ml  <- memlog$new(appenders = appender_console_glue$new())
+  ml  <- Memlog$new(appenders = AppenderConsoleGlue$new())
   expect_output(ml$fatal("foo"), "FATAL .* foo")
 })

@@ -32,7 +32,7 @@ format.memlog_data <- function(
       lvls <- ml$label_levels(x$level)
 
       if (!is.null(pad_levels)){
-        nchar_max <- max(nchar(names(ml$get_log_levels())))
+        nchar_max <- max(nchar(names(ml$log_levels)))
         diff <- nchar_max - nchar(lvls)
         pad <- vapply(diff, function(i) paste(rep.int(" ", i), collapse = ""), character(1))
 
@@ -43,7 +43,7 @@ format.memlog_data <- function(
         }
       }
 
-      user <- ml$get_user() %||% NA_character_
+      user <- ml$user %||% NA_character_
     } else {
       lvls <- x$level
       user <- {
