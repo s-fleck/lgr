@@ -15,18 +15,7 @@ Appender <- R6::R6Class(
       single_line_summary = FALSE
     ){
       if (single_line_summary){
-        sv <- private$.threshold
-        iv <- self$threshold
-        if (!is.null(sv)){
-          threshold <- sv
-        } else if (!is.null(iv)){
-          threshold <- paste(style_accent(iv), style_subtle("(inherited)"))
-        } else {
-          threshold <- style_subtle("NULL")
-        }
-        cls <- class(self)[[1]]
-
-        return(paste0(fmt_class(cls), "  threshold: ", threshold, ""))
+        return(private$single_line_summary(colors = colors))
       }
 
       ind <- "  "
@@ -101,7 +90,28 @@ Appender <- R6::R6Class(
   ),
     private = list(
       .threshold = NULL,
-      .parent_memlog = NULL
+      .parent_memlog = NULL,
+      single_line_summary = function(colors = TRUE){
+        sv <- private$.threshold
+        iv <- self$threshold
+        ml <- self$parent_memlog
+
+        if (!is.null(sv)){
+          threshold <- sv
+          if (!is.null(ml)){
+            threshold <- paste0(ml$label_levels(sv), " (", sv, ")")
+          }
+
+        } else if (!is.null(iv)){
+          iv <- paste0(ml$label_levels(iv), " (", iv, ")")
+          threshold <- paste(style_accent(iv), style_subtle("(inherited)"))
+        } else {
+          threshold <- style_subtle("no threshold")
+        }
+        cls <- class(self)[[1]]
+
+        return(paste(fmt_class(cls), threshold))
+      }
   )
 )
 
@@ -239,7 +249,28 @@ AppenderFile <- R6::R6Class(
   ),
 
   private = list(
-    .file = NULL
+    .file = NULL,
+    single_line_summary = function(colors = TRUE){
+      sv <- private$.threshold
+      iv <- self$threshold
+      ml <- self$parent_memlog
+
+      if (!is.null(sv)){
+        threshold <- sv
+        if (!is.null(ml)){
+          threshold <- paste0(ml$label_levels(sv), " (", sv, ")")
+        }
+
+      } else if (!is.null(iv)){
+        iv <- paste0(ml$label_levels(iv), " (", iv, ")")
+        threshold <- paste(style_accent(iv), style_subtle("(inherited)"))
+      } else {
+        threshold <- style_subtle("no threshold")
+      }
+      cls <- class(self)[[1]]
+
+      return(paste(fmt_class(cls), threshold, ptrunc(private$.file)))
+    }
   )
 )
 

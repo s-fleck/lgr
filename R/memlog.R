@@ -42,9 +42,6 @@ Memlog <- R6::R6Class(
         "trace" = colt::clt_chr
       )
     ){
-
-
-
       # fields ------------------------------------------------------------
         # active
         self$collector  <- collector
@@ -91,21 +88,45 @@ Memlog <- R6::R6Class(
         }
 
         invisible(self)
-      },
+    },
 
-      showdt = function(n = NULL, threshold = Inf) {
-        if (is.null(threshold)) threshold <- private$.threshold
-        if (is.character(threshold)) threshold <- private$.log_levels[[threshold]]
-        dd <- private$.collector$data
-        dd <- dd[dd$level <= threshold & dd$level > 0, ]
-        dd <- dd[order(dd$id), ]
+    format = function(
+      ...,
+      colors = TRUE
+    ){
+      header <- paste0("<", class(self)[[1]], ">")
+      ind <- "  "
 
-        if (is.null(n)){
-          dd
-        } else {
-          tail(dd, n)
-        }
-      },
+      appenders <- vapply(
+        self$appenders,
+        format,
+        character(1),
+        single_line_summary = TRUE,
+        colors = colors
+      )
+
+      paste0(
+        header, "\n",
+        paste0(ind, "Log Levels:\n"),
+        paste0(ind, ind, sls(self$log_levels), "\n"),
+        paste0(ind, "Appenders:\n"),
+        paste0(ind, ind, appenders, collapse= "\n")
+      )
+    },
+
+    showdt = function(n = NULL, threshold = Inf) {
+      if (is.null(threshold)) threshold <- private$.threshold
+      if (is.character(threshold)) threshold <- private$.log_levels[[threshold]]
+      dd <- private$.collector$data
+      dd <- dd[dd$level <= threshold & dd$level > 0, ]
+      dd <- dd[order(dd$id), ]
+
+      if (is.null(n)){
+        dd
+      } else {
+        tail(dd, n)
+      }
+    },
 
       show = function(
         n = 20,
@@ -219,6 +240,7 @@ Memlog <- R6::R6Class(
       )
 
       value <- setNames(as.integer(value), names(value))
+      class(value) <- c("log_levels", class(value))
 
       private$.log_levels <- value
     },
