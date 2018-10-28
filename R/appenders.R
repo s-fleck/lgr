@@ -104,13 +104,13 @@ Appender <- R6::R6Class(
 
         } else if (!is.null(iv)){
           iv <- paste0(ml$label_levels(iv), " (", iv, ")")
-          threshold <- paste(style_accent(iv), style_subtle("(inherited)"))
+          threshold <- style_subtle(paste(iv, "<inherited>"))
         } else {
           threshold <- style_subtle("no threshold")
         }
         cls <- class(self)[[1]]
 
-        return(paste(fmt_class(cls), threshold))
+        paste(paste0(cls, ":"), threshold)
       }
   )
 )
@@ -263,13 +263,20 @@ AppenderFile <- R6::R6Class(
 
       } else if (!is.null(iv)){
         iv <- paste0(ml$label_levels(iv), " (", iv, ")")
-        threshold <- paste(style_accent(iv), style_subtle("(inherited)"))
+        threshold <- style_subtle(paste(iv, "<inherited>"))
       } else {
         threshold <- style_subtle("no threshold")
       }
       cls <- class(self)[[1]]
 
-      return(paste(fmt_class(cls), threshold, ptrunc(private$.file)))
+      return(ptrunc(
+        paste0(cls, ": "),
+        threshold,
+        colt::clt_warning("->"),
+        private$.file,
+        width = 80,
+        sep = " "
+      ))
     }
   )
 )

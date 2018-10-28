@@ -80,7 +80,6 @@ test_that("memory cycling works", {
 
 test_that("suspending loggers works", {
 
-
   expect_output(ml_col$fatal("blubb"), "FATAL")
   x <- capture.output(ml_col$fatal("blubb"))
   ml_col$suspend()
@@ -93,29 +92,4 @@ test_that("suspending loggers works", {
   y <- gsub("[.*]", x, "[time]")
 
   expect_identical(x, y)
-})
-
-
-test_that("printing works", {
-  ml_col <- Memlog$new(
-    appenders = c(
-      appender_console_color,
-      AppenderConsoleGlue$new(threshold = 3),
-      AppenderConsoleMinimal$new(),
-      AppenderFile$new(file = tempfile()),
-      AppenderFile$new(threshold = 0, file = paste0(tempfile(), tempfile(), tempfile()))
-    )
-  )
-
-  ml_col$info("blub")
-  ml_col$info("wub")
-  ml_col$info("wub")
-
-  ml_col
-
-  app <- AppenderConsoleGlue$new()
-
-  print(app, single_line_summary = TRUE)
-
-
 })

@@ -15,10 +15,11 @@ URL: https://github.com/s-fleck/memlog
 BugReports: https://github.com/s-fleck/dint/memlog
 Imports:
     data.table,
-    R6
+    R6,
+    colt,
+    crayon
 Suggests: 
     glue,
-    colt,
     whoami
 Encoding: UTF-8
 LazyData: true

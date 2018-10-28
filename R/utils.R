@@ -115,6 +115,7 @@ ptrunc <- function(
 ){
   assert(width > 7L, "The minimum supported width is 8")
   x <- paste(..., sep = sep, collapse = collapse)
+  width <- width + nchar(x) - crayon::col_nchar(x)
 
   sel <- vapply(x, nchar, integer(1), USE.NAMES = FALSE) > width
 
