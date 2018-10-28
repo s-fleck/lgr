@@ -9,7 +9,7 @@ collector_default <- CollectorDefault$new(
 
 
 
-collector_minimal<- CollectorDefault$new(
+collector_minimal <- CollectorDefault$new(
   level = NA_integer_,
   timestamp = Sys.time,
   msg = NA_character_,
@@ -24,7 +24,7 @@ collector_minimal<- CollectorDefault$new(
 
 
 #' @export
-console_appender_slim <- AppenderConsoleMinimal$new()
+appender_console_minimal <- AppenderConsoleMinimal$new()
 
 
 
@@ -39,3 +39,4 @@ appender_console_color <- AppenderConsole$new(
     "trace" = colt::clt_chr_subtle
   )
 )
+

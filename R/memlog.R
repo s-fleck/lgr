@@ -247,16 +247,29 @@ Memlog <- R6::R6Class(
 
     appenders = function(value){
       if (missing(value)) return(private$.appenders)
+
+      if (is.null(value)){
+        private$.appenders <- NULL
+        return(invisible())
+      }
+
+
       if (inherits(value, "Appender"))
         value <- list(value)
 
       assert(
         is.list(value) && all(vapply(value, inherits, TRUE, "Appender")),
-        "'appenders' must either be a single Appender or a list thereof"
+        "'appenders' must either be a single Appender, a list thereof, or NULL for no appenders."
       )
 
-      walk(value, function(.x) .x$parent_memlog <- self)
+      value <- lapply(value, function(.x){
+        res <- .x$clone()
+        res$parent_memlog <- self
+        res
+      })
+
       private$.appenders <- value
+      invisible()
     },
 
     user = function(value){

@@ -12,7 +12,7 @@ walk <- function(.x, .f, ...){
 
 
 # setup memlog
-ml <- memlog$new()
+ml <- Memlog$new()
 
 
 
@@ -35,13 +35,14 @@ print(ggplot2::autoplot(res))
 
 library(futile.logger)
 library(bench)
+library(memlog)
 
-ml_nul <- memlog$new(appenders = NULL)
-ml_min <- memlog$new(appenders = console_appender_slim)
-ml_std <- memlog$new(appenders = appender_console$new())
-ml_glu <- memlog$new(appenders = appender_console_glue$new())
-ml_col <- memlog$new(appenders = console_appender_color)
-ml_sus <- memlog$new(appenders = console_appender_color)
+ml_nul <- Memlog$new(appenders = NULL)
+ml_min <- Memlog$new(appenders = AppenderConsoleMinimal$new())
+ml_std <- Memlog$new(appenders = AppenderConsole$new())
+ml_glu <- Memlog$new(appenders = AppenderConsoleGlue$new())
+ml_col <- Memlog$new(appenders = appender_console_color$clone())
+ml_sus <- Memlog$new(appenders = appender_console_color$clone())
 ml_sus$suspend()
 
 
@@ -76,5 +77,6 @@ data.table::as.data.table(res[, c(1, 4, 7)])
 # 7:        glu    1.15s    1.08MB
 # 8:        flg    1.58s   18.59MB
 
+res$expression <- factor(res$expression, levels = rev(res$expression))
 plot(res)
 

@@ -81,8 +81,16 @@ CollectorDefault <- R6::R6Class(
       private$.last_value <- value
     },
 
-    data = function(){
-      private$.data
+    data = function(value){
+      if (missing(value)) return(private$.data)
+
+      assert(
+        is.null(private$.data),
+        stop("'data' cannot be modified once it has been initialized")
+      )
+
+      assert(data.table::is.data.table(value))
+      private$.data <- value
     }
   ),
 

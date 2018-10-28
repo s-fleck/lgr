@@ -41,6 +41,14 @@ assert_valid_threshold <- function(x, log_levels, msg = ""){
 
 
 
+#' Title
+#'
+#' @param where
+#'
+#' @return
+#' @export
+#'
+#' @examples
 get_caller <- function(
   where = -5L
 ){
