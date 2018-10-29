@@ -1,3 +1,30 @@
+#' Collectors
+#'
+#' A Collector collects the log data to an in memory data.table. A memlog
+#' can have a single collectors. It's possible to define your own collectors
+#' but right now this is still experimental and not documented.
+#'
+#'
+#' @section Usage:
+#' ```
+#' col <- CollectorDefault$new(
+#'   level = NA_integer_,
+#'   timestamp = Sys.time,
+#'   ...,
+#'   .cache_size = 1e5
+#' )
+#'
+#' ```
+#'
+#'
+#' @section Arguments
+#'
+#' * `...` Named arguments containing scalars and functions. The values will
+#'   become the columns of the in-memory log data.table. Functions will be
+#'   executed.
+#' * .cache_size. Number of rows of the in-memory log data.table
+#'
+#'
 #' @include utils.R utils-sfmisc.R
 #' @export
 CollectorDefault <- R6::R6Class(
@@ -12,6 +39,10 @@ CollectorDefault <- R6::R6Class(
       assert(
         all(vapply(args, is_scalar, logical(1))),
         "All arguments must scalars"
+      )
+      assert(
+        !".id" %in% names(args),
+        "The name '.id' is reserved"
       )
 
       res <- function(){
@@ -30,7 +61,7 @@ CollectorDefault <- R6::R6Class(
         data.table::set(
           private$.data,
           private$current_row,
-          j = c(names(.args), "id"),
+          j = c(names(.args), ".id"),
           value = c(vals, list(private$id))
         )
 
@@ -49,7 +80,7 @@ CollectorDefault <- R6::R6Class(
       # initialize empty dt
         vals <- lapply(args, function(.x) {if (is.function(.x)) .x() else .x})
         private$.data <- structure(
-          data.table::as.data.table(vals),
+          data.table::as.data.table(c(vals, list(".id" = 0L))),
           class = c("memlog_data", "data.table", "data.frame")
         )
         for (j in seq_along(private$.data)){
@@ -64,6 +95,8 @@ CollectorDefault <- R6::R6Class(
           dd,
           fill = TRUE
         )
+        private$.last_value <- list()
+
         data.table::setattr(
           private$.data,
           "class",
@@ -75,6 +108,7 @@ CollectorDefault <- R6::R6Class(
     log = NULL
   ),
 
+
   active = list(
     last_value = function(value) {
       if (missing(value)) return(private$.last_value)
@@ -83,16 +117,15 @@ CollectorDefault <- R6::R6Class(
 
     data = function(value){
       if (missing(value)) return(private$.data)
-
       assert(
         is.null(private$.data),
         stop("'data' cannot be modified once it has been initialized")
       )
-
       assert(data.table::is.data.table(value))
       private$.data <- value
     }
   ),
+
 
   private = list(
     id = 0L,
