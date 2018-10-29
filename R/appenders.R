@@ -118,7 +118,8 @@ Appender <- R6::R6Class(
 
 
 
-# appender format ---------------------------------------------------------
+
+# AppenderFormat ----------------------------------------------------------
 
 AppenderFormat <- R6::R6Class(
   "AppenderFormat",
@@ -127,7 +128,7 @@ AppenderFormat <- R6::R6Class(
     initialize = function(
       threshold = NULL,
       formatter = format.memlog_data,
-      fmt = "%L [%t] %m",
+      fmt = "%L [%t] %c: %m",
       timestamp_fmt = "%Y-%m-%d %H:%M:%S",
       colors = NULL
     ){
@@ -218,7 +219,7 @@ AppenderFile <- R6::R6Class(
       self$threshold <- threshold
       self$formatter <- formatter
       self$fmt <- fmt
-      self$timestamp_fmt <- fmt
+      self$timestamp_fmt <- timestamp_fmt
     },
 
 
@@ -272,7 +273,7 @@ AppenderFile <- R6::R6Class(
       return(ptrunc(
         paste0(cls, ": "),
         threshold,
-        colt::clt_warning("->"),
+        "->",
         private$.file,
         width = 80,
         sep = " "
@@ -344,7 +345,9 @@ AppenderConsoleGlue <- R6::R6Class(
 
 
 
-# appender minimal --------------------------------------------------------
+
+# AppenderMinimal ---------------------------------------------------------
+
 
 
 #' @export
@@ -354,7 +357,7 @@ AppenderConsoleMinimal <- R6::R6Class(
   public = list(
     initialize = function(
       threshold = NULL,
-      timestamp_fmt ="%Y-%m-%d %H:%M:%S",
+      timestamp_fmt ="%H:%M:%S",
       colors = NULL
     ){
       self$threshold <- threshold
