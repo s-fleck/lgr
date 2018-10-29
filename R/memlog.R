@@ -33,14 +33,7 @@ Memlog <- R6::R6Class(
       string_formatter = sprintf,
       fmt = "%L [%t] %m",
       timestamp_fmt = "%H:%M:%S",
-      colors = list(
-        "fatal" = function(x) colt::clt_emph2(colt::clt_error(x)),
-        "error" = colt::clt_error,
-        "warn"  = colt::clt_warning,
-        "info"  = colt::clt_info,
-        "debug" = colt::clt_chr,
-        "trace" = colt::clt_chr
-      )
+      colors = getOption("memlog.colors")
     ){
       # fields ------------------------------------------------------------
         # active
@@ -119,7 +112,7 @@ Memlog <- R6::R6Class(
       if (is.character(threshold)) threshold <- private$.log_levels[[threshold]]
       dd <- private$.collector$data
       dd <- dd[dd$level <= threshold & dd$level > 0, ]
-      dd <- dd[order(dd$id), ]
+      dd <- dd[order(dd$.id), ]
 
       if (is.null(n)){
         dd
@@ -148,40 +141,6 @@ Memlog <- R6::R6Class(
           ),
           sep = "\n"
         )
-      },
-
-      log = function(
-        level,
-        timestamp,
-        caller,
-        msg
-      ){
-        if (!identical(length(msg), 1L)) stop("'msg' must be a vector of length 1")
-
-        private$current_row <- private$current_row + 1L
-        private$id <- private$id  + 1L
-
-        val <- list(id = private$id, level = level, timestamp = timestamp, caller = caller, msg = msg)
-
-        data.table::set(
-          private$data,
-          private$current_row,
-          j = c("id", "level", "timestamp",  "caller", "msg"),
-          value = val
-        )
-
-        # caching the last row for easy access brings significant speed
-        # improvement for the appender
-        private$last_row <- val
-
-        for (appender in private$.appenders) {
-          appender$append()
-        }
-
-        if (private$current_row >= nrow(private$data))
-          private$allocate(1000L)
-
-        invisible(msg)
       },
 
     label_levels = function(x){
