@@ -79,17 +79,29 @@ get_caller <- function(
 
 
 
+
 class_fmt <- function(x, ignore = "R6"){
   fmt_class(setdiff(class(x), ignore))
 }
+
+
+
 
 fmt_class <- function(x){
   paste0("<", paste(x, collapse = "/"), ">")
 }
 
 
-style_accent <- colt::clt_chr_accent
-style_subtle <- colt::clt_chr_subtle
+
+if (requireNamespace("crayon", quietly = TRUE)){
+  style_accent <- crayon::silver
+  style_subtle <- crayon::silver
+  col_nchar <- crayon::col_nchar
+} else {
+  style_accent <- identity
+  style_subtle <- identity
+  col_nchar <- nchar
+}
 
 
 
@@ -115,7 +127,7 @@ ptrunc <- function(
 ){
   assert(width > 7L, "The minimum supported width is 8")
   x <- paste(..., sep = sep, collapse = collapse)
-  width <- width + nchar(x) - crayon::col_nchar(x)
+  width <- width + nchar(x) - col_nchar(x)
 
   sel <- vapply(x, nchar, integer(1), USE.NAMES = FALSE) > width
 
@@ -123,4 +135,3 @@ ptrunc <- function(
   x[sel] <- paste(gsub(",{0,1}\\s*$", "", x[sel]), "...")
   x
 }
-
