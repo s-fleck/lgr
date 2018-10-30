@@ -4,8 +4,9 @@
 
 
 
-.onLoad <- function(...){
 
+#' @export ml
+.onLoad <- function(...){
   if (requireNamespace("colt", quietly = TRUE)){
     options(
       memlog.colors = list(
