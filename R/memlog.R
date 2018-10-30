@@ -83,6 +83,12 @@ Memlog <- R6::R6Class(
         invisible(self)
     },
 
+
+    log = function(...){
+      private$.collector$log(...)
+      for (app in private$.appenders)  app$append()
+    },
+
     format = function(
       ...,
       colors = TRUE
