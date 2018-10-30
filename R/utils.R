@@ -58,22 +58,7 @@ get_caller <- function(
     return("(shell)")
 
   } else {
-    res <- deparse(res)
-
-    if (grepl("::", res, fixed = TRUE)){
-      return(res)
-
-    } else {
-      ns <- try(format(findFunction(res)[[1]]), silent = TRUE)
-
-      if (inherits(ns, "try-error")){
-        return(res)
-      } else if (grepl("namespace", ns)){
-          return(paste0(sub(".*namespace:([^>]+)>.*", "\\1", ns), "::", res))
-      } else {
-        return(paste0(sub(".*environment:([^>]+)>.*", "\\1", ns), "::", res))
-      }
-    }
+    return(deparse(res))
   }
 }
 
