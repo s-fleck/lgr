@@ -13,8 +13,8 @@
         "fatal" = function(x) colt::clt_emph2(colt::clt_error(x)),
         "error" = colt::clt_error,
         "warn"  = colt::clt_warning,
-        "debug" = colt::clt_chr,
-        "trace" = colt::clt_chr
+        "debug" = colt::clt_chr_subtle,
+        "trace" = colt::clt_chr_subtle
       )
     )
   }
