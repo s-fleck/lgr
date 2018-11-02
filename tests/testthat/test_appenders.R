@@ -49,11 +49,11 @@ test_that("AppenderFile works as expected", {
 test_that("AppenderConsole works as expected", {
   app <- AppenderConsole$new()
 
-  x <- list(
+  x <- as.environment(list(
     level = 2,
     timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
     msg = "foo bar"
-  )
+  ))
 
   expect_identical(
     capture.output(app$append(x)),
@@ -66,26 +66,40 @@ test_that("AppenderConsole works as expected", {
 # AppenderMemory ----------------------------------------------------------
 
 test_that("memory cycling works", {
-  expect_true(
-    data.table::is.data.table(ml$showdt())
-  )
+  app <- AppenderMemoryDt$new()
 
-  expect_true(nrow(ml$showdt()) == 2L)
+  x <- as.environment(list(
+    level = 2L,
+    timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
+    msg = "foo bar"
+  ))
 
-  fatalfun <- function() ml$fatal("test ftl")
-  expect_output(fatalfun(), "FATAL")
-  expect_true(grepl("fatalfun", ml$showdt()[3]$caller))
+  app$append(x)
+
+  expect_identical(app$data[1]$level, x$level)
+  expect_identical(app$data[1]$timestamp, x$timestamp)
+  expect_identical(app$data[1]$msg, x$msg)
+  expect_identical(app$data[1]$caller, NA_character_)
+
+  x$level <- 3
+  app$append(x)
+
+  expect_match(paste(capture.output(app$show()), collapse = ""), "ERROR.*WARN")
 })
 
 
-test_that("memory cycling works", {
-  ml <- Memlog$new(collector = CollectorDefault$new(
-    level = NA_integer_,
-    msg = NA_character_,
-    .cache_size = 10)
-  )
 
-  expect_output(replicate(12, ml$info("blubb info")))
-  expect_equal(ml$showdt()$id, 3:12)
+
+test_that("memory cycling works", {
+  app <- AppenderMemoryDt$new(cache_size = 10)
+
+  x <- as.environment(list(
+    level = 2L,
+    timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
+    msg = "foo bar"
+  ))
+
+  replicate(12, app$append(x))
+  expect_equal(app$data$.id, 3:12)
 })
 

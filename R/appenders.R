@@ -243,6 +243,138 @@ AppenderConsole <- R6::R6Class(
 
 
 
+# AppenderMemory ----------------------------------------------------------
+
+#' Collectors
+#'
+#' A Collector collects the log data to an in memory data.table. A memlog
+#' can have a single collectors. It's possible to define your own collectors
+#' but right now this is still experimental and not documented.
+#'
+#'
+#' @section Usage:
+#' ```
+#' col <- CollectorDefault$new(
+#'   level = NA_integer_,
+#'   timestamp = Sys.time,
+#'   ...,
+#'   .cache_size = 1e5
+#' )
+#'
+#' ```
+#'
+#'
+#' @section Arguments
+#'
+#' * `...` Named arguments containing scalars and functions. The values will
+#'   become the columns of the in-memory log data.table. Functions will be
+#'   executed.
+#' * .cache_size. Number of rows of the in-memory log data.table
+#'
+#'
+#' @include utils.R utils-sfmisc.R
+#' @export
+AppenderMemoryDt <- R6::R6Class(
+  "AppenderMemoryDt",
+  inherit = AppenderFormat,
+  public = list(
+    initialize = function(
+      threshold = NA,
+      layout = LayoutFormat$new(),
+      prototype = data.table::data.table(
+        .id  = NA_integer_,
+        level = NA_integer_,
+        timestamp = Sys.time(),
+        caller = NA_character_,
+        msg = NA_character_
+      ),
+      cache_size = 1e5
+    ){
+      assert(is_scalar_integerish(cache_size))
+      assert(is.integer(prototype$.id))
+      private$current_row <- 0L
+      private$id <- 0L
+      self$data <- prototype
+      self$threshold <- threshold
+      self$layout <- layout
+
+      # initialize empty dt
+      for (j in seq_along(private$.data)){
+        data.table::set(private$.data, i = 1L, j = j, value = NA)
+      }
+      dd <- list(
+        private$.data,
+        list(.id = rep(private$.data[[1]], cache_size - 1L))
+      )
+      private$.data <- data.table::rbindlist(
+        dd,
+        fill = TRUE
+      )
+      data.table::setattr(
+        private$.data,
+        "class",
+        c("memlog_data", "data.table", "data.frame")
+      )
+
+      invisible(self)
+    },
+
+
+    append = function(x){
+      private[["current_row"]] <- private[["current_row"]] + 1L
+      private[["id"]] <- private[["id"]] + 1L
+      data.table::set(
+        private$.data,
+        private[["current_row"]],
+        j = c(".id", names(x)),
+        value = c(private$id, as.list(x))
+      )
+
+      if (private[["current_row"]] == nrow(private$.data)){
+        private[["current_row"]] <- 0L
+      }
+    },
+
+
+    show = function(
+      n = 20,
+      threshold = NA
+    ){
+      if (is.na(threshold)) threshold <- Inf
+      dd <- self$data
+      dd <- tail(dd[dd$level <= threshold], n)
+
+      cat(self$layout$format_event(dd), sep = "\n")
+    }
+  ),
+
+
+  active = list(
+    data = function(value){
+      if (missing(value)){
+        tmp <- private$.data[!is.na(private$.data$.id), ]
+        return(tmp[order(tmp$.id), ])
+      }
+      assert(
+        is.null(private$.data),
+        stop("'data' cannot be modified once it has been initialized")
+      )
+      assert(data.table::is.data.table(value))
+      private$.data <- value
+    }
+  ),
+
+
+  private = list(
+    id = 0L,
+    current_row = 0L,
+    .data = NULL
+  )
+)
+
+
+
+
 # appender crash ----------------------------------------------------------
 
 
