@@ -1,5 +1,5 @@
 Type: Package
-Package: memlog
+Package: yog
 Title: Advanced logging framework for R
 Version: 0.0.1.9000
 Authors@R: 
@@ -8,15 +8,14 @@ Authors@R:
            role = c("aut", "cre"),
            email = "stefan.b.fleck@gmail.com")
 Maintainer: Stefan Fleck <stefan.b.fleck@gmail.com>
-Description: A flexible R6 based logging framework with
-    in-memory caching of logs
+Description: A flexible R6 based logging framework 
 License: MIT + file LICENSE
-URL: https://github.com/s-fleck/memlog
-BugReports: https://github.com/s-fleck/dint/memlog
+URL: https://github.com/s-fleck/yog
+BugReports: https://github.com/s-fleck/dint/yog
 Imports:
-    data.table,
     R6
 Suggests: 
+    data.table,
     glue,
     whoami,
     colt,
@@ -28,11 +27,8 @@ RoxygenNote: 6.1.0.9000
 Collate: 
     'utils-sfmisc.R'
     'utils.R'
-    'format.R'
+    'print.R'
     'appenders.R'
-    'formatters.R'
     'layouts.R'
     'memlog-package.R'
     'memlog.R'
-    'print.R'
-    'sls.R'

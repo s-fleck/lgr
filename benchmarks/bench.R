@@ -1,6 +1,6 @@
 library(bench)
 library(futile.logger)
-library(memlog)
+library(yog)
 
 # Compare appenders -------------------------------------------------------
 
@@ -16,13 +16,13 @@ colors <- list(
 )
 
 
-ml$nul <- Memlog$new(appenders = NULL)
-ml$min <- Memlog$new(appenders = AppenderConsoleMinimal$new(colors = list()))
-ml$min_col <- Memlog$new(appenders = AppenderConsoleMinimal$new(colors = colors))
-ml$std <- Memlog$new(appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = NULL)))
-ml$glu <- Memlog$new(appenders = AppenderConsoleGlue$new())
-ml$col <- Memlog$new(appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = colors)))
-ml$sus <- Memlog$new(appenders = appender_console_color$clone())
+ml$nul <- Logger$new(appenders = NULL)
+ml$min <- Logger$new(appenders = AppenderConsoleMinimal$new(colors = list()))
+ml$min_col <- Logger$new(appenders = AppenderConsoleMinimal$new(colors = colors))
+ml$std <- Logger$new(appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = NULL)))
+ml$glu <- Logger$new(appenders = AppenderConsoleGlue$new())
+ml$col <- Logger$new(appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = colors)))
+ml$sus <- Logger$new(appenders = appender_console_color$clone())
 ml$sus$suspend()
 
 

@@ -1,4 +1,4 @@
 library(testthat)
-library(memlog)
+library(yog)
 
-test_check("memlog")
+test_check("yog")

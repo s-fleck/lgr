@@ -1,8 +1,8 @@
-context("memlog")
+context("yog")
 
 
 test_that("active bindings", {
-  ml <- Memlog$new()
+  ml <- Logger$new()
 
   expect_identical(
     ml$log_levels,
@@ -34,7 +34,7 @@ test_that("active bindings", {
 
 
 test_that("basic logging", {
-  ml <- Memlog$new()
+  ml <- Logger$new()
   ts <- structure(1540486764.41946, class = c("POSIXct", "POSIXt"))
 
   testfun <- function(){

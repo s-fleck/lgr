@@ -1,4 +1,4 @@
-library(memlog)
+library(yog)
 library(futile.logger)
 
 # Benchmarking different appenders ----------------------------------------
@@ -6,10 +6,10 @@ library(futile.logger)
 times <- list()
 
 
-ml_nul <- Memlog$new(appenders = NULL)
-ml_min <- Memlog$new(appenders = AppenderConsoleMinimal$new())
-ml_std <- Memlog$new(appenders = AppenderConsole$new())
-ml_col <- Memlog$new(appenders = AppenderConsole$new(
+ml_nul <- Logger$new(appenders = NULL)
+ml_min <- Logger$new(appenders = AppenderConsoleMinimal$new())
+ml_std <- Logger$new(appenders = AppenderConsole$new())
+ml_col <- Logger$new(appenders = AppenderConsole$new(
   colors = list(
     "fatal" = function(x) colt::clt_error(colt::clt_emph2(x)),
     "error" = colt::clt_error,
@@ -25,7 +25,7 @@ ml_std$fatal("blubb")
 ml_col$fatal("blubb")
 
 
-ml_min <- Memlog$new(appenders = AppenderConsoleMinimalColor$new())
+ml_min <- Logger$new(appenders = AppenderConsoleMinimalColor$new())
 ml_min
 ml_min$fatal("blubb")
 ml_min$info("blubb")
@@ -71,7 +71,7 @@ ml$debug("blubb")
 ml$trace("blubb")
 
 
-ml <- Memlog$new()
+ml <- Logger$new()
 ml$set_threshold("blubb")
 
 

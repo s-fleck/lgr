@@ -54,7 +54,7 @@ style_subtle <- colt::clt_chr_subtle
 #' @export
 #'
 #' @examples
-format.memlog_data <- function(
+format.yog_data <- function(
   x,
   fmt = "%L [%t] %m",
   timestamp_fmt = "%Y-%m-%d %H:%M:%S",

@@ -1,7 +1,7 @@
-library(memlog)
+library(yog)
 
 
-  ml_col <- Memlog$new(
+  ml_col <- Logger$new(
     appenders = c(
       appender_console_color,
       AppenderConsoleGlue$new(threshold = 3),

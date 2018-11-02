@@ -1,12 +1,11 @@
+#' @include print.R
+#' @include utils.R
+#' @include utils-sfmisc.R
 
 # Appender ----------------------------------------------------------------
 
 
 
-#' @include format.R
-#' @include utils.R
-#' @include utils-sfmisc.R
-#'
 #' @export
 Appender <- R6::R6Class(
   "Appender",
@@ -101,7 +100,6 @@ Appender <- R6::R6Class(
       single_line_summary = function(colors = TRUE){
         sv <- private$.threshold
         iv <- self$threshold
-        ml <- self$parent_memlog
 
         if (!is.null(sv)){
           threshold <- sv
@@ -192,7 +190,6 @@ AppenderFile <- R6::R6Class(
     single_line_summary = function(colors = TRUE){
       sv <- private$.threshold
       iv <- self$threshold
-      ml <- self$parent_memlog
 
       if (!is.null(sv)){
         threshold <- sv
@@ -250,33 +247,7 @@ AppenderConsole <- R6::R6Class(
 
 # AppenderMemory ----------------------------------------------------------
 
-#' Collectors
-#'
-#' A Collector collects the log data to an in memory data.table. A memlog
-#' can have a single collectors. It's possible to define your own collectors
-#' but right now this is still experimental and not documented.
-#'
-#'
-#' @section Usage:
-#' ```
-#' col <- CollectorDefault$new(
-#'   level = NA_integer_,
-#'   timestamp = Sys.time,
-#'   ...,
-#'   .cache_size = 1e5
-#' )
-#'
-#' ```
-#'
-#'
-#' @section Arguments
-#'
-#' * `...` Named arguments containing scalars and functions. The values will
-#'   become the columns of the in-memory log data.table. Functions will be
-#'   executed.
-#' * .cache_size. Number of rows of the in-memory log data.table
-#'
-#'
+
 #' @include utils.R utils-sfmisc.R
 #' @export
 AppenderMemoryDt <- R6::R6Class(
@@ -321,7 +292,7 @@ AppenderMemoryDt <- R6::R6Class(
       data.table::setattr(
         private$.data,
         "class",
-        c("memlog_data", "data.table", "data.frame")
+        c("yog_data", "data.table", "data.frame")
       )
 
       invisible(self)

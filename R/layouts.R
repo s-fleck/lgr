@@ -1,9 +1,9 @@
-# Layout ------------------------------------------------------------------
-
-#' @include format.R
+#' @include print.R
 #' @include utils.R
 #' @include utils-sfmisc.R
-#'
+
+# Layout ------------------------------------------------------------------
+
 #' @export
 Layout <- R6::R6Class(
   "Layout",
@@ -40,7 +40,7 @@ LayoutFormat <- R6::R6Class(
       ),
       pad_levels = "right"
     ){
-      private$formatter <- format.memlog_data
+      private$formatter <- format.yog_data
       self$fmt <- fmt
       self$timestamp_fmt <- timestamp_fmt
       self$colors <- colors

@@ -9,15 +9,14 @@
 #' @export
 #'
 #' @examples
-Memlog <- R6::R6Class(
-  "Memlog",
+Logger <- R6::R6Class(
+  "Logger",
 
   # public methods --------------------------------------------------------
   public = list(
     initialize = function(
       appenders = list(
-        AppenderConsole$new(layout = LayoutFormat$new(colors = getOption("memlog.colors"))),
-        AppenderMemoryDt$new(layout = LayoutFormat$new(colors = getOption("memlog.colors")))
+        AppenderConsole$new(layout = LayoutFormat$new(colors = getOption("yog.colors")))
       ),
       user = guess_user(),
       log_levels = c(

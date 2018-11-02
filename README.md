@@ -1,9 +1,9 @@
-# memlog
+# Yog
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-memlog is yet another logging package for R that is build on the back of
-R6 and data.table. The difference to other logging packages is that memlog
+yog is yet another logging package for R that is build on the back of
+R6 and data.table. The difference to other logging packages is that yog
 maintains the log in memory as a data.table. That does not mean that it lacks
 the facility to log to the console or to logfiles.
 
@@ -24,5 +24,5 @@ This package is under heavy development right now, come back later.
 ## Installation
 
 ``` r
-devtools::install.github("s-fleck/memlog")
+devtools::install.github("s-fleck/yog")
 ```

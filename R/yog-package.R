@@ -6,11 +6,11 @@
 
 
 
-#' @export ml
+#' @export yog
 .onLoad <- function(...){
   if (requireNamespace("colt", quietly = TRUE)){
     options(
-      memlog.colors = list(
+      yog.colors = list(
         "fatal" = function(x) colt::clt_emph2(colt::clt_error(x)),
         "error" = colt::clt_error,
         "warn"  = colt::clt_warning,
@@ -21,8 +21,8 @@
   }
 
   assign(
-    "ml",
-    Memlog$new(),
-    envir =  asNamespace("memlog")
+    "yog",
+    Logger$new(),
+    envir =  asNamespace("yog")
   )
 }
