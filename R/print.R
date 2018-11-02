@@ -42,3 +42,281 @@ object_summaries <- function(x, exclude = NULL) {
 style_accent <- colt::clt_chr_accent
 style_subtle <- colt::clt_chr_subtle
 
+
+
+#' Title
+#'
+#' @param x
+#' @param format
+#' @param timestamp_fmt
+#'
+#' @return
+#' @export
+#'
+#' @examples
+format.memlog_data <- function(
+  x,
+  fmt = "%L [%t] %m",
+  timestamp_fmt = "%Y-%m-%d %H:%M:%S",
+  colors = NULL,
+  log_levels = c(
+    "fatal" = 1,
+    "error" = 2,
+    "warn"  = 3,
+    "info"  = 4,
+    "debug" = 5,
+    "trace" = 6
+  ),
+  pad_levels = "right",
+  user = guess_user(),
+  ...
+){
+  stopifnot(
+    is_scalar_character(fmt),
+    is_scalar_character(timestamp_fmt),
+    is_scalar_character(pad_levels) || is.null(pad_levels)
+  )
+
+  # degenerate cases
+  if (identical(nrow(x), 0L))  return("[empty log]")
+
+
+  # init
+  lvls <- label_levels(x$level, log_levels = log_levels)
+
+  if (!is.null(pad_levels)){
+    nchar_max <- max(nchar(names(log_levels)))
+    diff <- nchar_max - nchar(lvls)
+    pad <- vapply(diff, function(i) paste(rep.int(" ", i), collapse = ""), character(1))
+
+    if (pad_levels == "right"){
+      lvls <- paste0(lvls, pad)
+    } else {
+      lvls <- paste0(pad, lvls)
+    }
+
+  } else {
+    lvls <- x$level
+  }
+
+  # tokenize
+  tokens <- tokenize_format(
+    fmt,
+    valid_tokens = c("%t", "%u", "%p", "%c", "%m", "%l", "%L", "%n")
+  )
+
+  # format
+  len  <- length(tokens)
+  res  <- vector("list", length(tokens))
+  for(i in seq_len(len)){
+    res[[i]] <- switch(
+      tokens[[i]],
+      "%n" = colorize_levels(x$level, x$level, colors, unlabel_levels(names(colors), log_levels = log_levels  )),
+      "%l" = colorize_levels(lvls, x$level, colors, unlabel_levels(names(colors), log_levels = log_levels  )),
+      "%L" = colorize_levels(toupper(lvls), x$level, colors, unlabel_levels(names(colors), log_levels = log_levels )),
+      "%t" = format(x$timestamp, format = timestamp_fmt),
+      "%m" = x$msg,
+      "%c" = x$caller %||% "(unknown function)",
+      "%u" = user,
+      "%p" = Sys.getpid(),
+      tokens[[i]]
+    )
+  }
+  res <- do.call(paste0, res)
+
+  res
+}
+
+
+
+
+tokenize_format <- function(
+  x,
+  valid_tokens = NULL
+){
+  pos <- unlist(gregexpr("%.", x))
+
+  if (identical(pos, -1L))
+    return(x)
+  pos <- sort(unique(c(1L, pos, pos + 2L, nchar(x) + 1L)))
+  res <- vector("character", length(x))
+  begin <- 1L
+  for(i in seq_len(length(pos) -1L)) {
+    res[[i]] <- substr(x, pos[[i]], pos[[i + 1]] - 1L)
+  }
+
+  if (!is.null(valid_tokens)){
+    placeholders <- grep("%", res, value = TRUE)
+    assert(
+      all(placeholders %in% valid_tokens),
+      "'format' contains unrecognised format specifications: ",
+      paste(sort(setdiff(placeholders, valid_tokens)), collapse = ", ")
+    )
+  }
+
+  res
+}
+
+
+
+
+#' @param x levels to be colored
+#' @param num_levels numeric version of x (to match against numeric color levels)
+#' @param colors named list of coloring functions. the names should be the levels in x
+#' @param num_levels_colors numeric version of the names of `colors` to be matched
+#'   against num_levels
+#'
+#' @return a `character` vector wit color ansi codes
+#' @nord
+#'
+colorize_levels <- function(
+  x,
+  num_levels,
+  colors,
+  num_levels_colors
+){
+  if (is.null(colors))
+    return(x)
+
+  for (i in seq_along(colors)){
+    sel <- num_levels == num_levels_colors[[i]]
+    x[sel] <- colors[[i]](x[sel])
+  }
+
+  x
+}
+
+
+
+
+#' Title
+#'
+#' @param x
+#' @param log_levels
+#'
+#' @return
+#' @export
+#'
+#' @examples
+label_levels = function(
+  x,
+  log_levels = c(
+    "fatal" = 1,
+    "error" = 2,
+    "warn"  = 3,
+    "info"  = 4,
+    "debug" = 5,
+    "trace" = 6
+  )
+){
+  if (!is.numeric(x)) stop("Expected numeric 'x'")
+  names(log_levels)[match(x, log_levels)]
+}
+
+
+
+
+#' Title
+#'
+#' @param x
+#' @param log_levels
+#'
+#' @return
+#' @export
+#'
+#' @examples
+unlabel_levels = function(
+  x,
+  log_levels = c(
+    "fatal" = 1,
+    "error" = 2,
+    "warn"  = 3,
+    "info"  = 4,
+    "debug" = 5,
+    "trace" = 6
+  )
+){
+  if (!is.character(x)) stop("Expected character 'x'")
+  log_levels[match(x, names(log_levels))]
+}
+
+
+
+
+pad_left <- function(
+  x,
+  nchar = max(nchar(x)),
+  pad = " "
+){
+  diff <- nchar - nchar(x)
+  padding <-
+    vapply(diff, function(i) paste(rep.int(" ", i), collapse = ""), character(1))
+  lvls <- paste0(padding, x)
+}
+
+
+
+
+pad_right <- function(
+  x,
+  nchar = max(nchar(x)),
+  pad = " "
+){
+  diff <- nchar - nchar(x)
+  padding <-
+    vapply(diff, function(i) paste(rep.int(" ", i), collapse = ""), character(1))
+  paste0(x, padding)
+}
+
+
+
+#' Single Line Summary
+#' @return a `character` scalar
+#' @noRd
+sls <- function(x, colors = FALSE){
+  UseMethod("sls")
+}
+
+#' Title
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
+sls.Appender <- function(x, colors = FALSE){
+  x$format(colors = colors, single_line_summary = TRUE)
+}
+
+
+#' Title
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
+sls.default <- function(x, colors = FALSE){
+  if (is.atomic(x)){
+    ptrunc(x, width = 64)
+  } else {
+    class_fmt(x)
+  }
+}
+
+
+#' Title
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
+sls.log_levels <- function(x, colors = FALSE){
+  paste0(names(x), " (", x, ")", collapse = ", ")
+}
+
+

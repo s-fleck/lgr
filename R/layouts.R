@@ -1,3 +1,5 @@
+# Layout ------------------------------------------------------------------
+
 #' @include format.R
 #' @include utils.R
 #' @include utils-sfmisc.R
@@ -17,6 +19,9 @@ Layout <- R6::R6Class(
 
 
 
+# LayoutFormat ------------------------------------------------------------
+
+#' @export
 LayoutFormat <- R6::R6Class(
   "LayoutFormat",
   inherit = Layout,
@@ -100,6 +105,9 @@ LayoutFormat <- R6::R6Class(
 
 
 
+# LayoutGlue --------------------------------------------------------------
+
+#' @export
 LayoutGlue <- R6::R6Class(
   "Layout",
   inherit = LayoutFormat,

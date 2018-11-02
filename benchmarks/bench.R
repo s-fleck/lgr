@@ -19,9 +19,9 @@ colors <- list(
 ml$nul <- Memlog$new(appenders = NULL)
 ml$min <- Memlog$new(appenders = AppenderConsoleMinimal$new(colors = list()))
 ml$min_col <- Memlog$new(appenders = AppenderConsoleMinimal$new(colors = colors))
-ml$std <- Memlog$new(appenders = AppenderConsole$new())
+ml$std <- Memlog$new(appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = NULL)))
 ml$glu <- Memlog$new(appenders = AppenderConsoleGlue$new())
-ml$col <- Memlog$new(appenders = appender_console_color$clone())
+ml$col <- Memlog$new(appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = colors)))
 ml$sus <- Memlog$new(appenders = appender_console_color$clone())
 ml$sus$suspend()
 

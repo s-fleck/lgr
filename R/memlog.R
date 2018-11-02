@@ -12,7 +12,6 @@
 Memlog <- R6::R6Class(
   "Memlog",
 
-
   # public methods --------------------------------------------------------
   public = list(
     initialize = function(
