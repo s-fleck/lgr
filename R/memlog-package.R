@@ -20,5 +20,9 @@
     )
   }
 
-  assign("ml", Memlog$new(), envir =  asNamespace("memlog"))
+  assign(
+    "ml",
+    Memlog$new(),
+    envir =  asNamespace("memlog")
+  )
 }

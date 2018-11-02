@@ -16,7 +16,10 @@ Memlog <- R6::R6Class(
   # public methods --------------------------------------------------------
   public = list(
     initialize = function(
-      appenders = list(AppenderConsole$new()),
+      appenders = list(
+        AppenderConsole$new(layout = LayoutFormat$new(colors = getOption("memlog.colors"))),
+        AppenderMemoryDt$new(layout = LayoutFormat$new(colors = getOption("memlog.colors")))
+      ),
       user = guess_user(),
       log_levels = c(
         "fatal" = 1,
@@ -26,11 +29,8 @@ Memlog <- R6::R6Class(
         "debug" = 5,
         "trace" = 6
       ),
-      threshold = "info",
-      string_formatter = sprintf,
-      fmt = "%L [%t] %m",
-      timestamp_fmt = "%H:%M:%S",
-      colors = getOption("memlog.colors")
+      threshold = NA,
+      string_formatter = sprintf
     ){
       # fields ------------------------------------------------------------
         # active
@@ -39,7 +39,6 @@ Memlog <- R6::R6Class(
         self$appenders <- appenders
         self$user  <- user
         self$string_formatter <- string_formatter
-
 
       # init log functions ----------------------------------------------
         make_logger <- function(
@@ -138,7 +137,7 @@ Memlog <- R6::R6Class(
 
 
   # public fields -----------------------------------------------------------
-    last_value = environment()
+    last_value = new.env(parent = emptyenv())
   ),
 
 
@@ -170,7 +169,7 @@ Memlog <- R6::R6Class(
       if (is_scalar_character(value)){
         value <- unlabel_levels(value, log_levels = self$log_levels)
       }
-      assert_valid_threshold(value, log_levels = self$log_levels)
+      is.na(value) || assert_valid_threshold(value, log_levels = self$log_levels)
       private$.threshold <- as.integer(value)
     },
 

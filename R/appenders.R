@@ -167,7 +167,7 @@ AppenderFile <- R6::R6Class(
     },
 
     append = function(x){
-      if (is.na(private$.threshold || x$level <= private$.threshold)){
+      if (is.na(private$.threshold) || x$level <= private$.threshold){
         cat(
           private$.layout$format_event(x), "\n",
           file = private$.file,
@@ -230,8 +230,12 @@ AppenderConsole <- R6::R6Class(
   inherit = AppenderFile,
   public = list(
     initialize = function(
-      threshold = NA,
-      layout = LayoutFormat$new()
+      threshold = 4L,
+      layout = LayoutFormat$new(
+        fmt = "%L [%t] %m",
+        timestamp_fmt = "%H:%M:%S",
+        colors = colors
+      )
     ){
       self$file <- ""
       self$threshold <- threshold
@@ -239,6 +243,7 @@ AppenderConsole <- R6::R6Class(
     }
   )
 )
+
 
 
 
@@ -280,7 +285,10 @@ AppenderMemoryDt <- R6::R6Class(
   public = list(
     initialize = function(
       threshold = NA,
-      layout = LayoutFormat$new(),
+      layout = LayoutFormat$new(
+        fmt = "%L [%t] %m",
+        timestamp_fmt = "%H:%M:%S"
+      ),
       prototype = data.table::data.table(
         .id  = NA_integer_,
         level = NA_integer_,
@@ -323,6 +331,7 @@ AppenderMemoryDt <- R6::R6Class(
     append = function(x){
       private[["current_row"]] <- private[["current_row"]] + 1L
       private[["id"]] <- private[["id"]] + 1L
+
       data.table::set(
         private$.data,
         private[["current_row"]],

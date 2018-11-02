@@ -30,7 +30,6 @@ Collate:
     'utils.R'
     'format.R'
     'appenders.R'
-    'collectors.R'
     'formatters.R'
     'layouts.R'
     'memlog-package.R'
