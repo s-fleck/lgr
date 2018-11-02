@@ -32,6 +32,7 @@ Collate:
     'appenders.R'
     'collectors.R'
     'formatters.R'
+    'layouts.R'
     'memlog-package.R'
     'memlog.R'
     'print.R'
