@@ -12,9 +12,17 @@ format.memlog_data <- function(
   x,
   fmt = "%L [%t] %m",
   timestamp_fmt = "%Y-%m-%d %H:%M:%S",
-  ml = NULL,
   colors = NULL,
+  log_levels = c(
+    "fatal" = 1,
+    "error" = 2,
+    "warn"  = 3,
+    "info"  = 4,
+    "debug" = 5,
+    "trace" = 6
+  ),
   pad_levels = "right",
+  user = guess_user(),
   ...
 ){
   stopifnot(
@@ -28,11 +36,10 @@ format.memlog_data <- function(
 
 
   # init
-    if (!is.null(ml)){
-      lvls <- ml$label_levels(x$level)
+      lvls <- label_levels(x$level, log_levels = log_levels)
 
       if (!is.null(pad_levels)){
-        nchar_max <- max(nchar(names(ml$log_levels)))
+        nchar_max <- max(nchar(names(log_levels)))
         diff <- nchar_max - nchar(lvls)
         pad <- vapply(diff, function(i) paste(rep.int(" ", i), collapse = ""), character(1))
 
@@ -41,18 +48,10 @@ format.memlog_data <- function(
         } else {
           lvls <- paste0(pad, lvls)
         }
-      }
 
-      user <- ml$user %||% NA_character_
-    } else {
-      lvls <- x$level
-      user <- {
-        if (requireNamespace("whoami", silent = TRUE))
-          whoami::email_address(whoami::username())
-        else
-          "(unknown_user)"
+      } else {
+        lvls <- x$level
       }
-    }
 
   # tokenize
     tokens <- tokenize_format(
@@ -66,9 +65,9 @@ format.memlog_data <- function(
     for(i in seq_len(len)){
       res[[i]] <- switch(
         tokens[[i]],
-        "%n" = colorize_levels(x$level, x$level, colors, ml$unlabel_levels(names(colors))),
-        "%l" = colorize_levels(lvls, x$level, colors, ml$unlabel_levels(names(colors))),
-        "%L" = colorize_levels(toupper(lvls), x$level, colors, ml$unlabel_levels(names(colors))),
+        "%n" = colorize_levels(x$level, x$level, colors, unlabel_levels(names(colors), log_levels = log_levels  )),
+        "%l" = colorize_levels(lvls, x$level, colors, unlabel_levels(names(colors), log_levels = log_levels  )),
+        "%L" = colorize_levels(toupper(lvls), x$level, colors, unlabel_levels(names(colors), log_levels = log_levels )),
         "%t" = format(x$timestamp, format = timestamp_fmt),
         "%m" = x$msg,
         "%c" = x$caller %||% "(unknown function)",
@@ -114,6 +113,7 @@ tokenize_format <- function(
 
 
 
+
 #' @param x levels to be colored
 #' @param num_levels numeric version of x (to match against numeric color levels)
 #' @param colors named list of coloring functions. the names should be the levels in x
@@ -138,4 +138,58 @@ colorize_levels <- function(
   }
 
   x
+}
+
+
+
+
+#' Title
+#'
+#' @param x
+#' @param log_levels
+#'
+#' @return
+#' @export
+#'
+#' @examples
+label_levels = function(
+  x,
+  log_levels = c(
+    "fatal" = 1,
+    "error" = 2,
+    "warn"  = 3,
+    "info"  = 4,
+    "debug" = 5,
+    "trace" = 6
+  )
+){
+  if (!is.numeric(x)) stop("Expected numeric 'x'")
+  names(log_levels)[match(x, log_levels)]
+}
+
+
+
+
+#' Title
+#'
+#' @param x
+#' @param log_levels
+#'
+#' @return
+#' @export
+#'
+#' @examples
+unlabel_levels = function(
+  x,
+  log_levels = c(
+    "fatal" = 1,
+    "error" = 2,
+    "warn"  = 3,
+    "info"  = 4,
+    "debug" = 5,
+    "trace" = 6
+  )
+){
+  if (!is.character(x)) stop("Expected character 'x'")
+  log_levels[match(x, names(log_levels))]
 }
