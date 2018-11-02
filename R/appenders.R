@@ -1,4 +1,8 @@
 
+# Appender ----------------------------------------------------------------
+
+
+
 #' @include format.R
 #' @include utils.R
 #' @include utils-sfmisc.R
@@ -8,6 +12,20 @@ Appender <- R6::R6Class(
   "Appender",
 
   public = list(
+    initialize = function(
+      layout = Layout$new(),
+      threshold = 4
+    ){
+      self$layout    <- layout
+      self$threshold <- threshold
+    },
+
+    append = function(x){
+      if (x[["level"]] <= private$.threshold || is.na(private$.threshold)) {
+        private$.layout$format_event(x)
+      }
+    },
+
     format = function(
       x,
       ...,
@@ -46,7 +64,6 @@ Appender <- R6::R6Class(
 
       # print
 
-
       paste0(
         paste0(header, "\n"),
         paste0(ind, "Active Bindings:\n"),
@@ -56,7 +73,6 @@ Appender <- R6::R6Class(
       )
     },
 
-
     print = function(..., single_line_summary = FALSE, colors = TRUE){
       cat(format(x = self, ..., colors = colors, single_line_summary = single_line_summary))
       invisible(self)
@@ -64,33 +80,24 @@ Appender <- R6::R6Class(
   ),
 
   active = list(
-    parent_memlog = function(value){
-      if (missing(value)) return(private$.parent_memlog)
-      private$.parent_memlog <- value
-    },
     threshold = function(value){
-      if (missing(value)){
-        res <- private$.threshold %||% private$.parent_memlog$threshold
-        if (is.character(res))
-          res <- private$.parent_memlog$unlabel_levels(res)
-        return(res)
+      if (missing(value)) return(private$.threshold)
+      if (is_scalar_character(value)){
+        value <- self$unlabel_levels(value)
       }
+      is.na(value) || assert_valid_threshold(value, log_levels = self$log_levels)
+      private$.threshold <- as.integer(value)
+    },
 
-      if (is.character(value))
-        res <- private$.parent_memlog$unlabel_levels(res)
-
-      is.null(value) || assert_valid_threshold(
-        value,
-        private$.parent_memlog$log_levels,
-        sprintf("Illegal threshold set for appender <%s>: ", class(self)[[1]])
-      )
-
-      private$.threshold <- value
+    layout = function(value){
+      if (missing(value)) return(private$.layout)
+      assert(inherits(value, "Layout"))
+      private$.layout <- value
     }
   ),
     private = list(
       .threshold = NULL,
-      .parent_memlog = NULL,
+      .layout = NULL,
       single_line_summary = function(colors = TRUE){
         sv <- private$.threshold
         iv <- self$threshold
@@ -126,80 +133,21 @@ AppenderFormat <- R6::R6Class(
   inherit = Appender,
   public = list(
     initialize = function(
-      threshold = NULL,
-      formatter = format.memlog_data,
-      fmt = "%L [%t] %c: %m",
-      timestamp_fmt = "%Y-%m-%d %H:%M:%S",
-      colors = NULL
+      threshold = 4L,
+      layout = LayoutFormat$new()
     ){
       self$threshold <- threshold
-      self$formatter <- formatter
-      self$fmt <- fmt
-      self$timestamp_fmt <- "%Y-%m-%d %H:%M:%S"
-      self$colors <- colors
-    }
-  ),
-
-  active = list(
-    formatter = function(value){
-      if (missing(value)) return(private$.formatter)
-      private$.formatter <- value
-    },
-
-    fmt = function(value){
-      if (missing(value)) return(private$.fmt)
-      private$.fmt <- value
-    },
-
-    timestamp_fmt = function(value){
-      if (missing(value)) return(private$.timestamp_fmt)
-      private$.timestamp_fmt <- value
-    },
-
-    colors = function(value){
-      if (missing(value)) return(private$.colors)
-      private$.colors <- value
-    }
-  ),
-
-  private = list(
-    format_entry = function(x){
-      private$.formatter(
-        x,
-        fmt = private$.fmt,
-        timestamp_fmt = private$.timestamp_fmt,
-        colors = private$.colors,
-        ml = private$.parent_memlog
-      )
-    },
-    .formatter = NULL,
-    .fmt = NULL,
-    .timestamp_fmt = NULL,
-    .colors = NULL
-  )
-)
-
-
-
-
-#' @export
-AppenderConsole <- R6::R6Class(
-  "AppenderConsole",
-  inherit = AppenderFormat,
-  public = list(
-    append = function(){
-      x <- private$.parent_memlog$collector$last_value
-
-      if (x$level <= self$threshold)
-        cat(private$format_entry(x), "\n")
-
-      return(invisible(x$msg))
+      self$layout    <- layout
     }
   )
 )
 
 
 
+
+
+
+# AppenderFile ------------------------------------------------------------
 
 #' @inheritParams cat
 #'
@@ -210,43 +158,33 @@ AppenderFile <- R6::R6Class(
   public = list(
     initialize = function(
       file,
-      threshold = NULL,
-      formatter = format.memlog_data,
-      fmt = "%L [%t] %m",
-      timestamp_fmt = "%Y-%m-%d %H:%M:%S"
+      threshold = NA,
+      layout = LayoutFormat$new()
     ){
       self$file <- file
       self$threshold <- threshold
-      self$formatter <- formatter
-      self$fmt <- fmt
-      self$timestamp_fmt <- timestamp_fmt
+      self$layout <- layout
     },
 
-
-    append = function(){
-      threshold <- self$threshold
-      x <- private$.parent_memlog$collector$last_value
-
-      if (x$level <= threshold){
+    append = function(x){
+      if (is.na(private$.threshold || x$level <= private$.threshold)){
         cat(
-          private$format_entry(x), "\n",
+          private$.layout$format_event(x), "\n",
           file = private$.file,
-          append = TRUE
+          append = TRUE,
+          sep = ""
         )
       }
 
-      return(invisible(x$msg))
+      return(invisible())
     }
   ),
 
   active = list(
     file = function(value){
       if (missing(value)) return(private$.file)
-
       private$.file <- value
     }
-
-
   ),
 
   private = list(
@@ -284,136 +222,23 @@ AppenderFile <- R6::R6Class(
 
 
 
-
-# appender glue -----------------------------------------------------------
-
-
-AppenderGlue <- R6::R6Class(
-  "AppenderGlue",
-  inherit = AppenderFormat,
-  public = list(
-    initialize = function(
-      threshold = NULL,
-      fmt = "{toupper(.ml$label_levels(level))} [{format(timestamp, format = '%Y-%m-%d %H:%M:%S')}] {msg}",
-      colors = NULL
-    ){
-      assert_namespace("glue")
-
-      self$threshold <- threshold
-      self$formatter <- glue::glue
-      self$fmt <- fmt
-      self$colors <- colors
-    },
-
-    append = function(){
-      x <- private$.parent_memlog$collector$last_value
-      if (x$level <= self$threshold){
-        private$format_entry(x)
-      } else {
-        invisible(NULL)
-      }
-    }
-  ),
-
-  private = list(
-    format_entry = function(x){
-      .ml <- private$.parent_memlog  # make available for glue format
-      do.call(glue::glue, c(list(private$.fmt), as.list(x)))
-    }
-  )
-)
-
-
-
+# AppenderConsole ---------------------------------------------------------
 
 #' @export
-AppenderConsoleGlue <- R6::R6Class(
-  "AppenderConsoleGlue",
-  inherit = AppenderGlue,
-  public = list(
-    append = function(){
-      x <- private$.parent_memlog$collector$last_value
-
-      if (x$level <= self$threshold)
-        cat(private$format_entry(x), "\n")
-
-      return(invisible(x$msg))
-    }
-  )
-)
-
-
-
-
-
-# AppenderMinimal ---------------------------------------------------------
-
-
-
-#' @export
-AppenderConsoleMinimal <- R6::R6Class(
-  "AppenderConsoleMinimal",
-  inherit = Appender,
+AppenderConsole <- R6::R6Class(
+  "AppenderConsole",
+  inherit = AppenderFile,
   public = list(
     initialize = function(
-      threshold = NULL,
-      timestamp_fmt ="%H:%M:%S",
-      colors = NULL
+      threshold = NA,
+      layout = LayoutFormat$new()
     ){
+      self$file <- ""
       self$threshold <- threshold
-      self$timestamp_fmt <- timestamp_fmt
-      self$colors <- colors
-    },
-
-    append = function(){
-      x <- private$.parent_memlog$collector$last_value
-
-      if (x$level > self$threshold){
-        return(invisible(x$msg))
-      } else {
-        pad <- max(nchar(names(private$.parent_memlog$log_levels)))
-        lvl <- pad_right(toupper(private$.parent_memlog$label_levels(x$level)), pad)
-
-        if (!identical(length(private$.colors), 0L)){
-          coln <- private$.parent_memlog$unlabel_levels(names(private$.colors))
-          lvl <- colorize_levels(lvl, x$level, private$.colors, coln )
-        }
-
-        cat(
-          lvl,
-          " [", format(x$timestamp, private$.timestamp_fmt), "] ",
-          x$msg,
-          "\n",
-          sep = ""
-        )
-        return(invisible(x$msg))
-      }
+      self$layout <- layout
     }
-  ),
-
-  active = list(
-    timestamp_fmt = function(value){
-      if (missing(value)) return(private$.timestamp_fmt)
-
-      assert(is_scalar_character(value))
-      private$.timestamp_fmt <- value
-    },
-
-    colors = function(value){
-      if (missing(value)) return(private$.colors)
-      private$.colors <- value
-    }
-  ),
-
-
-  private = list(
-    .timestamp_fmt = NULL,
-    .colors = NULL
   )
 )
-
-
-
 
 
 
@@ -425,25 +250,3 @@ AppenderConsoleMinimal <- R6::R6Class(
 
 
 
-pad_left <- function(
-  x,
-  nchar = max(nchar(x)),
-  pad = " "
-){
-  diff <- nchar - nchar(x)
-  padding <-
-    vapply(diff, function(i) paste(rep.int(" ", i), collapse = ""), character(1))
-  lvls <- paste0(padding, x)
-}
-
-
-pad_right <- function(
-  x,
-  nchar = max(nchar(x)),
-  pad = " "
-){
-  diff <- nchar - nchar(x)
-  padding <-
-    vapply(diff, function(i) paste(rep.int(" ", i), collapse = ""), character(1))
-  paste0(x, padding)
-}

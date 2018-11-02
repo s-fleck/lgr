@@ -193,3 +193,31 @@ unlabel_levels = function(
   if (!is.character(x)) stop("Expected character 'x'")
   log_levels[match(x, names(log_levels))]
 }
+
+
+
+
+pad_left <- function(
+  x,
+  nchar = max(nchar(x)),
+  pad = " "
+){
+  diff <- nchar - nchar(x)
+  padding <-
+    vapply(diff, function(i) paste(rep.int(" ", i), collapse = ""), character(1))
+  lvls <- paste0(padding, x)
+}
+
+
+
+
+pad_right <- function(
+  x,
+  nchar = max(nchar(x)),
+  pad = " "
+){
+  diff <- nchar - nchar(x)
+  padding <-
+    vapply(diff, function(i) paste(rep.int(" ", i), collapse = ""), character(1))
+  paste0(x, padding)
+}
