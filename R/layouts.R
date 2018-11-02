@@ -75,7 +75,11 @@ LayoutFormat <- R6::R6Class(
 
     colors = function(value){
       if (missing(value)) return(private$.colors)
-      assert(is.null(value) || is.list(value))
+      assert(
+        is.null(value) || is.list(value),
+        "'colors' must either be NULL or a list of functions, not ",
+        class_fmt(value)
+      )
       private$.colors <- value
     },
 

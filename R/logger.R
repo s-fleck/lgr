@@ -109,6 +109,22 @@ Logger <- R6::R6Class(
     },
 
 
+    show = function(
+      n = 20,
+      threshold = NA
+    ){
+      sel <- vapply(self$appenders, inherits, TRUE, "AppenderMemoryDt")
+
+      if (!any(sel)){
+        message("This logger has no memory appender (see AppenderMempryDt)")
+        return(invisible)
+
+      } else {
+        self$appenders[sel][[1]]$show(n = n, threshold = threshold)
+      }
+    },
+
+
     format = function(
       ...,
       colors = TRUE
@@ -132,6 +148,7 @@ Logger <- R6::R6Class(
         paste0(ind, ind, appenders, collapse= "\n")
       )
     },
+
 
 
   # public fields -----------------------------------------------------------
@@ -169,19 +186,6 @@ Logger <- R6::R6Class(
       }
       is.na(value) || assert_valid_threshold(value, log_levels = self$log_levels)
       private$.threshold <- as.integer(value)
-    },
-
-    collector = function(value){
-      if (missing(value)) {
-        return(private$.collector)
-      }
-
-      assert(
-        is.null(private$.collector),
-        stop("The 'collector' cannot be modified after it has been initialized")
-      )
-
-      private$.collector <- value
     },
 
     appenders = function(value){

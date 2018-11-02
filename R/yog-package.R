@@ -20,9 +20,17 @@
     )
   }
 
+  appenders <- list(
+    console = AppenderConsole$new()
+  )
+
+  if (requireNamespace("data.table", quietly = TRUE)){
+    appenders[["memory"]] <- AppenderMemoryDt$new()
+  }
+
   assign(
     "yog",
-    Logger$new(),
+    Logger$new(appenders = appenders),
     envir =  asNamespace("yog")
   )
 }

@@ -3,11 +3,10 @@ library(yog)
 
   ml_col <- Logger$new(
     appenders = c(
-      appender_console_color,
-      AppenderConsoleGlue$new(threshold = 3),
-      AppenderConsoleMinimal$new(),
       AppenderFile$new(file = tempfile()),
-      AppenderFile$new(threshold = 1, file = paste0(tempfile(), tempfile(), tempfile()))
+      AppenderConsole$new(),
+      AppenderFile$new(threshold = 1, file = paste0(tempfile(), tempfile(), tempfile())),
+      AppenderMemoryDt$new()
     )
   )
 
@@ -15,10 +14,10 @@ library(yog)
   ml_col$info("wub")
   ml_col$info("wub")
 
-  print(ml_col)
 
-  app <- AppenderConsoleGlue$new()
-  print(app, single_line_summary = TRUE)
+  ml_col$appenders[[1]]
+  ml_col$appenders[[2]]
+  ml_col$appenders[[3]]
+  ml_col$appenders[[4]]
 
-
-  collector_default
+  ml_col

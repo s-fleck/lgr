@@ -30,5 +30,5 @@ Collate:
     'print.R'
     'appenders.R'
     'layouts.R'
-    'memlog-package.R'
-    'memlog.R'
+    'logger.R'
+    'yog-package.R'

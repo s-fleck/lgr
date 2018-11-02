@@ -82,7 +82,7 @@ Appender <- R6::R6Class(
     threshold = function(value){
       if (missing(value)) return(private$.threshold)
       if (is_scalar_character(value)){
-        value <- self$unlabel_levels(value)
+        value <- unlabel_levels(value)
       }
       is.na(value) || assert_valid_threshold(value, log_levels = self$log_levels)
       private$.threshold <- as.integer(value)
@@ -97,25 +97,18 @@ Appender <- R6::R6Class(
     private = list(
       .threshold = NULL,
       .layout = NULL,
-      single_line_summary = function(colors = TRUE){
-        sv <- private$.threshold
-        iv <- self$threshold
-
-        if (!is.null(sv)){
-          threshold <- sv
-          if (!is.null(ml)){
-            threshold <- paste0(ml$label_levels(sv), " (", sv, ")")
-          }
-
-        } else if (!is.null(iv)){
-          iv <- paste0(ml$label_levels(iv), " (", iv, ")")
-          threshold <- style_subtle(paste(iv, "<inherited>"))
-        } else {
-          threshold <- style_subtle("no threshold")
-        }
+      single_line_summary = function(
+        colors = TRUE
+      ){
+        threshold <- private$.threshold
         cls <- class(self)[[1]]
 
-        paste(paste0(cls, ":"), threshold)
+        return(ptrunc(
+          paste0(cls, ": "),
+          threshold,
+          width = 80,
+          sep = " "
+        ))
       }
   )
 )
@@ -141,6 +134,56 @@ AppenderFormat <- R6::R6Class(
 )
 
 
+# AppenderConsole ---------------------------------------------------------
+
+#' @export
+AppenderConsole <- R6::R6Class(
+  "AppenderConsole",
+  inherit = AppenderFormat,
+  public = list(
+    initialize = function(
+      threshold = 4L,
+      layout = LayoutFormat$new(
+        fmt = "%L [%t] %m",
+        timestamp_fmt = "%H:%M:%S",
+        colors = getOption("yog.colors")
+      )
+    ){
+      self$threshold <- threshold
+      self$layout <- layout
+    },
+
+    append = function(x){
+      if (is.na(private$.threshold) || x$level <= private$.threshold){
+        cat(
+          private$.layout$format_event(x), "\n",
+          sep = ""
+        )
+      }
+
+      return(invisible())
+    }
+
+  ),
+
+  private = list(
+    single_line_summary = function(
+      colors = TRUE
+    ){
+      threshold <- private$.threshold
+      cls <- class(self)[[1]]
+
+      return(ptrunc(
+        paste0(cls, ": "),
+        threshold,
+        width = 80,
+        sep = " "
+      ))
+    }
+  )
+)
+
+
 
 
 
@@ -152,7 +195,7 @@ AppenderFormat <- R6::R6Class(
 #' @export
 AppenderFile <- R6::R6Class(
   "AppenderFile",
-  inherit = AppenderFormat,
+  inherit = AppenderConsole,
   public = list(
     initialize = function(
       file,
@@ -162,19 +205,6 @@ AppenderFile <- R6::R6Class(
       self$file <- file
       self$threshold <- threshold
       self$layout <- layout
-    },
-
-    append = function(x){
-      if (is.na(private$.threshold) || x$level <= private$.threshold){
-        cat(
-          private$.layout$format_event(x), "\n",
-          file = private$.file,
-          append = TRUE,
-          sep = ""
-        )
-      }
-
-      return(invisible())
     }
   ),
 
@@ -187,22 +217,10 @@ AppenderFile <- R6::R6Class(
 
   private = list(
     .file = NULL,
-    single_line_summary = function(colors = TRUE){
-      sv <- private$.threshold
-      iv <- self$threshold
-
-      if (!is.null(sv)){
-        threshold <- sv
-        if (!is.null(ml)){
-          threshold <- paste0(ml$label_levels(sv), " (", sv, ")")
-        }
-
-      } else if (!is.null(iv)){
-        iv <- paste0(ml$label_levels(iv), " (", iv, ")")
-        threshold <- style_subtle(paste(iv, "<inherited>"))
-      } else {
-        threshold <- style_subtle("no threshold")
-      }
+    single_line_summary = function(
+      colors = TRUE
+    ){
+      threshold <- private$.threshold
       cls <- class(self)[[1]]
 
       return(ptrunc(
@@ -219,27 +237,6 @@ AppenderFile <- R6::R6Class(
 
 
 
-# AppenderConsole ---------------------------------------------------------
-
-#' @export
-AppenderConsole <- R6::R6Class(
-  "AppenderConsole",
-  inherit = AppenderFile,
-  public = list(
-    initialize = function(
-      threshold = 4L,
-      layout = LayoutFormat$new(
-        fmt = "%L [%t] %m",
-        timestamp_fmt = "%H:%M:%S",
-        colors = colors
-      )
-    ){
-      self$file <- ""
-      self$threshold <- threshold
-      self$layout <- layout
-    }
-  )
-)
 
 
 
@@ -258,7 +255,8 @@ AppenderMemoryDt <- R6::R6Class(
       threshold = NA,
       layout = LayoutFormat$new(
         fmt = "%L [%t] %m",
-        timestamp_fmt = "%H:%M:%S"
+        timestamp_fmt = "%H:%M:%S",
+        colors = getOption("yog.colors")
       ),
       prototype = data.table::data.table(
         .id  = NA_integer_,
