@@ -40,8 +40,18 @@ you can just add a file appender to yog
 
 ```{r}
 tf <- tempfile()
-yog$add_appender(AppenderFile$new(file = tf))
+
+# Add a new appender to a logger. We don't have to supply a name, but that
+# makes it easier to remove later.
+yog$add_appender(AppenderFile$new(file = tf), "tempfile_appender")
+
+yog$info("Another informational message")
+yog$debug("A debug message that the console appender doesn't show.")
+
 readLines(tf)
+
+# Remove the appender again
+yog$remove_appender("tempfile_appender")
 ```
 
 # Structure
