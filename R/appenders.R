@@ -26,13 +26,8 @@ Appender <- R6::R6Class(
     format = function(
       x,
       ...,
-      colors = TRUE,
-      single_line_summary = FALSE
+      colors = TRUE
     ){
-      if (single_line_summary){
-        return(private$single_line_summary(colors = colors))
-      }
-
       ind <- "  "
 
       header <- paste(
@@ -70,8 +65,8 @@ Appender <- R6::R6Class(
       )
     },
 
-    print = function(..., single_line_summary = FALSE, colors = TRUE){
-      cat(format(x = self, ..., colors = colors, single_line_summary = single_line_summary))
+    print = function(..., colors = TRUE){
+      cat(format(x = self, ..., colors = colors), "\n")
       invisible(self)
     }
   ),
@@ -92,22 +87,10 @@ Appender <- R6::R6Class(
       private$.layout <- value
     }
   ),
-    private = list(
-      .threshold = NULL,
-      .layout = NULL,
-      single_line_summary = function(
-        colors = TRUE
-      ){
-        threshold <- private$.threshold
-        cls <- class(self)[[1]]
 
-        return(ptrunc(
-          paste0(cls, ": "),
-          threshold,
-          width = 80,
-          sep = " "
-        ))
-      }
+  private = list(
+    .threshold = NULL,
+    .layout = NULL
   )
 )
 
@@ -155,22 +138,6 @@ AppenderConsole <- R6::R6Class(
       cat(private$.layout$format_event(x), "\n", sep = "")
       return(invisible())
     }
-  ),
-
-  private = list(
-    single_line_summary = function(
-      colors = TRUE
-    ){
-      threshold <- private$.threshold
-      cls <- class(self)[[1]]
-
-      return(ptrunc(
-        paste0(cls, ": "),
-        threshold,
-        width = 80,
-        sep = " "
-      ))
-    }
   )
 )
 
@@ -215,22 +182,7 @@ AppenderFile <- R6::R6Class(
   ),
 
   private = list(
-    .file = NULL,
-    single_line_summary = function(
-      colors = TRUE
-    ){
-      threshold <- private$.threshold
-      cls <- class(self)[[1]]
-
-      return(ptrunc(
-        paste0(cls, ": "),
-        threshold,
-        "->",
-        private$.file,
-        width = 80,
-        sep = " "
-      ))
-    }
+    .file = NULL
   )
 )
 

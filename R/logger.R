@@ -81,7 +81,10 @@ Logger <- R6::R6Class(
     add_appender = function(appender, name = NULL){
       assert(inherits(appender, "Appender"))
       private$.appenders[length(private$.appenders) + 1L] <- list(appender)
-      names(private$.appenders)[length(private$.appenders)] <- name
+
+      if (!is.null(name))
+        names(private$.appenders)[length(private$.appenders)] <- name
+
       invisible(self)
     },
 
@@ -158,20 +161,38 @@ Logger <- R6::R6Class(
       header <- paste0("<", class(self)[[1]], ">")
       ind <- "  "
 
-      appenders <- vapply(
-        self$appenders,
-        format,
-        character(1),
-        single_line_summary = TRUE,
-        colors = colors
+      appenders <- do.call(rbind, lapply(self$appenders, srs))
+      appenders$name <- pad_right(appenders$name)
+
+      appenders <- paste0(
+        pad_right(appenders$name), ": ",
+        pad_right(
+          paste0(label_levels(appenders$threshold), style_subtle(paste0(" (", appenders$threshold, ")")))
+        ),
+        vapply(appenders$comment, ptrunc, character(1), width = 128)
       )
+
+      obsums <- object_summaries(self)
+
+      act <- obsums[obsums == "active binding"]
+      act <- paste0(names(act), ": ", act)
+
+      funs <- obsums[grep("function", obsums)]
+      funs <- paste0(names(funs), ": ", funs)
+
 
       paste0(
         header, "\n",
-        paste0(ind, "Log Levels:\n"),
-        paste0(ind, ind, sls(self$log_levels), "\n"),
-        paste0(ind, "Appenders:\n"),
+        paste0(ind, "threshold:\n"),
+        paste0(ind, ind, fmt_threshold(self$threshold)), "\n",
+        paste0(ind, "appenders:\n"),
         paste0(ind, ind, appenders, collapse= "\n")
+        # paste0(ind, "Log Levels:\n"),
+        # paste0(ind, ind, sls(self$log_levels))
+        # paste0(ind, "Methods:\n"),
+        # paste0(ind, ind, funs, collapse= "\n"), "\n",
+        # paste0(ind, "Active Bindings:\n"),
+        # paste0(ind, ind, act, collapse= "\n")
       )
     },
 
@@ -257,6 +278,8 @@ Logger <- R6::R6Class(
     }
   ),
 
+
+# private -----------------------------------------------------------------
   private = list(
     .appenders = NULL,
     .user = NA_character_,

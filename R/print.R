@@ -35,12 +35,13 @@ object_summaries <- function(x, exclude = NULL) {
 
 
 
-
-
-
-
 style_accent <- colt::clt_chr_accent
+
+
+
+
 style_subtle <- colt::clt_chr_subtle
+
 
 
 
@@ -198,7 +199,10 @@ label_levels = function(
   log_levels = getOption("yog.log_levels")
 ){
   if (!is.numeric(x)) stop("Expected numeric 'x'")
-  names(log_levels)[match(x, log_levels)]
+  res <- names(log_levels)[match(x, log_levels)]
+  res[is.na(x)] <- "all"
+  res[x == 0] <- "off"
+  res
 }
 
 
@@ -226,13 +230,13 @@ unlabel_levels = function(
 
 pad_left <- function(
   x,
-  nchar = max(nchar(x)),
+  width = max(nchar(paste(x))),
   pad = " "
 ){
-  diff <- nchar - nchar(x)
+  diff <- width - nchar(paste(x))
   padding <-
     vapply(diff, function(i) paste(rep.int(" ", i), collapse = ""), character(1))
-  lvls <- paste0(padding, x)
+  paste0(padding, x)
 }
 
 
@@ -240,10 +244,10 @@ pad_left <- function(
 
 pad_right <- function(
   x,
-  nchar = max(nchar(x)),
+  width = max(nchar(paste(x))),
   pad = " "
 ){
-  diff <- nchar - nchar(x)
+  diff <- width - nchar(paste(x))
   padding <-
     vapply(diff, function(i) paste(rep.int(" ", i), collapse = ""), character(1))
   paste0(x, padding)
@@ -251,24 +255,39 @@ pad_right <- function(
 
 
 
-#' Single Line Summary
-#' @return a `character` scalar
+
+#' Single Row Summary of yog objects
+#' @return a 1 row `data.frame` with columns `name`, `threshold`, `comment`
 #' @noRd
-sls <- function(x, colors = FALSE){
+srs <- function(
+  x
+){
+  res <- data.frame(
+    name = class(x)[[1]],
+    threshold = x$threshold,
+    comment = "",
+    stringsAsFactors = FALSE
+  )
+
+  if (inherits(x, "AppenderFile"))
+    res$comment <- paste("  ->", x$file)
+
+  res
+}
+
+
+
+
+
+
+
+#' @return
+#' @export
+sls <- function(x){
   UseMethod("sls")
 }
 
-#' Title
-#'
-#' @param x
-#'
-#' @return
-#' @export
-#'
-#' @examples
-sls.Appender <- function(x, colors = FALSE){
-  x$format(colors = colors, single_line_summary = TRUE)
-}
+
 
 
 #' Title
@@ -288,6 +307,8 @@ sls.default <- function(x, colors = FALSE){
 }
 
 
+
+
 #' Title
 #'
 #' @param x
@@ -301,3 +322,18 @@ sls.log_levels <- function(x, colors = FALSE){
 }
 
 
+
+
+#' @export
+sls.Appender <- function(x){
+  paste(as.character(as.list(srs(x))), collapse = " ")
+}
+
+
+
+fmt_threshold <- function(
+  x,
+  log_levels = getOption("yog.log_levels")
+){
+  paste0(label_levels(x, log_levels), " (", x, ")")
+}

@@ -5,7 +5,7 @@ library(yog)
     appenders = c(
       AppenderFile$new(file = tempfile()),
       AppenderConsole$new(),
-      AppenderFile$new(threshold = 1, file = paste0(tempfile(), tempfile(), tempfile())),
+      AppenderFile$new(threshold = 100, file = paste0(tempfile(), tempfile(), tempfile())),
       AppenderMemoryDt$new()
     )
   )
@@ -21,3 +21,8 @@ library(yog)
   ml_col$appenders[[4]]
 
   ml_col
+
+
+  list(yog, ml_col)
+
+  ml_col$appenders
