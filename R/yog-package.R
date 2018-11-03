@@ -1,3 +1,4 @@
+#'
 #' @keywords internal
 #' @importFrom data.table data.table set
 #' @importFrom stats setNames
@@ -16,6 +17,14 @@
         "warn"  = colt::clt_warning,
         "debug" = colt::clt_chr_subtle,
         "trace" = colt::clt_chr_subtle
+      ),
+      yog.log_levels = c(
+        "fatal" = 100L,
+        "error" = 200L,
+        "warn"  = 300L,
+        "info"  = 400L,
+        "debug" = 500L,
+        "trace" = 600L
       )
     )
   }

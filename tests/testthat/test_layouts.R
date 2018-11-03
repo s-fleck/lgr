@@ -5,7 +5,7 @@ test_that("layouts works as expected", {
 
   lo <- Layout$new()
   x <- list(
-    level = 2,
+    level = 200,
     timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
     msg = "foo bar"
   )
@@ -18,7 +18,7 @@ test_that("layouts works as expected", {
 test_that("LayoutFormat works as expected", {
   lo <- LayoutFormat$new()
   x <- list(
-    level = 2,
+    level = 200,
     timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
     msg = "foo bar"
   )
@@ -35,7 +35,7 @@ test_that("LayoutFormat works as expected", {
 test_that("LayoutGlue works as expected", {
   lo <- LayoutGlue$new()
   x <- list(
-    level = 2,
+    level = 200,
     timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
     msg = "foo bar"
   )

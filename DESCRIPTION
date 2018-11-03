@@ -1,6 +1,6 @@
 Type: Package
 Package: yog
-Title: Advanced logging framework for R
+Title: Yet Another Log4j Inspired Logging Framework
 Version: 0.0.1.9000
 Authors@R: 
     person(given = "Stefan",
@@ -19,7 +19,9 @@ Suggests:
     glue,
     whoami,
     colt,
-    crayon
+    crayon,
+    knitr,
+    rmarkdown
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -31,4 +33,6 @@ Collate:
     'appenders.R'
     'layouts.R'
     'logger.R'
+    'predicates.R'
     'yog-package.R'
+VignetteBuilder: knitr

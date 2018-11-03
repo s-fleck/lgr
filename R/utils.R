@@ -1,4 +1,12 @@
-guess_user <- function(fallback = "unknown user"){
+#' Title
+#'
+#' @param fallback
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_user <- function(fallback = "unknown user"){
   if (requireNamespace("whoami", quietly = TRUE)){
     res <-
       whoami::email_address(
@@ -26,17 +34,6 @@ guess_user <- function(fallback = "unknown user"){
     x
 }
 
-
-
-
-assert_valid_threshold <- function(x, log_levels, msg = ""){
-  assert(
-    !is.na(x) && is_scalar_integerish(x),
-    msg,
-    "'x' must either the numeric or character representation of one of the following log levels: ",
-    paste(sprintf("%s (%s)", names(log_levels), log_levels), collapse = ", ")
-  )
-}
 
 
 

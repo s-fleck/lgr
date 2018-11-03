@@ -30,21 +30,12 @@ LayoutFormat <- R6::R6Class(
       fmt = "%L [%t] %m",
       timestamp_fmt = "%Y-%m-%d %H:%M:%S",
       colors = NULL,
-      log_levels = c(
-        "fatal" = 1,
-        "error" = 2,
-        "warn"  = 3,
-        "info"  = 4,
-        "debug" = 5,
-        "trace" = 6
-      ),
       pad_levels = "right"
     ){
       private$formatter <- format.yog_data
       self$fmt <- fmt
       self$timestamp_fmt <- timestamp_fmt
       self$colors <- colors
-      self$log_levels <- log_levels
       self$pad_levels <- pad_levels
     },
 
@@ -54,7 +45,7 @@ LayoutFormat <- R6::R6Class(
         fmt = private$.fmt,
         timestamp_fmt = private$.timestamp_fmt,
         colors = private$.colors,
-        log_levels = private$.log_levels,
+        log_levels = getOption("yog.log_levels"),
         pad_levels = private$.pad_levels
       )
     }
@@ -83,13 +74,6 @@ LayoutFormat <- R6::R6Class(
       private$.colors <- value
     },
 
-    log_levels = function(value){
-      if (missing(value)) return(private$.log_levels)
-      assert(is.null(value) || is_integerish(value))
-      value <- setNames(as.integer(value), names(value))
-      private$.log_levels <- value
-    },
-
     pad_levels = function(value){
       if (missing(value)) return(private$.pad_levels)
       assert(is_scalar_character(value))
@@ -101,7 +85,6 @@ LayoutFormat <- R6::R6Class(
     .fmt = NULL,
     .timestamp_fmt = NULL,
     .colors = NULL,
-    .log_levels = NULL,
     .pad_levels = NULL
   )
 )
@@ -117,19 +100,10 @@ LayoutGlue <- R6::R6Class(
   inherit = LayoutFormat,
   public = list(
     initialize = function(
-      fmt = "{toupper(label_levels(level, self$log_levels))} [{strftime(timestamp, format = '%Y-%m-%d %H:%M:%S')}] {msg}",
-      log_levels = c(
-        "fatal" = 1,
-        "error" = 2,
-        "warn"  = 3,
-        "info"  = 4,
-        "debug" = 5,
-        "trace" = 6
-      )
+      fmt = "{toupper(label_levels(level))} [{strftime(timestamp, format = '%Y-%m-%d %H:%M:%S')}] {msg}"
     ){
       private$formatter <- glue::glue
       self$fmt <- fmt
-      self$log_levels <- log_levels
     },
 
     format_event = function(x) {
@@ -145,13 +119,6 @@ LayoutGlue <- R6::R6Class(
       if (missing(value)) return(private$.fmt)
       assert(is_scalar_character(value))
       private$.fmt <- value
-    },
-
-    log_levels = function(value){
-      if (missing(value)) return(private$.log_levels)
-      assert(is.null(value) || is_integerish(value))
-      value <- setNames(as.integer(value), names(value))
-      private$.log_levels <- value
     }
   ),
 
@@ -159,7 +126,6 @@ LayoutGlue <- R6::R6Class(
     .fmt = NULL,
     .timestamp_fmt = NULL,
     .colors = NULL,
-    .log_levels = NULL,
     .pad_levels = NULL
   )
 )

@@ -13,16 +13,14 @@ Appender <- R6::R6Class(
   public = list(
     initialize = function(
       layout = Layout$new(),
-      threshold = 4
+      threshold = 400
     ){
       self$layout    <- layout
       self$threshold <- threshold
     },
 
     append = function(x){
-      if (x[["level"]] <= private$.threshold || is.na(private$.threshold)) {
-        private$.layout$format_event(x)
-      }
+      private$.layout$format_event(x)
     },
 
     format = function(
@@ -84,7 +82,7 @@ Appender <- R6::R6Class(
       if (is_scalar_character(value)){
         value <- unlabel_levels(value)
       }
-      is.na(value) || assert_valid_threshold(value, log_levels = self$log_levels)
+      is.na(value) || assert_valid_threshold(value, log_levels = getOption("yog.log_levels"))
       private$.threshold <- as.integer(value)
     },
 
@@ -124,7 +122,7 @@ AppenderFormat <- R6::R6Class(
   inherit = Appender,
   public = list(
     initialize = function(
-      threshold = 4L,
+      threshold = 400L,
       layout = LayoutFormat$new()
     ){
       self$threshold <- threshold
@@ -142,7 +140,7 @@ AppenderConsole <- R6::R6Class(
   inherit = AppenderFormat,
   public = list(
     initialize = function(
-      threshold = 4L,
+      threshold = 400L,
       layout = LayoutFormat$new(
         fmt = "%L [%t] %m",
         timestamp_fmt = "%H:%M:%S",
@@ -154,16 +152,9 @@ AppenderConsole <- R6::R6Class(
     },
 
     append = function(x){
-      if (is.na(private$.threshold) || x$level <= private$.threshold){
-        cat(
-          private$.layout$format_event(x), "\n",
-          sep = ""
-        )
-      }
-
+      cat(private$.layout$format_event(x), "\n", sep = "")
       return(invisible())
     }
-
   ),
 
   private = list(
@@ -205,6 +196,14 @@ AppenderFile <- R6::R6Class(
       self$file <- file
       self$threshold <- threshold
       self$layout <- layout
+    },
+
+    append = function(x){
+      cat(
+        private$.layout$format_event(x),
+        "\n", sep = "", file = private$.file, append = TRUE
+      )
+      return(invisible())
     }
   ),
 
@@ -321,7 +320,6 @@ AppenderMemoryDt <- R6::R6Class(
       if (is.na(threshold)) threshold <- Inf
       dd <- self$data
       dd <- tail(dd[dd$level <= threshold], n)
-
       cat(self$layout$format_event(dd), sep = "\n")
     }
   ),

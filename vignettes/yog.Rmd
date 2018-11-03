@@ -1,0 +1,120 @@
+---
+title: "Yet Another Log4j Inspired Logging Framework"
+author: "Stefan Fleck"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{yog}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+library(yog)
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Yog is an [Apache Log4j](https://logging.apache.org/log4j/2.x/) inspired
+logging framework based on [R6 classes](https://github.com/r-lib/R6) that 
+focuses on extensibility, ease of use, and the ability to use multiple 
+appenders with custom thresholds for a single logger.
+
+# Basic usage
+
+Yog comes with a pre-configured logger included. You can just start logging 
+with:
+
+```{r}
+yog$info("This is an informational message")
+yog$fatal("This is an important message about something going wrong")
+```
+
+This only logs to the console. If you want to redirect the output to a file
+you can just add a file appender to yog
+
+```{r}
+tf <- tempfile()
+yog$add_appender(AppenderFile$new(file = tf))
+readLines(tf)
+```
+
+# Structure
+
+* A **Logger** collects information and dispatches it to the appropriate appenders
+* An **Appender** writes the log message to destination (the console, a file, 
+  a database, etc...)
+* A **Layout** is
+
+
+
+
+## Log Levels
+
+Yog supports the standard log4j log levels outlined bellow. Log levels have
+numeric and character representations. Creation of custom log levels are not 
+yet supported by yog.
+
+```{r, echo = FALSE}
+
+ll <- data.frame(
+  `Level` = seq(100, 600, by = 100),
+  `Name` = c("FATAL", "ERROR", "WARNING", "INFO", "DEBUG", "TRACE"),
+  `Description` = c(
+    "Critical error that leads to program abort. Should always indicate a `stop()` or similar",
+    "A severe error that does not trigger program abort",
+    "A potentially harmful situation, like `warning()`",
+    "An informatinal message on the progress of the application",
+    "Finer grained informational messages that are mostly useful for debugging",
+    "An even finer grained message than debug"
+  )
+) 
+
+knitr::kable(ll)
+
+```
+
+
+
+## Styles
+
+The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+
+    output: 
+      rmarkdown::html_vignette:
+        css: mystyles.css
+
+## Figures
+
+The figure sizes have been customised so that you can easily put two images side-by-side. 
+
+```{r, fig.show='hold'}
+plot(1:10)
+plot(10:1)
+```
+
+You can enable figure captions by `fig_caption: yes` in YAML:
+
+    output:
+      rmarkdown::html_vignette:
+        fig_caption: yes
+
+Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+
+## More Examples
+
+You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(mtcars, 10))
+```
+
+Also a quote using `>`:
+
+> "He who gives up [code] safety for [code] speed deserves neither."
+([via](https://twitter.com/hadleywickham/status/504368538874703872))

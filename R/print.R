@@ -59,16 +59,9 @@ format.yog_data <- function(
   fmt = "%L [%t] %m",
   timestamp_fmt = "%Y-%m-%d %H:%M:%S",
   colors = NULL,
-  log_levels = c(
-    "fatal" = 1,
-    "error" = 2,
-    "warn"  = 3,
-    "info"  = 4,
-    "debug" = 5,
-    "trace" = 6
-  ),
+  log_levels = getOption("yog.log_levels"),
   pad_levels = "right",
-  user = guess_user(),
+  user = get_user(),
   ...
 ){
   stopifnot(
@@ -77,12 +70,14 @@ format.yog_data <- function(
     is_scalar_character(pad_levels) || is.null(pad_levels)
   )
 
+
   # degenerate cases
   if (identical(nrow(x), 0L))  return("[empty log]")
 
 
   # init
   lvls <- label_levels(x$level, log_levels = log_levels)
+  lvls[is.na(lvls)] <- x$level[is.na(lvls)]
 
   if (!is.null(pad_levels)){
     nchar_max <- max(nchar(names(log_levels)))
@@ -200,14 +195,7 @@ colorize_levels <- function(
 #' @examples
 label_levels = function(
   x,
-  log_levels = c(
-    "fatal" = 1,
-    "error" = 2,
-    "warn"  = 3,
-    "info"  = 4,
-    "debug" = 5,
-    "trace" = 6
-  )
+  log_levels = getOption("yog.log_levels")
 ){
   if (!is.numeric(x)) stop("Expected numeric 'x'")
   names(log_levels)[match(x, log_levels)]
@@ -227,14 +215,7 @@ label_levels = function(
 #' @examples
 unlabel_levels = function(
   x,
-  log_levels = c(
-    "fatal" = 1,
-    "error" = 2,
-    "warn"  = 3,
-    "info"  = 4,
-    "debug" = 5,
-    "trace" = 6
-  )
+  log_levels = getOption("yog.log_levels")
 ){
   if (!is.character(x)) stop("Expected character 'x'")
   log_levels[match(x, names(log_levels))]

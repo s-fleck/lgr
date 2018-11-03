@@ -18,15 +18,8 @@ Logger <- R6::R6Class(
       appenders = list(
         AppenderConsole$new(layout = LayoutFormat$new(colors = getOption("yog.colors")))
       ),
-      user = guess_user(),
-      log_levels = c(
-        "fatal" = 1,
-        "error" = 2,
-        "warn"  = 3,
-        "info"  = 4,
-        "debug" = 5,
-        "trace" = 6
-      ),
+      user = get_user(),
+      log_levels = getOption("yog.log_levels"),
       threshold = NA,
       string_formatter = sprintf
     ){
@@ -77,9 +70,42 @@ Logger <- R6::R6Class(
       assign("caller", caller, envir = self$last_value)
       assign("msg", msg, envir = self$last_value)
 
-      for (app in private$.appenders)  app$append(self$last_value)
+      for (app in private$.appenders) {
+        if (is.na(app$threshold) || level <= app$threshold){
+          app$append(self$last_value)
+        }
+      }
     },
 
+
+    add_appender = function(appender, name = NULL){
+      assert(inherits(appender, "Appender"))
+      private$.appenders[length(private$.appenders) + 1L] <- list(appender)
+      names(private$.appenders)[length(private$.appenders)] <- name
+      invisible(self)
+    },
+
+    remove_appender = function(pos){
+      if (is.numeric(pos)){
+        assert(
+          all(pos %in% seq_along(private$.appenders)),
+          "'pos' is out of range of the length of appenders (1:",
+          length(appenders), ")"
+        )
+
+        pos <- as.integer(pos)
+      } else if (is.character(pos)) {
+        assert(
+          all(pos %in% names(private$.appenders)),
+          "'pos' is not names of appenders (",
+          paste(names(private$.appenders), collapse = ", "),
+          ")"
+        )
+      }
+
+      private$.appenders[pos] <- NULL
+      invisible(self)
+    },
 
     suspend = function(){
       if (length(private$suspended_loggers) > 0){
@@ -180,11 +206,18 @@ Logger <- R6::R6Class(
     },
 
     threshold = function(value){
-      if (missing(value)) return(private$.threshold)
-      if (is_scalar_character(value)){
+      if (missing(value))
+        return(private$.threshold)
+
+      if (is.na(value)){
+        value <- NA_integer_
+
+      } else if (is_scalar_character(value)) {
+        assert_valid_log_levels(value)
         value <- unlabel_levels(value, log_levels = self$log_levels)
       }
-      is.na(value) || assert_valid_threshold(value, log_levels = self$log_levels)
+
+      assert_valid_log_levels(value)
       private$.threshold <- as.integer(value)
     },
 
@@ -225,7 +258,6 @@ Logger <- R6::R6Class(
   ),
 
   private = list(
-    .collector = NULL,
     .appenders = NULL,
     .user = NA_character_,
     .log_levels = NULL,
