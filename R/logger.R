@@ -21,7 +21,7 @@ Logger <- R6::R6Class(
       user = get_user(),
       log_levels = getOption("yog.log_levels"),
       threshold = NA,
-      string_formatter = sprintf
+      string_formatter = sprintf_safely
     ){
       # fields ------------------------------------------------------------
         # active
@@ -180,19 +180,29 @@ Logger <- R6::R6Class(
       funs <- obsums[grep("function", obsums)]
       funs <- paste0(names(funs), ": ", funs)
 
+      logger_pat <-
+        paste0("(^", c(names(self$log_levels), "log"), ":)", collapse = "|")
 
-      paste0(
-        header, "\n",
-        paste0(ind, "threshold:\n"),
-        paste0(ind, ind, fmt_threshold(self$threshold)), "\n",
-        paste0(ind, "appenders:\n"),
-        paste0(ind, ind, appenders, collapse= "\n")
-        # paste0(ind, "Log Levels:\n"),
-        # paste0(ind, ind, sls(self$log_levels))
-        # paste0(ind, "Methods:\n"),
-        # paste0(ind, ind, funs, collapse= "\n"), "\n",
-        # paste0(ind, "Active Bindings:\n"),
-        # paste0(ind, ind, act, collapse= "\n")
+      sel <- grepl(logger_pat, funs)
+      methods <- funs[!sel]
+      loggers <- c(
+        paste0(names(self$log_levels), ": function (msg, ...) "),
+        grep("^log:", funs, value = TRUE)
+      )
+
+      c(
+        header,
+        paste0(ind, "Fields / Active Bindings:"),
+          paste0(ind, ind, "threshold: ",  fmt_threshold(self$threshold)),
+          paste0(ind, ind, "log_levels: ", sls(self$log_levels)),
+          paste0(ind, ind, "string_formatter: ", sls(self$string_formatter)),
+          paste0(ind, ind, "user: ", self$user),
+          paste0(ind, ind, "appenders:"),
+          paste0(ind, ind, ind, appenders),
+        paste0(ind, "Methods:"),
+          paste0(ind, ind, "Loggers:"),
+          paste0(ind, ind, ind, loggers),
+          paste0(ind, ind, methods)
       )
     },
 

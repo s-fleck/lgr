@@ -34,5 +34,6 @@ Collate:
     'layouts.R'
     'logger.R'
     'predicates.R'
+    'utils-exported.R'
     'yog-package.R'
 VignetteBuilder: knitr

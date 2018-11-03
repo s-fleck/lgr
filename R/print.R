@@ -6,6 +6,7 @@ object_summaries <- function(x, exclude = NULL) {
 
   if (is.list(x))
     obj_names <- names(x)
+
   else if (is.environment(x))
     obj_names <- ls(x, all.names = TRUE)
 
@@ -270,7 +271,7 @@ srs <- function(
   )
 
   if (inherits(x, "AppenderFile"))
-    res$comment <- paste("  ->", x$file)
+    res$comment <- style_subtle(paste(" ->", x$file))
 
   res
 }
@@ -281,53 +282,31 @@ srs <- function(
 
 
 
-#' @return
-#' @export
-sls <- function(x){
-  UseMethod("sls")
-}
 
 
-
-
-#' Title
+#' Single Line Summary
 #'
 #' @param x
 #'
-#' @return
-#' @export
-#'
-#' @examples
-sls.default <- function(x, colors = FALSE){
-  if (is.atomic(x)){
-    ptrunc(x, width = 64)
-  } else {
-    class_fmt(x)
-  }
+sls <- function(
+  x,
+  colors = FALSE
+){
+  if (inherits(x, "Appender"))
+    return(paste(as.character(as.list(srs(x))), collapse = " "))
+
+  if (is.function(x))
+    return(trimws(paste0(format(x)[[1]])))
+
+  if (inherits(x, "log_levels"))
+    return(paste0(names(x), " (", x, ")", collapse = ", "))
+
+  if (is.atomic(x))
+    return(ptrunc(x, width = 64))
+
+  class_fmt(x)
 }
 
-
-
-
-#' Title
-#'
-#' @param x
-#'
-#' @return
-#' @export
-#'
-#' @examples
-sls.log_levels <- function(x, colors = FALSE){
-  paste0(names(x), " (", x, ")", collapse = ", ")
-}
-
-
-
-
-#' @export
-sls.Appender <- function(x){
-  paste(as.character(as.list(srs(x))), collapse = " ")
-}
 
 
 
