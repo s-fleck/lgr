@@ -21,7 +21,7 @@ test_that("dummy AppenderFormat works as expected", {
     timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
     msg = "foo bar"
   ))
-  expect_equal(app$append(x), "ERROR [2018-11-02 17:19:33] foo bar")
+  expect_match(app$append(x), "ERROR \\[2018-11-02 17:19:33.*\\] foo bar")
 })
 
 
@@ -55,9 +55,9 @@ test_that("AppenderConsole works as expected", {
     msg = "foo bar"
   ))
 
-  expect_identical(
+  expect_match(
     capture.output(app$append(x)),
-    "ERROR [17:19:33] foo bar"
+    "ERROR \\[17:19:33.*\\] foo bar"
   )
 })
 
@@ -65,7 +65,7 @@ test_that("AppenderConsole works as expected", {
 
 # AppenderMemory ----------------------------------------------------------
 
-test_that("appending multiple rows works", {
+test_that("AppenderMemory: appending multiple rows works", {
   app <- AppenderMemoryDt$new()
 
   x <- as.environment(list(
@@ -91,16 +91,16 @@ test_that("appending multiple rows works", {
 
 
 
-test_that("memory cycling works", {
+test_that("AppenderMemory: memory cycling works", {
   app1 <- AppenderMemoryDt$new(cache_size = 10)
   x <- as.environment(list(
     level = 200L,
     timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
     msg = "foo bar"
   ))
-  replicate(12, app$append(x))
-  expect_equal(app$data$.id, 3:12)
-  r1 <- app$data
+  replicate(12, app1$append(x))
+  expect_equal(app1$data$.id, 3:12)
+  r1 <- app1$data
 
 
   # bulk insert behaves like sepparate inserts
@@ -110,9 +110,8 @@ test_that("memory cycling works", {
     timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
     msg = "foo bar"
   ))
-  app$append(x)
-  expect_equal(app$data$.id,  3:12)
-  expect_identical(app$data, r1)
-
+  app2$append(x)
+  expect_equal(app2$data$.id,  3:12)
+  expect_identical(app2$data, r1)
 })
 
