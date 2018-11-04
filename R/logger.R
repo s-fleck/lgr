@@ -21,7 +21,13 @@ Logger <- R6::R6Class(
       user = get_user(),
       log_levels = getOption("yog.log_levels"),
       threshold = NA,
-      string_formatter = sprintf_safely
+      string_formatter = sprintf,
+      handle_exception = function(e){
+        warning(
+          "[", format(Sys.time(), format = "%Y-%m-%d %H:%M:%OS3"), "] ",
+          "An error occured in the logging sub system: ", e
+        )
+      }
     ){
       # fields ------------------------------------------------------------
         # active
@@ -30,6 +36,7 @@ Logger <- R6::R6Class(
         self$appenders <- appenders
         self$user  <- user
         self$string_formatter <- string_formatter
+        self$handle_exception <- handle_exception
 
       # init log functions ----------------------------------------------
         make_logger <- function(
@@ -63,19 +70,30 @@ Logger <- R6::R6Class(
     },
 
 
-    log = function(level, timestamp = Sys.time(), caller = get_caller(), msg){
+    log = function(
+      level,
+      timestamp = Sys.time(),
+      caller = get_caller(),
+      msg
+    ){
+      tryCatch({
+        assign("level", level, envir = self$last_event)
+        assign("timestamp", timestamp,  envir = self$last_event)
+        assign("caller", caller, envir = self$last_event)
+        assign("msg", msg, envir = self$last_event)
 
-      assign("level", level, envir = self$last_value)
-      assign("timestamp", timestamp,  envir = self$last_value)
-      assign("caller", caller, envir = self$last_value)
-      assign("msg", msg, envir = self$last_value)
-
-      for (app in private$.appenders) {
-        if (is.na(app$threshold) || level <= app$threshold){
-          app$append(self$last_value)
+        for (app in private$.appenders) {
+          if (is.na(app$threshold) || level <= app$threshold){
+            app$append(self$last_event)
+          }
         }
-      }
+      },
+        error = self$handle_exception
+      )
     },
+
+
+    handle_exception = NULL,
 
 
     add_appender = function(appender, name = NULL){
@@ -214,7 +232,7 @@ Logger <- R6::R6Class(
 
 
   # public fields -----------------------------------------------------------
-    last_value = new.env(parent = emptyenv())
+    last_event = new.env(parent = emptyenv())
   ),
 
 

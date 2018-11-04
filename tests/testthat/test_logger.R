@@ -88,3 +88,24 @@ test_that("add/remove appenders", {
   ml$remove_appender(c("blah", "blubb"))
   expect_identical(length(ml$appenders), 1L)
 })
+
+
+
+
+test_that("Exceptions are cought and turned into warnings", {
+  ml <- Logger$new(
+    appenders = list(
+      AppenderFile$new(file = tempfile()),
+      AppenderConsole$new()
+    )
+  )
+
+  expect_warning(ml$fatal(stop("blubb")), "Error.*blubb")
+  expect_warning(ml$fatal(), "Error")
+
+  ml$add_appender(AppenderFile$new(
+    file = file.path(tempfile(), "non", "existing", "directory" )
+  ))
+
+  expect_output(expect_warning(ml$fatal("blubb"), "Error"))
+})
