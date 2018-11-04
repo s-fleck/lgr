@@ -127,3 +127,13 @@ test_that("Logger inheritance and event propagation", {
   expect_identical(readLines(tf1), readLines(tf2))
 
 })
+
+
+
+
+test_that("filters work", {
+  c1  <- Logger$new("c1")
+  expect_output(c1$error("blubb"), "ERROR")
+  c1$threshold <- 100
+  expect_silent(c1$error("blubb"))
+})

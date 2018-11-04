@@ -1,3 +1,5 @@
+#' @include filterable.R
+
 #' Title
 #'
 #' @param appenders
@@ -11,6 +13,7 @@
 #' @examples
 Logger <- R6::R6Class(
   "Logger",
+  inherit = Filterable,
 
   # public methods --------------------------------------------------------
   public = list(
@@ -84,9 +87,11 @@ Logger <- R6::R6Class(
         assign("caller", caller, envir = self$last_event)
         assign("msg", msg, envir = self$last_event)
 
-        for (app in c(self$appenders, self$ancestral_appenders)) {
-          if (is.na(app$threshold) || level <= app$threshold){
-            app$append(self$last_event)
+        if (self$filter(self$last_event)){
+          for (app in c(self$appenders, self$ancestral_appenders)) {
+            if (app$filter(self$last_event)){
+              app$append(self$last_event)
+            }
           }
         }
       },
@@ -386,6 +391,7 @@ Logger <- R6::R6Class(
 
 # private -----------------------------------------------------------------
   private = list(
+    .filters = list(check_threshold),
     .name = NULL,
     .parrent = NULL,
     .appenders = NULL,

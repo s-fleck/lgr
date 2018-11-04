@@ -51,7 +51,7 @@ res <- do.call(mark, c(exps, list(iterations = 10, check = FALSE)))
 sink()
 print(Sys.time())
 
-data.table::as.data.table(res)[,
+print(data.table::as.data.table(res)[,
   .(
     expression,
     median,
@@ -59,8 +59,9 @@ data.table::as.data.table(res)[,
     mem_alloc,
     `mem_alloc_d%` = round(as.numeric((mem_alloc[expression == "default (no colors)"] - mem_alloc) / mem_alloc) * 100)
   )
-]
+])
 
+stop()
 
 # 2018-11-04 13:50:06 CET
 #             expression   median mem_alloc

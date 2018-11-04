@@ -1,6 +1,7 @@
 #' @include print.R
 #' @include utils.R
 #' @include utils-sfmisc.R
+#' @include filterable.R
 
 # Appender ----------------------------------------------------------------
 
@@ -9,6 +10,7 @@
 #' @export
 Appender <- R6::R6Class(
   "Appender",
+  inherit = Filterable,
 
   public = list(
     initialize = function(
@@ -92,16 +94,15 @@ Appender <- R6::R6Class(
       assert(inherits(value, "Logger"))
       private$.logger <- value
     }
-
   ),
 
   private = list(
+    .filters = list(check_threshold),
     .threshold = NULL,
     .layout = NULL,
     .logger = NULL
   )
 )
-
 
 
 

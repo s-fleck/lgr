@@ -115,3 +115,20 @@ test_that("AppenderMemory: memory cycling works", {
   expect_identical(app2$data, r1)
 })
 
+
+
+
+test_that("Appender: filters work", {
+  app1 <- AppenderConsole$new()
+  x <- as.environment(list(
+    level = 200L,
+    timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
+    msg = "foo bar"
+  ))
+
+  expect_true(app1$filter(x))
+  app1$threshold <-  100
+  expect_false(app1$filter(x))
+})
+
+
