@@ -25,11 +25,8 @@ ml[["no appenders"]] <-
 ml[["memory only"]] <-
   Logger$new(appenders = AppenderMemoryDt$new())
 
-ml[["default (no colors, unsafe)"]] <-
+ml[["default (no colors)"]] <-
   Logger$new(appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = NULL)), string_formatter = sprintf)
-
-ml[["default (no colors, safe string formatting)"]] <-
-  Logger$new(appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = NULL)), string_formatter = sprintf_safely)
 
 ml[["default (colors)"]] <-
   Logger$new(appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = colors)))
@@ -60,25 +57,21 @@ data.table::as.data.table(res)[,
   .(
     expression,
     median,
-    #`median_d%` = round(as.numeric((median[expression == "default (no colors)"] - median) / median) * 100),
-    mem_alloc
-    #`mem_alloc_d%` = round(as.numeric((mem_alloc[expression == "default (no colors)"] - mem_alloc) / mem_alloc) * 100)
+    `median_d%` = round(as.numeric((median[expression == "default (no colors)"] - median) / median) * 100),
+    mem_alloc,
+    `mem_alloc_d%` = round(as.numeric((mem_alloc[expression == "default (no colors)"] - mem_alloc) / mem_alloc) * 100)
   )
 ]
 
 
-# 2018-10-27
-#       expression   median mem_alloc
-# 1:           for 918.91µs    6.76KB
-# 2:           sus   2.52ms    8.45KB
-# 3:           nul 215.18ms  470.09KB
-# 4:           min  363.6ms  399.12KB
-# 5:       min_col 895.61ms     3.7MB
-# 6: min_col_nocol 361.83ms  399.12KB
-# 7:           std 609.38ms    8.45MB
-# 8:           col    1.11s   11.13MB
-# 9:           glu    1.11s    1.55MB
-# 10:          flg    1.59s   18.94MB
+# 2018-11-04 13:50:06 CET
+#             expression   median mem_alloc
+# 1:           suspended   3.11ms   11.69KB
+# 2:        no appenders  61.77ms   11.69KB
+# 3:         memory only 122.94ms   11.93KB
+# 4: default (no colors) 433.12ms    7.92MB
+# 5:    default (colors)    1.03s   11.23MB
+# 6:                flog    1.63s   20.27MB
 
 res$expression <- factor(res$expression, levels = rev(res$expression))
 plot(res)
