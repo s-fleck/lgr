@@ -21,6 +21,21 @@ Storing the log as a data.table gives us the following advantages:
 This package is under heavy development right now, come back later.
 
 
+## Features
+  
+* An arbitrary number of appenders for each logger. A single logger can write
+  values to the console, logfile, database, etc... . Each appender has its
+  own logging threshold.
+* Vectorized logging (so `yog$fatal(capture.output(iris))` works)
+* Lightning fast in-memory appender based in `data.table` included for 
+  interactive use and (in the future possible) cached appending
+* Optional color support via colt and crayon
+
+
+## Dependencies
+
+
+
 ## Installation
 
 ``` r

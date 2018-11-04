@@ -168,7 +168,7 @@ AppenderFile <- R6::R6Class(
     append = function(x){
       cat(
         private$.layout$format_event(x),
-        "\n", sep = "", file = private$.file, append = TRUE
+        sep = "\n", file = private$.file, append = TRUE
       )
       return(invisible())
     }
