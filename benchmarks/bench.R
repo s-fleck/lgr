@@ -16,8 +16,14 @@ colors <- list(
 )
 
 
+ml[["suspended"]] <- Logger$new(appenders = AppenderConsole$new())
+ml[["suspended"]]$suspend()
+
 ml[["no appenders"]] <-
   Logger$new(appenders = NULL)
+
+ml[["memory only"]] <-
+  Logger$new(appenders = AppenderMemoryDt$new())
 
 ml[["default (no colors, unsafe)"]] <-
   Logger$new(appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = NULL)), string_formatter = sprintf)
@@ -30,12 +36,12 @@ ml[["default (colors)"]] <-
 
 
 
+
 #ml$min <- Logger$new(appenders = AppenderConsoleMinimal$new(colors = list()))
 #ml$min_col <- Logger$new(appenders = AppenderConsoleMinimal$new(colors = colors))
 #ml$glu <- Logger$new(appenders = AppenderConsoleGlue$new())
 
-ml[["suspended"]] <- Logger$new(appenders = AppenderConsole$new())
-ml[["suspended"]]$suspend()
+
 
 n <- 1e3
 print(Sys.time())
@@ -54,9 +60,9 @@ data.table::as.data.table(res)[,
   .(
     expression,
     median,
-    `median_d%` = round(as.numeric((median[expression == "default (no colors)"] - median) / median) * 100),
-    mem_alloc,
-    `mem_alloc_d%` = round(as.numeric((mem_alloc[expression == "default (no colors)"] - mem_alloc) / mem_alloc) * 100)
+    #`median_d%` = round(as.numeric((median[expression == "default (no colors)"] - median) / median) * 100),
+    mem_alloc
+    #`mem_alloc_d%` = round(as.numeric((mem_alloc[expression == "default (no colors)"] - mem_alloc) / mem_alloc) * 100)
   )
 ]
 

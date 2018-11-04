@@ -13,6 +13,6 @@ sprintf_safely <- function(
 ){
   tryCatch(
     sprintf(fmt, ...),
-    error = function(e) paste("LOGGING ERROR!!!:", e)
+    error = function(e) paste("LOGGING ERROR!!!:", trimws(e))
   )
 }

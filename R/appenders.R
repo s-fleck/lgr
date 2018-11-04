@@ -135,7 +135,7 @@ AppenderConsole <- R6::R6Class(
     },
 
     append = function(x){
-      cat(private$.layout$format_event(x), "\n", sep = "")
+      cat(private$.layout$format_event(x), sep = "\n")
       return(invisible())
     }
   )
@@ -249,19 +249,35 @@ AppenderMemoryDt <- R6::R6Class(
 
 
     append = function(x){
-      private[["current_row"]] <- private[["current_row"]] + 1L
-      private[["id"]] <- private[["id"]] + 1L
+      lengths <- unlist(eapply(x, length, USE.NAMES = FALSE))
+      lenmax  <- max(lengths)
+      assert(all(lengths %in% c(1, lenmax)))
+
+      if (lenmax > nrow(private$.data)){
+        x <- eapply(x, trim_last_value, nrow(private$.data))
+        # ensure .id would be the same as without cycling
+        private[["id"]] <- private[["id"]] + lenmax - nrow(private$.data)
+        lenmax <- nrow(private$.data)
+      }
+
+      i   <- seq_len(lenmax)
+      ids <- i + private[["id"]]
+
+      if (private[["current_row"]] + lenmax <= nrow(private$.data)){
+        i   <- i + private[["current_row"]]
+        private[["current_row"]] <- private[["current_row"]] + lenmax
+      } else {
+        private[["current_row"]] <- lenmax  # reset cache
+      }
 
       data.table::set(
         private$.data,
-        private[["current_row"]],
+        i,
         j = c(".id", names(x)),
-        value = c(private$id, as.list(x))
+        value = c(list(ids), as.list(x))
       )
 
-      if (private[["current_row"]] == nrow(private$.data)){
-        private[["current_row"]] <- 0L
-      }
+      private[["id"]] <- private[["id"]] + lenmax
     },
 
 
@@ -308,5 +324,16 @@ AppenderMemoryDt <- R6::R6Class(
 
 # appender email ----------------------------------------------------------
 
+
+
+
+# utils -------------------------------------------------------------------
+
+trim_last_value <- function(x, max_len){
+  if (length(x) == 1L)
+    x
+  else
+    x[seq.int(length(x) - max_len + 1L, length(x))]
+}
 
 

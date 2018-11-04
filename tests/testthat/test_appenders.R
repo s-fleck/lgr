@@ -65,25 +65,26 @@ test_that("AppenderConsole works as expected", {
 
 # AppenderMemory ----------------------------------------------------------
 
-test_that("memory cycling works", {
+test_that("appending multiple rows works", {
   app <- AppenderMemoryDt$new()
 
   x <- as.environment(list(
-    level = 200L,
+    level = c(200L, 300L, 400L),
     timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
     msg = "foo bar"
   ))
 
-  app$append(x)
+  expect_silent(app$append(x))
 
-  expect_identical(app$data[1]$level, x$level)
-  expect_identical(app$data[1]$timestamp, x$timestamp)
-  expect_identical(app$data[1]$msg, x$msg)
-  expect_identical(app$data[1]$caller, NA_character_)
+  expect_identical(app$data[1:3]$level, x$level)
+  expect_identical(app$data[1:3]$timestamp, rep(x$timestamp, 3))
+  expect_identical(app$data[1:3]$msg, rep(x$msg, 3))
+  expect_identical(app$data[1:3]$caller, rep(NA_character_, 3))
 
   x$level <- 300
   app$append(x)
 
+  expect_identical(app$.__enclos_env__$private$.data$.id[1:4], 1:4)
   expect_match(paste(capture.output(app$show()), collapse = ""), "ERROR.*WARN")
 })
 
@@ -91,15 +92,27 @@ test_that("memory cycling works", {
 
 
 test_that("memory cycling works", {
-  app <- AppenderMemoryDt$new(cache_size = 10)
-
+  app1 <- AppenderMemoryDt$new(cache_size = 10)
   x <- as.environment(list(
     level = 200L,
     timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
     msg = "foo bar"
   ))
-
   replicate(12, app$append(x))
   expect_equal(app$data$.id, 3:12)
+  r1 <- app$data
+
+
+  # bulk insert behaves like sepparate inserts
+  app2 <- AppenderMemoryDt$new(cache_size = 10)
+  x <- as.environment(list(
+    level = rep(200L, 12),
+    timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
+    msg = "foo bar"
+  ))
+  app$append(x)
+  expect_equal(app$data$.id,  3:12)
+  expect_identical(app$data, r1)
+
 })
 

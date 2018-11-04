@@ -162,15 +162,20 @@ Logger <- R6::R6Class(
       ind <- "  "
 
       appenders <- do.call(rbind, lapply(self$appenders, srs))
-      appenders$name <- pad_right(appenders$name)
 
-      appenders <- paste0(
-        pad_right(appenders$name), ": ",
-        pad_right(
-          paste0(label_levels(appenders$threshold), style_subtle(paste0(" (", appenders$threshold, ")")))
-        ),
-        vapply(appenders$comment, ptrunc, character(1), width = 128)
-      )
+      if (length(appenders) > 0){
+        appenders$name <- pad_right(appenders$name)
+
+        appenders <- paste0(
+          pad_right(appenders$name), ": ",
+          pad_right(
+            paste0(label_levels(appenders$threshold), style_subtle(paste0(" (", appenders$threshold, ")")))
+          ),
+          vapply(appenders$comment, ptrunc, character(1), width = 128)
+        )
+      } else {
+        appenders <- style_subtle("none")
+      }
 
       obsums <- object_summaries(self)
 
