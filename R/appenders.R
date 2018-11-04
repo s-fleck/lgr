@@ -254,7 +254,7 @@ AppenderMemoryDt <- R6::R6Class(
       assert(all(lengths %in% c(1, lenmax)))
 
       if (lenmax > nrow(private$.data)){
-        x <- eapply(x, trim_last_value, nrow(private$.data))
+        x <- eapply(x, trim_last_event, nrow(private$.data))
         # ensure .id would be the same as without cycling
         private[["id"]] <- private[["id"]] + lenmax - nrow(private$.data)
         lenmax <- nrow(private$.data)
@@ -329,7 +329,7 @@ AppenderMemoryDt <- R6::R6Class(
 
 # utils -------------------------------------------------------------------
 
-trim_last_value <- function(x, max_len){
+trim_last_event <- function(x, max_len){
   if (length(x) == 1L)
     x
   else
