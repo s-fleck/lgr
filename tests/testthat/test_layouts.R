@@ -22,7 +22,7 @@ test_that("LayoutFormat works as expected", {
     timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
     msg = "foo bar"
   )
-  expect_identical(lo$format_event(x), "ERROR [2018-11-02 17:19:33] foo bar")
+  expect_match(lo$format_event(x), "ERROR \\[2018-11-02 17:19:33.*\\] foo bar")
 
   lo$timestamp_fmt <- "%Y-%m-%d"
   lo$fmt <- "[%t]"

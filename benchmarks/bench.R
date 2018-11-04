@@ -16,27 +16,25 @@ colors <- list(
 )
 
 
-ml[["suspended"]] <- Logger$new(appenders = AppenderConsole$new())
+# all loggers are created as Root loggers for the benchmarks. do not do this
+# in real code, loggers should always inherit from root!
+
+ml[["suspended"]] <- Logger$new(
+  "suspended", appenders = AppenderConsole$new(), parent = NULL)
+
 ml[["suspended"]]$suspend()
 
 ml[["no appenders"]] <-
-  Logger$new(appenders = NULL)
+  Logger$new("no appenders", appenders = NULL, parent = NULL)
 
 ml[["memory only"]] <-
-  Logger$new(appenders = AppenderMemoryDt$new())
+  Logger$new("memory only", appenders = AppenderMemoryDt$new(), parent = NULL)
 
 ml[["default (no colors)"]] <-
-  Logger$new(appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = NULL)), string_formatter = sprintf)
+  Logger$new("default (no colors)", appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = NULL)), parent = NULL)
 
 ml[["default (colors)"]] <-
-  Logger$new(appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = colors)))
-
-
-
-
-#ml$min <- Logger$new(appenders = AppenderConsoleMinimal$new(colors = list()))
-#ml$min_col <- Logger$new(appenders = AppenderConsoleMinimal$new(colors = colors))
-#ml$glu <- Logger$new(appenders = AppenderConsoleGlue$new())
+  Logger$new("default (colors)", appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = colors)), parent = NULL)
 
 
 

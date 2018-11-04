@@ -39,7 +39,11 @@
 
   assign(
     "yog",
-    Logger$new(appenders = appenders),
+    Logger$new(
+      name = "Root",
+      appenders = appenders,
+      parent = NULL  # _never_ set the parent to null yoursel, yog should be the only root logger
+    ),
     envir =  asNamespace("yog")
   )
 }

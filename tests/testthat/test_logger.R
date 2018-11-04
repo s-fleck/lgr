@@ -2,7 +2,7 @@ context("loggers")
 
 
 test_that("active bindings", {
-  ml <- Logger$new()
+  ml <- Logger$new("test_logger")
 
   expect_identical(
     ml$log_levels,
@@ -33,7 +33,7 @@ test_that("active bindings", {
 
 
 test_that("basic logging", {
-  ml <- Logger$new()
+  ml <- Logger$new("test_logger")
   ts <- structure(1540486764.41946, class = c("POSIXct", "POSIXt"))
 
   testfun <- function(){
@@ -51,7 +51,7 @@ test_that("basic logging", {
 
 
 test_that("suspending loggers works", {
-  ml <- Logger$new()
+  ml <- Logger$new("test_logger")
 
   expect_output(ml$fatal("blubb"), "FATAL")
   x <- capture.output(ml$fatal("blubb"))
@@ -71,7 +71,7 @@ test_that("suspending loggers works", {
 
 
 test_that("add/remove appenders", {
-  ml <- Logger$new(appenders = AppenderFile$new(file = tempfile()))
+  ml <- Logger$new("test_logger", appenders = AppenderFile$new(file = tempfile()))
   app1 <- AppenderConsole$new(threshold = 100)
   app2 <- AppenderConsole$new(threshold = 300)
 
@@ -79,8 +79,12 @@ test_that("add/remove appenders", {
   ml$add_appender(app2, "blah")
   ml$add_appender(AppenderMemoryDt$new(), "blubb")
 
-  expect_true(identical(ml$appenders[[2]], app1))
-  expect_true(identical(ml$appenders$blah, app2))
+  # because the now have the logger proerty set
+  expect_false(identical(ml$appenders[[2]], app1))
+  expect_identical(ml$appenders[[2]]$logger, ml)
+
+  expect_false(identical(ml$appenders$blah, app2))
+  expect_identical(ml$appenders$blah$logger, ml)
 
   ml$remove_appender(2)
   expect_identical(length(ml$appenders), 3L)
@@ -93,7 +97,7 @@ test_that("add/remove appenders", {
 
 
 test_that("Exceptions are cought and turned into warnings", {
-  ml <- Logger$new(
+  ml <- Logger$new("test_logger",
     appenders = list(
       AppenderFile$new(file = tempfile()),
       AppenderConsole$new()
@@ -108,4 +112,18 @@ test_that("Exceptions are cought and turned into warnings", {
   ))
 
   expect_output(expect_warning(ml$fatal("blubb"), "Error"))
+})
+
+
+
+test_that("Logger inheritance and event propagation", {
+  tf1 <- tempfile()
+  tf2 <- tempfile()
+  c1  <- Logger$new("c1", appenders = AppenderFile$new(tf1))
+  c2  <- Logger$new("c2", parent = c1, appenders = AppenderFile$new(tf2))
+
+  expect_output(c2$fatal("blubb"), "FATAL.*blubb")
+  expect_match(readLines(tf1), "FATAL.*blubb")
+  expect_identical(readLines(tf1), readLines(tf2))
+
 })

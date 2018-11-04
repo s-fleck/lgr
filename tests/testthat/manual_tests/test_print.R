@@ -2,6 +2,7 @@ library(yog)
 
 
   ml_col <- Logger$new(
+    "test_logger",
     appenders = c(
       AppenderFile$new(file = tempfile()),
       AppenderConsole$new(),

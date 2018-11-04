@@ -85,12 +85,20 @@ Appender <- R6::R6Class(
       if (missing(value)) return(private$.layout)
       assert(inherits(value, "Layout"))
       private$.layout <- value
+    },
+
+    logger = function(value){
+      if (missing(value)) return(private$.logger)
+      assert(inherits(value, "Logger"))
+      private$.logger <- value
     }
+
   ),
 
   private = list(
     .threshold = NULL,
-    .layout = NULL
+    .layout = NULL,
+    .logger = NULL
   )
 )
 

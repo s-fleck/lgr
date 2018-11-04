@@ -316,3 +316,22 @@ fmt_threshold <- function(
 ){
   paste0(label_levels(x, log_levels), " (", x, ")")
 }
+
+
+
+#' Title
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
+format.ancestry <- function(x, ...){
+  paste(x, collapse = " -> ")
+}
+
+
+print.ancestry <- function(x, ...){
+  cat(format(x))
+}
