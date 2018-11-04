@@ -28,7 +28,7 @@ LayoutFormat <- R6::R6Class(
   public = list(
     initialize = function(
       fmt = "%L [%t] %m",
-      timestamp_fmt = "%Y-%m-%d %H:%M:%S",
+      timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
       colors = NULL,
       pad_levels = "right"
     ){
