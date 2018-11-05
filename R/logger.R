@@ -172,8 +172,8 @@ Logger <- R6::R6Class(
       sel <- vapply(self$appenders, inherits, TRUE, "AppenderMemoryDt")
 
       if (!any(sel)){
-        message("This logger has no memory appender (see AppenderMempryDt)")
-        return(invisible)
+        message("This logger has no memory appender (see ?AppenderMemoryDt)")
+        return(invisible())
 
       } else {
         self$appenders[sel][[1]]$show(n = n, threshold = threshold)
@@ -288,11 +288,13 @@ Logger <- R6::R6Class(
       private$.name <- value
     },
 
+
     ancestry = function(){
       structure(
         c(self$name, private$.parent$ancestry),
         class = c("ancestry", "character")
       )
+
     },
 
     parent = function(value){
@@ -300,6 +302,7 @@ Logger <- R6::R6Class(
       assert(is.null(value) || inherits(value, "Logger"))
       private$.parent <- value
     },
+
 
     log_levels = function(value){
       if (missing(value)) return(private$.log_levels)
@@ -323,6 +326,7 @@ Logger <- R6::R6Class(
       private$.log_levels <- value
     },
 
+
     threshold = function(value){
       if (missing(value))
         return(private$.threshold)
@@ -338,6 +342,7 @@ Logger <- R6::R6Class(
       assert_valid_log_levels(value)
       private$.threshold <- as.integer(value)
     },
+
 
     ancestral_appenders = function(){
       c(
@@ -357,20 +362,21 @@ Logger <- R6::R6Class(
       if (inherits(value, "Appender"))
         value <- list(value)
 
+      assert(
+        is.list(value) && all(vapply(value, inherits, TRUE, "Appender")),
+        "'appenders' must either be a single Appender, a list thereof, or NULL for no appenders."
+      )
+
       value <- lapply(value, function(app){
         res <- app$clone()
         res$logger <- self
         res
       })
 
-      assert(
-        is.list(value) && all(vapply(value, inherits, TRUE, "Appender")),
-        "'appenders' must either be a single Appender, a list thereof, or NULL for no appenders."
-      )
-
       private$.appenders <- value
       invisible()
     },
+
 
     user = function(value){
       if (missing(value)) return(private$.user)
@@ -380,6 +386,7 @@ Logger <- R6::R6Class(
       )
       private$.user <- value
     },
+
 
     string_formatter = function(value){
       if (missing(value)) return(private$.string_formatter)
