@@ -302,7 +302,7 @@ sls <- function(
     return(paste0(names(x), " (", x, ")", collapse = ", "))
 
   if (is.atomic(x))
-    return(ptrunc(x, width = 64))
+    return(col_ptrunc(x, width = 64))
 
   class_fmt(x)
 }

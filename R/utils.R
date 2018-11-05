@@ -37,7 +37,6 @@ get_user <- function(fallback = "unknown user"){
 
 
 
-
 #' Title
 #'
 #' @param where
@@ -62,19 +61,6 @@ get_caller <- function(
 
 
 
-class_fmt <- function(x, ignore = "R6"){
-  fmt_class(setdiff(class(x), ignore))
-}
-
-
-
-
-fmt_class <- function(x){
-  paste0("<", paste(x, collapse = "/"), ">")
-}
-
-
-
 if (requireNamespace("crayon", quietly = TRUE)){
   style_accent <- crayon::silver
   style_subtle <- crayon::silver
@@ -90,18 +76,9 @@ if (requireNamespace("crayon", quietly = TRUE)){
 
 #' Paste and Truncate
 #'
-#' @param x a vector
-#' @param width (maximum) width of result
-#' @inheritParams paste
+#' color aware version of ptrunc from sfmisc
 #'
-#' @return a `character` scalar
-#' @noRd
-#'
-#' @example
-#'   ptrunc(month.abb)
-#'   ptrunc(month.abb, month.name)
-#'
-ptrunc <- function(
+ptrunc_col <- function(
   ...,
   width = 40L,
   sep = ", ",
