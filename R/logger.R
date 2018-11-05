@@ -86,6 +86,7 @@ Logger <- R6::R6Class(
         assign("timestamp", timestamp,  envir = self$last_event)
         assign("caller", caller, envir = self$last_event)
         assign("msg", msg, envir = self$last_event)
+        assign(".Logger", self, envir = self$last_event)
 
         if (self$filter(self$last_event)){
           for (app in c(self$appenders, self$ancestral_appenders)) {
