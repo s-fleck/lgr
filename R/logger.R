@@ -30,9 +30,10 @@ Logger <- R6::R6Class(
           "[", format(Sys.time(), format = "%Y-%m-%d %H:%M:%OS3"), "] ",
           "An error occured in the logging sub system: ", e
         )
-      }
+      },
+      propagate = TRUE
     ){
-      # fields ------------------------------------------------------------
+      # fields
         # active
         self$log_levels <- log_levels
         self$threshold <- threshold
@@ -42,8 +43,10 @@ Logger <- R6::R6Class(
         self$handle_exception <- handle_exception
         self$parent <- parent
         self$name <- name
+        self$propagate <- propagate
 
-      # init log functions ----------------------------------------------
+
+      # init log functions
         make_logger <- function(
           level,
           ...
@@ -203,7 +206,7 @@ Logger <- R6::R6Class(
           pad_right(
             paste0(label_levels(appenders$threshold), style_subtle(paste0(" (", appenders$threshold, ")")))
           ),
-          vapply(appenders$comment, ptrunc, character(1), width = 128)
+          vapply(appenders$comment, ptrunc_col, character(1), width = 128)
         )
       } else {
         appenders <- style_subtle("none")
@@ -228,7 +231,7 @@ Logger <- R6::R6Class(
           pad_right(
             paste0(label_levels(anc_appenders$threshold), style_subtle(paste0(" (", anc_appenders$threshold, ")")))
           ),
-          vapply(anc_appenders$comment, ptrunc, character(1), width = 128)
+          vapply(anc_appenders$comment, ptrunc_col, character(1), width = 128)
         )
       } else {
         anc_appenders <- NULL
@@ -289,13 +292,20 @@ Logger <- R6::R6Class(
     },
 
 
+    propagate = function(value){
+      if (missing(value)) return(private$.propagate)
+      assert(is_scalar_bool(value))
+      private$.propagate <- value
+    },
+
+
     ancestry = function(){
       structure(
         c(self$name, private$.parent$ancestry),
         class = c("ancestry", "character")
       )
-
     },
+
 
     parent = function(value){
       if (missing(value)) return(private$.parent)
@@ -345,11 +355,16 @@ Logger <- R6::R6Class(
 
 
     ancestral_appenders = function(){
-      c(
-        private$.parent$appenders,
-        private$.parent$ancestral_appenders
-      )
+      if (self$propagate){
+        c(
+          private$.parent$appenders,
+          private$.parent$ancestral_appenders
+        )
+      } else {
+        NULL
+      }
     },
+
 
     appenders = function(value){
       if (missing(value)) return(c(private$.appenders))
@@ -398,6 +413,7 @@ Logger <- R6::R6Class(
 
 # private -----------------------------------------------------------------
   private = list(
+    .propagate = NULL,
     .filters = list(check_threshold),
     .name = NULL,
     .parrent = NULL,

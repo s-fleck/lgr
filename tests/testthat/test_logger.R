@@ -119,13 +119,20 @@ test_that("Exceptions are cought and turned into warnings", {
 test_that("Logger inheritance and event propagation", {
   tf1 <- tempfile()
   tf2 <- tempfile()
+  tf3 <- tempfile()
   c1  <- Logger$new("c1", appenders = AppenderFile$new(tf1))
   c2  <- Logger$new("c2", parent = c1, appenders = AppenderFile$new(tf2))
+  c3  <- Logger$new("c3", parent = c2, appenders = AppenderFile$new(tf3))
 
-  expect_output(c2$fatal("blubb"), "FATAL.*blubb")
+  expect_output(c3$fatal("blubb"), "FATAL.*blubb")
   expect_match(readLines(tf1), "FATAL.*blubb")
   expect_identical(readLines(tf1), readLines(tf2))
+  expect_identical(readLines(tf1), readLines(tf3))
 
+  c2$propagate <- FALSE
+  expect_silent(c3$error("blubb"))
+  expect_identical(readLines(tf2), readLines(tf3))
+  expect_lt(length(readLines(tf1)), length(readLines(tf3)))
 })
 
 
