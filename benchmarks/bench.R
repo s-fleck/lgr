@@ -35,26 +35,7 @@ ml[["default (no colors)"]] <-
 
 ml[["default (colors)"]] <-
   Logger$new("default (colors)", appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = colors)), parent = NULL)
-
-
-ml[["logger1"]] <-
-  Logger$new("no appenders", appenders = AppenderMemoryDt$new(), parent = NULL)
-
-ml[["logger2"]] <-
-  Logger2$new("no appenders", appenders = AppenderMemoryDt2$new(), parent = NULL)
-
-ml[[1]]$fatal("blubb")
-ml[[2]]$fatal("blubb")
-
-
-ml[[1]]$last_event
-ml[[2]]$last_event
-
-ls(ml[[1]]$last_event)
-ls(ml[[2]]$last_event)
-
-ml[[2]]$last_event$values
-
+274
 n <- 1e3
 print(Sys.time())
 sink("/dev/null")
@@ -63,7 +44,7 @@ exps <- lapply(
   function(x) bquote(for (i in 1:n) ml[[.(x)]]$fatal("blubb"))
 )
 names(exps) = names(ml)
-#exps <- append(exps, list(flog = quote(for (i in 1:n) flog.fatal("blubb"))))
+exps <- append(exps, list(flog = quote(for (i in 1:n) flog.fatal("blubb"))))
 res <- do.call(mark, c(exps, list(iterations = 15, check = FALSE)))
 sink()
 print(Sys.time())
