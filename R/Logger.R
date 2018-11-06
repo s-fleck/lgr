@@ -1,4 +1,4 @@
-#' @include filterable.R
+#' @include Filterable.R
 
 #' Title
 #'
@@ -33,48 +33,50 @@ Logger <- R6::R6Class(
       },
       propagate = TRUE
     ){
-      # fields
-        # active
-        self$log_levels <- log_levels
-        self$threshold <- threshold
-        self$appenders <- appenders
-        self$user  <- user
-        self$string_formatter <- string_formatter
-        self$handle_exception <- handle_exception
-        self$parent <- parent
-        self$name <- name
-        self$propagate <- propagate
+
+      # fields ------------------------------------------------------------
+      # active
+      self$log_levels <- log_levels
+      self$threshold <- threshold
+      self$appenders <- appenders
+      self$user  <- user
+      self$string_formatter <- string_formatter
+      self$handle_exception <- handle_exception
+      self$parent <- parent
+      self$name <- name
+      self$last_event <- LogRecord$new(self)
+      self$propagate <- propagate
 
 
-      # init log functions
-        make_logger <- function(
-          level,
-          ...
-        ){
-          force(level)
-          function(msg, ...){
-            self$log(
-              msg = private$.string_formatter(msg, ...),
-              level = level
-            )
-          }
+      # init log functions ----------------------------------------------
+      make_logger <- function(
+        level,
+        ...
+      ){
+        force(level)
+        function(msg, ...){
+          self$log(
+            msg = private$.string_formatter(msg, ...),
+            level = level
+          )
+        }
+      }
+
+      for (i in seq_along(private$.log_levels)){
+        nm  <- names(private$.log_levels)[[i]]
+        lvl <- private$.log_levels[[i]]
+
+        if (nm %in% names(self)){
+          stop(
+            "The following names are not allowed for log levels: ",
+            paste(sort(names(self)), collapse= ", ")
+          )
         }
 
-        for (i in seq_along(private$.log_levels)){
-          nm  <- names(private$.log_levels)[[i]]
-          lvl <- private$.log_levels[[i]]
+        self[[nm]] <- make_logger(lvl)
+      }
 
-          if (nm %in% names(self)){
-            stop(
-              "The following names are not allowed for log levels: ",
-              paste(sort(names(self)), collapse= ", ")
-            )
-          }
-
-          self[[nm]] <- make_logger(lvl)
-        }
-
-        invisible(self)
+      invisible(self)
     },
 
 
@@ -89,6 +91,8 @@ Logger <- R6::R6Class(
         assign("timestamp", timestamp,  envir = self$last_event)
         assign("caller", caller, envir = self$last_event)
         assign("msg", msg, envir = self$last_event)
+        #assign(".Logger", self, envir = self$last_event)
+
 
         if (self$filter(self$last_event)){
           for (app in c(self$appenders, self$ancestral_appenders)) {
@@ -98,7 +102,7 @@ Logger <- R6::R6Class(
           }
         }
       },
-        error = self$handle_exception
+      error = self$handle_exception
       )
     },
 
@@ -217,7 +221,7 @@ Logger <- R6::R6Class(
         lapply(self$ancestral_appenders, function(.x){
           cbind(data.frame(logger = .x$logger$name, srs(.x)))
         }
-      ))
+        ))
 
 
 
@@ -261,29 +265,31 @@ Logger <- R6::R6Class(
       c(
         header,
         paste0(ind, "Fields / Active Bindings:"),
-          paste0(ind, ind, "threshold: ",  fmt_threshold(self$threshold)),
-          paste0(ind, ind, "log_levels: ", sls(self$log_levels)),
-          paste0(ind, ind, "string_formatter: ", sls(self$string_formatter)),
-          paste0(ind, ind, "user: ", self$user),
-          paste0(ind, ind, "appenders:"),
-          paste0(ind, ind, ind, appenders),
-          paste0(ind, ind, ind, anc_appenders)[!is.null(anc_appenders)],
+        paste0(ind, ind, "threshold: ",  fmt_threshold(self$threshold)),
+        paste0(ind, ind, "log_levels: ", sls(self$log_levels)),
+        paste0(ind, ind, "string_formatter: ", sls(self$string_formatter)),
+        paste0(ind, ind, "user: ", self$user),
+        paste0(ind, ind, "propagate:", self$propagate),
+        paste0(ind, ind, "appenders:"),
+        paste0(ind, ind, ind, appenders),
+        paste0(ind, ind, ind, anc_appenders)[!is.null(anc_appenders)],
         paste0(ind, "Methods:"),
-          paste0(ind, ind, "Loggers:"),
-          paste0(ind, ind, ind, loggers),
-          paste0(ind, ind, methods)
+        paste0(ind, ind, "Loggers:"),
+        paste0(ind, ind, ind, loggers),
+        paste0(ind, ind, methods)
       )
     },
 
 
-  # public fields -----------------------------------------------------------
-    last_event = new.env(parent = emptyenv())
+    # public fields -----------------------------------------------------------
+    last_event = NULL
+
   ),
 
 
 
 
-# active bindings ---------------------------------------------------------
+  # active bindings ---------------------------------------------------------
   active = list(
     name = function(value){
       if (missing(value)) return(private$.name)
@@ -411,7 +417,7 @@ Logger <- R6::R6Class(
   ),
 
 
-# private -----------------------------------------------------------------
+  # private -----------------------------------------------------------------
   private = list(
     .propagate = NULL,
     .filters = list(check_threshold),

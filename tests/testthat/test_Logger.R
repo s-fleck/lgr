@@ -1,4 +1,4 @@
-context("loggers")
+context("Logger")
 
 
 test_that("active bindings", {

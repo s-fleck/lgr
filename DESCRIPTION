@@ -27,13 +27,14 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.0.9000
 Collate: 
-    'filterable.R'
+    'Filterable.R'
     'utils-sfmisc.R'
     'utils.R'
     'print.R'
-    'appenders.R'
-    'layouts.R'
-    'logger.R'
+    'Appender.R'
+    'Layout.R'
+    'LogRecord.R'
+    'Logger.R'
     'predicates.R'
     'yog-package.R'
 VignetteBuilder: knitr

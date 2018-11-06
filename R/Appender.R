@@ -1,7 +1,7 @@
 #' @include print.R
 #' @include utils.R
 #' @include utils-sfmisc.R
-#' @include filterable.R
+#' @include Filterable.R
 
 # Appender ----------------------------------------------------------------
 
@@ -258,12 +258,15 @@ AppenderMemoryDt <- R6::R6Class(
 
 
     append = function(x){
-      lengths <- unlist(eapply(x, length, USE.NAMES = FALSE))
+      # could just use as.list[,c(...)] but mget has a bit less overhead
+      #vals <- mget(c("level", "timestamp", "caller", "msg"), x)
+      vals <- x[["values"]]
+      lengths <- vapply(vals, length, integer(1), USE.NAMES = FALSE)
       lenmax  <- max(lengths)
       assert(all(lengths %in% c(1, lenmax)))
 
       if (lenmax > nrow(private$.data)){
-        x <- eapply(x, trim_last_event, nrow(private$.data))
+        vals <- lapply(vals, trim_last_event, nrow(private$.data))
         # ensure .id would be the same as without cycling
         private[["id"]] <- private[["id"]] + lenmax - nrow(private$.data)
         lenmax <- nrow(private$.data)
@@ -276,14 +279,15 @@ AppenderMemoryDt <- R6::R6Class(
         i   <- i + private[["current_row"]]
         private[["current_row"]] <- private[["current_row"]] + lenmax
       } else {
-        private[["current_row"]] <- lenmax  # reset cache
+        # cycle cache
+        private[["current_row"]] <- lenmax
       }
 
       data.table::set(
         private$.data,
         i,
-        j = c(".id", names(x)),
-        value = c(list(ids), as.list(x))
+        j = c(".id", names(vals)),
+        value = c(list(ids), vals)
       )
 
       private[["id"]] <- private[["id"]] + lenmax

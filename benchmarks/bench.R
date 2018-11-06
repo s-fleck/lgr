@@ -35,9 +35,7 @@ ml[["default (no colors)"]] <-
 
 ml[["default (colors)"]] <-
   Logger$new("default (colors)", appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = colors)), parent = NULL)
-
-
-
+274
 n <- 1e3
 print(Sys.time())
 sink("/dev/null")
@@ -47,7 +45,7 @@ exps <- lapply(
 )
 names(exps) = names(ml)
 exps <- append(exps, list(flog = quote(for (i in 1:n) flog.fatal("blubb"))))
-res <- do.call(mark, c(exps, list(iterations = 10, check = FALSE)))
+res <- do.call(mark, c(exps, list(iterations = 15, check = FALSE)))
 sink()
 print(Sys.time())
 
