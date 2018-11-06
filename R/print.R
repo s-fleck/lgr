@@ -319,6 +319,7 @@ fmt_threshold <- function(
 
 
 
+
 #' Title
 #'
 #' @param x
@@ -332,6 +333,14 @@ format.ancestry <- function(x, ...){
 }
 
 
+
+
 print.ancestry <- function(x, ...){
   cat(format(x))
+}
+
+
+
+summary.Logger = function(x){
+
 }

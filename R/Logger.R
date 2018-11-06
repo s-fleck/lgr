@@ -1,16 +1,139 @@
-#' @include Filterable.R
 
-#' Title
+
+
+#' A simple Logger.
 #'
-#' @param appenders
-#' @param user
-#' @param pid
-#' @param log_levels
+#' This is an R6 class that implements a concurrency safe package cache.
 #'
-#' @return
-#' @export
 #'
+#' By default these fields are included for every package:
+#' * `fullpath` Full package path.
+#' * `path` Package path, within the repository.
+#' * `package` Package name.
+#' * `url` URL it was downloaded from.
+#' * `etag` ETag for the last download, from the given URL.
+#' * `md5` MD5 of the file, to make sure if it has not changed.
+#'
+#' Additional fields can be added as needed.
+#'
+#' For a simple API to a session-wide instance of this class, see
+#' [pkg_cache_summary()] and the other functions listed there.
+#'
+#' @section Usage:
+#' ```
+#' pc <- package_cache$new(path = NULL)
+#'
+#' pc$list()
+#' pc$find(..., .list = NULL)
+#' pc$copy_to(..., .list = NULL)
+#' pc$add(file, path, md5 = tools::md5sum(file)[[1]], ..., .list = NULL)
+#' pc$add_url(url, path, ..., .list = NULL, on_progress = NULL)
+#' pc$async_add_url(url, path, ..., .list = NULL, on_progress = NULL)
+#' pc$copy_or_add(target, urls, path, md5 = NULL, ..., .list = NULL,
+#'                on_progress = NULL)
+#' pc$async_copy_or_add(target, urls, path, ..., md5 = NULL, ...,
+#'                .list = NULL, on_progress = NULL)
+#' pc$update_or_add(target, urls, path, ..., .list = NULL,
+#'                on_progress = NULL)
+#' pc$async_update_or_add(target, urls, path, ..., .list = NULL,
+#'                on_progress = NULL)
+#' pc$delete(..., .list = NULL)
+#' ```
+#'
+#' @section Arguments:
+#' * `path`: For `package_cache$new()` the location of the cache. For other
+#'   functions the location of the file inside the cache.
+#' * `...`: Extra attributes to search for. They have to be named.
+#' * `.list`: Extra attributes to search for, they have to in a named list.
+#' * `file`:  Path to the file to add.
+#' * `url`: URL attribute. This is used to update the file, if requested.
+#' * `md5`: MD5 hash of the file.
+#' * `on_progress`: Callback to create progress bard. Passed to
+#'   [http_get()].
+#' * `target`: Path to copy the (first) to hit to.
+#' * `urls`: Character vector or URLs to try to download the file from.
+#'
+#' @section Methods:
+#'
+#' `Logger$new()` initializes a new logger
+#'
+#' \describe{
+#'   \item{name}{`character` scalar. Name of the Logger. Must be unique amongst
+#'     Loggers. If you define a logger for an R Package, the logger should have
+#'     the same name as the Package.}
+#'   \item{appenders}{`list` of [Appender]s. The appenders used by this logger
+#'     to write log entries to the console, to files, etc...}
+#'   \item{threshold}{`character` or `integer` scalar. The minimum log level
+#'     that triggers this logger}
+#'   \item{user}{`character` scalar. The current user name or email adress.
+#'     This information can be used by the appenders}
+#'   \item{log_levels}{named `integer` vector. The log levels supported by this
+#'     Logger. It is not recommended to modify the default log levels and this
+#'     feature is still experimental. Please file an issue in the yog issue
+#'     tracker if you require this feature.}
+#'   \item{parent}{a `Logger`. Usually the Root logger. All Loggers must be
+#'     descentents of the Root logger for yog to work as intended.}
+#'
+#'   \item{string_formatter}{a `function` used to format the log strings passed
+#'     to the logging functions (`fatal()`, `error()`, etc...). Defaults to
+#'     [base::sprintf()]. Another sensible choice wuld be [glue::glue()].}
+#'
+#'   \item{handle_exception}{a `function` that takes a single argument `e`.
+#'     The function used to handle errors that occur durring loging. Default
+#'     to demoting any error to a [warning]}
+#'  }
+#'
+#'
+#'
+#'
+#' `pc$list()` lists all files in the cache, returns a tibble with all the
+#' default columns, and potentially extra columns as well.
+#'
+#' `pc$find()` list all files that match the specified criteria (`fullpath`,
+#' `path`, `package`, etc.). Custom columns can be searched for as well.
+#'
+#' `pc$copy_to()` will copy the first matching file from the cache to
+#' `target`. It returns the tibble of _all_ matching records, invisibly.
+#' If no file matches, it returns an empty (zero-row) tibble.
+#'
+#' `pc$add()` adds a file to the cache.
+#'
+#' `pc$add_url()` downloads a file and adds it to the cache.
+#'
+#' `pc$async_add_url()` is the same, but it is asynchronous.
+#'
+#' `pc$copy_or_add()` works like `pc$copy_to()`, but if the file is not in
+#' the cache, it tries to download it from one of the specified URLs first.
+#'
+#' `pc$async_copy_or_add()` is the same, but asynchronous.
+#'
+#' `pc$update_or_add()` is like `pc$copy_to_add()`, but if the file is in
+#' the cache it tries to update it from the urls, using the stored ETag to
+#' avoid unnecessary downloads.
+#'
+#' `pc$async_update_or_add()` is the same, but it is asynchronous.
+#'
+#' `pc$delete()` deletes the file(s) from the cache.
+#'
+#' @name Logger
+#' @include Filterable.R
 #' @examples
+#'
+#' ## Although package_cache usually stores packages, it may store
+#' ## arbitrary files, that can be search by metadata
+#' pc <- package_cache$new(path = tempfile())
+#' pc$list()
+#'
+#' cat("foo\n", file = f1 <- tempfile())
+#' cat("bar\n", file = f2 <- tempfile())
+#' pc$add(f1, "/f1")
+#' pc$add(f2, "/f2")
+#' pc$list()
+#' pc$find(path = "/f1")
+#' pc$copy_to(target = f3 <- tempfile(), path = "/f1")
+#' readLines(f3)
+#'
+#' @export
 Logger <- R6::R6Class(
   "Logger",
   inherit = Filterable,
@@ -217,7 +340,7 @@ Logger <- R6::R6Class(
         lapply(self$ancestral_appenders, function(.x){
           cbind(data.frame(logger = .x$logger$name, srs(.x)))
         }
-        ))
+      ))
 
 
 
