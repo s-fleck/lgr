@@ -17,7 +17,11 @@
         "warn"  = colt::clt_warning,
         "debug" = colt::clt_chr_subtle,
         "trace" = colt::clt_chr_subtle
-      ),
+      )
+    )
+  }
+
+   options(
       yog.log_levels = c(
         "fatal" = 100L,
         "error" = 200L,
@@ -27,7 +31,7 @@
         "trace" = 600L
       )
     )
-  }
+
 
   appenders <- list(
     console = AppenderConsole$new()

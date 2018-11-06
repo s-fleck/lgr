@@ -153,8 +153,10 @@ Logger <- R6::R6Class(
           "[", format(Sys.time(), format = "%Y-%m-%d %H:%M:%OS3"), "] ",
           "An error occured in the logging sub system: ", e
         )
-      }
+      },
+      propagate = TRUE
     ){
+
       # fields ------------------------------------------------------------
       # active
       self$log_levels <- log_levels
@@ -166,6 +168,8 @@ Logger <- R6::R6Class(
       self$parent <- parent
       self$name <- name
       self$last_event <- LogRecord$new(self)
+      self$propagate <- propagate
+
 
       # init log functions ----------------------------------------------
       make_logger <- function(
@@ -298,8 +302,8 @@ Logger <- R6::R6Class(
       sel <- vapply(self$appenders, inherits, TRUE, "AppenderMemoryDt")
 
       if (!any(sel)){
-        message("This logger has no memory appender (see AppenderMempryDt)")
-        return(invisible)
+        message("This logger has no memory appender (see ?AppenderMemoryDt)")
+        return(invisible())
 
       } else {
         self$appenders[sel][[1]]$show(n = n, threshold = threshold)
@@ -329,7 +333,7 @@ Logger <- R6::R6Class(
           pad_right(
             paste0(label_levels(appenders$threshold), style_subtle(paste0(" (", appenders$threshold, ")")))
           ),
-          vapply(appenders$comment, ptrunc, character(1), width = 128)
+          vapply(appenders$comment, ptrunc_col, character(1), width = 128)
         )
       } else {
         appenders <- style_subtle("none")
@@ -354,7 +358,7 @@ Logger <- R6::R6Class(
           pad_right(
             paste0(label_levels(anc_appenders$threshold), style_subtle(paste0(" (", anc_appenders$threshold, ")")))
           ),
-          vapply(anc_appenders$comment, ptrunc, character(1), width = 128)
+          vapply(anc_appenders$comment, ptrunc_col, character(1), width = 128)
         )
       } else {
         anc_appenders <- NULL
@@ -388,6 +392,7 @@ Logger <- R6::R6Class(
         paste0(ind, ind, "log_levels: ", sls(self$log_levels)),
         paste0(ind, ind, "string_formatter: ", sls(self$string_formatter)),
         paste0(ind, ind, "user: ", self$user),
+        paste0(ind, ind, "propagate:", self$propagate),
         paste0(ind, ind, "appenders:"),
         paste0(ind, ind, ind, appenders),
         paste0(ind, ind, ind, anc_appenders)[!is.null(anc_appenders)],
@@ -415,6 +420,14 @@ Logger <- R6::R6Class(
       private$.name <- value
     },
 
+
+    propagate = function(value){
+      if (missing(value)) return(private$.propagate)
+      assert(is_scalar_bool(value))
+      private$.propagate <- value
+    },
+
+
     ancestry = function(){
       structure(
         c(self$name, private$.parent$ancestry),
@@ -422,11 +435,13 @@ Logger <- R6::R6Class(
       )
     },
 
+
     parent = function(value){
       if (missing(value)) return(private$.parent)
       assert(is.null(value) || inherits(value, "Logger"))
       private$.parent <- value
     },
+
 
     log_levels = function(value){
       if (missing(value)) return(private$.log_levels)
@@ -450,6 +465,7 @@ Logger <- R6::R6Class(
       private$.log_levels <- value
     },
 
+
     threshold = function(value){
       if (missing(value))
         return(private$.threshold)
@@ -466,12 +482,18 @@ Logger <- R6::R6Class(
       private$.threshold <- as.integer(value)
     },
 
+
     ancestral_appenders = function(){
-      c(
-        private$.parent$appenders,
-        private$.parent$ancestral_appenders
-      )
+      if (self$propagate){
+        c(
+          private$.parent$appenders,
+          private$.parent$ancestral_appenders
+        )
+      } else {
+        NULL
+      }
     },
+
 
     appenders = function(value){
       if (missing(value)) return(c(private$.appenders))
@@ -484,20 +506,21 @@ Logger <- R6::R6Class(
       if (inherits(value, "Appender"))
         value <- list(value)
 
+      assert(
+        is.list(value) && all(vapply(value, inherits, TRUE, "Appender")),
+        "'appenders' must either be a single Appender, a list thereof, or NULL for no appenders."
+      )
+
       value <- lapply(value, function(app){
         res <- app$clone()
         res$logger <- self
         res
       })
 
-      assert(
-        is.list(value) && all(vapply(value, inherits, TRUE, "Appender")),
-        "'appenders' must either be a single Appender, a list thereof, or NULL for no appenders."
-      )
-
       private$.appenders <- value
       invisible()
     },
+
 
     user = function(value){
       if (missing(value)) return(private$.user)
@@ -507,6 +530,7 @@ Logger <- R6::R6Class(
       )
       private$.user <- value
     },
+
 
     string_formatter = function(value){
       if (missing(value)) return(private$.string_formatter)
@@ -518,6 +542,7 @@ Logger <- R6::R6Class(
 
   # private -----------------------------------------------------------------
   private = list(
+    .propagate = NULL,
     .filters = list(check_threshold),
     .name = NULL,
     .parrent = NULL,

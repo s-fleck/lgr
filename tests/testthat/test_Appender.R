@@ -10,7 +10,7 @@ x[["msg"]] <- "foo bar"
 
 test_that("dummy Appender works as expected", {
   app <- Appender$new()
-  expect_match(app$append(x), "environment")
+  expect_match(app$append(x), "LogRecord")
 })
 
 

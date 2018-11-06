@@ -98,7 +98,7 @@ Appender <- R6::R6Class(
 
   private = list(
     .filters = list(check_threshold),
-    .threshold = NULL,
+    .threshold = 300,
     .layout = NULL,
     .logger = NULL
   )

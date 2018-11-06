@@ -1,9 +1,56 @@
-# sfmisc utils 0.0.1.9011
+# sfmisc utils 0.0.1.9016
 
 
 
 
 # utils -------------------------------------------------------------------
+
+#' Paste and Truncate
+#'
+#' @param x a vector
+#' @param width (maximum) width of result
+#' @inheritParams paste
+#'
+#' @return a `character` scalar
+#' @noRd
+#'
+#' @example
+#'   ptrunc(month.abb)
+#'   ptrunc(month.abb, month.name)
+#'
+ptrunc <- function(
+  ...,
+  width = 40L,
+  sep = ", ",
+  collapse = ", "
+){
+  assert(width > 7L, "The minimum supported width is 8")
+  x <- paste(..., sep = sep, collapse = collapse)
+
+  sel <- vapply(x, nchar, integer(1), USE.NAMES = FALSE) > width
+
+  x[sel] <- strtrim(x[sel], width = width - 4L)
+  x[sel] <- paste(gsub(",{0,1}\\s*$", "", x[sel]), "...")
+  x
+}
+
+
+
+
+fmt_class <- function(x){
+  paste0("<", paste(x, collapse = "/"), ">")
+}
+
+
+
+
+class_fmt <- function(x){
+  fmt_class(setdiff(class(x), ignore))
+}
+
+
+
+
 
 compact <- function(x){
   x[!vapply(x, is.null, FALSE)]
@@ -168,28 +215,41 @@ is_scalar_logical <- function(x){
 
 
 
-
-is_scalar_integerish <- function(x){
-  is_scalar(x) && is_integerish(x)
+is_scalar_atomic <- function(x){
+  is.atomic(x) && is_scalar(x)
 }
 
 
-
-
-is_tf <- function(x){
+is_bool <- function(x){
   is.logical(x) && !anyNA(x)
 }
 
 
 
 
-is_scalar_tf <- function(x){
+#' Check if Object is a Boolean
+#'
+#' Check wheter an object is either `TRUE` or `FALSE`.
+#'
+#' @param x Any \R Object.
+#' @return either `TRUE` or `FALSE`
+#' @noRd
+#'
+is_scalar_bool <- function(x){
   identical(x, TRUE) || identical(x, FALSE)
 }
 
 
 
 
+#' Check if Object is Integer-like
+#'
+#' Check wheter an object is either `TRUE` or `FALSE`.
+#'
+#' @param x Any \R Object.
+#' @return either `TRUE` or `FALSE`
+#' @noRd
+#'
 is_integerish <- function(x){
   if (!is.numeric(x)){
     FALSE
@@ -201,6 +261,19 @@ is_integerish <- function(x){
 
 
 
+is_scalar_integerish <- function(x){
+  is_scalar(x) && is_integerish(x)
+}
+
+
+
+
+#' Check if Objects have the same length
+#'
+#' @param ... Any number of \R Objects.
+#'
+#' @return either `TRUE` or `FALSE`
+#' @noRd
 is_equal_length <- function(...){
   lengths <- vapply(list(...), length, 1L)
   identical(length(unique(lengths)), 1L)
@@ -209,6 +282,14 @@ is_equal_length <- function(...){
 
 
 
+#' Check if Object has length 0
+#'
+#' Check wheter an object is either `TRUE` or `FALSE`.
+#'
+#' @param x Any \R Object.
+#' @return either `TRUE` or `FALSE`
+#' @noRd
+#'
 is_empty <- function(x){
   identical(length(x), 0L)
 }
@@ -216,6 +297,14 @@ is_empty <- function(x){
 
 
 
+#' Check if a String is Blank
+#'
+#' Check wheter a character vector contains only of spaces
+#'
+#' @param x Any \R Object.
+#' @return either `TRUE` or `FALSE`
+#' @noRd
+#'
 is_blank <- function(x){
   trimws(x) == ""
 }
