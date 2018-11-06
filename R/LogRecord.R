@@ -9,13 +9,15 @@ LogRecord <- R6::R6Class(
     timestamp = NULL,
     caller = NULL,
     msg = NULL,
-    logger = NULL,
-    value_names = c("level", "timestamp", "caller", "msg")
+    logger = NULL
   ),
 
   active = list(
     values = function(){
       mget(c("level", "timestamp", "caller", "msg"), envir = self)
+    },
+    level_name = function(){
+      label_levels(self$level, log_levels = self$logger$log_levels)
     }
   ),
 

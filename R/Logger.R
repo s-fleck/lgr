@@ -1,4 +1,4 @@
-#' @include filterable.R
+#' @include Filterable.R
 
 #' Title
 #'

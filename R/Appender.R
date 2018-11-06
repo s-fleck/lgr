@@ -1,7 +1,7 @@
 #' @include print.R
 #' @include utils.R
 #' @include utils-sfmisc.R
-#' @include filterable.R
+#' @include Filterable.R
 
 # Appender ----------------------------------------------------------------
 
