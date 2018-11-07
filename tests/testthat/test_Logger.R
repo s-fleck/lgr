@@ -33,17 +33,20 @@ test_that("active bindings", {
 
 
 test_that("basic logging", {
-  ml <- Logger$new("test_logger")
+  ml <- Logger$new("test_logger", appenders = list(memory = AppenderMemoryDt$new()))
   ts <- structure(1540486764.41946, class = c("POSIXct", "POSIXt"))
 
   testfun <- function(){
     ml$fatal("blubb")
+    ml$log(msg = "testfun", level = 500)
   }
 
   expect_output({
     testfun()
     testfun()
   })
+
+  expect_true(all(ml$appenders$memory$data$caller == "testfun"))
 
 })
 
