@@ -178,6 +178,7 @@ Logger <- R6::R6Class(
         function(msg, ...){
           self$log(
             msg = private$.string_formatter(msg, ...),
+            caller = get_caller(-4L),
             level = level
           )
         }
@@ -205,8 +206,10 @@ Logger <- R6::R6Class(
       level,
       msg,
       timestamp = Sys.time(),
-      caller = get_caller()
+      caller = get_caller(-3)
     ){
+      force(caller)
+
       tryCatch({
         assign("level", level, envir = self$last_event)
         assign("timestamp", timestamp,  envir = self$last_event)

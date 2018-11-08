@@ -44,7 +44,7 @@ fmt_class <- function(x){
 
 
 
-class_fmt <- function(x){
+class_fmt <- function(x, ignore){
   fmt_class(setdiff(class(x), ignore))
 }
 
