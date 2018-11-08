@@ -33,7 +33,7 @@ Collate:
     'print.R'
     'Appender.R'
     'Layout.R'
-    'LogRecord.R'
+    'LogEvent.R'
     'Logger.R'
     'predicates.R'
     'yog-package.R'

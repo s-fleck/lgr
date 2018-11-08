@@ -1,25 +1,49 @@
 
 
 
-#' A simple Logger.
+#' Loggers
 #'
-#' @section basic concepts
-#'
-#'   * A Logger records the log message and some metadata (timestamp,
-#'     calling function) as a [LogEvent]
-#'   * Several [Appenders] can be attached to Loggers to write events to a
-#'     destination, for example the console or a text file (a Logger without
-#'     Appenders does nothing useful).
-#'   * A [Layout] is used by the Appender to convert the LogEvent to the
-#'     appropriate Format for output.
-#'   * **Log levels** reflect the importance of a log event. Loggers and
-#'     Appenders have a **thresholds**, that is the minimum log level that will
-#'     be processed by said Logger/Appender.
+#' * A Logger records the log message and some metadata (timestamp,
+#'   calling function) as a [LogEvent]
+#' * Several [Appenders] can be attached to Loggers to write events to a
+#'   destination, for example the console or a text file (a Logger without
+#'   Appenders does nothing useful).
+#' * A [Layout] is used by the Appender to convert the LogEvent to the
+#'   appropriate Format for output.
+#' * **Log levels** reflect the importance of a log event. Loggers and
+#'   Appenders have a **thresholds**, that is the minimum log level that will
+#'   be processed by said Logger/Appender.
 #'
 #'
 #'
-#' @section Log Levels:
+#' @section Usage:
 #'
+#' ```
+#' l <- Logger$new("example logger")
+#'
+#' # methods
+#'  l$fatal(msg, ...)
+#'  l$error(msg, ...)
+#'  l$warn(msg, ...)
+#'  l$info(msg, ...)
+#'  l$debug(msg, ...)
+#'  l$trace(msg, ...)
+#'  l$log(level, msg, timestamp = Sys.time(), caller = get_caller())
+#'
+#'  l$suspend()
+#'  l$unsuspend()
+#'  l$filter(x)
+#'
+#'
+#' # fields / active bindings
+#'  l$threshold
+#'  l$appenders
+#'  l$ancestral_appenders  # inherited appenders
+#'  l$last_event
+#'  l$log_levels
+#'  l$filters
+#'
+#' ```
 #'
 #' @section Creating a new Logger:
 #'
@@ -179,9 +203,9 @@ Logger <- R6::R6Class(
 
     log = function(
       level,
+      msg,
       timestamp = Sys.time(),
-      caller = get_caller(),
-      msg
+      caller = get_caller()
     ){
       tryCatch({
         assign("level", level, envir = self$last_event)
