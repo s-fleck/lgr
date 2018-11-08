@@ -3,59 +3,30 @@
 
 #' A simple Logger.
 #'
-#' This is an R6 class that implements a concurrency safe package cache.
+#' @section basic concepts
+#'
+#'   * A Logger records the log message and some metadata (timestamp,
+#'     calling function) as a [LogEvent]
+#'   * Several [Appenders] can be attached to Loggers to write events to a
+#'     destination, for example the console or a text file (a Logger without
+#'     Appenders does nothing useful).
+#'   * A [Layout] is used by the Appender to convert the LogEvent to the
+#'     appropriate Format for output.
+#'   * **Log levels** reflect the importance of a log event. Loggers and
+#'     Appenders have a **thresholds**, that is the minimum log level that will
+#'     be processed by said Logger/Appender.
 #'
 #'
-#' By default these fields are included for every package:
-#' * `fullpath` Full package path.
-#' * `path` Package path, within the repository.
-#' * `package` Package name.
-#' * `url` URL it was downloaded from.
-#' * `etag` ETag for the last download, from the given URL.
-#' * `md5` MD5 of the file, to make sure if it has not changed.
 #'
-#' Additional fields can be added as needed.
+#' @section Log Levels:
 #'
-#' For a simple API to a session-wide instance of this class, see
-#' [pkg_cache_summary()] and the other functions listed there.
 #'
-#' @section Usage:
-#' ```
-#' pc <- package_cache$new(path = NULL)
+#' @section Creating a new Logger:
 #'
-#' pc$list()
-#' pc$find(..., .list = NULL)
-#' pc$copy_to(..., .list = NULL)
-#' pc$add(file, path, md5 = tools::md5sum(file)[[1]], ..., .list = NULL)
-#' pc$add_url(url, path, ..., .list = NULL, on_progress = NULL)
-#' pc$async_add_url(url, path, ..., .list = NULL, on_progress = NULL)
-#' pc$copy_or_add(target, urls, path, md5 = NULL, ..., .list = NULL,
-#'                on_progress = NULL)
-#' pc$async_copy_or_add(target, urls, path, ..., md5 = NULL, ...,
-#'                .list = NULL, on_progress = NULL)
-#' pc$update_or_add(target, urls, path, ..., .list = NULL,
-#'                on_progress = NULL)
-#' pc$async_update_or_add(target, urls, path, ..., .list = NULL,
-#'                on_progress = NULL)
-#' pc$delete(..., .list = NULL)
-#' ```
-#'
-#' @section Arguments:
-#' * `path`: For `package_cache$new()` the location of the cache. For other
-#'   functions the location of the file inside the cache.
-#' * `...`: Extra attributes to search for. They have to be named.
-#' * `.list`: Extra attributes to search for, they have to in a named list.
-#' * `file`:  Path to the file to add.
-#' * `url`: URL attribute. This is used to update the file, if requested.
-#' * `md5`: MD5 hash of the file.
-#' * `on_progress`: Callback to create progress bard. Passed to
-#'   [http_get()].
-#' * `target`: Path to copy the (first) to hit to.
-#' * `urls`: Character vector or URLs to try to download the file from.
-#'
-#' @section Methods:
-#'
-#' `Logger$new()` initializes a new logger
+#' If you want logging for a Project (f.e a Package you are developing) that is
+#' separate from the global logging, you can create a new logger with
+#' `Logger$new()`. If you just want to add different outputs (for example
+#' logfiles) to the root logger, look into [Appenders].
 #'
 #' \describe{
 #'   \item{name}{`character` scalar. Name of the Logger. Must be unique amongst
@@ -119,19 +90,22 @@
 #' @include Filterable.R
 #' @examples
 #'
-#' ## Although package_cache usually stores packages, it may store
-#' ## arbitrary files, that can be search by metadata
-#' pc <- package_cache$new(path = tempfile())
-#' pc$list()
+#' # yog includes a pre-configured root logger
+#' yog$fatal("This is a serious error")
 #'
-#' cat("foo\n", file = f1 <- tempfile())
-#' cat("bar\n", file = f2 <- tempfile())
-#' pc$add(f1, "/f1")
-#' pc$add(f2, "/f2")
-#' pc$list()
-#' pc$find(path = "/f1")
-#' pc$copy_to(target = f3 <- tempfile(), path = "/f1")
-#' readLines(f3)
+#' # if you want to take advantage of hierarchical logging, you can create new loggers.
+#' # the following creates a new logger that logs to a temporary file.
+#' tf <- tempfile()
+#' mylogger <- Logger$new(
+#'   "mylogger",
+#'   appenders = AppenderFile$new(tf)
+#' )
+#'
+#' # The new logger passes the log message on to the appenders of its parent
+#' # logger, which is by default the root logger. This is why the following
+#' # writes not only the file 'tf', but also to the console.
+#' mylogger$fatal("blubb")
+#' readLines(tf)
 #'
 #' @export
 Logger <- R6::R6Class(
@@ -167,7 +141,7 @@ Logger <- R6::R6Class(
       self$handle_exception <- handle_exception
       self$parent <- parent
       self$name <- name
-      self$last_event <- LogRecord$new(self)
+      self$last_event <- LogEvent$new(self)
       self$propagate <- propagate
 
 

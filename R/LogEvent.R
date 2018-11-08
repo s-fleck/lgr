@@ -1,6 +1,6 @@
 #' @export
-LogRecord <- R6::R6Class(
-  "LogRecord",
+LogEvent <- R6::R6Class(
+  "LogEvent",
   public = list(
     initialize = function(logger){
       assert(inherits(logger, "Logger"))

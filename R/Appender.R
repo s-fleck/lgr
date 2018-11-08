@@ -6,7 +6,7 @@
 # Appender ----------------------------------------------------------------
 
 
-
+#' @aliases Appenders
 #' @export
 Appender <- R6::R6Class(
   "Appender",
