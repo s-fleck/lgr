@@ -45,7 +45,7 @@ LayoutFormat <- R6::R6Class(
         fmt = private$.fmt,
         timestamp_fmt = private$.timestamp_fmt,
         colors = private$.colors,
-        log_levels = getOption("yog.log_levels"),
+        log_levels = x$logger$log_levels,
         pad_levels = private$.pad_levels
       )
     }
@@ -91,7 +91,7 @@ LayoutFormat <- R6::R6Class(
 
 
 
-
+#' @seealso http://jsonlines.org/
 #' @export
 LayoutJson <- R6::R6Class(
   "LayoutJson",
