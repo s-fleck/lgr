@@ -1,11 +1,14 @@
 context("appenders")
 
-
 x <- LogEvent$new(logger = Logger$new("dummy"))
-x[["level"]] <- 200L
-x[["timestamp"]] <- structure(1541175573.9308, class = c("POSIXct", "POSIXt"))
-x[["caller"]] <- NA_character_
-x[["msg"]] <- "foo bar"
+
+{
+  x[["level"]] <- 200L
+  x[["timestamp"]] <- structure(1541175573.9308, class = c("POSIXct", "POSIXt"))
+  x[["caller"]] <- NA_character_
+  x[["msg"]] <- "foo bar"
+}
+
 
 
 test_that("dummy Appender works as expected", {
@@ -20,6 +23,7 @@ test_that("dummy AppenderFormat works as expected", {
   app <- AppenderFormat$new()
   expect_match(app$append(x), "ERROR \\[2018-11-02 17:19:33.*\\] foo bar")
 })
+
 
 
 
@@ -61,6 +65,7 @@ test_that("AppenderConsole works as expected", {
     "ERROR \\[17:19:33.*\\] foo bar"
   )
 })
+
 
 
 
@@ -116,3 +121,37 @@ test_that("Appender: filters work", {
   app1$threshold <-  100
   expect_false(app1$filter(x))
 })
+
+
+
+
+test_that("AppenderRotating works as expected", {
+  tf <- tempfile()
+
+  # with default format
+  app <- AppenderRotating$new(file = tf)
+  app$append(x)
+  app$do_rollover()
+
+  for (i in 1:15){
+    app$append(x)
+    app$do_rollover()
+  }
+
+  logfiles <- list.files(dirname(tf), pattern = basename(tf))
+  res <- sapply(strsplit(logfiles, ".", fixed = TRUE), function(.x) .x[[length(.x)]])
+  expect_identical(sort(as.integer(res)), 1:16)
+
+  # pruning retains the x newest files
+  app$prune_backups(3)
+  logfiles <- list.files(dirname(tf), pattern = basename(tf))
+  res <- sapply(strsplit(logfiles, ".", fixed = TRUE), function(.x) .x[[length(.x)]])
+  expect_identical(sort(as.integer(res)), 1:3)
+
+  # pruning to the exact number of files does nothing
+  app$prune_backups(3)
+  logfiles <- list.files(dirname(tf), pattern = basename(tf))
+  res <- sapply(strsplit(logfiles, ".", fixed = TRUE), function(.x) .x[[length(.x)]])
+  expect_identical(sort(as.integer(res)), 1:3)
+})
+

@@ -198,6 +198,162 @@ AppenderFile <- R6::R6Class(
 
 
 
+# AppenderRotatingFile ----------------------------------------------------
+
+
+#' @inheritParams cat
+#'
+#' @export
+AppenderRotating <- R6::R6Class(
+  "AppenderRotating",
+  inherit = AppenderFile,
+  public = list(
+    initialize = function(
+      file,
+      threshold = NA,
+      layout = LayoutFormat$new(),
+      zip = FALSE
+    ){
+      self$file <- file
+      self$threshold <- threshold
+      self$layout <- layout
+      self$zip <- zip
+    },
+
+    append = function(x){
+      cat(
+        private$.layout$format_event(x),
+        sep = "\n", file = private$.file, append = TRUE
+      )
+      return(invisible())
+    },
+
+    do_rollover = function(){
+      backups <- private$list_backups()
+
+      if (length(backups) > 0){
+        idx <- as.integer(names(backups))
+        assert(is.integer(idx) && !anyNA(idx))
+
+        # walk instead of vectorized file.rename to prevent accidental overwrites
+        walk(
+          sort(idx, decreasing = TRUE),
+          function(i){
+            file.rename(
+              paste0(self$file, ".", i),
+              paste0(self$file, ".", i + 1L)
+            )
+          }
+        )
+      }
+
+      file.rename(self$file, paste0(self$file, ".1"))
+      invisible(self)
+    },
+
+    prune_backups = function(max_backups){
+      backups <- private$list_backups()
+      if (length(backups) >= max_backups){
+        backups <- backups[order(as.integer(names(backups)))]
+        to_remove <- backups[-c(seq_len(max_backups))]
+        file.remove(to_remove)
+      }
+      invisible(self)
+    }
+
+  ),
+
+  active = list(
+    file = function(value){
+      if (missing(value)) return(private$.file)
+      private$.file <- value
+    },
+
+    zip = function(value){
+      if (missing(value)) return(private$.zip)
+      assert(is_scalar_bool(value))
+      private$.zip <- value
+    }
+  ),
+
+  private = list(
+    .file = NULL,
+    .zip = NULL,
+    list_backups = function(dir = dirname(self$file)){
+
+      backups <- list.files(
+        dir,
+        pattern = paste0(basename(self$file), "\\.\\d*$"),
+        full.names = TRUE
+      )
+
+      idx <- vapply(
+        strsplit(backups, ".", fixed = TRUE),
+        function(.x) .x[[length(.x)]],
+        character(1)
+      )
+
+      setNames(backups, idx)
+
+
+
+    }
+  )
+)
+
+
+
+
+#' @inheritParams cat
+#'
+#' @export
+AppenderRotatingFile<- R6::R6Class(
+  "AppenderFile",
+  inherit = AppenderConsole,
+  public = list(
+    initialize = function(
+      file,
+      threshold = NA,
+      layout = LayoutFormat$new(),
+      max_bytes = 0L,
+      max_backups = 0L,
+      zip = FALSE
+    ){
+      self$file <- file
+      self$threshold <- threshold
+      self$layout <- layout
+    },
+
+    append = function(x){
+      cat(
+        private$.layout$format_event(x),
+        sep = "\n", file = private$.file, append = TRUE
+      )
+      return(invisible())
+    },
+
+    do_rollover = function(){
+
+    },
+
+    prune_backups = function(max_backups){
+
+    }
+
+  ),
+
+  active = list(
+    file = function(value){
+      if (missing(value)) return(private$.file)
+      private$.file <- value
+    }
+  ),
+
+  private = list(
+    .file = NULL
+  )
+)
+
 
 
 
