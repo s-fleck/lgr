@@ -26,13 +26,29 @@ test_that("dummy AppenderFormat works as expected", {
 test_that("AppenderFile works as expected", {
   tf <- tempfile()
 
+  # with default format
   app <- AppenderFile$new(file = tf)
   app$append(x)
   app$append(x)
   res <- readLines(tf)
-
   expect_true(grepl("foo", res[[1]]))
   expect_true(grepl("bar", res[[2]]))
+
+
+  tf <- tempfile()
+  # with Json
+  app <- AppenderFile$new(file = tf, layout = LayoutJson$new())
+  app$append(x)
+  app$append(x)
+  tres <- read_json_log(tf)
+  eres <- data.table::rbindlist(
+    list(x$values, x$values)
+  )
+
+  expect_identical(tres[["level"]], eres[["level"]])
+  expect_identical(tres[["msg"]], eres[["msg"]])
+  expect_identical(tres[["caller"]], eres[["caller"]])
+  expect_equal(as.POSIXct(tres[["timestamp"]]), eres[["timestamp"]], tolerance = 1)
 })
 
 

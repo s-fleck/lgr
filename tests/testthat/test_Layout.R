@@ -53,7 +53,15 @@ test_that("LayoutJson works as expected", {
   x[["caller"]] <- NA_character_
   x[["msg"]] <- "foo bar"
 
-  lo$format_event(x)
+  eres <- c(x$values, user = x$logger$user)
+  json <- lo$format_event(x)
+  tres <- jsonlite::fromJSON(json)
 
-  expect_equal(lo$format_event(x), "ERROR [2018-11-02 17:19:33] foo bar")
+  expect_setequal(names(eres), names(tres))
+  expect_identical(tres[["level"]], eres[["level"]])
+  expect_identical(tres[["msg"]], eres[["msg"]])
+  expect_identical(tres[["user"]], eres[["user"]])
+  expect_identical(tres[["caller"]], eres[["caller"]])
+  expect_equal(as.POSIXct(tres[["timestamp"]]), eres[["timestamp"]], tolerance = 1)
+
 })
