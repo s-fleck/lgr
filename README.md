@@ -34,6 +34,17 @@ This package is under heavy development right now, come back later.
 
 ## Dependencies
 
+  * `R6`: The R6 class system prevents the framework on which yog is built. This
+  is the only Package yog will ever depend on.
+
+There are also some suggested packages that are not necessary to use Yog, but
+that provide additonal features. Care was taken to choose packages that are
+slim themselves and only depend on base packages:
+
+  * `crayon` and `colt` for color output
+  * `data.table` for `AppenderMemoryDt`, for fast in-memory logging
+  * `jsonlite` for JSON logging of via `LayoutJson()`. 
+  * `glue` for `LayoutGlue`
 
 
 ## Installation

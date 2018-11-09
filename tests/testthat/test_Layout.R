@@ -41,3 +41,19 @@ test_that("LayoutGlue works as expected", {
   )
   expect_equal(lo$format_event(x), "ERROR [2018-11-02 17:19:33] foo bar")
 })
+
+
+
+
+test_that("LayoutJson works as expected", {
+  lo <- LayoutJson$new(logger_vals = "user")
+  x <- LogEvent$new(logger = Logger$new("dummy"))
+  x[["level"]] <- 200L
+  x[["timestamp"]] <- structure(1541175573.9308, class = c("POSIXct", "POSIXt"))
+  x[["caller"]] <- NA_character_
+  x[["msg"]] <- "foo bar"
+
+  lo$format_event(x)
+
+  expect_equal(lo$format_event(x), "ERROR [2018-11-02 17:19:33] foo bar")
+})

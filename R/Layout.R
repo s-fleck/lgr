@@ -92,6 +92,51 @@ LayoutFormat <- R6::R6Class(
 
 
 
+#' @export
+LayoutJson <- R6::R6Class(
+  "LayoutJson",
+  inherit = Layout,
+  public = list(
+    initialize = function(
+      event_vals  = c("level", "timestamp", "caller", "msg"),
+      logger_vals = NULL,
+      toJSON_args = list(auto_unbox = TRUE)
+    ){
+      self$toJSON_args <- toJSON_args
+      self$event_vals <- event_vals
+      self$logger_vals <- logger_vals
+    },
+
+    format_event = function(x) {
+      vals <- mget(self$event_vals, x)
+
+      if (!is.null(self$logger_vals)){
+        vals <- c(vals, mget(self$logger_vals, x[["logger"]]))
+      }
+
+      do.call(jsonlite::toJSON, args = c(list(vals), self$toJSON_args))
+    },
+
+    toJSON_args = NULL,
+    event_vals = NULL,
+    logger_vals = NULL
+  ),
+
+  active = list(
+    pad_levels = function(value){
+      if (missing(value)) return(private$.pad_levels)
+      assert(is_scalar_character(value))
+      private$.pad_levels <- value
+    }
+  ),
+
+  private = list(
+    .toJSON_args = NULL
+  )
+)
+
+
+
 # LayoutGlue --------------------------------------------------------------
 
 #' @export
