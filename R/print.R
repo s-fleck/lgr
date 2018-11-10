@@ -236,7 +236,7 @@ pad_left <- function(
 ){
   diff <- width - nchar(paste(x))
   padding <-
-    vapply(diff, function(i) paste(rep.int(" ", i), collapse = ""), character(1))
+    vapply(diff, function(i) paste(rep.int(pad, i), collapse = ""), character(1))
   paste0(padding, x)
 }
 
@@ -250,7 +250,7 @@ pad_right <- function(
 ){
   diff <- width - nchar(paste(x))
   padding <-
-    vapply(diff, function(i) paste(rep.int(" ", i), collapse = ""), character(1))
+    vapply(diff, function(i) paste(rep.int(pad, i), collapse = ""), character(1))
   paste0(x, padding)
 }
 

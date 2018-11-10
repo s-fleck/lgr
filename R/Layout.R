@@ -9,7 +9,7 @@ Layout <- R6::R6Class(
   "Layout",
 
   public = list(
-    format_event = function(x) paste(capture.output(print(x)), collapse = " ")
+    format_event = function(x) paste(capture.output(print(x$values)), collapse = " ")
   ),
 
   private = list(
@@ -39,7 +39,9 @@ LayoutFormat <- R6::R6Class(
       self$pad_levels <- pad_levels
     },
 
-    format_event = function(x) {
+    format_event = function(
+      x
+    ){
       private[["formatter"]](
         x,
         fmt = private$.fmt,
@@ -90,6 +92,9 @@ LayoutFormat <- R6::R6Class(
 )
 
 
+
+
+# LayoutJson --------------------------------------------------------------
 
 #' @seealso http://jsonlines.org/
 #' @export
@@ -145,7 +150,7 @@ LayoutGlue <- R6::R6Class(
   inherit = LayoutFormat,
   public = list(
     initialize = function(
-      fmt = "{toupper(label_levels(level))} [{strftime(timestamp, format = '%Y-%m-%d %H:%M:%S')}] {msg}"
+      fmt = "{toupper(label_levels(level, x$logger$levels))} [{strftime(timestamp, format = '%Y-%m-%d %H:%M:%S')}] {msg}"
     ){
       private$formatter <- glue::glue
       self$fmt <- fmt
