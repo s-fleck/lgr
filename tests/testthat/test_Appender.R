@@ -163,12 +163,12 @@ test_that("AppenderRotating works as expected", {
 
 
 
-test_that("AppenderRotating works as expected wiht zip option enabled", {
+test_that("AppenderRotating works as expected wiht compress option enabled", {
   td <- tempdir()
   tf <- file.path(td, "logtest")
 
   # with default format
-  app <- AppenderRotating$new(file = tf, zip = TRUE)
+  app <- AppenderRotating$new(file = tf, compress = TRUE)
   app$append(x)
   app$do_rollover()
 

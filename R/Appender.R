@@ -211,12 +211,14 @@ AppenderRotating <- R6::R6Class(
       file,
       threshold = NA,
       layout = LayoutFormat$new(),
-      zip = FALSE
+      compress = FALSE,
+      compress_args = list(flags = paste0(formals(utils::zip)$flags, "q"))
     ){
       self$file <- file
       self$threshold <- threshold
       self$layout <- layout
-      self$zip <- zip
+      self$compress <- compress
+      self$compress_args <- compress_args
     },
 
     append = function(x){
@@ -246,25 +248,21 @@ AppenderRotating <- R6::R6Class(
         walk(
           seq_along(idx),
           function(i){
-            from <- paste0(self$file, ".", idx[[i]], ext[[i]])
-            to   <- paste0(self$file, ".", as.integer(idx[[i]]) + 1L, ext[[i]])
-            file.rename(from, to)
+            file.rename(
+              paste0(self$file, ".", idx[[i]], ext[[i]]),
+              paste0(self$file, ".", as.integer(idx[[i]]) + 1L, ext[[i]])
+            )
           }
         )
       }
 
-      if (!identical(self$zip, FALSE)){
+      if (self$compress) {
         utils::capture.output(do.call(
-            utils::zip,
-            c(
-              list(
-                zipfile = paste0(self$file, ".1.zip"),
-                files  = self$file
-              ),
-              self$zip
-            )
+          utils::zip,
+          c(list(zipfile = paste0(self$file, ".1.zip"), files  = self$file), self$compress_args)
         ))
         file.remove(self$file)
+
       } else {
         file.rename(self$file, paste0(self$file, ".1"))
       }
@@ -273,6 +271,7 @@ AppenderRotating <- R6::R6Class(
       file.rename(backups, autopad_backup_index(backups))
       invisible(self)
     },
+
 
     prune_backups = function(max_backups){
       backups <- private$list_backups()
@@ -283,10 +282,10 @@ AppenderRotating <- R6::R6Class(
         backups <- private$list_backups()
         file.rename(backups, autopad_backup_index(backups))
       }
-
       invisible(self)
     }
   ),
+
 
   active = list(
     file = function(value){
@@ -294,96 +293,40 @@ AppenderRotating <- R6::R6Class(
       private$.file <- value
     },
 
-    zip = function(value){
-      if (missing(value)) return(private$.zip)
 
-      if (is.list(value)){
-        assert(
-          identical(length(names(values)), length(values)) &&
-          all(names(value)) %in% names(formals(utils::zip)),
-          "If 'zip' is a list of arguments, all arguments",
-          "must be named and must be valid arguments for tools::zip()."
-        )
+    compress = function(value){
+      if (missing(value)) return(private$.compress)
+      assert(is_scalar_bool(value))
+      private$.compress <- value
+    },
 
-      } else if (isTRUE(value)){
-        value <- list(flags = paste0(formals(utils::zip)$flags, "q"))
-      } else {
 
-        assert(identical(value, FALSE))
-      }
-
-      private$.zip <- value
+    compress_args = function(value){
+      if (missing(value)) return(private$.compress_args)
+      assert(
+        identical(length(names(value)), length(value)) &&
+        all(names(value) %in% names(formals(utils::zip))),
+        "'compress_args' must be a named list, all names be valid arguments",
+        "for tools::zip()."
+      )
+      private$.compress_args <- value
     }
   ),
 
+
   private = list(
     .file = NULL,
-    .zip = FALSE,
+    .compress = FALSE,
+    .compress_args = NULL,
     list_backups = function(){
-
       backups <- list.files(
         dirname(self$file),
         pattern = paste0(basename(self$file), "\\.\\d*(\\.zip){0,1}$"),
         full.names = TRUE
       )
-
       idx <- get_backup_index(backups)
-
       setNames(backups, idx)
     }
-  )
-)
-
-
-
-
-#' @inheritParams cat
-#'
-#' @export
-AppenderRotatingFile<- R6::R6Class(
-  "AppenderFile",
-  inherit = AppenderConsole,
-  public = list(
-    initialize = function(
-      file,
-      threshold = NA,
-      layout = LayoutFormat$new(),
-      max_bytes = 0L,
-      max_backups = 0L,
-      zip = FALSE
-    ){
-      self$file <- file
-      self$threshold <- threshold
-      self$layout <- layout
-    },
-
-    append = function(x){
-      cat(
-        private$.layout$format_event(x),
-        sep = "\n", file = private$.file, append = TRUE
-      )
-      return(invisible())
-    },
-
-    do_rollover = function(){
-
-    },
-
-    prune_backups = function(max_backups){
-
-    }
-
-  ),
-
-  active = list(
-    file = function(value){
-      if (missing(value)) return(private$.file)
-      private$.file <- value
-    }
-  ),
-
-  private = list(
-    .file = NULL
   )
 )
 
