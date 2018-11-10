@@ -6,8 +6,7 @@
 #' @export
 #'
 read_json_log <- function(x){
-  assert_namespace("data.table")
-  assert_namespace("jsonlite")
+  assert_namespace("data.table", "jsonlite")
   res <- data.table::rbindlist(
     lapply(readLines(x), function(.x){
       r <- jsonlite::fromJSON(.x)
