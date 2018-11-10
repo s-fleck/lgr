@@ -13,7 +13,7 @@ x <- LogEvent$new(logger = Logger$new("dummy"))
 
 test_that("dummy Appender works as expected", {
   app <- Appender$new()
-  expect_match(app$append(x), "LogEvent")
+  expect_match(app$append(x), "foo bar")
 })
 
 
@@ -51,7 +51,7 @@ test_that("AppenderFile works as expected", {
 
   expect_identical(tres[["level"]], eres[["level"]])
   expect_identical(tres[["msg"]], eres[["msg"]])
-  expect_identical(tres[["caller"]], eres[["caller"]])
+  expect_true(all(is.na(tres[["caller"]])) && all(is.na(eres[["caller"]])))
   expect_equal(as.POSIXct(tres[["timestamp"]]), eres[["timestamp"]], tolerance = 1)
 })
 
@@ -87,6 +87,8 @@ test_that("AppenderMemory: appending multiple rows works", {
   y$level <- 300
   app$append(y)
   expect_identical(app$.__enclos_env__$private$.data$.id[1:4], 1:4)
+  app$logger <- yog  # so that log levels can be labelled
+
   expect_match(paste(capture.output(app$show()), collapse = ""), "ERROR.*WARN")
 })
 
@@ -126,7 +128,8 @@ test_that("Appender: filters work", {
 
 
 test_that("AppenderRotating works as expected", {
-  tf <- tempfile()
+  td <- tempdir()
+  tf <- file.path(td, "logtest")
 
   # with default format
   app <- AppenderRotating$new(file = tf)
@@ -153,5 +156,51 @@ test_that("AppenderRotating works as expected", {
   logfiles <- list.files(dirname(tf), pattern = basename(tf))
   res <- sapply(strsplit(logfiles, ".", fixed = TRUE), function(.x) .x[[length(.x)]])
   expect_identical(sort(as.integer(res)), 1:3)
+
+  file.remove(list.files(td, pattern = "logtest", full.names = TRUE))
+
 })
 
+
+
+test_that("AppenderRotating works as expected wiht zip option enabled", {
+  td <- tempdir()
+  tf <- file.path(td, "logtest")
+
+  # with default format
+  app <- AppenderRotating$new(file = tf, zip = TRUE)
+  app$append(x)
+  app$do_rollover()
+
+  for (i in 1:8){
+    app$append(x)
+    app$do_rollover()
+  }
+
+  logfiles <- list.files(dirname(tf), pattern = basename(tf))
+  res <- get_backup_index(logfiles)
+  expect_identical(sort(as.integer(res)), 1:9)
+
+  for (i in 1:5){
+    app$append(x)
+    app$do_rollover()
+  }
+
+  logfiles <- list.files(dirname(tf), pattern = basename(tf))
+  res <- get_backup_index(logfiles)
+  expect_identical(sort(res), c(paste0("0", 1:9), 10:14))
+
+  # pruning retains the x newest files
+  app$prune_backups(3)
+  logfiles <- list.files(dirname(tf), pattern = basename(tf))
+  res <- get_backup_index(logfiles)
+  expect_identical(sort(as.integer(res)), 1:3)
+
+  # pruning to the exact number of files does nothing
+  app$prune_backups(3)
+  logfiles <- list.files(dirname(tf), pattern = basename(tf))
+  res <- get_backup_index(logfiles)
+  expect_identical(sort(as.integer(res)), 1:3)
+
+  file.remove(list.files(td, pattern = "logtest", full.names = TRUE))
+})

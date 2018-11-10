@@ -198,8 +198,7 @@ AppenderFile <- R6::R6Class(
 
 
 
-# AppenderRotatingFile ----------------------------------------------------
-
+# AppenderRotating ----------------------------------------------------
 
 #' @inheritParams cat
 #'
@@ -229,25 +228,49 @@ AppenderRotating <- R6::R6Class(
     },
 
     do_rollover = function(){
+      assert(file.exists(self$file))
       backups <- private$list_backups()
+      idx_pad <- 1L
 
       if (length(backups) > 0){
-        idx <- as.integer(names(backups))
-        assert(is.integer(idx) && !anyNA(idx))
+        idx <- names(backups)
+        ext <- ifelse(tools::file_ext(backups) == "zip", ".zip", "")
+        sorder <- order(sort(as.integer(idx)), decreasing = TRUE)
+        idx <- idx[sorder]
+        ext <- ext[sorder]
+
+        assert(!anyNA(idx))
+        idx_pad <- max(nchar(as.character(as.integer(idx) + 1L)))
 
         # walk instead of vectorized file.rename to prevent accidental overwrites
         walk(
-          sort(idx, decreasing = TRUE),
+          seq_along(idx),
           function(i){
-            file.rename(
-              paste0(self$file, ".", i),
-              paste0(self$file, ".", i + 1L)
-            )
+            from <- paste0(self$file, ".", idx[[i]], ext[[i]])
+            to   <- paste0(self$file, ".", as.integer(idx[[i]]) + 1L, ext[[i]])
+            file.rename(from, to)
           }
         )
       }
 
-      file.rename(self$file, paste0(self$file, ".1"))
+      if (!identical(self$zip, FALSE)){
+        utils::capture.output(do.call(
+            utils::zip,
+            c(
+              list(
+                zipfile = paste0(self$file, ".1.zip"),
+                files  = self$file
+              ),
+              self$zip
+            )
+        ))
+        file.remove(self$file)
+      } else {
+        file.rename(self$file, paste0(self$file, ".1"))
+      }
+
+      backups <- private$list_backups()
+      file.rename(backups, autopad_backup_index(backups))
       invisible(self)
     },
 
@@ -257,10 +280,12 @@ AppenderRotating <- R6::R6Class(
         backups <- backups[order(as.integer(names(backups)))]
         to_remove <- backups[-c(seq_len(max_backups))]
         file.remove(to_remove)
+        backups <- private$list_backups()
+        file.rename(backups, autopad_backup_index(backups))
       }
+
       invisible(self)
     }
-
   ),
 
   active = list(
@@ -271,32 +296,40 @@ AppenderRotating <- R6::R6Class(
 
     zip = function(value){
       if (missing(value)) return(private$.zip)
-      assert(is_scalar_bool(value))
+
+      if (is.list(value)){
+        assert(
+          identical(length(names(values)), length(values)) &&
+          all(names(value)) %in% names(formals(utils::zip)),
+          "If 'zip' is a list of arguments, all arguments",
+          "must be named and must be valid arguments for tools::zip()."
+        )
+
+      } else if (isTRUE(value)){
+        value <- list(flags = paste0(formals(utils::zip)$flags, "q"))
+      } else {
+
+        assert(identical(value, FALSE))
+      }
+
       private$.zip <- value
     }
   ),
 
   private = list(
     .file = NULL,
-    .zip = NULL,
-    list_backups = function(dir = dirname(self$file)){
+    .zip = FALSE,
+    list_backups = function(){
 
       backups <- list.files(
-        dir,
-        pattern = paste0(basename(self$file), "\\.\\d*$"),
+        dirname(self$file),
+        pattern = paste0(basename(self$file), "\\.\\d*(\\.zip){0,1}$"),
         full.names = TRUE
       )
 
-      idx <- vapply(
-        strsplit(backups, ".", fixed = TRUE),
-        function(.x) .x[[length(.x)]],
-        character(1)
-      )
+      idx <- get_backup_index(backups)
 
       setNames(backups, idx)
-
-
-
     }
   )
 )
@@ -457,6 +490,8 @@ AppenderMemoryDt <- R6::R6Class(
       if (is.na(threshold)) threshold <- Inf
       dd <- self$data
       dd <- tail(dd[dd$level <= threshold], n)
+      dd <- as.environment(dd)
+      assign("logger", self$logger, dd)
       cat(self$layout$format_event(dd), sep = "\n")
     }
   ),
@@ -505,4 +540,34 @@ trim_last_event <- function(x, max_len){
     x[seq.int(length(x) - max_len + 1L, length(x))]
 }
 
+
+
+get_backup_index <- function(
+  x
+){
+  vapply(
+    strsplit(x, ".", fixed = TRUE),
+    function(.x) {
+      .r <- .x[[length(.x)]]
+      if (identical(.r, "zip"))  .r <- .x[[length(.x) - 1L]]
+      assert(!is.na(as.integer(.r)))
+      .r
+    },
+    character(1)
+  )
+}
+
+
+
+autopad_backup_index <- function(
+  x
+){
+  assert(is.character(x) && length(x) > 0)
+  bn  <- gsub("\\.\\d*(zip){0,1}", "", x)
+  idx <- get_backup_index(x)
+  int <- as.integer(idx)
+  ext <- ifelse(tools::file_ext(x) == "zip", ".zip", "")
+  new_idx <- pad_left(int, max(nchar(as.character(int))), "0")
+  paste0(bn, ".", new_idx, ext)
+}
 
