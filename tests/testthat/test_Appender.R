@@ -95,6 +95,34 @@ test_that("AppenderMemory: appending multiple rows works", {
 
 
 
+# AppenderMemoryBuffer ----------------------------------------------------
+
+test_that("AppenderMemoryBufferDt: appending multiple rows works", {
+  app <- AppenderMemoryBufferDt$new(
+
+  )
+
+  y <- x$clone()
+  y$level <- seq(100L, 300L, 100L)
+
+  expect_silent(app$append(y))
+  expect_identical(app$data[1:3]$level, y$level)
+  expect_identical(app$data[1:3]$timestamp, rep(y$timestamp, 3))
+  expect_identical(app$data[1:3]$msg, rep(y$msg, 3))
+  expect_identical(app$data[1:3]$caller, rep(NA_character_, 3))
+
+  y <- x$clone()
+  y$level <- 300
+  app$append(y)
+  expect_identical(app$.__enclos_env__$private$.data$.id[1:4], 1:4)
+  app$logger <- yog  # so that log levels can be labelled
+
+  expect_match(paste(capture.output(app$show()), collapse = ""), "ERROR.*WARN")
+})
+
+
+
+
 test_that("AppenderMemory: memory cycling works", {
   app1 <- AppenderMemoryDt$new(cache_size = 10)
 
@@ -158,7 +186,6 @@ test_that("AppenderRotating works as expected", {
   expect_identical(sort(as.integer(res)), 1:3)
 
   file.remove(list.files(td, pattern = "logtest", full.names = TRUE))
-
 })
 
 

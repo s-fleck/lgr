@@ -497,9 +497,173 @@ get_backup_index <- function(
       .r
     },
     character(1)
-  )
+
+
+      )
 }
 
+# AppenderMemoryDtBuffer --------------------------------------------------
+
+#' @include utils.R utils-sfmisc.R
+#' @export
+AppenderMemoryBufferDt <- R6::R6Class(
+  "AppenderMemoryBufferDt",
+  inherit = AppenderFormat,
+  public = list(
+    initialize = function(
+      threshold = NA,
+      appenders = NULL,
+      flush_level = 200,
+      should_flush = function(
+        x
+      ){
+        FALSE
+
+      },
+      layout = LayoutFormat$new(
+        fmt = "%L [%t] %m",
+        timestamp_fmt = "%H:%M:%S",
+        colors = getOption("yog.colors")
+      ),
+      prototype = data.table::data.table(
+        .id  = NA_integer_,
+        level = NA_integer_,
+        timestamp = Sys.time(),
+        caller = NA_character_,
+        msg = NA_character_
+      ),
+      cache_size = 1e5
+    ){
+      assert(is_scalar_integerish(cache_size))
+      assert(is.integer(prototype$.id))
+      private$current_row <- 0L
+      private$id <- 0L
+      self$data <- prototype
+      self$threshold <- threshold
+      self$layout <- layout
+
+      # initialize empty dt
+      for (j in seq_along(private$.data)){
+        data.table::set(private$.data, i = 1L, j = j, value = NA)
+      }
+      dd <- list(
+        private$.data,
+        list(.id = rep(private$.data[[1]], cache_size - 1L))
+      )
+      private$.data <- data.table::rbindlist(
+        dd,
+        fill = TRUE
+      )
+      data.table::setattr(
+        private$.data,
+        "class",
+        c("yog_data", "data.table", "data.frame")
+      )
+
+      invisible(self)
+    },
+
+
+    append = function(
+      x
+    ){
+      # could just use as.list[,c(...)] but mget has a bit less overhead
+      #vals <- mget(c("level", "timestamp", "caller", "msg"), x)
+      vals <- x[["values"]]
+      lengths <- vapply(vals, length, integer(1), USE.NAMES = FALSE)
+      lenmax  <- max(lengths)
+      assert(all(lengths %in% c(1, lenmax)))
+
+
+      # Special care is necessary if the log event is bigger than the buffer
+      if (
+        lenmax > nrow(private$.data)
+      ){
+        self$flush()  # flush current cache
+        self$flush(x) # flush x before trimming it so that if fits the buffer
+        vals <- lapply(vals, trim_last_event, nrow(private$.data))
+        # ensure .id would be the same as without cycling
+        private[["id"]] <- private[["id"]] + lenmax - nrow(private$.data)
+        lenmax <- nrow(private$.data)
+      }
+
+      i   <- seq_len(lenmax)
+      ids <- i + private[["id"]]
+
+      if (private[["current_row"]] + lenmax <= nrow(private$.data)){
+        i   <- i + private[["current_row"]]
+        private[["current_row"]] <- private[["current_row"]] + lenmax
+      } else {
+        # cycle cache
+        self$flush()
+        private[["current_row"]] <- lenmax
+      }
+
+      data.table::set(
+        private$.data,
+        i,
+        j = c(".id", names(vals)),
+        value = c(list(ids), vals)
+      )
+
+      if (self$should_flush(x)){
+        self$flush()
+      }
+
+      private[["id"]] <- private[["id"]] + lenmax
+      NULL
+    },
+
+    show = function(
+      n = 20,
+      threshold = NA
+    ){
+      if (is.na(threshold)) threshold <- Inf
+      dd <- self$data
+      dd <- tail(dd[dd$level <= threshold], n)
+      dd <- as.environment(dd)
+      assign("logger", self$logger, dd)
+      cat(self$layout$format_event(dd), sep = "\n")
+    },
+
+    flush = function(
+      x = get(".data", envir = private)
+    ){
+      for (app in c(self$appenders)) {
+        if (app$filter(x)){
+          app$append(x)
+        }
+      }
+    },
+
+    finalize = function(){
+      self$flush()
+    }
+  ),
+
+  active = list(
+    data = function(value){
+      if (missing(value)){
+        tmp <- private$.data[!is.na(private$.data$.id), ]
+        return(tmp[order(tmp$.id), ])
+      }
+      assert(
+        is.null(private$.data),
+        stop("'data' cannot be modified once it has been initialized")
+      )
+      assert(data.table::is.data.table(value))
+      private$.data <- value
+    }
+  ),
+
+
+  private = list(
+    id = 0L,
+    current_row = 0L,
+    flushed_row = 0L,
+    .data = NULL
+  )
+)
 
 
 autopad_backup_index <- function(
