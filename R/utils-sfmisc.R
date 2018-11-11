@@ -125,7 +125,7 @@ assert <- function(
 assert_namespace <- function(...){
   res <- vapply(c(...), requireNamespace, logical(1), quietly = TRUE)
   if (all(res)){
-    return(invsible(TRUE))
+    return(invisible(TRUE))
   } else {
     stop(sprintf(
       paste(

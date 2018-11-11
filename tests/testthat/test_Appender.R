@@ -98,26 +98,26 @@ test_that("AppenderMemory: appending multiple rows works", {
 # AppenderMemoryBuffer ----------------------------------------------------
 
 test_that("AppenderMemoryBufferDt: appending multiple rows works", {
-  app <- AppenderMemoryBufferDt$new(
+  tf <- tempfile()
 
+  # Sub sub appenders must have a reference to the original logger
+  l <- Logger$new(
+    "dummy",
+    appenders = list(
+      buffer = AppenderMemoryBufferDt$new(
+        appenders = list(file = AppenderFile$new(file = tf))
+      )
+    ),
+    parent = NULL
   )
+  expect_identical(l, l$appenders$buffer$logger)
+  expect_identical(l, l$appenders$buffer$appenders$file$logger)
 
-  y <- x$clone()
-  y$level <- seq(100L, 300L, 100L)
+  l$info(LETTERS[1:3])
+  l$fatal(letters[1:3]) #triggers flush
+  expect_match(paste(readLines(tf), collapse = "#"), ".*A#.*B#.*C#.*a#.*b#.*c")
 
-  expect_silent(app$append(y))
-  expect_identical(app$data[1:3]$level, y$level)
-  expect_identical(app$data[1:3]$timestamp, rep(y$timestamp, 3))
-  expect_identical(app$data[1:3]$msg, rep(y$msg, 3))
-  expect_identical(app$data[1:3]$caller, rep(NA_character_, 3))
 
-  y <- x$clone()
-  y$level <- 300
-  app$append(y)
-  expect_identical(app$.__enclos_env__$private$.data$.id[1:4], 1:4)
-  app$logger <- yog  # so that log levels can be labelled
-
-  expect_match(paste(capture.output(app$show()), collapse = ""), "ERROR.*WARN")
 })
 
 

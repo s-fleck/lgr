@@ -465,60 +465,25 @@ AppenderMemoryDt <- R6::R6Class(
 
 
 
-
-# appender crash ----------------------------------------------------------
-
-
-# appender email ----------------------------------------------------------
-
-
-
-
-# utils -------------------------------------------------------------------
-
-trim_last_event <- function(x, max_len){
-  if (length(x) == 1L)
-    x
-  else
-    x[seq.int(length(x) - max_len + 1L, length(x))]
-}
-
-
-
-get_backup_index <- function(
-  x
-){
-  vapply(
-    strsplit(x, ".", fixed = TRUE),
-    function(.x) {
-      .r <- .x[[length(.x)]]
-      if (identical(.r, "zip"))  .r <- .x[[length(.x) - 1L]]
-      assert(!is.na(as.integer(.r)))
-      .r
-    },
-    character(1)
-
-
-      )
-}
-
 # AppenderMemoryDtBuffer --------------------------------------------------
 
 #' @include utils.R utils-sfmisc.R
 #' @export
 AppenderMemoryBufferDt <- R6::R6Class(
   "AppenderMemoryBufferDt",
-  inherit = AppenderFormat,
+  inherit = AppenderMemoryDt,
   public = list(
     initialize = function(
       threshold = NA,
       appenders = NULL,
-      flush_level = 200,
       should_flush = function(
         x
       ){
-        FALSE
-
+        if (any(get("level", envir = x) <= 200)){
+          TRUE
+        } else {
+          FALSE
+        }
       },
       layout = LayoutFormat$new(
         fmt = "%L [%t] %m",
@@ -541,6 +506,8 @@ AppenderMemoryBufferDt <- R6::R6Class(
       self$data <- prototype
       self$threshold <- threshold
       self$layout <- layout
+      self$should_flush <- should_flush
+      self$appenders <- appenders
 
       # initialize empty dt
       for (j in seq_along(private$.data)){
@@ -614,56 +581,156 @@ AppenderMemoryBufferDt <- R6::R6Class(
       NULL
     },
 
-    show = function(
-      n = 20,
-      threshold = NA
-    ){
-      if (is.na(threshold)) threshold <- Inf
-      dd <- self$data
-      dd <- tail(dd[dd$level <= threshold], n)
-      dd <- as.environment(dd)
-      assign("logger", self$logger, dd)
-      cat(self$layout$format_event(dd), sep = "\n")
-    },
 
     flush = function(
-      x = get(".data", envir = private)
+      x = self$data_as_record
     ){
-      for (app in c(self$appenders)) {
+      for (app in self$appenders) {
         if (app$filter(x)){
           app$append(x)
         }
       }
     },
 
+
+    add_appender = function(
+      appender,
+      name = NULL
+    ){
+      assert(inherits(appender, "Appender"))
+      appender <- appender$clone()
+      appender$logger <- self$logger
+      private$.appenders[length(private$.appenders) + 1L] <- list(appender)
+
+      if (!is.null(name))
+        names(private$.appenders)[length(private$.appenders)] <- name
+
+      invisible(self)
+    },
+
+
+    remove_appender = function(
+      pos
+    ){
+      if (is.numeric(pos)){
+        assert(
+          all(pos %in% seq_along(private$.appenders)),
+          "'pos' is out of range of the length of appenders (1:",
+          length(appenders), ")"
+        )
+
+        pos <- as.integer(pos)
+      } else if (is.character(pos)) {
+        assert(
+          all(pos %in% names(private$.appenders)),
+          "'pos' is not names of appenders (",
+          paste(names(private$.appenders), collapse = ", "),
+          ")"
+        )
+      }
+
+      private$.appenders[pos] <- NULL
+      invisible(self)
+    },
+
+
     finalize = function(){
       self$flush()
-    }
+    },
+
+    should_flush = NULL
   ),
 
   active = list(
-    data = function(value){
-      if (missing(value)){
-        tmp <- private$.data[!is.na(private$.data$.id), ]
-        return(tmp[order(tmp$.id), ])
+
+    data_as_record = function(){
+      res <- as.environment(self$data)
+      assign("logger", self$logger, envir = res)
+      res
+    },
+
+    appenders = function(value){
+      if (missing(value)) return(c(private$.appenders))
+
+      if (is.null(value)){
+        private$.appenders <- NULL
+        return(invisible())
       }
+
+      if (inherits(value, "Appender"))
+        value <- list(value)
+
       assert(
-        is.null(private$.data),
-        stop("'data' cannot be modified once it has been initialized")
+        is.list(value) && all(vapply(value, inherits, TRUE, "Appender")),
+        "'appenders' must either be a single Appender, a list thereof, or NULL for no appenders."
       )
-      assert(data.table::is.data.table(value))
-      private$.data <- value
+
+      value <- lapply(value, function(app){
+        res <- app$clone()
+        # logger gets assigned to sub-appenders inside the `logger` active binding
+        res
+      })
+
+      private$.appenders <- value
+      invisible()
+    },
+
+    logger = function(value){
+      if (missing(value)) return(private$.logger)
+      assert(inherits(value, "Logger"))
+      private$.logger <- value
+      for (app in self$appenders){
+        app$logger <- value
+      }
     }
   ),
 
 
   private = list(
-    id = 0L,
-    current_row = 0L,
-    flushed_row = 0L,
-    .data = NULL
+    .appenders = list(),
+    flushed_row = 0L
   )
 )
+
+
+
+
+# appender crash ----------------------------------------------------------
+
+
+# appender email ----------------------------------------------------------
+
+
+
+
+# utils -------------------------------------------------------------------
+
+trim_last_event <- function(x, max_len){
+  if (length(x) == 1L)
+    x
+  else
+    x[seq.int(length(x) - max_len + 1L, length(x))]
+}
+
+
+
+get_backup_index <- function(
+  x
+){
+  vapply(
+    strsplit(x, ".", fixed = TRUE),
+    function(.x) {
+      .r <- .x[[length(.x)]]
+      if (identical(.r, "zip"))  .r <- .x[[length(.x) - 1L]]
+      assert(!is.na(as.integer(.r)))
+      .r
+    },
+    character(1)
+
+
+      )
+}
+
 
 
 autopad_backup_index <- function(
