@@ -105,18 +105,70 @@ test_that("AppenderMemoryBufferDt: appending multiple rows works", {
     "dummy",
     appenders = list(
       buffer = AppenderMemoryBufferDt$new(
-        appenders = list(file = AppenderFile$new(file = tf))
+        appenders = list(file = AppenderFile$new(file = tf)),
+        cache_size = 10
       )
     ),
     parent = NULL
   )
   expect_identical(l, l$appenders$buffer$logger)
-  expect_identical(l, l$appenders$buffer$appenders$file$logger)
-
+  expect_identical(l$appenders$buffer$.__enclos_env__$private$flushed, 0L)
   l$info(LETTERS[1:3])
-  l$fatal(letters[1:3]) #triggers flush
+  expect_identical(l$appenders$buffer$.__enclos_env__$private$flushed, 0L)
+
+
+  # FATAL log level triggers flush
+  l$fatal(letters[1:3])
+  expect_identical(l$appenders$buffer$.__enclos_env__$private$flushed, 6L)
+  expect_true(is.null(l$appenders$buffer$unflushed_records))
   expect_match(paste(readLines(tf), collapse = "#"), ".*A#.*B#.*C#.*a#.*b#.*c")
 
+  # Does the next flush flush the correct records?
+  l$fatal("x")
+  expect_identical(length(readLines(tf)), 7L)
+  expect_true(is.null(l$appenders$buffer$unflushed_records))
+  expect_match(paste(readLines(tf), collapse = "#"), ".*A#.*B#.*C#.*a#.*b#.*c#.*x")
+
+  # does flushing on memory cycling work?
+  l$info(rep("z", 10))
+  expect_identical(length(l$appenders$buffer$unflushed_records$level), 10L)
+  l$info(c("y", "y", "y"))
+  expect_identical(length(readLines(tf)), 17L)
+  expect_identical(l$appenders$buffer$unflushed_records$msg, c("y", "y", "y"))
+  expect_match(paste(readLines(tf), collapse = "#"), ".*A#.*B#.*C#.*a#.*b#.*c#.*x(.*z.*){10}")
+
+  # manual flushing works
+  l$appenders$buffer$flush()
+  expect_identical(length(readLines(tf)), 20L)
+  expect_match(paste(readLines(tf), collapse = "#"), "(.*z.*){10}(.*y.*){3}")
+
+  # does flushing of bigger-than-buffer data work?
+  l$info(rep("bigger than memory", 20))
+  expect_identical(l$appenders$buffer$unflushed_records, NULL)
+  expect_identical(length(readLines(tf)), 40L)
+  expect_identical(l$appenders$buffer$.__enclos_env__$private$flushed, 40L)
+  expect_match(
+    paste(readLines(tf), collapse = "#"),
+    "(.*z.*){10}(.*y.*){3}(.*bigger than memory){20}"
+  )
+
+  # does flushing on object destruction work?
+  l$info(c("destruction", "destruction"))
+  expect_identical(length(l$appenders$buffer$unflushed_records$msg), 2L)
+  expect_identical(l$appenders$buffer$.__enclos_env__$private$flushed, 40L)
+  rm(l)
+  gc()
+  expect_match(
+    paste(readLines(tf), collapse = "#"),
+    "(.*destruction){2}"
+  )
+
+  # does flushing honor log levels and filters??
+
+
+
+
+  file.remove(tf)
 
 })
 

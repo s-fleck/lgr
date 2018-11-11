@@ -546,11 +546,18 @@ AppenderMemoryBufferDt <- R6::R6Class(
       if (
         lenmax > nrow(private$.data)
       ){
-        self$flush()  # flush current cache
-        self$flush(x) # flush x before trimming it so that if fits the buffer
-        vals <- lapply(vals, trim_last_event, nrow(private$.data))
-        # ensure .id would be the same as without cycling
+        # flush current cache, as well as the new data
+        self$flush()
+        self$flush(x)
         private[["id"]] <- private[["id"]] + lenmax - nrow(private$.data)
+
+        # we already flushed all of x (even before inserting it into the dt)
+        # and must set the flushed field accordingly
+        private[["flushed"]] <- private[["id"]] + nrow(private$.data)
+
+        # trim x so that it fits the buffer
+        vals <- lapply(vals, trim_last_event, nrow(private$.data))
+
         lenmax <- nrow(private$.data)
       }
 
@@ -573,23 +580,30 @@ AppenderMemoryBufferDt <- R6::R6Class(
         value = c(list(ids), vals)
       )
 
+      private[["id"]] <- private[["id"]] + lenmax
+
       if (self$should_flush(x)){
         self$flush()
       }
 
-      private[["id"]] <- private[["id"]] + lenmax
       NULL
     },
 
 
     flush = function(
-      x = self$data_as_record
+      x = self$unflushed_records
     ){
+      if (is.null(x)) {
+        return(NULL)
+      }
+
       for (app in self$appenders) {
         if (app$filter(x)){
           app$append(x)
         }
       }
+
+      private$flushed <- private$id
     },
 
 
@@ -612,6 +626,8 @@ AppenderMemoryBufferDt <- R6::R6Class(
     remove_appender = function(
       pos
     ){
+      assert(is_scalar(pos))
+
       if (is.numeric(pos)){
         assert(
           all(pos %in% seq_along(private$.appenders)),
@@ -623,13 +639,14 @@ AppenderMemoryBufferDt <- R6::R6Class(
       } else if (is.character(pos)) {
         assert(
           all(pos %in% names(private$.appenders)),
-          "'pos' is not names of appenders (",
+          "'pos' is not a name of any attached appender (",
           paste(names(private$.appenders), collapse = ", "),
           ")"
         )
       }
 
-      private$.appenders[pos] <- NULL
+      try(private$.appenders[[pos]]$finalize(), silent = TRUE)
+      private$.appenders[[pos]] <- NULL
       invisible(self)
     },
 
@@ -642,11 +659,15 @@ AppenderMemoryBufferDt <- R6::R6Class(
   ),
 
   active = list(
-
-    data_as_record = function(){
-      res <- as.environment(self$data)
-      assign("logger", self$logger, envir = res)
-      res
+    unflushed_records = function(){
+      res <- self[["data"]][self[["data"]][[".id"]] > private[["flushed"]], ]
+      if (nrow(res) > 0){
+        res <- as.environment(res)
+        assign("logger", self$logger, envir = res)
+        res
+      } else {
+        NULL
+      }
     },
 
     appenders = function(value){
@@ -688,7 +709,7 @@ AppenderMemoryBufferDt <- R6::R6Class(
 
   private = list(
     .appenders = list(),
-    flushed_row = 0L
+    flushed = 0L
   )
 )
 

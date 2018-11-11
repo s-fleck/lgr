@@ -201,6 +201,17 @@ Logger <- R6::R6Class(
       invisible(self)
     },
 
+    finalize = function(){
+      # ensure appenders are destroyed before logger is destroyed so that the
+      # finalize method of the appenders can still access the logger if it
+      # wants to
+
+      for (i in rev(seq_along(self$appenders))){
+        self$remove_appender(i)
+      }
+
+      gc()
+    },
 
     log = function(
       level,
@@ -251,7 +262,7 @@ Logger <- R6::R6Class(
         assert(
           all(pos %in% seq_along(private$.appenders)),
           "'pos' is out of range of the length of appenders (1:",
-          length(appenders), ")"
+          length(private$.appenders), ")"
         )
 
         pos <- as.integer(pos)
@@ -264,7 +275,16 @@ Logger <- R6::R6Class(
         )
       }
 
-      private$.appenders[pos] <- NULL
+      # call finalize method of the appenders that will be destroyed along
+      # with the logger, so that they still have access to the logger
+      try({
+        private$.appenders[[pos]]$finalize()
+        unlockBinding("finalize", env = private$.appenders[[pos]])
+        private$.appenders[[pos]]$finalize <- identity
+      }, silent = TRUE
+      )
+
+      private$.appenders[[pos]] <- NULL
       invisible(self)
     },
 
@@ -364,9 +384,6 @@ Logger <- R6::R6Class(
       } else {
         anc_appenders <- NULL
       }
-
-
-
 
       obsums <- object_summaries(self)
 
