@@ -275,15 +275,6 @@ Logger <- R6::R6Class(
         )
       }
 
-      # call finalize method of the appenders that will be destroyed along
-      # with the logger, so that they still have access to the logger
-      try({
-        private$.appenders[[pos]]$finalize()
-        unlockBinding("finalize", env = private$.appenders[[pos]])
-        private$.appenders[[pos]]$finalize <- identity
-      }, silent = TRUE
-      )
-
       private$.appenders[[pos]] <- NULL
       invisible(self)
     },
