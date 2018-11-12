@@ -164,12 +164,7 @@ test_that("AppenderMemoryBufferDt: appending multiple rows works", {
   )
 
   # does flushing honor log levels and filters??
-
-
-
-
   file.remove(tf)
-
 })
 
 
@@ -280,6 +275,85 @@ test_that("AppenderRotating works as expected wiht compress option enabled", {
   logfiles <- list.files(dirname(tf), pattern = basename(tf))
   res <- get_backup_index(logfiles)
   expect_identical(sort(as.integer(res)), 1:3)
+
+  file.remove(list.files(td, pattern = "logtest", full.names = TRUE))
+})
+
+
+
+
+test_that("AppenderRotatingDate works as expected", {
+  td <- tempdir()
+  tf <- file.path(td, "logtest")
+  file.remove(list.files(td, pattern = "logtest", full.names = TRUE))
+
+  d0  <- structure(1539262374.04303, class = c("POSIXct", "POSIXt"))
+  d1  <- structure(1542027174.04303, class = c("POSIXct", "POSIXt"))
+  d2  <- structure(1544705574.04303, class = c("POSIXct", "POSIXt"))
+  d3  <- structure(1547383974.04303, class = c("POSIXct", "POSIXt"))
+
+  # last_rollover paramter is set correclty for new appender
+  testthat::with_mock(
+    Sys.time = function(...){d0},
+    Sys.Date = function(...){as.Date(d0)},
+    {
+      app <- AppenderRotatingDate$new(file = tf)
+      app$append(x)
+    }
+  )
+  expect_equal(app$last_rollover, d0)
+
+  # Monthly rollover is triggered on first append in new month
+  testthat::with_mock(
+    Sys.time = function(...){d1},
+    Sys.Date = function(...){as.Date(d1)},
+    app$append(x)
+  )
+  expect_equal(app$last_rollover, d1)
+  expect_true(file.exists(file.path(td, "logtest.2018-M11")))
+  expect_identical(length(readLines(tf)), 1L)
+  expect_identical(length(readLines(file.path(td, "logtest.2018-M11"))), 1L)
+
+
+  # correct last_rollover is set for new appender if backups already exist
+  testthat::with_mock(
+    Sys.time = function(...){d0},
+    Sys.Date = function(...){as.Date(d0)},
+    {
+      app <- AppenderRotatingDate$new(file = tf)
+    }
+  )
+  app <- AppenderRotatingDate$new(file = tf)
+  expect_equal(as.Date(app$last_rollover), as.Date("2018-11-01"))
+
+
+  # trigger rollover
+    app$append(x)
+    testthat::with_mock(Sys.time = function(...){d2},  app$do_rollover() )
+    expect_true(file.exists(file.path(td, "logtest.2018-M12")))
+    expect_false(file.exists(file.path(td, "logtest")))
+
+  # abbort rollover if target file exists
+  app$append(x)
+  expect_error(
+    testthat::with_mock(Sys.time = function(...){d1},  app$do_rollover() ),
+    "exists"
+  )
+
+  # compress
+  app$compress <- TRUE
+
+  # compressed backups also dont work if target backup already exists
+  expect_error(
+    testthat::with_mock(Sys.time = function(...){d1},  app$do_rollover() ),
+    "exists"
+  )
+
+  # otherwise everything is fine
+  app$append(x)
+  testthat::with_mock(Sys.time = function(...){d3}, app$do_rollover())
+  expect_true(file.exists(file.path(td, "logtest.2019-M01.zip")))
+  expect_false(file.exists(file.path(td, "logtest")))
 
   file.remove(list.files(td, pattern = "logtest", full.names = TRUE))
 })
