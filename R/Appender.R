@@ -457,8 +457,8 @@ AppenderMemoryDt <- R6::R6Class(
 
 
   private = list(
-    id = 0L,
-    current_row = 0L,
+    id = NULL,
+    current_row = NULL,
     .data = NULL
   )
 )
@@ -503,6 +503,7 @@ AppenderMemoryBufferDt <- R6::R6Class(
       assert(is.integer(prototype$.id))
       private$current_row <- 0L
       private$id <- 0L
+      private$flushed <- 0L
       self$data <- prototype
       self$threshold <- threshold
       self$layout <- layout
@@ -612,7 +613,7 @@ AppenderMemoryBufferDt <- R6::R6Class(
       name = NULL
     ){
       assert(inherits(appender, "Appender"))
-      appender <- appender$clone()
+      appender <- appender$clone(deep = TRUE)
       appender$logger <- self$logger
       private$.appenders[length(private$.appenders) + 1L] <- list(appender)
 
@@ -652,6 +653,7 @@ AppenderMemoryBufferDt <- R6::R6Class(
 
 
     finalize = function(){
+      browser()
       self$flush()
     },
 
@@ -709,7 +711,7 @@ AppenderMemoryBufferDt <- R6::R6Class(
 
   private = list(
     .appenders = list(),
-    flushed = 0L
+    flushed = NULL
   )
 )
 
