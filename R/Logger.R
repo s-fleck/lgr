@@ -115,7 +115,7 @@
 #' @examples
 #'
 #' # yog includes a pre-configured root logger
-#' yog$fatal("This is a serious error")
+#' root$fatal("This is a serious error")
 #'
 #' # if you want to take advantage of hierarchical logging, you can create new loggers.
 #' # the following creates a new logger that logs to a temporary file.
@@ -144,7 +144,7 @@ Logger <- R6::R6Class(
       threshold = NA,
       user = get_user(),
       log_levels = getOption("yog.log_levels"),
-      parent = yog::yog,
+      parent = yog::root,
       string_formatter = sprintf,
       handle_exception = function(e){
         warning(
@@ -247,7 +247,13 @@ Logger <- R6::R6Class(
 
     add_appender = function(appender, name = NULL){
       assert(inherits(appender, "Appender"))
-      appender <- appender$clone()
+      assert(
+        is.null(appender$logger),
+        "Cannot add appender to logger as it is already attached to another",
+        "logger. Please create a new appender or clone the old one with",
+        "`appender$clone()`, but be aware that this can cause weird bugs",
+        "for some appender types."
+        )
       appender$logger <- self
       private$.appenders[length(private$.appenders) + 1L] <- list(appender)
 
@@ -257,7 +263,9 @@ Logger <- R6::R6Class(
       invisible(self)
     },
 
-    remove_appender = function(pos){
+    remove_appender = function(
+      pos
+    ){
       if (is.numeric(pos)){
         assert(
           all(pos %in% seq_along(private$.appenders)),
@@ -275,7 +283,10 @@ Logger <- R6::R6Class(
         )
       }
 
-      private$.appenders[[pos]] <- NULL
+      for (nm in pos){
+        private$.appenders[[nm]] <- NULL
+      }
+
       invisible(self)
     },
 
@@ -508,7 +519,7 @@ Logger <- R6::R6Class(
       if (missing(value)) return(c(private$.appenders))
 
       if (is.null(value)){
-        private$.appenders <- NULL
+        private$.appenders <- list()
         return(invisible())
       }
 
@@ -517,16 +528,13 @@ Logger <- R6::R6Class(
 
       assert(
         is.list(value) && all(vapply(value, inherits, TRUE, "Appender")),
-        "'appenders' must either be a single Appender, a list thereof, or NULL for no appenders."
+        "'appenders' must either be a single Appender, a list thereof, or ",
+        "NULL for no appenders."
       )
 
-      value <- lapply(value, function(app){
-        res <- app$clone()
-        res$logger <- self
-        res
-      })
+      for (i in seq_along(value))
+        self$add_appender(value[[i]], name = names(value)[[i]])
 
-      private$.appenders <- value
       invisible()
     },
 

@@ -87,7 +87,7 @@ test_that("AppenderMemory: appending multiple rows works", {
   y$level <- 300
   app$append(y)
   expect_identical(app$.__enclos_env__$private$.data$.id[1:4], 1:4)
-  app$logger <- yog  # so that log levels can be labelled
+  app$logger <- root  # so that log levels can be labelled
 
   expect_match(paste(capture.output(app$show()), collapse = ""), "ERROR.*WARN")
 })

@@ -47,7 +47,6 @@ test_that("basic logging", {
   })
 
   expect_true(all(ml$appenders$memory$data$caller == "testfun"))
-
 })
 
 
@@ -83,10 +82,10 @@ test_that("add/remove appenders", {
   ml$add_appender(AppenderMemoryDt$new(), "blubb")
 
   # because the now have the logger proerty set
-  expect_false(identical(ml$appenders[[2]], app1))
+  expect_identical(ml$appenders[[2]], app1)
   expect_identical(ml$appenders[[2]]$logger, ml)
 
-  expect_false(identical(ml$appenders$blah, app2))
+  expect_identical(ml$appenders$blah, app2)
   expect_identical(ml$appenders$blah$logger, ml)
 
   ml$remove_appender(2)
