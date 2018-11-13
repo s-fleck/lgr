@@ -799,7 +799,6 @@ AppenderMemoryBufferDt <- R6::R6Class(
 
 
     finalize = function(){
-      browser()
       self$flush()
     },
 

@@ -42,7 +42,7 @@
   }
 
   assign(
-    "root",  # usally a logger should have the same name as the package it belongs to
+    "yog",  # usally a logger should have the same name as the package it belongs to
     Logger$new(
       name = "root",
       appenders = appenders,
