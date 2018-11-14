@@ -99,8 +99,5 @@ knitr::kable(ll)
 
 # Hierarchical Loggers
 
-```{r}
-
-
-```
+![](log_flow.svg)
 
