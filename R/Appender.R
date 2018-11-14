@@ -15,7 +15,7 @@ Appender <- R6::R6Class(
   public = list(
     initialize = function(
       layout = Layout$new(),
-      threshold = 400
+      threshold = NA_integer_
     ){
       self$layout    <- layout
       self$threshold <- threshold
@@ -98,7 +98,7 @@ Appender <- R6::R6Class(
 
   private = list(
     .filters = list(check_threshold),
-    .threshold = 300,
+    .threshold = NA,
     .layout = NULL,
     .logger = NULL
   )
@@ -114,7 +114,7 @@ AppenderFormat <- R6::R6Class(
   inherit = Appender,
   public = list(
     initialize = function(
-      threshold = 400L,
+      threshold = NA,
       layout = LayoutFormat$new()
     ){
       self$threshold <- threshold
@@ -132,7 +132,7 @@ AppenderConsole <- R6::R6Class(
   inherit = AppenderFormat,
   public = list(
     initialize = function(
-      threshold = 400L,
+      threshold = NA_integer_,
       layout = LayoutFormat$new(
         fmt = "%L [%t] %m",
         timestamp_fmt = "%H:%M:%OS3",
@@ -166,7 +166,7 @@ AppenderFile <- R6::R6Class(
   public = list(
     initialize = function(
       file,
-      threshold = NA,
+      threshold = NA_integer_,
       layout = LayoutFormat$new()
     ){
       self$file <- file
@@ -209,7 +209,7 @@ AppenderRotating <- R6::R6Class(
   public = list(
     initialize = function(
       file,
-      threshold = NA,
+      threshold = NA_integer_,
       layout = LayoutFormat$new(),
       compress = FALSE,
       compress_args = list(flags = paste0(formals(utils::zip)$flags, "q"))
@@ -350,7 +350,7 @@ AppenderRotatingDate <- R6::R6Class(
   public = list(
     initialize = function(
       file,
-      threshold = NA,
+      threshold = NA_integer_,
       period = "1 month",
       timestamp_fmt = "%Y-M%m",
       layout = LayoutFormat$new(),
@@ -490,7 +490,7 @@ AppenderMemoryDt <- R6::R6Class(
   inherit = AppenderFormat,
   public = list(
     initialize = function(
-      threshold = NA,
+      threshold = NA_integer_,
       layout = LayoutFormat$new(
         fmt = "%L [%t] %m",
         timestamp_fmt = "%H:%M:%S",
@@ -574,7 +574,7 @@ AppenderMemoryDt <- R6::R6Class(
 
     show = function(
       n = 20,
-      threshold = NA
+      threshold = NA_integer_
     ){
       if (is.na(threshold)) threshold <- Inf
       dd <- self$data
@@ -620,7 +620,7 @@ AppenderMemoryBufferDt <- R6::R6Class(
   inherit = AppenderMemoryDt,
   public = list(
     initialize = function(
-      threshold = NA,
+      threshold = NA_integer_,
       appenders = NULL,
       should_flush = function(
         x

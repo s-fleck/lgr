@@ -141,7 +141,7 @@ Logger <- R6::R6Class(
     initialize = function(
       name,
       appenders = list(),
-      threshold = NA,
+      threshold = 300L,
       user = get_user(),
       log_levels = getOption("yog.log_levels"),
       parent = yog::yog,
