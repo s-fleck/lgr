@@ -27,18 +27,32 @@ appenders with custom thresholds for a single logger.
 
 # Basic usage
 
-Yog comes with a pre-configured logger included. You can just start logging 
-with:
+## Simple logging
+
+Yog comes with a pre-configured logger included. If you do not care about using 
+multiple loggers, and do not want to deal with R6 classes you can use the 
+the log functions that come with yog. The names of the functions are just the
+default log levels in capital letters.
 
 ```{r}
-yog$info("This is an informational message")
-yog$fatal("This is an important message about something going wrong")
 
+FATAL("This is an important message about %s going wrong", "something")
+DEBUG("Debug messages are hidden by default")
+threshold("debug")  # you must use lower case names here
+DEBUG("Unless we lower the threshold")
+
+```
+
+You can also direclty use Logger R6 objects to log. This package comes with a
+default root logger named like the package (`"yog"`). This method of referring
+to the logger is more explicit (and therefore arguably better). The examples
+in this vignette will moslty use the notation below.
+
+```{r}
+yog$fatal("This is an important message about %s going wrong", something)
 yog$debug("Debug messages are hidden by default")
 yog$threshold <- "debug"
 yog$debug("Unless we lower the threshold")
-
-
 ```
 
 This only logs to the console. If you want to redirect the output to a file
@@ -50,7 +64,6 @@ tf <- tempfile()
 # Add a new appender to a logger. We don't have to supply a name, but that
 # makes it easier to remove later.
 yog$add_appender(AppenderFile$new(file = tf), "tempfile_appender")
-
 yog$info("Another informational message")
 yog$debug("A debug message that the console appender doesn't show.")
 
@@ -59,16 +72,6 @@ readLines(tf)
 # Remove the appender again
 yog$remove_appender("tempfile_appender")
 ```
-
-# Structure
-
-* A **Logger** collects information and dispatches it to the appropriate appenders
-* An **Appender** writes the log message to destination (the console, a file, 
-  a database, etc...)
-* A **Layout** is
-
-
-
 
 ## Log Levels
 
@@ -97,7 +100,20 @@ knitr::kable(ll)
 
 
 
-# Hierarchical Loggers
+# Configuring Loggers
+
+
+## Structure
+
+* A **Logger** collects information and dispatches it to the appropriate appenders
+* An **Appender** writes the log message to destination (the console, a file, 
+  a database, etc...)
+* A **Layout** is
+
+
+# Advanced Usage
+
+## Hierarchical Loggers
 
 ![](log_flow.svg)
 
