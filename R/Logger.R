@@ -226,12 +226,23 @@ Logger <- R6::R6Class(
       force(caller)
 
       tryCatch({
+        if (is.character(level)){
+          level <- unlabel_levels(level, self$log_levels)
+        }
+
+        assert_valid_log_levels(level)
+
+        assert(
+          identical(length(unique(level)), 1L),
+          "Can only utilize vectorized logging if log level is the same for all entries"
+        )
+
+        if (level[[1]] > private$.threshold)  return(invisible())
+
         assign("level", level, envir = self$last_event)
         assign("timestamp", timestamp,  envir = self$last_event)
         assign("caller", caller, envir = self$last_event)
         assign("msg", msg, envir = self$last_event)
-        #assign(".Logger", self, envir = self$last_event)
-
 
         if (self$filter(self$last_event)){
           for (app in c(self$appenders, self$ancestral_appenders)) {
@@ -241,7 +252,7 @@ Logger <- R6::R6Class(
           }
         }
       },
-      error = self$handle_exception
+        error = self$handle_exception
       )
     },
 
@@ -543,15 +554,25 @@ Logger <- R6::R6Class(
     suspend = function(
       level = 0
     ){
+      # unsuspend all
+      for (i in seq_along(private$suspended_loggers)){
+        nm  <- names(private$suspended_loggers)[[i]]
+        self[[nm]] <- private$suspended_loggers[[nm]]
+      }
+      private$suspended_loggers <- list()
+
+      # suspend loggers above threshold
       if (is.na(level)) level <- Inf
       ll <- self$log_levels[self$log_levels > level]
 
       for (i in seq_along(ll)){
         nm  <- names(ll)[[i]]
         lvl <- ll[[i]]
+        private$suspended_loggers[[nm]] <- self[[nm]]
         self[[nm]] <- function(...) invisible()
       }
     },
+
 
 
     # +- fields ---------------------------------------------------------------
@@ -563,7 +584,8 @@ Logger <- R6::R6Class(
     .user = NA_character_,
     .log_levels = NULL,
     .threshold = 4L,
-    .string_formatter = NULL
+    .string_formatter = NULL,
+    suspended_loggers = list()
   ),
 
   lock_objects = FALSE

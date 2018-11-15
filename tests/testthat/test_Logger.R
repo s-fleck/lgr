@@ -62,6 +62,10 @@ test_that("suspending loggers works", {
   ml$threshold <- "error"
   y <- capture.output(ml$fatal("blubb"))
 
+  expect_output(ml$log(100, "test"), "FATAL")
+  expect_output(ml$log("error", "test"), "ERROR")
+  expect_silent(ml$warn("blubb"))
+  expect_silent(ml$log(300, "blubb"))
   # ignore timestamp for comparison
   x <- gsub("[.*]", x, "[time]")
   y <- gsub("[.*]", x, "[time]")
