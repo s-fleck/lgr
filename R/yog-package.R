@@ -48,6 +48,6 @@
       appenders = appenders,
       parent = NULL  # _never_ set the parent to null yoursel, root should be the only root logger
     ),
-    envir =  asNamespace("yog")
+    envir = asNamespace("yog")
   )
 }

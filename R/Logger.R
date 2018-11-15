@@ -136,12 +136,14 @@ Logger <- R6::R6Class(
   "Logger",
   inherit = Filterable,
 
-  # public methods --------------------------------------------------------
+  # public --------------------------------------------------------------------
   public = list(
+
+    # +- methods --------------------------------------------------------------
     initialize = function(
       name,
       appenders = list(),
-      threshold = 300L,
+      threshold = 400L,
       user = get_user(),
       log_levels = getOption("yog.log_levels"),
       parent = yog::yog,
@@ -158,7 +160,7 @@ Logger <- R6::R6Class(
       # fields ------------------------------------------------------------
       # active
       self$log_levels <- log_levels
-      self$threshold <- threshold
+      # threshold must be set *after* the logging functions have been initalized
       self$appenders <- appenders
       self$user  <- user
       self$string_formatter <- string_formatter
@@ -197,6 +199,8 @@ Logger <- R6::R6Class(
 
         self[[nm]] <- make_logger(lvl)
       }
+
+      self$threshold <- threshold
 
       invisible(self)
     },
@@ -288,33 +292,6 @@ Logger <- R6::R6Class(
       }
 
       invisible(self)
-    },
-
-    suspend = function(){
-      if (length(private$suspended_loggers) > 0){
-        warning("Logger is already suspended")
-      } else {
-        for (i in seq_along(self$log_levels)){
-          nm  <- names(self$log_levels)[[i]]
-          lvl <- self$log_levels[[i]]
-          private$suspended_loggers[[nm]] <- self[[nm]]
-          self[[nm]] <- function(...) NULL
-        }
-      }
-    },
-
-
-    unsuspend = function(){
-      if (length(private$suspended_loggers) < 1){
-        warning("Logger is not suspended")
-      }
-
-      for (i in seq_along(private$.log_levels)){
-        nm  <- names(private$.log_levels)[[i]]
-        lvl <- private$.log_levels[[i]]
-        self[[nm]] <- private$suspended_loggers[[nm]]
-      }
-      private$suspended_loggers <- list()
     },
 
 
@@ -424,7 +401,7 @@ Logger <- R6::R6Class(
     },
 
 
-    # public fields -----------------------------------------------------------
+    # +- fields -----------------------------------------------------------
     last_event = NULL
 
   ),
@@ -499,6 +476,8 @@ Logger <- R6::R6Class(
       }
 
       assert_valid_log_levels(value)
+      private$suspend(value)
+
       private$.threshold <- as.integer(value)
     },
 
@@ -559,6 +538,23 @@ Logger <- R6::R6Class(
 
   # private -----------------------------------------------------------------
   private = list(
+
+    # +- methods --------------------------------------------------------------
+    suspend = function(
+      level = 0
+    ){
+      if (is.na(level)) level <- Inf
+      ll <- self$log_levels[self$log_levels > level]
+
+      for (i in seq_along(ll)){
+        nm  <- names(ll)[[i]]
+        lvl <- ll[[i]]
+        self[[nm]] <- function(...) invisible()
+      }
+    },
+
+
+    # +- fields ---------------------------------------------------------------
     .propagate = NULL,
     .filters = list(check_threshold),
     .name = NULL,
@@ -567,8 +563,7 @@ Logger <- R6::R6Class(
     .user = NA_character_,
     .log_levels = NULL,
     .threshold = 4L,
-    .string_formatter = NULL,
-    suspended_loggers = list()
+    .string_formatter = NULL
   ),
 
   lock_objects = FALSE

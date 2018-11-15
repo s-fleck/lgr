@@ -57,9 +57,9 @@ test_that("suspending loggers works", {
 
   expect_output(ml$fatal("blubb"), "FATAL")
   x <- capture.output(ml$fatal("blubb"))
-  ml$suspend()
+  ml$threshold <- 0
   expect_identical(ml$fatal("blubb %s", "blah"), NULL)
-  ml$unsuspend()
+  ml$threshold <- "error"
   y <- capture.output(ml$fatal("blubb"))
 
   # ignore timestamp for comparison
