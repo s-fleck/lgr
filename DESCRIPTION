@@ -39,6 +39,6 @@ Collate:
     'Logger.R'
     'predicates.R'
     'read_json_log.R'
-    'utils-root_logger.R'
+    'utils-exported.R'
     'yog-package.R'
 VignetteBuilder: knitr
