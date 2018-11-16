@@ -101,6 +101,30 @@ test_that("add/remove appenders", {
 
 
 
+test_that("modify appenders for a logger", {
+  ml <- Logger$new("test_logger", appenders = list(AppenderConsole$new()), parent = NULL)
+  tf <- tempfile()
+
+  # Add a new appender to a logger. We don't have to supply a name, but that
+  # mak1es it easier to remove later.
+  ml$add_appender(AppenderFile$new(file = tf), name = "file")
+
+  # configure yog so that it logs everything to the file, but only info and above
+  # to the console
+
+  ml$threshold <- NA
+  ml$appenders[[1]]$threshold <- "info"
+  ml$appenders$file$threshold <- NA
+
+
+  expect_output(ml$info("Another informational message"))
+  expect_silent(ml$debug("A debug message that the console appender doesn't show."))
+
+  expect_identical(length(readLines(tf)), 2L)
+  expect_match(paste(readLines(tf), collapse = "---"), "INFO.*---DEBUG.*")
+  file.remove(tf)
+})
+
 
 test_that("Exceptions are cought and turned into warnings", {
   ml <- Logger$new("test_logger",

@@ -156,7 +156,6 @@ Logger <- R6::R6Class(
       },
       propagate = TRUE
     ){
-
       # fields ------------------------------------------------------------
       # active
       self$log_levels <- log_levels
@@ -205,6 +204,7 @@ Logger <- R6::R6Class(
       invisible(self)
     },
 
+
     finalize = function(){
       # ensure appenders are destroyed before logger is destroyed so that the
       # finalize method of the appenders can still access the logger if it
@@ -217,6 +217,7 @@ Logger <- R6::R6Class(
       gc()
     },
 
+
     log = function(
       level,
       msg,
@@ -226,24 +227,26 @@ Logger <- R6::R6Class(
       force(caller)
 
       tryCatch({
-        if (is.character(level)){
-          level <- unlabel_levels(level, self$log_levels)
-        }
-
+        # preconditions
+        if (is.character(level)) level <- unlabel_levels(level, self$log_levels)
         assert_valid_log_levels(level)
-
         assert(
           identical(length(unique(level)), 1L),
           "Can only utilize vectorized logging if log level is the same for all entries"
         )
 
-        if (level[[1]] > private$.threshold)  return(invisible())
+        # check threshold
+        thr <- private$.threshold
+        if (is.na(thr)) thr <- Inf
+        if (level[[1]] > thr) return(invisible())
 
+        # update log records
         assign("level", level, envir = self$last_event)
         assign("timestamp", timestamp,  envir = self$last_event)
         assign("caller", caller, envir = self$last_event)
         assign("msg", msg, envir = self$last_event)
 
+        # emit
         if (self$filter(self$last_event)){
           for (app in c(self$appenders, self$ancestral_appenders)) {
             if (app$filter(self$last_event)){
@@ -260,16 +263,29 @@ Logger <- R6::R6Class(
     handle_exception = NULL,
 
 
-    add_appender = function(appender, name = NULL){
+    add_appender = function(
+      appender,
+      name = NULL
+    ){
       assert(inherits(appender, "Appender"))
+
+      for(app in self$appenders){
+        # appender is already attached to logger, nothing to do, this is
+        # necessary because `logger$appender$blubb <- blagh` tries to readd the
+        # whole appender list
+        if (identical(app, appender)) return(invisible(self))
+      }
+
       assert(
-        is.null(appender$logger),
+        is.null(appender$logger) || identical(appender$logger, self),
         "Cannot add appender to logger as it is already attached to another",
         "logger. Please create a new appender or clone the old one with",
         "`appender$clone()`, but be aware that this can cause weird bugs",
         "for some appender types."
         )
       appender$logger <- self
+
+
       private$.appenders[length(private$.appenders) + 1L] <- list(appender)
 
       if (!is.null(name))
@@ -277,6 +293,7 @@ Logger <- R6::R6Class(
 
       invisible(self)
     },
+
 
     remove_appender = function(
       pos
@@ -326,7 +343,6 @@ Logger <- R6::R6Class(
       ...,
       colors = TRUE
     ){
-
       header <- paste(
         paste0("<", class(self)[[1]], ">"),
         style_subtle(format(self$ancestry))
@@ -356,7 +372,6 @@ Logger <- R6::R6Class(
           cbind(data.frame(logger = .x$logger$name, srs(.x)))
         }
       ))
-
 
 
       if (length(anc_appenders) > 0){
@@ -414,7 +429,6 @@ Logger <- R6::R6Class(
 
     # +- fields -----------------------------------------------------------
     last_event = NULL
-
   ),
 
 
@@ -572,7 +586,6 @@ Logger <- R6::R6Class(
         self[[nm]] <- function(...) invisible()
       }
     },
-
 
 
     # +- fields ---------------------------------------------------------------
