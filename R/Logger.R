@@ -40,7 +40,6 @@
 #'  l$appenders
 #'  l$ancestral_appenders  # inherited appenders
 #'  l$last_event
-#'  l$log_levels
 #'  l$filters
 #'
 #' ```
@@ -145,7 +144,6 @@ Logger <- R6::R6Class(
       appenders = list(),
       threshold = 400L,
       user = get_user(),
-      log_levels = getOption("yog.log_levels"),
       parent = yog::yog,
       string_formatter = sprintf,
       handle_exception = function(e){
@@ -157,8 +155,6 @@ Logger <- R6::R6Class(
       propagate = TRUE
     ){
       # fields
-      # active
-      self$log_levels <- log_levels
       # threshold must be set *after* the logging functions have been initalized
       self$appenders <- appenders
       self$user  <- user
@@ -188,7 +184,6 @@ Logger <- R6::R6Class(
       for (i in seq_along(private$.log_levels)){
         nm  <- names(private$.log_levels)[[i]]
         lvl <- private$.log_levels[[i]]
-
         if (nm %in% names(self)){
           stop(
             "The following names are not allowed for log levels: ",
@@ -200,7 +195,6 @@ Logger <- R6::R6Class(
       }
 
       self$threshold <- threshold
-
       invisible(self)
     },
 
@@ -228,7 +222,7 @@ Logger <- R6::R6Class(
 
       tryCatch({
         # preconditions
-        if (is.character(level)) level <- unlabel_levels(level, self$log_levels)
+        if (is.character(level)) level <- unlabel_levels(level)
         assert_valid_log_levels(level)
         assert(
           identical(length(unique(level)), 1L),
@@ -265,12 +259,12 @@ Logger <- R6::R6Class(
       inclusive = TRUE
     ){
       assert(is_scalar_bool(inclusive))
-      assert(is_valid_log_levels(threshold, self$log_levels))
+      assert(is_valid_log_levels(threshold))
       if (is.na(threshold))
         threshold <- Inf
 
       if (is.character(threshold))
-        threshold <- unlabel_levels(threshold, self$log_levels)
+        threshold <- unlabel_levels(threshold)
 
       assert(is.numeric(threshold))
 
@@ -525,28 +519,6 @@ Logger <- R6::R6Class(
     },
 
 
-    log_levels = function(value){
-      if (missing(value)) return(private$.log_levels)
-
-      assert(
-        is.null(private$.log_levels),
-        stop("'log_levels' cannot be modified once they have been initialized")
-      )
-
-      stopifnot(
-        all_are_distinct(unname(value)),
-        all_are_distinct(names(value)),
-        !any(value == 0),
-        is_integerish(value),
-        identical(length(names(value)) , length(value))
-      )
-
-      value <- setNames(as.integer(value), names(value))
-      class(value) <- c("log_levels", class(value))
-
-      private$.log_levels <- value
-    },
-
 
     threshold = function(value){
       if (missing(value))
@@ -567,6 +539,11 @@ Logger <- R6::R6Class(
       private$.threshold <- as.integer(value)
     },
 
+
+    log_levels = function(
+    ){
+      private$.log_levels
+    },
 
     ancestral_appenders = function(){
       if (self$propagate){
@@ -632,11 +609,21 @@ Logger <- R6::R6Class(
     .parrent = NULL,
     .appenders = NULL,
     .user = NA_character_,
-    .log_levels = NULL,
     .threshold = 4L,
     .string_formatter = NULL,
+    .log_levels = as_log_levels(c(  # intentionaly hardcoded and not using the option
+      "fatal" = 100L,
+      "error" = 200L,
+      "warn"  = 300L,
+      "info"  = 400L,
+      "debug" = 500L,
+      "trace" = 600L
+    )),
     suspended_loggers = list()
   ),
 
   lock_objects = FALSE
 )
+
+
+

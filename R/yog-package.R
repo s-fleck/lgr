@@ -21,17 +21,16 @@
     )
   }
 
-   options(
-      yog.log_levels = c(
-        "fatal" = 100L,
-        "error" = 200L,
-        "warn"  = 300L,
-        "info"  = 400L,
-        "debug" = 500L,
-        "trace" = 600L
-      )
+  options(
+    yog.log_levels = c(
+      "fatal" = 100L,
+      "error" = 200L,
+      "warn"  = 300L,
+      "info"  = 400L,
+      "debug" = 500L,
+      "trace" = 600L
     )
-
+  )
 
   appenders <- list(
     console = AppenderConsole$new()

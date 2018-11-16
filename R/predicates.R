@@ -38,4 +38,3 @@ assert_valid_threshold <- function(x, log_levels = getOption("yog.log_levels"), 
     paste(sprintf("%s (%s)", names(log_levels), log_levels), collapse = ", ")
   )
 }
-

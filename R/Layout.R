@@ -47,7 +47,6 @@ LayoutFormat <- R6::R6Class(
         fmt = private$.fmt,
         timestamp_fmt = private$.timestamp_fmt,
         colors = private$.colors,
-        log_levels = x$logger$log_levels,
         pad_levels = private$.pad_levels
       )
     }

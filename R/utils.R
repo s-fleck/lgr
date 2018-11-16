@@ -94,3 +94,12 @@ ptrunc_col <- function(
   x[sel] <- paste(gsub(",{0,1}\\s*$", "", x[sel]), "...")
   x
 }
+
+
+
+
+as_log_levels <- function(x){
+  structure(x, class = c("log_levels", "integer"))
+}
+
+

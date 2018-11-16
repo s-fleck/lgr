@@ -79,7 +79,7 @@ Appender <- R6::R6Class(
       if (is_scalar_character(value)){
         value <- unlabel_levels(value)
       }
-      is.na(value) || assert_valid_threshold(value, log_levels = getOption("yog.log_levels"))
+      is.na(value) || assert_valid_threshold(value)
       private$.threshold <- as.integer(value)
     },
 

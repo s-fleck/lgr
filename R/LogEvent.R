@@ -110,7 +110,7 @@ LogEvent <- R6::R6Class(
       mget(c("level", "timestamp", "caller", "msg"), envir = self)
     },
     level_name = function(){
-      label_levels(self$level, log_levels = self$logger$log_levels)
+      label_levels(self$level)
     }
   )
 )

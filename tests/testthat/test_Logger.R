@@ -11,8 +11,6 @@ test_that("active bindings", {
       class = c("log_levels", "integer")
     )
   )
-  expect_error(ml$log_levels <- ml$log_levels, "cannot be modified")
-
 
   expect_silent(ml$threshold <- 5)
   expect_identical(ml$threshold, 5L)
