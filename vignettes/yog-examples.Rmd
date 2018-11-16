@@ -1,0 +1,54 @@
+---
+title: "Example Configurations for yog"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Adding a Custom Logger to a Package
+
+If you are a package author, it is good practice to define a separate logger
+for your package. This gives users the ability to easily enable/disable 
+logging on a per-package basis. To do this you must put the following code
+into any `.R` file inside the `R/` directory of your package:
+
+```{r}
+# mypackage/R/mypackage-package.R
+.onLoad <- function(...){
+  assign(
+    "logger",
+    yog::Logger$new(name = "mypackage"),  # the logger name should be the same as the package name
+    envir = asNamespace("mypackage")
+  )
+}
+
+```
+After you set this up you can use `logger$fatal()`, `logger$info()`, etc... 
+inside your package. You do not have to define any appenders, since all log 
+events will get redirected to the Root Logger (see the chapter on hierarchical 
+logging in the `yog` main vignette). 
+
+
+
+# Recommended Logger Setup
+
+The out-of-the-box setup for the Root Logger is minimal to make it easy
+to use for newcommers. I prefer to set up my logger like this:
+
+```{r}
+
+```
+
+
+
