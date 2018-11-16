@@ -55,6 +55,13 @@ test_that("basic logging", {
 test_that("suspending loggers works", {
   ml <- Logger$new("test_logger")
 
+  expect_output(ml$info("blubb"), "blubb")
+  ml$suspend("info", inclusive = TRUE)
+  expect_silent(ml$info("blubb"))
+  ml$unsuspend("info", inclusive = TRUE)
+  expect_output(ml$info("blubb"), "blubb")
+
+
   expect_output(ml$fatal("blubb"), "FATAL")
   x <- capture.output(ml$fatal("blubb"))
   ml$threshold <- 0

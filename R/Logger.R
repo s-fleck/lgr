@@ -260,6 +260,66 @@ Logger <- R6::R6Class(
     },
 
 
+    suspend = function(
+      threshold = 0,
+      inclusive = TRUE
+    ){
+      assert(is_scalar_bool(inclusive))
+      assert(is_valid_log_levels(threshold, self$log_levels))
+      if (is.na(threshold))
+        threshold <- Inf
+
+      if (is.character(threshold))
+        threshold <- unlabel_levels(threshold, self$log_levels)
+
+      assert(is.numeric(threshold))
+
+      if (inclusive){
+        ll <- self$log_levels[self$log_levels >= threshold]
+      } else {
+        ll <- self$log_levels[self$log_levels > threshold]
+      }
+
+      for (i in seq_along(ll)){
+        nm  <- names(ll)[[i]]
+        lvl <- ll[[i]]
+        private$suspended_loggers[[nm]] <- self[[nm]]
+        self[[nm]] <- function(...) invisible()
+      }
+    },
+
+
+    unsuspend = function(
+      threshold = 0,
+      inclusive = TRUE
+    ){
+      assert(is_scalar_bool(inclusive))
+      assert(is_valid_log_levels(threshold, self$log_levels))
+      if (is.na(threshold))
+        threshold <- Inf
+
+      if (is.character(threshold))
+        threshold <- unlabel_levels(threshold, self$log_levels)
+
+      assert(is.numeric(threshold))
+
+      if (inclusive){
+        ll <- self$log_levels[self$log_levels >= threshold]
+      } else {
+        ll <- self$log_levels[self$log_levels > threshold]
+      }
+
+      if (is.na(threshold)) threshold <- Inf
+      ll <- self$log_levels[self$log_levels >= threshold]
+
+      for (i in seq_along(private$suspended_loggers)){
+        nm  <- names(private$suspended_loggers)[[i]]
+        self[[nm]] <- private$suspended_loggers[[nm]]
+      }
+      private$suspended_loggers <- list()
+    },
+
+
     handle_exception = NULL,
 
 
@@ -501,7 +561,8 @@ Logger <- R6::R6Class(
       }
 
       assert_valid_log_levels(value)
-      private$suspend(value)
+      self$unsuspend()
+      self$suspend(value, inclusive = FALSE)
 
       private$.threshold <- as.integer(value)
     },
@@ -563,30 +624,6 @@ Logger <- R6::R6Class(
 
   # private -----------------------------------------------------------------
   private = list(
-
-    # +- methods --------------------------------------------------------------
-    suspend = function(
-      level = 0
-    ){
-      # unsuspend all
-      for (i in seq_along(private$suspended_loggers)){
-        nm  <- names(private$suspended_loggers)[[i]]
-        self[[nm]] <- private$suspended_loggers[[nm]]
-      }
-      private$suspended_loggers <- list()
-
-      # suspend loggers above threshold
-      if (is.na(level)) level <- Inf
-      ll <- self$log_levels[self$log_levels > level]
-
-      for (i in seq_along(ll)){
-        nm  <- names(ll)[[i]]
-        lvl <- ll[[i]]
-        private$suspended_loggers[[nm]] <- self[[nm]]
-        self[[nm]] <- function(...) invisible()
-      }
-    },
-
 
     # +- fields ---------------------------------------------------------------
     .propagate = NULL,

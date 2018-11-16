@@ -47,7 +47,7 @@ ml$`default (colors)`$fatal("test")
 exps <- lapply(names(ml), function(x) bquote(ml[[.(x)]]$fatal("blubb")))
 names(exps) = names(ml)
 exps <- c(exps, alist(flog = flog.fatal("test")))
-opts <- list(check = FALSE, min_iterations = 1e3, max_iterations = 1e5)
+opts <- list(check = FALSE)
 
 sink("/dev/null")
 res <- do.call(mark, c(exps, opts))
