@@ -156,7 +156,7 @@ Logger <- R6::R6Class(
       },
       propagate = TRUE
     ){
-      # fields ------------------------------------------------------------
+      # fields
       # active
       self$log_levels <- log_levels
       # threshold must be set *after* the logging functions have been initalized
@@ -170,7 +170,7 @@ Logger <- R6::R6Class(
       self$propagate <- propagate
 
 
-      # init log functions ----------------------------------------------
+      # init log functions
       make_logger <- function(
         level,
         ...
