@@ -26,16 +26,41 @@ Yog is a logging framework for R inspired by
 It is based on [R6 classes](https://github.com/r-lib/R6) that 
 focuses on extensibility, ease of use, and performance
 
-Some key features of yog are:
-
-  * use multiple appenders with custom thresholds for a single logger.
-  
-
 # Basic usage
 
-## Simple logging
 
-Yog comes with a pre-configured root logger included. If you do not care about 
+## Log Levels
+
+Yog supports the standard log4j Log Levels outlined bellow. The Log Level of
+an event represents its severity. Log levels have numeric and character 
+representations. Creation of custom log levels ist not yet supported by yog 
+(but planned for the future).
+
+```{r, echo = FALSE}
+ll <- data.frame(
+  `Level` = c(0, seq(100, 600, by = 100), NA),
+  `Name` = c("off", "fatal", "error", "warn", "info", "debug", "trace", "all"),
+  `Description` = c(
+    "A log level of 0/off tells a Logger or Appender to suspend all logging",
+    "Critical error that leads to program abort. Should always indicate a `stop()` or similar",
+    "A severe error that does not trigger program abort",
+    "A potentially harmful situation, like `warning()`",
+    "An informatinal message on the progress of the application",
+    "Finer grained informational messages that are mostly useful for debugging",
+    "An even finer grained message than debug",
+    "A log level of NA/all tells a Logger or Appender to process all log events"
+  )
+) 
+
+knitr::kable(ll)
+```
+
+
+
+## Simple logging with the Root Logger
+
+
+Yog comes with a pre-configured Root Logger. If you do not care about 
 using multiple loggers, and do not want to deal with R6 classes you still use 
 yog as a performant and easy to use logging solution.
 
@@ -52,8 +77,6 @@ TRACE("Trace is even lower than debug")
 
 ```
 
-
-
 You can also direclty use Logger R6 objects to log. This package comes with a
 default root logger named like the package (`"yog"`). This method of referring
 to the logger is more explicit (and therefore arguably better). The examples
@@ -65,6 +88,8 @@ yog$trace("Trace messages are still hidden")
 yog$threshold <- "trace"
 yog$trace("Unless we lower the threshold")
 ```
+
+## Using Appenders
 
 This only logs to the console. If you want to redirect the output to a file
 you can just add a file appender to yog
@@ -78,12 +103,9 @@ yog$add_appender(AppenderFile$new(file = tf), name = "file")
 
 # configure yog so that it logs everything to the file, but only info and above
 # to the console
-
 yog$threshold <- NA
 yog$appenders$console$threshold <- "info"
 yog$appenders$file$threshold <- NA
-
-
 yog$info("Another informational message")
 yog$debug("A debug message that the console appender doesn't show.")
 
@@ -93,47 +115,51 @@ readLines(tf)
 yog$remove_appender("file")
 ```
 
-## Log Levels
 
-Yog supports the standard log4j log levels outlined bellow. Log levels have
-numeric and character representations. Creation of custom log levels are not 
-yet supported by yog.
-
-```{r, echo = FALSE}
-
-ll <- data.frame(
-  `Level` = seq(100, 600, by = 100),
-  `Name` = c("FATAL", "ERROR", "WARNING", "INFO", "DEBUG", "TRACE"),
-  `Description` = c(
-    "Critical error that leads to program abort. Should always indicate a `stop()` or similar",
-    "A severe error that does not trigger program abort",
-    "A potentially harmful situation, like `warning()`",
-    "An informatinal message on the progress of the application",
-    "Finer grained informational messages that are mostly useful for debugging",
-    "An even finer grained message than debug"
-  )
-) 
-
-knitr::kable(ll)
-
-```
-
-
-
-# Configuring Loggers
-
-
-## Structure
-
-* A **Logger** collects information and dispatches it to the appropriate appenders
-* An **Appender** writes the log message to destination (the console, a file, 
-  a database, etc...)
-* A **Layout** is
 
 
 # Advanced Usage
 
-## Hierarchical Loggers
+If you want custom logging configurations, you have to understand the structure
+of the logging process.
+
+## Structure
+
+* A **Logger** collects information and dispatches it to its *Appenders*, and
+  also the *Appenders* of its *Parent Loggers* (also see the section on 
+  hierarchical logging)
+* An **Appender** writes the log message to destination (the console, a file, 
+  a database, etc...).
+* A **Layout** is used by an *Appender* to format *LogRecords*. For example,
+  `AppenderFile` uses `LayoutFormat` by default to write human readable log
+  events to a text file, but can also use `LayoutJson` produce machine 
+  readable JSON lines logfiles.
+* **LogRecords** are produced by the *Logger* and dispatched to *Appenders* and
+  *Layouts*. 
+
+
+
+
+## Logger Hierarchies
+
+Each newly created Logger is child to a parent Logger. If no parent Logger
+is specified manually during a Logger's creation, its parent is the Root 
+Logger. A logger dispatches the LogRecords it creates not only to its own
+Appenders, but also to the Appenders of all its ancestral Appenders (ignoring
+the threshold and Filters of the ancestral Loggers, but not of the ancestral 
+Appenders).
+
 
 ![](log_flow.svg)
 
+
+
+# Outlook
+
+The following features are planned, but have no fixed release date yet. If they
+are important to you please comment on the approriate issue in the issue tracker
+
+* Custom log levels
+* Arbitrary fields in LogRecords
+* A RollingFileAppender that supports log rotation
+* A Buffered Appender
