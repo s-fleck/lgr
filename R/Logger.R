@@ -111,6 +111,7 @@
 #'
 #' @name Logger
 #' @include Filterable.R
+#' @include log_levels.R
 #' @examples
 #'
 #' # yog includes a pre-configured root logger

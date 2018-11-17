@@ -1,3 +1,11 @@
+is_valid_log_level <- function(x){
+  is_scalar(x) &&
+  is.atomic(x) &&
+  (is.na(x) || is_integerish(x) || x %in% names(log_levels))
+}
+
+
+
 is_valid_log_levels <- function(
   x,
   log_levels = getOption("yog.log_levels")

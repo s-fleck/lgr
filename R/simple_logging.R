@@ -152,24 +152,3 @@ remove_appender <- function(
 
 
 
-#' Title
-#'
-#' @param x
-#'
-#' @return
-#' @export
-#'
-#' @examples
-add_log_levels <- function(
-  x
-){
-  current_lvls <- getOption("yog.log_levels")
-  assert(!is.null(current_lvls))
-  assert(is_valid_log_levels(current_lvls))
-  assert(is_integerish(x) && identical(length(names(x)), length(x)))
-  x <- setNames(as.integer(x), names(x))
-
-  res <- sort(c(current_lvls, x))
-  assert(is_integerish(x) && identical(length(names(x)), length(x)))
-  options(yog.log_levels = res)
-}

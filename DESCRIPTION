@@ -37,6 +37,7 @@ Collate:
     'Appender_experimental.R'
     'Layout.R'
     'LogEvent.R'
+    'log_levels.R'
     'Logger.R'
     'predicates.R'
     'read_json_log.R'
