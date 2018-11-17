@@ -393,13 +393,10 @@ Logger <- R6::R6Class(
       funs <- obsums[grep("function", obsums)]
       funs <- paste0(names(funs), ": ", funs)
 
-      logger_pat <-
-        paste0("(^", c(names(self$log_levels), "log"), ":)", collapse = "|")
-
       sel <- grepl(logger_pat, funs)
       methods <- funs[!sel]
       loggers <- c(
-        paste0(names(self$log_levels), ": function (msg, ...) "),
+        paste0(names(private$.log_levels), ": function (msg, ...) "),
         grep("^log:", funs, value = TRUE)
       )
 
@@ -407,7 +404,6 @@ Logger <- R6::R6Class(
         header,
         paste0(ind, "Fields / Active Bindings:"),
         paste0(ind, ind, "threshold: ",  fmt_threshold(self$threshold)),
-        paste0(ind, ind, "log_levels: ", sls(self$log_levels)),
         paste0(ind, ind, "string_formatter: ", sls(self$string_formatter)),
         paste0(ind, ind, "user: ", self$user),
         paste0(ind, ind, "propagate:", self$propagate),
@@ -473,11 +469,6 @@ Logger <- R6::R6Class(
       private$.threshold <- as.integer(value)
     },
 
-
-    log_levels = function(
-    ){
-      private$.log_levels
-    },
 
     ancestral_appenders = function(){
       if (self$propagate){
@@ -552,9 +543,9 @@ Logger <- R6::R6Class(
       assert(is.numeric(threshold))
 
       if (inclusive){
-        ll <- self$log_levels[self$log_levels >= threshold]
+        ll <- private$.log_levels[private$.log_levels >= threshold]
       } else {
-        ll <- self$log_levels[self$log_levels > threshold]
+        ll <- private$.log_levels[private$.log_levels > threshold]
       }
 
       for (i in seq_along(ll)){
@@ -571,23 +562,23 @@ Logger <- R6::R6Class(
       inclusive = TRUE
     ){
       assert(is_scalar_bool(inclusive))
-      assert(is_valid_log_levels(threshold, self$log_levels))
+      assert(is_valid_log_levels(threshold, private$.log_levels))
       if (is.na(threshold))
         threshold <- Inf
 
       if (is.character(threshold))
-        threshold <- unlabel_levels(threshold, self$log_levels)
+        threshold <- unlabel_levels(threshold, private$.log_levels)
 
       assert(is.numeric(threshold))
 
       if (inclusive){
-        ll <- self$log_levels[self$log_levels >= threshold]
+        ll <- private$.log_levels[private$.log_levels >= threshold]
       } else {
-        ll <- self$log_levels[self$log_levels > threshold]
+        ll <- private$.log_levels[private$.log_levels > threshold]
       }
 
       if (is.na(threshold)) threshold <- Inf
-      ll <- self$log_levels[self$log_levels >= threshold]
+      ll <- private$.log_levels[private$.log_levels >= threshold]
 
       for (i in seq_along(private$suspended_loggers)){
         nm  <- names(private$suspended_loggers)[[i]]
@@ -606,7 +597,10 @@ Logger <- R6::R6Class(
     .user = NA_character_,
     .threshold = 4L,
     .string_formatter = NULL,
-    .log_levels = as_log_levels(c(  # intentionaly hardcoded and not using the option
+
+    # intentionaly hardcoded and not using the global options. this is used to
+    # track which logging functions are available for the logger
+    .log_levels = as_log_levels(c(
       "fatal" = 100L,
       "error" = 200L,
       "warn"  = 300L,
