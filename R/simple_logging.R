@@ -148,7 +148,3 @@ remove_appender <- function(
 ){
   target$remove_appender(appender)
 }
-
-
-
-
