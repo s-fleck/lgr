@@ -25,12 +25,12 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.39553872"
-     inkscape:cx="95.717776"
-     inkscape:cy="248.68451"
+     inkscape:zoom="0.27968811"
+     inkscape:cx="-520.5134"
+     inkscape:cy="564.45471"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
-     showgrid="true"
+     showgrid="false"
      inkscape:snap-grids="true"
      inkscape:snap-to-guides="false"
      inkscape:snap-global="true"
@@ -60,7 +60,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -83,7 +83,7 @@
        inkscape:flatsided="true"
        inkscape:rounded="0"
        inkscape:randomized="0"
-       d="M 101.6,142.88445 41.850979,108.38834 41.850977,39.396117 101.6,4.9000023 l 59.74902,34.4961117 0,68.992226 z"
+       d="M 101.6,142.88445 41.850979,108.38834 41.850977,39.396116 101.6,4.9000015 l 59.74902,34.4961115 0,68.992227 z"
        inkscape:transform-center-x="1.3178224e-05"
        transform="matrix(1.0668154,0,0,1.0737925,-2.5551085,16.57175)" />
     <ellipse
@@ -107,5 +107,21 @@
        cy="95.916672"
        rx="9.9722481"
        ry="9.9722471" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:23.80923843px;line-height:125%;font-family:'Bitstream Charter';-inkscape-font-specification:'Bitstream Charter, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#aa4400;fill-opacity:1;stroke:none;stroke-width:0.5952298px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
+       x="79.276268"
+       y="106.77122"
+       id="text827"
+       transform="scale(1.031384,0.96957099)"><tspan
+         sodipodi:role="line"
+         id="tspan825"
+         x="79.276268"
+         y="106.77122"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:23.80923843px;font-family:'Bitstream Charter';-inkscape-font-specification:'Bitstream Charter, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#aa4400;stroke-width:0.5952298px;"><tspan
+   style="fill:#803300"
+   id="tspan829">Y</tspan>O<tspan
+   style="fill:#803300"
+   id="tspan831">G</tspan></tspan></text>
   </g>
 </svg>
