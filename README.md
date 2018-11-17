@@ -1,4 +1,4 @@
-# yog <img src="man/figures/yog-logo.svg" align="right" width=160 height=160/>
+# yog <img src="man/figures/yog-logo-plain.svg" align="right" width=160 height=160/>
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 

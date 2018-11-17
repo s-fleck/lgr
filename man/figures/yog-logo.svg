@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.27968811"
-     inkscape:cx="-520.5134"
-     inkscape:cy="564.45471"
+     inkscape:zoom="1"
+     inkscape:cx="317.9674"
+     inkscape:cy="440.34229"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -60,7 +60,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -87,21 +87,22 @@
        inkscape:transform-center-x="1.3178224e-05"
        transform="matrix(1.0668154,0,0,1.0737925,-2.5551085,16.57175)" />
     <ellipse
-       style="opacity:0.98999999;fill:#ff9955;fill-opacity:0.98173517;stroke:none;stroke-width:0.27437201;stroke-opacity:1"
+       style="opacity:0.98999999;fill:#ff9955;fill-opacity:0.98173517;stroke:none;stroke-width:0.29107457;stroke-opacity:1"
        id="path4786-3"
        cx="-105.83334"
        cy="95.916672"
        transform="scale(-1,1)"
-       rx="49.172718"
-       ry="49.417362" />
-    <circle
-       style="opacity:0.98999999;fill:#d45500;fill-opacity:0.98173517;stroke:none;stroke-width:0.16651456;stroke-opacity:1"
+       rx="52.166138"
+       ry="52.425674" />
+    <ellipse
+       style="opacity:0.98999999;fill:#d45500;fill-opacity:0.98173517;stroke:none;stroke-width:0.17827716;stroke-opacity:1"
        id="path4786"
        cx="105.83334"
        cy="95.916672"
-       r="29.916742" />
+       rx="32.2043"
+       ry="31.856768" />
     <ellipse
-       style="opacity:0.98999999;fill:#803300;fill-opacity:0.98173517;stroke:#a02c2c;stroke-width:0.05550486;stroke-opacity:1"
+       style="opacity:0.98999999;fill:#552200;fill-opacity:0.98173517;stroke:#a02c2c;stroke-width:0.05550486;stroke-opacity:1"
        id="path4786-6-0"
        cx="105.83334"
        cy="95.916672"
@@ -109,19 +110,24 @@
        ry="9.9722471" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:23.80923843px;line-height:125%;font-family:'Bitstream Charter';-inkscape-font-specification:'Bitstream Charter, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#aa4400;fill-opacity:1;stroke:none;stroke-width:0.5952298px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
-       x="79.276268"
-       y="106.77122"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:23.80923843px;line-height:125%;font-family:'Bitstream Charter';-inkscape-font-specification:'Bitstream Charter, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#803300;fill-opacity:1;stroke:none;stroke-width:0.5952298px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="77.086662"
+       y="106.90302"
        id="text827"
        transform="scale(1.031384,0.96957099)"><tspan
          sodipodi:role="line"
          id="tspan825"
-         x="79.276268"
-         y="106.77122"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:23.80923843px;font-family:'Bitstream Charter';-inkscape-font-specification:'Bitstream Charter, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#aa4400;stroke-width:0.5952298px;"><tspan
-   style="fill:#803300"
-   id="tspan829">Y</tspan>O<tspan
-   style="fill:#803300"
-   id="tspan831">G</tspan></tspan></text>
+         x="77.086662"
+         y="106.90302"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:23.80923843px;font-family:'Bitstream Charter';-inkscape-font-specification:'Bitstream Charter, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#aa4400;stroke-width:0.5952298px"
+         dx="0 1.7"><tspan
+           style="fill:#803300"
+           id="tspan875"
+           dx="0 0 1.8"><tspan
+             id="tspan909"
+             style="fill:#552200">Y<tspan
+   style="fill:#aa4400"
+   id="tspan913"
+   dx="2">O</tspan>G</tspan></tspan></tspan></text>
   </g>
 </svg>
