@@ -46,3 +46,9 @@ slim, stable, have minimal dependencies, and are well mentained:
 ``` r
 devtools::install.github("s-fleck/yog")
 ```
+
+
+## Acknowledgements
+
+* [Inkscape](https://inkscape.org/) for the hex sticker
+* [draw.io](https://draw.io/) for the flow chart in the vignette
