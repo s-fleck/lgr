@@ -30,9 +30,24 @@ assert_valid_log_levels <- function(
 
 
 
-assert_valid_threshold <- function(x, log_levels = getOption("yog.log_levels"), msg = ""){
+is_valid_threshold <- function(
+  x,
+  log_levels = getOption("yog.log_levels")
+){
+  is.na(x) ||
+  is_scalar_integerish(x) ||
+  (is_scalar_character(x) && x %in% names(log_levels))
+}
+
+
+
+assert_valid_threshold <- function(
+  x,
+  log_levels = getOption("yog.log_levels"),
+  msg = ""
+){
   assert(
-    !is.na(x) && is_scalar_integerish(x),
+    is_valid_threshold(x, log_levels = log_levels),
     msg,
     "'x' must either the numeric or character representation of one of the following log levels: ",
     paste(sprintf("%s (%s)", names(log_levels), log_levels), collapse = ", ")

@@ -76,10 +76,11 @@ Appender <- R6::R6Class(
   active = list(
     threshold = function(value){
       if (missing(value)) return(private$.threshold)
-      if (is_scalar_character(value)){
+      assert_valid_threshold(value)
+
+      if (is_scalar_character(value))
         value <- unlabel_levels(value)
-      }
-      is.na(value) || assert_valid_threshold(value)
+
       private$.threshold <- as.integer(value)
     },
 

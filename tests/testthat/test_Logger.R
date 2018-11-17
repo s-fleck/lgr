@@ -50,15 +50,36 @@ test_that("basic logging", {
 
 
 
+test_that("setting appender threshold works", {
+  lg <- Logger$new("dummy", appenders = AppenderConsole$new())
+  lg$threshold <- 200
+  expect_identical(lg$threshold, 200L)
+  lg$threshold <- "info"
+  expect_identical(lg$threshold, 400L)
+  lg$threshold <- NA
+  expect_identical(lg$threshold, NA_integer_)
+  expect_error(lg$threshold <- "blubb", "log levels")
+
+  # test if setting for appenders of a logger also works as this is somewhat tricky
+  lg$appenders[[1]]$threshold <- NA
+  expect_identical(lg$appenders[[1]]$threshold, NA_integer_)
+  lg$appenders[[1]]$threshold <- 300
+  expect_identical(lg$appenders[[1]]$threshold, 300L)
+  lg$appenders[[1]]$threshold <- "info"
+  expect_identical(lg$appenders[[1]]$threshold, 400L)
+  expect_error(lg$appenders[[1]]$threshold <- "blubb", "log levels")
+})
+
+
+
 test_that("suspending loggers works", {
   ml <- Logger$new("test_logger")
 
   expect_output(ml$info("blubb"), "blubb")
-  ml$suspend("info", inclusive = TRUE)
+  ml$.__enclos_env__$private$suspend("info", inclusive = TRUE)
   expect_silent(ml$info("blubb"))
-  ml$unsuspend("info", inclusive = TRUE)
+  ml$.__enclos_env__$private$unsuspend("info", inclusive = TRUE)
   expect_output(ml$info("blubb"), "blubb")
-
 
   expect_output(ml$fatal("blubb"), "FATAL")
   x <- capture.output(ml$fatal("blubb"))

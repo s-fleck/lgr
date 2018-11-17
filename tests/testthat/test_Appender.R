@@ -17,6 +17,21 @@ test_that("dummy Appender works as expected", {
 })
 
 
+test_that("setting appender threshold works", {
+  app <- Appender$new()
+  app$threshold <- 200
+  expect_identical(app$threshold, 200L)
+
+  app$threshold <- "info"
+  expect_identical(app$threshold, 400L)
+
+  app$threshold <- NA
+  expect_identical(app$threshold, NA_integer_)
+
+  expect_error(app$threshold <- "blubb", "log levels")
+})
+
+
 
 
 test_that("dummy AppenderFormat works as expected", {

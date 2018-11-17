@@ -254,66 +254,6 @@ Logger <- R6::R6Class(
     },
 
 
-    suspend = function(
-      threshold = 0,
-      inclusive = TRUE
-    ){
-      assert(is_scalar_bool(inclusive))
-      assert(is_valid_log_levels(threshold))
-      if (is.na(threshold))
-        threshold <- Inf
-
-      if (is.character(threshold))
-        threshold <- unlabel_levels(threshold)
-
-      assert(is.numeric(threshold))
-
-      if (inclusive){
-        ll <- self$log_levels[self$log_levels >= threshold]
-      } else {
-        ll <- self$log_levels[self$log_levels > threshold]
-      }
-
-      for (i in seq_along(ll)){
-        nm  <- names(ll)[[i]]
-        lvl <- ll[[i]]
-        private$suspended_loggers[[nm]] <- self[[nm]]
-        self[[nm]] <- function(...) invisible()
-      }
-    },
-
-
-    unsuspend = function(
-      threshold = 0,
-      inclusive = TRUE
-    ){
-      assert(is_scalar_bool(inclusive))
-      assert(is_valid_log_levels(threshold, self$log_levels))
-      if (is.na(threshold))
-        threshold <- Inf
-
-      if (is.character(threshold))
-        threshold <- unlabel_levels(threshold, self$log_levels)
-
-      assert(is.numeric(threshold))
-
-      if (inclusive){
-        ll <- self$log_levels[self$log_levels >= threshold]
-      } else {
-        ll <- self$log_levels[self$log_levels > threshold]
-      }
-
-      if (is.na(threshold)) threshold <- Inf
-      ll <- self$log_levels[self$log_levels >= threshold]
-
-      for (i in seq_along(private$suspended_loggers)){
-        nm  <- names(private$suspended_loggers)[[i]]
-        self[[nm]] <- private$suspended_loggers[[nm]]
-      }
-      private$suspended_loggers <- list()
-    },
-
-
     handle_exception = NULL,
 
 
@@ -521,20 +461,13 @@ Logger <- R6::R6Class(
 
 
     threshold = function(value){
-      if (missing(value))
-        return(private$.threshold)
+      if (missing(value))  return(private$.threshold)
 
-      if (is.na(value)){
-        value <- NA_integer_
+      assert_valid_threshold(value)
+      if (is_scalar_character(value))  value <- unlabel_levels(value)
 
-      } else if (is_scalar_character(value)) {
-        assert_valid_log_levels(value)
-        value <- unlabel_levels(value, log_levels = self$log_levels)
-      }
-
-      assert_valid_log_levels(value)
-      self$unsuspend()
-      self$suspend(value, inclusive = FALSE)
+      private$unsuspend()
+      private$suspend(value, inclusive = FALSE)
 
       private$.threshold <- as.integer(value)
     },
@@ -601,6 +534,67 @@ Logger <- R6::R6Class(
 
   # private -----------------------------------------------------------------
   private = list(
+
+    # +- methods --------------------------------------------------------------
+    suspend = function(
+      threshold = 0,
+      inclusive = TRUE
+    ){
+      assert(is_scalar_bool(inclusive))
+      assert(is_valid_log_levels(threshold))
+      if (is.na(threshold))
+        threshold <- Inf
+
+      if (is.character(threshold))
+        threshold <- unlabel_levels(threshold)
+
+      assert(is.numeric(threshold))
+
+      if (inclusive){
+        ll <- self$log_levels[self$log_levels >= threshold]
+      } else {
+        ll <- self$log_levels[self$log_levels > threshold]
+      }
+
+      for (i in seq_along(ll)){
+        nm  <- names(ll)[[i]]
+        lvl <- ll[[i]]
+        private$suspended_loggers[[nm]] <- self[[nm]]
+        self[[nm]] <- function(...) invisible()
+      }
+    },
+
+
+    unsuspend = function(
+      threshold = 0,
+      inclusive = TRUE
+    ){
+      assert(is_scalar_bool(inclusive))
+      assert(is_valid_log_levels(threshold, self$log_levels))
+      if (is.na(threshold))
+        threshold <- Inf
+
+      if (is.character(threshold))
+        threshold <- unlabel_levels(threshold, self$log_levels)
+
+      assert(is.numeric(threshold))
+
+      if (inclusive){
+        ll <- self$log_levels[self$log_levels >= threshold]
+      } else {
+        ll <- self$log_levels[self$log_levels > threshold]
+      }
+
+      if (is.na(threshold)) threshold <- Inf
+      ll <- self$log_levels[self$log_levels >= threshold]
+
+      for (i in seq_along(private$suspended_loggers)){
+        nm  <- names(private$suspended_loggers)[[i]]
+        self[[nm]] <- private$suspended_loggers[[nm]]
+      }
+      private$suspended_loggers <- list()
+    },
+
 
     # +- fields ---------------------------------------------------------------
     .propagate = NULL,
