@@ -1,9 +1,9 @@
-# Yog
+# yog <img src="man/figures/yog-logo.svg" align="right" width=160 height=160/>
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-yog is yet another logging package for R that is build on the back of
-R6. It is heavily inspired by 
+yog is yet another logging package for R. It is built on the back of
+[R6](https://github.com/r-lib/R6) and heavily inspired by 
 [Apache Log4j](https://logging.apache.org/log4j/2.x/) and 
 [Python logging](https://docs.python.org/3/library/logging.html).
 
@@ -12,6 +12,7 @@ R6. It is heavily inspired by
 * An arbitrary number of appenders for each logger. A single logger can write
   values to the console, logfile, database, etc... . Each appender has its
   own logging threshold.
+* Hierarchical loggers like in log4j and python logging.
 * Vectorized logging (so `yog$fatal(capture.output(iris))` works)
 * Lightning fast in-memory appender based in `data.table` included for 
   interactive use and (in the future possible) cached appending
