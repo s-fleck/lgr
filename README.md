@@ -47,6 +47,14 @@ slim, stable, have minimal dependencies, and are well mentained:
 devtools::install.github("s-fleck/yog")
 ```
 
+## Outlook
+
+The long term goal is to support (nearly) all features of the python logging
+module. Feel free to add a feature request to the issue tracker if you require
+something special.
+
+
+
 
 ## Acknowledgements
 
