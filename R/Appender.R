@@ -107,30 +107,12 @@ Appender <- R6::R6Class(
 
 
 
-
-# AppenderFormat ----------------------------------------------------------
-
-AppenderFormat <- R6::R6Class(
-  "AppenderFormat",
-  inherit = Appender,
-  public = list(
-    initialize = function(
-      threshold = NA,
-      layout = LayoutFormat$new()
-    ){
-      self$threshold <- threshold
-      self$layout    <- layout
-    }
-  )
-)
-
-
 # AppenderConsole ---------------------------------------------------------
 
 #' @export
 AppenderConsole <- R6::R6Class(
   "AppenderConsole",
-  inherit = AppenderFormat,
+  inherit = Appender,
   public = list(
     initialize = function(
       threshold = NA_integer_,
@@ -163,7 +145,7 @@ AppenderConsole <- R6::R6Class(
 #' @export
 AppenderFile <- R6::R6Class(
   "AppenderFile",
-  inherit = AppenderConsole,
+  inherit = Appender,
   public = list(
     initialize = function(
       file,
@@ -488,7 +470,7 @@ AppenderRotatingDate <- R6::R6Class(
 #' @export
 AppenderMemoryDt <- R6::R6Class(
   "AppenderMemoryDt",
-  inherit = AppenderFormat,
+  inherit = Appender,
   public = list(
     initialize = function(
       threshold = NA_integer_,

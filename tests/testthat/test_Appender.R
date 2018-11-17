@@ -33,14 +33,6 @@ test_that("setting appender threshold works", {
 
 
 
-test_that("dummy AppenderFormat works as expected", {
-  app <- AppenderFormat$new()
-  expect_match(app$append(x), "ERROR \\[2018-11-02 17:19:33.*\\] foo bar")
-})
-
-
-
-
 test_that("AppenderFile works as expected", {
   tf <- tempfile()
 
