@@ -1,6 +1,21 @@
+#' Layouts
+#'
+#' Layouts get a [LogEvent] passed down from an [Appender], and format them
+#' for output. How this formatting works exactly varries widely. For example
+#' for file or console output the log event is usually formatted into a single
+#' character line.
+#'
+#' @name Layout
+#' @aliases Layouts
+#' @family Layouts
 #' @include print.R
 #' @include utils.R
 #' @include utils-sfmisc.R
+#' @include Filterable.R
+NULL
+
+
+
 
 # Layout ------------------------------------------------------------------
 

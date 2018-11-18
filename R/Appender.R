@@ -36,12 +36,6 @@ Appender <- R6::R6Class(
 
     append = function(event){
       private$.layout$format_event(event)
-    },
-
-
-    print = function(..., colors = TRUE){
-      cat(format(x = self, ..., colors = colors), "\n")
-      invisible(self)
     }
   ),
 
