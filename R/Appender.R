@@ -24,8 +24,8 @@ Appender <- R6::R6Class(
       self$threshold <- threshold
     },
 
-    append = function(x){
-      private$.layout$format_event(x)
+    append = function(event){
+      private$.layout$format_event(event)
     },
 
 
@@ -92,8 +92,8 @@ AppenderConsole <- R6::R6Class(
       self$layout <- layout
     },
 
-    append = function(x){
-      cat(private$.layout$format_event(x), sep = "\n")
+    append = function(event){
+      cat(private$.layout$format_event(event), sep = "\n")
       return(invisible())
     }
   ),
@@ -127,9 +127,9 @@ AppenderFile <- R6::R6Class(
       self$layout <- layout
     },
 
-    append = function(x){
+    append = function(event){
       cat(
-        private$.layout$format_event(x),
+        private$.layout$format_event(event),
         sep = "\n", file = private$.file, append = TRUE
       )
       return(invisible())
@@ -212,10 +212,10 @@ AppenderMemoryDt <- R6::R6Class(
     },
 
 
-    append = function(x){
-      # could just use as.list[,c(...)] but mget has a bit less overhead
-      #vals <- mget(c("level", "timestamp", "caller", "msg"), x)
-      vals <- x[["values"]]
+    append = function(
+      event
+    ){
+      vals <- event[["values"]]
       lengths <- vapply(vals, length, integer(1), USE.NAMES = FALSE)
       lenmax  <- max(lengths)
       assert(all(lengths %in% c(1, lenmax)))
