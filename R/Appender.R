@@ -1,12 +1,22 @@
+#' Appenders
+#'
+#' Appenders get a [LogEvent] passed down from a [Logger], format them using
+#' a [Layout] and ultimately write them to a destination (the console, a file,
+#' ...).
+#'
+#' @name Appender
+#' @aliases Appenders
 #' @include print.R
 #' @include utils.R
 #' @include utils-sfmisc.R
 #' @include Filterable.R
+NULL
+
+
+
 
 # Appender ----------------------------------------------------------------
 
-
-#' @aliases Appenders
 #' @export
 Appender <- R6::R6Class(
   "Appender",
@@ -110,8 +120,6 @@ AppenderConsole <- R6::R6Class(
 
 # AppenderFile ------------------------------------------------------------
 
-#' @inheritParams cat
-#'
 #' @export
 AppenderFile <- R6::R6Class(
   "AppenderFile",
@@ -159,8 +167,6 @@ AppenderFile <- R6::R6Class(
 
 # AppenderMemory ----------------------------------------------------------
 
-
-#' @include utils.R utils-sfmisc.R
 #' @export
 AppenderMemoryDt <- R6::R6Class(
   "AppenderMemoryDt",

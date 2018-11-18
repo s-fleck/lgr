@@ -46,7 +46,7 @@ logging in the `yog` main vignette).
 The out-of-the-box setup for the Root Logger is minimal to make it easy
 to use for newcommers. I prefer to set up my logger like this:
 
-```{r}
+```{r, eval = FALSE}
 yog$add_appender()
 ```
 

@@ -1,16 +1,12 @@
 #' Loggers
 #'
-#' * A Logger records the log message and some metadata (timestamp,
-#'   calling function) as a [LogEvent]
-#' * Several [Appenders] can be attached to Loggers to write events to a
-#'   destination, for example the console or a text file (a Logger without
-#'   Appenders does nothing useful).
-#' * A [Layout] is used by the Appender to convert the LogEvent to the
-#'   appropriate Format for output.
-#' * **Log levels** reflect the importance of a log event. Loggers and
-#'   Appenders have a **thresholds**, that is the minimum log level that will
-#'   be processed by said Logger/Appender.
-#'
+#' A Logger records the log message and some metadata (timestamp,
+#' calling function) as a [LogEvent] and passes this event on to one or
+#' several [Appenders] that write the event to a destination (a file,
+#' the console, ...). All Loggers of an R session are in a hierarchical
+#' structure, and each Logger (except the Root Looger) passes on LogEvents to
+#' the Appenders of it ancestral Loggers. See
+#' [`vignette("yog", package = "yog")`] for more info.
 #'
 #' @section Usage:
 #'
@@ -31,15 +27,15 @@
 #'  l$filter(event)
 #'
 #' # fields / active bindings
+#'  l$name
+#'  l$threshold
 #'  l$appenders
+#'  l$parent
+#'  l$propagate
 #'  l$ancestry
 #'  l$ancestral_appenders
 #'  l$filters
 #'  l$last_event
-#'  l$name
-#'  l$parent
-#'  l$propagate
-#'  l$threshold
 #'  l$user
 #'
 #' ```
@@ -49,7 +45,7 @@
 #' If you want logging for a Project (f.e a Package you are developing) that is
 #' separate from the global logging, you can create a new logger with
 #' `Logger$new()`. If you just want to add different outputs (for example
-#' logfiles) to the root logger, look into [Appenders].
+#' logfiles) to the Root Logger, look into [Appenders].
 #'
 #' \describe{
 #'   \item{name}{`character` scalar. Name of the Logger. Should be unique amongst
@@ -152,6 +148,7 @@
 #' }
 #'
 #' @name Logger
+#' @aliases Loggers
 #' @include Filterable.R
 #' @include log_levels.R
 #' @examples
