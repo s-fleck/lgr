@@ -237,7 +237,7 @@ LayoutJSON <- R6::R6Class(
   active = list(
     other_vals = function(value){
       if (missing(value)) return(private$.other_vals)
-      assert(is.list(value))
+      assert(is.list(value) || is.null(value))
       assert(identical(length(names(value)), length(value)))
       private$.other_vals <- value
     }

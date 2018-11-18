@@ -6,14 +6,6 @@ context("Logger")
 test_that("active bindings", {
   ml <- Logger$new("test_logger")
 
-  expect_identical(
-    ml$log_levels,
-    structure(
-      setNames(seq(100L, 600L, by = 100L), c("fatal", "error", "warn", "info", "debug", "trace")),
-      class = c("log_levels", "integer")
-    )
-  )
-
   expect_silent(ml$threshold <- 5)
   expect_identical(ml$threshold, 5L)
   expect_silent(ml$threshold <- "fatal")
@@ -25,8 +17,6 @@ test_that("active bindings", {
   expect_silent(ml$user <- "blubb")
   expect_identical(ml$user, "blubb")
   expect_error(ml$user <- 5, "'user'")
-
-  expect_true(is.function(ml$string_formatter))
 })
 
 

@@ -1,10 +1,6 @@
-
+#' @include utils.R utils-sfmisc.R
 
 # AppenderRotating ----------------------------------------------------
-
-#' @inheritParams cat
-#'
-#' @export
 AppenderRotating <- R6::R6Class(
   "AppenderRotating",
   inherit = AppenderFile,
@@ -140,12 +136,6 @@ AppenderRotating <- R6::R6Class(
 
 
 # AppenderRotatingDate ----------------------------------------------------
-
-
-
-#' @inheritParams cat
-#'
-#' @export
 AppenderRotatingDate <- R6::R6Class(
   "AppenderRotatingDate",
   inherit = AppenderRotating,
@@ -283,9 +273,6 @@ AppenderRotatingDate <- R6::R6Class(
 
 
 # AppenderMemoryDtBuffer --------------------------------------------------
-
-#' @include utils.R utils-sfmisc.R
-#' @export
 AppenderMemoryBufferDt <- R6::R6Class(
   "AppenderMemoryBufferDt",
   inherit = AppenderMemoryDt,

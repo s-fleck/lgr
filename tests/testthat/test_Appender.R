@@ -1,15 +1,20 @@
 context("appenders")
 
 
-x <- LogEvent$new(logger = Logger$new("dummy"))
-x[["level"]] <- 200L
-x[["timestamp"]] <- structure(1541175573.9308, class = c("POSIXct", "POSIXt"))
-x[["caller"]] <- NA_character_
-x[["msg"]] <- "foo bar"
+
+
+x <- LogEvent$new(
+  logger = Logger$new("dummy"),
+  level = 200L,
+  timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
+  caller = NA_character_,
+  msg = "foo bar"
+)
 
 
 
 
+# Appender --------------------------------------------------------------------
 test_that("dummy Appender works as expected", {
   app <- Appender$new()
   expect_match(app$append(x), "foo bar")
@@ -33,6 +38,7 @@ test_that("setting appender threshold works", {
 
 
 
+# AppenderFile ---------------------------------------------------------
 test_that("AppenderFile works as expected", {
   tf <- tempfile()
 
@@ -60,6 +66,8 @@ test_that("AppenderFile works as expected", {
 
 
 
+
+# AppenderConsole ---------------------------------------------------------
 
 test_that("AppenderConsole works as expected", {
   app <- AppenderConsole$new()
@@ -100,6 +108,7 @@ test_that("AppenderMemory: appending multiple rows works", {
 # AppenderMemoryBuffer ----------------------------------------------------
 
 test_that("AppenderMemoryBufferDt: appending multiple rows works", {
+  skip("experimental")
   tf <- tempfile()
 
   # Sub sub appenders must have a reference to the original logger
@@ -201,7 +210,10 @@ test_that("Appender: filters work", {
 
 
 
+# AppenderRotating --------------------------------------------------------
+
 test_that("AppenderRotating works as expected", {
+  skip("experimental")
   td <- tempdir()
   tf <- file.path(td, "logtest")
 
@@ -238,6 +250,7 @@ test_that("AppenderRotating works as expected", {
 
 
 test_that("AppenderRotating works as expected wiht compress option enabled", {
+  skip("experimental")
   td <- tempdir()
   tf <- file.path(td, "logtest")
 
@@ -282,7 +295,11 @@ test_that("AppenderRotating works as expected wiht compress option enabled", {
 
 
 
+# AppenderRotatingDate ----------------------------------------------------
+
 test_that("AppenderRotatingDate works as expected", {
+  skip("experimental")
+
   td <- tempdir()
   tf <- file.path(td, "logtest")
   file.remove(list.files(td, pattern = "logtest", full.names = TRUE))

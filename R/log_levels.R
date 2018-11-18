@@ -40,20 +40,20 @@ add_log_levels <- function(
 
 
 
-#' @param name a `character` vector of the names of the levels to remove
+#' @param names a `character` vector of the names of the levels to remove
 #' @rdname get_log_levels
 #' @export
 remove_log_levels <- function(
-  name
+  level_names
 ){
-  assert(is.character(x))
+  assert(is.character(level_names))
   assert(
-    !any(c("fatal", "error", "warn", "info", "debug", "trace") %in% x),
+    !any(c("fatal", "error", "warn", "info", "debug", "trace") %in% level_names),
     "Cannot remove default log levels"
   )
   current_lvls <- getOption("yog.log_levels")
-  assert(all(x) %in% names(current_lvls))
-  res <- current_lvls[!names(current_lvls) %in% x]
+  assert(all(level_names %in% names(current_lvls)))
+  res <- current_lvls[!names(current_lvls) %in% level_names]
   res <- as_log_levels(res)
   options(yog.log_levels = res)
   invisible(get_log_levels())
