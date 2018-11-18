@@ -1,6 +1,3 @@
-
-
-
 #' Loggers
 #'
 #' * A Logger records the log message and some metadata (timestamp,
