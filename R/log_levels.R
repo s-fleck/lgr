@@ -75,14 +75,8 @@ as_log_levels <- function(x){
 
 
 
-
-
-
-
 format_log_levels <- function(
   x
 ){
   paste0(names(sort(x)), " (", sort(x), ")", collapse = ", ")
 }
-
-

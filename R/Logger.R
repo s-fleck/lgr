@@ -15,7 +15,6 @@
 #'   be processed by said Logger/Appender.
 #'
 #'
-#'
 #' @section Usage:
 #'
 #' ```
@@ -29,16 +28,22 @@
 #'  l$debug(msg, ...)
 #'  l$trace(msg, ...)
 #'  l$log(level, msg, timestamp = Sys.time(), caller = get_caller())
-#'
-#'  l$filter(x)
-#'
+#'  l$add_appender(appender, name = NULL)
+#'  l$remove_appender(pos)
+#'  l$handle_exception(e)
+#'  l$filter(record)
 #'
 #' # fields / active bindings
-#'  l$threshold
 #'  l$appenders
-#'  l$ancestral_appenders  # inherited appenders
-#'  l$last_event
+#'  l$ancestry
+#'  l$ancestral_appenders
 #'  l$filters
+#'  l$last_event
+#'  l$name
+#'  l$parent
+#'  l$propagate
+#'  l$threshold
+#'  l$user
 #'
 #' ```
 #'
@@ -173,6 +178,10 @@
 #' mylogger$fatal("blubb")
 #' readLines(tf)
 #'
+NULL
+
+
+
 #' @export
 Logger <- R6::R6Class(
   "Logger",

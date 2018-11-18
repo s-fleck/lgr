@@ -5,9 +5,9 @@ Filterable <- R6::R6Class(
   cloneable = FALSE,
 
   public = list(
-    filter = function(x){
+    filter = function(record){
       for (f in private$.filters) {
-        if (!identical(f(x, self), TRUE)) return(FALSE)
+        if (!identical(f(record, self), TRUE)) return(FALSE)
       }
       TRUE
     }
@@ -42,8 +42,8 @@ is_filter <- function(
 
 
 check_threshold <- function(
-  x,
+  record,
   self
 ){
-  is.na(self$threshold) || x[["level"]] <= self$threshold
+  is.na(self$threshold) || record[["level"]] <= self$threshold
 }
