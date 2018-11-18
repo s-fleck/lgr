@@ -148,3 +148,23 @@ remove_appender <- function(
 ){
   target$remove_appender(appender)
 }
+
+
+
+
+
+show = function(
+  n = 20,
+  threshold = NA,
+  logger = yog::yog
+){
+  sel <- vapply(self$appenders, inherits, TRUE, "AppenderMemoryDt")
+
+  if (!any(sel)){
+    message("This logger has no memory appender (see ?AppenderMemoryDt)")
+    return(invisible())
+
+  } else {
+    self$appenders[sel][[1]]$show(n = n, threshold = threshold)
+  }
+}

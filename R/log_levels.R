@@ -71,3 +71,18 @@ as_log_levels <- function(x){
   x <- setNames(as.integer(x), names(x))
   structure(sort(x), class = c("log_levels", "integer"))
 }
+
+
+
+
+
+
+
+
+format_log_levels <- function(
+  x
+){
+  paste0(names(sort(x)), " (", sort(x), ")", collapse = ", ")
+}
+
+

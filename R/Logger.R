@@ -30,8 +30,6 @@
 #'  l$trace(msg, ...)
 #'  l$log(level, msg, timestamp = Sys.time(), caller = get_caller())
 #'
-#'  l$suspend()
-#'  l$unsuspend()
 #'  l$filter(x)
 #'
 #'
@@ -52,7 +50,7 @@
 #' logfiles) to the root logger, look into [Appenders].
 #'
 #' \describe{
-#'   \item{name}{`character` scalar. Name of the Logger. Must be unique amongst
+#'   \item{name}{`character` scalar. Name of the Logger. Should be unique amongst
 #'     Loggers. If you define a logger for an R Package, the logger should have
 #'     the same name as the Package.}
 #'   \item{appenders}{`list` of [Appender]s. The appenders used by this logger
@@ -61,10 +59,6 @@
 #'     that triggers this logger}
 #'   \item{user}{`character` scalar. The current user name or email adress.
 #'     This information can be used by the appenders}
-#'   \item{log_levels}{named `integer` vector. The log levels supported by this
-#'     Logger. It is not recommended to modify the default log levels and this
-#'     feature is still experimental. Please file an issue in the yog issue
-#'     tracker if you require this feature.}
 #'   \item{parent}{a `Logger`. Usually the Root logger. All Loggers must be
 #'     descentents of the Root logger for yog to work as intended.}
 #'
@@ -78,41 +72,89 @@
 #'  }
 #'
 #'
+#' @section Methods:
+#'
+#' \describe{
+#'   \item{`fatal(msg, ...)`}{Logs a message with level `FATAL` on this logger.
+#'     The arguments are interpreted as for `trace()`.}
+#'
+#'   \item{`error(msg, ...)`}{Logs a message with level `ERROR` on this logger.
+#'     The arguments are interpreted as for `trace()`.}
+#'
+#'   \item{`warn(msg, ...)`}{Logs a message with level `WARN` on this logger.
+#'     The arguments are interpreted as for `trace()`.}
+#'
+#'   \item{`info(msg, ...)`}{Logs a message with level `INFO` on this logger.
+#'     The arguments are interpreted as for `trace()`.}
+#'
+#'   \item{`debug(msg, ...)`}{Logs a message with level `DEBUG` on this logger.
+#'     The arguments are interpreted as for `trace()`.}
+#'
+#'   \item{`trace(msg, ...)`}{Logs a message with level `TRACE` on this logger.
+#'   `msg` and `...` are passed on to [base::sprintf()].}
+#'
+#'   \item{`log(level, msg, timestamp, caller)`}{Logs a message with `level`.}
+#'
+#'   \item{`add_appender(appender, name = NULL)`}{Adds a new Appender to the
+#'   Logger. `appender` must be an [Appender] object. `name` is optional and
+#'   will be used as name in the list of appenders, i.e if you do
+#'   `logger$add_appender(AppenderConsole$new(), name = "console")` you can
+#'    refer to it via `logger$appenders$console`.}
+#'
+#'   \item{`remove_appender(pos)`}{Removes and Appender from a Logger. `pos`
+#'   can be an `integer` or `character` vector referring either to the positions
+#'   or names of the Appenders to be removed.}
+#'
+#'   \item{`handle_exception(e)`}{Used to handle errors that occur durring the
+#'   logging process. The defaul is to convert errors to warnings.}
+#'
+#'   \item{`filter(x)`}{Determine whether the LogRecord `x` should be passed
+#'   on to Appenders (`TRUE`) or not (`FALSE`). See also the active binding
+#'   `filters`}
+#' }
 #'
 #'
-#' `pc$list()` lists all files in the cache, returns a tibble with all the
-#' default columns, and potentially extra columns as well.
+#' @section Active Bindings:
 #'
-#' `pc$find()` list all files that match the specified criteria (`fullpath`,
-#' `path`, `package`, etc.). Custom columns can be searched for as well.
+#' \describe{
 #'
-#' `pc$copy_to()` will copy the first matching file from the cache to
-#' `target`. It returns the tibble of _all_ matching records, invisibly.
-#' If no file matches, it returns an empty (zero-row) tibble.
+#'   \item{`appenders`}{A `list` of all Appenders attached to the current
+#'     logger}
 #'
-#' `pc$add()` adds a file to the cache.
+#'   \item{`ancestry`}{*read only*. A `character` vector of the names of all
+#'     Loggers that are ancestors to the current Logger}
 #'
-#' `pc$add_url()` downloads a file and adds it to the cache.
+#'   \item{`ancestral_appenders`}{*read only*. A `list` of all inherited
+#'   appenders from ancestral Loggers of the current Logger}
 #'
-#' `pc$async_add_url()` is the same, but it is asynchronous.
+#'   \item{`filters`}{a `list` of predicates (functions that return either
+#'   `TRUE` or `FALSE`). If all of these functions evaluate to `TRUE` the
+#'   LogRecord is passed on to the Logger's Appenders}
 #'
-#' `pc$copy_or_add()` works like `pc$copy_to()`, but if the file is not in
-#' the cache, it tries to download it from one of the specified URLs first.
+#'   \item{`last_event`}{The last LogRecord produced by the current Logger}
 #'
-#' `pc$async_copy_or_add()` is the same, but asynchronous.
+#'   \item{`name`}{Name of the Logger. Mainly used for display purposes. If
+#'     you define a Logger for a package, this should be the same name as
+#'     the packages
+#'   }
 #'
-#' `pc$update_or_add()` is like `pc$copy_to_add()`, but if the file is in
-#' the cache it tries to update it from the urls, using the stored ETag to
-#' avoid unnecessary downloads.
+#'   \item{`parent`}{Parent Logger of the current Logger (`NULL` for the Root Logger)}
 #'
-#' `pc$async_update_or_add()` is the same, but it is asynchronous.
+#'   \item{`propagate`}{`TRUE` or `FALSE`. Should log messages be passed on to
+#'   the appenders of the ancestral Loggers?}
 #'
-#' `pc$delete()` deletes the file(s) from the cache.
+#'   \item{`threshold`}{An `integer`. Threshold of the current Logger (i.e the
+#'   maximum log level that this Logger processes)}
+#'
+#'   \item{`user`}{The current user}
+#' }
 #'
 #' @name Logger
 #' @include Filterable.R
 #' @include log_levels.R
 #' @examples
+#'
+#' yog$info("Today is %s", Sys.Date() )
 #'
 #' # yog includes a pre-configured root logger
 #' yog$fatal("This is a serious error")
@@ -135,6 +177,7 @@
 Logger <- R6::R6Class(
   "Logger",
   inherit = Filterable,
+  cloneable = FALSE,
 
   # public --------------------------------------------------------------------
   public = list(
@@ -146,7 +189,6 @@ Logger <- R6::R6Class(
       threshold = 400L,
       user = get_user(),
       parent = yog::yog,
-      string_formatter = sprintf,
       handle_exception = function(e){
         warning(
           "[", format(Sys.time(), format = "%Y-%m-%d %H:%M:%OS3"), "] ",
@@ -159,7 +201,6 @@ Logger <- R6::R6Class(
       # threshold must be set *after* the logging functions have been initalized
       self$appenders <- appenders
       self$user  <- user
-      self$string_formatter <- string_formatter
       self$handle_exception <- handle_exception
       self$parent <- parent
       self$name <- name
@@ -317,113 +358,9 @@ Logger <- R6::R6Class(
       invisible(self)
     },
 
-
-    show = function(
-      n = 20,
-      threshold = NA
-    ){
-      sel <- vapply(self$appenders, inherits, TRUE, "AppenderMemoryDt")
-
-      if (!any(sel)){
-        message("This logger has no memory appender (see ?AppenderMemoryDt)")
-        return(invisible())
-
-      } else {
-        self$appenders[sel][[1]]$show(n = n, threshold = threshold)
-      }
-    },
-
-
-    format = function(
-      ...,
-      colors = TRUE
-    ){
-      header <- paste(
-        paste0("<", class(self)[[1]], ">"),
-        style_subtle(format(self$ancestry))
-      )
-
-      ind <- "  "
-
-      appenders <- do.call(rbind, lapply(self$appenders, srs))
-
-      if (length(appenders) > 0){
-        appenders$name <- pad_right(appenders$name)
-
-        appenders <- paste0(
-          pad_right(appenders$name), ": ",
-          pad_right(
-            paste0(label_levels(appenders$threshold), style_subtle(paste0(" (", appenders$threshold, ")")))
-          ),
-          vapply(appenders$comment, ptrunc_col, character(1), width = 128)
-        )
-      } else {
-        appenders <- style_subtle("none")
-      }
-
-      anc_appenders <- do.call(
-        rbind,
-        lapply(self$ancestral_appenders, function(.x){
-          cbind(data.frame(logger = .x$logger$name, srs(.x)))
-        }
-      ))
-
-
-      if (length(anc_appenders) > 0){
-        anc_appenders$logger <- pad_right(anc_appenders$logger)
-        anc_appenders$name   <- pad_right(anc_appenders$name)
-
-        anc_appenders <- paste0(
-          style_subtle(paste0(anc_appenders$logger, " -> ")),
-          anc_appenders$name, ": ",
-          pad_right(
-            paste0(label_levels(anc_appenders$threshold), style_subtle(paste0(" (", anc_appenders$threshold, ")")))
-          ),
-          vapply(anc_appenders$comment, ptrunc_col, character(1), width = 128)
-        )
-      } else {
-        anc_appenders <- NULL
-      }
-
-      obsums <- object_summaries(self)
-
-      act <- obsums[obsums == "active binding"]
-      act <- paste0(names(act), ": ", act)
-
-      funs <- obsums[grep("function", obsums)]
-      funs <- paste0(names(funs), ": ", funs)
-
-      sel <- grepl(logger_pat, funs)
-      methods <- funs[!sel]
-      loggers <- c(
-        paste0(names(private$.log_levels), ": function (msg, ...) "),
-        grep("^log:", funs, value = TRUE)
-      )
-
-      c(
-        header,
-        paste0(ind, "Fields / Active Bindings:"),
-        paste0(ind, ind, "threshold: ",  fmt_threshold(self$threshold)),
-        paste0(ind, ind, "string_formatter: ", sls(self$string_formatter)),
-        paste0(ind, ind, "user: ", self$user),
-        paste0(ind, ind, "propagate:", self$propagate),
-        paste0(ind, ind, "appenders:"),
-        paste0(ind, ind, ind, appenders),
-        paste0(ind, ind, ind, anc_appenders)[!is.null(anc_appenders)],
-        paste0(ind, "Methods:"),
-        paste0(ind, ind, "Loggers:"),
-        paste0(ind, ind, ind, loggers),
-        paste0(ind, ind, methods)
-      )
-    },
-
-
     # +- fields -----------------------------------------------------------
     last_event = NULL
   ),
-
-
-
 
   # active bindings ---------------------------------------------------------
   active = list(
@@ -513,13 +450,6 @@ Logger <- R6::R6Class(
         "'user' must be a scalar character"
       )
       private$.user <- value
-    },
-
-
-    string_formatter = function(value){
-      if (missing(value)) return(private$.string_formatter)
-      assert(is.function(value))
-      private$.string_formatter <- value
     }
   ),
 
@@ -596,7 +526,7 @@ Logger <- R6::R6Class(
     .appenders = NULL,
     .user = NA_character_,
     .threshold = 4L,
-    .string_formatter = NULL,
+    .string_formatter = sprintf,
 
     # intentionaly hardcoded and not using the global options. this is used to
     # track which logging functions are available for the logger
@@ -616,3 +546,57 @@ Logger <- R6::R6Class(
 
 
 
+
+# utils -------------------------------------------------------------------
+
+# Given a string, indent every line by some number of spaces.
+# The exception is to not add spaces after a trailing \n.
+indent <- function(str, indent = 0) {
+  gsub("(^|\\n)(?!$)",
+       paste0("\\1", paste(rep(" ", indent), collapse = "")),
+       str,
+       perl = TRUE
+  )
+}
+
+# Trim a string to n characters; if it's longer than n, add " ..." to the end
+trim <- function(str, n = 60) {
+  if (nchar(str) > n) paste(substr(str, 1, n-4), "...")
+  else str
+}
+
+
+
+object_summaries <- function(x, exclude = NULL) {
+  if (length(x) == 0)
+    return(NULL)
+
+  if (is.list(x))
+    obj_names <- names(x)
+  else if (is.environment(x))
+    obj_names <- ls(x, all.names = TRUE)
+
+  obj_names <- setdiff(obj_names, exclude)
+
+  values <- vapply(obj_names, function(name) {
+    if (is.environment(x) && bindingIsActive(name, x)) {
+      "active binding"
+    } else {
+      obj <- .subset2(x, name)
+      if (is.function(obj)) deparse(args(obj))[[1L]]
+      # Plain environments (not envs with classes, like R6 or RefClass objects)
+      else if (is.environment(obj) && identical(class(obj), "environment")) "environment"
+      else if (is.null(obj)) "NULL"
+      else if (is.atomic(obj)) {
+        # If obj has many elements, paste() can be very slow, so we'll just
+        # use just a subset of it. https://github.com/r-lib/R6/issues/159
+        txt <- as.character(utils::head(obj, 60))
+        txt <- paste(txt, collapse = " ")
+        trim(txt)
+      }
+      else paste(class(obj), collapse = ", ")
+    }
+  }, FUN.VALUE = character(1))
+
+  paste0(obj_names, ": ", values, sep = "")
+}

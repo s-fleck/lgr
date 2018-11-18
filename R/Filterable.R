@@ -2,6 +2,7 @@
 #' @param filters a list of functions with the arguments x and self
 Filterable <- R6::R6Class(
   "Filterable",
+  cloneable = FALSE,
 
   public = list(
     filter = function(x){

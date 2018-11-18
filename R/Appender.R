@@ -11,6 +11,7 @@
 Appender <- R6::R6Class(
   "Appender",
   inherit = Filterable,
+  cloneable = FALSE,
 
 
   # +- public --------------------------------------------------------------
@@ -27,47 +28,6 @@ Appender <- R6::R6Class(
       private$.layout$format_event(x)
     },
 
-    format = function(
-      x,
-      ...,
-      colors = TRUE
-    ){
-      ind <- "  "
-
-      header <- paste(
-        class(self)[[1]],
-        style_subtle(class_fmt(self, c("R6", class(self)[[1]])))
-      )
-
-      # Object summaries
-      obs    <- object_summaries(self)
-      methods <- obs[grep("function", obs)]
-      methods <- methods[!names(methods) %in% c("clone", "initialize", "print")]
-
-
-      active <- obs[obs == "active binding"]
-      active_bindings <- lapply(names(active), function(.x){
-        sv <- private[[paste0(".", .x)]]
-        iv <- self[[.x]]
-        if (!is.null(sv))
-          return(sls(sv))
-        else if (!is.null(iv))
-          return(paste(style_accent(sls(iv)), style_subtle("(inherited)")))
-        else
-          return(style_subtle("NULL"))
-      })
-      names(active_bindings) <- names(active)
-
-      # print
-
-      paste0(
-        paste0(header, "\n"),
-        paste0(ind, "Active Bindings:\n"),
-        paste0(ind, ind, names(active_bindings), ": ", active_bindings, collapse = "\n"), "\n",
-        paste0(ind, "Methods:\n"),
-        paste0(ind, ind, names(methods), ": ", methods, collapse = "\n")
-      )
-    },
 
     print = function(..., colors = TRUE){
       cat(format(x = self, ..., colors = colors), "\n")
@@ -98,7 +58,9 @@ Appender <- R6::R6Class(
       if (missing(value)) return(private$.logger)
       assert(inherits(value, "Logger"))
       private$.logger <- value
-    }
+    },
+
+    destination = function() NULL
   ),
 
   private = list(
@@ -134,6 +96,10 @@ AppenderConsole <- R6::R6Class(
       cat(private$.layout$format_event(x), sep = "\n")
       return(invisible())
     }
+  ),
+
+  active = list(
+    destination = function() "console"
   )
 )
 
@@ -176,7 +142,9 @@ AppenderFile <- R6::R6Class(
     file = function(value){
       if (missing(value)) return(private$.file)
       private$.file <- value
-    }
+    },
+
+    destination = function() self$file
   ),
 
   private = list(
@@ -309,6 +277,10 @@ AppenderMemoryDt <- R6::R6Class(
       )
       assert(data.table::is.data.table(value))
       private$.data <- value
+    },
+
+    destination = {
+      function() "in memory data.table"
     }
   ),
 
