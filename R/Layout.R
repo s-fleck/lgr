@@ -155,7 +155,7 @@ LayoutFormat <- R6::R6Class(
 #'   }
 #'
 #'   \item{`logger_vals`}{Names of the fields of the Logger that produced the
-#'     record to include in the resulting JSON object.
+#'     LogEvent to include in the resulting JSON object.
 #'   }
 #'
 #'   \item{`other_vals`}{A named `list` of any kind of R value that can be

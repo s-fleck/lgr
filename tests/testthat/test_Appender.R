@@ -122,21 +122,21 @@ test_that("AppenderMemoryBufferDt: appending multiple rows works", {
   # FATAL log level triggers flush
   l$fatal(letters[1:3])
   expect_identical(l$appenders$buffer$.__enclos_env__$private$flushed, 6L)
-  expect_true(is.null(l$appenders$buffer$unflushed_records))
+  expect_true(is.null(l$appenders$buffer$unflushed_events))
   expect_match(paste(readLines(tf), collapse = "#"), ".*A#.*B#.*C#.*a#.*b#.*c")
 
-  # Does the next flush flush the correct records?
+  # Does the next flush flush the correct event?
   l$fatal("x")
   expect_identical(length(readLines(tf)), 7L)
-  expect_true(is.null(l$appenders$buffer$unflushed_records))
+  expect_true(is.null(l$appenders$buffer$unflushed_events))
   expect_match(paste(readLines(tf), collapse = "#"), ".*A#.*B#.*C#.*a#.*b#.*c#.*x")
 
   # does flushing on memory cycling work?
   l$info(rep("z", 10))
-  expect_identical(length(l$appenders$buffer$unflushed_records$level), 10L)
+  expect_identical(length(l$appenders$buffer$unflushed_events$level), 10L)
   l$info(c("y", "y", "y"))
   expect_identical(length(readLines(tf)), 17L)
-  expect_identical(l$appenders$buffer$unflushed_records$msg, c("y", "y", "y"))
+  expect_identical(l$appenders$buffer$unflushed_events$msg, c("y", "y", "y"))
   expect_match(paste(readLines(tf), collapse = "#"), ".*A#.*B#.*C#.*a#.*b#.*c#.*x(.*z.*){10}")
 
   # manual flushing works
@@ -146,7 +146,7 @@ test_that("AppenderMemoryBufferDt: appending multiple rows works", {
 
   # does flushing of bigger-than-buffer data work?
   l$info(rep("bigger than memory", 20))
-  expect_identical(l$appenders$buffer$unflushed_records, NULL)
+  expect_identical(l$appenders$buffer$unflushed_events, NULL)
   expect_identical(length(readLines(tf)), 40L)
   expect_identical(l$appenders$buffer$.__enclos_env__$private$flushed, 40L)
   expect_match(
@@ -156,7 +156,7 @@ test_that("AppenderMemoryBufferDt: appending multiple rows works", {
 
   # does flushing on object destruction work?
   l$info(c("destruction", "destruction"))
-  expect_identical(length(l$appenders$buffer$unflushed_records$msg), 2L)
+  expect_identical(length(l$appenders$buffer$unflushed_events$msg), 2L)
   expect_identical(l$appenders$buffer$.__enclos_env__$private$flushed, 40L)
   rm(l)
   gc()

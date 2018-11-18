@@ -28,7 +28,7 @@
 #'  l$add_appender(appender, name = NULL)
 #'  l$remove_appender(pos)
 #'  l$handle_exception(e)
-#'  l$filter(record)
+#'  l$filter(event)
 #'
 #' # fields / active bindings
 #'  l$appenders
@@ -110,7 +110,7 @@
 #'   \item{`handle_exception(e)`}{Used to handle errors that occur durring the
 #'   logging process. The defaul is to convert errors to warnings.}
 #'
-#'   \item{`filter(x)`}{Determine whether the LogRecord `x` should be passed
+#'   \item{`filter(x)`}{Determine whether the LogEvent `x` should be passed
 #'   on to Appenders (`TRUE`) or not (`FALSE`). See also the active binding
 #'   `filters`}
 #' }
@@ -131,9 +131,9 @@
 #'
 #'   \item{`filters`}{a `list` of predicates (functions that return either
 #'   `TRUE` or `FALSE`). If all of these functions evaluate to `TRUE` the
-#'   LogRecord is passed on to the Logger's Appenders}
+#'   LogEvent is passed on to the Logger's Appenders}
 #'
-#'   \item{`last_event`}{The last LogRecord produced by the current Logger}
+#'   \item{`last_event`}{The last LogEvent produced by the current Logger}
 #'
 #'   \item{`name`}{Name of the Logger. Mainly used for display purposes. If
 #'     you define a Logger for a package, this should be the same name as
@@ -282,7 +282,7 @@ Logger <- R6::R6Class(
         if (is.na(thr)) thr <- Inf
         if (level[[1]] > thr) return(invisible())
 
-        # update log records
+        # update log event
         assign("level", level, envir = self$last_event)
         assign("timestamp", timestamp,  envir = self$last_event)
         assign("caller", caller, envir = self$last_event)

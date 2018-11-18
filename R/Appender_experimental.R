@@ -409,7 +409,7 @@ AppenderMemoryBufferDt <- R6::R6Class(
 
 
     flush = function(
-      x = self$unflushed_records
+      x = self$unflushed_event
     ){
       if (is.null(x)) {
         return(NULL)
@@ -477,7 +477,7 @@ AppenderMemoryBufferDt <- R6::R6Class(
   ),
 
   active = list(
-    unflushed_records = function(){
+    unflushed_events = function(){
       res <- self[["data"]][self[["data"]][[".id"]] > private[["flushed"]], ]
       if (nrow(res) > 0){
         res <- as.environment(res)
