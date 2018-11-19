@@ -1,18 +1,10 @@
 context("Logger")
 
 
+
+
 test_that("active bindings", {
   ml <- Logger$new("test_logger")
-
-  expect_identical(
-    ml$log_levels,
-    structure(
-      setNames(seq(100L, 600L, by = 100L), c("fatal", "error", "warn", "info", "debug", "trace")),
-      class = c("log_levels", "integer")
-    )
-  )
-  expect_error(ml$log_levels <- ml$log_levels, "cannot be modified")
-
 
   expect_silent(ml$threshold <- 5)
   expect_identical(ml$threshold, 5L)
@@ -25,8 +17,6 @@ test_that("active bindings", {
   expect_silent(ml$user <- "blubb")
   expect_identical(ml$user, "blubb")
   expect_error(ml$user <- 5, "'user'")
-
-  expect_true(is.function(ml$string_formatter))
 })
 
 
@@ -52,15 +42,37 @@ test_that("basic logging", {
 
 
 
+test_that("setting appender threshold works", {
+  lg <- Logger$new("dummy", appenders = AppenderConsole$new())
+  lg$threshold <- 200
+  expect_identical(lg$threshold, 200L)
+  lg$threshold <- "info"
+  expect_identical(lg$threshold, 400L)
+  lg$threshold <- NA
+  expect_identical(lg$threshold, NA_integer_)
+  expect_error(lg$threshold <- "blubb", "log levels")
+
+  # test if setting for appenders of a logger also works as this is somewhat tricky
+  lg$appenders[[1]]$threshold <- NA
+  expect_identical(lg$appenders[[1]]$threshold, NA_integer_)
+  lg$appenders[[1]]$threshold <- 300
+  expect_identical(lg$appenders[[1]]$threshold, 300L)
+  lg$appenders[[1]]$threshold <- "info"
+  expect_identical(lg$appenders[[1]]$threshold, 400L)
+  expect_error(lg$appenders[[1]]$threshold <- "blubb", "log levels")
+})
+
+
+
+
 test_that("suspending loggers works", {
   ml <- Logger$new("test_logger")
 
   expect_output(ml$info("blubb"), "blubb")
-  ml$suspend("info", inclusive = TRUE)
+  ml$.__enclos_env__$private$suspend("info", inclusive = TRUE)
   expect_silent(ml$info("blubb"))
-  ml$unsuspend("info", inclusive = TRUE)
+  ml$.__enclos_env__$private$unsuspend("info", inclusive = TRUE)
   expect_output(ml$info("blubb"), "blubb")
-
 
   expect_output(ml$fatal("blubb"), "FATAL")
   x <- capture.output(ml$fatal("blubb"))
@@ -95,16 +107,15 @@ test_that("add/remove appenders", {
   # because the now have the logger proerty set
   expect_identical(ml$appenders[[2]], app1)
   expect_identical(ml$appenders[[2]]$logger, ml)
-
   expect_identical(ml$appenders$blah, app2)
   expect_identical(ml$appenders$blah$logger, ml)
 
   ml$remove_appender(2)
   expect_identical(length(ml$appenders), 3L)
-
   ml$remove_appender(c("blah", "blubb"))
   expect_identical(length(ml$appenders), 1L)
 })
+
 
 
 
@@ -118,19 +129,17 @@ test_that("modify appenders for a logger", {
 
   # configure yog so that it logs everything to the file, but only info and above
   # to the console
-
   ml$threshold <- NA
   ml$appenders[[1]]$threshold <- "info"
   ml$appenders$file$threshold <- NA
-
-
   expect_output(ml$info("Another informational message"))
   expect_silent(ml$debug("A debug message that the console appender doesn't show."))
-
   expect_identical(length(readLines(tf)), 2L)
   expect_match(paste(readLines(tf), collapse = "---"), "INFO.*---DEBUG.*")
   file.remove(tf)
 })
+
+
 
 
 test_that("Exceptions are cought and turned into warnings", {
@@ -143,13 +152,12 @@ test_that("Exceptions are cought and turned into warnings", {
 
   expect_warning(ml$fatal(stop("blubb")), "Error.*blubb")
   expect_warning(ml$fatal(), "Error")
-
   ml$add_appender(AppenderFile$new(
     file = file.path(tempfile(), "non", "existing", "directory" )
   ))
-
   expect_output(expect_warning(ml$fatal("blubb"), "Error"))
 })
+
 
 
 

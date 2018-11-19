@@ -2,11 +2,12 @@
 #' @param filters a list of functions with the arguments x and self
 Filterable <- R6::R6Class(
   "Filterable",
+  cloneable = FALSE,
 
   public = list(
-    filter = function(x){
+    filter = function(event){
       for (f in private$.filters) {
-        if (!identical(f(x, self), TRUE)) return(FALSE)
+        if (!identical(f(event, self), TRUE)) return(FALSE)
       }
       TRUE
     }
@@ -41,8 +42,8 @@ is_filter <- function(
 
 
 check_threshold <- function(
-  x,
+  event,
   self
 ){
-  is.na(self$threshold) || x[["level"]] <= self$threshold
+  is.na(self$threshold) || event[["level"]] <= self$threshold
 }

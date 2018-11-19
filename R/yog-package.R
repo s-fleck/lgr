@@ -21,17 +21,16 @@
     )
   }
 
-   options(
-      yog.log_levels = c(
-        "fatal" = 100L,
-        "error" = 200L,
-        "warn"  = 300L,
-        "info"  = 400L,
-        "debug" = 500L,
-        "trace" = 600L
-      )
+  options(
+    yog.log_levels = c(
+      "fatal" = 100L,
+      "error" = 200L,
+      "warn"  = 300L,
+      "info"  = 400L,
+      "debug" = 500L,
+      "trace" = 600L
     )
-
+  )
 
   appenders <- list(
     console = AppenderConsole$new()
@@ -42,9 +41,9 @@
   }
 
   assign(
-    "yog",  # usally a logger should have the same name as the package it belongs to
+    "yog",
     Logger$new(
-      name = "root",
+      name = "root",    # usally a logger should have the same name as the package it belongs to
       appenders = appenders,
       parent = NULL  # _never_ set the parent to null yoursel, root should be the only root logger
     ),

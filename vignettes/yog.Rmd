@@ -159,7 +159,6 @@ Appenders).
 The following features are planned, but have no fixed release date yet. If they
 are important to you please comment on the approriate issue in the issue tracker
 
-* Custom log levels
 * Arbitrary fields in LogRecords
 * A RollingFileAppender that supports log rotation
 * A Buffered Appender

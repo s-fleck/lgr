@@ -94,15 +94,26 @@ NULL
 LogEvent <- R6::R6Class(
   "LogEvent",
   public = list(
-    initialize = function(logger){
+    initialize = function(
+      logger,
+      level = NULL,
+      timestamp = NULL,
+      caller = NULL,
+      msg = NULL
+    ){
       assert(inherits(logger, "Logger"))
       self$logger <- logger
+      self$level <- level
+      self$timestamp <-timestamp
+      self$caller <- caller
+      self$msg <- msg
+      self$logger <- logger
     },
+    logger = NULL,
     level = NULL,
     timestamp = NULL,
     caller = NULL,
-    msg = NULL,
-    logger = NULL
+    msg = NULL
   ),
 
   active = list(
@@ -110,7 +121,7 @@ LogEvent <- R6::R6Class(
       mget(c("level", "timestamp", "caller", "msg"), envir = self)
     },
     level_name = function(){
-      label_levels(self$level, log_levels = self$logger$log_levels)
+      label_levels(self$level)
     }
   )
 )
