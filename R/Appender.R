@@ -7,10 +7,12 @@
 #'
 #' @section Creating a new Appender:
 #'
+#' General properties that are shared among all Appenders:
+#'
 #' \describe{
 #'   \item{threshold}{`character` or `integer` scalar. The minimum log level
 #'     that triggers this logger. See [log levels]}
-#'   \item{Layout}{A [Layout]. See examples.}
+#'   \item{layout}{A [Layout]. See examples.}
 #'  }
 #'
 #' @name Appender
@@ -88,7 +90,34 @@ Appender <- R6::R6Class(
 
 
 # AppenderConsole ---------------------------------------------------------
+
+#' AppenderConsole
+#'
+#' A simple Appender that outputs to the console. If you have the packages
+#' **colt** and **crayon** installed log levels will be coloured by default.
+#'
+#' @inheritSection Appender Creating a new Appender
+#'
+#' @export
+#' @seealso [LayoutFormat], [LayoutGlue]
+#'
+#' @examples
+#' # create a new logger with propagate = FALSE to prevent routing to the root
+#' # logger. Please look at the section "Logger Hirarchies" in the package
+#' # vignette for more info.
+#' logger  <- Logger$new("testlogger", propagate = FALSE)
+#'
+#' logger$add_appender(AppenderConsole$new())
+#' logger$add_appender(AppenderConsole$new(
+#'   layout = LayoutFormat$new("[%t] %c(): [%n] %m from user %u", colors = getOption("yog.colors"))))
+#'
+#' # Will output the message twice because we attached two console appenders
+#' logger$warn("A test message")
+#'
 #' @family Appenders
+#' @name AppenderConsole
+NULL
+
 #' @export
 AppenderConsole <- R6::R6Class(
   "AppenderConsole",
@@ -135,9 +164,6 @@ AppenderConsole <- R6::R6Class(
 #' \describe{
 #'   \item{file}{`character` scalar. Path to the desired log file. If the file
 #'     does not exist it will be created}
-#'   \item{threshold}{`character` or `integer` scalar. The minimum log level
-#'     that triggers this logger. See [log levels]}
-#'   \item{Layout}{A [Layout]. See examples.}
 #'  }
 #'
 #' @inherit Appender

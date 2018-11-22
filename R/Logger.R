@@ -40,7 +40,7 @@
 #'
 #' ```
 #'
-#' @section Creating a new Logger:
+#' @section Creating Loggers:
 #'
 #' If you want logging for a Project (f.e a Package you are developing) that is
 #' separate from the global logging, you can create a new logger with

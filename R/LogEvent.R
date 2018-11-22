@@ -43,7 +43,7 @@
 #' * `level_name`  the log level as a `character` string.
 #'
 #'
-#' @section Creating a new LoggEvent:
+#' @section Creating LogEvents:
 #'
 #' **not yet stable**
 #' Currently custom LogEvents are not officially supported in yog, but a lot of
