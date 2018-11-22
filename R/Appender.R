@@ -1,11 +1,21 @@
 #' Appenders
 #'
-#' Appenders get a [LogEvent] passed down from a [Logger], format them using
-#' a [Layout] and ultimately write them to a destination (the console, a file,
-#' ...).
+#' Appenders are assigned to [Loggers] and manage the output of the [LogEvents]
+#' to a destination, such as the console or a text file. An appender must have
+#' a single [Layout] that tells it how to format the LogEvent. For details
+#' please refer to the documentations of the specific Appenders.
+#'
+#' @section Creating a new Appender:
+#'
+#' \describe{
+#'   \item{threshold}{`character` or `integer` scalar. The minimum log level
+#'     that triggers this logger. See [log levels]}
+#'   \item{Layout}{A [Layout]. See examples.}
+#'  }
 #'
 #' @name Appender
 #' @aliases Appenders
+#' @family Appenders
 #' @include print.R
 #' @include utils.R
 #' @include utils-sfmisc.R
@@ -78,7 +88,7 @@ Appender <- R6::R6Class(
 
 
 # AppenderConsole ---------------------------------------------------------
-
+#' @family Appenders
 #' @export
 AppenderConsole <- R6::R6Class(
   "AppenderConsole",
@@ -113,6 +123,53 @@ AppenderConsole <- R6::R6Class(
 
 
 # AppenderFile ------------------------------------------------------------
+
+#' AppenderFile
+#'
+#' A simple Appender that outputs to a file in the file system.
+#'
+#' @inheritSection Appender Creating a new Appender
+#'
+#' @section Creating a new AppenderFile:
+#'
+#' \describe{
+#'   \item{file}{`character` scalar. Path to the desired log file. If the file
+#'     does not exist it will be created}
+#'   \item{threshold}{`character` or `integer` scalar. The minimum log level
+#'     that triggers this logger. See [log levels]}
+#'   \item{Layout}{A [Layout]. See examples.}
+#'  }
+#'
+#' @inherit Appender
+#'
+#' @export
+#' @seealso [LayoutFormat], [LayoutJson], [LayoutGlue]
+#'
+#' @examples
+#' logger <- Logger$new()
+#' default <- tempfile()
+#' fancy <- tempfile()
+#' json <- tempfile()
+#'
+#' logger$add_appender(AppenderFile$new(default), "default")
+#' logger$add_appender(
+#'   AppenderFile$new(fancy, layout = LayoutFormat$new("[%t] %c(): %L %m from user %u")), "fancy"
+#' )
+#' logger$add_appender(
+#'   AppenderFile$new(json, layout = LayoutJson$new()), "json"
+#' )
+#'
+#' logger$info("A test message")
+#'
+#' readLines(default)
+#' readLines(fancy)
+#' readLines(json)
+#' @family Appenders
+#' @name AppenderFile
+NULL
+
+
+
 
 #' @export
 AppenderFile <- R6::R6Class(
@@ -162,6 +219,10 @@ AppenderFile <- R6::R6Class(
 # AppenderMemory ----------------------------------------------------------
 
 #' @aliases yog_data
+#' @family Appenders
+#' @name AppenderMemoryDt
+NULL
+
 #' @export
 AppenderMemoryDt <- R6::R6Class(
   "AppenderMemoryDt",

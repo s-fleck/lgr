@@ -110,14 +110,14 @@ LayoutFormat <- R6::R6Class(
 
 # LayoutJSON --------------------------------------------------------------
 
-#' LayoutJSON
+#' LayoutJson
 #'
 #' Format an LogEvent as JSON
 #'
 #' @section Usage:
 #'
 #' ```
-#' lo <- LayoutJSON$new()
+#' lo <- LayoutJson$new()
 #'
 #' # methods
 #'  lo$format_event(x)
@@ -130,7 +130,7 @@ LayoutFormat <- R6::R6Class(
 #'
 #' ```
 #'
-#' @section Creating a new LayoutJSON:
+#' @section Creating a new LayoutJson:
 #'
 #' If you want logging for a Project (f.e a Package you are developing) that is
 #' separate from the global logging, you can create a new logger with
@@ -195,7 +195,7 @@ LayoutFormat <- R6::R6Class(
 #'   caller = NA_character_,
 #'   msg = "a test message"
 #' )
-#' lo <- LayoutJSON$new(
+#' lo <- LayoutJson$new(
 #'   event_vals = c("level", "timestamp", "msg"),
 #'   logger_vals = "user",
 #'   other_vals = list(pid = Sys.getpid, random_number = function() runif(3), teststring = "blah")
@@ -207,8 +207,8 @@ NULL
 
 
 #' @export
-LayoutJSON <- R6::R6Class(
-  "LayoutJSON",
+LayoutJson <- R6::R6Class(
+  "LayoutJson",
   inherit = Layout,
   public = list(
     initialize = function(

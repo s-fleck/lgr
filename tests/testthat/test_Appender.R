@@ -52,7 +52,7 @@ test_that("AppenderFile works as expected", {
 
   tf <- tempfile()
   # with Json
-  app <- AppenderFile$new(file = tf, layout = LayoutJSON$new())
+  app <- AppenderFile$new(file = tf, layout = LayoutJson$new())
   app$append(x)
   app$append(x)
   tres <- read_json_log(tf)

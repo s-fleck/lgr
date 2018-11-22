@@ -41,8 +41,8 @@ test_that("LayoutGlue works as expected", {
 
 
 
-test_that("LayoutJSON works as expected", {
-  lo <- LayoutJSON$new(
+test_that("LayoutJson works as expected", {
+  lo <- LayoutJson$new(
     logger_vals = "user",
     other_vals = list(pid = Sys.getpid, teststring = "blah")
   )
