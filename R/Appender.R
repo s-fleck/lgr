@@ -161,6 +161,7 @@ AppenderFile <- R6::R6Class(
 
 # AppenderMemory ----------------------------------------------------------
 
+#' @aliases yog_data
 #' @export
 AppenderMemoryDt <- R6::R6Class(
   "AppenderMemoryDt",
