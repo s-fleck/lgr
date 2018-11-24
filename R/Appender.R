@@ -383,6 +383,187 @@ AppenderMemoryDt <- R6::R6Class(
 
 
 
+# AppenderMemoryBuffer --------------------------------------------------
+AppenderMemoryBuffer <- R6::R6Class(
+  "AppenderMemoryBuffer",
+  inherit = AppenderMemoryDt,
+  public = list(
+    initialize = function(
+      threshold = NA_integer_,
+      appenders = NULL,
+      should_flush = function(
+        x
+      ){
+        if (any(get("level", envir = x) <= 200)){
+          TRUE
+        } else {
+          FALSE
+        }
+      },
+      layout = LayoutFormat$new(
+        fmt = "%L [%t] %m",
+        timestamp_fmt = "%H:%M:%S",
+        colors = getOption("yog.colors")
+      ),
+      cache_size = 1e5
+    ){
+      assert(is_scalar_integerish(cache_size))
+      assert(is.integer(prototype$.id))
+      private$current_row <- 0L
+      private$id <- 0L
+      private$flushed <- 0L
+      self$data <- prototype
+      self$threshold <- threshold
+      self$should_flush <- should_flush
+      self$appenders <- appenders
+
+      # initialize empty dt
+      for (j in seq_along(private$.data)){
+        data.table::set(private$.data, i = 1L, j = j, value = NA)
+      }
+      dd <- list(
+        private$.data,
+        list(.id = rep(private$.data[[1]], cache_size - 1L))
+      )
+      private$.data <- data.table::rbindlist(
+        dd,
+        fill = TRUE
+      )
+      data.table::setattr(
+        private$.data,
+        "class",
+        c("yog_data", "data.table", "data.frame")
+      )
+
+      invisible(self)
+    },
+
+
+    append = function(
+      x
+    ){
+      self$buffered_events[[length(private$.buffered_events) + 1L]] <- x
+      NULL
+    },
+
+
+    buffered_events = list(),
+
+
+    flush = function(
+      x = self$buffered_events
+    ){
+      if (length(x) < 1) {
+        return(NULL)
+      }
+
+      for (event in self$buffered_events){
+        for (app in self$appenders) {
+          if (app$filter(x)){
+            app$append(x)
+          }
+        }
+      }
+
+      self$buffered_events <- list()
+    },
+
+
+    add_appender = function(
+      appender,
+      name = NULL
+    ){
+      assert(inherits(appender, "Appender"))
+      appender <- appender$clone(deep = TRUE)
+      appender$logger <- self$logger
+      private$.appenders[length(private$.appenders) + 1L] <- list(appender)
+
+      if (!is.null(name))
+        names(private$.appenders)[length(private$.appenders)] <- name
+
+      invisible(self)
+    },
+
+
+    remove_appender = function(
+      pos
+    ){
+      assert(is_scalar(pos))
+
+      if (is.numeric(pos)){
+        assert(
+          all(pos %in% seq_along(private$.appenders)),
+          "'pos' is out of range of the length of appenders (1:",
+          length(appenders), ")"
+        )
+
+        pos <- as.integer(pos)
+      } else if (is.character(pos)) {
+        assert(
+          all(pos %in% names(private$.appenders)),
+          "'pos' is not a name of any attached appender (",
+          paste(names(private$.appenders), collapse = ", "),
+          ")"
+        )
+      }
+
+      try(private$.appenders[[pos]]$finalize(), silent = TRUE)
+      private$.appenders[[pos]] <- NULL
+      invisible(self)
+    },
+
+
+    finalize = function(){
+      self$flush()
+    },
+
+    should_flush = NULL
+  ),
+
+  active = list(
+    appenders = function(value){
+      if (missing(value)) return(c(private$.appenders))
+
+      if (is.null(value)){
+        private$.appenders <- NULL
+        return(invisible())
+      }
+
+      if (inherits(value, "Appender"))
+        value <- list(value)
+
+      assert(
+        is.list(value) && all(vapply(value, inherits, TRUE, "Appender")),
+        "'appenders' must either be a single Appender, a list thereof, or NULL for no appenders."
+      )
+
+      value <- lapply(value, function(app){
+        res <- app$clone()
+        # logger gets assigned to sub-appenders inside the `logger` active binding
+        res
+      })
+
+      private$.appenders <- value
+      invisible()
+    },
+
+    logger = function(value){
+      if (missing(value)) return(private$.logger)
+      assert(inherits(value, "Logger"))
+      private$.logger <- value
+      for (app in self$appenders){
+        app$logger <- value
+      }
+    }
+  ),
+
+
+  private = list(
+    .appenders = list()
+  )
+)
+
+
 
 # utils -------------------------------------------------------------------
 
