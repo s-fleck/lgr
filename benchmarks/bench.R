@@ -34,6 +34,9 @@ ml[["no appenders"]] <-
 ml[["memory only"]] <-
   Logger$new("memory only", appenders = AppenderMemoryDt$new(), parent = NULL)
 
+ml[["memory buffer"]] <-
+  Logger$new("memory buffer", appenders = AppenderMemoryBuffer$new(cache_size = 1e5), parent = NULL)
+
 ml[["default (no colors)"]] <-
   Logger$new("default (no colors)", appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = NULL)), parent = NULL)
 
@@ -41,12 +44,15 @@ ml[["default (colors)"]] <-
   Logger$new("default (colors)", appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = colors)), parent = NULL)
 
 
+
+for (i in 1:1000) ml$`memory buffer`$warn("test")
+
 ml$`default (no colors)`$fatal("blubb")
 ml$`default (colors)`$fatal("test")
 
-exps <- lapply(names(ml), function(x) bquote(ml[[.(x)]]$fatal("blubb")))
+exps <- lapply(names(ml), function(x) bquote(ml[[.(x)]]$warn("blubb")))
 names(exps) = names(ml)
-exps <- c(exps, alist(flog = flog.fatal("test")))
+exps <- c(exps, alist(flog = flog.fatal("test"), flog_off = flog.trace("test")))
 opts <- list(check = FALSE)
 
 sink("/dev/null")
