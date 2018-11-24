@@ -405,36 +405,14 @@ AppenderMemoryBuffer <- R6::R6Class(
         timestamp_fmt = "%H:%M:%S",
         colors = getOption("yog.colors")
       ),
-      cache_size = 1e5
+      cache_size = 1e3
     ){
       assert(is_scalar_integerish(cache_size))
-      assert(is.integer(prototype$.id))
-      private$current_row <- 0L
-      private$id <- 0L
-      private$flushed <- 0L
-      self$data <- prototype
       self$threshold <- threshold
       self$should_flush <- should_flush
       self$appenders <- appenders
-
-      # initialize empty dt
-      for (j in seq_along(private$.data)){
-        data.table::set(private$.data, i = 1L, j = j, value = NA)
-      }
-      dd <- list(
-        private$.data,
-        list(.id = rep(private$.data[[1]], cache_size - 1L))
-      )
-      private$.data <- data.table::rbindlist(
-        dd,
-        fill = TRUE
-      )
-      data.table::setattr(
-        private$.data,
-        "class",
-        c("yog_data", "data.table", "data.frame")
-      )
-
+      self$buffered_events <- list()
+      self$cache_size <- cache_size
       invisible(self)
     },
 
@@ -442,12 +420,16 @@ AppenderMemoryBuffer <- R6::R6Class(
     append = function(
       x
     ){
-      self$buffered_events[[length(private$.buffered_events) + 1L]] <- x
-      NULL
+      self$buffered_events[[length(self$buffered_events) + 1L]] <- x$clone()
+      if (self$should_flush(x) || length(self$buffered_events) > self$cache_size)
+        self$flush()
+      invisible(NULL)
     },
 
 
-    buffered_events = list(),
+    buffered_events = NULL,
+
+    cache_size = NULL,
 
 
     flush = function(
@@ -459,8 +441,9 @@ AppenderMemoryBuffer <- R6::R6Class(
 
       for (event in self$buffered_events){
         for (app in self$appenders) {
-          if (app$filter(x)){
-            app$append(x)
+
+          if (app$filter(event)){
+            app$append(event)
           }
         }
       }
