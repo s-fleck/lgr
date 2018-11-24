@@ -386,20 +386,13 @@ AppenderMemoryDt <- R6::R6Class(
 # AppenderMemoryBuffer --------------------------------------------------
 AppenderMemoryBuffer <- R6::R6Class(
   "AppenderMemoryBuffer",
-  inherit = AppenderMemoryDt,
+  inherit = Appender,
   public = list(
     initialize = function(
       threshold = NA_integer_,
       appenders = NULL,
-      should_flush = function(
-        x
-      ){
-        if (any(get("level", envir = x) <= 200)){
-          TRUE
-        } else {
-          FALSE
-        }
-      },
+      should_flush =
+        function(x){if (any(get("level", envir = x) <= 200)) TRUE else FALSE},
       layout = LayoutFormat$new(
         fmt = "%L [%t] %m",
         timestamp_fmt = "%H:%M:%S",
@@ -411,7 +404,7 @@ AppenderMemoryBuffer <- R6::R6Class(
       self$threshold <- threshold
       self$should_flush <- should_flush
       self$appenders <- appenders
-      self$buffered_events <- list()
+      self$buffered_events <- list()  # no speed advantage in pre allocating lists in R!
       self$cache_size <- cache_size
       invisible(self)
     },
@@ -429,25 +422,18 @@ AppenderMemoryBuffer <- R6::R6Class(
 
     buffered_events = NULL,
 
+
     cache_size = NULL,
 
 
     flush = function(
       x = self$buffered_events
     ){
-      if (length(x) < 1) {
-        return(NULL)
-      }
-
       for (event in self$buffered_events){
         for (app in self$appenders) {
-
-          if (app$filter(event)){
-            app$append(event)
-          }
+          if (app$filter(event))  app$append(event)
         }
       }
-
       self$buffered_events <- list()
     },
 
