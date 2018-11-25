@@ -383,29 +383,62 @@ AppenderMemoryDt <- R6::R6Class(
 
 
 
-# AppenderMemoryBuffer --------------------------------------------------
-AppenderMemoryBuffer <- R6::R6Class(
-  "AppenderMemoryBuffer",
+# AppenderBuffer --------------------------------------------------
+
+#' AppenderBuffer
+#'
+#' An Appender that Buffers LogEvents in-memory and and redirects them to other
+#' appenders once certain conditions are met
+#'
+#' @inheritSection Appender Creating a new Appender
+#'
+#' @export
+#' @seealso [LayoutFormat], [LayoutGlue]
+#'
+#' @examples
+#' # create a new logger with propagate = FALSE to prevent routing to the root
+#' # logger. Please look at the section "Logger Hirarchies" in the package
+#' # vignette for more info.
+#' logger  <- Logger$new("testlogger", propagate = FALSE)
+#'
+#' logger$add_appender(AppenderConsole$new())
+#' logger$add_appender(AppenderConsole$new(
+#'   layout = LayoutFormat$new("[%t] %c(): [%n] %m from user %u", colors = getOption("yog.colors"))))
+#'
+#' # Will output the message twice because we attached two console appenders
+#' logger$warn("A test message")
+#'
+#' @family Appenders
+#' @name AppenderConsole
+AppenderBuffer <- R6::R6Class(
+  "AppenderBuffer",
   inherit = Appender,
   public = list(
     initialize = function(
       threshold = NA_integer_,
       appenders = NULL,
       should_flush =
-        function(x){if (any(get("level", envir = x) <= 200)) TRUE else FALSE},
+        function(x){
+          isTRUE(
+            any(x[["level"]] <= 200) ||
+            length(self[["buffered_events"]]) > self[["buffer_size"]]
+          )
+        },
+      flush_on_exit = TRUE,
       layout = LayoutFormat$new(
         fmt = "%L [%t] %m",
         timestamp_fmt = "%H:%M:%S",
         colors = getOption("yog.colors")
       ),
-      cache_size = 1e3
+      buffer_size = 1e3
     ){
-      assert(is_scalar_integerish(cache_size))
+      assert(is_scalar_integerish(buffer_size))
       self$threshold <- threshold
       self$should_flush <- should_flush
       self$appenders <- appenders
       self$buffered_events <- list()  # no speed advantage in pre allocating lists in R!
-      self$cache_size <- cache_size
+      self$buffer_size <- buffer_size
+      self$flush_on_exit <- flush_on_exit
       invisible(self)
     },
 
@@ -414,7 +447,7 @@ AppenderMemoryBuffer <- R6::R6Class(
       x
     ){
       self$buffered_events[[length(self$buffered_events) + 1L]] <- x$clone()
-      if (self$should_flush(x) || length(self$buffered_events) > self$cache_size)
+      if (self$should_flush(x))
         self$flush()
       invisible(NULL)
     },
@@ -423,7 +456,7 @@ AppenderMemoryBuffer <- R6::R6Class(
     buffered_events = NULL,
 
 
-    cache_size = NULL,
+    buffer_size = NULL,
 
 
     flush = function(
@@ -483,8 +516,10 @@ AppenderMemoryBuffer <- R6::R6Class(
 
 
     finalize = function(){
-      self$flush()
+      if (self$flush_on_exit) self$flush()
     },
+
+    flush_on_exit = NULL,
 
     should_flush = NULL
   ),

@@ -80,9 +80,9 @@ test_that("AppenderConsole works as expected", {
 
 
 
-# AppenderMemory ----------------------------------------------------------
+# AppenderMemoryDt ----------------------------------------------------------
 
-test_that("AppenderMemory: appending multiple rows works", {
+test_that("AppenderMemoryDt: appending multiple rows works", {
   app <- AppenderMemoryDt$new()
   y <- x$clone()
   y$level <- seq(100L, 300L, 100L)
@@ -105,18 +105,18 @@ test_that("AppenderMemory: appending multiple rows works", {
 
 
 
-# AppenderMemoryBuffer ----------------------------------------------------
+# AppenderBuffer ----------------------------------------------------
 
-test_that("AppenderMemoryBuffer: appending multiple rows works", {
+test_that("AppenderBuffer: appending multiple rows works", {
   tf <- tempfile()
 
   # Sub sub appenders must have a reference to the original logger
   l <- Logger$new(
     "dummy",
     appenders = list(
-      buffer = AppenderMemoryBuffer$new(
+      buffer = AppenderBuffer$new(
         appenders = list(file = AppenderFile$new(file = tf)),
-        cache_size = 10
+        buffer_size = 10
       )
     ),
     parent = NULL
@@ -172,6 +172,31 @@ test_that("AppenderMemoryBuffer: appending multiple rows works", {
 
   # does flushing honor log levels and filters??
   file.remove(tf)
+})
+
+
+
+
+test_that("AppenderBuffer: dont flush on object destruction if switched of", {
+  tf <- tempfile()
+
+  # Sub sub appenders must have a reference to the original logger
+  l <- Logger$new(
+    "dummy",
+    appenders = list(
+      buffer = AppenderBuffer$new(
+        appenders = list(file = AppenderFile$new(file = tf)),
+        buffer_size = 10
+      )
+    ),
+    parent = NULL
+  )
+  l$info(LETTERS[1:3])
+  l$appenders$buffer$flush_on_exit <- FALSE
+  rm(l)
+  gc()
+  expect_true(!file.exists(tf))
+  try(file.remove(tf), silent = TRUE)
 })
 
 
