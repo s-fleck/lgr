@@ -244,10 +244,60 @@ AppenderFile <- R6::R6Class(
 
 # AppenderMemory ----------------------------------------------------------
 
-#' @aliases yog_data
+
+#' AppenderMemory
+#'
+#' An Appender that outputs to an in-memory `data.table`. This requires that
+#' you have the suggested package [data.table] installed
+#'
+#'
+#' @inheritSection Appender Creating a new Appender
+#'
+#'
+#'
+#' @section Methods:
+#'
+#' \describe{
+#'   \item{`show(n, threshold)`}{Show the last `n` log entries with a log level
+#'   bellow `threshold`. The log entries will be formated for console output
+#'   via the defined [Layout]}
+#' }
+#'
+#' @section Active Bindings:
+#'
+#' \describe{
+#'   \item{`data`}{read-only binding to access all cached LogEvents as a `data.table`}
+#' }
+#'
+#' @export
+#' @seealso [LayoutFormat], [simple_logging]
+#'
+#' @examples
+#' # create a new logger with propagate = FALSE to prevent routing to the root
+#' # logger. Please look at the section "Logger Hirarchies" in the package
+#' # vignette for more info.
+#' lgr  <- Logger$new("testlogger", propagate = FALSE)
+#'
+#' lgr$add_appender(AppenderMemoryDt$new())
+#'
+#' # Will output the message twice because we attached two console appenders
+#' lgr$warn("A test message")
+#'
+#' lgr$appenders[[1]]$show()
+#' lgr$appenders[[1]]$data
+#'
+#' # In the normal case that only one memory appnder is attached to a logger,
+#' # you can just use the show_log()
+#' show_log(logger = lgr)
+#' show_log(logger = lgr)
+#'
+#'
 #' @family Appenders
+#' @aliases yog_data
 #' @name AppenderMemoryDt
 NULL
+
+
 
 #' @export
 AppenderMemoryDt <- R6::R6Class(

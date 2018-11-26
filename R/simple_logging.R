@@ -152,19 +152,21 @@ remove_appender <- function(
 
 
 
-
-show = function(
+#' @param pos `integer` index or `character` names of the appenders to remove
+#' @rdname simple_logging
+#' @export
+show_log = function(
   n = 20,
   threshold = NA,
   logger = yog::yog
 ){
-  sel <- vapply(self$appenders, inherits, TRUE, "AppenderMemoryDt")
+  sel <- vapply(logger$appenders, inherits, TRUE, "AppenderMemoryDt")
 
   if (!any(sel)){
     message("This logger has no memory appender (see ?AppenderMemoryDt)")
     return(invisible())
 
   } else {
-    self$appenders[sel][[1]]$show(n = n, threshold = threshold)
+    logger$appenders[sel][[1]]$show(n = n, threshold = threshold)
   }
 }
