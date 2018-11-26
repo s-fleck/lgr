@@ -242,10 +242,10 @@ AppenderFile <- R6::R6Class(
 
 
 
-# AppenderMemory ----------------------------------------------------------
+# AppenderMemoryDt ----------------------------------------------------------
 
 
-#' AppenderMemory
+#' AppenderMemoryDt
 #'
 #' An Appender that outputs to an in-memory `data.table`. This requires that
 #' you have the suggested package [data.table] installed
