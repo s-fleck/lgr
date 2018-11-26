@@ -8,18 +8,20 @@
 #' @examples
 get_user <- function(fallback = "unknown user"){
   if (requireNamespace("whoami", quietly = TRUE)){
-    res <-
+    res <- try({
       whoami::email_address(
         whoami::fullname(
           whoami::gh_username(
             whoami::username(
               fallback
-    ))))
+      ))))
+    }, silent = TRUE)
   } else {
     res <- try(Sys.info()$user)
-    if (inherits(res, "try-error") || is.null(res))
-      res <- fallback
   }
+
+  if (inherits(res, "try-error") || is.null(res))
+      res <- fallback
 
   res
 }
