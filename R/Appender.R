@@ -433,6 +433,191 @@ AppenderMemoryDt <- R6::R6Class(
 
 
 
+# AppenderBuffer --------------------------------------------------
+
+#' AppenderBuffer
+#'
+#' An Appender that Buffers LogEvents in-memory and and redirects them to other
+#' appenders once certain conditions are met
+#'
+#' @inheritSection Appender Creating a new Appender
+#'
+#' @export
+#' @seealso [LayoutFormat], [LayoutGlue]
+#'
+#' @examples
+#' # create a new logger with propagate = FALSE to prevent routing to the root
+#' # logger. Please look at the section "Logger Hirarchies" in the package
+#' # vignette for more info.
+#' logger  <- Logger$new("testlogger", propagate = FALSE)
+#'
+#' logger$add_appender(AppenderConsole$new())
+#' logger$add_appender(AppenderConsole$new(
+#'   layout = LayoutFormat$new("[%t] %c(): [%n] %m from user %u", colors = getOption("yog.colors"))))
+#'
+#' # Will output the message twice because we attached two console appenders
+#' logger$warn("A test message")
+#'
+#' @family Appenders
+#' @name AppenderConsole
+AppenderBuffer <- R6::R6Class(
+  "AppenderBuffer",
+  inherit = Appender,
+  public = list(
+    initialize = function(
+      threshold = NA_integer_,
+      appenders = NULL,
+      should_flush =
+        function(x){
+          isTRUE(
+            any(x[["level"]] <= 200) ||
+            length(self[["buffered_events"]]) > self[["buffer_size"]]
+          )
+        },
+      flush_on_exit = TRUE,
+      layout = LayoutFormat$new(
+        fmt = "%L [%t] %m",
+        timestamp_fmt = "%H:%M:%S",
+        colors = getOption("yog.colors")
+      ),
+      buffer_size = 1e3
+    ){
+      assert(is_scalar_integerish(buffer_size))
+      self$threshold <- threshold
+      self$should_flush <- should_flush
+      self$appenders <- appenders
+      self$buffered_events <- list()  # no speed advantage in pre allocating lists in R!
+      self$buffer_size <- buffer_size
+      self$flush_on_exit <- flush_on_exit
+      invisible(self)
+    },
+
+
+    append = function(
+      x
+    ){
+      self$buffered_events[[length(self$buffered_events) + 1L]] <- x$clone()
+      if (self$should_flush(x))
+        self$flush()
+      invisible(NULL)
+    },
+
+
+    buffered_events = NULL,
+
+
+    buffer_size = NULL,
+
+
+    flush = function(
+      x = self$buffered_events
+    ){
+      for (event in self$buffered_events){
+        for (app in self$appenders) {
+          if (app$filter(event))  app$append(event)
+        }
+      }
+      self$buffered_events <- list()
+    },
+
+
+    add_appender = function(
+      appender,
+      name = NULL
+    ){
+      assert(inherits(appender, "Appender"))
+      appender <- appender$clone(deep = TRUE)
+      appender$logger <- self$logger
+      private$.appenders[length(private$.appenders) + 1L] <- list(appender)
+
+      if (!is.null(name))
+        names(private$.appenders)[length(private$.appenders)] <- name
+
+      invisible(self)
+    },
+
+
+    remove_appender = function(
+      pos
+    ){
+      assert(is_scalar(pos))
+
+      if (is.numeric(pos)){
+        assert(
+          all(pos %in% seq_along(private$.appenders)),
+          "'pos' is out of range of the length of appenders (1:",
+          length(appenders), ")"
+        )
+
+        pos <- as.integer(pos)
+      } else if (is.character(pos)) {
+        assert(
+          all(pos %in% names(private$.appenders)),
+          "'pos' is not a name of any attached appender (",
+          paste(names(private$.appenders), collapse = ", "),
+          ")"
+        )
+      }
+
+      try(private$.appenders[[pos]]$finalize(), silent = TRUE)
+      private$.appenders[[pos]] <- NULL
+      invisible(self)
+    },
+
+
+    finalize = function(){
+      if (self$flush_on_exit) self$flush()
+    },
+
+    flush_on_exit = NULL,
+
+    should_flush = NULL
+  ),
+
+  active = list(
+    appenders = function(value){
+      if (missing(value)) return(c(private$.appenders))
+
+      if (is.null(value)){
+        private$.appenders <- NULL
+        return(invisible())
+      }
+
+      if (inherits(value, "Appender"))
+        value <- list(value)
+
+      assert(
+        is.list(value) && all(vapply(value, inherits, TRUE, "Appender")),
+        "'appenders' must either be a single Appender, a list thereof, or NULL for no appenders."
+      )
+
+      value <- lapply(value, function(app){
+        res <- app$clone()
+        # logger gets assigned to sub-appenders inside the `logger` active binding
+        res
+      })
+
+      private$.appenders <- value
+      invisible()
+    },
+
+    logger = function(value){
+      if (missing(value)) return(private$.logger)
+      assert(inherits(value, "Logger"))
+      private$.logger <- value
+      for (app in self$appenders){
+        app$logger <- value
+      }
+    }
+  ),
+
+
+  private = list(
+    .appenders = list()
+  )
+)
+
+
 
 # utils -------------------------------------------------------------------
 

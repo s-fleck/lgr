@@ -80,9 +80,9 @@ test_that("AppenderConsole works as expected", {
 
 
 
-# AppenderMemory ----------------------------------------------------------
+# AppenderMemoryDt ----------------------------------------------------------
 
-test_that("AppenderMemory: appending multiple rows works", {
+test_that("AppenderMemoryDt: appending multiple rows works", {
   app <- AppenderMemoryDt$new()
   y <- x$clone()
   y$level <- seq(100L, 300L, 100L)
@@ -105,68 +105,64 @@ test_that("AppenderMemory: appending multiple rows works", {
 
 
 
-# AppenderMemoryBuffer ----------------------------------------------------
+# AppenderBuffer ----------------------------------------------------
 
-test_that("AppenderMemoryBufferDt: appending multiple rows works", {
-  skip("experimental")
+test_that("AppenderBuffer: appending multiple rows works", {
   tf <- tempfile()
 
   # Sub sub appenders must have a reference to the original logger
   l <- Logger$new(
     "dummy",
     appenders = list(
-      buffer = AppenderMemoryBufferDt$new(
+      buffer = AppenderBuffer$new(
         appenders = list(file = AppenderFile$new(file = tf)),
-        cache_size = 10
+        buffer_size = 10
       )
     ),
     parent = NULL
   )
   expect_identical(l, l$appenders$buffer$logger)
-  expect_identical(l$appenders$buffer$.__enclos_env__$private$flushed, 0L)
   l$info(LETTERS[1:3])
-  expect_identical(l$appenders$buffer$.__enclos_env__$private$flushed, 0L)
+  expect_identical(length(l$appenders$buffer$buffered_events), 1L)
+  l$info(LETTERS[4:7])
+  expect_identical(length(l$appenders$buffer$buffered_events), 2L)
 
 
   # FATAL log level triggers flush
   l$fatal(letters[1:3])
-  expect_identical(l$appenders$buffer$.__enclos_env__$private$flushed, 6L)
-  expect_true(is.null(l$appenders$buffer$unflushed_events))
-  expect_match(paste(readLines(tf), collapse = "#"), ".*A#.*B#.*C#.*a#.*b#.*c")
+  expect_identical(l$appenders$buffer$buffered_events, list())
+  expect_match(
+    paste(readLines(tf), collapse = "#"),
+    "INFO.*A#INFO.*B#INFO.*C#INFO.*D#INFO.*E#INFO.*F#INFO.*G#FATAL.*a#FATAL.*b#FATAL.*c"
+  )
 
   # Does the next flush flush the correct event?
   l$fatal("x")
-  expect_identical(length(readLines(tf)), 7L)
-  expect_true(is.null(l$appenders$buffer$unflushed_events))
+  expect_identical(length(readLines(tf)), 11L)
+  expect_identical(l$appenders$buffer$buffered_events, list())
   expect_match(paste(readLines(tf), collapse = "#"), ".*A#.*B#.*C#.*a#.*b#.*c#.*x")
 
   # does flushing on memory cycling work?
-  l$info(rep("z", 10))
-  expect_identical(length(l$appenders$buffer$unflushed_events$level), 10L)
+  replicate(10, l$info("z"))
+  expect_identical(length(l$appenders$buffer$buffered_events), 10L)
   l$info(c("y", "y", "y"))
-  expect_identical(length(readLines(tf)), 17L)
-  expect_identical(l$appenders$buffer$unflushed_events$msg, c("y", "y", "y"))
-  expect_match(paste(readLines(tf), collapse = "#"), ".*A#.*B#.*C#.*a#.*b#.*c#.*x(.*z.*){10}")
-
-  # manual flushing works
-  l$appenders$buffer$flush()
-  expect_identical(length(readLines(tf)), 20L)
-  expect_match(paste(readLines(tf), collapse = "#"), "(.*z.*){10}(.*y.*){3}")
-
-  # does flushing of bigger-than-buffer data work?
-  l$info(rep("bigger than memory", 20))
-  expect_identical(l$appenders$buffer$unflushed_events, NULL)
-  expect_identical(length(readLines(tf)), 40L)
-  expect_identical(l$appenders$buffer$.__enclos_env__$private$flushed, 40L)
+  expect_identical(length(readLines(tf)), 24L)
+  expect_identical(l$appenders$buffer$buffered_events, list())
   expect_match(
     paste(readLines(tf), collapse = "#"),
-    "(.*z.*){10}(.*y.*){3}(.*bigger than memory){20}"
+    ".*A#.*B#.*C#.*a#.*b#.*c#.*x(.*z.*){10}(.*y.*){3}"
   )
+
+  # manual flushing works
+  l$info(c("y", "y", "y"))
+  l$appenders$buffer$flush()
+  expect_identical(length(readLines(tf)), 27L)
+  expect_match(paste(readLines(tf), collapse = "#"), "(.*z.*){10}(.*y.*){6}")
+
 
   # does flushing on object destruction work?
   l$info(c("destruction", "destruction"))
-  expect_identical(length(l$appenders$buffer$unflushed_events$msg), 2L)
-  expect_identical(l$appenders$buffer$.__enclos_env__$private$flushed, 40L)
+  expect_identical(length(l$appenders$buffer$buffered_events), 1L)
   rm(l)
   gc()
   expect_match(
@@ -176,6 +172,31 @@ test_that("AppenderMemoryBufferDt: appending multiple rows works", {
 
   # does flushing honor log levels and filters??
   file.remove(tf)
+})
+
+
+
+
+test_that("AppenderBuffer: dont flush on object destruction if switched of", {
+  tf <- tempfile()
+
+  # Sub sub appenders must have a reference to the original logger
+  l <- Logger$new(
+    "dummy",
+    appenders = list(
+      buffer = AppenderBuffer$new(
+        appenders = list(file = AppenderFile$new(file = tf)),
+        buffer_size = 10
+      )
+    ),
+    parent = NULL
+  )
+  l$info(LETTERS[1:3])
+  l$appenders$buffer$flush_on_exit <- FALSE
+  rm(l)
+  gc()
+  expect_true(!file.exists(tf))
+  try(file.remove(tf), silent = TRUE)
 })
 
 
