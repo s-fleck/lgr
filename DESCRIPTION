@@ -1,7 +1,7 @@
 Type: Package
 Package: yog
 Title: Yet Another Log4j Inspired Logging Framework
-Version: 0.0.3.9000
+Version: 0.0.3.9001
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
