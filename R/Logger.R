@@ -263,6 +263,10 @@ Logger <- R6::R6Class(
       timestamp = Sys.time(),
       caller = get_caller(-3)
     ){
+      if (identical(getOption("yog.logging_suspended"), TRUE)){
+        return(invisible(msg))
+      }
+
       force(caller)
 
       tryCatch({
