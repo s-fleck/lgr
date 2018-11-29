@@ -393,7 +393,13 @@ AppenderMemoryDt <- R6::R6Class(
     ){
       if (is.na(threshold)) threshold <- Inf
       dd <- self$data
-      dd <- tail(dd[dd$level <= threshold], n)
+
+      if (identical(nrow(dd),  0L)){
+        cat("[empty log]")
+        return(invisible(NULL))
+      }
+
+      dd <- tail(dd[dd$level <= threshold, ], n)
       dd <- as.environment(dd)
       assign("logger", self$logger, dd)
       cat(self$layout$format_event(dd), sep = "\n")
