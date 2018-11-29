@@ -1,4 +1,20 @@
 #'
+#'
+#' @section Options:
+#'
+#' \describe{
+#'   \item{`yog.colors`}{a `list` of `functions` used for coloring the log
+#'     levels in console output. Usually these will be functions from the
+#'     packages **crayon** or **colt**}
+#'   \item{`yog.log_levels`}{A named integer vector of log levels that are
+#'     known to yog for labeling, setting thresholds, etc... . Instead of
+#'     modifying this option manually use [add_log_levels()] and
+#'     [remove_log_levels()]}
+#'  \item{`yog.suspend_logging`}{`TRUE` or `FALSE`. Suspend all logging for
+#'    all loggers.  Instead of modifying this option manually use
+#'    [suspend_logging()] and [unsuspend_log_levels()]}
+#' }
+#'
 #' @keywords internal
 #' @importFrom data.table data.table set
 #' @importFrom stats setNames
@@ -9,16 +25,18 @@
 
 #' @export yog
 .onLoad <- function(...){
-  if (requireNamespace("colt", quietly = TRUE)){
+  if (requireNamespace("crayon", quietly = TRUE)){
     options(
       yog.colors = list(
-        "fatal" = function(x) colt::clt_emph2(colt::clt_error(x)),
-        "error" = colt::clt_error,
-        "warn"  = colt::clt_warning,
-        "debug" = colt::clt_chr_subtle,
-        "trace" = colt::clt_chr_subtle
+        "fatal" = style_fatal,
+        "error" = style_error,
+        "warn"  = style_warning,
+        "debug" = style_subtle,
+        "trace" = style_subtle
       )
     )
+  } else {
+    options(yog.colors = list())
   }
 
   options(

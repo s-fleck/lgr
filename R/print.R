@@ -319,13 +319,3 @@ print.ancestry <- function(x, ...){
 summary.Logger = function(x){
 
 }
-
-
-
-
-style_accent <- colt::clt_chr_accent
-
-
-
-
-style_subtle <- colt::clt_chr_subtle

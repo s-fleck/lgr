@@ -176,11 +176,12 @@ show_log = function(
 
 #' Suspend all logging
 #'
-#' Completely disable logging for loggers. This is for example useful for
+#' Completely disable logging for all loggers. This is for example useful for
 #' automated test code.
 #'
+#'
 #' @return
-#'   `suspend_logging()` and `unsuspend_logging` return `NULL` (invisibly),
+#'   `suspend_logging()` and `unsuspend_logging()` return `NULL` (invisibly),
 #'   `without_logging` returns whatever `code` returns
 #' @export
 #'
