@@ -172,7 +172,7 @@ AppenderConsole <- R6::R6Class(
 #' @seealso [LayoutFormat], [LayoutJson], [LayoutGlue]
 #'
 #' @examples
-#' logger <- Logger$new()
+#' logger <- Logger$new("loggername")
 #' default <- tempfile()
 #' fancy <- tempfile()
 #' json <- tempfile()

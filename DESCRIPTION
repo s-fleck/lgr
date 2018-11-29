@@ -19,6 +19,7 @@ Imports:
     R6
 Suggests: 
     data.table,
+    jsonlite,
     glue,
     whoami,
     colt,
@@ -26,7 +27,8 @@ Suggests:
     knitr,
     rmarkdown,
     tools,
-    utils
+    utils,
+    testthat
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -46,6 +48,5 @@ Collate:
     'read_json_log.R'
     'simple_logging.R'
     'styles.R'
-    'summary.R'
     'yog-package.R'
 VignetteBuilder: knitr

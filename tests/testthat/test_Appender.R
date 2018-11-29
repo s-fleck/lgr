@@ -88,10 +88,13 @@ test_that("AppenderMemoryDt: appending multiple rows works", {
   y$level <- seq(100L, 300L, 100L)
 
   expect_silent(app$append(y))
-  expect_identical(app$data[1:3]$level, y$level)
-  expect_identical(app$data[1:3]$timestamp, rep(y$timestamp, 3))
-  expect_identical(app$data[1:3]$msg, rep(y$msg, 3))
-  expect_identical(app$data[1:3]$caller, rep(NA_character_, 3))
+
+
+  expect_true(data.table::is.data.table(app$data))
+  expect_identical(app$data$level[1:3], y$level)
+  expect_identical(app$data$timestamp[1:3], rep(y$timestamp, 3))
+  expect_identical(app$data$msg[1:3], rep(y$msg, 3))
+  expect_identical(app$data$caller[1:3], rep(NA_character_, 3))
 
   y <- x$clone()
   y$level <- 300
@@ -171,7 +174,7 @@ test_that("AppenderBuffer: appending multiple rows works", {
   )
 
   # does flushing honor log levels and filters??
-  file.remove(tf)
+  try(file.remove(tf), silent = TRUE)
 })
 
 
@@ -196,7 +199,7 @@ test_that("AppenderBuffer: dont flush on object destruction if switched of", {
   rm(l)
   gc()
   expect_true(!file.exists(tf))
-  try(file.remove(tf), silent = TRUE)
+  suppressWarnings(file.remove(tf))
 })
 
 
@@ -215,7 +218,7 @@ test_that("AppenderMemory: memory cycling works", {
 
   app2$append(y)
   expect_equal(app2$data$.id,  3:12)
-  expect_identical(app2$data, r1)
+  expect_equal(app2$data, r1)
 })
 
 

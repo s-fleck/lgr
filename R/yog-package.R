@@ -16,7 +16,6 @@
 #' }
 #'
 #' @keywords internal
-#' @importFrom data.table data.table set
 #' @importFrom stats setNames
 "_PACKAGE"
 
