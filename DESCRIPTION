@@ -8,7 +8,10 @@ Authors@R:
            role = c("aut", "cre"),
            email = "stefan.b.fleck@gmail.com")
 Maintainer: Stefan Fleck <stefan.b.fleck@gmail.com>
-Description: A flexible R6 based logging framework 
+Description: 
+  A flexible R6 based logging framework. Yog is under heavy development right 
+  now, please don't heistate to contact the maintainer with bug reports, 
+  wishes, suggestions, etc...
 License: MIT + file LICENSE
 URL: https://github.com/s-fleck/yog
 BugReports: https://github.com/s-fleck/dint/yog
