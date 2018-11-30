@@ -5,7 +5,7 @@ if (requireNamespace("colt", quietly = TRUE)){
   style_error   <- colt::clt_error
   style_warning <- colt::clt_warning
   style_subtle  <- colt::clt_chr_subtle
-  style_accent <- colt::clt_chr_accent
+  style_accent  <- colt::clt_chr_accent
 
 } else if (requireNamespace("crayon", quietly = TRUE)){
 
@@ -16,11 +16,11 @@ if (requireNamespace("colt", quietly = TRUE)){
   style_accent  <- crayon::blue
 
 } else {
-  style_error   <- function(...) paste(...)
   style_fatal   <- function(...) paste(...)
-  style_error   <- function(...) paste(...)
-  style_warning <- function(...) paste(...)
-  style_subtle  <- function(...) paste(...)
-  style_accent  <- function(...) paste(...)
+  style_error   <- style_fatal
+  style_error   <- style_fatal
+  style_warning <- style_fatal
+  style_subtle  <- style_fatal
+  style_accent  <- style_fatal
 
 }

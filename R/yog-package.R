@@ -25,6 +25,7 @@
 #' @export yog
 .onLoad <- function(...){
   if (requireNamespace("crayon", quietly = TRUE)){
+
     options(
       yog.colors = list(
         "fatal" = style_fatal,
