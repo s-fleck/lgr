@@ -1,16 +1,4 @@
-#
-# if (requireNamespace("colt", quietly = TRUE)){
-#
-#   style_fatal   <- function(x) colt::clt_emph2(colt::clt_error(x))
-#   style_error   <- colt::clt_error
-#   style_warning <- colt::clt_warning
-#   style_subtle  <- colt::clt_chr_subtle
-#   style_accent  <- colt::clt_chr_accent
-#
-# } else
-#
 if (requireNamespace("crayon", quietly = TRUE)){
-
   style_error   <- crayon::make_style("#BB3333", colors = 256)
   style_fatal   <- function(x) style_error(crayon::bold(x))
   style_warning <- crayon::make_style("#EEBB50", colors = 256)
@@ -20,9 +8,7 @@ if (requireNamespace("crayon", quietly = TRUE)){
 } else {
   style_fatal   <- function(...) paste(...)
   style_error   <- style_fatal
-  style_error   <- style_fatal
   style_warning <- style_fatal
   style_subtle  <- style_fatal
   style_accent  <- style_fatal
-
 }

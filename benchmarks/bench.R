@@ -7,14 +7,6 @@ library(magrittr)
 
 ml <- list()
 
-colors <- list(
-  "fatal" = function(x) colt::clt_emph2(colt::clt_error(x)),
-  "error" = colt::clt_error,
-  "warn"  = colt::clt_warning,
-  "info"  = colt::clt_info,
-  "debug" = colt::clt_chr,
-  "trace" = colt::clt_chr
-)
 
 
 # all loggers are created as Root loggers for the benchmarks. do not do this

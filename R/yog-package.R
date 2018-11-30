@@ -5,7 +5,7 @@
 #' \describe{
 #'   \item{`yog.colors`}{a `list` of `functions` used for coloring the log
 #'     levels in console output. Usually these will be functions from the
-#'     packages **crayon** or **colt**}
+#'     package **crayon**}
 #'   \item{`yog.log_levels`}{A named integer vector of log levels that are
 #'     known to yog for labeling, setting thresholds, etc... . Instead of
 #'     modifying this option manually use [add_log_levels()] and

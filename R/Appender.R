@@ -93,8 +93,8 @@ Appender <- R6::R6Class(
 
 #' AppenderConsole
 #'
-#' A simple Appender that outputs to the console. If you have the packages
-#' **colt** and **crayon** installed log levels will be coloured by default.
+#' A simple Appender that outputs to the console. If you have the package
+#'  **crayon** installed log levels will be coloured by default.
 #'
 #' @inheritSection Appender Creating a new Appender
 #'
