@@ -63,18 +63,6 @@ get_caller <- function(
 
 
 
-if (requireNamespace("crayon", quietly = TRUE)){
-  style_accent <- crayon::silver
-  style_subtle <- crayon::silver
-  col_nchar <- crayon::col_nchar
-} else {
-  style_accent <- identity
-  style_subtle <- identity
-  col_nchar <- nchar
-}
-
-
-
 
 #' Paste and Truncate
 #'

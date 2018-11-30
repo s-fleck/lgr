@@ -73,7 +73,7 @@ test_that("AppenderConsole works as expected", {
   app <- AppenderConsole$new()
   expect_match(
     capture.output(app$append(x)),
-    "ERROR \\[17:19:33.*\\] foo bar"
+    "ERROR .*:19:33.* foo bar"
   )
 })
 
