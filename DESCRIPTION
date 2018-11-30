@@ -1,7 +1,7 @@
 Type: Package
 Package: yog
 Title: Yet Another Log4j Inspired Logging Framework
-Version: 0.0.3.9006
+Version: 0.0.3.9009
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -22,7 +22,6 @@ Suggests:
     jsonlite,
     glue,
     whoami,
-    colt,
     crayon,
     knitr,
     rmarkdown,

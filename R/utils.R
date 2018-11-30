@@ -17,7 +17,7 @@ get_user <- function(fallback = "unknown user"){
       ))))
     }, silent = TRUE)
   } else {
-    res <- try(Sys.info()$user)
+    res <- try(Sys.info()[["user"]], silent = TRUE)
   }
 
   if (inherits(res, "try-error") || is.null(res))

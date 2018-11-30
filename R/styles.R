@@ -1,13 +1,15 @@
-
-if (requireNamespace("colt", quietly = TRUE)){
-
-  style_fatal   <- function(x) colt::clt_emph2(colt::clt_error(x))
-  style_error   <- colt::clt_error
-  style_warning <- colt::clt_warning
-  style_subtle  <- colt::clt_chr_subtle
-  style_accent  <- colt::clt_chr_accent
-
-} else if (requireNamespace("crayon", quietly = TRUE)){
+#
+# if (requireNamespace("colt", quietly = TRUE)){
+#
+#   style_fatal   <- function(x) colt::clt_emph2(colt::clt_error(x))
+#   style_error   <- colt::clt_error
+#   style_warning <- colt::clt_warning
+#   style_subtle  <- colt::clt_chr_subtle
+#   style_accent  <- colt::clt_chr_accent
+#
+# } else
+#
+if (requireNamespace("crayon", quietly = TRUE)){
 
   style_error   <- crayon::make_style("#BB3333", colors = 256)
   style_fatal   <- function(x) style_error(crayon::bold(x))

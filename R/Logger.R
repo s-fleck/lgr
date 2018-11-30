@@ -203,22 +203,28 @@ Logger <- R6::R6Class(
       # fields
       # threshold must be set *after* the logging functions have been initalized
 
-      cat("yog: registering\n")
+      cat("initializing logger\n")  ###debug###
+      cat("assigning fields\n")  ###debug###
+      cat("assigning appenders\n")  ###debug###
       self$appenders <- appenders
+      cat("assigning user\n")  ###debug###
       self$user  <- user
+      cat("assigning exception handler\n")  ###debug###
       self$handle_exception <- handle_exception
+      cat("assigning parent\n")  ###debug###
       self$parent <- parent
+      cat("assigning name\n")  ###debug###
       self$name <- name
-      cat("yog: creating dummy event\n")
+      cat("assigning event\n")  ###debug###
       self$last_event <- LogEvent$new(self)
-      cat("yog: creating dummy event - end\n")
+      cat("assigning propagate\n")  ###debug###
       self$propagate <- propagate
 
 
 
 
       # init log functions
-      cat("yog: init log functions\n")
+      cat("init log functions\n")  ###debug###
       make_logger <- function(
         level,
         ...
@@ -245,8 +251,11 @@ Logger <- R6::R6Class(
 
         self[[nm]] <- make_logger(lvl)
       }
-      cat("yog: assign threshold\n")
+      cat("assigning threshold\n") ###debug###
       self$threshold <- threshold
+
+
+      cat("Logger init succesfull\n") ###debug###
       invisible(self)
     },
 
