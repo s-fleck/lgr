@@ -3,3 +3,4 @@
 ^Jenkinsfile$
 ^LICENSE\.md$
 ^benchmarks$
+^\.travis\.yml$

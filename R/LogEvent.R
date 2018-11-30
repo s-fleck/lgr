@@ -101,8 +101,6 @@ LogEvent <- R6::R6Class(
       caller = NA,
       msg = NA
     ){
-      cat("Initializing LogEvent\n") ###debug###
-
       assert(inherits(logger, "Logger"))
       self$logger <- logger
       self$level <- level
@@ -110,8 +108,6 @@ LogEvent <- R6::R6Class(
       self$caller <- caller
       self$msg <- msg
       self$logger <- logger
-
-      cat("Initializing LogEvent successfull\n") ###debug###
 
       invisible(self)
     },

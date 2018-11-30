@@ -320,7 +320,7 @@ AppenderMemoryDt <- R6::R6Class(
       ),
       cache_size = 1e5
     ){
-      cat("Initializing AppenderMemoryDt\n") ###debug###
+
       assert(is_scalar_integerish(cache_size))
       assert(is.integer(prototype$.id))
       private$current_row <- 0L
@@ -348,7 +348,7 @@ AppenderMemoryDt <- R6::R6Class(
       )
 
 
-      cat("Initializing AppenderMemoryDt successfull\n") ###debug###
+
       invisible(self)
     },
 
