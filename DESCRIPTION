@@ -31,7 +31,7 @@ Suggests:
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.0.9000
+RoxygenNote: 6.1.1
 Collate: 
     'Filterable.R'
     'utils-sfmisc.R'
@@ -46,6 +46,5 @@ Collate:
     'predicates.R'
     'read_json_log.R'
     'simple_logging.R'
-    'styles.R'
     'yog-package.R'
 VignetteBuilder: knitr
