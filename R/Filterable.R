@@ -1,5 +1,10 @@
-
-#' @param filters a list of functions with the arguments x and self
+#' Filterables
+#'
+#' Superclass for classes that have a filter method, such as Appenders an
+#' Loggers.
+#'
+#' @noRd
+#'
 Filterable <- R6::R6Class(
   "Filterable",
   cloneable = FALSE,
