@@ -97,7 +97,7 @@ LogEvent <- R6::R6Class(
     initialize = function(
       logger,
       level = NA,
-      timestamp = NA,
+      timestamp = Sys.time(),
       caller = NA,
       msg = NA
     ){

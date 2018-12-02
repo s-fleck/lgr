@@ -127,6 +127,7 @@ threshold <- function(
 
 
 
+#' @rdname simple_logging
 #' @param appender an `Appender`
 #' @return `add_appender()` and `remove_appender()` return `target`
 #' @export
@@ -158,16 +159,19 @@ remove_appender <- function(
 show_log = function(
   n = 20,
   threshold = NA,
-  logger = yog::yog
+  target = yog::yog
 ){
-  sel <- vapply(logger$appenders, inherits, TRUE, "AppenderMemoryDt")
+  sel <- vapply(target$appenders, inherits, TRUE, "AppenderMemoryDt")
 
   if (!any(sel)){
-    message("This logger has no memory appender (see ?AppenderMemoryDt)")
+    warning(sprintf(
+      "This %s has no memory appender (see ?AppenderMemoryDt)",
+      class_fmt(target)
+    ))
     return(invisible())
 
   } else {
-    logger$appenders[sel][[1]]$show(n = n, threshold = threshold)
+    target$appenders[sel][[1]]$show(n = n, threshold = threshold)
   }
 }
 

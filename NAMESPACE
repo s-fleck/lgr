@@ -2,6 +2,7 @@
 
 S3method(format,LogEvent)
 S3method(format,yog_data)
+S3method(print,LogEvent)
 export(Appender)
 export(AppenderBuffer)
 export(AppenderConsole)

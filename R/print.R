@@ -1,20 +1,19 @@
-#' Format Logging Data
+#' Print or Format Logging Data
 #'
 #' @param x a [LogEvent] or [yog_data] Object
 #' @param timestamp_fmt see [format.POSIXct]
 #' @param fmt A format string that may contain the following tokens:
-#'
-#' \describe{
-#'   \item{`%t`} A timestamp (see also `timestamp_fmt`)
-#'   \item{`%l`} the log level
-#'   \item{`%L`} the log level (uppercase)
-#'   \item{`%n`} the log level (numeric)
-#'   \item{`%u`} the current user
-#'   \item{`%p`} the PID (process ID)
-#'   \item{`%c`} the calling function
-#'   \item{`%m`} the log message
-#' }
-#'
+#'   \describe{
+#'     \item{`%t`}{A timestamp (see also `timestamp_fmt`)}
+#'     \item{`%l`}{the log level}
+#'     \item{`%L`}{the log level (uppercase)}
+#'     \item{`%n`}{the log level (numeric)}
+#'     \item{`%u`}{the current user}
+#'     \item{`%p`}{the PID (process ID). Useful when logging code that uses
+#'       multiple threads.}
+#'     \item{`%c`}{the calling function}
+#'     \item{`%m`}{the log message}
+#'  }
 #'
 #' @param colors A `list` of `functions` that will be used to color the
 #'   log levels (likely from [crayon]).
@@ -24,10 +23,41 @@
 #' @param user The user
 #' @param ...
 #'
-#' @return
+#' @return `x` for `print()` and a `character` scalar for `format()`
 #' @export
 #'
 #' @examples
+#' x <- LogEvent$new(level = 300, msg = "a test event", logger = yog)
+#' print(x)
+#' print(x, colors = NULL)
+#'
+#'
+print.LogEvent <- function(
+  x,
+  fmt = "%L [%t] %m",
+  timestamp_fmt = "%Y-%m-%d %H:%M:%S",
+  colors = getOption("yog.colors"),
+  log_levels = getOption("yog.log_levels"),
+  pad_levels = "right",
+  user = x$user,
+  ...
+){
+  cat(format(
+    x,
+    fmt = fmt,
+    timestamp_fmt = timestamp_fmt,
+    colors = colors,
+    log_levels = log_levels,
+    pad_levels = pad_levels,
+    user = user
+  ))
+  invisible(x)
+}
+
+
+
+#' @rdname print.LogEvent
+#' @export
 format.LogEvent <- function(
   x,
   fmt = "%L [%t] %m",
@@ -35,7 +65,7 @@ format.LogEvent <- function(
   colors = NULL,
   log_levels = getOption("yog.log_levels"),
   pad_levels = "right",
-  user = get_user(),
+  user = x$user,
   ...
 ){
   stopifnot(
@@ -86,7 +116,7 @@ format.LogEvent <- function(
       "%t" = format(x$timestamp, format = timestamp_fmt),
       "%m" = x$msg,
       "%c" = x$caller %||% "(unknown function)",
-      "%u" = user,
+      "%u" = x$user,
       "%p" = Sys.getpid(),
       tokens[[i]]
     )
