@@ -1,6 +1,3 @@
-
-
-
 #' Format Logging Data
 #'
 #' @param x a [LogEvent] or [yog_data] Object
@@ -106,6 +103,8 @@ format.LogEvent <- function(
 format.yog_data <- format.LogEvent
 
 
+
+
 tokenize_format <- function(
   x,
   valid_tokens = NULL
@@ -136,82 +135,6 @@ tokenize_format <- function(
 
 
 
-pad_left <- function(
-  x,
-  width = max(nchar(paste(x))),
-  pad = " "
-){
-  diff <- width - nchar(paste(x))
-  padding <-
-    vapply(diff, function(i) paste(rep.int(pad, i), collapse = ""), character(1))
-  paste0(padding, x)
-}
-
-
-
-
-pad_right <- function(
-  x,
-  width = max(nchar(paste(x))),
-  pad = " "
-){
-  diff <- width - nchar(paste(x))
-  padding <-
-    vapply(diff, function(i) paste(rep.int(pad, i), collapse = ""), character(1))
-  paste0(x, padding)
-}
-
-
-
-
-#' Single Row Summary of yog objects
-#' @return a 1 row `data.frame` with columns `name`, `threshold`, `comment`
-#' @noRd
-srs <- function(
-  x
-){
-  res <- data.frame(
-    name = class(x)[[1]],
-    threshold = x$threshold,
-    comment = "",
-    stringsAsFactors = FALSE
-  )
-
-  if (inherits(x, "AppenderFile"))
-    res$comment <- style_subtle(paste(" ->", x$file))
-
-  res
-}
-
-
-
-
-#' Single Line Summary
-#'
-#' @param x
-#'
-sls <- function(
-  x,
-  colors = FALSE
-){
-  if (inherits(x, "Appender"))
-    return(paste(as.character(as.list(srs(x))), collapse = " "))
-
-  if (is.function(x))
-    return(trimws(paste0(format(x)[[1]])))
-
-  if (inherits(x, "log_levels"))
-    return(paste0(names(x), " (", x, ")", collapse = ", "))
-
-  if (is.atomic(x))
-    return(ptrunc_col(x, width = 64))
-
-  class_fmt(x)
-}
-
-
-
-
 fmt_threshold <- function(
   x,
   log_levels = getOption("yog.log_levels")
@@ -220,30 +143,3 @@ fmt_threshold <- function(
 }
 
 
-
-
-#' Title
-#'
-#' @param x
-#'
-#' @return
-#' @export
-#'
-#' @examples
-format.ancestry <- function(x, ...){
-  paste(x, collapse = " -> ")
-}
-
-
-
-
-print.ancestry <- function(x, ...){
-  cat(format(x))
-}
-
-
-
-
-summary.Logger = function(x){
-
-}

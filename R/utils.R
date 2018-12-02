@@ -1,29 +1,42 @@
-#' Title
+#' Get the Current System User
 #'
-#' @param fallback
+#' Try to determine the current user. Defaults to `getOption("yog.user")`. If
+#' the option is not set, `Sys.info()[["user"]]` is used. If the option is not
+#' set and the package **whoami** is available, the user name
+#' is guessed to whichever of the following is available: `email_address``,
+#' `fullname`, `gh_username`, `username`.
+#'
+#' @param fallback A fallback in case the user name could not be determined
 #'
 #' @return
+#'   a `character` scalar.
 #' @export
 #'
 #' @examples
+#'   get_user()
 get_user <- function(fallback = "unknown user"){
-  if (requireNamespace("whoami", quietly = TRUE)){
-    res <- try({
-      whoami::email_address(
-        whoami::fullname(
-          whoami::gh_username(
-            whoami::username(
-              fallback
-      ))))
-    }, silent = TRUE)
-  } else {
-    res <- try(Sys.info()[["user"]], silent = TRUE)
+  guess_user <- function(){
+    if (requireNamespace("whoami", quietly = TRUE)){
+      res <- try({
+        whoami::email_address(
+          whoami::fullname(
+            whoami::gh_username(
+              whoami::username(
+                fallback
+        ))))
+      }, silent = TRUE)
+    } else {
+      res <- try(Sys.info()[["user"]], silent = TRUE)
+    }
+
+    if (inherits(res, "try-error") || is.null(res))
+        res <- fallback
+
+    res
   }
 
-  if (inherits(res, "try-error") || is.null(res))
-      res <- fallback
 
-  res
+  getOption("yog.user", guess_user())
 }
 
 
@@ -63,7 +76,6 @@ get_caller <- function(
 
 
 
-
 #' Paste and Truncate
 #'
 #' color aware version of ptrunc from sfmisc
@@ -83,4 +95,32 @@ ptrunc_col <- function(
   x[sel] <- strtrim(x[sel], width = width - 4L)
   x[sel] <- paste(gsub(",{0,1}\\s*$", "", x[sel]), "...")
   x
+}
+
+
+
+
+pad_left <- function(
+  x,
+  width = max(nchar(paste(x))),
+  pad = " "
+){
+  diff <- width - nchar(paste(x))
+  padding <-
+    vapply(diff, function(i) paste(rep.int(pad, i), collapse = ""), character(1))
+  paste0(padding, x)
+}
+
+
+
+
+pad_right <- function(
+  x,
+  width = max(nchar(paste(x))),
+  pad = " "
+){
+  diff <- width - nchar(paste(x))
+  padding <-
+    vapply(diff, function(i) paste(rep.int(pad, i), collapse = ""), character(1))
+  paste0(x, padding)
 }

@@ -8,13 +8,17 @@
 #'   \item{`yog.colors`}{a `list` of `functions` used for coloring the log
 #'     levels in console output. Usually these will be functions from the
 #'     package **crayon**}
-#'   \item{`yog.log_levels`}{A named integer vector of log levels that are
+#'   \item{`yog.log_levels`}{A named `integer` vector of log levels that are
 #'     known to yog for labeling, setting thresholds, etc... . Instead of
 #'     modifying this option manually use [add_log_levels()] and
 #'     [remove_log_levels()]}
 #'  \item{`yog.suspend_logging`}{`TRUE` or `FALSE`. Suspend all logging for
 #'    all loggers.  Instead of modifying this option manually use
 #'    [suspend_logging()] and [unsuspend_log_levels()]}
+#'  \item{`yog.user`}{a `character` scalar. The default username for new
+#'    Loggers. Users can also be set per Logger, though this rarely makes
+#'    sense.
+#'   }
 #' }
 #'
 #' @keywords internal
