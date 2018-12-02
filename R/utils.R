@@ -52,14 +52,21 @@ get_user <- function(fallback = "unknown user"){
 
 
 
-#' Title
+#' Get the Calling Function
 #'
-#' @param where
+#' Tries to determine the calling functions based on `where`. The default for
+#' `where` assumes that `get_caller()` gets called from a [Logger].
 #'
-#' @return
+#' @inheritParams Sys.call
+#'
+#' @return a `character` scalar
 #' @export
 #'
 #' @examples
+#' foo <- function() get_caller(-1L)
+#' foo()
+#'
+#'
 get_caller <- function(
   where = -5L
 ){
