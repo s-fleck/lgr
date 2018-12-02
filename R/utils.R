@@ -87,7 +87,7 @@ get_caller <- function(
 #' Paste and Truncate
 #'
 #' color aware version of ptrunc from sfmisc
-#'
+#' @noRd
 ptrunc_col <- function(
   ...,
   width = 40L,

@@ -20,7 +20,7 @@ get_log_levels <- function(){
 
 
 
-#' @param x a named `character` vector (see examples)
+#' @param levels a named `character` vector (see examples)
 #' @rdname get_log_levels
 #' @export
 add_log_levels <- function(
@@ -40,7 +40,7 @@ add_log_levels <- function(
 
 
 
-#' @param names a `character` vector of the names of the levels to remove
+#' @param level_names a `character` vector of the names of the levels to remove
 #' @rdname get_log_levels
 #' @export
 remove_log_levels <- function(

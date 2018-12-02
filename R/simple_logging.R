@@ -1,9 +1,5 @@
 #' Simple Logging
 #'
-#' @param msg,... passed on to [base::sprintf()]
-#' @param level the log level, either as integer or character (see bellow)
-#' @param threshold like `log_level`, but used to limit print output
-#'
 #' @name simple_logging
 #'
 #' @examples
@@ -18,6 +14,12 @@ NULL
 
 # logging -----------------------------------------------------------------
 
+#' @param msg,... passed on to [base::sprintf()]
+#' @param level,threshold an `integer` or `character` scalar, see
+#'   `getOption("yog.log_levels")` for possible values. For `threshold` `0`
+#'   (`"off"`) and `NA` (`"all"`) are also valid.
+#' @param target a [Logger] or [Appender]. Defaults to the root logger.
+#'
 #' @export
 #' @return `FATAL()` ... `TRACE()` and `log_exception()` return the log message
 #'   as a `character` vector.
@@ -106,10 +108,6 @@ log_exception <- function(
 #'   `add_appender()` and `remove_appender()` add [Appenders] to [Loggers] and
 #'   other Appenders.
 #'
-#' @param level an `integer` or `character` scalar. See
-#'   `getOption("yog.log_levels")`. In addition `0` (`"off"`) and `NA`
-#'   (`"all"`) are also valid.
-#' @param target a [Logger] or [Appender]. Defaults to the root logger.
 #' @rdname simple_logging
 #' @return
 #'   `threshold()` returns the log level of `target` as `integer` (invisibly)
@@ -157,9 +155,6 @@ remove_appender <- function(
 
 #' @param n `integer` scalar. Show only the last `n` log entries that match
 #'   `threshold`
-#' @param threshold `integer` or `character` scalar. Show only log entries with
-#'   a log level of `threshold` or less. See `getOption("yog.log_levels")` for
-#'   available levels.
 #' @rdname simple_logging
 #' @export
 show_log = function(

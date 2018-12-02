@@ -288,8 +288,8 @@ AppenderFile <- R6::R6Class(
 #'
 #' # In the normal case that only one memory appnder is attached to a logger,
 #' # you can just use the show_log()
-#' show_log(logger = lgr)
-#' show_log(logger = lgr)
+#' show_log(target = lgr)
+#' show_log(target = lgr)
 #'
 #'
 #' @family Appenders
