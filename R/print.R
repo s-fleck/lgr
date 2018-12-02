@@ -2,26 +2,28 @@
 #'
 #' @param x a [LogEvent] or [yog_data] Object
 #' @param timestamp_fmt see [format.POSIXct]
-#' @param fmt A format string that may contain the following tokens:
-#'   \describe{
-#'     \item{`%t`}{A timestamp (see also `timestamp_fmt`)}
-#'     \item{`%l`}{the log level}
-#'     \item{`%L`}{the log level (uppercase)}
-#'     \item{`%n`}{the log level (numeric)}
-#'     \item{`%u`}{the current user}
-#'     \item{`%p`}{the PID (process ID). Useful when logging code that uses
-#'       multiple threads.}
-#'     \item{`%c`}{the calling function}
-#'     \item{`%m`}{the log message}
-#'  }
-#'
+#' @param fmt A `character` scalar that may contain any of the tokens listed
+#'   bellow in the section Format Tokens.
 #' @param colors A `list` of `functions` that will be used to color the
 #'   log levels (likely from [crayon]).
 #' @param log_levels a named `integer` vector of log levels.
 #' @param pad_levels `right`, `left` or `NULL`. Whether or not to pad the log
 #'   level names to the same width on the left or right side, or not at all.
 #' @param user The user
-#' @param ...
+#' @param ... ignored
+#'
+#' @section Format Tokens:
+#' \describe{
+#'   \item{`%t`}{A timestamp (see also `timestamp_fmt`) }
+#'   \item{`%l`}{the log level}
+#'   \item{`%L`}{the log level (uppercase)}
+#'   \item{`%n`}{the log level (numeric)}
+#'   \item{`%u`}{the current user}
+#'   \item{`%p`}{the PID (process ID). Useful when logging code that uses
+#'       multiple threads.}
+#'   \item{`%c`}{the calling function}
+#'   \item{`%m`}{the log message}
+#' }
 #'
 #' @return `x` for `print()` and a `character` scalar for `format()`
 #' @export

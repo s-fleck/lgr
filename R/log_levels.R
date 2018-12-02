@@ -159,7 +159,7 @@ label_levels = function(
 
 
 #' @rdname label_levels
-#' @param log_levels
+#' @export
 unlabel_levels = function(
   labels,
   log_levels = getOption("yog.log_levels")

@@ -54,12 +54,13 @@ get_user <- function(fallback = "unknown user"){
 
 #' Get the Calling Function
 #'
-#' Tries to determine the calling functions based on `where`. The default for
-#' `where` assumes that `get_caller()` gets called from a [Logger].
+#' Tries to determine the calling functions based on `where`.
 #'
-#' @inheritParams Sys.call
+#' @param where `integer` scalar (usually negative). Look up that many frames
+#'   up the call stack
 #'
 #' @return a `character` scalar
+#' @seealso [base::sys.call()]
 #' @export
 #'
 #' @examples
@@ -68,7 +69,7 @@ get_user <- function(fallback = "unknown user"){
 #'
 #'
 get_caller <- function(
-  where = -5L
+  where = -1L
 ){
   res <- try(sys.call(where)[[1]], silent = TRUE)
 

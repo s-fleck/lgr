@@ -106,7 +106,9 @@ log_exception <- function(
 #'   `add_appender()` and `remove_appender()` add [Appenders] to [Loggers] and
 #'   other Appenders.
 #'
-#' @param level
+#' @param level an `integer` or `character` scalar. See
+#'   `getOption("yog.log_levels")`. In addition `0` (`"off"`) and `NA`
+#'   (`"all"`) are also valid.
 #' @param target a [Logger] or [Appender]. Defaults to the root logger.
 #' @rdname simple_logging
 #' @return
@@ -153,7 +155,11 @@ remove_appender <- function(
 
 
 
-#' @param pos `integer` index or `character` names of the appenders to remove
+#' @param n `integer` scalar. Show only the last `n` log entries that match
+#'   `threshold`
+#' @param threshold `integer` or `character` scalar. Show only log entries with
+#'   a log level of `threshold` or less. See `getOption("yog.log_levels")` for
+#'   available levels.
 #' @rdname simple_logging
 #' @export
 show_log = function(
@@ -183,13 +189,10 @@ show_log = function(
 #' Completely disable logging for all loggers. This is for example useful for
 #' automated test code.
 #'
-#'
 #' @return
 #'   `suspend_logging()` and `unsuspend_logging()` return `NULL` (invisibly),
 #'   `without_logging` returns whatever `code` returns
 #' @export
-#'
-#' @examples
 suspend_logging <- function(){
   options("yog.logging_suspended" = TRUE)
   invisible()
@@ -199,7 +202,6 @@ suspend_logging <- function(){
 
 
 #' @rdname suspend_logging
-#' @return
 #' @export
 unsuspend_logging <- function(){
   options("yog.logging_suspended" = FALSE)

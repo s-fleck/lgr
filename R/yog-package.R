@@ -1,4 +1,4 @@
-#'
+#' A Fully Featured Logging Framework for R
 #'
 #' @section Options:
 #'
