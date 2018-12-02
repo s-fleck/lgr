@@ -36,6 +36,65 @@ Layout <- R6::R6Class(
 
 # LayoutFormat ------------------------------------------------------------
 
+#' LayoutFormat
+#'
+#' Format an LogEvent as human readable text using [format.LogEvent()]
+#'
+#' @section Usage:
+#'
+#' ```
+#' lo <- LayoutFormat$new(fmt = "%L [%t] %m", timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
+#'   colors = NULL, pad_levels = "right")
+#'
+#' # methods
+#'  lo$format_event(x)
+#'
+#' # fields / active bindings
+#'  lo$fmt
+#'  lo$timestamp_fmt
+#'  lo$colors
+#'  lo$pad_levels
+#'
+#' ```
+#'
+#' @section Creating a new LayoutFormat:
+#'
+#' LayoutFormat passes it fields as arguments to [format.LogEvent()].
+#'
+#' \describe{
+#'   \item{`fmt`}{see [format.LogEvent()]}
+#'   \item{`timestamp_fmt`}{see [base::format.POSIXct()]}
+#'   \item{`colors`}{see [format.LogEvent()]}
+#'   \item{`pad_levels`}{see [format.LogEvent()]}
+#'  }
+#'
+#'
+#' @section Methods:
+#'
+#' \describe{
+#'   \item{`format_event(x)`}{format a LogEvent}
+#' }
+#'
+#'
+#' @name LayoutFormat
+#' @include Filterable.R
+#' @include log_levels.R
+#' @examples
+#'
+#' # setup a dummy LogEvent
+#' event <- LogEvent$new(
+#'   logger = Logger$new("dummy logger", user = "testuser"),
+#'   level = 200,
+#'   timestamp = Sys.time(),
+#'   caller = NA_character_,
+#'   msg = "a test message"
+#' )
+#' lo <- LayoutFormat$new()
+#' lo$format_event(event)
+#'
+NULL
+
+
 #' @export
 LayoutFormat <- R6::R6Class(
   "LayoutFormat",
@@ -47,7 +106,6 @@ LayoutFormat <- R6::R6Class(
       colors = NULL,
       pad_levels = "right"
     ){
-      private$formatter <- format.yog_data
       self$fmt <- fmt
       self$timestamp_fmt <- timestamp_fmt
       self$colors <- colors
@@ -57,7 +115,7 @@ LayoutFormat <- R6::R6Class(
     format_event = function(
       x
     ){
-      private[["formatter"]](
+      format.LogEvent(
         x,
         fmt = private$.fmt,
         timestamp_fmt = private$.timestamp_fmt,
