@@ -6,6 +6,25 @@
 #'   (`add_log_levels()` and `remove_log_levels()` return invisibly).
 #' @export
 #'
+#'
+#' @section Default Log Levels:
+#'
+#' Yog comes with the following predefined log levels that are identical to
+#' the log levels of log4j.
+#'
+#'\tabular{rll}{
+#'  Level \tab Name  \tab Description \cr
+#'    `0` \tab off   \tab A log level of 0/off tells a Logger or Appender to suspend all logging \cr
+#'  `100` \tab fatal \tab Critical error that leads to program abort. Should always indicate a `stop()` or similar \cr
+#'  `200` \tab error \tab A severe error that does not trigger program abort\cr
+#'  `300` \tab warn  \tab A potentially harmful situation, like `warning()`\cr
+#'  `400` \tab info  \tab An informatinal message on the progress of the application\cr
+#'  `500` \tab debug \tab Finer grained informational messages that are mostly useful for debugging\cr
+#'  `600` \tab trace \tab An even finer grained message than debug\cr
+#'   `NA` \tab all   \tab A log level of NA/all tells a Logger or Appender to process all log events
+#' }
+#'
+#' @aliases log_levels
 #' @examples
 #' get_log_levels()
 #' add_log_levels(c(errorish = 250))

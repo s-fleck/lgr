@@ -11,7 +11,7 @@
 #'
 #' \describe{
 #'   \item{threshold}{`character` or `integer` scalar. The minimum log level
-#'     that triggers this logger. See [log levels]}
+#'     that triggers this logger. See [log_levels]}
 #'   \item{layout}{A [Layout]. See examples.}
 #'  }
 #'

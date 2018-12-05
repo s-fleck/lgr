@@ -147,7 +147,7 @@ remove_appender <- function(
   pos,
   target = yog::yog
 ){
-  target$remove_appender(appender)
+  target$remove_appender(pos)
 }
 
 
