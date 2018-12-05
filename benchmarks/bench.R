@@ -20,6 +20,7 @@ ml[["suspended"]] <- Logger$new(
 )
 
 
+
 ml[["no appenders"]] <-
   Logger$new("no appenders", appenders = NULL, parent = NULL)
 
@@ -27,17 +28,15 @@ ml[["memory only"]] <-
   Logger$new("memory only", appenders = AppenderMemoryDt$new(), parent = NULL)
 
 ml[["memory buffer"]] <-
-  Logger$new("memory buffer", appenders = AppenderMemoryBuffer$new(cache_size = 1e5), parent = NULL)
+  Logger$new("memory buffer", appenders = AppenderBuffer$new(buffer_size = 1e5), parent = NULL)
 
 ml[["default (no colors)"]] <-
   Logger$new("default (no colors)", appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = NULL)), parent = NULL)
 
 ml[["default (colors)"]] <-
-  Logger$new("default (colors)", appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = colors)), parent = NULL)
+  Logger$new("default (colors)", appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = getOption("yog.colors"))), parent = NULL)
 
 
-
-for (i in 1:1000) ml$`memory buffer`$warn("test")
 
 ml$`default (no colors)`$fatal("blubb")
 ml$`default (colors)`$fatal("test")
