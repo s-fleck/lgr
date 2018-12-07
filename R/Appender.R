@@ -7,8 +7,6 @@
 #'
 #' @section Creating a new Appender:
 #'
-#' General properties that are shared among all Appenders:
-#'
 #' \describe{
 #'   \item{threshold}{`character` or `integer` scalar. The minimum log level
 #'     that triggers this logger. See [log_levels]}
@@ -93,8 +91,9 @@ Appender <- R6::R6Class(
 
 #' AppenderConsole
 #'
-#' A simple Appender that outputs to the console. If you have the package
-#'  **crayon** installed log levels will be coloured by default.
+#' A simple Appender that outputs to the console. If you
+#' have the package **crayon** installed log levels will be coloured by default
+#' (but you can modify this behaviour by passing a custom [Layout])
 #'
 #' @inheritSection Appender Creating a new Appender
 #'
@@ -117,6 +116,9 @@ Appender <- R6::R6Class(
 #' @family Appenders
 #' @name AppenderConsole
 NULL
+
+
+
 
 #' @export
 AppenderConsole <- R6::R6Class(
@@ -167,6 +169,8 @@ AppenderConsole <- R6::R6Class(
 #'  }
 #'
 #' @inherit Appender
+#'
+#' @inherit
 #'
 #' @export
 #' @seealso [LayoutFormat], [LayoutJson], [LayoutGlue]
@@ -248,12 +252,18 @@ AppenderFile <- R6::R6Class(
 #' AppenderMemoryDt
 #'
 #' An Appender that outputs to an in-memory `data.table`. This requires that
-#' you have the suggested package [data.table] installed
+#' you have the suggested package [data.table] installed. This kind of appender
+#' is pretty useful for interactive use, and hast very little overhead.
 #'
+#' @section Creating a new AppenderMemoryDt:
 #'
-#' @inheritSection Appender Creating a new Appender
-#'
-#'
+#' \describe{
+#'   \item{buffer_size}{`integer` scalar. Number of rows of the in-memory
+#'   `data.table`.}
+#'   \item{prototype}{A prototype `data.table`. This is only necessary if you
+#'   use custom [LogEvents] (which is not yet supported by yog, but planned for
+#'   the future)}
+#'  }
 #'
 #' @section Methods:
 #'
@@ -271,31 +281,32 @@ AppenderFile <- R6::R6Class(
 #'
 #' @export
 #' @seealso [LayoutFormat], [simple_logging]
-#'
-#' @examples
-#' # create a new logger with propagate = FALSE to prevent routing to the root
-#' # logger. Please look at the section "Logger Hirarchies" in the package
-#' # vignette for more info.
-#' lgr  <- Logger$new("testlogger", propagate = FALSE)
-#'
-#' lgr$add_appender(AppenderMemoryDt$new())
-#'
-#' # Will output the message twice because we attached two console appenders
-#' lgr$warn("A test message")
-#'
-#' lgr$appenders[[1]]$show()
-#' lgr$appenders[[1]]$data
-#'
-#' # In the normal case that only one memory appnder is attached to a logger,
-#' # you can just use the show_log()
-#' show_log(target = lgr)
-#' show_log(target = lgr)
-#'
-#'
 #' @family Appenders
 #' @aliases yog_data
 #' @name AppenderMemoryDt
+#'
+#' @examples
+#' lg <- Logger$new(
+#'   "test",
+#'   appenders = list(memory = AppenderMemoryDt$new()),
+#'   threshold = NA,
+#'   parent = NULL  # to prevent routing to root logger for this example
+#' )
+#' lg$debug("test")
+#' lg$error("test")
+#'
+#' # Displaying the log
+#' lg$appenders$memory$data
+#' lg$appenders$memory$show()
+#' show_log(target = lg$appenders$memory)
+#'
+#' # If you pass a Logger to show_log, it looks for the first MemoryAppender it
+#' # can find.
+#' show_log(target = lg)
 NULL
+
+
+
 
 
 
@@ -318,10 +329,10 @@ AppenderMemoryDt <- R6::R6Class(
         caller = NA_character_,
         msg = NA_character_
       ),
-      cache_size = 1e5
+      buffer_size = 1e5
     ){
 
-      assert(is_scalar_integerish(cache_size))
+      assert(is_scalar_integerish(buffer_size))
       assert(is.integer(prototype$.id))
       private$current_row <- 0L
       private$id <- 0L
@@ -335,7 +346,7 @@ AppenderMemoryDt <- R6::R6Class(
       }
       dd <- list(
         private$.data,
-        list(.id = rep(private$.data[[1]], cache_size - 1L))
+        list(.id = rep(private$.data[[1]], buffer_size - 1L))
       )
       private$.data <- data.table::rbindlist(
         dd,
@@ -447,9 +458,36 @@ AppenderMemoryDt <- R6::R6Class(
 #' AppenderBuffer
 #'
 #' An Appender that Buffers LogEvents in-memory and and redirects them to other
-#' appenders once certain conditions are met
+#' appenders once certain conditions are met.
 #'
+#' @section Creating a new AppenderBuffer:
+#'
+#' \describe{
+#'   \item{`buffer_size`}{`integer` scalar. Number of [LogEvents] to buffer}
+#'   \item{`should_flush`}{A `function` with a single argument `event`
+#'     (a [LogEvent]) that must only return either `TRUE` or `FALSE`. If the
+#'     function returns `TRUE`, flushing of the buffer is triggered. Defaults
+#'     to flushing if a `FATAL` event is registered
+#'    }
+#'   \item{`flush_on_exit`}{`TRUE` or `FALSE`: Whether the buffer should be
+#'     flushed when the Appender is garbage collected (f.e when you close R)}
+#'   \item{`flush_on_rotate`}{`TRUE` or `FALSE`: Whether the buffer should be
+#'     flushed when the Buffer is full (f.e when you close R). Setting this
+#'     to off can have slighly negative perfomance impacts.}
+#'   \item{`appenders`}{Like for a [Logger]. Buffered events will be passed on
+#'     to these Appenders once a flush is triggered}
+#'  }
 #' @inheritSection Appender Creating a new Appender
+#'
+#' @section Methods:
+#'
+#' \describe{
+#'   \item{`flush()`}{Manually trigger a flush of the buffer}
+#'   \item{`add_appender(appender, name)`}{Add an Appender to this Appender.
+#'     see [Logger]}
+#'   \item{`remove_appender(pos)`}{Remove and Appender from this Appender.
+#'     see [Logger]}
+#' }
 #'
 #' @export
 #' @seealso [LayoutFormat], [LayoutGlue]
@@ -468,7 +506,7 @@ AppenderMemoryDt <- R6::R6Class(
 #' logger$warn("A test message")
 #'
 #' @family Appenders
-#' @name AppenderConsole
+#' @name AppenderBuffer
 AppenderBuffer <- R6::R6Class(
   "AppenderBuffer",
   inherit = Appender,
@@ -476,14 +514,9 @@ AppenderBuffer <- R6::R6Class(
     initialize = function(
       threshold = NA_integer_,
       appenders = NULL,
-      should_flush =
-        function(x){
-          isTRUE(
-            any(x[["level"]] <= 200) ||
-            length(self[["buffered_events"]]) > self[["buffer_size"]]
-          )
-        },
+      should_flush = function(event) isTRUE(event[["level"]] <= 100),
       flush_on_exit = TRUE,
+      flush_on_rotate = TRUE,
       layout = LayoutFormat$new(
         fmt = "%L [%t] %m",
         timestamp_fmt = "%H:%M:%S",
@@ -491,13 +524,19 @@ AppenderBuffer <- R6::R6Class(
       ),
       buffer_size = 1e3
     ){
-      assert(is_scalar_integerish(buffer_size))
+      stopifnot(
+        is_scalar_integerish(buffer_size),
+        is_scalar_bool(flush_on_exit),
+        is_scalar_bool(flush_on_rotate)
+      )
+
       self$threshold <- threshold
       self$should_flush <- should_flush
       self$appenders <- appenders
       self$buffered_events <- list()  # no speed advantage in pre allocating lists in R!
       self$buffer_size <- buffer_size
       self$flush_on_exit <- flush_on_exit
+      self$flush_on_rotate <- flush_on_rotate
       invisible(self)
     },
 
@@ -505,9 +544,24 @@ AppenderBuffer <- R6::R6Class(
     append = function(
       x
     ){
-      self$buffered_events[[length(self$buffered_events) + 1L]] <- x$clone()
-      if (self$should_flush(x))
+      len <- length(self$buffered_events)
+      self$buffered_events[[len + 1L]] <- x$clone()
+      if (self$should_flush(x)){
         self$flush()
+        return(invisible())
+      } else {
+        if (len >= self$buffer_size){
+          if (self$flush_on_rotate){
+            self$flush()
+          } else {
+            len <- length(self$buffered_events)
+            self$buffered_events <-
+              self$buffered_events[seq.int(len + 1L - self$buffer_size, len)]
+          }
+        }
+
+
+      }
       invisible(NULL)
     },
 
@@ -516,6 +570,9 @@ AppenderBuffer <- R6::R6Class(
 
 
     buffer_size = NULL,
+
+
+    flush_on_rotate = NULL,
 
 
     flush = function(

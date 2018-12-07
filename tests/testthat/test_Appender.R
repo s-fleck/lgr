@@ -110,7 +110,7 @@ test_that("AppenderMemoryDt: appending multiple rows works", {
 
 # AppenderBuffer ----------------------------------------------------
 
-test_that("AppenderBuffer: appending multiple rows works", {
+test_that("AppenderBuffer behaves as expected", {
   tf <- tempfile()
 
   # Sub sub appenders must have a reference to the original logger
@@ -160,10 +160,22 @@ test_that("AppenderBuffer: appending multiple rows works", {
   l$info(c("y", "y", "y"))
   l$appenders$buffer$flush()
   expect_identical(length(readLines(tf)), 27L)
-  expect_match(paste(readLines(tf), collapse = "#"), "(.*z.*){10}(.*y.*){6}")
+  eres <- readLines(tf)
+  expect_match(paste(eres, collapse = "#"), "(.*z.*){10}(.*y.*){6}")
+
+
+  # memory cycling without flushing also works
+  l$appenders$buffer$flush_on_rotate <- FALSE
+  for (i in 1:15) l$info(i)
+  expect_identical(length(l$appenders$buffer$buffered_events), 10L)
+  msgs <- sapply(l$appenders$buffer$buffered_events, `[[`, "msg")
+  expect_identical(msgs, as.character(6:15))
+  # Nothing should have been flushed to the log file
+  expect_identical(readLines(tf), eres)
 
 
   # does flushing on object destruction work?
+  l$appenders$buffer$flush()  # ensure empty appender
   l$info(c("destruction", "destruction"))
   expect_identical(length(l$appenders$buffer$buffered_events), 1L)
   rm(l)
@@ -172,6 +184,8 @@ test_that("AppenderBuffer: appending multiple rows works", {
     paste(readLines(tf), collapse = "#"),
     "(.*destruction){2}"
   )
+
+
 
   # does flushing honor log levels and filters??
   try(file.remove(tf), silent = TRUE)
@@ -206,13 +220,13 @@ test_that("AppenderBuffer: dont flush on object destruction if switched of", {
 
 
 test_that("AppenderMemory: memory cycling works", {
-  app1 <- AppenderMemoryDt$new(cache_size = 10)
+  app1 <- AppenderMemoryDt$new(buffer_size = 10)
   replicate(12, app1$append(x))
   expect_equal(app1$data$.id, 3:12)
   r1 <- app1$data
 
   # bulk insert behaves like sepparate inserts
-  app2 <- AppenderMemoryDt$new(cache_size = 10)
+  app2 <- AppenderMemoryDt$new(buffer_size = 10)
   y <- x$clone()
   y$msg <- rep(y$msg, 12)
 

@@ -219,7 +219,7 @@ Logger <- R6::R6Class(
         force(level)
         function(msg, ...){
           self$log(
-            msg = private$.string_formatter(msg, ...),
+            msg = private$.string_formatter(as.character(msg), ...),
             caller = get_caller(-4L),
             level = level
           )

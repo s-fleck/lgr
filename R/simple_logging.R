@@ -162,6 +162,9 @@ show_log = function(
   threshold = NA,
   target = yog::yog
 ){
+  if (inherits(target, "Appender"))
+    return(target$show(n = n, threshold = threshold))
+
   sel <- vapply(target$appenders, inherits, TRUE, "AppenderMemoryDt")
 
   if (!any(sel)){
