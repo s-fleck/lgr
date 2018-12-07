@@ -1,11 +1,11 @@
 #' Print or Format Logging Data
 #'
 #' @param x a [LogEvent] or [yog_data] Object
-#' @param timestamp_fmt see [format.POSIXct]
+#' @param timestamp_fmt see [format.POSIXct()]
 #' @param fmt A `character` scalar that may contain any of the tokens listed
 #'   bellow in the section Format Tokens.
 #' @param colors A `list` of `functions` that will be used to color the
-#'   log levels (likely from [crayon]).
+#'   log levels (likely from [crayon::crayon]).
 #' @param log_levels a named `integer` vector of log levels.
 #' @param pad_levels `right`, `left` or `NULL`. Whether or not to pad the log
 #'   level names to the same width on the left or right side, or not at all.

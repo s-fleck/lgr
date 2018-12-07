@@ -1,7 +1,7 @@
-context("read_json_log")
+context("read_json_lines")
 
 
-test_that("read_json_log works as expected", {
+test_that("read_json_lines works as expected", {
   tf <- tempfile()
   lo <- LayoutJson$new(
     logger_vals = "user",
@@ -22,6 +22,6 @@ test_that("read_json_log works as expected", {
   lgr$trace("test")
 
 
-  expect_true(all(read_json_log(tf)$level == seq(100, 600, by = 100)))
+  expect_true(all(read_json_lines(tf)$level == seq(100, 600, by = 100)))
   file.remove(tf)
 })

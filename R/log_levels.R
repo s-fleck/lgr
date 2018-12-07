@@ -24,7 +24,7 @@
 #'   `NA` \tab all   \tab A log level of NA/all tells a Logger or Appender to process all log events
 #' }
 #'
-#' @aliases log_levels
+#' @aliases log_levels log_level
 #' @examples
 #' get_log_levels()
 #' add_log_levels(c(errorish = 250))

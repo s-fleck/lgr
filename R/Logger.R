@@ -5,8 +5,8 @@
 #' several [Appenders] that write the event to a destination (a file,
 #' the console, ...). All Loggers of an R session are in a hierarchical
 #' structure, and each Logger (except the Root Looger) passes on LogEvents to
-#' the Appenders of it ancestral Loggers. See
-#' [`vignette("yog", package = "yog")`] for more info.
+#' the Appenders of it ancestral Loggers. See `vignette("yog", package = "yog")`
+#' for more info.
 #'
 #' @section Usage:
 #'

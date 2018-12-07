@@ -32,15 +32,6 @@ test_that("LayoutFormat works as expected", {
 
 
 
-test_that("LayoutGlue works as expected", {
-  skip("layoutGlue not yet operational")
-  lo <- LayoutGlue$new()
-  expect_equal(lo$format_event(x), "ERROR .*2018-11-02 .*:19:33.* foo bar")
-})
-
-
-
-
 test_that("LayoutJson works as expected", {
   lo <- LayoutJson$new(
     logger_vals = "user",
