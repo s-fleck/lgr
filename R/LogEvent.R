@@ -1,7 +1,7 @@
 #' Log Events
 #'
 #' A `LogEvent` is a single unit of data that should be logged. It usually
-#' contains at minimum the [log level], a timestamp and the log message.
+#' contains at minimum the [log_level], a timestamp and the log message.
 #' `LogEvents` are created by a [Logger], and then processed a [Appenders] and
 #' [Layouts].
 #'
@@ -25,7 +25,7 @@
 #'
 #' Log Evnets contain the following data fields
 #'
-#' * `level`: The [log level] of the event
+#' * `level`: The [log_level] of the event
 #' * `timestamp`: `POSIXct`.
 #' * `caller`: `character`. the function that called this event
 #' * `msg`: `character`. the log message.

@@ -98,7 +98,7 @@ Appender <- R6::R6Class(
 #' @inheritSection Appender Creating a new Appender
 #'
 #' @export
-#' @seealso [LayoutFormat], [LayoutGlue]
+#' @seealso [LayoutFormat]
 #'
 #' @examples
 #' # create a new logger with propagate = FALSE to prevent routing to the root
@@ -173,7 +173,7 @@ AppenderConsole <- R6::R6Class(
 #' @inherit
 #'
 #' @export
-#' @seealso [LayoutFormat], [LayoutJson], [LayoutGlue]
+#' @seealso [LayoutFormat], [LayoutJson]
 #'
 #' @examples
 #' logger <- Logger$new("loggername")
@@ -252,7 +252,7 @@ AppenderFile <- R6::R6Class(
 #' AppenderMemoryDt
 #'
 #' An Appender that outputs to an in-memory `data.table`. This requires that
-#' you have the suggested package [data.table] installed. This kind of appender
+#' you have the suggested package **data.table** installed. This kind of appender
 #' is pretty useful for interactive use, and hast very little overhead.
 #'
 #' @section Creating a new AppenderMemoryDt:
@@ -280,7 +280,7 @@ AppenderFile <- R6::R6Class(
 #' }
 #'
 #' @export
-#' @seealso [LayoutFormat], [simple_logging]
+#' @seealso [LayoutFormat], [simple_logging], [data.table::data.table]
 #' @family Appenders
 #' @aliases yog_data
 #' @name AppenderMemoryDt
@@ -490,7 +490,7 @@ AppenderMemoryDt <- R6::R6Class(
 #' }
 #'
 #' @export
-#' @seealso [LayoutFormat], [LayoutGlue]
+#' @seealso [LayoutFormat]
 #'
 #' @examples
 #' # create a new logger with propagate = FALSE to prevent routing to the root

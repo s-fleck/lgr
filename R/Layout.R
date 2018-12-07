@@ -239,7 +239,7 @@ LayoutFormat <- R6::R6Class(
 #' }
 #'
 #'
-#' @name LayoutJSON
+#' @name LayoutJson
 #' @include Filterable.R
 #' @include log_levels.R
 #' @seealso [read_json_lines()], [http://jsonlines.org/](http://jsonlines.org/)
@@ -319,45 +319,5 @@ LayoutJson <- R6::R6Class(
   private = list(
     .toJSON_args = NULL,
     .other_vals = NULL
-  )
-)
-
-
-
-# LayoutGlue --------------------------------------------------------------
-
-#' @export
-LayoutGlue <- R6::R6Class(
-  "Layout",
-  inherit = LayoutFormat,
-  public = list(
-    initialize = function(
-      fmt = "{toupper(label_levels(level, x$logger$levels))} [{strftime(timestamp, format = '%Y-%m-%d %H:%M:%S')}] {msg}"
-    ){
-      private$formatter <- glue::glue
-      self$fmt <- fmt
-    },
-
-    format_event = function(x) {
-      do.call(
-        private[["formatter"]],
-        c(list(private$.fmt), x)
-      )
-    }
-  ),
-
-  active = list(
-    fmt = function(value){
-      if (missing(value)) return(private$.fmt)
-      assert(is_scalar_character(value))
-      private$.fmt <- value
-    }
-  ),
-
-  private = list(
-    .fmt = NULL,
-    .timestamp_fmt = NULL,
-    .colors = NULL,
-    .pad_levels = NULL
   )
 )
