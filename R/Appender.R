@@ -40,39 +40,46 @@ Appender <- R6::R6Class(
       layout = Layout$new(),
       threshold = NA_integer_
     ){
-      self$layout    <- layout
-      self$threshold <- threshold
+      self$set_layout(layout)
+      self$set_threshold(threshold)
     },
 
     append = function(event){
       private$.layout$format_event(event)
+    },
+
+    set_threshold = function(level){
+      assert_valid_threshold(level)
+
+      if (is_scalar_character(level))
+        level <- unlabel_levels(level)
+
+      private$.threshold <- as.integer(level)
+      invisible(self)
+    },
+
+
+    set_logger = function(logger){
+      assert(inherits(logger, "Logger") || is.null(logger))
+      private$.logger <- logger
+      invisible(self)
+    },
+
+    set_layout = function(layout){
+      assert(inherits(layout, "Layout"))
+      private$.layout <- layout
+      invisible(self)
     }
   ),
 
 
   # +- active ---------------------------------------------------------------
   active = list(
-    threshold = function(value){
-      if (missing(value)) return(private$.threshold)
-      assert_valid_threshold(value)
+    threshold = function() private$.threshold,
 
-      if (is_scalar_character(value))
-        value <- unlabel_levels(value)
+    layout = function() private$.layout,
 
-      private$.threshold <- as.integer(value)
-    },
-
-    layout = function(value){
-      if (missing(value)) return(private$.layout)
-      assert(inherits(value, "Layout"))
-      private$.layout <- value
-    },
-
-    logger = function(value){
-      if (missing(value)) return(private$.logger)
-      assert(inherits(value, "Logger"))
-      private$.logger <- value
-    },
+    logger = function() private$.logger,
 
     destination = function() NULL
   ),
@@ -133,8 +140,8 @@ AppenderConsole <- R6::R6Class(
         colors = getOption("yog.colors", list())
       )
     ){
-      self$threshold <- threshold
-      self$layout <- layout
+      self$set_threshold(threshold)
+      self$set_layout(layout)
     },
 
     append = function(event){
@@ -211,9 +218,9 @@ AppenderFile <- R6::R6Class(
       threshold = NA_integer_,
       layout = LayoutFormat$new()
     ){
-      self$file <- file
-      self$threshold <- threshold
-      self$layout <- layout
+      self$set_file(file)
+      self$set_threshold(threshold)
+      self$set_layout(layout)
     },
 
     append = function(event){
@@ -222,16 +229,19 @@ AppenderFile <- R6::R6Class(
         sep = "\n", file = private$.file, append = TRUE
       )
       return(invisible())
+    },
+
+    set_file = function(file){
+      assert(is_scalar_character(file))
+      private$.file <- file
+      invisible(self)
     }
   ),
 
 
   # +- active ---------------------------------------------------------------
   active = list(
-    file = function(value){
-      if (missing(value)) return(private$.file)
-      private$.file <- value
-    },
+    file = function() private$.file,
 
     destination = function() self$file
   ),
@@ -331,22 +341,25 @@ AppenderMemoryDt <- R6::R6Class(
       ),
       buffer_size = 1e5
     ){
-
       assert(is_scalar_integerish(buffer_size))
-      assert(is.integer(prototype$.id))
+      assert(
+        data.table::is.data.table(prototype) && is.integer(prototype$.id),
+        "'prototype' must be a data.table with an integer column '.id'"
+      )
+
       private$current_row <- 0L
       private$id <- 0L
-      self$data <- prototype
-      self$threshold <- threshold
-      self$layout <- layout
+      self$set_threshold(threshold)
+      self$set_layout(layout)
 
       # initialize empty dt
-      for (j in seq_along(private$.data)){
-        data.table::set(private$.data, i = 1L, j = j, value = NA)
+      prototype <- data.table::copy(prototype)
+      for (j in seq_along(prototype)){
+        data.table::set(prototype, i = 1L, j = j, value = NA)
       }
       dd <- list(
-        private$.data,
-        list(.id = rep(private$.data[[1]], buffer_size - 1L))
+        prototype,
+        list(.id = rep(prototype[[1]], buffer_size - 1L))
       )
       private$.data <- data.table::rbindlist(
         dd,
@@ -357,8 +370,6 @@ AppenderMemoryDt <- R6::R6Class(
         "class",
         c("yog_data", "data.table", "data.frame")
       )
-
-
 
       invisible(self)
     },
@@ -424,17 +435,9 @@ AppenderMemoryDt <- R6::R6Class(
 
   # +- active ---------------------------------------------------------------
   active = list(
-    data = function(value){
-      if (missing(value)){
-        tmp <- private$.data[!is.na(private$.data$.id), ]
-        return(tmp[order(tmp$.id), ])
-      }
-      assert(
-        is.null(private$.data),
-        stop("'data' cannot be modified once it has been initialized")
-      )
-      assert(data.table::is.data.table(value))
-      private$.data <- value
+    data = function(){
+      tmp <- private$.data[!is.na(private$.data$.id), ]
+      tmp[order(tmp$.id), ]
     },
 
     destination = {
@@ -530,13 +533,16 @@ AppenderBuffer <- R6::R6Class(
         is_scalar_bool(flush_on_rotate)
       )
 
-      self$threshold <- threshold
-      self$should_flush <- should_flush
-      self$appenders <- appenders
-      self$buffered_events <- list()  # no speed advantage in pre allocating lists in R!
-      self$buffer_size <- buffer_size
-      self$flush_on_exit <- flush_on_exit
-      self$flush_on_rotate <- flush_on_rotate
+      self$set_threshold(threshold)
+      self$set_should_flush(should_flush)
+      self$set_appenders(appenders)
+      self$set_buffer_size(buffer_size)
+      self$set_flush_on_exit(flush_on_exit)
+      self$set_flush_on_rotate(flush_on_rotate)
+
+      # no speed advantage in pre allocating lists in R!
+      private$.buffered_events <- list()
+
       invisible(self)
     },
 
@@ -544,9 +550,9 @@ AppenderBuffer <- R6::R6Class(
     append = function(
       x
     ){
-      len <- length(self$buffered_events)
-      self$buffered_events[[len + 1L]] <- x$clone()
-      if (self$should_flush(x)){
+      len <- length(private$.buffered_events)
+      private$.buffered_events[[len + 1L]] <- x$clone()
+      if (private$.should_flush(x)){
         self$flush()
         return(invisible())
       } else {
@@ -554,36 +560,41 @@ AppenderBuffer <- R6::R6Class(
           if (self$flush_on_rotate){
             self$flush()
           } else {
-            len <- length(self$buffered_events)
-            self$buffered_events <-
-              self$buffered_events[seq.int(len + 1L - self$buffer_size, len)]
+            len <- length(private$.buffered_events)
+            private$.buffered_events <-
+              private$.buffered_events[seq.int(len + 1L - self$buffer_size, len)]
           }
         }
-
-
       }
       invisible(NULL)
     },
 
-
-    buffered_events = NULL,
-
-
-    buffer_size = NULL,
-
-
-    flush_on_rotate = NULL,
-
-
     flush = function(
-      x = self$buffered_events
+      x = private$.buffered_events
     ){
-      for (event in self$buffered_events){
+      for (event in private$.buffered_events){
         for (app in self$appenders) {
           if (app$filter(event))  app$append(event)
         }
       }
-      self$buffered_events <- list()
+      private$.buffered_events <- list()
+    },
+
+    set_appenders = function(x){
+      if (is.null(x)){
+        private$.appenders <- list()
+        return(invisible())
+      }
+      if (inherits(x, "Appender"))  x <- list(x)
+
+      assert(
+        is.list(x) && all(vapply(x, inherits, TRUE, "Appender")),
+        "'appenders' must either be a single Appender, a list thereof, or ",
+        "NULL for no appenders."
+      )
+      for (i in seq_along(x))  self$add_appender(x[[i]], name = names(x)[[i]])
+
+      invisible(self)
     },
 
 
@@ -592,8 +603,24 @@ AppenderBuffer <- R6::R6Class(
       name = NULL
     ){
       assert(inherits(appender, "Appender"))
-      appender <- appender$clone(deep = TRUE)
-      appender$logger <- self$logger
+
+      for(app in self$appenders){
+        # appender is already attached to logger, nothing to do, this is
+        # necessary because `logger$appender$blubb <- blagh` tries to readd the
+        # whole appender list
+        if (identical(app, appender)) return(invisible(self))
+      }
+
+      assert(
+        is.null(appender$logger) || identical(appender$logger, self),
+        "Cannot add appender to logger as it is already attached to another",
+        "logger. Please create a new appender or clone the old one with",
+        "`appender$clone()`, but be aware that this can cause weird bugs",
+        "for some appender types."
+      )
+
+      appender$set_logger(self$logger)
+
       private$.appenders[length(private$.appenders) + 1L] <- list(appender)
 
       if (!is.null(name))
@@ -606,41 +633,78 @@ AppenderBuffer <- R6::R6Class(
     remove_appender = function(
       pos
     ){
-      assert(is_scalar(pos))
-
       if (is.numeric(pos)){
         assert(
           all(pos %in% seq_along(private$.appenders)),
           "'pos' is out of range of the length of appenders (1:",
-          length(appenders), ")"
+          length(private$.appenders), ")"
         )
 
         pos <- as.integer(pos)
       } else if (is.character(pos)) {
         assert(
           all(pos %in% names(private$.appenders)),
-          "'pos' is not a name of any attached appender (",
+          "'pos' is not names of appenders (",
           paste(names(private$.appenders), collapse = ", "),
           ")"
         )
       }
 
-      try(private$.appenders[[pos]]$finalize(), silent = TRUE)
-      private$.appenders[[pos]] <- NULL
+      for (nm in pos){
+        private$.appenders[[nm]] <- NULL
+      }
+
       invisible(self)
     },
-
 
     finalize = function(){
       if (self$flush_on_exit) self$flush()
     },
 
-    flush_on_exit = NULL,
+    set_buffer_size = function(x){
+      assert(is_scalar_integerish(x))
+      private$.buffer_size <- x
+      invisible(self)
+    },
 
-    should_flush = NULL
+    set_flush_on_exit = function(x){
+      assert(is_scalar_bool(x))
+      private$.flush_on_exit <- x
+      invisible(self)
+    },
+
+    set_flush_on_rotate = function(x){
+      assert(is_scalar_bool(x))
+      private$.flush_on_rotate <- x
+      invisible(self)
+    },
+
+    set_should_flush = function(x){
+      assert(is.function(x))
+      private$.should_flush <- x
+      invisible(self)
+    },
+
+    set_logger = function(logger){
+      assert(inherits(logger, "Logger") || is.null(logger))
+      for (app in private$.appenders)  app$set_logger(logger)
+      private$.logger <- logger
+      invisible(self)
+    }
   ),
 
+
+
+  # +- active ---------------------------------------------------------------
   active = list(
+    flush_on_exit = function() private$.flush_on_exit,
+
+    flush_on_rotate = function() private$.flush_on_rotate,
+
+    buffer_size = function() private$.buffer_size,
+
+    buffered_events = function() private$.buffered_events,
+
     appenders = function(value){
       if (missing(value)) return(c(private$.appenders))
 
@@ -677,9 +741,13 @@ AppenderBuffer <- R6::R6Class(
     }
   ),
 
-
   private = list(
-    .appenders = list()
+    .appenders = list(),
+    .flush_on_exit = NULL,
+    .flush_on_rotate = NULL,
+    .should_flush = NULL,
+    .buffer_size = NULL,
+    .buffered_events = NULL
   )
 )
 

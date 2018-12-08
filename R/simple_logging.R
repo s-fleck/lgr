@@ -120,7 +120,7 @@ threshold <- function(
   if (missing(level))
     target$threshold
   else
-    target$threshold <- level
+    target$set_threshold(level)
 
   invisible(target$threshold)
 }

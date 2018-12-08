@@ -24,8 +24,8 @@ test_that("LayoutFormat works as expected", {
   lo <- LayoutFormat$new()
   expect_match(lo$format_event(x), "ERROR .*2018-11-02 .*:19:33.*\\.* foo bar")
 
-  lo$timestamp_fmt <- "%Y-%m-%d"
-  lo$fmt <- "[%t]"
+  lo$set_timestamp_fmt("%Y-%m-%d")
+  lo$set_fmt("[%t]")
   expect_identical(lo$format_event(x), "[2018-11-02]")
 })
 

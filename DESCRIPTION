@@ -1,33 +1,35 @@
 Type: Package
 Package: yog
 Title: Yet Another Log4j Inspired Logging Framework
-Version: 0.0.4.9000
+Version: 0.0.5.9000
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
            role = c("aut", "cre"),
-           email = "stefan.b.fleck@gmail.com")
+           email = "stefan.b.fleck@gmail.com",
+           comment = c(ORCID = "0000-0003-3344-9851"))
 Maintainer: Stefan Fleck <stefan.b.fleck@gmail.com>
-Description: 
-  A flexible R6 based logging framework. Yog is under heavy development right 
-  now, please don't heistate to contact the maintainer with bug reports, 
-  wishes, suggestions, etc...
+Description: A flexible R6 based logging framework. Yog is under
+    heavy development right now, please don't heistate to contact the
+    maintainer with bug reports, wishes, suggestions, etc...
 License: MIT + file LICENSE
 URL: https://github.com/s-fleck/yog
 BugReports: https://github.com/s-fleck/dint/yog
 Imports:
     R6
 Suggests: 
-    data.table,
-    jsonlite,
-    glue,
-    whoami,
     crayon,
+    data.table,
+    glue,
+    jsonlite,
     knitr,
     rmarkdown,
+    testthat,
     tools,
     utils,
-    testthat
+    whoami
+VignetteBuilder: 
+    knitr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -46,4 +48,3 @@ Collate:
     'read_json_log.R'
     'simple_logging.R'
     'yog-package.R'
-VignetteBuilder: knitr

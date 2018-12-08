@@ -26,7 +26,7 @@ for more info.
  l$log(level, msg, timestamp = Sys.time(), caller = get_caller())
  l$add_appender(appender, name = NULL)
  l$remove_appender(pos)
- l$handle_exception(e)
+ l$exception_handler(e)
  l$filter(event)
 
 # fields / active bindings
@@ -65,11 +65,7 @@ This information can be used by the appenders}
 \item{parent}{a \code{Logger}. Usually the Root logger. All Loggers must be
 descentents of the Root logger for yog to work as intended.}
 
-\item{string_formatter}{a \code{function} used to format the log strings passed
-to the logging functions (\code{fatal()}, \code{error()}, etc...). Defaults to
-\code{\link[base:sprintf]{base::sprintf()}}. Another sensible choice wuld be \code{\link[glue:glue]{glue::glue()}}.}
-
-\item{handle_exception}{a \code{function} that takes a single argument \code{e}.
+\item{exception_handler}{a \code{function} that takes a single argument \code{e}.
 The function used to handle errors that occur durring loging. Default
 to demoting any error to a \link{warning}}
 }
@@ -109,7 +105,7 @@ refer to it via \code{logger$appenders$console}.}
 can be an \code{integer} or \code{character} vector referring either to the positions
 or names of the Appenders to be removed.}
 
-\item{\code{handle_exception(e)}}{Used to handle errors that occur durring the
+\item{\code{exception_handler(e)}}{Used to handle errors that occur durring the
 logging process. The defaul is to convert errors to warnings.}
 
 \item{\code{filter(x)}}{Determine whether the LogEvent \code{x} should be passed

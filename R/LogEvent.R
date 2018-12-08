@@ -103,11 +103,10 @@ LogEvent <- R6::R6Class(
     ){
       assert(inherits(logger, "Logger"))
       self$logger <- logger
-      self$level <- level
-      self$timestamp <-timestamp
+      self$level  <- level
+      self$timestamp <- timestamp
       self$caller <- caller
       self$msg <- msg
-      self$logger <- logger
 
       invisible(self)
     },

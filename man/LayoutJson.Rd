@@ -42,10 +42,6 @@ This information can be used by the appenders}
 \item{parent}{a \code{Logger}. Usually the Root logger. All Loggers must be
 descentents of the Root logger for yog to work as intended.}
 
-\item{string_formatter}{a \code{function} used to format the log strings passed
-to the logging functions (\code{fatal()}, \code{error()}, etc...). Defaults to
-\code{\link[base:sprintf]{base::sprintf()}}. Another sensible choice wuld be \code{\link[glue:glue]{glue::glue()}}.}
-
 \item{handle_exception}{a \code{function} that takes a single argument \code{e}.
 The function used to handle errors that occur durring loging. Default
 to demoting any error to a \link{warning}}
