@@ -8,37 +8,8 @@
 #' the Appenders of it ancestral Loggers. See `vignette("yog", package = "yog")`
 #' for more info.
 #'
-#' @section Usage:
+#' @eval r6_usage(Logger, "lgr")
 #'
-#' ```
-#' l <- Logger$new("example logger")
-#'
-#' # methods
-#'  l$fatal(msg, ...)
-#'  l$error(msg, ...)
-#'  l$warn(msg, ...)
-#'  l$info(msg, ...)
-#'  l$debug(msg, ...)
-#'  l$trace(msg, ...)
-#'  l$log(level, msg, timestamp = Sys.time(), caller = get_caller())
-#'  l$add_appender(appender, name = NULL)
-#'  l$remove_appender(pos)
-#'  l$exception_handler(e)
-#'  l$filter(event)
-#'
-#' # fields / active bindings
-#'  l$name
-#'  l$threshold
-#'  l$appenders
-#'  l$parent
-#'  l$propagate
-#'  l$ancestry
-#'  l$ancestral_appenders
-#'  l$filters
-#'  l$last_event
-#'  l$user
-#'
-#' ```
 #'
 #' @section Creating Loggers:
 #'
@@ -47,22 +18,36 @@
 #' `Logger$new()`. If you just want to add different outputs (for example
 #' logfiles) to the Root Logger, look into [Appenders].
 #'
+#'
+#' @section Fields:
+#'
+#' You can either specify the fields in `Logger$new()` or modify them after
+#' creation with setter functions of the form `logger$set_fieldname(value)`
+#' (see examples)
+#'
 #' \describe{
-#'   \item{name}{`character` scalar. Name of the Logger. Should be unique amongst
+#'   \item{`name`}{`character` scalar. Name of the Logger. Should be unique amongst
 #'     Loggers. If you define a logger for an R Package, the logger should have
 #'     the same name as the Package.}
-#'   \item{appenders}{`list` of [Appender]s. The appenders used by this logger
+#'
+#'   \item{`appenders`}{`list` of [Appender]s. The appenders used by this logger
 #'     to write log entries to the console, to files, etc...}
-#'   \item{threshold}{`character` or `integer` scalar. The minimum log level
+#'
+#'   \item{`threshold`}{`character` or `integer` scalar. The minimum log level
 #'     that triggers this logger}
-#'   \item{user}{`character` scalar. The current user name or email adress.
+#'
+#'   \item{`user`}{`character` scalar. The current user name or email adress.
 #'     This information can be used by the appenders}
-#'   \item{parent}{a `Logger`. Usually the Root logger. All Loggers must be
+#'
+#'   \item{`parent`}{a `Logger`. Usually the Root logger. All Loggers must be
 #'     descentents of the Root logger for yog to work as intended.}
 #'
-#'   \item{exception_handler}{a `function` that takes a single argument `e`.
+#'   \item{`exception_handler`}{a `function` that takes a single argument `e`.
 #'     The function used to handle errors that occur durring loging. Default
 #'     to demoting any error to a [warning]}
+#'
+#'   \item{`propagate`}{`TRUE` or `FALSE`. Should log messages be passed on to
+#'     the appenders of the ancestral Loggers?}
 #'  }
 #'
 #'
@@ -105,6 +90,9 @@
 #'   \item{`filter(x)`}{Determine whether the LogEvent `x` should be passed
 #'   on to Appenders (`TRUE`) or not (`FALSE`). See also the active binding
 #'   `filters`}
+#'
+#'   \item{`set_name(x)`}{Set the Logger name to the `character` scalar `x`}
+#'
 #' }
 #'
 #'
@@ -134,8 +122,6 @@
 #'
 #'   \item{`parent`}{Parent Logger of the current Logger (`NULL` for the Root Logger)}
 #'
-#'   \item{`propagate`}{`TRUE` or `FALSE`. Should log messages be passed on to
-#'   the appenders of the ancestral Loggers?}
 #'
 #'   \item{`threshold`}{An `integer`. Threshold of the current Logger (i.e the
 #'   maximum log level that this Logger processes)}
@@ -203,8 +189,8 @@ Logger <- R6::R6Class(
       self$set_exception_handler(exception_handler)
       self$set_parent(parent)
       self$set_name(name)
-      self$set_last_event(LogEvent$new(self))
       self$set_propagate(propagate)
+      private$.last_event <- LogEvent$new(self)
 
 
       # init log functions
@@ -420,12 +406,6 @@ Logger <- R6::R6Class(
       assert(is_scalar_character(x), "'user' must be a scalar character")
       private$.user <- x
       invisible(self)
-    },
-
-    set_last_event = function(event){
-      assert(inherits(event, "LogEvent"))
-      private$.last_event <- event
-      invisible(self)
     }
   ),
 
@@ -578,3 +558,7 @@ trim <- function(str, n = 60) {
   if (nchar(str) > n) paste(substr(str, 1, n-4), "...")
   else str
 }
+
+
+
+

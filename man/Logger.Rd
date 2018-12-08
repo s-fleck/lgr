@@ -14,33 +14,35 @@ the Appenders of it ancestral Loggers. See \code{vignette("yog", package = "yog"
 for more info.
 }
 \section{Usage}{
-\preformatted{l <- Logger$new("example logger")
-
-# methods
- l$fatal(msg, ...)
- l$error(msg, ...)
- l$warn(msg, ...)
- l$info(msg, ...)
- l$debug(msg, ...)
- l$trace(msg, ...)
- l$log(level, msg, timestamp = Sys.time(), caller = get_caller())
- l$add_appender(appender, name = NULL)
- l$remove_appender(pos)
- l$exception_handler(e)
- l$filter(event)
-
-# fields / active bindings
- l$name
- l$threshold
- l$appenders
- l$parent
- l$propagate
- l$ancestry
- l$ancestral_appenders
- l$filters
- l$last_event
- l$user
-
+\preformatted{Logger$new(name, appenders = list(), threshold = 400L, user = get_user(),
+    parent = yog::yog, exception_handler = function(e) { warning("[",
+    format(Sys.time(), format = "\%Y-\%m-\%d \%H:\%M:\%OS3"), "] ", "An error occured
+    in the logging sub system: ", e) }, propagate = TRUE)
+# public methods
+    lgr$log(level, msg, timestamp = Sys.time(), caller = get_caller(-3))
+    lgr$add_appender(appender, name = NULL)
+    lgr$remove_appender(pos)
+    lgr$handle_exception(...)
+    lgr$set_name(x)
+    lgr$set_exception_handler(fun)
+    lgr$set_propagate(x)
+    lgr$set_parent(logger)
+    lgr$set_threshold(level)
+    lgr$set_appenders(x)
+    lgr$set_user(x)
+# public fields
+    lgr$
+# active bindings
+    lgr$name
+    lgr$propagate
+    lgr$last_event
+    lgr$ancestry
+    lgr$parent
+    lgr$threshold
+    lgr$ancestral_appenders
+    lgr$exception_handler
+    lgr$appenders
+    lgr$user
 }
 }
 
@@ -51,23 +53,38 @@ If you want logging for a Project (f.e a Package you are developing) that is
 separate from the global logging, you can create a new logger with
 \code{Logger$new()}. If you just want to add different outputs (for example
 logfiles) to the Root Logger, look into \link{Appenders}.
+}
+
+\section{Fields}{
+
+
+You can either specify the fields in \code{Logger$new()} or modify them after
+creation with setter functions of the form \code{logger$set_fieldname(value)}
+(see examples)
 
 \describe{
-\item{name}{\code{character} scalar. Name of the Logger. Should be unique amongst
+\item{\code{name}}{\code{character} scalar. Name of the Logger. Should be unique amongst
 Loggers. If you define a logger for an R Package, the logger should have
 the same name as the Package.}
-\item{appenders}{\code{list} of \link{Appender}s. The appenders used by this logger
+
+\item{\code{appenders}}{\code{list} of \link{Appender}s. The appenders used by this logger
 to write log entries to the console, to files, etc...}
-\item{threshold}{\code{character} or \code{integer} scalar. The minimum log level
+
+\item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
 that triggers this logger}
-\item{user}{\code{character} scalar. The current user name or email adress.
+
+\item{\code{user}}{\code{character} scalar. The current user name or email adress.
 This information can be used by the appenders}
-\item{parent}{a \code{Logger}. Usually the Root logger. All Loggers must be
+
+\item{\code{parent}}{a \code{Logger}. Usually the Root logger. All Loggers must be
 descentents of the Root logger for yog to work as intended.}
 
-\item{exception_handler}{a \code{function} that takes a single argument \code{e}.
+\item{\code{exception_handler}}{a \code{function} that takes a single argument \code{e}.
 The function used to handle errors that occur durring loging. Default
 to demoting any error to a \link{warning}}
+
+\item{\code{propagate}}{\code{TRUE} or \code{FALSE}. Should log messages be passed on to
+the appenders of the ancestral Loggers?}
 }
 }
 
@@ -111,6 +128,9 @@ logging process. The defaul is to convert errors to warnings.}
 \item{\code{filter(x)}}{Determine whether the LogEvent \code{x} should be passed
 on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 \code{filters}}
+
+\item{\code{set_name(x)}}{Set the Logger name to the \code{character} scalar \code{x}}
+
 }
 }
 
@@ -140,9 +160,6 @@ the packages
 }
 
 \item{\code{parent}}{Parent Logger of the current Logger (\code{NULL} for the Root Logger)}
-
-\item{\code{propagate}}{\code{TRUE} or \code{FALSE}. Should log messages be passed on to
-the appenders of the ancestral Loggers?}
 
 \item{\code{threshold}}{An \code{integer}. Threshold of the current Logger (i.e the
 maximum log level that this Logger processes)}

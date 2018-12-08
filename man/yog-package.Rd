@@ -6,9 +6,9 @@
 \alias{yog-package}
 \title{A Fully Featured Logging Framework for R}
 \description{
-A flexible R6 based logging framework. Yog is under heavy development right 
-  now, please don't heistate to contact the maintainer with bug reports, 
-  wishes, suggestions, etc...
+A flexible R6 based logging framework. Yog is under
+    heavy development right now, please don't heistate to contact the
+    maintainer with bug reports, wishes, suggestions, etc...
 }
 \section{Options}{
 
@@ -42,7 +42,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Stefan Fleck \email{stefan.b.fleck@gmail.com}
+\strong{Maintainer}: Stefan Fleck \email{stefan.b.fleck@gmail.com} (0000-0003-3344-9851)
 
 }
 \keyword{internal}

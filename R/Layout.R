@@ -5,6 +5,7 @@
 #' for file or console output the log event is usually formatted into a single
 #' character line.
 #'
+#'
 #' @name Layout
 #' @aliases Layouts
 #' @family Layouts

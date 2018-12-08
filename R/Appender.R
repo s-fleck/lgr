@@ -5,6 +5,8 @@
 #' a single [Layout] that tells it how to format the LogEvent. For details
 #' please refer to the documentations of the specific Appenders.
 #'
+#' @eval r6_usage(Appender, "app")
+#'
 #' @section Creating a new Appender:
 #'
 #' \describe{

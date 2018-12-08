@@ -25,6 +25,23 @@ that triggers this logger. See \link{log_levels}}
 }
 }
 
+\section{Usage}{
+\preformatted{Appender$new(layout = Layout$new(), threshold = NA_integer_)
+# public methods
+    app$append(event)
+    app$set_threshold(level)
+    app$set_logger(logger)
+    app$set_layout(layout)
+# public fields
+    app$
+# active bindings
+    app$threshold
+    app$layout
+    app$logger
+    app$destination
+}
+}
+
 \examples{
 logger <- Logger$new("loggername")
 default <- tempfile()
