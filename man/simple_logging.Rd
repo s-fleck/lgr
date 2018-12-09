@@ -10,6 +10,7 @@
 \alias{TRACE}
 \alias{log_exception}
 \alias{threshold}
+\alias{console_threshold}
 \alias{add_appender}
 \alias{remove_appender}
 \alias{show_log}
@@ -31,7 +32,9 @@ log_exception(...)
 
 threshold(level, target = yog::yog)
 
-add_appender(appender, target = yog::yog)
+console_threshold(level, target = yog::yog$appenders$console)
+
+add_appender(appender, name = NULL, target = yog::yog)
 
 remove_appender(pos, target = yog::yog)
 
@@ -48,6 +51,8 @@ show_log(n = 20, threshold = NA, target = yog::yog)
 
 \item{appender}{an \code{Appender}}
 
+\item{name}{\code{character} scalar. An optional name for the new Appender.}
+
 \item{pos}{\code{integer} index or \code{character} names of the appenders to remove}
 
 \item{n}{\code{integer} scalar. Show only the last \code{n} log entries that match
@@ -57,25 +62,36 @@ show_log(n = 20, threshold = NA, target = yog::yog)
 \code{FATAL()} ... \code{TRACE()} and \code{log_exception()} return the log message
 as a \code{character} vector.
 
-\code{threshold()} returns the log level of \code{target} as \code{integer} (invisibly)
+\code{threshold()} and \code{console_threshold()} return the \link{log_level} of \code{target}
+as \code{integer} (invisibly)
 
-\code{add_appender()} and \code{remove_appender()} return \code{target}
+\code{add_appender()} and \code{remove_appender()} return \code{target}.
 }
 \description{
-yog provides some functions for managing loggers that default to the root
-logger as target. These are useful if you just use the root logger and
-do not want to worry about
+Yog provides convenience functions to manage the root Logger. These
+are intended for interactive use, and for people who just need basic
+logging facilities and don't want to worry about hierarchical loggers and
+R6 classes.
 
-\code{threshold()} sets or retrieves the threshold for an appender or logger
-(the minimum level of log messages it processes).
+\code{threshold()} sets or retrieves the threshold for an \link{Appender} or \link{Logger}
+(the minimum level of log messages it processes). It's \code{target} defaults
+to the root logger.
 
-\code{add_appender()} and \code{remove_appender()} add \link{Appenders} to \link{Loggers} and
+\code{console_threshold()} is a shortcut to set the threshold of the root
+loggers \link{AppenderConsole}, which is usually the only Appender that manages
+console output for a given \R session.
+
+\code{add_appender()} and \code{remove_appender()} add Appenders to Loggers and
 other Appenders.
 }
 \examples{
 FATAL("This is an important message about \%s going wrong", "something")
 DEBUG("Debug messages are hidden by default")
-threshold("debug")  # you must use lower case names here
+console_threshold("debug")  # you must use lower case names here
 DEBUG("Unless we lower the threshold")
 
+add_appender(AppenderConsole$new(), "second_console_appender")
+FATAL("Multiple console appenders are a bad idea")
+remove_appender("second_console_appender")
+INFO("Good that we defined an appender name, so it's easy to remove")
 }
