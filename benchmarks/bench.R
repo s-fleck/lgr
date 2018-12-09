@@ -53,7 +53,10 @@ sink()
 dd <- list(res) %>% setNames(Sys.time())
 
 hist <- readRDS("benchmarks/history.rds")
-
 dd <- c(dd, hist)
+
+print(dd[1:2])
+
+stop()
 
 saveRDS(dd, "benchmarks/history.rds")

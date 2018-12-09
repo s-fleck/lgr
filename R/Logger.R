@@ -191,36 +191,6 @@ Logger <- R6::R6Class(
       self$set_name(name)
       self$set_propagate(propagate)
       private$.last_event <- LogEvent$new(self)
-
-
-      # init log functions
-      make_logger <- function(
-        level,
-        ...
-      ){
-        force(level)
-        function(msg, ...){
-          self$log(
-            msg = sprintf(as.character(msg), ...),
-            caller = get_caller(-4L),
-            level = level
-          )
-        }
-      }
-
-      for (i in seq_along(private$.log_levels)){
-        nm  <- names(private$.log_levels)[[i]]
-        lvl <- private$.log_levels[[i]]
-        if (nm %in% names(self)){
-          stop(
-            "The following names are not allowed for log levels: ",
-            paste(sort(names(self)), collapse= ", ")
-          )
-        }
-
-        self[[nm]] <- make_logger(lvl)
-      }
-
       self$set_threshold(threshold)
 
       invisible(self)
@@ -246,10 +216,6 @@ Logger <- R6::R6Class(
       timestamp = Sys.time(),
       caller = get_caller(-3)
     ){
-      if (identical(getOption("yog.logging_suspended"), TRUE)){
-        return(invisible(msg))
-      }
-
       force(caller)
 
       tryCatch({
@@ -261,10 +227,14 @@ Logger <- R6::R6Class(
           "Can only utilize vectorized logging if log level is the same for all entries"
         )
 
-        # check threshold
-        thr <- private$.threshold
-        if (is.na(thr)) thr <- Inf
-        if (level[[1]] > thr) return(invisible())
+        # Check if LogEvent should be created
+        if (
+          identical(level[[1]] > private[[".threshold"]], TRUE) ||
+          identical(getOption("yog.logging_suspended"), TRUE)
+        ){
+          return(invisible(msg))
+        }
+
 
         # update log event
         assign("level", level, envir = self$last_event)
@@ -282,6 +252,55 @@ Logger <- R6::R6Class(
         }
       },
         error = self$handle_exception
+      )
+    },
+
+
+    fatal = function(msg, ...){
+      self$log(
+        msg = sprintf(as.character(msg), ...),
+        caller = get_caller(-4L),
+        level = 100
+      )
+    },
+
+    error = function(msg, ...){
+      self$log(
+        msg = sprintf(as.character(msg), ...),
+        caller = get_caller(-4L),
+        level = 200
+      )
+    },
+
+    warn = function(msg, ...){
+      self$log(
+        msg = sprintf(as.character(msg), ...),
+        caller = get_caller(-4L),
+        level = 300
+      )
+    },
+
+    info = function(msg, ...){
+      self$log(
+        msg = sprintf(as.character(msg), ...),
+        caller = get_caller(-4L),
+        level = 400
+      )
+    },
+
+    debug = function(msg, ...){
+      self$log(
+        msg = sprintf(as.character(msg), ...),
+        caller = get_caller(-4L),
+        level = 500
+      )
+    },
+
+    trace = function(msg, ...){
+      self$log(
+        msg = sprintf(as.character(msg), ...),
+        caller = get_caller(-4L),
+        level = 600
       )
     },
 
@@ -475,8 +494,11 @@ Logger <- R6::R6Class(
         nm  <- names(ll)[[i]]
         lvl <- ll[[i]]
         private$suspended_loggers[[nm]] <- self[[nm]]
+        unlockBinding(nm, env = self)
         self[[nm]] <- function(...) invisible()
+        lockBinding(nm, env = self)
       }
+      invisible(self)
     },
 
 
@@ -505,9 +527,12 @@ Logger <- R6::R6Class(
 
       for (i in seq_along(private$suspended_loggers)){
         nm  <- names(private$suspended_loggers)[[i]]
+        unlockBinding(nm, env = self)
         self[[nm]] <- private$suspended_loggers[[nm]]
+        lockBinding(nm, env = self)
       }
       private$suspended_loggers <- list()
+      invisible(self)
     },
 
 
@@ -516,14 +541,15 @@ Logger <- R6::R6Class(
     .filters = list(check_threshold),
     .exception_handler = NULL,
     .name = NULL,
-    .parrent = NULL,
+    .parent = NULL,
     .appenders = NULL,
     .user = NA_character_,
-    .threshold = 4L,
+    .threshold = NA_integer_,
     .last_event = NULL,
 
     # intentionaly hardcoded and not using the global options. this is used to
-    # track which logging functions are available for the logger
+    # track which logging functions are available for the logger. used by
+    # suspend/unsuspend
     .log_levels = as_log_levels(c(
       "fatal" = 100L,
       "error" = 200L,
@@ -533,9 +559,7 @@ Logger <- R6::R6Class(
       "trace" = 600L
     )),
     suspended_loggers = list()
-  ),
-
-  lock_objects = FALSE
+  )
 )
 
 

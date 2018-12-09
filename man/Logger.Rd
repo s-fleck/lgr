@@ -20,6 +20,12 @@ for more info.
   in the logging sub system: ", e) }, propagate = TRUE)
 
 x$log(level, msg, timestamp = Sys.time(), caller = get_caller(-3))
+x$fatal(msg, ...)
+x$error(msg, ...)
+x$warn(msg, ...)
+x$info(msg, ...)
+x$debug(msg, ...)
+x$trace(msg, ...)
 x$add_appender(appender, name = NULL)
 x$remove_appender(pos)
 x$handle_exception(...)
