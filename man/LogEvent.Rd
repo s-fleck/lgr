@@ -11,20 +11,38 @@ contains at minimum the \link{log_level}, a timestamp and the log message.
 \link{Layouts}.
 }
 \section{Usage}{
-\preformatted{l <- LogEvent$new(logger)
+\preformatted{x <- LogEvent$new(logger, level = NA, timestamp = Sys.time(), caller = NA,
+  msg = NA)
 
- # public fields
- l$caller
- l$level
- l$msg
- l$timestamp
- l$logger
+x$clone(deep = FALSE)
 
- # active bindings
- l$values
- l$level_name
-
+x$caller
+x$level
+x$level_name
+x$logger
+x$msg
+x$timestamp
+x$values
 }
+}
+
+\section{Creating LogEvents}{
+
+
+\strong{not yet stable}
+Currently custom LogEvents are not officially supported in yog, but a lot of
+the infrastructure to make them possible is already in place. If you require
+this function, please upvote
+\href{https://github.com/s-fleck/yog/issues/4}{this issue}
+
+\describe{
+\item{logger}{\code{\link{Logger}} scalar. The \code{Logger} this \code{LogEvent} is
+associated with}
+}
+}
+
+\section{Fields}{
+
 
 Log Evnets contain the following data fields
 \itemize{
@@ -45,21 +63,6 @@ Log events also contain the following active bindings:
 \item \code{value}: an active binding that returns a named \code{list} containing all the
 above values.
 \item \code{level_name}  the log level as a \code{character} string.
-}
-}
-
-\section{Creating LogEvents}{
-
-
-\strong{not yet stable}
-Currently custom LogEvents are not officially supported in yog, but a lot of
-the infrastructure to make them possible is already in place. If you require
-this function, please upvote
-\href{https://github.com/s-fleck/yog/issues/4}{this issue}
-
-\describe{
-\item{logger}{\code{\link{Logger}} scalar. The \code{Logger} this \code{LogEvent} is
-associated with}
 }
 }
 

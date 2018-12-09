@@ -7,18 +7,20 @@
 Format an LogEvent as human readable text using \code{\link[=format.LogEvent]{format.LogEvent()}}
 }
 \section{Usage}{
-\preformatted{lo <- LayoutFormat$new(fmt = "\%L [\%t] \%m", timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3",
-  colors = NULL, pad_levels = "right")
+\preformatted{x <- LayoutFormat$new(fmt = "\%L [\%t] \%m", timestamp_fmt = "\%Y-\%m-\%d
+  \%H:\%M:\%OS3", colors = NULL, pad_levels = "right")
 
-# methods
- lo$format_event(x)
+x$format_event(x)
+x$set_fmt(x)
+x$set_timestamp_fmt(x)
+x$set_colors(x)
+x$set_pad_levels(x)
+x$clone(deep = FALSE)
 
-# fields / active bindings
- lo$fmt
- lo$timestamp_fmt
- lo$colors
- lo$pad_levels
-
+x$colors
+x$fmt
+x$pad_levels
+x$timestamp_fmt
 }
 }
 

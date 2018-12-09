@@ -6,6 +6,19 @@
 \description{
 A simple Appender that outputs to a file in the file system.
 }
+\section{Usage}{
+\preformatted{x <- AppenderFile$new(file, threshold = NA_integer_,
+  layout = LayoutFormat$new())
+
+x$append(event)
+x$set_file(file)
+x$clone(deep = FALSE)
+
+x$destination
+x$file
+}
+}
+
 \section{Creating a new AppenderFile}{
 
 
@@ -22,23 +35,6 @@ does not exist it will be created}
 \item{threshold}{\code{character} or \code{integer} scalar. The minimum log level
 that triggers this logger. See \link{log_levels}}
 \item{layout}{A \link{Layout}. See examples.}
-}
-}
-
-\section{Usage}{
-\preformatted{Appender$new(layout = Layout$new(), threshold = NA_integer_)
-# public methods
-    app$append(event)
-    app$set_threshold(level)
-    app$set_logger(logger)
-    app$set_layout(layout)
-# public fields
-    app$
-# active bindings
-    app$threshold
-    app$layout
-    app$logger
-    app$destination
 }
 }
 

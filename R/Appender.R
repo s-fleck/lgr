@@ -5,7 +5,7 @@
 #' a single [Layout] that tells it how to format the LogEvent. For details
 #' please refer to the documentations of the specific Appenders.
 #'
-#' @eval r6_usage(Appender, "app")
+#' @eval r6_usage(Appender)
 #'
 #' @section Creating a new Appender:
 #'
@@ -104,6 +104,8 @@ Appender <- R6::R6Class(
 #' have the package **crayon** installed log levels will be coloured by default
 #' (but you can modify this behaviour by passing a custom [Layout])
 #'
+#' @eval r6_usage(AppenderConsole)
+#'
 #' @inheritSection Appender Creating a new Appender
 #'
 #' @export
@@ -167,6 +169,8 @@ AppenderConsole <- R6::R6Class(
 #' AppenderFile
 #'
 #' A simple Appender that outputs to a file in the file system.
+#'
+#' @eval r6_usage(AppenderFile)
 #'
 #' @inheritSection Appender Creating a new Appender
 #'
@@ -266,6 +270,8 @@ AppenderFile <- R6::R6Class(
 #' An Appender that outputs to an in-memory `data.table`. This requires that
 #' you have the suggested package **data.table** installed. This kind of appender
 #' is pretty useful for interactive use, and hast very little overhead.
+#'
+#' @eval r6_usage(AppenderMemoryDt)
 #'
 #' @section Creating a new AppenderMemoryDt:
 #'
@@ -464,6 +470,8 @@ AppenderMemoryDt <- R6::R6Class(
 #'
 #' An Appender that Buffers LogEvents in-memory and and redirects them to other
 #' appenders once certain conditions are met.
+#'
+#' @eval r6_usage(AppenderMemoryDt)
 #'
 #' @section Creating a new AppenderBuffer:
 #'

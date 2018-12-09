@@ -5,7 +5,6 @@
 #' for file or console output the log event is usually formatted into a single
 #' character line.
 #'
-#'
 #' @name Layout
 #' @aliases Layouts
 #' @family Layouts
@@ -41,22 +40,7 @@ Layout <- R6::R6Class(
 #'
 #' Format an LogEvent as human readable text using [format.LogEvent()]
 #'
-#' @section Usage:
-#'
-#' ```
-#' lo <- LayoutFormat$new(fmt = "%L [%t] %m", timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
-#'   colors = NULL, pad_levels = "right")
-#'
-#' # methods
-#'  lo$format_event(x)
-#'
-#' # fields / active bindings
-#'  lo$fmt
-#'  lo$timestamp_fmt
-#'  lo$colors
-#'  lo$pad_levels
-#'
-#' ```
+#' @eval r6_usage(LayoutFormat)
 #'
 #' @section Creating a new LayoutFormat:
 #'
@@ -182,21 +166,7 @@ LayoutFormat <- R6::R6Class(
 #'
 #' Format an LogEvent as JSON
 #'
-#' @section Usage:
-#'
-#' ```
-#' lo <- LayoutJson$new()
-#'
-#' # methods
-#'  lo$format_event(x)
-#'
-#' # fields / active bindings
-#'  lo$event_vals
-#'  lo$logger_vals
-#'  lo$other_vals
-#'  lo$toJSON_args
-#'
-#' ```
+#' @eval r6_usage(LayoutJson)
 #'
 #' @section Creating a new LayoutJson:
 #'

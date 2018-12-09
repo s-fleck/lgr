@@ -14,35 +14,33 @@ the Appenders of it ancestral Loggers. See \code{vignette("yog", package = "yog"
 for more info.
 }
 \section{Usage}{
-\preformatted{Logger$new(name, appenders = list(), threshold = 400L, user = get_user(),
-    parent = yog::yog, exception_handler = function(e) { warning("[",
-    format(Sys.time(), format = "\%Y-\%m-\%d \%H:\%M:\%OS3"), "] ", "An error occured
-    in the logging sub system: ", e) }, propagate = TRUE)
-# public methods
-    lgr$log(level, msg, timestamp = Sys.time(), caller = get_caller(-3))
-    lgr$add_appender(appender, name = NULL)
-    lgr$remove_appender(pos)
-    lgr$handle_exception(...)
-    lgr$set_name(x)
-    lgr$set_exception_handler(fun)
-    lgr$set_propagate(x)
-    lgr$set_parent(logger)
-    lgr$set_threshold(level)
-    lgr$set_appenders(x)
-    lgr$set_user(x)
-# public fields
-    lgr$
-# active bindings
-    lgr$name
-    lgr$propagate
-    lgr$last_event
-    lgr$ancestry
-    lgr$parent
-    lgr$threshold
-    lgr$ancestral_appenders
-    lgr$exception_handler
-    lgr$appenders
-    lgr$user
+\preformatted{x <- Logger$new(name, appenders = list(), threshold = 400L, user = get_user(),
+  parent = yog::yog, exception_handler = function(e) { warning("[",
+  format(Sys.time(), format = "\%Y-\%m-\%d \%H:\%M:\%OS3"), "] ", "An error occured
+  in the logging sub system: ", e) }, propagate = TRUE)
+
+x$log(level, msg, timestamp = Sys.time(), caller = get_caller(-3))
+x$add_appender(appender, name = NULL)
+x$remove_appender(pos)
+x$handle_exception(...)
+x$set_name(x)
+x$set_exception_handler(fun)
+x$set_propagate(x)
+x$set_parent(logger)
+x$set_threshold(level)
+x$set_appenders(x)
+x$set_user(x)
+
+x$ancestral_appenders
+x$ancestry
+x$appenders
+x$exception_handler
+x$last_event
+x$name
+x$parent
+x$propagate
+x$threshold
+x$user
 }
 }
 

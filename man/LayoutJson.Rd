@@ -7,17 +7,20 @@
 Format an LogEvent as JSON
 }
 \section{Usage}{
-\preformatted{lo <- LayoutJson$new()
+\preformatted{x <- LayoutJson$new(event_vals = c("level", "timestamp", "caller", "msg"),
+  logger_vals = NULL, other_vals = NULL, toJSON_args = list(auto_unbox = TRUE))
 
-# methods
- lo$format_event(x)
+x$format_event(x)
+x$set_other_vals(x)
+x$set_toJSON_args(x)
+x$set_event_vals(x)
+x$set_logger_vals(x)
+x$clone(deep = FALSE)
 
-# fields / active bindings
- lo$event_vals
- lo$logger_vals
- lo$other_vals
- lo$toJSON_args
-
+x$event_vals
+x$logger_vals
+x$other_vals
+x$toJSON_args
 }
 }
 

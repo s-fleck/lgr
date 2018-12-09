@@ -11,19 +11,17 @@ a single \link{Layout} that tells it how to format the LogEvent. For details
 please refer to the documentations of the specific Appenders.
 }
 \section{Usage}{
-\preformatted{Appender$new(layout = Layout$new(), threshold = NA_integer_)
-# public methods
-    app$append(event)
-    app$set_threshold(level)
-    app$set_logger(logger)
-    app$set_layout(layout)
-# public fields
-    app$
-# active bindings
-    app$threshold
-    app$layout
-    app$logger
-    app$destination
+\preformatted{x <- Appender$new(layout = Layout$new(), threshold = NA_integer_)
+
+x$append(event)
+x$set_threshold(level)
+x$set_logger(logger)
+x$set_layout(layout)
+
+x$destination
+x$layout
+x$logger
+x$threshold
 }
 }
 

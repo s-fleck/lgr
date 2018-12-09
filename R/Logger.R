@@ -8,7 +8,7 @@
 #' the Appenders of it ancestral Loggers. See `vignette("yog", package = "yog")`
 #' for more info.
 #'
-#' @eval r6_usage(Logger, "lgr")
+#' @eval r6_usage(Logger)
 #'
 #'
 #' @section Creating Loggers:

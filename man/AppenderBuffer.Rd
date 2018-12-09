@@ -12,6 +12,22 @@ AppenderBuffer
 An Appender that Buffers LogEvents in-memory and and redirects them to other
 appenders once certain conditions are met.
 }
+\section{Usage}{
+\preformatted{x <- AppenderMemoryDt$new(threshold = NA_integer_,
+  layout = LayoutFormat$new(fmt = "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S",
+  colors = getOption("yog.colors")), prototype = data.table::data.table(.id =
+  NA_integer_, level = NA_integer_, timestamp = Sys.time(), caller =
+  NA_character_, msg = NA_character_), buffer_size = 1e+05)
+
+x$append(event)
+x$show(n = 20, threshold = NA_integer_)
+x$clone(deep = FALSE)
+
+x$data
+x$destination
+}
+}
+
 \section{Creating a new AppenderBuffer}{
 
 

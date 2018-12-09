@@ -8,6 +8,18 @@ A simple Appender that outputs to the console. If you
 have the package \strong{crayon} installed log levels will be coloured by default
 (but you can modify this behaviour by passing a custom \link{Layout})
 }
+\section{Usage}{
+\preformatted{x <- AppenderConsole$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt
+  = "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%OS3", colors =
+  getOption("yog.colors", list())))
+
+x$append(event)
+x$clone(deep = FALSE)
+
+x$destination
+}
+}
+
 \section{Creating a new Appender}{
 
 

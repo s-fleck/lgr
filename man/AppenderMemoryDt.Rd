@@ -9,6 +9,22 @@ An Appender that outputs to an in-memory \code{data.table}. This requires that
 you have the suggested package \strong{data.table} installed. This kind of appender
 is pretty useful for interactive use, and hast very little overhead.
 }
+\section{Usage}{
+\preformatted{x <- AppenderMemoryDt$new(threshold = NA_integer_,
+  layout = LayoutFormat$new(fmt = "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S",
+  colors = getOption("yog.colors")), prototype = data.table::data.table(.id =
+  NA_integer_, level = NA_integer_, timestamp = Sys.time(), caller =
+  NA_character_, msg = NA_character_), buffer_size = 1e+05)
+
+x$append(event)
+x$show(n = 20, threshold = NA_integer_)
+x$clone(deep = FALSE)
+
+x$data
+x$destination
+}
+}
+
 \section{Creating a new AppenderMemoryDt}{
 
 
