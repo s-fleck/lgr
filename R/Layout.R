@@ -40,22 +40,7 @@ Layout <- R6::R6Class(
 #'
 #' Format an LogEvent as human readable text using [format.LogEvent()]
 #'
-#' @section Usage:
-#'
-#' ```
-#' lo <- LayoutFormat$new(fmt = "%L [%t] %m", timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
-#'   colors = NULL, pad_levels = "right")
-#'
-#' # methods
-#'  lo$format_event(x)
-#'
-#' # fields / active bindings
-#'  lo$fmt
-#'  lo$timestamp_fmt
-#'  lo$colors
-#'  lo$pad_levels
-#'
-#' ```
+#' @eval r6_usage(LayoutFormat)
 #'
 #' @section Creating a new LayoutFormat:
 #'
@@ -106,10 +91,10 @@ LayoutFormat <- R6::R6Class(
       colors = NULL,
       pad_levels = "right"
     ){
-      self$fmt <- fmt
-      self$timestamp_fmt <- timestamp_fmt
-      self$colors <- colors
-      self$pad_levels <- pad_levels
+      self$set_fmt(fmt)
+      self$set_timestamp_fmt(timestamp_fmt)
+      self$set_colors(colors)
+      self$set_pad_levels(pad_levels)
     },
 
     format_event = function(
@@ -122,37 +107,46 @@ LayoutFormat <- R6::R6Class(
         colors = private$.colors,
         pad_levels = private$.pad_levels
       )
+    },
+
+    set_fmt = function(x){
+      assert(is_scalar_character(x))
+      private$.fmt <- x
+      invisible(self)
+    },
+
+    set_timestamp_fmt = function(x){
+      assert(is_scalar_character(x))
+      private$.timestamp_fmt <- x
+      invisible(self)
+    },
+
+    set_colors = function(x){
+      assert(
+        is.null(x) || is.list(x),
+        "'colors' must either be NULL or a list of functions, not ",
+        class_fmt(x)
+      )
+      private$.colors <- x
+      invisible(self)
+    },
+
+    set_pad_levels = function(x){
+      assert(is_scalar_character(x))
+      private$.pad_levels <- x
+      invisible(self)
     }
   ),
 
+
   active = list(
-    fmt = function(value){
-      if (missing(value)) return(private$.fmt)
-      assert(is_scalar_character(value))
-      private$.fmt <- value
-    },
+    fmt = function()  private$.fmt,
 
-    timestamp_fmt = function(value){
-      if (missing(value)) return(private$.timestamp_fmt)
-      assert(is_scalar_character(value))
-      private$.timestamp_fmt <- value
-    },
+    timestamp_fmt = function() private$.timestamp_fmt,
 
-    colors = function(value){
-      if (missing(value)) return(private$.colors)
-      assert(
-        is.null(value) || is.list(value),
-        "'colors' must either be NULL or a list of functions, not ",
-        class_fmt(value)
-      )
-      private$.colors <- value
-    },
+    colors = function() private$.colors,
 
-    pad_levels = function(value){
-      if (missing(value)) return(private$.pad_levels)
-      assert(is_scalar_character(value))
-      private$.pad_levels <- value
-    }
+    pad_levels = function() private$.pad_levels
   ),
 
   private = list(
@@ -172,21 +166,7 @@ LayoutFormat <- R6::R6Class(
 #'
 #' Format an LogEvent as JSON
 #'
-#' @section Usage:
-#'
-#' ```
-#' lo <- LayoutJson$new()
-#'
-#' # methods
-#'  lo$format_event(x)
-#'
-#' # fields / active bindings
-#'  lo$event_vals
-#'  lo$logger_vals
-#'  lo$other_vals
-#'  lo$toJSON_args
-#'
-#' ```
+#' @eval r6_usage(LayoutJson)
 #'
 #' @section Creating a new LayoutJson:
 #'
@@ -208,9 +188,6 @@ LayoutFormat <- R6::R6Class(
 #'   \item{parent}{a `Logger`. Usually the Root logger. All Loggers must be
 #'     descentents of the Root logger for yog to work as intended.}
 #'
-#'   \item{string_formatter}{a `function` used to format the log strings passed
-#'     to the logging functions (`fatal()`, `error()`, etc...). Defaults to
-#'     [base::sprintf()]. Another sensible choice wuld be [glue::glue()].}
 #'
 #'   \item{handle_exception}{a `function` that takes a single argument `e`.
 #'     The function used to handle errors that occur durring loging. Default
@@ -275,10 +252,10 @@ LayoutJson <- R6::R6Class(
       other_vals = NULL,
       toJSON_args = list(auto_unbox = TRUE)
     ){
-      self$toJSON_args <- toJSON_args
-      self$event_vals  <- event_vals
-      self$logger_vals <- logger_vals
-      self$other_vals  <- other_vals
+      self$set_toJSON_args(toJSON_args)
+      self$set_event_vals(event_vals)
+      self$set_logger_vals(logger_vals)
+      self$set_other_vals(other_vals)
     },
 
     format_event = function(x) {
@@ -302,22 +279,42 @@ LayoutJson <- R6::R6Class(
       do.call(jsonlite::toJSON, args = c(list(vals), self$toJSON_args))
     },
 
-    toJSON_args = NULL,
-    event_vals = NULL,
-    logger_vals = NULL
+    set_other_vals = function(x){
+      assert(is.list(x) || is.null(x))
+      assert(identical(length(names(x)), length(x)))
+      private$.other_vals <- x
+      invisible(self)
+    },
+
+    set_toJSON_args = function(x){
+      assert(is.list(x))
+      assert(identical(length(names(x)), length(x)))
+      private$.toJSON_args <- x
+      invisible(self)
+    },
+
+    set_event_vals = function(x){
+      private$.event_vals <- x
+      invisible(self)
+    },
+
+    set_logger_vals = function(x){
+      private$.logger_vals <- x
+      invisible(self)
+    }
   ),
 
   active = list(
-    other_vals = function(value){
-      if (missing(value)) return(private$.other_vals)
-      assert(is.list(value) || is.null(value))
-      assert(identical(length(names(value)), length(value)))
-      private$.other_vals <- value
-    }
+    other_vals  = function() private$.other_vals,
+    event_vals  = function() private$.event_vals,
+    logger_vals = function() private$.logger_vals,
+    toJSON_args = function() private$.toJSON_args
   ),
 
   private = list(
     .toJSON_args = NULL,
+    .event_vals = NULL,
+    .logger_vals = NULL,
     .other_vals = NULL
   )
 )

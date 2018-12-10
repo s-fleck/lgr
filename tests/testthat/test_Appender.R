@@ -26,13 +26,13 @@ test_that("dummy Appender works as expected", {
 test_that("setting appender threshold works", {
   app <- Appender$new()
 
-  app$threshold <- 200
+  app$set_threshold(200)
   expect_identical(app$threshold, 200L)
-  app$threshold <- "info"
+  app$set_threshold("info")
   expect_identical(app$threshold, 400L)
-  app$threshold <- NA
+  app$set_threshold(NA)
   expect_identical(app$threshold, NA_integer_)
-  expect_error(app$threshold <- "blubb", "log levels")
+  expect_error(app$set_threshold("blubb"), "log levels")
 })
 
 
@@ -100,7 +100,7 @@ test_that("AppenderMemoryDt: appending multiple rows works", {
   y$level <- 300
   app$append(y)
   expect_identical(app$.__enclos_env__$private$.data$.id[1:4], 1:4)
-  app$logger <- Logger$new("dummy")  # so that log levels can be labelled
+  app$set_logger(Logger$new("dummy"))  # so that log levels can be labelled
 
   expect_match(paste(capture.output(app$show()), collapse = ""), "ERROR.*WARN")
 })
@@ -165,7 +165,7 @@ test_that("AppenderBuffer behaves as expected", {
 
 
   # memory cycling without flushing also works
-  l$appenders$buffer$flush_on_rotate <- FALSE
+  l$appenders$buffer$set_flush_on_rotate(FALSE)
   for (i in 1:15) l$info(i)
   expect_identical(length(l$appenders$buffer$buffered_events), 10L)
   msgs <- sapply(l$appenders$buffer$buffered_events, `[[`, "msg")
@@ -209,7 +209,7 @@ test_that("AppenderBuffer: dont flush on object destruction if switched of", {
     parent = NULL
   )
   l$info(LETTERS[1:3])
-  l$appenders$buffer$flush_on_exit <- FALSE
+  l$appenders$buffer$set_flush_on_exit(FALSE)
   rm(l)
   gc()
   expect_true(!file.exists(tf))
@@ -241,6 +241,6 @@ test_that("AppenderMemory: memory cycling works", {
 test_that("Appender: filters work", {
   app1 <- AppenderConsole$new()
   expect_true(app1$filter(x))
-  app1$threshold <-  100
+  app1$set_threshold(100)
   expect_false(app1$filter(x))
 })

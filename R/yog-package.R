@@ -92,16 +92,17 @@
 
 
   # root looger -------------------------------------------------------------
-  appenders <- list(console = AppenderConsole$new())
+  appenders <- list(console = AppenderConsole$new(threshold = 400L))
   if (requireNamespace("data.table", quietly = TRUE))
     appenders[["memory"]] <- AppenderMemoryDt$new()
 
   assign(
     "yog",
     Logger$new(
-      name = "root",    # usally a logger should have the same name as the package it belongs to
+      name = "root", # usally a logger should have the same name as the package it belongs to
       appenders = appenders,
-      parent = NULL  # _never_ set the parent to null yoursel, root should be the only root logger
+      threshold = NA,
+      parent = NULL  # _never_ set the parent to null yourself, root should be the only root logger
     ),
     envir = parent.env(environment())
   )

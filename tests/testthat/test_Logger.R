@@ -6,17 +6,17 @@ context("Logger")
 test_that("active bindings", {
   ml <- Logger$new("test_logger")
 
-  expect_silent(ml$threshold <- 5)
+  expect_silent(ml$set_threshold(5))
   expect_identical(ml$threshold, 5L)
-  expect_silent(ml$threshold <- "fatal")
+  expect_silent(ml$set_threshold("fatal"))
   expect_identical(ml$threshold, 100L)
-  expect_error(ml$threshold <- "blubb", "fatal.*trace")
+  expect_error(ml$set_threshold("blubb"), "fatal.*trace")
 
   walk(ml$appenders, function(.x) expect_true(inherits(.x, "Appender")))
 
-  expect_silent(ml$user <- "blubb")
+  expect_silent(ml$set_user("blubb"))
   expect_identical(ml$user, "blubb")
-  expect_error(ml$user <- 5, "'user'")
+  expect_error(ml$set_user(5), "'user'")
 })
 
 
@@ -44,22 +44,22 @@ test_that("basic logging", {
 
 test_that("setting appender threshold works", {
   lg <- Logger$new("dummy", appenders = AppenderConsole$new())
-  lg$threshold <- 200
+  lg$set_threshold(200)
   expect_identical(lg$threshold, 200L)
-  lg$threshold <- "info"
+  lg$set_threshold("info")
   expect_identical(lg$threshold, 400L)
-  lg$threshold <- NA
+  lg$set_threshold(NA)
   expect_identical(lg$threshold, NA_integer_)
-  expect_error(lg$threshold <- "blubb", "log levels")
+  expect_error(lg$set_threshold("blubb"), "log levels")
 
   # test if setting for appenders of a logger also works as this is somewhat tricky
-  lg$appenders[[1]]$threshold <- NA
+  lg$appenders[[1]]$set_threshold(NA)
   expect_identical(lg$appenders[[1]]$threshold, NA_integer_)
-  lg$appenders[[1]]$threshold <- 300
+  lg$appenders[[1]]$set_threshold(300)
   expect_identical(lg$appenders[[1]]$threshold, 300L)
-  lg$appenders[[1]]$threshold <- "info"
+  lg$appenders[[1]]$set_threshold("info")
   expect_identical(lg$appenders[[1]]$threshold, 400L)
-  expect_error(lg$appenders[[1]]$threshold <- "blubb", "log levels")
+  expect_error(lg$appenders[[1]]$set_threshold("blubb"), "log levels")
 })
 
 
@@ -76,9 +76,9 @@ test_that("suspending loggers works", {
 
   expect_output(ml$fatal("blubb"), "FATAL")
   x <- capture.output(ml$fatal("blubb"))
-  ml$threshold <- 0
+  ml$set_threshold(0)
   expect_identical(ml$fatal("blubb %s", "blah"), NULL)
-  ml$threshold <- "error"
+  ml$set_threshold("error")
   y <- capture.output(ml$fatal("blubb"))
 
   expect_output(ml$log(100, "test"), "FATAL")
@@ -129,9 +129,9 @@ test_that("modify appenders for a logger", {
 
   # configure yog so that it logs everything to the file, but only info and above
   # to the console
-  ml$threshold <- NA
-  ml$appenders[[1]]$threshold <- "info"
-  ml$appenders$file$threshold <- NA
+  ml$set_threshold(NA)
+  ml$appenders[[1]]$set_threshold("info")
+  ml$appenders$file$set_threshold(NA)
   expect_output(ml$info("Another informational message"))
   expect_silent(ml$debug("A debug message that the console appender doesn't show."))
   expect_identical(length(readLines(tf)), 2L)
@@ -174,7 +174,7 @@ test_that("Logger inheritance and event propagation", {
   expect_identical(readLines(tf1), readLines(tf2))
   expect_identical(readLines(tf1), readLines(tf3))
 
-  c2$propagate <- FALSE
+  c2$set_propagate(FALSE)
   expect_silent(c3$error("blubb"))
   expect_identical(readLines(tf2), readLines(tf3))
   expect_lt(length(readLines(tf1)), length(readLines(tf3)))
@@ -186,6 +186,6 @@ test_that("Logger inheritance and event propagation", {
 test_that("filters work", {
   c1  <- Logger$new("c1")
   expect_output(c1$error("blubb"), "ERROR")
-  c1$threshold <- 100
+  c1$set_threshold(100)
   expect_silent(c1$error("blubb"))
 })

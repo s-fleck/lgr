@@ -8,37 +8,8 @@
 #' the Appenders of it ancestral Loggers. See `vignette("yog", package = "yog")`
 #' for more info.
 #'
-#' @section Usage:
-#'
-#' ```
-#' l <- Logger$new("example logger")
-#'
-#' # methods
-#'  l$fatal(msg, ...)
-#'  l$error(msg, ...)
-#'  l$warn(msg, ...)
-#'  l$info(msg, ...)
-#'  l$debug(msg, ...)
-#'  l$trace(msg, ...)
-#'  l$log(level, msg, timestamp = Sys.time(), caller = get_caller())
-#'  l$add_appender(appender, name = NULL)
-#'  l$remove_appender(pos)
-#'  l$handle_exception(e)
-#'  l$filter(event)
-#'
-#' # fields / active bindings
-#'  l$name
-#'  l$threshold
-#'  l$appenders
-#'  l$parent
-#'  l$propagate
-#'  l$ancestry
-#'  l$ancestral_appenders
-#'  l$filters
-#'  l$last_event
-#'  l$user
-#'
-#' ```
+
+#' @eval r6_usage(Logger)
 #'
 #' @section Creating Loggers:
 #'
@@ -47,26 +18,36 @@
 #' `Logger$new()`. If you just want to add different outputs (for example
 #' logfiles) to the Root Logger, look into [Appenders].
 #'
+#'
+#' @section Fields:
+#'
+#' You can either specify the fields in `Logger$new()` or modify them after
+#' creation with setter functions of the form `logger$set_fieldname(value)`
+#' (see examples)
+#'
 #' \describe{
-#'   \item{name}{`character` scalar. Name of the Logger. Should be unique amongst
+#'   \item{`name`}{`character` scalar. Name of the Logger. Should be unique amongst
 #'     Loggers. If you define a logger for an R Package, the logger should have
 #'     the same name as the Package.}
-#'   \item{appenders}{`list` of [Appender]s. The appenders used by this logger
+#'
+#'   \item{`appenders`}{`list` of [Appender]s. The appenders used by this logger
 #'     to write log entries to the console, to files, etc...}
-#'   \item{threshold}{`character` or `integer` scalar. The minimum log level
+#'
+#'   \item{`threshold`}{`character` or `integer` scalar. The minimum log level
 #'     that triggers this logger}
-#'   \item{user}{`character` scalar. The current user name or email adress.
+#'
+#'   \item{`user`}{`character` scalar. The current user name or email adress.
 #'     This information can be used by the appenders}
-#'   \item{parent}{a `Logger`. Usually the Root logger. All Loggers must be
+#'
+#'   \item{`parent`}{a `Logger`. Usually the Root logger. All Loggers must be
 #'     descentents of the Root logger for yog to work as intended.}
 #'
-#'   \item{string_formatter}{a `function` used to format the log strings passed
-#'     to the logging functions (`fatal()`, `error()`, etc...). Defaults to
-#'     [base::sprintf()]. Another sensible choice wuld be [glue::glue()].}
-#'
-#'   \item{handle_exception}{a `function` that takes a single argument `e`.
+#'   \item{`exception_handler`}{a `function` that takes a single argument `e`.
 #'     The function used to handle errors that occur durring loging. Default
 #'     to demoting any error to a [warning]}
+#'
+#'   \item{`propagate`}{`TRUE` or `FALSE`. Should log messages be passed on to
+#'     the appenders of the ancestral Loggers?}
 #'  }
 #'
 #'
@@ -103,12 +84,15 @@
 #'   can be an `integer` or `character` vector referring either to the positions
 #'   or names of the Appenders to be removed.}
 #'
-#'   \item{`handle_exception(e)`}{Used to handle errors that occur durring the
+#'   \item{`exception_handler(e)`}{Used to handle errors that occur durring the
 #'   logging process. The defaul is to convert errors to warnings.}
 #'
 #'   \item{`filter(x)`}{Determine whether the LogEvent `x` should be passed
 #'   on to Appenders (`TRUE`) or not (`FALSE`). See also the active binding
 #'   `filters`}
+#'
+#'   \item{`set_name(x)`}{Set the Logger name to the `character` scalar `x`}
+#'
 #' }
 #'
 #'
@@ -138,8 +122,6 @@
 #'
 #'   \item{`parent`}{Parent Logger of the current Logger (`NULL` for the Root Logger)}
 #'
-#'   \item{`propagate`}{`TRUE` or `FALSE`. Should log messages be passed on to
-#'   the appenders of the ancestral Loggers?}
 #'
 #'   \item{`threshold`}{An `integer`. Threshold of the current Logger (i.e the
 #'   maximum log level that this Logger processes)}
@@ -192,7 +174,7 @@ Logger <- R6::R6Class(
       threshold = 400L,
       user = get_user(),
       parent = yog::yog,
-      handle_exception = function(e){
+      exception_handler = function(e){
         warning(
           "[", format(Sys.time(), format = "%Y-%m-%d %H:%M:%OS3"), "] ",
           "An error occured in the logging sub system: ", e
@@ -202,46 +184,14 @@ Logger <- R6::R6Class(
     ){
       # fields
       # threshold must be set *after* the logging functions have been initalized
-      self$appenders <- appenders
-      self$user  <- user
-      self$handle_exception <- handle_exception
-      self$parent <- parent
-      self$name <- name
-      self$last_event <- LogEvent$new(self)
-      self$propagate <- propagate
-
-
-      # init log functions
-      make_logger <- function(
-        level,
-        ...
-      ){
-        force(level)
-        function(msg, ...){
-          self$log(
-            msg = private$.string_formatter(as.character(msg), ...),
-            caller = get_caller(-4L),
-            level = level
-          )
-        }
-      }
-
-      for (i in seq_along(private$.log_levels)){
-        nm  <- names(private$.log_levels)[[i]]
-        lvl <- private$.log_levels[[i]]
-        if (nm %in% names(self)){
-          stop(
-            "The following names are not allowed for log levels: ",
-            paste(sort(names(self)), collapse= ", ")
-          )
-        }
-
-        self[[nm]] <- make_logger(lvl)
-      }
-
-      self$threshold <- threshold
-
-
+      self$set_appenders(appenders)
+      self$set_user(user)
+      self$set_exception_handler(exception_handler)
+      self$set_parent(parent)
+      self$set_name(name)
+      self$set_propagate(propagate)
+      private$.last_event <- LogEvent$new(self)
+      self$set_threshold(threshold)
 
       invisible(self)
     },
@@ -255,7 +205,8 @@ Logger <- R6::R6Class(
         self$remove_appender(i)
       }
 
-      gc()
+      gc()  # ensure that finalizers of appenders are executed now
+      invisible()
     },
 
 
@@ -265,10 +216,6 @@ Logger <- R6::R6Class(
       timestamp = Sys.time(),
       caller = get_caller(-3)
     ){
-      if (identical(getOption("yog.logging_suspended"), TRUE)){
-        return(invisible(msg))
-      }
-
       force(caller)
 
       tryCatch({
@@ -280,10 +227,14 @@ Logger <- R6::R6Class(
           "Can only utilize vectorized logging if log level is the same for all entries"
         )
 
-        # check threshold
-        thr <- private$.threshold
-        if (is.na(thr)) thr <- Inf
-        if (level[[1]] > thr) return(invisible())
+        # Check if LogEvent should be created
+        if (
+          identical(level[[1]] > private[[".threshold"]], TRUE) ||
+          identical(getOption("yog.logging_suspended"), TRUE)
+        ){
+          return(invisible(msg))
+        }
+
 
         # update log event
         assign("level", level, envir = self$last_event)
@@ -305,8 +256,53 @@ Logger <- R6::R6Class(
     },
 
 
-    handle_exception = NULL,
+    fatal = function(msg, ...){
+      self$log(
+        msg = sprintf(as.character(msg), ...),
+        caller = get_caller(-4L),
+        level = 100
+      )
+    },
 
+    error = function(msg, ...){
+      self$log(
+        msg = sprintf(as.character(msg), ...),
+        caller = get_caller(-4L),
+        level = 200
+      )
+    },
+
+    warn = function(msg, ...){
+      self$log(
+        msg = sprintf(as.character(msg), ...),
+        caller = get_caller(-4L),
+        level = 300
+      )
+    },
+
+    info = function(msg, ...){
+      self$log(
+        msg = sprintf(as.character(msg), ...),
+        caller = get_caller(-4L),
+        level = 400
+      )
+    },
+
+    debug = function(msg, ...){
+      self$log(
+        msg = sprintf(as.character(msg), ...),
+        caller = get_caller(-4L),
+        level = 500
+      )
+    },
+
+    trace = function(msg, ...){
+      self$log(
+        msg = sprintf(as.character(msg), ...),
+        caller = get_caller(-4L),
+        level = 600
+      )
+    },
 
     add_appender = function(
       appender,
@@ -328,8 +324,8 @@ Logger <- R6::R6Class(
         "`appender$clone()`, but be aware that this can cause weird bugs",
         "for some appender types."
         )
-      appender$logger <- self
 
+      appender$set_logger(self)
 
       private$.appenders[length(private$.appenders) + 1L] <- list(appender)
 
@@ -367,25 +363,78 @@ Logger <- R6::R6Class(
       invisible(self)
     },
 
-    # +- fields -----------------------------------------------------------
-    last_event = NULL
+    handle_exception = function(...){
+      private$.exception_handler(...)
+    },
+
+    set_name = function(x){
+      assert(is_scalar_character(x))
+      private$.name <- x
+      invisible(self)
+    },
+
+    set_exception_handler = function(fun){
+      assert(is.function(fun))
+      private$.exception_handler <- fun
+      invisible(self)
+    },
+
+    set_propagate = function(x){
+      assert(is_scalar_bool(x))
+      private$.propagate <- x
+      invisible(self)
+    },
+
+    set_parent = function(logger){
+      assert(is.null(logger) || inherits(logger, "Logger"))
+      private$.parent <- logger
+      invisible(self)
+    },
+
+
+    set_threshold = function(level){
+      assert_valid_threshold(level)
+      if (is_scalar_character(level))  level <- unlabel_levels(level)
+
+      private$unsuspend()
+      private$suspend(level, inclusive = FALSE)
+
+      private$.threshold <- as.integer(level)
+      invisible(self)
+    },
+
+
+    set_appenders = function(x){
+      if (is.null(x)){
+        private$.appenders <- list()
+        return(invisible())
+      }
+      if (inherits(x, "Appender"))  x <- list(x)
+
+      assert(
+        is.list(x) && all(vapply(x, inherits, TRUE, "Appender")),
+        "'appenders' must either be a single Appender, a list thereof, or ",
+        "NULL for no appenders."
+      )
+      for (i in seq_along(x))  self$add_appender(x[[i]], name = names(x)[[i]])
+
+      invisible(self)
+    },
+
+    set_user = function(x){
+      assert(is_scalar_character(x), "'user' must be a scalar character")
+      private$.user <- x
+      invisible(self)
+    }
   ),
 
   # active bindings ---------------------------------------------------------
   active = list(
-    name = function(value){
-      if (missing(value)) return(private$.name)
-      assert(is_scalar_character(value))
-      private$.name <- value
-    },
+    name = function() private$.name,
 
+    propagate = function() private$.propagate,
 
-    propagate = function(value){
-      if (missing(value)) return(private$.propagate)
-      assert(is_scalar_bool(value))
-      private$.propagate <- value
-    },
-
+    last_event = function() private$.last_event,
 
     ancestry = function(){
       structure(
@@ -394,27 +443,9 @@ Logger <- R6::R6Class(
       )
     },
 
+    parent = function() private$.parent,
 
-    parent = function(value){
-      if (missing(value)) return(private$.parent)
-      assert(is.null(value) || inherits(value, "Logger"))
-      private$.parent <- value
-    },
-
-
-
-    threshold = function(value){
-      if (missing(value))  return(private$.threshold)
-
-      assert_valid_threshold(value)
-      if (is_scalar_character(value))  value <- unlabel_levels(value)
-
-      private$unsuspend()
-      private$suspend(value, inclusive = FALSE)
-
-      private$.threshold <- as.integer(value)
-    },
-
+    threshold = function() private$.threshold,
 
     ancestral_appenders = function(){
       if (self$propagate){
@@ -427,39 +458,11 @@ Logger <- R6::R6Class(
       }
     },
 
+    exception_handler = function() private$.exception_handler,
 
-    appenders = function(value){
-      if (missing(value)) return(c(private$.appenders))
+    appenders = function()  private$.appenders,
 
-      if (is.null(value)){
-        private$.appenders <- list()
-        return(invisible())
-      }
-
-      if (inherits(value, "Appender"))
-        value <- list(value)
-
-      assert(
-        is.list(value) && all(vapply(value, inherits, TRUE, "Appender")),
-        "'appenders' must either be a single Appender, a list thereof, or ",
-        "NULL for no appenders."
-      )
-
-      for (i in seq_along(value))
-        self$add_appender(value[[i]], name = names(value)[[i]])
-
-      invisible()
-    },
-
-
-    user = function(value){
-      if (missing(value)) return(private$.user)
-      assert(
-        is_scalar_character(value),
-        "'user' must be a scalar character"
-      )
-      private$.user <- value
-    }
+    user = function() private$.user
   ),
 
 
@@ -491,8 +494,11 @@ Logger <- R6::R6Class(
         nm  <- names(ll)[[i]]
         lvl <- ll[[i]]
         private$suspended_loggers[[nm]] <- self[[nm]]
+        unlockBinding(nm, env = self)
         self[[nm]] <- function(...) invisible()
+        lockBinding(nm, env = self)
       }
+      invisible(self)
     },
 
 
@@ -521,24 +527,29 @@ Logger <- R6::R6Class(
 
       for (i in seq_along(private$suspended_loggers)){
         nm  <- names(private$suspended_loggers)[[i]]
+        unlockBinding(nm, env = self)
         self[[nm]] <- private$suspended_loggers[[nm]]
+        lockBinding(nm, env = self)
       }
       private$suspended_loggers <- list()
+      invisible(self)
     },
 
 
     # +- fields ---------------------------------------------------------------
     .propagate = NULL,
     .filters = list(check_threshold),
+    .exception_handler = NULL,
     .name = NULL,
-    .parrent = NULL,
+    .parent = NULL,
     .appenders = NULL,
     .user = NA_character_,
-    .threshold = 4L,
-    .string_formatter = sprintf,
+    .threshold = NA_integer_,
+    .last_event = NULL,
 
     # intentionaly hardcoded and not using the global options. this is used to
-    # track which logging functions are available for the logger
+    # track which logging functions are available for the logger. used by
+    # suspend/unsuspend
     .log_levels = as_log_levels(c(
       "fatal" = 100L,
       "error" = 200L,
@@ -548,9 +559,7 @@ Logger <- R6::R6Class(
       "trace" = 600L
     )),
     suspended_loggers = list()
-  ),
-
-  lock_objects = FALSE
+  )
 )
 
 
@@ -573,3 +582,7 @@ trim <- function(str, n = 60) {
   if (nchar(str) > n) paste(substr(str, 1, n-4), "...")
   else str
 }
+
+
+
+

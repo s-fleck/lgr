@@ -5,7 +5,7 @@
 #' @examples
 #' FATAL("This is an important message about %s going wrong", "something")
 #' DEBUG("Debug messages are hidden by default")
-#' threshold("debug")  # you must use lower case names here
+#' console_threshold("debug")  # you must use lower case names here
 #' DEBUG("Unless we lower the threshold")
 #'
 NULL
@@ -98,19 +98,26 @@ log_exception <- function(
 
 
 #' @description
-#'   yog provides some functions for managing loggers that default to the root
-#'   logger as target. These are useful if you just use the root logger and
-#'   do not want to worry about
+#'   Yog provides convenience functions to manage the root Logger. These
+#'   are intended for interactive use, and for people who just need basic
+#'   logging facilities and don't want to worry about hierarchical loggers and
+#'   R6 classes.
 #'
-#'   `threshold()` sets or retrieves the threshold for an appender or logger
-#'   (the minimum level of log messages it processes).
+#'   `threshold()` sets or retrieves the threshold for an [Appender] or [Logger]
+#'   (the minimum level of log messages it processes). It's `target` defaults
+#'   to the root logger.
 #'
-#'   `add_appender()` and `remove_appender()` add [Appenders] to [Loggers] and
+#'   `console_threshold()` is a shortcut to set the threshold of the root
+#'   loggers [AppenderConsole], which is usually the only Appender that manages
+#'   console output for a given \R session.
+#'
+#'   `add_appender()` and `remove_appender()` add Appenders to Loggers and
 #'   other Appenders.
 #'
 #' @rdname simple_logging
 #' @return
-#'   `threshold()` returns the log level of `target` as `integer` (invisibly)
+#'   `threshold()` and `console_threshold()` return the [log_level] of `target`
+#'   as `integer` (invisibly)
 #'
 #' @export
 threshold <- function(
@@ -120,7 +127,7 @@ threshold <- function(
   if (missing(level))
     target$threshold
   else
-    target$threshold <- level
+    target$set_threshold(level)
 
   invisible(target$threshold)
 }
@@ -128,14 +135,37 @@ threshold <- function(
 
 
 #' @rdname simple_logging
-#' @param appender an `Appender`
-#' @return `add_appender()` and `remove_appender()` return `target`
 #' @export
+console_threshold <- function(
+  level,
+  target = yog::yog$appenders$console
+){
+  assert(inherits(target, "AppenderConsole"))
+  if (missing(level))
+    target$threshold
+  else
+    target$set_threshold(level)
+
+  invisible(target$threshold)
+}
+
+
+#' @rdname simple_logging
+#' @param appender an `Appender`
+#' @param name `character` scalar. An optional name for the new Appender.
+#' @return `add_appender()` and `remove_appender()` return `target`.
+#' @export
+#' @examples
+#' add_appender(AppenderConsole$new(), "second_console_appender")
+#' FATAL("Multiple console appenders are a bad idea")
+#' remove_appender("second_console_appender")
+#' INFO("Good that we defined an appender name, so it's easy to remove")
 add_appender <- function(
   appender,
+  name = NULL,
   target = yog::yog
 ){
-  target$add_appender(appender)
+  target$add_appender(appender, name = name)
 }
 
 
@@ -162,8 +192,20 @@ show_log = function(
   threshold = NA,
   target = yog::yog
 ){
-  if (inherits(target, "Appender"))
-    return(target$show(n = n, threshold = threshold))
+  if (!requireNamespace("data.table")){
+    stop(
+      "To use this feature, please install the package data.table via ",
+      "install.packages('data.table') and restart R."
+    )
+  }
+
+  if (inherits(target, "Appender")){
+    if ("show" %in% names(target))
+      return(target$show(n = n, threshold = threshold))
+    else
+      stop("This ", class_fmt(target), " does not have a 'show()' method")
+  }
+
 
   sel <- vapply(target$appenders, inherits, TRUE, "AppenderMemoryDt")
 

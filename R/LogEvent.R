@@ -5,23 +5,23 @@
 #' `LogEvents` are created by a [Logger], and then processed a [Appenders] and
 #' [Layouts].
 #'
-#' @section Usage:
+#' @eval r6_usage(LogEvent)
 #'
-#' ```
-#' l <- LogEvent$new(logger)
 #'
-#'  # public fields
-#'  l$caller
-#'  l$level
-#'  l$msg
-#'  l$timestamp
-#'  l$logger
+#' @section Creating LogEvents:
 #'
-#'  # active bindings
-#'  l$values
-#'  l$level_name
+#' **not yet stable**
+#' Currently custom LogEvents are not officially supported in yog, but a lot of
+#' the infrastructure to make them possible is already in place. If you require
+#' this function, please upvote
+#' [this issue](https://github.com/s-fleck/yog/issues/4)
 #'
-#' ```
+#' \describe{
+#'   \item{logger}{[`Logger`] scalar. The `Logger` this `LogEvent` is
+#'     associated with}
+#'  }
+#'
+#' @section Fields:
 #'
 #' Log Evnets contain the following data fields
 #'
@@ -41,20 +41,6 @@
 #' * `value`: an active binding that returns a named `list` containing all the
 #'   above values.
 #' * `level_name`  the log level as a `character` string.
-#'
-#'
-#' @section Creating LogEvents:
-#'
-#' **not yet stable**
-#' Currently custom LogEvents are not officially supported in yog, but a lot of
-#' the infrastructure to make them possible is already in place. If you require
-#' this function, please upvote
-#' [this issue](https://github.com/s-fleck/yog/issues/4)
-#'
-#' \describe{
-#'   \item{logger}{[`Logger`] scalar. The `Logger` this `LogEvent` is
-#'     associated with}
-#'  }
 #'
 #'
 #' @name LogEvent
@@ -103,11 +89,10 @@ LogEvent <- R6::R6Class(
     ){
       assert(inherits(logger, "Logger"))
       self$logger <- logger
-      self$level <- level
-      self$timestamp <-timestamp
+      self$level  <- level
+      self$timestamp <- timestamp
       self$caller <- caller
       self$msg <- msg
-      self$logger <- logger
 
       invisible(self)
     },

@@ -71,7 +71,7 @@ ERROR("A less severe error")
 WARN("something likely went wrong")
 INFO("Everything is ok")
 DEBUG("Debug messages are hidden by default")
-threshold("debug")  # you must use lower case names here
+console_threshold("debug")  # you must use lower case names here
 DEBUG("unless we lower the threshold")
 TRACE("Trace is even lower than debug")
 
@@ -85,7 +85,7 @@ in this vignette will moslty use the notation below.
 ```{r}
 yog$fatal("This is an important message about %s going wrong", "->something<-")
 yog$trace("Trace messages are still hidden")
-yog$threshold <- "trace"
+yog$set_threshold("trace")
 yog$trace("Unless we lower the threshold")
 ```
 
@@ -103,9 +103,9 @@ yog$add_appender(AppenderFile$new(file = tf), name = "file")
 
 # configure yog so that it logs everything to the file, but only info and above
 # to the console
-yog$threshold <- NA
-yog$appenders$console$threshold <- "info"
-yog$appenders$file$threshold <- NA
+yog$set_threshold(NA)
+yog$appenders$console$set_threshold("info")
+yog$appenders$file$set_threshold(NA)
 yog$info("Another informational message")
 yog$debug("A debug message that the console appender doesn't show.")
 

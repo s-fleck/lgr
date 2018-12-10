@@ -4,12 +4,12 @@ context("simple_logging")
 test_that("simple_logging works as expected", {
   ml <- Logger$new("dummy")
 
-  expect_error(ml$threshold <- "blubb")
+  expect_error(ml$set_threshold("blubb"))
   add_log_levels(c(blubb = 250))
-  expect_silent(ml$threshold <- "blubb")
+  expect_silent(ml$set_threshold("blubb"))
   expect_identical(ml$threshold, 250L)
   remove_log_levels("blubb")  # cleanup
-  expect_error(ml$threshold <- "blubb")
+  expect_error(ml$set_threshold("blubb"))
 })
 
 
