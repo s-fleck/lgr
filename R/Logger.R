@@ -8,7 +8,6 @@
 #' the Appenders of it ancestral Loggers. See `vignette("yog", package = "yog")`
 #' for more info.
 #'
-
 #' @eval r6_usage(Logger)
 #'
 #' @section Creating Loggers:
@@ -106,7 +105,7 @@
 #'   \item{`ancestry`}{*read only*. A `character` vector of the names of all
 #'     Loggers that are ancestors to the current Logger}
 #'
-#'   \item{`ancestral_appenders`}{*read only*. A `list` of all inherited
+#'   \item{`inherited_appenders`}{*read only*. A `list` of all inherited
 #'   appenders from ancestral Loggers of the current Logger}
 #'
 #'   \item{`filters`}{a `list` of predicates (functions that return either
@@ -244,7 +243,7 @@ Logger <- R6::R6Class(
 
         # emit
         if (self$filter(self$last_event)){
-          for (app in c(self$appenders, self$ancestral_appenders)) {
+          for (app in c(self$appenders, self$inherited_appenders)) {
             if (app$filter(self$last_event)){
               app$append(self$last_event)
             }
@@ -447,11 +446,11 @@ Logger <- R6::R6Class(
 
     threshold = function() private$.threshold,
 
-    ancestral_appenders = function(){
+    inherited_appenders = function(){
       if (self$propagate){
         c(
           private$.parent$appenders,
-          private$.parent$ancestral_appenders
+          private$.parent$inherited_appenders
         )
       } else {
         NULL

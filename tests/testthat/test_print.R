@@ -11,3 +11,34 @@ test_that("format works as expected", {
   )
 
 })
+
+
+
+
+test_that("formatting Loggers works as expected", {
+
+  tf <- tempfile()
+
+  l <- Logger$new(
+    "blubb",
+    appenders = list(
+      AppenderFile$new(file = tf),
+      AppenderBuffer$new(
+        appenders = list(
+          AppenderMemoryDt$new(),
+          AppenderConsole$new()
+        )
+      )
+  ))
+
+
+  l
+
+
+
+
+
+
+
+
+})

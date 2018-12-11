@@ -7,42 +7,49 @@ format.Logger = function(
   x,
   ...
 ){
-  x <- yog
-
-  res <- list(
-    ancestry = x$ancestry,
-    appenders = x$appenders,
-    ancestral_appenders = x$ancestral_appenders
-  )
-
-  x$ancestry
-
   header <- paste(
-    paste0("<", class(x)[[1]], ">"),
-    style_subtle(format(x$ancestry))
+    paste0("<", class(x)[[1]], "> [", fmt_threshold(x$threshold, type = "character"), "]"),
+    style_subtle(paste(format(x$ancestry), collapse = " -> "))
   )
+
+  inherited_appenders <- do.call(rbind, lapply(x$inherited_appenders, srs_appender))
+  appenders <- do.call(rbind, lapply(x$appenders, srs_appender))
+
+  fmt_appenders <- function(.x){
+    if (is.null(x)) NULL
+
+
+    .x$name <- rownames(.x)
+    .x$destination <- ifelse(
+      !is_blank(.x$destination),
+      paste("->", .x$destination),
+      ""
+    )
+
+
+    with(
+      .x,
+      paste0(
+        pad_right(name), ": ",
+        pad_right(class), " [",
+        pad_left(fmt_threshold(threshold, type = "character")), "] ",
+        destination
+      )
+    )
+  }
 
   ind <- "  "
 
-  appenders <- do.call(rbind, lapply(x$appenders, srs_appender))
-  appenders$name <- rownames(appenders)
-  appenders$destination <- ifelse(
-    !is_blank(appenders$destination),
-    paste("->", appenders$destination),
-    ""
+  c(
+    header,
+    "",
+    "appenders:",
+    paste0(ind, fmt_appenders(appenders)),
+    "",
+    "inherited appenders:",
+    paste0(ind, fmt_appenders(inherited_appenders))
   )
 
-  appenders <- with(
-    appenders,
-    paste0(
-      pad_right(name), ": ",
-      pad_right(class), " [",
-      pad_left(fmt_threshold(threshold, type = "character")), "] ",
-      destination
-    )
-  )
-
-  c(header, appenders)
 }
 
 
@@ -93,59 +100,6 @@ summary.Appender = function(
 
 
 # format appenders --------------------------------------------------------
-
-
-
-format_appenders <- function(
-  x
-){
-  res <- matrix(
-    dimnames = list(NULL, c("names", "threshold", "destination")),
-    nrow = length(x),
-    ncol = 3
-  )
-  if (length(x) > 0){
-    res[, "names"] <- pad_right(names(x))
-    res[, "threshold"] <- vapply(x, function(.x) format_threshold(.x$threshold), character(1))
-    res[, "destination"] <- vapply(x, function(.x) .x$destination, character(1))
-
-
-    appenders <- paste0(
-      pad_right(appenders$name), ": ",
-      pad_right(
-        paste0(label_levels(appenders$threshold), style_subtle(paste0(" (", appenders$threshold, ")")))
-      ),
-      vapply(appenders$comment, ptrunc_col, character(1), width = 128)
-    )
-  } else {
-    appenders <- style_subtle("none")
-  }
-
-  anc_appenders <- do.call(
-    rbind,
-    lapply(self$ancestral_appenders, function(.x){
-      cbind(data.frame(logger = .x$logger$name, srs(.x)))
-    }
-    ))
-
-
-  if (length(anc_appenders) > 0){
-    anc_appenders$logger <- pad_right(anc_appenders$logger)
-    anc_appenders$name   <- pad_right(anc_appenders$name)
-
-    anc_appenders <- paste0(
-      style_subtle(paste0(anc_appenders$logger, " -> ")),
-      anc_appenders$name, ": ",
-      pad_right(
-        paste0(label_levels(anc_appenders$threshold), style_subtle(paste0(" (", anc_appenders$threshold, ")")))
-      ),
-      vapply(anc_appenders$comment, ptrunc_col, character(1), width = 128)
-    )
-  } else {
-    anc_appenders <- NULL
-  }
-}
-
 
 
 
@@ -246,7 +200,6 @@ destination.AppenderConsole <- function(x){
 #'
 #' @examples
 destination.AppenderFile <- function(x){
-  browser()
   x$file
 }
 
