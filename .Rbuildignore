@@ -4,3 +4,4 @@
 ^LICENSE\.md$
 ^benchmarks$
 ^\.travis\.yml$
+^vignettes/rsconnect/.*$
