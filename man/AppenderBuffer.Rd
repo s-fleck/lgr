@@ -28,7 +28,7 @@ x$destination
 }
 }
 
-\section{Creating a new AppenderBuffer}{
+\section{Creating a new Appender}{
 
 
 \describe{
@@ -46,6 +46,22 @@ to off can have slighly negative perfomance impacts.}
 \item{\code{appenders}}{Like for a \link{Logger}. Buffered events will be passed on
 to these Appenders once a flush is triggered}
 }
+
+
+
+\describe{
+\item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
+that triggers this logger. See \link{log_levels}}
+\item{\code{layout}}{A \link{Layout}. See examples.}
+}
+
+
+
+\describe{
+\item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
+that triggers this logger. See \link{log_levels}}
+\item{\code{layout}}{A \link{Layout}. See examples.}
+}
 }
 
 \section{Methods}{
@@ -57,16 +73,6 @@ to these Appenders once a flush is triggered}
 see \link{Logger}}
 \item{\code{remove_appender(pos)}}{Remove and Appender from this Appender.
 see \link{Logger}}
-}
-}
-
-\section{Creating a new Appender}{
-
-
-\describe{
-\item{threshold}{\code{character} or \code{integer} scalar. The minimum log level
-that triggers this logger. See \link{log_levels}}
-\item{layout}{A \link{Layout}. See examples.}
 }
 }
 

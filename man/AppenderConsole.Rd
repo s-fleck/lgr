@@ -24,9 +24,9 @@ x$destination
 
 
 \describe{
-\item{threshold}{\code{character} or \code{integer} scalar. The minimum log level
+\item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
 that triggers this logger. See \link{log_levels}}
-\item{layout}{A \link{Layout}. See examples.}
+\item{\code{layout}}{A \link{Layout}. See examples.}
 }
 }
 

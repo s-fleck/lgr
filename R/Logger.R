@@ -325,8 +325,6 @@ Logger <- R6::R6Class(
         "for some appender types."
         )
 
-      appender$set_logger(self)
-
       private$.appenders[length(private$.appenders) + 1L] <- list(appender)
 
       if (!is.null(name))

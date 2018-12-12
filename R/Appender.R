@@ -10,13 +10,22 @@
 #' @section Creating a new Appender:
 #'
 #' \describe{
-#'   \item{threshold}{`character` or `integer` scalar. The minimum log level
+#'   \item{`threshold`}{`character` or `integer` scalar. The minimum log level
 #'     that triggers this logger. See [log_levels]}
-#'   \item{layout}{A [Layout]. See examples.}
+#'   \item{`layout`}{A [Layout]. See examples.}
 #'  }
 #'
 #' @section Fields:
 #'
+#'
+#' @section Methods:
+#'
+#' \describe{
+#'   \item{`set_threshold(level)`}{`character` or `integer` scalar. See section
+#'     Fields.
+#'   \item{`set_layout(layout)`}{Set the `Appenders` [Layout] to `Layout`.
+#'     See section Fields.}
+#'  }
 #'
 #' @name Appender
 #' @aliases Appenders
@@ -36,7 +45,6 @@ Appender <- R6::R6Class(
   "Appender",
   inherit = Filterable,
   cloneable = FALSE,
-
 
   # +- public --------------------------------------------------------------
   public = list(
@@ -62,13 +70,6 @@ Appender <- R6::R6Class(
       invisible(self)
     },
 
-
-    set_logger = function(logger){
-      assert(inherits(logger, "Logger") || is.null(logger))
-      private$.logger <- logger
-      invisible(self)
-    },
-
     set_layout = function(layout){
       assert(inherits(layout, "Layout"))
       private$.layout <- layout
@@ -83,16 +84,13 @@ Appender <- R6::R6Class(
 
     layout = function() private$.layout,
 
-    logger = function() private$.logger,
-
     destination = function() ""
   ),
 
   private = list(
     .filters = list(check_threshold),
     .threshold = NA,
-    .layout = NULL,
-    .logger = NULL
+    .layout = NULL
   )
 )
 
@@ -275,7 +273,8 @@ AppenderFile <- R6::R6Class(
 #'
 #' @eval r6_usage(AppenderMemoryDt)
 #'
-#' @section Creating a new AppenderMemoryDt:
+#' @inheritSection Appender Creating a new Appender
+#' @section Creating a new Appender:
 #'
 #' \describe{
 #'   \item{buffer_size}{`integer` scalar. Number of rows of the in-memory
@@ -475,7 +474,8 @@ AppenderMemoryDt <- R6::R6Class(
 #'
 #' @eval r6_usage(AppenderMemoryDt)
 #'
-#' @section Creating a new AppenderBuffer:
+#' @inheritSection Appender Creating a new Appender
+#' @section Creating a new Appender:
 #'
 #' \describe{
 #'   \item{`buffer_size`}{`integer` scalar. Number of [LogEvents] to buffer}
@@ -631,8 +631,6 @@ AppenderBuffer <- R6::R6Class(
         "for some appender types."
       )
 
-      appender$set_logger(self$logger)
-
       private$.appenders[length(private$.appenders) + 1L] <- list(appender)
 
       if (!is.null(name))
@@ -694,13 +692,6 @@ AppenderBuffer <- R6::R6Class(
     set_should_flush = function(x){
       assert(is.function(x))
       private$.should_flush <- x
-      invisible(self)
-    },
-
-    set_logger = function(logger){
-      assert(inherits(logger, "Logger") || is.null(logger))
-      for (app in private$.appenders)  app$set_logger(logger)
-      private$.logger <- logger
       invisible(self)
     }
   ),

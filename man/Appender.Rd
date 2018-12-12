@@ -15,7 +15,6 @@ please refer to the documentations of the specific Appenders.
 
 x$append(event)
 x$set_threshold(level)
-x$set_logger(logger)
 x$set_layout(layout)
 
 x$destination
@@ -29,9 +28,9 @@ x$threshold
 
 
 \describe{
-\item{threshold}{\code{character} or \code{integer} scalar. The minimum log level
+\item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
 that triggers this logger. See \link{log_levels}}
-\item{layout}{A \link{Layout}. See examples.}
+\item{\code{layout}}{A \link{Layout}. See examples.}
 }
 }
 

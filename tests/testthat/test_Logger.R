@@ -106,9 +106,7 @@ test_that("add/remove appenders", {
 
   # because the now have the logger proerty set
   expect_identical(ml$appenders[[2]], app1)
-  expect_identical(ml$appenders[[2]]$logger, ml)
   expect_identical(ml$appenders$blah, app2)
-  expect_identical(ml$appenders$blah$logger, ml)
 
   ml$remove_appender(2)
   expect_identical(length(ml$appenders), 3L)

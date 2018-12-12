@@ -25,7 +25,7 @@ x$destination
 }
 }
 
-\section{Creating a new AppenderMemoryDt}{
+\section{Creating a new Appender}{
 
 
 \describe{
@@ -34,6 +34,14 @@ x$destination
 \item{prototype}{A prototype \code{data.table}. This is only necessary if you
 use custom \link{LogEvents} (which is not yet supported by yog, but planned for
 the future)}
+}
+
+
+
+\describe{
+\item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
+that triggers this logger. See \link{log_levels}}
+\item{\code{layout}}{A \link{Layout}. See examples.}
 }
 }
 
