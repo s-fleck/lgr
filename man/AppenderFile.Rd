@@ -38,6 +38,10 @@ that triggers this logger. See \link{log_levels}}
 }
 }
 
+\section{Fields}{
+
+}
+
 \examples{
 logger <- Logger$new("loggername")
 default <- tempfile()

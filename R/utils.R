@@ -107,28 +107,3 @@ ptrunc_col <- function(
 
 
 
-
-pad_left <- function(
-  x,
-  width = max(nchar(paste(x))),
-  pad = " "
-){
-  diff <- width - nchar(paste(x))
-  padding <-
-    vapply(diff, function(i) paste(rep.int(pad, i), collapse = ""), character(1))
-  paste0(padding, x)
-}
-
-
-
-
-pad_right <- function(
-  x,
-  width = max(nchar(paste(x))),
-  pad = " "
-){
-  diff <- width - nchar(paste(x))
-  padding <-
-    vapply(diff, function(i) paste(rep.int(pad, i), collapse = ""), character(1))
-  paste0(x, padding)
-}

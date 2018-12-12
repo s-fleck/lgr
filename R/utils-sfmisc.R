@@ -1,4 +1,4 @@
-# sfmisc utils 0.0.1.9016
+# sfmisc utils 0.0.1.9019
 
 
 
@@ -44,6 +44,9 @@ fmt_class <- function(x){
 
 
 
+#' @param x any \R object
+#' @param ignore subclasses to ignore
+#' @noRd
 class_fmt <- function(x, ignore = NULL){
   fmt_class(setdiff(class(x), ignore))
 }
@@ -406,4 +409,34 @@ all_are_distinct <- function(
 
 n_distinct <- function(x){
   length(unique(x))
+}
+
+
+
+# misc --------------------------------------------------------------------
+
+
+pad_left <- function(
+  x,
+  width = max(nchar(paste(x))),
+  pad = " "
+){
+  diff <- pmax(width - nchar(paste(x)), 0L)
+  padding <-
+    vapply(diff, function(i) paste(rep.int(pad, i), collapse = ""), character(1))
+  paste0(padding, x)
+}
+
+
+
+
+pad_right <- function(
+  x,
+  width = max(nchar(paste(x))),
+  pad = " "
+){
+  diff <- pmax(width - nchar(paste(x)), 0L)
+  padding <-
+    vapply(diff, function(i) paste(rep.int(pad, i), collapse = ""), character(1))
+  paste0(x, padding)
 }

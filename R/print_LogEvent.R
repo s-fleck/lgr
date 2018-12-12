@@ -163,15 +163,3 @@ tokenize_format <- function(
 
   res
 }
-
-
-
-
-fmt_threshold <- function(
-  x,
-  log_levels = getOption("yog.log_levels")
-){
-  paste0(label_levels(x, log_levels), " (", x, ")")
-}
-
-

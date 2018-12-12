@@ -17,28 +17,21 @@ test_that("format works as expected", {
 
 test_that("formatting Loggers works as expected", {
 
-  tf <- tempfile()
-
   l <- Logger$new(
-    "blubb",
-    appenders = list(
-      AppenderFile$new(file = tf),
+    "test_logger",
+    appenders = c(
+      AppenderFile$new(file = tempfile()),
+      AppenderConsole$new(),
+      AppenderFile$new(threshold = 100, file = paste0(tempfile(), tempfile(), tempfile())),
+      AppenderMemoryDt$new(),
       AppenderBuffer$new(
-        appenders = list(
-          AppenderMemoryDt$new(),
-          AppenderConsole$new()
-        )
-      )
-  ))
+        appenders = list(AppenderMemoryDt$new(), AppenderFile$new(tempfile())))
+    )
+  )
 
-
-  l
-
-
-
-
-
-
-
-
+  # ensure that print doesn't raise exceptions
+  expect_output(print(l))
+  expect_output(print(Logger$new("blubb", parent = NULL)))
+  expect_output(print(Logger$new("blubb", parent = NULL, propagate = FALSE)))
+  expect_output(print(Logger$new("blubb", parent = NULL, appenders = Appender$new())))
 })

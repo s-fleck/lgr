@@ -35,6 +35,10 @@ that triggers this logger. See \link{log_levels}}
 }
 }
 
+\section{Fields}{
+
+}
+
 \seealso{
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}},

@@ -15,10 +15,12 @@
 #'   \item{layout}{A [Layout]. See examples.}
 #'  }
 #'
+#' @section Fields:
+#'
+#'
 #' @name Appender
 #' @aliases Appenders
 #' @family Appenders
-#' @include print.R
 #' @include utils.R
 #' @include utils-sfmisc.R
 #' @include Filterable.R
@@ -83,7 +85,7 @@ Appender <- R6::R6Class(
 
     logger = function() private$.logger,
 
-    destination = function() NULL
+    destination = function() ""
   ),
 
   private = list(
@@ -748,7 +750,9 @@ AppenderBuffer <- R6::R6Class(
       for (app in self$appenders){
         app$logger <- value
       }
-    }
+    },
+
+    destination = function() paste(length(self$appenders), "child Appenders")
   ),
 
   private = list(

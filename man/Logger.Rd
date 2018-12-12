@@ -37,10 +37,10 @@ x$set_threshold(level)
 x$set_appenders(x)
 x$set_user(x)
 
-x$ancestral_appenders
 x$ancestry
 x$appenders
 x$exception_handler
+x$inherited_appenders
 x$last_event
 x$name
 x$parent
@@ -149,7 +149,7 @@ logger}
 \item{\code{ancestry}}{\emph{read only}. A \code{character} vector of the names of all
 Loggers that are ancestors to the current Logger}
 
-\item{\code{ancestral_appenders}}{\emph{read only}. A \code{list} of all inherited
+\item{\code{inherited_appenders}}{\emph{read only}. A \code{list} of all inherited
 appenders from ancestral Loggers of the current Logger}
 
 \item{\code{filters}}{a \code{list} of predicates (functions that return either

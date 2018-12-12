@@ -8,7 +8,7 @@
 #' @name Layout
 #' @aliases Layouts
 #' @family Layouts
-#' @include print.R
+#' @include print_LogEvent.R
 #' @include utils.R
 #' @include utils-sfmisc.R
 #' @include Filterable.R
