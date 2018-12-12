@@ -95,7 +95,7 @@
 #' }
 #'
 #'
-#' @section Active Bindings:
+#' @section Fields:
 #'
 #' \describe{
 #'

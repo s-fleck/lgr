@@ -30,10 +30,10 @@ x$destination
 
 \describe{
 \item{buffer_size}{\code{integer} scalar. Number of rows of the in-memory
-\code{data.table}.}
-\item{prototype}{A prototype \code{data.table}. This is only necessary if you
-use custom \link{LogEvents} (which is not yet supported by yog, but planned for
-the future)}
+\code{data.table}}
+\item{prototype}{A prototype \code{data.table}. This is only necessary to set
+manually if you use custom \link{LogEvents} (which is not yet supported by yog,
+but planned for the future)}
 }
 
 
@@ -41,25 +41,21 @@ the future)}
 \describe{
 \item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
 that triggers this logger. See \link{log_levels}}
-\item{\code{layout}}{A \link{Layout}. See examples.}
+\item{\code{layout}}{a \code{Layout} that will be used for formatting the \code{LogEvents}
+passed to this Appender
+}
 }
 }
 
-\section{Methods}{
+\section{Fields and Methods}{
 
 
 \describe{
 \item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a log level
 bellow \code{threshold}. The log entries will be formated for console output
 via the defined \link{Layout}}
-}
-}
-
-\section{Active Bindings}{
-
-
-\describe{
-\item{\code{data}}{read-only binding to access all cached LogEvents as a \code{data.table}}
+\item{\code{data}}{Get the log recorded by this \code{Appender} as a \code{data.table}
+with a maximum of \code{buffer_size} rows}
 }
 }
 

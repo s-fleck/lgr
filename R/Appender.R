@@ -12,20 +12,21 @@
 #' \describe{
 #'   \item{`threshold`}{`character` or `integer` scalar. The minimum log level
 #'     that triggers this logger. See [log_levels]}
-#'   \item{`layout`}{A [Layout]. See examples.}
+#'   \item{`layout`}{a `Layout` that will be used for formatting the `LogEvents`
+#'     passed to this Appender
+#'    }
 #'  }
 #'
-#' @section Fields:
-#'
-#'
-#' @section Methods:
+#' @section Fields and Methods:
 #'
 #' \describe{
-#'   \item{`set_threshold(level)`}{`character` or `integer` scalar. See section
-#'     Fields.
-#'   \item{`set_layout(layout)`}{Set the `Appenders` [Layout] to `Layout`.
-#'     See section Fields.}
+#'   \item{`append(event)`}{Write the [LogEvent] `event` to a destination}
+#'   \item{`threshold`, `set_threshold(level)`}{get/set the `Appender` threshold}
+#'   \item{`layout`, `set_layout(layout)`}{get/set the `Layout`}
+#'   \item{`destination`}{The output destination of the `Appender` in
+#'     human-readable form (mainly for print output)}
 #'  }
+#'
 #'
 #' @name Appender
 #' @aliases Appenders
@@ -96,6 +97,7 @@ Appender <- R6::R6Class(
 
 
 
+
 # AppenderConsole ---------------------------------------------------------
 
 #' AppenderConsole
@@ -107,6 +109,7 @@ Appender <- R6::R6Class(
 #' @eval r6_usage(AppenderConsole)
 #'
 #' @inheritSection Appender Creating a new Appender
+#' @inheritSection Appender Fields and Methods
 #'
 #' @export
 #' @seealso [LayoutFormat]
@@ -162,8 +165,6 @@ AppenderConsole <- R6::R6Class(
 
 
 
-
-
 # AppenderFile ------------------------------------------------------------
 
 #' AppenderFile
@@ -173,17 +174,20 @@ AppenderConsole <- R6::R6Class(
 #' @eval r6_usage(AppenderFile)
 #'
 #' @inheritSection Appender Creating a new Appender
+#' @inheritSection Appender Fields and Methods
 #'
-#' @section Creating a new AppenderFile:
+#' @section Creating a new Appender:
 #'
 #' \describe{
 #'   \item{file}{`character` scalar. Path to the desired log file. If the file
 #'     does not exist it will be created}
 #'  }
 #'
-#' @inherit Appender
+#' @section Fields and Methods:
 #'
-#' @inherit
+#' \describe{
+#'   \item{`file, set_file(file)`}{get/set the log file}
+#' }
 #'
 #' @export
 #' @seealso [LayoutFormat], [LayoutJson]
@@ -260,8 +264,6 @@ AppenderFile <- R6::R6Class(
 
 
 
-
-
 # AppenderMemoryDt ----------------------------------------------------------
 
 
@@ -278,25 +280,22 @@ AppenderFile <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{buffer_size}{`integer` scalar. Number of rows of the in-memory
-#'   `data.table`.}
-#'   \item{prototype}{A prototype `data.table`. This is only necessary if you
-#'   use custom [LogEvents] (which is not yet supported by yog, but planned for
-#'   the future)}
+#'   `data.table`}
+#'   \item{prototype}{A prototype `data.table`. This is only necessary to set
+#'   manually if you use custom [LogEvents] (which is not yet supported by yog,
+#'   but planned for the future)}
 #'  }
 #'
-#' @section Methods:
+#' @section Fields and Methods:
 #'
 #' \describe{
 #'   \item{`show(n, threshold)`}{Show the last `n` log entries with a log level
 #'   bellow `threshold`. The log entries will be formated for console output
 #'   via the defined [Layout]}
+#'   \item{`data`}{Get the log recorded by this `Appender` as a `data.table`
+#'   with a maximum of `buffer_size` rows}
 #' }
 #'
-#' @section Active Bindings:
-#'
-#' \describe{
-#'   \item{`data`}{read-only binding to access all cached LogEvents as a `data.table`}
-#' }
 #'
 #' @export
 #' @seealso [LayoutFormat], [simple_logging], [data.table::data.table]
@@ -323,8 +322,6 @@ AppenderFile <- R6::R6Class(
 #' # can find.
 #' show_log(target = lg)
 NULL
-
-
 
 
 
@@ -472,7 +469,7 @@ AppenderMemoryDt <- R6::R6Class(
 #' An Appender that Buffers LogEvents in-memory and and redirects them to other
 #' appenders once certain conditions are met.
 #'
-#' @eval r6_usage(AppenderMemoryDt)
+#' @eval r6_usage(AppenderBuffer)
 #'
 #' @inheritSection Appender Creating a new Appender
 #' @section Creating a new Appender:
@@ -492,36 +489,39 @@ AppenderMemoryDt <- R6::R6Class(
 #'   \item{`appenders`}{Like for a [Logger]. Buffered events will be passed on
 #'     to these Appenders once a flush is triggered}
 #'  }
-#' @inheritSection Appender Creating a new Appender
 #'
-#' @section Methods:
+#' @inheritSection Appender Fields and Methods
+#' @section Fields and Methods:
 #'
 #' \describe{
-#'   \item{`flush()`}{Manually trigger a flush of the buffer}
-#'   \item{`add_appender(appender, name)`}{Add an Appender to this Appender.
+#'   \item{`flush()`}{Manually trigger flushing}
+#'   \item{`add_appender(appender)`}{Add and Appender to this Appender.
 #'     see [Logger]}
 #'   \item{`remove_appender(pos)`}{Remove and Appender from this Appender.
 #'     see [Logger]}
+#'   \item{`appenders`, `set_appenders()`}{Get/set the `list` of `Appenders`
+#'     attached to this `Appender`}
+#'   \item{`buffer_size, set_buffer_size(x)`}{get/set the bufffer size}
+#'   \item{`flush_on_exit, set_flush_on_exit(x)`}{get/set whether the buffer
+#'    should be flushed when this `Appender` is garbage collected}
+#'   \item{`flush_on_rotate, set_flush_on_rotate`}{get/set whether the buffer
+#'     should be flushed once it is full}
+#'   \item{`should_flush(event)`, `set_should_flush(x)`}{Call or set the
+#'     function that determins whether an event should trigger flushing based
+#'     on its properties (e.g. its log level)
+#'   }
 #' }
 #'
 #' @export
 #' @seealso [LayoutFormat]
-#'
-#' @examples
-#' # create a new logger with propagate = FALSE to prevent routing to the root
-#' # logger. Please look at the section "Logger Hirarchies" in the package
-#' # vignette for more info.
-#' logger  <- Logger$new("testlogger", propagate = FALSE)
-#'
-#' logger$add_appender(AppenderConsole$new())
-#' logger$add_appender(AppenderConsole$new(
-#'   layout = LayoutFormat$new("[%t] %c(): [%n] %m from user %u", colors = getOption("yog.colors"))))
-#'
-#' # Will output the message twice because we attached two console appenders
-#' logger$warn("A test message")
-#'
 #' @family Appenders
 #' @name AppenderBuffer
+NULL
+
+
+
+
+#' @export
 AppenderBuffer <- R6::R6Class(
   "AppenderBuffer",
   inherit = Appender,
@@ -734,15 +734,6 @@ AppenderBuffer <- R6::R6Class(
       invisible()
     },
 
-    logger = function(value){
-      if (missing(value)) return(private$.logger)
-      assert(inherits(value, "Logger"))
-      private$.logger <- value
-      for (app in self$appenders){
-        app$logger <- value
-      }
-    },
-
     destination = function() paste(length(self$appenders), "child Appenders")
   ),
 
@@ -758,6 +749,7 @@ AppenderBuffer <- R6::R6Class(
 
 
 
+
 # utils -------------------------------------------------------------------
 
 trim_last_event <- function(x, max_len){
@@ -766,6 +758,7 @@ trim_last_event <- function(x, max_len){
   else
     x[seq.int(length(x) - max_len + 1L, length(x))]
 }
+
 
 
 
@@ -785,6 +778,8 @@ get_backup_index <- function(
 }
 
 
+
+
 get_backup_timestamp <- function(
   x
 ){
@@ -801,6 +796,7 @@ get_backup_timestamp <- function(
 
 
 
+
 autopad_backup_index <- function(
   x
 ){
@@ -812,4 +808,3 @@ autopad_backup_index <- function(
   new_idx <- pad_left(int, max(nchar(as.character(int))), "0")
   paste0(bn, ".", new_idx, ext)
 }
-
