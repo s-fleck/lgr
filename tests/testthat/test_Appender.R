@@ -109,9 +109,135 @@ test_that("AppenderMemoryDt: appending multiple rows works", {
 
 # AppenderDbi -------------------------------------------------------------
 
+test_that("AppenderDbi: appending multiple rows works", {
+  if (!requireNamespace("RSQLite", quietly = TRUE))
+    skip("Test requires RSQLite")
+
+  tname <- "LOGGING_TEST"
+
+  app <- expect_message(
+    AppenderDbi$new(
+      conn = DBI::dbConnect(RSQLite::SQLite(), ":memory:"),
+      table = tname
+    ),
+    "new"
+  )
+
+  e <- LogEvent$new(yog, level = 600, msg = "ohno", caller = "nope()", timestamp = Sys.time())
+
+  expect_silent(app$append(e))
+  expect_silent(app$append(e))
+  tres <- app$data
+  expect_identical(nrow(tres), 2L)
+
+
+  # test vectorized logging
+  e$msg <- rep("ohyeah", 3)
+  expect_silent(app$append(e))
+  tres <- app$data
+  expect_identical(tres$msg, c(rep("ohno", 2), rep("ohyeah", 3)))
+
+
+  # test show method
+  e$msg <- rep(1:20, 3)
+  expect_silent(app$append(e))
+  expect_output(
+    app$show(5),
+    paste(16:20, collapse = ".*")
+  )
+
+  expect_silent(app$append(e))
+})
+
+
+
+
+
+test_that("AppenderDbi: log access works", {
+  if (!requireNamespace("RSQLite", quietly = TRUE))
+    skip("Test requires RSQLite")
+
+  conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  tname <- "LOGGING_TEST"
+
+  expect_message(
+    lg <- Logger$new(
+      "test_dbi",
+      threshold = "trace",
+      appenders = list(db = AppenderDbi$new(conn = conn, table = tname, close_on_exit = FALSE))
+    ),
+    "new"
+  )
+
+  expect_output({
+    lg$fatal("blubb")
+    lg$trace("blah")
+  })
+
+  expect_output(lg$appenders$db$show(), "FATAL.*TRACE")
+  expect_output(
+    expect_identical(nrow(lg$appenders$db$show(1)), 1L),
+    "TRACE"
+  )
+
+  expect_identical(nrow(lg$appenders$db$data), 2L)
+
+  expect_output(
+    expect_identical(
+      show_log(target = lg),
+      lg$appenders$db$show()
+    )
+  )
+
+  expect_silent(DBI::dbDisconnect(conn))
+})
+
+
+
+test_that("AppenderDbi: Automatic closing of connections works", {
+  if (!requireNamespace("RSQLite", quietly = TRUE))
+    skip("Test requires RSQLite")
+
+  conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  tname <- "LOGGING_TEST"
+
+  # Autoclosing works
+  expect_message(
+    lg <- Logger$new(
+      "test_dbi",
+      threshold = "trace",
+      appenders = list(db = AppenderDbi$new(conn = conn, table = tname, close_on_exit = TRUE))
+    ),
+    "new"
+  )
+  rm(lg)
+  gc()
+  expect_warning(DBI::dbDisconnect(conn), "Already disconnected")
+
+
+  # Suppressing autoclose works
+  conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  tname <- "LOGGING_TEST"
+  expect_message(
+    lg <- Logger$new(
+      "test_dbi",
+      threshold = "trace",
+      appenders = list(db = AppenderDbi$new(conn = conn, table = tname, close_on_exit = FALSE))
+    ),
+    "new"
+  )
+  rm(lg)
+  gc()
+  expect_silent(DBI::dbDisconnect(conn))
+})
+
+
+
+
+# AppenderRjdbc -------------------------------------------------------------
 
 test_that("AppenderRjdbc: appending multiple rows works", {
-  if (!requireNamespace("dataSTAT"))
+  if (!requireNamespace("dataSTAT", quietly = TRUE))
     skip("Currently only tested at work")
 
   tname <- "TMP.LOGGING_TEST"
@@ -152,7 +278,6 @@ test_that("AppenderRjdbc: appending multiple rows works", {
   )
 
   expect_silent(app$append(e))
-
   DBI::dbDisconnect(conn)
 })
 
@@ -162,17 +287,20 @@ test_that("AppenderRjdbc: appending multiple rows works", {
 
 test_that("AppenderRjdbc: log access works", {
 
-  if (!requireNamespace("dataSTAT"))
+  if (!requireNamespace("dataSTAT", quietly = TRUE))
     skip("Currently only tested at work")
 
   tname <- "TMP.LOGGING_TEST"
   conn <- dataSTAT::dbConnectDB2("RTEST", "rtest", "rtest")
   try(DBI::dbRemoveTable(conn, tname), silent = TRUE)
 
-  lg <- Logger$new(
-    "test_rjdbc",
-    threshold = "trace",
-    appenders = list(db = AppenderRjdbc$new(conn = conn, table = tname))
+  expect_message(
+    lg <- Logger$new(
+      "test_rjdbc",
+      threshold = "trace",
+      appenders = list(db = AppenderRjdbc$new(conn = conn, table = tname))
+    ),
+    "new"
   )
 
 

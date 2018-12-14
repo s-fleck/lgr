@@ -30,7 +30,7 @@
 #'
 #' @name Appender
 #' @aliases Appenders
-#' @family Appenders
+#' @family internal Appenders
 #' @include utils.R
 #' @include utils-sfmisc.R
 #' @include Filterable.R
@@ -264,6 +264,65 @@ AppenderFile <- R6::R6Class(
 
 
 
+# AppenderTable -----------------------------------------------------------
+
+
+#' AppenderTable
+#'
+#' Log to a database table with the RJDBC package.
+#'
+#' @inheritSection Appender Creating a new Appender
+#' @section Creating a new Appender:
+#'
+#' \describe{
+#'   \item{conn}{an RJDBC connection}
+#'   \item{field_types}{a named `character` vector of field names and types.}
+#'  }
+#'
+#' @section Fields and Methods:
+#'
+#' \describe{
+#'   \item{`show(n, threshold)`}{Show the last `n` log entries with a log level
+#'   bellow `threshold`. The log entries will be formated for console output
+#'   via the defined [Layout]}
+#'   \item{`data`}{Get the log recorded by this `Appender` as a `data.table`
+#'   with a maximum of `buffer_size` rows}
+#' }
+#'
+#'
+#' @export
+#' @seealso [LayoutFormat], [simple_logging], [data.table::data.table]
+#' @family internal Appenders
+#' @name AppenderTable
+#'
+AppenderTable <- R6::R6Class(
+  "AppenderTable",
+  inherit = Appender,
+  public = list(
+    initialize = function() stop(
+        "AppenderTable is not designed for direct instantion, please see ",
+        "?AppenderTable for more info"
+      ),
+
+    show = function(n = 20, threshold = NA_integer_) NULL
+  ),
+
+  active = list(
+    destination = function() "",
+    data = function() NULL
+  ),
+
+  private = list(
+    .conn = NULL,
+    .table = NULL,
+    .field_types = NULL
+  )
+)
+
+
+
+
+
 # AppenderMemoryDt ----------------------------------------------------------
 
 
@@ -459,45 +518,35 @@ AppenderMemoryDt <- R6::R6Class(
   )
 )
 
+# AppenderDbi -------------------------------------------------------------
 
 
-
-
-# AppenderRjdbc -------------------------------------------------------------
-
-#' AppenderRjdbc
+#' AppenderDbi
 #'
-#' Log to a database table with the RJDBC package.
+#' Log to a database table with any DBI compatabile backend.
 #'
-#' @eval r6_usage(AppenderRjdbc)
+#' @eval r6_usage(AppenderDbi)
 #'
-#' @inheritSection Appender Creating a new Appender
 #' @section Creating a new Appender:
 #'
 #' \describe{
-#'   \item{conn}{an RJDBC connection}
+#'   \item{conn}{a DBI connection}
 #'   \item{field_types}{a named `character` vector of field names and types.}
 #'  }
 #'
+#' @inheritSection AppenderTable Fields and Methods
 #' @section Fields and Methods:
 #'
-#' \describe{
-#'   \item{`show(n, threshold)`}{Show the last `n` log entries with a log level
-#'   bellow `threshold`. The log entries will be formated for console output
-#'   via the defined [Layout]}
-#'   \item{`data`}{Get the log recorded by this `Appender` as a `data.table`
-#'   with a maximum of `buffer_size` rows}
-#' }
-#'
-#'
 #' @export
-#' @seealso [LayoutFormat], [simple_logging], [data.table::data.table]
 #' @family Appenders
-#' @name AppenderRjdbc
-#'
-AppenderRjdbc <- R6::R6Class(
-  "AppenderRjdbc",
-  inherit = Appender,
+#' @name AppenderDbi
+NULL
+
+
+#' @export
+AppenderDbi <- R6::R6Class(
+  "AppenderDbi",
+  inherit = AppenderTable,
   public = list(
     initialize = function(
       conn,
@@ -513,20 +562,23 @@ AppenderRjdbc <- R6::R6Class(
         fmt = "%L [%t] %m",
         timestamp_fmt = "%H:%M:%OS3",
         colors = getOption("yog.colors", list())
-      )
+      ),
+      close_on_exit = TRUE
     ){
+      assert_namespace("DBI")
       self$set_threshold(threshold)
       self$set_layout(layout)
+      self$set_close_on_exit(close_on_exit)
       private$.conn  <- conn
       private$.table <- table
       private$.field_types <- field_types
 
       table_exists <- tryCatch(
         is.data.frame(
-        DBI::dbGetQuery(
-          conn,
-          sprintf("select 1 from %s where 1 = 2", table)
-        )),
+          DBI::dbGetQuery(
+            self$conn,
+            sprintf("select 1 from %s where 1 = 2", table)
+          )),
         error = function(e) FALSE
       )
 
@@ -539,10 +591,20 @@ AppenderRjdbc <- R6::R6Class(
           col_types = field_types,
           col_names = names(field_types)
         )
-        RJDBC::dbSendUpdate(conn, q)
+        DBI::dbExecute(self$conn, q)
       }
     },
 
+    finalize = function() {
+      if (isTRUE(self$close_on_exit))
+        DBI::dbDisconnect(private$.conn)
+    },
+
+    set_close_on_exit = function(x){
+      assert(is_scalar_bool(x))
+      private$.close_on_exit <- x
+      invisible(self)
+    },
 
     show = function(n = 20, threshold = NA_integer_){
       dd <- data.table::copy(self$data)
@@ -573,8 +635,129 @@ AppenderRjdbc <- R6::R6Class(
 
       for (i in seq_len(nrow(dd))){
         data <- as.list(dd[i, ])
+        DBI::dbExecute(
+          private$.conn, sprintf(
+            "insert into %s values (%s)",
+            private$.table, paste0("'", data, "'", collapse = ", ")
+          )
+        )}
+
+      return(invisible())
+    }
+  ),
+
+
+  # +- active ---------------------------------------------------------------
+  active = list(
+    destination = function() private$.table,
+    conn = function(){
+      private$.conn
+    },
+
+    close_on_exit = function(){
+      private$.close_on_exit
+    },
+
+    data = function(){
+      dd <- DBI::dbGetQuery(private$.conn, sprintf("SELECT * FROM %s", private$.table))
+      names(dd) <- tolower(names(dd))
+      dd
+    }
+  ),
+
+  private = list(
+    .conn = NULL,
+    .table = NULL,
+    .field_types = NULL,
+    .close_on_exit = NULL
+  )
+)
+
+
+
+# AppenderRjdbc -------------------------------------------------------------
+
+#' AppenderRjdbc
+#'
+#' Log to a database table with the RJDBC package. RJDBC is somewhat DBI
+#' compliant but has its own quirks so that it does not work properly with
+#' AppenderDbi.
+#'
+#' @eval r6_usage(AppenderRjdbc)
+#'
+#' @section Creating a new Appender:
+#'
+#' \describe{
+#'   \item{conn}{an RJDBC connection}
+#'   \item{field_types}{a named `character` vector of field names and types.}
+#'  }
+#'
+#' @inheritSection AppenderTable Fields and Methods
+#' @section Fields and Methods:
+#'
+#' @export
+#' @seealso [LayoutFormat], [simple_logging], [data.table::data.table]
+#' @family Appenders
+#' @name AppenderRjdbc
+#'
+AppenderRjdbc <- R6::R6Class(
+  "AppenderRjdbc",
+  inherit = AppenderDbi,
+  public = list(
+    initialize = function(
+      conn,
+      table,
+      field_types = c(
+        level = "smallint",
+        timestamp = "timestamp",
+        caller = "varchar(1024)",
+        msg = "varchar(1024)"
+      ),
+      threshold = NA_integer_,
+      layout = LayoutFormat$new(
+        fmt = "%L [%t] %m",
+        timestamp_fmt = "%H:%M:%OS3",
+        colors = getOption("yog.colors", list())
+      )
+    ){
+      assert_namespace("RJDBC")
+      self$set_threshold(threshold)
+      self$set_layout(layout)
+      private$.conn  <- conn
+      private$.table <- table
+      private$.field_types <- field_types
+
+      table_exists <- tryCatch(
+        is.data.frame(
+        DBI::dbGetQuery(
+          conn,
+          sprintf("select 1 from %s where 1 = 2", table)
+        )),
+        error = function(e) FALSE
+      )
+
+      if (table_exists){
+        message("Logging to existing table ", table)
+      } else {
+        message("Creating new logging table ", table)
+        q <- generate_sql_create_table(
+          tname = table,
+          col_types = field_types,
+          col_names = names(field_types)
+        )
+        RJDBC::dbSendUpdate(conn, q)
+      }
+    },
+
+    append = function(event){
+      dd <- event$values
+      dd$timestamp <- format(dd$timestamp)
+      dd <- as.data.frame(dd, stringsAsFactors = FALSE)
+
+      for (i in seq_len(nrow(dd))){
+        data <- as.list(dd[i, ])
         RJDBC::dbSendUpdate(
-        conn, sprintf(
+          private$.conn, sprintf(
           "insert into %s values (%s)",
            private$.table, paste0("'", data, "'", collapse = ", ")
         )
@@ -585,13 +768,7 @@ AppenderRjdbc <- R6::R6Class(
   ),
 
   active = list(
-    destination = function() "console",
-    data = function(){
-      dd <- RJDBC::dbGetQuery(private$.conn, sprintf("SELECT * FROM %s", private$.table))
-      dd <- data.table::as.data.table(dd)
-      data.table::setnames(dd, tolower(names(dd)))
-      dd
-    }
+    destination = function() private$.table
   ),
 
   private = list(

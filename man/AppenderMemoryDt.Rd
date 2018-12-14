@@ -82,8 +82,7 @@ show_log(target = lg)
 \link{LayoutFormat}, \link{simple_logging}, \link[data.table:data.table]{data.table::data.table}
 
 Other Appenders: \code{\link{AppenderBuffer}},
-  \code{\link{AppenderConsole}},
-  \code{\link{AppenderFile}}, \code{\link{AppenderRjdbc}},
-  \code{\link{Appender}}
+  \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
+  \code{\link{AppenderFile}}, \code{\link{AppenderRjdbc}}
 }
 \concept{Appenders}

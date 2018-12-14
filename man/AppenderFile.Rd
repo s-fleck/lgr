@@ -80,8 +80,8 @@ readLines(json)
 \link{LayoutFormat}, \link{LayoutJson}
 
 Other Appenders: \code{\link{AppenderBuffer}},
-  \code{\link{AppenderConsole}},
+  \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
   \code{\link{AppenderMemoryDt}},
-  \code{\link{AppenderRjdbc}}, \code{\link{Appender}}
+  \code{\link{AppenderRjdbc}}
 }
 \concept{Appenders}

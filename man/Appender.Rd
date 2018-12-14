@@ -48,10 +48,6 @@ human-readable form (mainly for print output)}
 }
 
 \seealso{
-Other Appenders: \code{\link{AppenderBuffer}},
-  \code{\link{AppenderConsole}},
-  \code{\link{AppenderFile}},
-  \code{\link{AppenderMemoryDt}},
-  \code{\link{AppenderRjdbc}}
+Other internal Appenders: \code{\link{AppenderTable}}
 }
-\concept{Appenders}
+\concept{internal Appenders}

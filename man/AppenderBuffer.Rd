@@ -101,8 +101,8 @@ human-readable form (mainly for print output)}
 \link{LayoutFormat}
 
 Other Appenders: \code{\link{AppenderConsole}},
-  \code{\link{AppenderFile}},
+  \code{\link{AppenderDbi}}, \code{\link{AppenderFile}},
   \code{\link{AppenderMemoryDt}},
-  \code{\link{AppenderRjdbc}}, \code{\link{Appender}}
+  \code{\link{AppenderRjdbc}}
 }
 \concept{Appenders}
