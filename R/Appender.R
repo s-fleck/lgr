@@ -276,7 +276,7 @@ AppenderFile <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{conn}{an RJDBC connection}
-#'   \item{field_types}{a named `character` vector of field names and types.}
+#'   \item{col_types}{a named `character` vector of field names and types.}
 #'  }
 #'
 #' @section Fields and Methods:
@@ -315,7 +315,7 @@ AppenderTable <- R6::R6Class(
   private = list(
     .conn = NULL,
     .table = NULL,
-    .field_types = NULL
+    .col_types = NULL
   )
 )
 
@@ -531,7 +531,7 @@ AppenderMemoryDt <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{conn}{a DBI connection}
-#'   \item{field_types}{a named `character` vector of field names and types.}
+#'   \item{col_types}{a named `character` vector of field names and types.}
 #'  }
 #'
 #' @inheritSection AppenderTable Fields and Methods
@@ -551,18 +551,8 @@ AppenderDbi <- R6::R6Class(
     initialize = function(
       conn,
       table,
-      field_types = c(
-        level = "smallint",
-        timestamp = "timestamp",
-        caller = "varchar(1024)",
-        msg = "varchar(1024)"
-      ),
       threshold = NA_integer_,
-      layout = LayoutFormat$new(
-        fmt = "%L [%t] %m",
-        timestamp_fmt = "%H:%M:%OS3",
-        colors = getOption("yog.colors", list())
-      ),
+      layout = LayoutDbi$new(),
       close_on_exit = TRUE
     ){
       assert_namespace("DBI")
@@ -571,7 +561,6 @@ AppenderDbi <- R6::R6Class(
       self$set_close_on_exit(close_on_exit)
       private$.conn  <- conn
       private$.table <- table
-      private$.field_types <- field_types
 
       table_exists <- tryCatch(
         is.data.frame(
@@ -588,8 +577,8 @@ AppenderDbi <- R6::R6Class(
         message("Creating new logging table ", table)
         q <- generate_sql_create_table(
           tname = table,
-          col_types = field_types,
-          col_names = names(field_types)
+          col_types = layout$col_types,
+          col_names = layout$col_names
         )
         DBI::dbExecute(self$conn, q)
       }
@@ -629,9 +618,7 @@ AppenderDbi <- R6::R6Class(
 
 
     append = function(event){
-      dd <- event$values
-      dd$timestamp <- format(dd$timestamp)
-      dd <- as.data.frame(dd, stringsAsFactors = FALSE)
+      dd <- private$.layout$format_event(event)
 
       for (i in seq_len(nrow(dd))){
         data <- as.list(dd[i, ])
@@ -668,7 +655,6 @@ AppenderDbi <- R6::R6Class(
   private = list(
     .conn = NULL,
     .table = NULL,
-    .field_types = NULL,
     .close_on_exit = NULL
   )
 )
@@ -689,7 +675,7 @@ AppenderDbi <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{conn}{an RJDBC connection}
-#'   \item{field_types}{a named `character` vector of field names and types.}
+#'   \item{col_types}{a named `character` vector of field names and types.}
 #'  }
 #'
 #' @inheritSection AppenderTable Fields and Methods
@@ -707,32 +693,23 @@ AppenderRjdbc <- R6::R6Class(
     initialize = function(
       conn,
       table,
-      field_types = c(
-        level = "smallint",
-        timestamp = "timestamp",
-        caller = "varchar(1024)",
-        msg = "varchar(1024)"
-      ),
       threshold = NA_integer_,
-      layout = LayoutFormat$new(
-        fmt = "%L [%t] %m",
-        timestamp_fmt = "%H:%M:%OS3",
-        colors = getOption("yog.colors", list())
-      )
+      layout = LayoutDbi$new(),
+      close_on_exit = TRUE
     ){
       assert_namespace("RJDBC")
       self$set_threshold(threshold)
       self$set_layout(layout)
+      self$set_close_on_exit(close_on_exit)
       private$.conn  <- conn
       private$.table <- table
-      private$.field_types <- field_types
 
       table_exists <- tryCatch(
         is.data.frame(
-        DBI::dbGetQuery(
-          conn,
-          sprintf("select 1 from %s where 1 = 2", table)
-        )),
+          DBI::dbGetQuery(
+            self$conn,
+            sprintf("select 1 from %s where 1 = 2", table)
+          )),
         error = function(e) FALSE
       )
 
@@ -742,24 +719,23 @@ AppenderRjdbc <- R6::R6Class(
         message("Creating new logging table ", table)
         q <- generate_sql_create_table(
           tname = table,
-          col_types = field_types,
-          col_names = names(field_types)
+          col_types = layout$col_types,
+          col_names = layout$col_names
         )
         RJDBC::dbSendUpdate(conn, q)
       }
     },
 
     append = function(event){
-      dd <- event$values
-      dd$timestamp <- format(dd$timestamp)
-      dd <- as.data.frame(dd, stringsAsFactors = FALSE)
+      dd <- private$.layout$format_event(event)
 
       for (i in seq_len(nrow(dd))){
         data <- as.list(dd[i, ])
         RJDBC::dbSendUpdate(
           private$.conn, sprintf(
           "insert into %s values (%s)",
-           private$.table, paste0("'", data, "'", collapse = ", ")
+          private$.table,
+          paste0("'", data, "'", collapse = ", ")
         )
       )}
 
@@ -773,8 +749,7 @@ AppenderRjdbc <- R6::R6Class(
 
   private = list(
     .conn = NULL,
-    .table = NULL,
-    .field_types = NULL
+    .table = NULL
   )
 )
 

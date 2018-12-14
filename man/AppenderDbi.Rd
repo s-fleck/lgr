@@ -7,11 +7,8 @@
 Log to a database table with any DBI compatabile backend.
 }
 \section{Usage}{
-\preformatted{x <- AppenderDbi$new(conn, table, field_types = c(level = "smallint", timestamp
-  = "timestamp", caller = "varchar(1024)", msg = "varchar(1024)"),
-  threshold = NA_integer_, layout = LayoutFormat$new(fmt = "\%L [\%t] \%m",
-  timestamp_fmt = "\%H:\%M:\%OS3", colors = getOption("yog.colors", list())),
-  close_on_exit = TRUE)
+\preformatted{x <- AppenderDbi$new(conn, table, threshold = NA_integer_,
+  layout = LayoutDbi$new(), close_on_exit = TRUE)
 
 x$set_close_on_exit(x)
 x$show(n = 20, threshold = NA_integer_)
@@ -30,7 +27,7 @@ x$destination
 
 \describe{
 \item{conn}{a DBI connection}
-\item{field_types}{a named \code{character} vector of field names and types.}
+\item{col_types}{a named \code{character} vector of field names and types.}
 }
 }
 

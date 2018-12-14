@@ -16,7 +16,7 @@ Log to a database table with the RJDBC package.
 
 \describe{
 \item{conn}{an RJDBC connection}
-\item{field_types}{a named \code{character} vector of field names and types.}
+\item{col_types}{a named \code{character} vector of field names and types.}
 }
 
 

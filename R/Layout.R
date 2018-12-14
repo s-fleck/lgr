@@ -5,6 +5,14 @@
 #' for file or console output the log event is usually formatted into a single
 #' character line.
 #'
+#' @section Fields and Methods:
+#'
+#' \describe{
+#'   \item{`format_event(x)`}{format a [LogEvent]}
+#' }
+#'
+#'
+#'
 #' @name Layout
 #' @aliases Layouts
 #' @family Layouts
@@ -25,10 +33,6 @@ Layout <- R6::R6Class(
 
   public = list(
     format_event = function(x) paste(capture.output(print(x$values)), collapse = " ")
-  ),
-
-  private = list(
-    formatter = NULL
   )
 )
 
@@ -54,11 +58,7 @@ Layout <- R6::R6Class(
 #'  }
 #'
 #'
-#' @section Methods:
-#'
-#' \describe{
-#'   \item{`format_event(x)`}{format a LogEvent}
-#' }
+#' @inheritSection Layout Fields and Methods:
 #'
 #'
 #' @name LayoutFormat
@@ -154,6 +154,226 @@ LayoutFormat <- R6::R6Class(
     .timestamp_fmt = NULL,
     .colors = NULL,
     .pad_levels = NULL
+  )
+)
+
+
+
+# LayoutTable -------------------------------------------------------------
+
+#' LayoutDbi
+#'
+#' Format an LogEvent as JSON
+#'
+#' @eval r6_usage(LayoutDbi)
+#'
+#' @inheritSection Layout Creating a new Layout
+#' @section Creating a new Layout:
+#'
+#' \describe{
+#'
+#'  }
+#'
+#'
+#' @inheritSection Layout Fields and Methods:
+#' @section Fields and Methods:
+#'
+#' \describe{
+#'   \item{`event_vals`}{Names of the fields of the event (i.e the LogEvent)
+#'     to include in the output Object.
+#'   }
+#'
+#'   \item{`logger_vals`}{Names of the fields of the Logger that produced the
+#'     [LogEvent] to include in the output object.
+#'   }
+#'
+#'   \item{`other_vals`}{A named `list` of any kind of \R values. Functions in
+#'     this `list`` will be executed with no arguments and their results will
+#'     be included in the results object (see examples)
+#'   }
+#' }
+#'
+#'
+#' @name LayoutTable
+NULL
+
+
+# LayoutDbi ---------------------------------------------------------------
+
+
+#' LayoutDbi
+#'
+#' Format an LogEvent as JSON
+#'
+#' @eval r6_usage(LayoutDbi)
+#'
+#' @section Creating a new LayoutJson:
+#'
+#' If you want logging for a Project (f.e a Package you are developing) that is
+#' separate from the global logging, you can create a new logger with
+#' `Logger$new()`. If you just want to add different outputs (for example
+#' logfiles) to the root logger, look into [Appenders].
+#'
+#' \describe{
+#'   \item{name}{`character` scalar. Name of the Logger. Should be unique amongst
+#'     Loggers. If you define a logger for an R Package, the logger should have
+#'     the same name as the Package.}
+#'   \item{appenders}{`list` of [Appender]s. The appenders used by this logger
+#'     to write log entries to the console, to files, etc...}
+#'   \item{threshold}{`character` or `integer` scalar. The minimum log level
+#'     that triggers this logger}
+#'   \item{user}{`character` scalar. The current user name or email adress.
+#'     This information can be used by the appenders}
+#'   \item{parent}{a `Logger`. Usually the Root logger. All Loggers must be
+#'     descentents of the Root logger for yog to work as intended.}
+#'
+#'
+#'   \item{handle_exception}{a `function` that takes a single argument `e`.
+#'     The function used to handle errors that occur durring loging. Default
+#'     to demoting any error to a [warning]}
+#'  }
+#'
+#'
+#' @inheritSection LayoutTable Fields and Methods:
+#' @section Fields and Methods:
+#'
+#' \describe{
+#'
+#'   \item{`event_vals`}{Names of the fields of the event (i.e the LogEvent)
+#'     to include in the resulting JSON object.
+#'   }
+#'
+#'   \item{`logger_vals`}{Names of the fields of the Logger that produced the
+#'     LogEvent to include in the resulting JSON object.
+#'   }
+#'
+#'   \item{`other_vals`}{A named `list` of any kind of R value that can be
+#'     serialized to Json. Functions in this `list`` will be executed with no
+#'     arguments and their results will be included in the results object
+#'     (see examples)
+#'    }
+#' }
+#'
+#'
+#' @name LayoutDbi
+#' @include Filterable.R
+#' @include log_levels.R
+#' @seealso [read_json_lines()], [http://jsonlines.org/](http://jsonlines.org/)
+#' @examples
+#'
+#' # setup a dummy LogEvent
+#' event <- LogEvent$new(
+#'   logger = Logger$new("dummy logger", user = "testuser"),
+#'   level = 200,
+#'   timestamp = Sys.time(),
+#'   caller = NA_character_,
+#'   msg = "a test message"
+#' )
+#' lo <- LayoutJson$new(
+#'   event_vals = c("level", "timestamp", "msg"),
+#'   logger_vals = "user",
+#'   other_vals = list(pid = Sys.getpid, random_number = function() runif(3), teststring = "blah")
+#' )
+#' lo$format_event(event)
+#' lo$format_event(event)
+#'
+NULL
+
+
+
+
+#' @export
+LayoutDbi <- R6::R6Class(
+  "LayoutDbi",
+  inherit = Layout,
+  public = list(
+    initialize = function(
+      event_vals  = c("level", "timestamp", "caller", "msg"),
+      logger_vals = NULL,
+      other_vals = NULL,
+      col_types = c(
+        level = "smallint",
+        timestamp = "timestamp",
+        caller = "varchar(1024)",
+        msg = "varchar(1024)"
+      )
+    ){
+      assert(all_are_distinct(names(col_types)))
+      assert(setequal(
+          names(col_types),
+          c(event_vals, logger_vals, names(other_vals))
+      ),
+        "col_type missing for columns: ",
+        setdiff(c(event_vals, logger_vals, names(other_vals)), names(col_types))
+      )
+
+      self$set_event_vals(event_vals)
+      self$set_logger_vals(logger_vals)
+      self$set_other_vals(other_vals)
+      self$set_col_types(col_types)
+    },
+
+    format_event = function(x) {
+      vals <- mget(self$event_vals, x)
+
+      if (!is.null(self$logger_vals)){
+        vals <- c(vals, mget(self$logger_vals, x[["logger"]]))
+      }
+
+      if (!is.null(private$.other_vals)){
+        ov <- private$.other_vals
+        for (i in seq_along(ov)){
+          nm <- names(ov)[[i]]
+          if (is.function(ov[[i]]))
+            vals[[nm]] <- ov[[i]]()
+          else
+            vals[[nm]] <- ov[[i]]
+        }
+      }
+
+      vals <- vals[names(private$.col_types)]
+      vals <- c(vals, list(stringsAsFactors = FALSE))
+      do.call(data.frame, args = vals)
+    },
+
+    set_other_vals = function(x){
+      assert(is.list(x) || is.null(x))
+      assert(identical(length(names(x)), length(x)))
+      private$.other_vals <- x
+      invisible(self)
+    },
+
+    set_col_types = function(x){
+      assert(is.character(x))
+      assert(identical(length(names(x)), length(x)))
+      private$.col_types <- x
+      invisible(self)
+    },
+
+    set_event_vals = function(x){
+      private$.event_vals <- x
+      invisible(self)
+    },
+
+    set_logger_vals = function(x){
+      private$.logger_vals <- x
+      invisible(self)
+    }
+  ),
+
+  active = list(
+    other_vals  = function() private$.other_vals,
+    event_vals  = function() private$.event_vals,
+    logger_vals = function() private$.logger_vals,
+    col_types = function() private$.col_types,
+    col_names = function() names(private$.col_types)
+  ),
+
+  private = list(
+    .other_vals = NULL,
+    .event_vals = NULL,
+    .logger_vals = NULL,
+    .col_types = NULL
   )
 )
 

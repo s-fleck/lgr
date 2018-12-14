@@ -31,6 +31,35 @@ test_that("LayoutFormat works as expected", {
 
 
 
+test_that("LayoutDbi works as expected", {
+  col_types <-  c(
+    timestamp = "timestamp",
+    level = "smallint",
+    msg = "varchar(1024)",
+    user = "varchar(256)",
+    pid = "integer",
+    teststring = "varchar(256)"
+  )
+
+  lo <- LayoutDbi$new(
+    event_vals = c("level", "timestamp", "msg"),
+    logger_vals = "user",
+    other_vals = list(pid = Sys.getpid, teststring = "blah"),
+    col_types = col_types
+  )
+
+  eres <- c(x$values, user = x$logger$user)
+  tres <- lo$format_event(x)
+
+  expect_identical(names(tres), names(col_types))
+  expect_identical(tres[["level"]], eres[["level"]])
+  expect_identical(tres[["msg"]], eres[["msg"]])
+  expect_identical(tres[["user"]], eres[["user"]])
+  expect_equal(as.POSIXct(tres[["timestamp"]]), eres[["timestamp"]], tolerance = 1)
+  expect_equal(tres[["pid"]], Sys.getpid())
+  expect_equal(tres[["teststring"]], "blah")
+})
+
 
 test_that("LayoutJson works as expected", {
   lo <- LayoutJson$new(

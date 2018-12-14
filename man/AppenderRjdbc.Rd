@@ -14,10 +14,8 @@ compliant but has its own quirks so that it does not work properly with
 AppenderDbi.
 }
 \section{Usage}{
-\preformatted{x <- AppenderRjdbc$new(conn, table, field_types = c(level = "smallint",
-  timestamp = "timestamp", caller = "varchar(1024)", msg = "varchar(1024)"),
-  threshold = NA_integer_, layout = LayoutFormat$new(fmt = "\%L [\%t] \%m",
-  timestamp_fmt = "\%H:\%M:\%OS3", colors = getOption("yog.colors", list())))
+\preformatted{x <- AppenderRjdbc$new(conn, table, threshold = NA_integer_,
+  layout = LayoutDbi$new(), close_on_exit = TRUE)
 
 x$append(event)
 x$clone(deep = FALSE)
@@ -31,7 +29,7 @@ x$destination
 
 \describe{
 \item{conn}{an RJDBC connection}
-\item{field_types}{a named \code{character} vector of field names and types.}
+\item{col_types}{a named \code{character} vector of field names and types.}
 }
 }
 
