@@ -28,6 +28,28 @@ does not exist it will be created}
 }
 }
 
+\section{Fields}{
+
+
+\describe{
+\item{file}{\code{character} scalar. Path to the log file}
+}
+
+
+
+\describe{
+\item{\code{threshold}}{An \code{integer}. Threshold of the current Appender
+(i.e the maximum log level) that this Appender processes)}
+
+\item{\code{layout}}{The \link{Layout} this Appender usses for formatting \link{LogEvent}s}
+
+\item{\code{logger}}{The \link{Logger} this Appender is attached to}
+
+\item{\code{destination}}{A \code{character} scalar giving the output destination
+of the Appender as human readable print output.}
+}
+}
+
 \section{Creating a new Appender}{
 
 
@@ -36,10 +58,6 @@ does not exist it will be created}
 that triggers this logger. See \link{log_levels}}
 \item{layout}{A \link{Layout}. See examples.}
 }
-}
-
-\section{Fields}{
-
 }
 
 \examples{

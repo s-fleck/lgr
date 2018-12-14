@@ -25,7 +25,7 @@ x$destination
 }
 }
 
-\section{Creating a new AppenderMemoryDt}{
+\section{Creating a new Appender}{
 
 
 \describe{
@@ -34,6 +34,14 @@ x$destination
 \item{prototype}{A prototype \code{data.table}. This is only necessary if you
 use custom \link{LogEvents} (which is not yet supported by yog, but planned for
 the future)}
+}
+
+
+
+\describe{
+\item{threshold}{\code{character} or \code{integer} scalar. The minimum log level
+that triggers this logger. See \link{log_levels}}
+\item{layout}{A \link{Layout}. See examples.}
 }
 }
 
@@ -47,11 +55,25 @@ via the defined \link{Layout}}
 }
 }
 
-\section{Active Bindings}{
+\section{Fields}{
 
 
 \describe{
 \item{\code{data}}{read-only binding to access all cached LogEvents as a \code{data.table}}
+}
+
+
+
+\describe{
+\item{\code{threshold}}{An \code{integer}. Threshold of the current Appender
+(i.e the maximum log level) that this Appender processes)}
+
+\item{\code{layout}}{The \link{Layout} this Appender usses for formatting \link{LogEvent}s}
+
+\item{\code{logger}}{The \link{Logger} this Appender is attached to}
+
+\item{\code{destination}}{A \code{character} scalar giving the output destination
+of the Appender as human readable print output.}
 }
 }
 

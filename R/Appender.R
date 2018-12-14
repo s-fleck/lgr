@@ -15,8 +15,20 @@
 #'   \item{layout}{A [Layout]. See examples.}
 #'  }
 #'
+#'
 #' @section Fields:
 #'
+#' \describe{
+#'   \item{`threshold`}{An `integer`. Threshold of the current Appender
+#'     (i.e the maximum log level) that this Appender processes)}
+#'
+#'   \item{`layout`}{The [Layout] this Appender usses for formatting [LogEvent]s}
+#'
+#'   \item{`logger`}{The [Logger] this Appender is attached to}
+#'
+#'   \item{`destination`}{A `character` scalar giving the output destination
+#'     of the Appender as human readable print output.}
+#' }
 #'
 #' @name Appender
 #' @aliases Appenders
@@ -25,7 +37,6 @@
 #' @include utils-sfmisc.R
 #' @include Filterable.R
 NULL
-
 
 
 
@@ -110,6 +121,9 @@ Appender <- R6::R6Class(
 #'
 #' @inheritSection Appender Creating a new Appender
 #'
+#' @inheritSection Appender Fields
+#'
+#'
 #' @export
 #' @seealso [LayoutFormat]
 #'
@@ -183,9 +197,13 @@ AppenderConsole <- R6::R6Class(
 #'     does not exist it will be created}
 #'  }
 #'
-#' @inherit Appender
+#' @inheritSection Appender Fields
 #'
-#' @inherit
+#' @section Fields:
+#'
+#' \describe{
+#'   \item{file}{`character` scalar. Path to the log file}
+#'  }
 #'
 #' @export
 #' @seealso [LayoutFormat], [LayoutJson]
@@ -275,7 +293,9 @@ AppenderFile <- R6::R6Class(
 #'
 #' @eval r6_usage(AppenderMemoryDt)
 #'
-#' @section Creating a new AppenderMemoryDt:
+#' @inheritSection Appender Creating a new Appender
+#'
+#' @section Creating a new Appender:
 #'
 #' \describe{
 #'   \item{buffer_size}{`integer` scalar. Number of rows of the in-memory
@@ -293,10 +313,12 @@ AppenderFile <- R6::R6Class(
 #'   via the defined [Layout]}
 #' }
 #'
-#' @section Active Bindings:
+#' @inheritSection Appender Fields
+#'
+#' @section Fields:
 #'
 #' \describe{
-#'   \item{`data`}{read-only binding to access all cached LogEvents as a `data.table`}
+#'    \item{`data`}{read-only binding to access all cached LogEvents as a `data.table`}
 #' }
 #'
 #' @export
@@ -821,4 +843,5 @@ autopad_backup_index <- function(
   new_idx <- pad_left(int, max(nchar(as.character(int))), "0")
   paste0(bn, ".", new_idx, ext)
 }
+
 
