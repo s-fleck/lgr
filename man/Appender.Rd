@@ -23,7 +23,7 @@ x$threshold
 }
 }
 
-\section{Creating a new Appender}{
+\section{Creating a New Appender}{
 
 
 \describe{
@@ -48,6 +48,10 @@ human-readable form (mainly for print output)}
 }
 
 \seealso{
-Other internal Appenders: \code{\link{AppenderTable}}
+Other Appenders: \code{\link{AppenderBuffer}},
+  \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
+  \code{\link{AppenderFile}},
+  \code{\link{AppenderMemoryDt}},
+  \code{\link{AppenderRjdbc}}, \code{\link{AppenderTable}}
 }
-\concept{internal Appenders}
+\concept{Appenders}

@@ -4,72 +4,54 @@
 \alias{LayoutJson}
 \title{LayoutJson}
 \description{
-Format an LogEvent as JSON
+Format a LogEvent as JSON
 }
 \section{Usage}{
 \preformatted{x <- LayoutJson$new(event_vals = c("level", "timestamp", "caller", "msg"),
   logger_vals = NULL, other_vals = NULL, toJSON_args = list(auto_unbox = TRUE))
 
-x$format_event(x)
-x$set_other_vals(x)
+x$format_event(event)
 x$set_toJSON_args(x)
-x$set_event_vals(x)
-x$set_logger_vals(x)
 x$clone(deep = FALSE)
 
-x$event_vals
-x$logger_vals
-x$other_vals
 x$toJSON_args
 }
 }
 
-\section{Creating a new LayoutJson}{
-
-
-If you want logging for a Project (f.e a Package you are developing) that is
-separate from the global logging, you can create a new logger with
-\code{Logger$new()}. If you just want to add different outputs (for example
-logfiles) to the root logger, look into \link{Appenders}.
+\section{Creating a New Layout}{
 
 \describe{
-\item{name}{\code{character} scalar. Name of the Logger. Should be unique amongst
-Loggers. If you define a logger for an R Package, the logger should have
-the same name as the Package.}
-\item{appenders}{\code{list} of \link{Appender}s. The appenders used by this logger
-to write log entries to the console, to files, etc...}
-\item{threshold}{\code{character} or \code{integer} scalar. The minimum log level
-that triggers this logger}
-\item{user}{\code{character} scalar. The current user name or email adress.
-This information can be used by the appenders}
-\item{parent}{a \code{Logger}. Usually the Root logger. All Loggers must be
-descentents of the Root logger for yog to work as intended.}
-
-\item{handle_exception}{a \code{function} that takes a single argument \code{e}.
-The function used to handle errors that occur durring loging. Default
-to demoting any error to a \link{warning}}
-}
+\item{\code{toJSON_args}}{a list of values passed on to \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}}
 }
 
-\section{Methods}{
 
 
 \describe{
-\item{\code{format_event(x)}}{format a LogEvent}
-
-\item{\code{event_vals}}{Names of the fields of the event (i.e the LogEvent)
-to include in the resulting JSON object.
+\item{\code{event_vals}}{Names of the fields of the \link{LogEvent}
+to include in the output object.
 }
 
-\item{\code{logger_vals}}{Names of the fields of the Logger that produced the
-LogEvent to include in the resulting JSON object.
+\item{\code{logger_vals}}{Names of the fields of the \link{Logger} that produced the
+\link{LogEvent} to include in the output object.
 }
 
-\item{\code{other_vals}}{A named \code{list} of any kind of R value that can be
-serialized to Json. Functions in this `list`` will be executed with no
-arguments and their results will be included in the results object
-(see examples)
+\item{\code{other_vals}}{A named \code{list} of any kind of \R values. Functions in
+this `list`` will be executed with no arguments and their results will
+be included in the results object (see examples)
 }
+}
+}
+
+\section{Fields and Methods}{
+
+\describe{
+\item{\code{toJSON_args}, \code{set_toJSON_args()}}{Get/set the \code{toJSON_args}}
+}
+
+
+
+\describe{
+\item{\code{format_event(event)}}{format a \link{LogEvent}}
 }
 }
 
@@ -94,4 +76,9 @@ lo$format_event(event)
 }
 \seealso{
 \code{\link[=read_json_lines]{read_json_lines()}}, \url{http://jsonlines.org/}
+
+Other Layouts: \code{\link{LayoutDbi}},
+  \code{\link{LayoutFormat}}, \code{\link{LayoutTable}},
+  \code{\link{Layout}}
 }
+\concept{Layouts}

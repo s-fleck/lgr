@@ -10,4 +10,17 @@ for output. How this formatting works exactly varries widely. For example
 for file or console output the log event is usually formatted into a single
 character line.
 }
+\section{Fields and Methods}{
+
+
+\describe{
+\item{\code{format_event(event)}}{format a \link{LogEvent}}
+}
+}
+
+\seealso{
+Other Layouts: \code{\link{LayoutDbi}},
+  \code{\link{LayoutFormat}}, \code{\link{LayoutJson}},
+  \code{\link{LayoutTable}}
+}
 \concept{Layouts}

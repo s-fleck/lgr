@@ -19,7 +19,7 @@ x$file
 }
 }
 
-\section{Creating a new Appender}{
+\section{Creating a New Appender}{
 
 
 \describe{
@@ -82,6 +82,7 @@ readLines(json)
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
   \code{\link{AppenderMemoryDt}},
-  \code{\link{AppenderRjdbc}}
+  \code{\link{AppenderRjdbc}}, \code{\link{AppenderTable}},
+  \code{\link{Appender}}
 }
 \concept{Appenders}

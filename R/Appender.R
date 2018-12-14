@@ -7,7 +7,7 @@
 #'
 #' @eval r6_usage(Appender)
 #'
-#' @section Creating a new Appender:
+#' @section Creating a New Appender:
 #'
 #' \describe{
 #'   \item{`threshold`}{`character` or `integer` scalar. The minimum log level
@@ -30,11 +30,12 @@
 #'
 #' @name Appender
 #' @aliases Appenders
-#' @family internal Appenders
+#' @family Appenders
 #' @include utils.R
 #' @include utils-sfmisc.R
 #' @include Filterable.R
 NULL
+
 
 
 
@@ -107,7 +108,7 @@ Appender <- R6::R6Class(
 #'
 #' @eval r6_usage(AppenderConsole)
 #'
-#' @inheritSection Appender Creating a new Appender
+#' @inheritSection Appender Creating a New Appender
 #' @inheritSection Appender Fields and Methods
 #'
 #'
@@ -173,10 +174,10 @@ AppenderConsole <- R6::R6Class(
 #'
 #' @eval r6_usage(AppenderFile)
 #'
-#' @inheritSection Appender Creating a new Appender
+#' @inheritSection Appender Creating a New Appender
 #' @inheritSection Appender Fields and Methods
 #'
-#' @section Creating a new Appender:
+#' @section Creating a New Appender:
 #'
 #' \describe{
 #'   \item{file}{`character` scalar. Path to the desired log file. If the file
@@ -266,19 +267,13 @@ AppenderFile <- R6::R6Class(
 
 # AppenderTable -----------------------------------------------------------
 
-
 #' AppenderTable
 #'
-#' Log to a database table with the RJDBC package.
+#' `AppenderTable` is an internal class that is only exported for developers
+#' that want to extend yog.
 #'
-#' @inheritSection Appender Creating a new Appender
-#' @section Creating a new Appender:
-#'
-#' \describe{
-#'   \item{conn}{an RJDBC connection}
-#'   \item{col_types}{a named `character` vector of field names and types.}
-#'  }
-#'
+#' @inheritSection Appender Creating a New Appender
+#' @section Creating a New Appender:
 #' @section Fields and Methods:
 #'
 #' \describe{
@@ -290,20 +285,19 @@ AppenderFile <- R6::R6Class(
 #' }
 #'
 #'
-#' @export
 #' @seealso [LayoutFormat], [simple_logging], [data.table::data.table]
-#' @family internal Appenders
+#' @family Appenders
 #' @name AppenderTable
-#'
+NULL
+
+
+
+
+#' @export
 AppenderTable <- R6::R6Class(
   "AppenderTable",
   inherit = Appender,
   public = list(
-    initialize = function() stop(
-        "AppenderTable is not designed for direct instantion, please see ",
-        "?AppenderTable for more info"
-      ),
-
     show = function(n = 20, threshold = NA_integer_) NULL
   ),
 
@@ -314,17 +308,14 @@ AppenderTable <- R6::R6Class(
 
   private = list(
     .conn = NULL,
-    .table = NULL,
-    .col_types = NULL
+    .table = NULL
   )
 )
 
 
 
 
-
 # AppenderMemoryDt ----------------------------------------------------------
-
 
 #' AppenderMemoryDt
 #'
@@ -334,8 +325,8 @@ AppenderTable <- R6::R6Class(
 #'
 #' @eval r6_usage(AppenderMemoryDt)
 #'
-#' @inheritSection Appender Creating a new Appender
-#' @section Creating a new Appender:
+#' @inheritSection Appender Creating a New Appender
+#' @section Creating a New Appender:
 #'
 #' \describe{
 #'   \item{buffer_size}{`integer` scalar. Number of rows of the in-memory
@@ -518,16 +509,20 @@ AppenderMemoryDt <- R6::R6Class(
   )
 )
 
+
+
+
 # AppenderDbi -------------------------------------------------------------
 
 
 #' AppenderDbi
 #'
-#' Log to a database table with any DBI compatabile backend.
+#' Log to a database table with any **DBI** compatabile backend.
 #'
 #' @eval r6_usage(AppenderDbi)
 #'
-#' @section Creating a new Appender:
+#' @inheritSection Appender Creating a New Appender
+#' @section Creating a New Appender:
 #'
 #' \describe{
 #'   \item{conn}{a DBI connection}
@@ -536,11 +531,19 @@ AppenderMemoryDt <- R6::R6Class(
 #'
 #' @inheritSection AppenderTable Fields and Methods
 #' @section Fields and Methods:
+#' \describe{
+#'   \item{`close_on_exit`, `set_close_on_exit()`}{...}
+#'   \item{`data`}{...}
+#'   \item{`conn`}{get the DBI connection object}
+#'   \item{`table`}{Name of the target database table}
+#' }
 #'
 #' @export
 #' @family Appenders
 #' @name AppenderDbi
 NULL
+
+
 
 
 #' @export
@@ -619,13 +622,16 @@ AppenderDbi <- R6::R6Class(
 
     append = function(event){
       dd <- private$.layout$format_event(event)
+      dd_names <- paste0("'", names(dd), "'", collapse = ", ")
 
       for (i in seq_len(nrow(dd))){
         data <- as.list(dd[i, ])
         DBI::dbExecute(
           private$.conn, sprintf(
-            "insert into %s values (%s)",
-            private$.table, paste0("'", data, "'", collapse = ", ")
+            "insert into %s (%s) values (%s)",
+            private$.table,
+            dd_names,
+            paste0("'", data, "'", collapse = ", ")
           )
         )}
 
@@ -649,7 +655,9 @@ AppenderDbi <- R6::R6Class(
       dd <- DBI::dbGetQuery(private$.conn, sprintf("SELECT * FROM %s", private$.table))
       names(dd) <- tolower(names(dd))
       dd
-    }
+    },
+
+    table = function() private$.table
   ),
 
   private = list(
@@ -661,24 +669,25 @@ AppenderDbi <- R6::R6Class(
 
 
 
+
 # AppenderRjdbc -------------------------------------------------------------
 
 #' AppenderRjdbc
 #'
-#' Log to a database table with the RJDBC package. RJDBC is somewhat DBI
-#' compliant but has its own quirks so that it does not work properly with
-#' AppenderDbi.
+#' Log to a database table with the **RJDBC** package. **RJDBC** is only
+#' somewhat  **DBI** compliant and does not work with [AppenderDbi].
 #'
 #' @eval r6_usage(AppenderRjdbc)
 #'
-#' @section Creating a new Appender:
+#' @inheritSection Appender Creating a New Appender
+#' @section Creating a New Appender:
 #'
 #' \describe{
 #'   \item{conn}{an RJDBC connection}
 #'   \item{col_types}{a named `character` vector of field names and types.}
 #'  }
 #'
-#' @inheritSection AppenderTable Fields and Methods
+#' @inheritSection AppenderDbi Fields and Methods
 #' @section Fields and Methods:
 #'
 #' @export
@@ -755,6 +764,7 @@ AppenderRjdbc <- R6::R6Class(
 
 
 
+
 # AppenderBuffer --------------------------------------------------
 
 #' AppenderBuffer
@@ -764,8 +774,8 @@ AppenderRjdbc <- R6::R6Class(
 #'
 #' @eval r6_usage(AppenderBuffer)
 #'
-#' @inheritSection Appender Creating a new Appender
-#' @section Creating a new Appender:
+#' @inheritSection Appender Creating a New Appender
+#' @section Creating a New Appender:
 #'
 #' \describe{
 #'   \item{`buffer_size`}{`integer` scalar. Number of [LogEvents] to buffer}

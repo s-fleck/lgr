@@ -4,13 +4,13 @@
 \alias{LayoutFormat}
 \title{LayoutFormat}
 \description{
-Format an LogEvent as human readable text using \code{\link[=format.LogEvent]{format.LogEvent()}}
+Format a \link{LogEvent} as human readable text using \code{\link[=format.LogEvent]{format.LogEvent()}}
 }
 \section{Usage}{
 \preformatted{x <- LayoutFormat$new(fmt = "\%L [\%t] \%m", timestamp_fmt = "\%Y-\%m-\%d
   \%H:\%M:\%OS3", colors = NULL, pad_levels = "right")
 
-x$format_event(x)
+x$format_event(event)
 x$set_fmt(x)
 x$set_timestamp_fmt(x)
 x$set_colors(x)
@@ -24,7 +24,7 @@ x$timestamp_fmt
 }
 }
 
-\section{Creating a new LayoutFormat}{
+\section{Creating a New LayoutFormat}{
 
 
 LayoutFormat passes it fields as arguments to \code{\link[=format.LogEvent]{format.LogEvent()}}.
@@ -37,11 +37,11 @@ LayoutFormat passes it fields as arguments to \code{\link[=format.LogEvent]{form
 }
 }
 
-\section{Methods}{
+\section{Fields and Methods}{
 
 
 \describe{
-\item{\code{format_event(x)}}{format a LogEvent}
+\item{\code{format_event(event)}}{format a \link{LogEvent}}
 }
 }
 
@@ -59,3 +59,9 @@ lo <- LayoutFormat$new()
 lo$format_event(event)
 
 }
+\seealso{
+Other Layouts: \code{\link{LayoutDbi}},
+  \code{\link{LayoutJson}}, \code{\link{LayoutTable}},
+  \code{\link{Layout}}
+}
+\concept{Layouts}

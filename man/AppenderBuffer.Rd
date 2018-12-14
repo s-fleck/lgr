@@ -34,7 +34,7 @@ x$flush_on_rotate
 }
 }
 
-\section{Creating a new Appender}{
+\section{Creating a New Appender}{
 
 
 \describe{
@@ -103,6 +103,7 @@ human-readable form (mainly for print output)}
 Other Appenders: \code{\link{AppenderConsole}},
   \code{\link{AppenderDbi}}, \code{\link{AppenderFile}},
   \code{\link{AppenderMemoryDt}},
-  \code{\link{AppenderRjdbc}}
+  \code{\link{AppenderRjdbc}}, \code{\link{AppenderTable}},
+  \code{\link{Appender}}
 }
 \concept{Appenders}

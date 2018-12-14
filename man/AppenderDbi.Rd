@@ -4,7 +4,7 @@
 \alias{AppenderDbi}
 \title{AppenderDbi}
 \description{
-Log to a database table with any DBI compatabile backend.
+Log to a database table with any \strong{DBI} compatabile backend.
 }
 \section{Usage}{
 \preformatted{x <- AppenderDbi$new(conn, table, threshold = NA_integer_,
@@ -19,20 +19,37 @@ x$close_on_exit
 x$conn
 x$data
 x$destination
+x$table
 }
 }
 
-\section{Creating a new Appender}{
+\section{Creating a New Appender}{
 
 
 \describe{
 \item{conn}{a DBI connection}
 \item{col_types}{a named \code{character} vector of field names and types.}
 }
+
+
+
+\describe{
+\item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
+that triggers this logger. See \link{log_levels}}
+\item{\code{layout}}{a \code{Layout} that will be used for formatting the \code{LogEvents}
+passed to this Appender
+}
+}
 }
 
 \section{Fields and Methods}{
 
+\describe{
+\item{\code{close_on_exit}, \code{set_close_on_exit()}}{...}
+\item{\code{data}}{...}
+\item{\code{conn}}{get the DBI connection object}
+\item{\code{table}}{Name of the target database table}
+}
 
 
 
@@ -50,6 +67,7 @@ Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}},
   \code{\link{AppenderFile}},
   \code{\link{AppenderMemoryDt}},
-  \code{\link{AppenderRjdbc}}
+  \code{\link{AppenderRjdbc}}, \code{\link{AppenderTable}},
+  \code{\link{Appender}}
 }
 \concept{Appenders}

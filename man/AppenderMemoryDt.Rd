@@ -25,7 +25,7 @@ x$destination
 }
 }
 
-\section{Creating a new Appender}{
+\section{Creating a New Appender}{
 
 
 \describe{
@@ -83,6 +83,7 @@ show_log(target = lg)
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderFile}}, \code{\link{AppenderRjdbc}}
+  \code{\link{AppenderFile}}, \code{\link{AppenderRjdbc}},
+  \code{\link{AppenderTable}}, \code{\link{Appender}}
 }
 \concept{Appenders}

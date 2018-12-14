@@ -9,9 +9,8 @@
 AppenderRjdbc
 }
 \description{
-Log to a database table with the RJDBC package. RJDBC is somewhat DBI
-compliant but has its own quirks so that it does not work properly with
-AppenderDbi.
+Log to a database table with the \strong{RJDBC} package. \strong{RJDBC} is only
+somewhat  \strong{DBI} compliant and does not work with \link{AppenderDbi}.
 }
 \section{Usage}{
 \preformatted{x <- AppenderRjdbc$new(conn, table, threshold = NA_integer_,
@@ -24,17 +23,35 @@ x$destination
 }
 }
 
-\section{Creating a new Appender}{
+\section{Creating a New Appender}{
 
 
 \describe{
 \item{conn}{an RJDBC connection}
 \item{col_types}{a named \code{character} vector of field names and types.}
 }
+
+
+
+\describe{
+\item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
+that triggers this logger. See \link{log_levels}}
+\item{\code{layout}}{a \code{Layout} that will be used for formatting the \code{LogEvents}
+passed to this Appender
+}
+}
 }
 
 \section{Fields and Methods}{
 
+
+
+\describe{
+\item{\code{close_on_exit}, \code{set_close_on_exit()}}{...}
+\item{\code{data}}{...}
+\item{\code{conn}}{get the DBI connection object}
+\item{\code{table}}{Name of the target database table}
+}
 
 
 
@@ -53,7 +70,8 @@ with a maximum of \code{buffer_size} rows}
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
   \code{\link{AppenderFile}},
-  \code{\link{AppenderMemoryDt}}
+  \code{\link{AppenderMemoryDt}},
+  \code{\link{AppenderTable}}, \code{\link{Appender}}
 }
 \concept{Appenders}
 \keyword{datasets}

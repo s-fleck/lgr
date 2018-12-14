@@ -20,7 +20,7 @@ x$destination
 }
 }
 
-\section{Creating a new Appender}{
+\section{Creating a New Appender}{
 
 
 \describe{
@@ -64,6 +64,7 @@ logger$warn("A test message")
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderDbi}}, \code{\link{AppenderFile}},
   \code{\link{AppenderMemoryDt}},
-  \code{\link{AppenderRjdbc}}
+  \code{\link{AppenderRjdbc}}, \code{\link{AppenderTable}},
+  \code{\link{Appender}}
 }
 \concept{Appenders}

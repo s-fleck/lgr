@@ -5,10 +5,11 @@
 #' for file or console output the log event is usually formatted into a single
 #' character line.
 #'
+#'
 #' @section Fields and Methods:
 #'
 #' \describe{
-#'   \item{`format_event(x)`}{format a [LogEvent]}
+#'   \item{`format_event(event)`}{format a [LogEvent]}
 #' }
 #'
 #'
@@ -32,9 +33,10 @@ Layout <- R6::R6Class(
   "Layout",
 
   public = list(
-    format_event = function(x) paste(capture.output(print(x$values)), collapse = " ")
+    format_event = function(event) paste(capture.output(print(event$values)), collapse = " ")
   )
 )
+
 
 
 
@@ -42,11 +44,11 @@ Layout <- R6::R6Class(
 
 #' LayoutFormat
 #'
-#' Format an LogEvent as human readable text using [format.LogEvent()]
+#' Format a [LogEvent] as human readable text using [format.LogEvent()]
 #'
 #' @eval r6_usage(LayoutFormat)
 #'
-#' @section Creating a new LayoutFormat:
+#' @section Creating a New LayoutFormat:
 #'
 #' LayoutFormat passes it fields as arguments to [format.LogEvent()].
 #'
@@ -58,10 +60,11 @@ Layout <- R6::R6Class(
 #'  }
 #'
 #'
-#' @inheritSection Layout Fields and Methods:
+#' @inheritSection Layout Fields and Methods
 #'
 #'
 #' @name LayoutFormat
+#' @family Layouts
 #' @include Filterable.R
 #' @include log_levels.R
 #' @examples
@@ -78,6 +81,8 @@ Layout <- R6::R6Class(
 #' lo$format_event(event)
 #'
 NULL
+
+
 
 
 #' @export
@@ -98,10 +103,10 @@ LayoutFormat <- R6::R6Class(
     },
 
     format_event = function(
-      x
+      event
     ){
       format.LogEvent(
-        x,
+        event,
         fmt = private$.fmt,
         timestamp_fmt = private$.timestamp_fmt,
         colors = private$.colors,
@@ -159,31 +164,23 @@ LayoutFormat <- R6::R6Class(
 
 
 
+
 # LayoutTable -------------------------------------------------------------
 
-#' LayoutDbi
+#' LayoutTable
 #'
-#' Format an LogEvent as JSON
+#' `LayoutTable` is an internal class that is only exported for developers that
+#' want to extend yog. You are probably looking for either [LayoutDbi] or
+#' [LayoutJson].
 #'
-#' @eval r6_usage(LayoutDbi)
-#'
-#' @inheritSection Layout Creating a new Layout
-#' @section Creating a new Layout:
-#'
-#' \describe{
-#'
-#'  }
-#'
-#'
-#' @inheritSection Layout Fields and Methods:
-#' @section Fields and Methods:
+#' @section Creating a New Layout:
 #'
 #' \describe{
-#'   \item{`event_vals`}{Names of the fields of the event (i.e the LogEvent)
-#'     to include in the output Object.
+#'   \item{`event_vals`}{Names of the fields of the [LogEvent]
+#'     to include in the output object.
 #'   }
 #'
-#'   \item{`logger_vals`}{Names of the fields of the Logger that produced the
+#'   \item{`logger_vals`}{Names of the fields of the [Logger] that produced the
 #'     [LogEvent] to include in the output object.
 #'   }
 #'
@@ -194,8 +191,54 @@ LayoutFormat <- R6::R6Class(
 #' }
 #'
 #'
+#' @inheritSection Layout Fields and Methods
+#' @family Layouts
+#'
 #' @name LayoutTable
 NULL
+
+
+
+
+#' @export
+LayoutTable <- R6::R6Class(
+  "LayoutTable",
+  inherit = Layout,
+  public = list(
+    format_event = function(event) {NULL},
+
+    set_other_vals = function(x){
+      assert(is.list(x) || is.null(x))
+      assert(identical(length(names(x)), length(x)))
+      private$.other_vals <- x
+      invisible(self)
+    },
+
+    set_event_vals = function(x){
+      private$.event_vals <- x
+      invisible(self)
+    },
+
+    set_logger_vals = function(x){
+      private$.logger_vals <- x
+      invisible(self)
+    }
+  ),
+
+  active = list(
+    other_vals  = function() private$.other_vals,
+    event_vals  = function() private$.event_vals,
+    logger_vals = function() private$.logger_vals
+  ),
+
+  private = list(
+    .other_vals = NULL,
+    .event_vals = NULL,
+    .logger_vals = NULL
+  )
+)
+
+
 
 
 # LayoutDbi ---------------------------------------------------------------
@@ -203,64 +246,36 @@ NULL
 
 #' LayoutDbi
 #'
-#' Format an LogEvent as JSON
+#' Format a [LogEvent] as data.frame for inserting into a Database
 #'
 #' @eval r6_usage(LayoutDbi)
 #'
-#' @section Creating a new LayoutJson:
+#' @inheritSection LayoutTable Creating a New Layout
 #'
-#' If you want logging for a Project (f.e a Package you are developing) that is
-#' separate from the global logging, you can create a new logger with
-#' `Logger$new()`. If you just want to add different outputs (for example
-#' logfiles) to the root logger, look into [Appenders].
-#'
+#' @section Creating a New Layout:
 #' \describe{
-#'   \item{name}{`character` scalar. Name of the Logger. Should be unique amongst
-#'     Loggers. If you define a logger for an R Package, the logger should have
-#'     the same name as the Package.}
-#'   \item{appenders}{`list` of [Appender]s. The appenders used by this logger
-#'     to write log entries to the console, to files, etc...}
-#'   \item{threshold}{`character` or `integer` scalar. The minimum log level
-#'     that triggers this logger}
-#'   \item{user}{`character` scalar. The current user name or email adress.
-#'     This information can be used by the appenders}
-#'   \item{parent}{a `Logger`. Usually the Root logger. All Loggers must be
-#'     descentents of the Root logger for yog to work as intended.}
+#'   \item{`col_types`}{a named `character` vector of column types supported by
+#'     the target database. Must include all columns described in `event_vals`,
+#'     `logger_vals` and `other_vals`. If a new database table is created by
+#'     LayoutDbi its column order will correspond to the order of `col_types`.
+#'   }
+#' }
 #'
-#'
-#'   \item{handle_exception}{a `function` that takes a single argument `e`.
-#'     The function used to handle errors that occur durring loging. Default
-#'     to demoting any error to a [warning]}
-#'  }
-#'
-#'
-#' @inheritSection LayoutTable Fields and Methods:
+#' @inheritSection LayoutTable Fields and Methods
 #' @section Fields and Methods:
 #'
 #' \describe{
-#'
-#'   \item{`event_vals`}{Names of the fields of the event (i.e the LogEvent)
-#'     to include in the resulting JSON object.
-#'   }
-#'
-#'   \item{`logger_vals`}{Names of the fields of the Logger that produced the
-#'     LogEvent to include in the resulting JSON object.
-#'   }
-#'
-#'   \item{`other_vals`}{A named `list` of any kind of R value that can be
-#'     serialized to Json. Functions in this `list`` will be executed with no
-#'     arguments and their results will be included in the results object
-#'     (see examples)
-#'    }
+#'   \item{`col_types`, `set_col_types()`}{Get/set the col_types of this `Layout`}
+#'   \item{`col_names`}{Convenience method to get the names of the `col_types`
+#'     vector}
 #' }
 #'
-#'
 #' @name LayoutDbi
+#' @family Layouts
 #' @include Filterable.R
 #' @include log_levels.R
 #' @seealso [read_json_lines()], [http://jsonlines.org/](http://jsonlines.org/)
 #' @examples
-#'
 #' # setup a dummy LogEvent
 #' event <- LogEvent$new(
 #'   logger = Logger$new("dummy logger", user = "testuser"),
@@ -269,12 +284,26 @@ NULL
 #'   caller = NA_character_,
 #'   msg = "a test message"
 #' )
-#' lo <- LayoutJson$new(
+#'
+#' # defaults
+#' lo <- LayoutDbi$new()
+#' lo$format_event(event)
+#'
+#'
+#' # advanced example:
+#' lo <- LayoutDbi$new(
 #'   event_vals = c("level", "timestamp", "msg"),
 #'   logger_vals = "user",
-#'   other_vals = list(pid = Sys.getpid, random_number = function() runif(3), teststring = "blah")
+#'   other_vals = list(pid = Sys.getpid, teststring = "blah"),
+#'   col_types =  c(
+#'     timestamp = "timestamp",
+#'     level = "smallint",
+#'     msg = "varchar(1024)",
+#'     user = "varchar(256)",
+#'     pid = "integer",
+#'     teststring = "varchar(256)"
+#'   )
 #' )
-#' lo$format_event(event)
 #' lo$format_event(event)
 #'
 NULL
@@ -284,8 +313,8 @@ NULL
 
 #' @export
 LayoutDbi <- R6::R6Class(
-  "LayoutDbi",
-  inherit = Layout,
+  "LayoutTable",
+  inherit = LayoutTable,
   public = list(
     initialize = function(
       event_vals  = c("level", "timestamp", "caller", "msg"),
@@ -304,7 +333,10 @@ LayoutDbi <- R6::R6Class(
           c(event_vals, logger_vals, names(other_vals))
       ),
         "col_type missing for columns: ",
-        setdiff(c(event_vals, logger_vals, names(other_vals)), names(col_types))
+        paste(
+          setdiff(c(event_vals, logger_vals, names(other_vals)), names(col_types)),
+          collapse = ", "
+        )
       )
 
       self$set_event_vals(event_vals)
@@ -313,11 +345,11 @@ LayoutDbi <- R6::R6Class(
       self$set_col_types(col_types)
     },
 
-    format_event = function(x) {
-      vals <- mget(self$event_vals, x)
+    format_event = function(event) {
+      vals <- mget(self$event_vals, event)
 
       if (!is.null(self$logger_vals)){
-        vals <- c(vals, mget(self$logger_vals, x[["logger"]]))
+        vals <- c(vals, mget(self$logger_vals, event[["logger"]]))
       }
 
       if (!is.null(private$.other_vals)){
@@ -336,43 +368,20 @@ LayoutDbi <- R6::R6Class(
       do.call(data.frame, args = vals)
     },
 
-    set_other_vals = function(x){
-      assert(is.list(x) || is.null(x))
-      assert(identical(length(names(x)), length(x)))
-      private$.other_vals <- x
-      invisible(self)
-    },
-
     set_col_types = function(x){
       assert(is.character(x))
       assert(identical(length(names(x)), length(x)))
       private$.col_types <- x
       invisible(self)
-    },
-
-    set_event_vals = function(x){
-      private$.event_vals <- x
-      invisible(self)
-    },
-
-    set_logger_vals = function(x){
-      private$.logger_vals <- x
-      invisible(self)
     }
   ),
 
   active = list(
-    other_vals  = function() private$.other_vals,
-    event_vals  = function() private$.event_vals,
-    logger_vals = function() private$.logger_vals,
     col_types = function() private$.col_types,
     col_names = function() names(private$.col_types)
   ),
 
   private = list(
-    .other_vals = NULL,
-    .event_vals = NULL,
-    .logger_vals = NULL,
     .col_types = NULL
   )
 )
@@ -384,59 +393,25 @@ LayoutDbi <- R6::R6Class(
 
 #' LayoutJson
 #'
-#' Format an LogEvent as JSON
+#' Format a LogEvent as JSON
 #'
 #' @eval r6_usage(LayoutJson)
 #'
-#' @section Creating a new LayoutJson:
+#' @inheritSection LayoutTable Creating a New Layout
 #'
-#' If you want logging for a Project (f.e a Package you are developing) that is
-#' separate from the global logging, you can create a new logger with
-#' `Logger$new()`. If you just want to add different outputs (for example
-#' logfiles) to the root logger, look into [Appenders].
-#'
+#' @section Creating a New Layout:
 #' \describe{
-#'   \item{name}{`character` scalar. Name of the Logger. Should be unique amongst
-#'     Loggers. If you define a logger for an R Package, the logger should have
-#'     the same name as the Package.}
-#'   \item{appenders}{`list` of [Appender]s. The appenders used by this logger
-#'     to write log entries to the console, to files, etc...}
-#'   \item{threshold}{`character` or `integer` scalar. The minimum log level
-#'     that triggers this logger}
-#'   \item{user}{`character` scalar. The current user name or email adress.
-#'     This information can be used by the appenders}
-#'   \item{parent}{a `Logger`. Usually the Root logger. All Loggers must be
-#'     descentents of the Root logger for yog to work as intended.}
-#'
-#'
-#'   \item{handle_exception}{a `function` that takes a single argument `e`.
-#'     The function used to handle errors that occur durring loging. Default
-#'     to demoting any error to a [warning]}
-#'  }
-#'
-#'
-#' @section Methods:
-#'
-#' \describe{
-#'   \item{`format_event(x)`}{format a LogEvent}
-#'
-#'   \item{`event_vals`}{Names of the fields of the event (i.e the LogEvent)
-#'     to include in the resulting JSON object.
-#'   }
-#'
-#'   \item{`logger_vals`}{Names of the fields of the Logger that produced the
-#'     LogEvent to include in the resulting JSON object.
-#'   }
-#'
-#'   \item{`other_vals`}{A named `list` of any kind of R value that can be
-#'     serialized to Json. Functions in this `list`` will be executed with no
-#'     arguments and their results will be included in the results object
-#'     (see examples)
-#'    }
+#'   \item{`toJSON_args`}{a list of values passed on to [jsonlite::toJSON()]}
 #' }
 #'
+#' @inheritSection LayoutTable Fields and Methods
+#' @section Fields and Methods:
+#' \describe{
+#'   \item{`toJSON_args`, `set_toJSON_args()`}{Get/set the `toJSON_args`}
+#' }
 #'
 #' @name LayoutJson
+#' @family Layouts
 #' @include Filterable.R
 #' @include log_levels.R
 #' @seealso [read_json_lines()], [http://jsonlines.org/](http://jsonlines.org/)
@@ -461,10 +436,12 @@ LayoutDbi <- R6::R6Class(
 NULL
 
 
+
+
 #' @export
 LayoutJson <- R6::R6Class(
   "LayoutJson",
-  inherit = Layout,
+  inherit = LayoutTable,
   public = list(
     initialize = function(
       event_vals  = c("level", "timestamp", "caller", "msg"),
@@ -478,11 +455,11 @@ LayoutJson <- R6::R6Class(
       self$set_other_vals(other_vals)
     },
 
-    format_event = function(x) {
-      vals <- mget(self$event_vals, x)
+    format_event = function(event) {
+      vals <- mget(self$event_vals, event)
 
       if (!is.null(self$logger_vals)){
-        vals <- c(vals, mget(self$logger_vals, x[["logger"]]))
+        vals <- c(vals, mget(self$logger_vals, event[["logger"]]))
       }
 
       if (!is.null(private$.other_vals)){
@@ -499,42 +476,19 @@ LayoutJson <- R6::R6Class(
       do.call(jsonlite::toJSON, args = c(list(vals), self$toJSON_args))
     },
 
-    set_other_vals = function(x){
-      assert(is.list(x) || is.null(x))
-      assert(identical(length(names(x)), length(x)))
-      private$.other_vals <- x
-      invisible(self)
-    },
-
     set_toJSON_args = function(x){
       assert(is.list(x))
       assert(identical(length(names(x)), length(x)))
       private$.toJSON_args <- x
       invisible(self)
-    },
-
-    set_event_vals = function(x){
-      private$.event_vals <- x
-      invisible(self)
-    },
-
-    set_logger_vals = function(x){
-      private$.logger_vals <- x
-      invisible(self)
     }
   ),
 
   active = list(
-    other_vals  = function() private$.other_vals,
-    event_vals  = function() private$.event_vals,
-    logger_vals = function() private$.logger_vals,
     toJSON_args = function() private$.toJSON_args
   ),
 
   private = list(
-    .toJSON_args = NULL,
-    .event_vals = NULL,
-    .logger_vals = NULL,
-    .other_vals = NULL
+    .toJSON_args = NULL
   )
 )
