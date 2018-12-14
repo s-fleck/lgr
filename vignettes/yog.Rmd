@@ -2,7 +2,9 @@
 title: "Yet Another Log4j Inspired Logging Framework"
 author: "Stefan Fleck"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: true
 vignette: >
   %\VignetteIndexEntry{yog}
   %\VignetteEncoding{UTF-8}
@@ -20,13 +22,66 @@ knitr::opts_chunk$set(
 )
 ```
 
+# Introduction
+
 Yog is a logging framework for R inspired by 
 [Apache Log4j](https://logging.apache.org/log4j/2.x/) and
 [Python logging](https://docs.python.org/3/library/logging.html).
 It is based on [R6 classes](https://github.com/r-lib/R6) that 
 focuses on extensibility, ease of use, and performance
 
-# Basic usage
+## Quickstart
+
+Configure a new logger that writes all log messages of level *info* or more to 
+a text file and of level *error* or more to a json file.
+
+**Setup:**
+```{r}
+tfi <- tempfile(fileext = ".info")
+tfe <- tempfile(fileext = ".error")
+l <- Logger$new(
+  "example Logger",
+  appenders = list(
+    AppenderFile$new(tfi, threshold = "info"),
+    AppenderFile$new(tfe, threshold = "error", layout = LayoutJson$new())
+  )
+)
+
+```
+
+**Usage:**
+```{r}
+l$info("Everything is okay")
+l$error("Everything is NOT okay")
+l$fatal("NOTHING is okay")
+readLines(tfi)
+read_json_lines(tfe)
+file.remove(tfi, tfe)
+
+```
+  
+
+
+
+# Usage
+
+## Structure of the Logging System
+
+If you want custom logging configurations, you have to understand the structure
+of the logging process.
+
+* A **Logger** collects information and dispatches it to its *Appenders*, and
+  also the *Appenders* of its *Parent Loggers* (also see the section on 
+  hierarchical logging)
+* An **Appender** writes the log message to destination (the console, a file, 
+  a database, etc...).
+* A **Layout** is used by an *Appender* to format *LogRecords*. For example,
+  `AppenderFile` uses `LayoutFormat` by default to write human readable log
+  events to a text file, but can also use `LayoutJson` produce machine 
+  readable JSON lines logfiles.
+* **LogRecords** are produced by the *Logger* and dispatched to *Appenders* and
+  *Layouts*. 
+
 
 
 ## Log Levels
@@ -57,13 +112,11 @@ knitr::kable(ll)
 
 
 
-## Simple logging with the Root Logger
-
+## Simple Logging With the Root Logger
 
 Yog comes with a pre-configured Root Logger. If you do not care about 
 using multiple loggers, and do not want to deal with R6 classes you still use 
 yog as a performant and easy to use logging solution.
-
 
 ```{r}
 FATAL("This is an important message about %s going wrong", "something")
@@ -77,7 +130,7 @@ TRACE("Trace is even lower than debug")
 
 ```
 
-You can also direclty use Logger R6 objects to log. This package comes with a
+You can also directly use Logger R6 objects to log. This package comes with a
 default root logger named like the package (`"yog"`). This method of referring
 to the logger is more explicit (and therefore arguably better). The examples
 in this vignette will moslty use the notation below.
@@ -85,14 +138,21 @@ in this vignette will moslty use the notation below.
 ```{r}
 yog$fatal("This is an important message about %s going wrong", "->something<-")
 yog$trace("Trace messages are still hidden")
-yog$set_threshold("trace")
+yog$appenders$console$set_threshold("trace")
 yog$trace("Unless we lower the threshold")
 ```
 
-## Using Appenders
 
-This only logs to the console. If you want to redirect the output to a file
-you can just add a file appender to yog
+## Thresholds: Controlling Output Detail
+
+(wip)
+
+
+
+## Appenders: Managing Log Destinations
+
+The root logger only logs to the console by default. If you want to redirect 
+the output to a file you can just add a file appender to yog.
 
 ```{r}
 tf <- tempfile()
@@ -117,30 +177,7 @@ yog$remove_appender("file")
 
 
 
-
-# Advanced Usage
-
-If you want custom logging configurations, you have to understand the structure
-of the logging process.
-
-## Structure
-
-* A **Logger** collects information and dispatches it to its *Appenders*, and
-  also the *Appenders* of its *Parent Loggers* (also see the section on 
-  hierarchical logging)
-* An **Appender** writes the log message to destination (the console, a file, 
-  a database, etc...).
-* A **Layout** is used by an *Appender* to format *LogRecords*. For example,
-  `AppenderFile` uses `LayoutFormat` by default to write human readable log
-  events to a text file, but can also use `LayoutJson` produce machine 
-  readable JSON lines logfiles.
-* **LogRecords** are produced by the *Logger* and dispatched to *Appenders* and
-  *Layouts*. 
-
-
-
-
-## Logger Hierarchies
+## Inheritance: Hierarchical Loggers
 
 Each newly created Logger is child to a parent Logger. If no parent Logger
 is specified manually during a Logger's creation, its parent is the Root 
@@ -151,6 +188,8 @@ Appenders).
 
 
 ![](log_flow.svg)
+
+
 
 
 

@@ -95,7 +95,7 @@
 #' }
 #'
 #'
-#' @section Active Bindings:
+#' @section Fields:
 #'
 #' \describe{
 #'
@@ -324,8 +324,6 @@ Logger <- R6::R6Class(
         "`appender$clone()`, but be aware that this can cause weird bugs",
         "for some appender types."
         )
-
-      appender$set_logger(self)
 
       private$.appenders[length(private$.appenders) + 1L] <- list(appender)
 

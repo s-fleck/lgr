@@ -100,7 +100,6 @@ test_that("AppenderMemoryDt: appending multiple rows works", {
   y$level <- 300
   app$append(y)
   expect_identical(app$.__enclos_env__$private$.data$.id[1:4], 1:4)
-  app$set_logger(Logger$new("dummy"))  # so that log levels can be labelled
 
   expect_match(paste(capture.output(app$show()), collapse = ""), "ERROR.*WARN")
 })
@@ -124,7 +123,6 @@ test_that("AppenderBuffer behaves as expected", {
     ),
     parent = NULL
   )
-  expect_identical(l, l$appenders$buffer$logger)
   l$info(LETTERS[1:3])
   expect_identical(length(l$appenders$buffer$buffered_events), 1L)
   l$info(LETTERS[4:7])

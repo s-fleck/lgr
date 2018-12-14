@@ -24,25 +24,23 @@ x$destination
 
 
 \describe{
-\item{threshold}{\code{character} or \code{integer} scalar. The minimum log level
+\item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
 that triggers this logger. See \link{log_levels}}
-\item{layout}{A \link{Layout}. See examples.}
+\item{\code{layout}}{a \code{Layout} that will be used for formatting the \code{LogEvents}
+passed to this Appender
+}
 }
 }
 
-\section{Fields}{
+\section{Fields and Methods}{
 
 
 \describe{
-\item{\code{threshold}}{An \code{integer}. Threshold of the current Appender
-(i.e the maximum log level) that this Appender processes)}
-
-\item{\code{layout}}{The \link{Layout} this Appender usses for formatting \link{LogEvent}s}
-
-\item{\code{logger}}{The \link{Logger} this Appender is attached to}
-
-\item{\code{destination}}{A \code{character} scalar giving the output destination
-of the Appender as human readable print output.}
+\item{\code{append(event)}}{Write the \link{LogEvent} \code{event} to a destination}
+\item{\code{threshold}, \code{set_threshold(level)}}{get/set the \code{Appender} threshold}
+\item{\code{layout}, \code{set_layout(layout)}}{get/set the \code{Layout}}
+\item{\code{destination}}{The output destination of the \code{Appender} in
+human-readable form (mainly for print output)}
 }
 }
 

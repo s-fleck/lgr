@@ -2,6 +2,11 @@ library(bench)
 library(futile.logger)
 library(yog)
 library(magrittr)
+library(logging)
+t2 <- tempfile()
+
+#devtools::install_github("smbache/loggr")
+
 
 # Compare appenders -------------------------------------------------------
 

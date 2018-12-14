@@ -90,6 +90,38 @@ to demoting any error to a \link{warning}}
 \item{\code{propagate}}{\code{TRUE} or \code{FALSE}. Should log messages be passed on to
 the appenders of the ancestral Loggers?}
 }
+
+
+
+\describe{
+
+\item{\code{appenders}}{A \code{list} of all Appenders attached to the current
+logger}
+
+\item{\code{ancestry}}{\emph{read only}. A \code{character} vector of the names of all
+Loggers that are ancestors to the current Logger}
+
+\item{\code{inherited_appenders}}{\emph{read only}. A \code{list} of all inherited
+appenders from ancestral Loggers of the current Logger}
+
+\item{\code{filters}}{a \code{list} of predicates (functions that return either
+\code{TRUE} or \code{FALSE}). If all of these functions evaluate to \code{TRUE} the
+LogEvent is passed on to the Logger's Appenders}
+
+\item{\code{last_event}}{The last LogEvent produced by the current Logger}
+
+\item{\code{name}}{Name of the Logger. Mainly used for display purposes. If
+you define a Logger for a package, this should be the same name as
+the packages
+}
+
+\item{\code{parent}}{Parent Logger of the current Logger (\code{NULL} for the Root Logger)}
+
+\item{\code{threshold}}{An \code{integer}. Threshold of the current Logger (i.e the
+maximum log level that this Logger processes)}
+
+\item{\code{user}}{The current user}
+}
 }
 
 \section{Methods}{
@@ -135,40 +167,6 @@ on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 
 \item{\code{set_name(x)}}{Set the Logger name to the \code{character} scalar \code{x}}
 
-}
-}
-
-\section{Active Bindings}{
-
-
-\describe{
-
-\item{\code{appenders}}{A \code{list} of all Appenders attached to the current
-logger}
-
-\item{\code{ancestry}}{\emph{read only}. A \code{character} vector of the names of all
-Loggers that are ancestors to the current Logger}
-
-\item{\code{inherited_appenders}}{\emph{read only}. A \code{list} of all inherited
-appenders from ancestral Loggers of the current Logger}
-
-\item{\code{filters}}{a \code{list} of predicates (functions that return either
-\code{TRUE} or \code{FALSE}). If all of these functions evaluate to \code{TRUE} the
-LogEvent is passed on to the Logger's Appenders}
-
-\item{\code{last_event}}{The last LogEvent produced by the current Logger}
-
-\item{\code{name}}{Name of the Logger. Mainly used for display purposes. If
-you define a Logger for a package, this should be the same name as
-the packages
-}
-
-\item{\code{parent}}{Parent Logger of the current Logger (\code{NULL} for the Root Logger)}
-
-\item{\code{threshold}}{An \code{integer}. Threshold of the current Logger (i.e the
-maximum log level that this Logger processes)}
-
-\item{\code{user}}{The current user}
 }
 }
 
