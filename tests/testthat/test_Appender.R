@@ -107,6 +107,102 @@ test_that("AppenderMemoryDt: appending multiple rows works", {
 
 
 
+# AppenderDbi -------------------------------------------------------------
+
+
+test_that("AppenderRjdbc: appending multiple rows works", {
+  if (!requireNamespace("dataSTAT"))
+    skip("Currently only tested at work")
+
+  tname <- "TMP.LOGGING_TEST"
+  conn <- dataSTAT::dbConnectDB2("RTEST", "rtest", "rtest")
+  try(DBI::dbRemoveTable(conn, tname), silent = TRUE)
+
+  app <- expect_message(
+    AppenderRjdbc$new(conn = conn, table = tname),
+    "new"
+  )
+
+  expect_message(
+    app <- AppenderRjdbc$new(conn = conn, table = tname),
+    "existing"
+  )
+
+  e <- LogEvent$new(yog, level = 600, msg = "ohno", caller = "nope()", timestamp = Sys.time())
+
+  expect_silent(app$append(e))
+  expect_silent(app$append(e))
+  tres <- DBI::dbGetQuery(conn, sprintf("select * from %s", tname))
+  expect_identical(nrow(tres), 2L)
+
+
+  # test vectorized logging
+  e$msg <- rep("ohyeah", 3)
+  expect_silent(app$append(e))
+  tres <- app$data
+  expect_identical(tres$msg, c(rep("ohno", 2), rep("ohyeah", 3)))
+
+
+  # test show method
+  e$msg <- rep(1:20, 3)
+  expect_silent(app$append(e))
+  expect_output(
+    app$show(5),
+    paste(16:20, collapse = ".*")
+  )
+
+  expect_silent(app$append(e))
+
+  DBI::dbDisconnect(conn)
+})
+
+
+
+
+
+test_that("AppenderRjdbc: log access works", {
+
+  if (!requireNamespace("dataSTAT"))
+    skip("Currently only tested at work")
+
+  tname <- "TMP.LOGGING_TEST"
+  conn <- dataSTAT::dbConnectDB2("RTEST", "rtest", "rtest")
+  try(DBI::dbRemoveTable(conn, tname), silent = TRUE)
+
+  lg <- Logger$new(
+    "test_rjdbc",
+    threshold = "trace",
+    appenders = list(db = AppenderRjdbc$new(conn = conn, table = tname))
+  )
+
+
+  expect_output({
+    lg$fatal("blubb")
+    lg$trace("blah")
+  })
+
+
+  expect_output(lg$appenders$db$show(), "FATAL.*TRACE")
+  expect_output(
+    expect_identical(nrow(lg$appenders$db$show(1)), 1L),
+    "TRACE"
+  )
+
+  expect_identical(nrow(lg$appenders$db$data), 2L)
+
+  expect_output(
+    expect_identical(
+      show_log(target = lg),
+      lg$appenders$db$show()
+    )
+  )
+
+  DBI::dbDisconnect(conn)
+})
+
+
+
+
 # AppenderBuffer ----------------------------------------------------
 
 test_that("AppenderBuffer behaves as expected", {

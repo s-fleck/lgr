@@ -63,6 +63,7 @@ logger$warn("A test message")
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderFile}},
-  \code{\link{AppenderMemoryDt}}, \code{\link{Appender}}
+  \code{\link{AppenderMemoryDt}},
+  \code{\link{AppenderRjdbc}}, \code{\link{Appender}}
 }
 \concept{Appenders}

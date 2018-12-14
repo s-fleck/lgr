@@ -107,3 +107,49 @@ ptrunc_col <- function(
 
 
 
+generate_sql_create_table <- function(
+  tname,
+  col_names,
+  col_types,
+  sql_opts = rep("", length(col_names))
+){
+  # preconditions
+  stopifnot(
+    is_scalar_character(tname),
+    is.character(col_names),
+    is.character(col_types),
+    is_equal_length(col_names, col_types, sql_opts)
+  )
+
+  assert(all(
+    is.na(col_names) == FALSE |
+    is.na(col_names) == is.na(col_types)
+  ))
+
+  sql_opts[is.na(sql_opts)] <- ""
+  col_types  <- toupper(col_types)
+
+
+  # process input
+  empty_cols <- is.na(col_names) && is.na(col_types)
+  col_names  <- col_names[!empty_cols]
+  col_types  <- col_types[!empty_cols]
+
+  if (any(is.na(col_types))){
+    warning(sprintf(
+      "Skipping %s columns with col_type 'NA'", sum(is.na(col_types))
+    ))
+    col_names <- col_names[!is.na(col_types)]
+    col_types <- col_types[!is.na(col_types)]
+    sql_opts  <- sql_opts[!is.na(col_types)]
+  }
+
+
+  cols <- paste0(
+    trimws(paste0(col_names, " ", col_types, " ", sql_opts)),
+    collapse = ", "
+  )
+
+  sprintf("CREATE TABLE %s (%s)", tname, cols)
+}
+

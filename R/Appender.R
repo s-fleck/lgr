@@ -462,6 +462,147 @@ AppenderMemoryDt <- R6::R6Class(
 
 
 
+
+# AppenderRjdbc -------------------------------------------------------------
+
+#' AppenderRjdbc
+#'
+#' Log to a database table with the RJDBC package.
+#'
+#' @eval r6_usage(AppenderRjdbc)
+#'
+#' @inheritSection Appender Creating a new Appender
+#' @section Creating a new Appender:
+#'
+#' \describe{
+#'   \item{conn}{an RJDBC connection}
+#'   \item{field_types}{a named `character` vector of field names and types.}
+#'  }
+#'
+#' @section Fields and Methods:
+#'
+#' \describe{
+#'   \item{`show(n, threshold)`}{Show the last `n` log entries with a log level
+#'   bellow `threshold`. The log entries will be formated for console output
+#'   via the defined [Layout]}
+#'   \item{`data`}{Get the log recorded by this `Appender` as a `data.table`
+#'   with a maximum of `buffer_size` rows}
+#' }
+#'
+#'
+#' @export
+#' @seealso [LayoutFormat], [simple_logging], [data.table::data.table]
+#' @family Appenders
+#' @name AppenderRjdbc
+#'
+AppenderRjdbc <- R6::R6Class(
+  "AppenderRjdbc",
+  inherit = Appender,
+  public = list(
+    initialize = function(
+      conn,
+      table,
+      field_types = c(
+        level = "smallint",
+        timestamp = "timestamp",
+        caller = "varchar(1024)",
+        msg = "varchar(1024)"
+      ),
+      threshold = NA_integer_,
+      layout = LayoutFormat$new(
+        fmt = "%L [%t] %m",
+        timestamp_fmt = "%H:%M:%OS3",
+        colors = getOption("yog.colors", list())
+      )
+    ){
+      self$set_threshold(threshold)
+      self$set_layout(layout)
+      private$.conn  <- conn
+      private$.table <- table
+      private$.field_types <- field_types
+
+      table_exists <- tryCatch(
+        is.data.frame(
+        DBI::dbGetQuery(
+          conn,
+          sprintf("select 1 from %s where 1 = 2", table)
+        )),
+        error = function(e) FALSE
+      )
+
+      if (table_exists){
+        message("Logging to existing table ", table)
+      } else {
+        message("Creating new logging table ", table)
+        q <- generate_sql_create_table(
+          tname = table,
+          col_types = field_types,
+          col_names = names(field_types)
+        )
+        RJDBC::dbSendUpdate(conn, q)
+      }
+    },
+
+
+    show = function(n = 20, threshold = NA_integer_){
+      dd <- data.table::copy(self$data)
+      data.table::setattr(
+        dd,
+        "class",
+        c("yog_data", "data.table", "data.frame")
+      )
+
+      if (is.na(threshold)) threshold <- Inf
+
+      if (is.character(threshold))
+        threshold <- unlabel_levels(threshold)
+
+      if (identical(nrow(dd),  0L)){
+        cat("[empty log]")
+        return(invisible(NULL))
+      }
+
+      print(tail(dd[dd$level <= threshold, ], n))
+    },
+
+
+    append = function(event){
+      dd <- event$values
+      dd$timestamp <- format(dd$timestamp)
+      dd <- as.data.frame(dd, stringsAsFactors = FALSE)
+
+      for (i in seq_len(nrow(dd))){
+        data <- as.list(dd[i, ])
+        RJDBC::dbSendUpdate(
+        conn, sprintf(
+          "insert into %s values (%s)",
+           private$.table, paste0("'", data, "'", collapse = ", ")
+        )
+      )}
+
+      return(invisible())
+    }
+  ),
+
+  active = list(
+    destination = function() "console",
+    data = function(){
+      dd <- RJDBC::dbGetQuery(private$.conn, sprintf("SELECT * FROM %s", private$.table))
+      dd <- data.table::as.data.table(dd)
+      data.table::setnames(dd, tolower(names(dd)))
+      dd
+    }
+  ),
+
+  private = list(
+    .conn = NULL,
+    .table = NULL,
+    .field_types = NULL
+  )
+)
+
+
+
 # AppenderBuffer --------------------------------------------------
 
 #' AppenderBuffer

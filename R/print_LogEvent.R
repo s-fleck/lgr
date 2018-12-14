@@ -52,7 +52,7 @@ print.LogEvent <- function(
     log_levels = log_levels,
     pad_levels = pad_levels,
     user = user
-  ))
+  ), sep = "\n")
   invisible(x)
 }
 
@@ -135,6 +135,9 @@ format.LogEvent <- function(
 format.yog_data <- format.LogEvent
 
 
+
+#' @export
+print.yog_data <- print.LogEvent
 
 
 tokenize_format <- function(

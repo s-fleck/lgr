@@ -81,6 +81,7 @@ readLines(json)
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}},
-  \code{\link{AppenderMemoryDt}}, \code{\link{Appender}}
+  \code{\link{AppenderMemoryDt}},
+  \code{\link{AppenderRjdbc}}, \code{\link{Appender}}
 }
 \concept{Appenders}

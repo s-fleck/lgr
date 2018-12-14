@@ -207,11 +207,11 @@ show_log = function(
   }
 
 
-  sel <- vapply(target$appenders, inherits, TRUE, "AppenderMemoryDt")
+  sel <- vapply(target$appenders, function(app) "show" %in% names(app), logical(1))
 
   if (!any(sel)){
     warning(sprintf(
-      "This %s has no memory appender (see ?AppenderMemoryDt)",
+      "This %s has no appender with a show method (see ?AppenderTabular)",
       class_fmt(target)
     ))
     return(invisible())

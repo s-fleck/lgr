@@ -102,6 +102,7 @@ human-readable form (mainly for print output)}
 
 Other Appenders: \code{\link{AppenderConsole}},
   \code{\link{AppenderFile}},
-  \code{\link{AppenderMemoryDt}}, \code{\link{Appender}}
+  \code{\link{AppenderMemoryDt}},
+  \code{\link{AppenderRjdbc}}, \code{\link{Appender}}
 }
 \concept{Appenders}

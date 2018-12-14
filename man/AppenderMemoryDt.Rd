@@ -83,6 +83,7 @@ show_log(target = lg)
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}},
-  \code{\link{AppenderFile}}, \code{\link{Appender}}
+  \code{\link{AppenderFile}}, \code{\link{AppenderRjdbc}},
+  \code{\link{Appender}}
 }
 \concept{Appenders}
