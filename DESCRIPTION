@@ -29,8 +29,7 @@ Suggests:
     testthat,
     tools,
     utils,
-    whoami,
-    covr
+    whoami
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
