@@ -4,12 +4,11 @@
 \alias{LayoutDbi}
 \title{LayoutDbi}
 \description{
-Format a \link{LogEvent} as data.frame for inserting into a Database
+Format a \link{LogEvent} as data.frame for inserting into a Database.
 }
 \section{Usage}{
 \preformatted{x <- LayoutDbi$new(event_vals = c("level", "timestamp", "caller", "msg"),
-  logger_vals = NULL, other_vals = NULL, col_types = c(level = "smallint",
-  timestamp = "timestamp", caller = "varchar(1024)", msg = "varchar(1024)"))
+  logger_vals = NULL, other_vals = NULL, col_types = NULL)
 
 x$format_event(event)
 x$set_col_types(x)
@@ -104,3 +103,4 @@ Other Layouts: \code{\link{LayoutFormat}},
   \code{\link{Layout}}
 }
 \concept{Layouts}
+\concept{database layouts}

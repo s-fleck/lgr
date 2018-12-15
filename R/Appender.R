@@ -575,15 +575,17 @@ AppenderDbi <- R6::R6Class(
       )
 
       if (table_exists){
-        message("Logging to existing table ", table)
+        message("Logging to existing table '", table, "'")
+      } else if (is.null(self$layout$col_types)) {
+        message("Table '", table, "' %s will be created on first log")
       } else {
-        message("Creating new logging table ", table)
+        message("Creating '", table, "' with manual column types")
         q <- generate_sql_create_table(
           tname = table,
           col_types = layout$col_types,
           col_names = layout$col_names
         )
-        DBI::dbExecute(self$conn, q)
+        DBI::dbExecute(conn, q)
       }
     },
 
@@ -622,19 +624,12 @@ AppenderDbi <- R6::R6Class(
 
     append = function(event){
       dd <- private$.layout$format_event(event)
-      dd_names <- paste0("'", names(dd), "'", collapse = ", ")
-
-      for (i in seq_len(nrow(dd))){
-        data <- as.list(dd[i, ])
-        DBI::dbExecute(
-          private$.conn, sprintf(
-            "insert into %s (%s) values (%s)",
-            private$.table,
-            dd_names,
-            paste0("'", data, "'", collapse = ", ")
-          )
-        )}
-
+      DBI::dbWriteTable(
+        private$.conn,
+        private$.table,
+        dd,
+        append = TRUE
+      )
       return(invisible())
     }
   ),

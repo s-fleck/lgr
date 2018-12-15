@@ -73,6 +73,16 @@ request on the issue tracker.
 
 
 
+## Help Wanted
+
+Yog comes with Appenders that write logs to databases. If you are using this
+feature any feedback would be welcome. If you encounter bugs, please file a
+bug report. If everything works and you are using any database except SQLite or
+DB2 (which i can test myself), please drop me an email that confirms everything 
+works :). 
+
+
+
 ## Acknowledgements
 
 * [Inkscape](https://inkscape.org/) for the hex sticker

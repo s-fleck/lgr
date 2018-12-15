@@ -246,7 +246,7 @@ LayoutTable <- R6::R6Class(
 
 #' LayoutDbi
 #'
-#' Format a [LogEvent] as data.frame for inserting into a Database
+#' Format a [LogEvent] as data.frame for inserting into a Database.
 #'
 #' @eval r6_usage(LayoutDbi)
 #'
@@ -272,6 +272,7 @@ LayoutTable <- R6::R6Class(
 #'
 #' @name LayoutDbi
 #' @family Layouts
+#' @family database layouts
 #' @include Filterable.R
 #' @include log_levels.R
 #' @seealso [read_json_lines()], [http://jsonlines.org/](http://jsonlines.org/)
@@ -313,32 +314,28 @@ NULL
 
 #' @export
 LayoutDbi <- R6::R6Class(
-  "LayoutTable",
+  "LayoutDbi",
   inherit = LayoutTable,
   public = list(
     initialize = function(
       event_vals  = c("level", "timestamp", "caller", "msg"),
       logger_vals = NULL,
       other_vals = NULL,
-      col_types = c(
-        level = "smallint",
-        timestamp = "timestamp",
-        caller = "varchar(1024)",
-        msg = "varchar(1024)"
-      )
+      col_types = NULL
     ){
-      assert(all_are_distinct(names(col_types)))
-      assert(setequal(
+      if (!is.null(col_types)){
+        assert(all_are_distinct(names(col_types)))
+        assert(setequal(
           names(col_types),
           c(event_vals, logger_vals, names(other_vals))
-      ),
-        "col_type missing for columns: ",
-        paste(
-          setdiff(c(event_vals, logger_vals, names(other_vals)), names(col_types)),
-          collapse = ", "
-        )
-      )
-
+        ),
+          "col_type missing for columns: ",
+           paste(
+             setdiff(c(event_vals, logger_vals, names(other_vals)), names(col_types)),
+             collapse = ", "
+           )
+         )
+      }
       self$set_event_vals(event_vals)
       self$set_logger_vals(logger_vals)
       self$set_other_vals(other_vals)
@@ -363,14 +360,22 @@ LayoutDbi <- R6::R6Class(
         }
       }
 
-      vals <- vals[names(private$.col_types)]
+      vals <- lapply(
+        vals,
+        function(.x) if (inherits(.x, "POSIXt")) format(.x) else .x
+      )
+      if (!is.null(private$.col_types)){
+        vals <- vals[names(private$.col_types)]
+      }
       vals <- c(vals, list(stringsAsFactors = FALSE))
       do.call(data.frame, args = vals)
     },
 
     set_col_types = function(x){
-      assert(is.character(x))
-      assert(identical(length(names(x)), length(x)))
+      if (!is.null(x)){
+        assert(is.character(x))
+        assert(identical(length(names(x)), length(x)))
+      }
       private$.col_types <- x
       invisible(self)
     }
