@@ -109,23 +109,27 @@ test_that("AppenderMemoryDt: appending multiple rows works", {
 
 # AppenderDbi -------------------------------------------------------------
 
-test_that("AppenderDbi: appending multiple rows works", {
+test_that("AppenderDbi / RSQLite: basic operations work", {
   if (!requireNamespace("RSQLite", quietly = TRUE))
     skip("Test requires RSQLite")
 
+  # setup test environment
   tname <- "LOGGING_TEST"
-
-  app <- AppenderDbi$new(
-    conn = DBI::dbConnect(RSQLite::SQLite(), ":memory:"),
-    table = tname
+  expect_message(
+    app <- AppenderDbi$new(
+      conn = DBI::dbConnect(RSQLite::SQLite(), ":memory:"),
+      table = tname
+    ),
+    "will be created"
   )
-
   e <- LogEvent$new(yog, level = 600, msg = "ohno", caller = "nope()", timestamp = Sys.time())
 
+  # simple appending
   expect_silent(app$append(e))
   expect_silent(app$append(e))
   tres <- app$data
   expect_identical(nrow(tres), 2L)
+  expect_true(all(tres$timestamp == format(e$timestamp)))
 
 
   # test vectorized logging
@@ -138,93 +142,107 @@ test_that("AppenderDbi: appending multiple rows works", {
   # test show method
   e$msg <- rep(1:20, 3)
   expect_silent(app$append(e))
-  expect_output(
-    app$show(5),
-    paste(16:20, collapse = ".*")
-  )
-
-  expect_silent(app$append(e))
+  expect_output(app$show(5), paste(16:20, collapse = ".*"))
+  expect_output(expect_identical(
+    app$show(10),
+    show_log(10, target = app)
+  ))
 })
 
 
 
 
-test_that("AppenderDbi: shuffling column order does not impact inserts", {
+test_that("AppenderDbi / RSQLite:: shuffling column order does not impact inserts", {
   if (!requireNamespace("RSQLite", quietly = TRUE))
     skip("Test requires RSQLite")
 
+  # setup test environment
   tdb <- tempfile()
   tname <- "LOGGING_TEST"
-
   app <- AppenderDbi$new(
     conn = DBI::dbConnect(RSQLite::SQLite(), tdb),
     table = tname
   )
-
   e <- LogEvent$new(yog, level = 600, msg = "ohno", caller = "nope()", timestamp = Sys.time())
 
+  # test shuffled inserts
   for (i in 1:20){
     app$layout$set_col_types(sample(app$layout$col_types))
     expect_silent(app$append(e))
   }
-
   expect_true(all(vapply(app$data$timestamp, all_are_identical, logical(1))))
   expect_true(all(format(app$data$timestamp) == format(e$timestamp)))
+
+  # cleanup
+  rm(app)
+  gc()
+  unlink(tdb)
 })
 
 
 
-test_that("AppenderDbi: manual field types work (SQLite)", {
+test_that("AppenderDbi / RSQLite: manual field types work", {
   if (!requireNamespace("RSQLite", quietly = TRUE))
     skip("Test requires RSQLite")
 
+  # setup test environment
   tdb <- tempfile()
   tname <- "LOGGING_TEST"
-
-  app <- AppenderDbi$new(
-    conn = DBI::dbConnect(RSQLite::SQLite(), tdb),
-    layout = LayoutDbi$new(col_types = c(
-      level = "INTEGER",
-      timestamp = "TEXT",
-      caller = "TEXT",
-      msg = "TEXT"
-    )),
+  expect_message(
+    app <- AppenderDbi$new(
+      conn = DBI::dbConnect(RSQLite::SQLite(), tdb),
+      layout = LayoutDbi$new(col_types = c(
+        level = "INTEGER",
+        timestamp = "TEXT",
+        caller = "TEXT",
+        msg = "TEXT"
+      )),
     table = tname
+    ),
+  "column types"
   )
-
   e <- LogEvent$new(yog, level = 600, msg = "ohno", caller = "nope()", timestamp = Sys.time())
 
+  # do a few inserts
   for (i in 1:10){
     app$layout$set_col_types(sample(app$layout$col_types))
     expect_silent(app$append(e))
   }
 
+  # verify correct data types (sqlite doesnt have that many)
   t <- DBI::dbGetQuery(app$conn, sprintf("PRAGMA table_info(%s)", tname))
   expect_true(t[t$name == "level", ]$type == "INTEGER")
   expect_true(all(vapply(app$data$timestamp, all_are_identical, logical(1))))
   expect_true(all(format(app$data$timestamp) == format(e$timestamp)))
+
+  # cleanup
+  rm(app)
+  gc()
+  unlink(tdb)
 })
 
 
 
 
-test_that("AppenderDbi: log access works", {
+test_that("AppenderDbi / RSQLite: displaying logs works", {
   if (!requireNamespace("RSQLite", quietly = TRUE))
     skip("Test requires RSQLite")
 
+  # Setup test environment
   conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
   tname <- "LOGGING_TEST"
-
-  lg <- Logger$new(
-    "test_dbi",
-    threshold = "trace",
-    appenders = list(db = AppenderDbi$new(conn = conn, table = tname, close_on_exit = FALSE))
+  expect_message(
+    lg <- Logger$new(
+      "test_dbi",
+      threshold = "trace",
+      appenders = list(db = AppenderDbi$new(conn = conn, table = tname, close_on_exit = FALSE)),
+      propagate = FALSE
+    ),
+    "created"
   )
 
-  expect_output({
-    lg$fatal("blubb")
-    lg$trace("blah")
-  })
+  lg$fatal("blubb")
+  lg$trace("blah")
 
   expect_output(lg$appenders$db$show(), "FATAL.*TRACE")
   expect_output(
@@ -246,14 +264,15 @@ test_that("AppenderDbi: log access works", {
 
 
 
-test_that("AppenderDbi: Automatic closing of connections works", {
+test_that("AppenderDbi / RSQlite: Automatic closing of connections works", {
   if (!requireNamespace("RSQLite", quietly = TRUE))
     skip("Test requires RSQLite")
 
+  # setup test environment
   conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
   tname <- "LOGGING_TEST"
 
-  # Autoclosing works
+  # With close_on_exit
   lg <- Logger$new(
     "test_dbi",
     threshold = "trace",
@@ -264,7 +283,7 @@ test_that("AppenderDbi: Automatic closing of connections works", {
   expect_warning(DBI::dbDisconnect(conn), "Already disconnected")
 
 
-  # Suppressing autoclose works
+  # Without close_on_exit
   conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
   tname <- "LOGGING_TEST"
   lg <- Logger$new(
@@ -272,7 +291,6 @@ test_that("AppenderDbi: Automatic closing of connections works", {
     threshold = "trace",
     appenders = list(db = AppenderDbi$new(conn = conn, table = tname, close_on_exit = FALSE))
   )
-
   rm(lg)
   gc()
   expect_silent(DBI::dbDisconnect(conn))
