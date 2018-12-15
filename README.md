@@ -54,8 +54,9 @@ mentained:
   * [crayon](https://github.com/r-lib/crayon) for colored console output.
   * [data.table](https://github.com/Rdatatable/) for fast in-memroy logging
     with `AppenderMemoryDt`. 
-  * [jsonlite](https://github.com/jeroen/jsonlite) for JSON logging of via 
-    `LayoutJson`. 
+  * [jsonlite](https://github.com/jeroen/jsonlite) for JSON logging via 
+    `LayoutJson`. JSON is a populat plaintext based file format that is easy to 
+    read for humans and machines alike.
   * [DBI](https://github.com/r-dbi/DBI), 
     [RSQLite](https://github.com/r-dbi/RSQLite), 
     [RJDBC](https://github.com/s-u/RJDBC) for logging to databases. In theorey

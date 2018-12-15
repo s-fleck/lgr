@@ -23,7 +23,7 @@ Filterable <- R6::R6Class(
       if (missing(value))  return(private$.filters)
       assert(
         is.list(value) && all(vapply(value, is_filter, logical(1))),
-        "'filters' must be a list of functions with the arguments 'x' and 'self'"
+        "'filters' must be a list of functions with the arguments 'event' and 'obj'"
       )
       private$.filters <- value
     }
@@ -40,7 +40,7 @@ Filterable <- R6::R6Class(
 is_filter <- function(
   x
 ){
-  is.function(x) && identical(names(formals(x)), c("x", "self"))
+  is.function(x) && identical(names(formals(x)), c("event", "obj"))
 }
 
 
@@ -48,7 +48,7 @@ is_filter <- function(
 
 check_threshold <- function(
   event,
-  self
+  obj
 ){
-  is.na(self$threshold) || event[["level"]] <= self$threshold
+  is.na(obj$threshold) || event[["level"]] <= obj$threshold
 }

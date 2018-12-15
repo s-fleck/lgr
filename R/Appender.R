@@ -480,11 +480,13 @@ AppenderMemoryDt <- R6::R6Class(
         return(invisible(NULL))
       }
 
-      dd <- tail(dd[dd$level <= threshold, ], n)
-      dd <- as.environment(dd)
+      res <- tail(dd[dd$level <= threshold, ], n)
+      dd <- as.environment(res)
       assign("logger", self$logger, dd)
       cat(self$layout$format_event(dd), sep = "\n")
+      invisible(res)
     }
+
   ),
 
 

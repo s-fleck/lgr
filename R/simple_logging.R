@@ -215,10 +215,9 @@ show_log = function(
       class_fmt(target)
     ))
     return(invisible())
-
-  } else {
-    target$appenders[sel][[1]]$show(n = n, threshold = threshold)
   }
+
+  target$appenders[sel][[1]]$show(n = n, threshold = threshold)
 }
 
 

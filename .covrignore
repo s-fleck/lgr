@@ -1,3 +1,3 @@
-R/utils-sfmisc.R
+R/utils*.R
 R/yog-package.R
-R/utils-rd.R
+

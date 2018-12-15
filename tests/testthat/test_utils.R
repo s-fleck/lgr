@@ -18,4 +18,6 @@ test_that("utils works as expected", {
 
   blahblubb <- function() lgr$log(200, "test")
   expect_identical(capture.output(blahblubb()), "blahblubb")
+
+  expect_match(get_caller(-99), "shell")
 })
