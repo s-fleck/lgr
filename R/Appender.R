@@ -291,8 +291,8 @@ AppenderFile <- R6::R6Class(
 NULL
 
 
-
-
+# exclude from coverage because AppenderTable is just a metaclass
+# nocov start
 #' @export
 AppenderTable <- R6::R6Class(
   "AppenderTable",
@@ -311,7 +311,7 @@ AppenderTable <- R6::R6Class(
     .table = NULL
   )
 )
-
+# nocov end
 
 
 
@@ -666,7 +666,7 @@ AppenderDbi <- R6::R6Class(
 
 
 # AppenderRjdbc -------------------------------------------------------------
-# nocov start
+
 #' AppenderRjdbc
 #'
 #' Log to a database table with the **RJDBC** package. **RJDBC** is only
@@ -689,7 +689,11 @@ AppenderDbi <- R6::R6Class(
 #' @seealso [LayoutFormat], [simple_logging], [data.table::data.table]
 #' @family Appenders
 #' @name AppenderRjdbc
-#'
+NULL
+
+# exclude from coverage because relies on external ressources
+# nocov start
+#' @export
 AppenderRjdbc <- R6::R6Class(
   "AppenderRjdbc",
   inherit = AppenderDbi,
