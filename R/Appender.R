@@ -666,7 +666,7 @@ AppenderDbi <- R6::R6Class(
 
 
 # AppenderRjdbc -------------------------------------------------------------
-
+# nocov start
 #' AppenderRjdbc
 #'
 #' Log to a database table with the **RJDBC** package. **RJDBC** is only
@@ -756,7 +756,7 @@ AppenderRjdbc <- R6::R6Class(
     .table = NULL
   )
 )
-
+# nocov end
 
 
 
