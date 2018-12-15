@@ -4,7 +4,7 @@
 [![Travis build status](https://travis-ci.org/s-fleck/yog.svg?branch=master)](https://travis-ci.org/s-fleck/yog)
 [![Codecov test coverage](https://codecov.io/gh/s-fleck/yog/branch/master/graph/badge.svg)](https://codecov.io/gh/s-fleck/yog?branch=master)
 
-Yog is a performant and fully featured logging package for R built on the back 
+Yog is a fully featured logging package for R built on the back 
 of [R6](https://github.com/r-lib/R6) classes. It is designed to be flexible,
 performant and extensible. 
 
