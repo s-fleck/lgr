@@ -1056,59 +1056,10 @@ AppenderBuffer <- R6::R6Class(
 
 # utils -------------------------------------------------------------------
 
+#TODO: function needs renaming and doc
 trim_last_event <- function(x, max_len){
   if (length(x) == 1L)
     x
   else
     x[seq.int(length(x) - max_len + 1L, length(x))]
-}
-
-
-
-
-get_backup_index <- function(
-  x
-){
-  vapply(
-    strsplit(x, ".", fixed = TRUE),
-    function(.x) {
-      .r <- .x[[length(.x)]]
-      if (identical(.r, "zip"))  .r <- .x[[length(.x) - 1L]]
-      assert(!is.na(as.integer(.r)))
-      .r
-    },
-    character(1)
-  )
-}
-
-
-
-
-get_backup_timestamp <- function(
-  x
-){
-  vapply(
-    strsplit(x, ".", fixed = TRUE),
-    function(.x) {
-      .r <- .x[[length(.x)]]
-      if (identical(.r, "zip"))  .r <- .x[[length(.x) - 1L]]
-      .r
-    },
-    character(1)
-  )
-}
-
-
-
-
-autopad_backup_index <- function(
-  x
-){
-  assert(is.character(x) && length(x) > 0)
-  bn  <- gsub("\\.\\d*(zip){0,1}", "", x)
-  idx <- get_backup_index(x)
-  int <- as.integer(idx)
-  ext <- ifelse(tools::file_ext(x) == "zip", ".zip", "")
-  new_idx <- pad_left(int, max(nchar(as.character(int))), "0")
-  paste0(bn, ".", new_idx, ext)
 }

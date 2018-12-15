@@ -38,7 +38,7 @@ from [Apache Log4j](https://logging.apache.org/log4j/2.x/) and
 The internal architecture of Yog stable and tested. The current development 
 focus is on completing the documentation, and adding new appenders so that
 yog has user-visible advantages over existing logging frameworks for R.
-A first CRAN release is planned for roughly April 2019.
+A first CRAN release is planned for roughly April 2019 (at the latest).
 
 
 ## Dependencies
