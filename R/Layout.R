@@ -270,12 +270,28 @@ LayoutTable <- R6::R6Class(
 #'     vector}
 #' }
 #'
+#'
+#' @section Database Specific Layouts:
+#'
+#' Different databases have different data types and features. Currently the
+#' following `LayoutDBI` subclasses exist that deal with specific databases,
+#' but this list is expected to grow as yog matures:
+#'
+#'   * `LayoutSQLite`: Needs its own Layout because SQLite does not support
+#'     `timestamps`
+#'   * `LayoutDBI`: For all other datbases
+#'
+#' The utility function `select_dbi_layout()` returns the appropriate
+#' Layout for a DBI connection.
+#'
+#'
 #' @name LayoutDbi
+#' @aliases LayoutSqlite select_dbi_layout
 #' @family Layouts
 #' @family database layouts
 #' @include Filterable.R
 #' @include log_levels.R
-#' @seealso [read_json_lines()], [http://jsonlines.org/](http://jsonlines.org/)
+#' @seealso [DBI::DBI]
 #' @examples
 #' # setup a dummy LogEvent
 #' event <- LogEvent$new(
@@ -290,6 +306,9 @@ LayoutTable <- R6::R6Class(
 #' lo <- LayoutDbi$new()
 #' lo$format_event(event)
 #'
+#' # SQLite does not support timestamps so LayoutSqlite converts them to text
+#' lo <- LayoutSqlite$new()
+#' str(lo$format_event(event))
 #'
 #' # advanced example:
 #' lo <- LayoutDbi$new(
@@ -360,10 +379,6 @@ LayoutDbi <- R6::R6Class(
         }
       }
 
-      vals <- lapply(
-        vals,
-        function(.x) if (inherits(.x, "POSIXt")) format(.x) else .x
-      )
       if (!is.null(private$.col_types)){
         vals <- vals[names(private$.col_types)]
       }
@@ -393,6 +408,59 @@ LayoutDbi <- R6::R6Class(
 
 
 
+
+# +- LayoutSqlite ---------------------------------------------------------
+
+#' @export
+LayoutSqlite <- R6::R6Class(
+  "LayoutSqlite",
+  inherit = LayoutDbi,
+  public = list(
+    format_event = function(event) {
+      vals <- mget(self$event_vals, event)
+
+      if (!is.null(self$logger_vals)){
+        vals <- c(vals, mget(self$logger_vals, event[["logger"]]))
+      }
+
+      if (!is.null(private$.other_vals)){
+        ov <- private$.other_vals
+        for (i in seq_along(ov)){
+          nm <- names(ov)[[i]]
+          if (is.function(ov[[i]]))
+            vals[[nm]] <- ov[[i]]()
+          else
+            vals[[nm]] <- ov[[i]]
+        }
+      }
+
+      vals <- lapply(
+        vals,
+        function(.x) if (inherits(.x, "POSIXt")) format(.x) else .x
+      )
+
+      if (!is.null(private$.col_types)){
+        vals <- vals[names(private$.col_types)]
+      }
+      vals <- c(vals, list(stringsAsFactors = FALSE))
+      do.call(data.frame, args = vals)
+    }
+  )
+)
+
+
+
+# +- LayoutDBI utils ------------------------------------------------------
+
+#' @export
+select_dbi_layout <- function(conn){
+  cls <- c(class(conn))
+  switch(
+    cls,
+    "SQLiteConnection" = LayoutSqlite$new(),
+    LayoutDbi$new()
+  )
+}
 
 # LayoutJson --------------------------------------------------------------
 

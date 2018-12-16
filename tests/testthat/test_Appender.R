@@ -109,6 +109,8 @@ test_that("AppenderMemoryDt: appending multiple rows works", {
 
 # AppenderDbi -------------------------------------------------------------
 
+# +- RSQLite --------------------------------------------------------------
+
 test_that("AppenderDbi / RSQLite: basic operations work", {
   if (!requireNamespace("RSQLite", quietly = TRUE))
     skip("Test requires RSQLite")
@@ -124,29 +126,35 @@ test_that("AppenderDbi / RSQLite: basic operations work", {
   )
   e <- LogEvent$new(yog, level = 600, msg = "ohno", caller = "nope()", timestamp = Sys.time())
 
-  # simple appending
-  expect_silent(app$append(e))
-  expect_silent(app$append(e))
-  tres <- app$data
-  expect_identical(nrow(tres), 2L)
-  expect_true(all(tres$timestamp == format(e$timestamp)))
+  # round trip event inserts
+    expect_silent(app$append(e))
+    expect_silent(app$append(e))
+    tres <- app$data
+    eres <- rbind(
+      as.data.frame(e, stringsAsFactors = FALSE),
+      as.data.frame(e, stringsAsFactors = FALSE)
+    )
+    # timestamps are saved as text in SQLite :(
+    expect_identical(tres[, -2], eres[, -2])
+    expect_identical(nrow(tres), 2L)
+    expect_true(all(tres$timestamp == format(e$timestamp)))
 
 
   # test vectorized logging
-  e$msg <- rep("ohyeah", 3)
-  expect_silent(app$append(e))
-  tres <- app$data
-  expect_identical(tres$msg, c(rep("ohno", 2), rep("ohyeah", 3)))
+    e$msg <- rep("ohyeah", 3)
+    expect_silent(app$append(e))
+    tres <- app$data
+    expect_identical(tres$msg, c(rep("ohno", 2), rep("ohyeah", 3)))
 
 
   # test show method
-  e$msg <- rep(1:20, 3)
-  expect_silent(app$append(e))
-  expect_output(app$show(5), paste(16:20, collapse = ".*"))
-  expect_output(expect_identical(
-    app$show(10),
-    show_log(10, target = app)
-  ))
+    e$msg <- rep(1:20, 3)
+    expect_silent(app$append(e))
+    expect_output(app$show(5), paste(16:20, collapse = ".*"))
+    expect_output(expect_identical(
+      app$show(10),
+      show_log(10, target = app)
+    ))
 })
 
 
@@ -191,7 +199,7 @@ test_that("AppenderDbi / RSQLite: manual field types work", {
   expect_message(
     app <- AppenderDbi$new(
       conn = DBI::dbConnect(RSQLite::SQLite(), tdb),
-      layout = LayoutDbi$new(col_types = c(
+      layout = LayoutSqlite$new(col_types = c(
         level = "INTEGER",
         timestamp = "TEXT",
         caller = "TEXT",
@@ -294,6 +302,64 @@ test_that("AppenderDbi / RSQlite: Automatic closing of connections works", {
   rm(lg)
   gc()
   expect_silent(DBI::dbDisconnect(conn))
+})
+
+
+
+
+# +- Postgres -------------------------------------------------------------
+
+test_that("AppenderDbi / RPostgreSQL works", {
+  if (!requireNamespace("RPostgreSQL", quietly = TRUE))
+    skip("Test requires RPostgreSQL")
+
+  conn <- try(RPostgreSQL::dbConnect(
+    RPostgreSQL::PostgreSQL(),
+    host = "localhost",
+    dbname = "travis_ci_test"
+  ), silent = TRUE)
+
+  if (inherits(conn, "try-error"))
+    skip("RPostgreSQL installed but cannot connect to travis_ci_test")
+
+  # setup test environment
+    tname <- "logging_test"
+    expect_message(
+      app <- AppenderDbi$new(
+        conn = conn,
+        table = tname
+      ),
+      "will be created"
+    )
+    e <- LogEvent$new(yog, level = 600, msg = "ohno", caller = "nope()",
+                      timestamp = Sys.time())
+
+  # round trip event inserts
+    expect_silent(app$append(e))
+    expect_silent(app$append(e))
+    tres <- app$data
+    eres <- rbind(
+      as.data.frame(e, stringsAsFactors = FALSE),
+      as.data.frame(e, stringsAsFactors = FALSE)
+    )
+    expect_identical(tres[, -2], eres[, -2])
+    # small tolerance is allowed for timestamps
+    expect_true(all(as.numeric(tres[, 2]) - as.numeric(eres[, 2]) < 1))
+    expect_true(all(tres$timestamp == format(e$timestamp)))
+
+  # col order does not impact inserts
+    for (i in 1:20){
+      app$layout$set_col_types(sample(app$layout$col_types))
+      expect_silent(app$append(e))
+    }
+    expect_true(all(vapply(app$data$timestamp, all_are_identical, logical(1))))
+    expect_true(all(format(app$data$timestamp) == format(e$timestamp)))
+
+  # cleanup
+    expect_true(DBI::dbExistsTable(conn, tname))
+    DBI::dbExecute(conn, sprintf("DROP TABLE %s", tname))
+    expect_false(DBI::dbExistsTable(conn, tname))
+    RPostgreSQL::dbDisconnect(conn)
 })
 
 

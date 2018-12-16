@@ -112,3 +112,27 @@ LogEvent <- R6::R6Class(
     }
   )
 )
+
+
+
+
+#' Coerce LogEvents to Data Frames
+#'
+#' @inheritParams base::as.data.frame
+#' @param ... passed on to `as.data.frame.list`
+#' @export
+as.data.frame.LogEvent <- function(
+  x,
+  row.names = NULL,
+  optional = FALSE,
+  stringsAsFactors = default.stringsAsFactors(),
+  ...
+){
+  as.data.frame(
+    x$values,
+    row.names = row.names,
+    optional = FALSE,
+    stringsAsFactors = stringsAsFactors,
+    ...
+  )
+}

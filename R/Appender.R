@@ -557,7 +557,7 @@ AppenderDbi <- R6::R6Class(
       conn,
       table,
       threshold = NA_integer_,
-      layout = LayoutDbi$new(),
+      layout = select_dbi_layout(conn),
       close_on_exit = TRUE
     ){
       assert_namespace("DBI")
@@ -567,14 +567,7 @@ AppenderDbi <- R6::R6Class(
       private$.conn  <- conn
       private$.table <- table
 
-      table_exists <- tryCatch(
-        is.data.frame(
-          DBI::dbGetQuery(
-            self$conn,
-            sprintf("select 1 from %s where 1 = 2", table)
-          )),
-        error = function(e) FALSE
-      )
+      table_exists <- DBI::dbExistsTable(self$conn, table)
 
       if (table_exists){
         message("Logging to existing table '", table, "'")
@@ -629,6 +622,7 @@ AppenderDbi <- R6::R6Class(
       DBI::dbWriteTable(
         private$.conn,
         private$.table,
+        row.names = FALSE,
         dd,
         append = TRUE
       )

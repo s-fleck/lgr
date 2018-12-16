@@ -8,7 +8,7 @@ Log to a database table with any \strong{DBI} compatabile backend.
 }
 \section{Usage}{
 \preformatted{x <- AppenderDbi$new(conn, table, threshold = NA_integer_,
-  layout = LayoutDbi$new(), close_on_exit = TRUE)
+  layout = select_dbi_layout(conn), close_on_exit = TRUE)
 
 x$set_close_on_exit(x)
 x$show(n = 20, threshold = NA_integer_)

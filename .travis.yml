@@ -3,5 +3,9 @@
 language: R
 sudo: false
 cache: packages
+services:
+  - postgresql
 after_success:
   - Rscript -e 'covr::codecov()'
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres

@@ -2,6 +2,8 @@
 % Please edit documentation in R/Layout.R
 \name{LayoutDbi}
 \alias{LayoutDbi}
+\alias{LayoutSqlite}
+\alias{select_dbi_layout}
 \title{LayoutDbi}
 \description{
 Format a \link{LogEvent} as data.frame for inserting into a Database.
@@ -63,6 +65,22 @@ vector}
 }
 }
 
+\section{Database Specific Layouts}{
+
+
+Different databases have different data types and features. Currently the
+following \code{LayoutDBI} subclasses exist that deal with specific databases,
+but this list is expected to grow as yog matures:
+\itemize{
+\item \code{LayoutSQLite}: Needs its own Layout because SQLite does not support
+\code{timestamps}
+\item \code{LayoutDBI}: For all other datbases
+}
+
+The utility function \code{select_dbi_layout()} returns the appropriate
+Layout for a DBI connection.
+}
+
 \examples{
 # setup a dummy LogEvent
 event <- LogEvent$new(
@@ -77,6 +95,9 @@ event <- LogEvent$new(
 lo <- LayoutDbi$new()
 lo$format_event(event)
 
+# SQLite does not support timestamps so LayoutSqlite converts them to text
+lo <- LayoutSqlite$new()
+str(lo$format_event(event))
 
 # advanced example:
 lo <- LayoutDbi$new(
@@ -96,7 +117,7 @@ lo$format_event(event)
 
 }
 \seealso{
-\code{\link[=read_json_lines]{read_json_lines()}}, \url{http://jsonlines.org/}
+\link[DBI:DBI]{DBI::DBI}
 
 Other Layouts: \code{\link{LayoutFormat}},
   \code{\link{LayoutJson}}, \code{\link{LayoutTable}},
