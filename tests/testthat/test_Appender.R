@@ -109,6 +109,7 @@ test_that("AppenderMemoryDt: appending multiple rows works", {
 
 # AppenderDbi -------------------------------------------------------------
 
+
 # +- RSQLite --------------------------------------------------------------
 
 test_that("AppenderDbi / RSQLite: basic operations work", {
@@ -307,22 +308,34 @@ test_that("AppenderDbi / RSQlite: Automatic closing of connections works", {
 
 
 
-# +- Postgres -------------------------------------------------------------
+# +- Remote RDMS ----------------------------------------------------------
 
-test_that("AppenderDbi / RPostgreSQL works", {
-  if (!requireNamespace("RPostgreSQL", quietly = TRUE))
-    skip("Test requires RPostgreSQL")
+cons <- list()
 
-  conn <- try(RPostgreSQL::dbConnect(
-    RPostgreSQL::PostgreSQL(),
-    host = "localhost",
-    dbname = "travis_ci_test"
-  ), silent = TRUE)
+cons$MySQL <- try(DBI::dbConnect(
+  RMySQL::MySQL(),
+  user="root",
+  password="",
+  dbname="travis_ci_test",
+  host="localhost"
+), silent = TRUE)
 
-  if (inherits(conn, "try-error"))
-    skip("RPostgreSQL installed but cannot connect to travis_ci_test")
+cons$PostgreSQL <- try(RPostgreSQL::dbConnect(
+  RPostgreSQL::PostgreSQL(),
+  host = "localhost",
+  dbname = "travis_ci_test"
+), silent = TRUE)
 
-  # setup test environment
+
+for (nm in names(cons)){
+
+  test_that(paste("AppenderDbi /", nm), {
+    conn <- cons[[nm]]
+    if (inherits(conn, "try-error")){
+      skip(paste("Cannot connect to", nm, "database"))
+    }
+
+    # setup test environment
     tname <- "logging_test"
     expect_message(
       app <- AppenderDbi$new(
@@ -331,10 +344,11 @@ test_that("AppenderDbi / RPostgreSQL works", {
       ),
       "will be created"
     )
-    e <- LogEvent$new(yog, level = 600, msg = "ohno", caller = "nope()",
-                      timestamp = Sys.time())
+    e <- LogEvent$new(
+      yog, level = 600, msg = "ohno", caller = "nope()", timestamp = Sys.time()
+    )
 
-  # round trip event inserts
+    # round trip event inserts
     expect_silent(app$append(e))
     expect_silent(app$append(e))
     tres <- app$data
@@ -347,7 +361,7 @@ test_that("AppenderDbi / RPostgreSQL works", {
     expect_true(all(as.numeric(tres[, 2]) - as.numeric(eres[, 2]) < 1))
     expect_true(all(tres$timestamp == format(e$timestamp)))
 
-  # col order does not impact inserts
+    # col order does not impact inserts
     for (i in 1:20){
       app$layout$set_col_types(sample(app$layout$col_types))
       expect_silent(app$append(e))
@@ -355,12 +369,13 @@ test_that("AppenderDbi / RPostgreSQL works", {
     expect_true(all(vapply(app$data$timestamp, all_are_identical, logical(1))))
     expect_true(all(format(app$data$timestamp) == format(e$timestamp)))
 
-  # cleanup
+    # cleanup
     expect_true(DBI::dbExistsTable(conn, tname))
     DBI::dbExecute(conn, sprintf("DROP TABLE %s", tname))
     expect_false(DBI::dbExistsTable(conn, tname))
-    RPostgreSQL::dbDisconnect(conn)
-})
+    DBI::dbDisconnect(conn)
+  })
+}
 
 
 
