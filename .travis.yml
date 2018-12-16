@@ -3,9 +3,13 @@
 language: R
 sudo: false
 cache: packages
+r_binary_packages:
+  - devtools
+  - roxygen2
 services:
   - postgresql
 after_success:
   - Rscript -e 'covr::codecov()'
+  - Rscript -e 'devtools::install();devtools::test()'
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres

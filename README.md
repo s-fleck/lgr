@@ -59,8 +59,10 @@ mentained:
     read for humans and machines alike.
   * [DBI](https://github.com/r-dbi/DBI), 
     [RSQLite](https://github.com/r-dbi/RSQLite), 
-    [RJDBC](https://github.com/s-u/RJDBC) for logging to databases. In theorey
-    all DBI complient database packages for R should be supported. If you
+    [RJDBC](https://github.com/s-u/RJDBC),
+    [RPostgreSQL](https://cran.r-project.org/web/packages/RPostgreSQL/index.html)
+    for logging to databases. In theorey
+    all DBI compliant database packages for R should work. If you
     are using Yog with a database backend, please report your (positive and
     negative) experiences to me.
   * [whoami](https://github.com/r-lib/whoami/blob/master/DESCRIPTION) for 
