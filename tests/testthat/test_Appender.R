@@ -312,7 +312,7 @@ test_that("AppenderDbi / RSQlite: Automatic closing of connections works", {
 
 cons <- list()
 
-cons$MySQL <- try(DBI::dbConnect(
+cons[["MySQL via RMySQL"]] <- try(DBI::dbConnect(
   RMySQL::MySQL(),
   user="root",
   password="",
@@ -320,7 +320,16 @@ cons$MySQL <- try(DBI::dbConnect(
   host="localhost"
 ), silent = TRUE)
 
-cons$PostgreSQL <- try(RPostgreSQL::dbConnect(
+
+cons[["MySQL via RMariaDB"]]<- try(DBI::dbConnect(
+  RMariaDB::MariaDB(),
+  user="travis",
+  dbname="travis_ci_test",
+  host="localhost"
+), silent = TRUE)
+
+
+cons$PostgreSQL <- try(DBI::dbConnect(
   RPostgreSQL::PostgreSQL(),
   host = "localhost",
   dbname = "travis_ci_test"
@@ -332,7 +341,7 @@ for (nm in names(cons)){
   test_that(paste("AppenderDbi /", nm), {
     conn <- cons[[nm]]
     if (inherits(conn, "try-error")){
-      skip(paste("Cannot connect to", nm, "database"))
+      skip(trimws(paste("Cannot connect to", nm, "database: ", conn)))
     }
 
     # setup test environment

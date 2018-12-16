@@ -25,6 +25,7 @@ Suggests:
     knitr,
     rmarkdown,
     RSQLite,
+    RMariaDB,
     DBI,
     RPostgreSQL,
     testthat,

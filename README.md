@@ -4,12 +4,12 @@
 [![Travis build status](https://travis-ci.org/s-fleck/yog.svg?branch=master)](https://travis-ci.org/s-fleck/yog)
 [![Codecov test coverage](https://codecov.io/gh/s-fleck/yog/branch/master/graph/badge.svg)](https://codecov.io/gh/s-fleck/yog?branch=master)
 
-Yog is a fully featured logging package for R built on the back 
+yog is a fully featured logging package for R built on the back 
 of [R6](https://github.com/r-lib/R6) classes. It is designed to be flexible,
 performant and extensible. 
 
 Users that have not worked with R6 classes before, will find the way in which
-Loggers are configured in Yog a bit strange, but I did my best to compose a 
+Loggers are configured in yog a bit strange, but I did my best to compose a 
 hopefully helpful [package vignette](http://rpubs.com/hoelk/448497). 
 Users that come from python or Java, will feel at home as yog borrows heavily 
 from [Apache Log4j](https://logging.apache.org/log4j/2.x/) and
@@ -35,7 +35,7 @@ from [Apache Log4j](https://logging.apache.org/log4j/2.x/) and
 
 ## Development Status
 
-The internal architecture of Yog stable and tested. The current development 
+The internal architecture of yog stable and tested. The current development 
 focus is on completing the documentation, and adding new appenders so that
 yog has user-visible advantages over existing logging frameworks for R.
 A first CRAN release is planned for roughly April 2019 (at the latest).
@@ -57,13 +57,15 @@ mentained:
   * [jsonlite](https://github.com/jeroen/jsonlite) for JSON logging via 
     `LayoutJson`. JSON is a populat plaintext based file format that is easy to 
     read for humans and machines alike.
-  * [DBI](https://github.com/r-dbi/DBI), 
-    [RSQLite](https://github.com/r-dbi/RSQLite), 
-    [RJDBC](https://github.com/s-u/RJDBC),
-    [RPostgreSQL](https://cran.r-project.org/web/packages/RPostgreSQL/index.html)
-    for logging to databases. In theorey
-    all DBI compliant database packages should work. If you
-    are using Yog with a database backend, please report your (positive and
+  * [DBI](https://github.com/r-dbi/DBI) for logging to databases. Logging with
+    yog has been tested for the following DBI compatible backends: 
+    - [RSQLite](https://github.com/r-dbi/RSQLite), 
+    - [RMariaDB](https://cran.r-project.org/web/packages/RMySQL/index.html) for MariaDB and MySQL,
+    - [RPostgreSQL](https://cran.r-project.org/web/packages/RPostgreSQL/index.html),
+    - [RJDBC](https://github.com/s-u/RJDBC) for DB2. 
+    
+    In theory all DBI compliant database packages should work. If you
+    are using yog with a database backend, please report your (positive and
     negative) experiences to me.
   * [whoami](https://github.com/r-lib/whoami/blob/master/DESCRIPTION) for 
     guessing the user name from various sources. You can also set the user name 
