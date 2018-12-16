@@ -62,7 +62,7 @@ mentained:
     [RJDBC](https://github.com/s-u/RJDBC),
     [RPostgreSQL](https://cran.r-project.org/web/packages/RPostgreSQL/index.html)
     for logging to databases. In theorey
-    all DBI compliant database packages for R should work. If you
+    all DBI compliant database packages should work. If you
     are using Yog with a database backend, please report your (positive and
     negative) experiences to me.
   * [whoami](https://github.com/r-lib/whoami/blob/master/DESCRIPTION) for 
