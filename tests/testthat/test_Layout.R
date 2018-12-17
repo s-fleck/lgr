@@ -1,7 +1,7 @@
 context("Layout")
 
 
-x <- LogEvent$new(
+tevent <- LogEvent$new(
   logger = Logger$new("dummy"),
   level = 200L,
   timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
@@ -37,50 +37,67 @@ test_that("LayoutDbi works as expected", {
     level = "smallint",
     msg = "varchar(1024)",
     user = "varchar(256)",
-    pid = "integer",
-    teststring = "varchar(256)"
+    foo = "varchar(255)"
+  )
+
+  expect_error(
+    lo <- LayoutDbi$new(
+      event_vals = c("level", "timestamp", "msg"),
+      logger_vals = "user",
+      col_types = col_types
+    ), "foo"
+  )
+
+  expect_error(
+    lo <- LayoutDbi$new(
+      event_vals = c("level", "timestamp", "msg", "foo", "caller"),
+      logger_vals = "user",
+      col_types = col_types
+    ), "caller"
   )
 
   lo <- LayoutDbi$new(
-    event_vals = c("level", "timestamp", "msg"),
+    event_vals = c("level", "timestamp", "msg", "foo"),
     logger_vals = "user",
-    other_vals = list(pid = Sys.getpid, teststring = "blah"),
     col_types = col_types
   )
+
+  x <- tevent$clone()
+  x$foo <- "bar"
 
   eres <- c(x$values, user = x$logger$user)
   tres <- lo$format_event(x)
 
-  expect_identical(names(tres), names(col_types))
+  tres[sapply(tres, is.null)] <- NA_character_
+  expect_setequal(names(eres), c(names(tres), "caller"))
   expect_identical(tres[["level"]], eres[["level"]])
   expect_identical(tres[["msg"]], eres[["msg"]])
   expect_identical(tres[["user"]], eres[["user"]])
+  expect_true(is.null(tres[["caller"]]))
   expect_equal(as.POSIXct(tres[["timestamp"]]), eres[["timestamp"]], tolerance = 1)
-  expect_equal(tres[["pid"]], Sys.getpid())
-  expect_equal(tres[["teststring"]], "blah")
+  expect_equal(tres[["foo"]], "bar")
 })
 
 
 test_that("LayoutJson works as expected", {
   lo <- LayoutJson$new(
-    logger_vals = "user",
-    other_vals = list(pid = Sys.getpid, teststring = "blah")
+    logger_vals = "user"
   )
 
-  eres <- c(x$values, user = x$logger$user)
+  x <- tevent$clone()
+  x$foo <- "bar"
+
+  eres <- c(x$values, user = x$logger$user, foo = "bar")
   json <- lo$format_event(x)
   tres <- jsonlite::fromJSON(json)
 
 
   tres[sapply(tres, is.null)] <- NA_character_
-
-  expect_setequal(c(names(eres), "pid", "teststring"), names(tres))
+  expect_setequal(c(names(eres), "foo"), names(tres))
   expect_identical(tres[["level"]], eres[["level"]])
   expect_identical(tres[["msg"]], eres[["msg"]])
   expect_identical(tres[["user"]], eres[["user"]])
   expect_identical(tres[["caller"]], eres[["caller"]])
   expect_equal(as.POSIXct(tres[["timestamp"]]), eres[["timestamp"]], tolerance = 1)
-  expect_equal(tres[["pid"]], Sys.getpid())
-  expect_equal(tres[["teststring"]], "blah")
-
+  expect_equal(tres[["foo"]], "bar")
 })

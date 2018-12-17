@@ -4,8 +4,7 @@ context("read_json_lines")
 test_that("read_json_lines works as expected", {
   tf <- tempfile()
   lo <- LayoutJson$new(
-    logger_vals = "user",
-    other_vals = list(pid = Sys.getpid, teststring = "blah")
+    logger_vals = "user"
   )
   lgr <- Logger$new(
     "test",

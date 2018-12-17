@@ -183,11 +183,6 @@ LayoutFormat <- R6::R6Class(
 #'   \item{`logger_vals`}{Names of the fields of the [Logger] that produced the
 #'     [LogEvent] to include in the output object.
 #'   }
-#'
-#'   \item{`other_vals`}{A named `list` of any kind of \R values. Functions in
-#'     this `list`` will be executed with no arguments and their results will
-#'     be included in the results object (see examples)
-#'   }
 #' }
 #'
 #'
@@ -207,13 +202,6 @@ LayoutTable <- R6::R6Class(
   public = list(
     format_event = function(event) {NULL},
 
-    set_other_vals = function(x){
-      assert(is.list(x) || is.null(x))
-      assert(identical(length(names(x)), length(x)))
-      private$.other_vals <- x
-      invisible(self)
-    },
-
     set_event_vals = function(x){
       private$.event_vals <- x
       invisible(self)
@@ -226,13 +214,11 @@ LayoutTable <- R6::R6Class(
   ),
 
   active = list(
-    other_vals  = function() private$.other_vals,
     event_vals  = function() private$.event_vals,
     logger_vals = function() private$.logger_vals
   ),
 
   private = list(
-    .other_vals = NULL,
     .event_vals = NULL,
     .logger_vals = NULL
   )
@@ -256,7 +242,7 @@ LayoutTable <- R6::R6Class(
 #' \describe{
 #'   \item{`col_types`}{a named `character` vector of column types supported by
 #'     the target database. Must include all columns described in `event_vals`,
-#'     `logger_vals` and `other_vals`. If a new database table is created by
+#'     `logger_vals`. If a new database table is created by
 #'     LayoutDbi its column order will correspond to the order of `col_types`.
 #'   }
 #' }
@@ -314,7 +300,6 @@ LayoutTable <- R6::R6Class(
 #' lo <- LayoutDbi$new(
 #'   event_vals = c("level", "timestamp", "msg"),
 #'   logger_vals = "user",
-#'   other_vals = list(pid = Sys.getpid, teststring = "blah"),
 #'   col_types =  c(
 #'     timestamp = "timestamp",
 #'     level = "smallint",
@@ -339,25 +324,36 @@ LayoutDbi <- R6::R6Class(
     initialize = function(
       event_vals  = c("level", "timestamp", "caller", "msg"),
       logger_vals = NULL,
-      other_vals = NULL,
       col_types = NULL
     ){
       if (!is.null(col_types)){
         assert(all_are_distinct(names(col_types)))
-        assert(setequal(
-          names(col_types),
-          c(event_vals, logger_vals, names(other_vals))
-        ),
-          "col_type missing for columns: ",
-           paste(
-             setdiff(c(event_vals, logger_vals, names(other_vals)), names(col_types)),
-             collapse = ", "
-           )
-         )
+
+        if (!setequal(names(col_types), c(event_vals, logger_vals))){
+          msg <- ""
+          mis_ct <- setdiff(c(event_vals, logger_vals), names(col_types))
+          ext_ct <- setdiff(names(col_types), c(event_vals, logger_vals))
+
+          if (length(mis_ct)){
+            msg <- paste0(
+              "col_type missing: ", paste(mis_ct, collapse = ", "), "."
+            )
+          }
+
+          if (length(ext_ct)){
+            msg <- paste0(
+              msg, "col_type defined but not part of layout: ",
+              paste(ext_ct, collapse = ", "),
+              "."
+            )
+          }
+
+          stop(msg, call. = FALSE)
+        }
       }
+
       self$set_event_vals(event_vals)
       self$set_logger_vals(logger_vals)
-      self$set_other_vals(other_vals)
       self$set_col_types(col_types)
     },
 
@@ -366,17 +362,6 @@ LayoutDbi <- R6::R6Class(
 
       if (!is.null(self$logger_vals)){
         vals <- c(vals, mget(self$logger_vals, event[["logger"]]))
-      }
-
-      if (!is.null(private$.other_vals)){
-        ov <- private$.other_vals
-        for (i in seq_along(ov)){
-          nm <- names(ov)[[i]]
-          if (is.function(ov[[i]]))
-            vals[[nm]] <- ov[[i]]()
-          else
-            vals[[nm]] <- ov[[i]]
-        }
       }
 
       if (!is.null(private$.col_types)){
@@ -429,17 +414,6 @@ LayoutSqlite <- R6::R6Class(
 
       if (!is.null(self$logger_vals)){
         vals <- c(vals, mget(self$logger_vals, event[["logger"]]))
-      }
-
-      if (!is.null(private$.other_vals)){
-        ov <- private$.other_vals
-        for (i in seq_along(ov)){
-          nm <- names(ov)[[i]]
-          if (is.function(ov[[i]]))
-            vals[[nm]] <- ov[[i]]()
-          else
-            vals[[nm]] <- ov[[i]]
-        }
       }
 
       vals <- lapply(
@@ -507,19 +481,27 @@ select_dbi_layout <- function(conn){
 #' @examples
 #'
 #' # setup a dummy LogEvent
+#'
 #' event <- LogEvent$new(
 #'   logger = Logger$new("dummy logger", user = "testuser"),
 #'   level = 200,
 #'   timestamp = Sys.time(),
 #'   caller = NA_character_,
-#'   msg = "a test message"
+#'   msg = "a test message",
+#'   custom_field = "LayoutJson can handle arbitrary fields"
 #' )
+#'
+#' # Default settings show all event fals
+#' lo <- LayoutJson$new()
+#' lo$format_event(event)
+#'
+#'
+#' # Values from the LogEvent can be suppressed, and values from the Logger
+#' # can be added
 #' lo <- LayoutJson$new(
 #'   event_vals = c("level", "timestamp", "msg"),
-#'   logger_vals = "user",
-#'   other_vals = list(pid = Sys.getpid, random_number = function() runif(3), teststring = "blah")
+#'   logger_vals = c("user", logger_name = "name")
 #' )
-#' lo$format_event(event)
 #' lo$format_event(event)
 #'
 NULL
@@ -533,33 +515,25 @@ LayoutJson <- R6::R6Class(
   inherit = LayoutTable,
   public = list(
     initialize = function(
-      event_vals  = c("level", "timestamp", "caller", "msg"),
+      event_vals  = NULL,
       logger_vals = NULL,
-      other_vals = NULL,
       toJSON_args = list(auto_unbox = TRUE)
     ){
       self$set_toJSON_args(toJSON_args)
       self$set_event_vals(event_vals)
       self$set_logger_vals(logger_vals)
-      self$set_other_vals(other_vals)
     },
 
     format_event = function(event) {
-      vals <- mget(self$event_vals, event)
+
+      if (is.null(self$event_vals)){
+        vals <- get("values", event)
+      } else {
+        vals <- mget(self$event_vals, event)
+      }
 
       if (!is.null(self$logger_vals)){
         vals <- c(vals, mget(self$logger_vals, event[["logger"]]))
-      }
-
-      if (!is.null(private$.other_vals)){
-        ov <- private$.other_vals
-        for (i in seq_along(ov)){
-         nm <- names(ov)[[i]]
-         if (is.function(ov[[i]]))
-           vals[[nm]] <- ov[[i]]()
-         else
-           vals[[nm]] <- ov[[i]]
-        }
       }
 
       do.call(jsonlite::toJSON, args = c(list(vals), self$toJSON_args))

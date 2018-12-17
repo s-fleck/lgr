@@ -53,23 +53,26 @@
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{`fatal(msg, ...)`}{Logs a message with level `FATAL` on this logger.
-#'     The arguments are interpreted as for `trace()`.}
+#'   \item{`fatal(msg, ...)`}{Logs a message with level `fatal` on this logger.
+#'     If there are *unnamed* arguments in `...`, they will be pased to
+#'     `base::sprintf()` along with message. Named arguments will be passed
+#'     as custom fields to [LogEvent]. If there are named arguments the names
+#'     must be unique}
 #'
-#'   \item{`error(msg, ...)`}{Logs a message with level `ERROR` on this logger.
-#'     The arguments are interpreted as for `trace()`.}
+#'   \item{`error(msg, ...)`}{Logs a message with level `error` on this logger.
+#'     The arguments are interpreted as for `fatal()`.}
 #'
-#'   \item{`warn(msg, ...)`}{Logs a message with level `WARN` on this logger.
-#'     The arguments are interpreted as for `trace()`.}
+#'   \item{`warn(msg, ...)`}{Logs a message with level `warn` on this logger.
+#'     The arguments are interpreted as for `fatal()`.}
 #'
-#'   \item{`info(msg, ...)`}{Logs a message with level `INFO` on this logger.
-#'     The arguments are interpreted as for `trace()`.}
+#'   \item{`info(msg, ...)`}{Logs a message with level `info` on this logger.
+#'     The arguments are interpreted as for `fatal()`.}
 #'
-#'   \item{`debug(msg, ...)`}{Logs a message with level `DEBUG` on this logger.
-#'     The arguments are interpreted as for `trace()`.}
+#'   \item{`debug(msg, ...)`}{Logs a message with level `debug` on this logger.
+#'     The arguments are interpreted as for `fatal()`.}
 #'
-#'   \item{`trace(msg, ...)`}{Logs a message with level `TRACE` on this logger.
-#'   `msg` and `...` are passed on to [base::sprintf()].}
+#'   \item{`trace(msg, ...)`}{Logs a message with level `trace` on this logger.
+#'   `msg` and `...` are passed on to [base::fatal()].}
 #'
 #'   \item{`log(level, msg, timestamp, caller)`}{Logs a message with `level`.}
 #'
@@ -140,7 +143,7 @@
 #' yog$fatal("This is a serious error")
 #'
 #' # if you want to take advantage of hierarchical logging, you can create new loggers.
-#' # the following creates a new logger that logs to a temporary file.
+#' #' # the following creates a new logger that logs to a temporary file.
 #' tf <- tempfile()
 #' mylogger <- Logger$new(
 #'   "mylogger",
@@ -153,7 +156,16 @@
 #' mylogger$fatal("blubb")
 #' readLines(tf)
 #'
+#' # use string inerpolation and custom fields
+#' tf2 <- tempfile()
+#' mylogger$add_appender(AppenderFile$new(tf2, layout = LayoutJson$new()))
+#' mylogger$info("Not all %s support custom fields", "appenders", type = "test")
+#' readLines(tf)
+#' readLines(tf2)
+#'
 NULL
+
+
 
 
 
