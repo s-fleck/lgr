@@ -203,19 +203,21 @@ LayoutTable <- R6::R6Class(
     format_event = function(event) {NULL},
 
     set_event_vals = function(x){
+      names(x)[names(x) == ""] <- x[names(x) == ""]
       private$.event_vals <- x
       invisible(self)
     },
 
     set_logger_vals = function(x){
+      names(x)[names(x) == ""] <- x[names(x) == ""]
       private$.logger_vals <- x
       invisible(self)
     }
   ),
 
   active = list(
-    event_vals  = function() private$.event_vals,
-    logger_vals = function() private$.logger_vals
+    event_vals  = function() get(".event_vals", private),
+    logger_vals = function() get(".logger_vals", private)
   ),
 
   private = list(
@@ -525,15 +527,17 @@ LayoutJson <- R6::R6Class(
     },
 
     format_event = function(event) {
-
       if (is.null(self$event_vals)){
         vals <- get("values", event)
       } else {
         vals <- mget(self$event_vals, event)
+        names(vals) <- names(self$event_vals)
       }
 
       if (!is.null(self$logger_vals)){
-        vals <- c(vals, mget(self$logger_vals, event[["logger"]]))
+        lvs <- mget(self$logger_vals, event[["logger"]])
+        names(lvs) <- names(self$logger_vals)
+        vals <- c(vals, lvs)
       }
 
       do.call(jsonlite::toJSON, args = c(list(vals), self$toJSON_args))

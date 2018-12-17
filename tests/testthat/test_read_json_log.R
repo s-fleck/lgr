@@ -4,7 +4,7 @@ context("read_json_lines")
 test_that("read_json_lines works as expected", {
   tf <- tempfile()
   lo <- LayoutJson$new(
-    logger_vals = "user"
+    logger_vals = c(logger_user = "user")
   )
   lgr <- Logger$new(
     "test",
@@ -20,7 +20,9 @@ test_that("read_json_lines works as expected", {
   lgr$debug("test")
   lgr$trace("test")
 
+  tres <- read_json_lines(tf)
 
-  expect_true(all(read_json_lines(tf)$level == seq(100, 600, by = 100)))
+  expect_identical(names(tres), c("level", "timestamp", "caller", "msg", "logger_user"))
+  expect_true(all(tres$level == seq(100, 600, by = 100)))
   file.remove(tf)
 })

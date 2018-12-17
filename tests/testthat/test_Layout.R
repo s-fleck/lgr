@@ -81,13 +81,13 @@ test_that("LayoutDbi works as expected", {
 
 test_that("LayoutJson works as expected", {
   lo <- LayoutJson$new(
-    logger_vals = "user"
+    logger_vals = c(logger_user = "user")
   )
 
   x <- tevent$clone()
   x$foo <- "bar"
 
-  eres <- c(x$values, user = x$logger$user, foo = "bar")
+  eres <- c(x$values, logger_user = x$logger$user, foo = "bar")
   json <- lo$format_event(x)
   tres <- jsonlite::fromJSON(json)
 
@@ -100,4 +100,15 @@ test_that("LayoutJson works as expected", {
   expect_identical(tres[["caller"]], eres[["caller"]])
   expect_equal(as.POSIXct(tres[["timestamp"]]), eres[["timestamp"]], tolerance = 1)
   expect_equal(tres[["foo"]], "bar")
+
+
+  # named event vals
+  lo <- LayoutJson$new(
+    event_vals  = c(event_foo = "foo"),
+    logger_vals = c(logger_user = "user", "ancestry")
+  )
+
+  expect_match(lo$format_event(x), "event_foo")
+  expect_match(lo$format_event(x), "logger_user")
+  expect_match(lo$format_event(x), "ancestry")
 })
