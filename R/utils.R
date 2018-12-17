@@ -3,7 +3,7 @@
 #' Try to determine the current user. Defaults to `getOption("yog.user")`. If
 #' the option is not set, `Sys.info()[["user"]]` is used. If the option is not
 #' set and the package **whoami** is available, the user name
-#' is guessed to whichever of the following is available: `email_address``,
+#' is guessed based on whichever of the following is available: `email_address`,
 #' `fullname`, `gh_username`, `username`.
 #'
 #' @param fallback A fallback in case the user name could not be determined

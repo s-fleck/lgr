@@ -237,33 +237,41 @@ Logger <- R6::R6Class(
         }
 
         # init
-        dots <- list(...)
         msg <- as.character(msg)
-        custom_vals <- list()
 
-        # update log event
-        if (length(dots) > 0){
+        if (missing(...)){
+          vals <- list(
+            logger = self,
+            level = level,
+            timestamp = timestamp,
+            caller = caller,
+            msg = msg
+          )
+        } else {
+          dots <- list(...)
           if (is.null(names(dots))){
-            msg <- sprintf(msg, ...)
+            vals <- list(
+              logger = self,
+              level = level,
+              timestamp = timestamp,
+              caller = caller,
+              msg = sprintf(msg, ...)
+            )
           } else {
             not_named <- vapply(names(dots), is_blank, TRUE, USE.NAMES = FALSE)
-            msg <- do.call(sprintf, c(list(msg), dots[not_named]))
-            custom_vals <- dots[!not_named]
+            vals <- c(list(
+              logger = self,
+              level = level,
+              timestamp = timestamp,
+              caller = caller,
+              msg = do.call(sprintf, c(list(msg), dots[not_named]))
+            ), dots[!not_named])
           }
         }
 
         private[[".last_event"]] <- do.call(
           get("new", envir = LogEvent),
-          c(
-            list(
-              logger = self,
-              level = level,
-              timestamp = timestamp,
-              caller = caller,
-              msg = msg
-            ),
-            custom_vals
-          )
+          vals
         )
 
         # emit

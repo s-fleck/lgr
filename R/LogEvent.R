@@ -98,9 +98,9 @@ LogEvent <- R6::R6Class(
       assign("msg", msg, self)
 
       # custom values
-      dots <- list(...)
-      if (length(...) > 0){
-        assert(all_are_distinct(names(dots)))
+      if (!missing(...)){
+        dots <- list(...)
+        assert(identical(length(names(dots)), length(dots)))
         for (nm in names(dots)){
           assign(nm, dots[[nm]], self)
         }

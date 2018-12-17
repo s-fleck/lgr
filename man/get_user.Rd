@@ -16,7 +16,8 @@ a \code{character} scalar.
 Try to determine the current user. Defaults to \code{getOption("yog.user")}. If
 the option is not set, \code{Sys.info()[["user"]]} is used. If the option is not
 set and the package \strong{whoami} is available, the user name
-is guessed to whichever of the following is available: \code{email_address``, }fullname\code{, }gh_username\code{, }username`.
+is guessed based on whichever of the following is available: \code{email_address},
+\code{fullname}, \code{gh_username}, \code{username}.
 }
 \examples{
   get_user()
