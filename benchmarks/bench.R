@@ -3,7 +3,11 @@ library(futile.logger)
 library(yog)
 library(magrittr)
 library(logging)
+library(ggplot2)
+library(data.table)
+
 t2 <- tempfile()
+
 
 #devtools::install_github("smbache/loggr")
 
@@ -61,5 +65,31 @@ hist <- readRDS("benchmarks/history.rds")
 dd <- c(dd, hist)
 
 print(dd[1:2])
+
+
+pdat <- lapply(dd[1:5], function(.x) {
+  as.data.table(.x)[, .(expression = as.character(.x$expression), median)]
+})
+
+pdat <- data.table::rbindlist(pdat, idcol = "date")
+
+pdat[, expression := forcats::fct_reorder(expression, median)]
+
+p <- ggplot(
+  pdat,
+  aes(
+    x = expression,
+    y = as.numeric(median),
+    fill = date
+  )
+) +
+  geom_col(position = "dodge") +
+  scale_fill_brewer()
+
+p
+
+plotly::ggplotly(p)
+
+
 
 saveRDS(dd, "benchmarks/history.rds")

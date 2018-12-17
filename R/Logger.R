@@ -236,24 +236,35 @@ Logger <- R6::R6Class(
           return(invisible(msg))
         }
 
+        # init
+        dots <- list(...)
+        msg <- as.character(msg)
+        custom_vals <- list()
 
         # update log event
-          # standard fields
-          assign("level", level, envir = self[["last_event"]])
-          assign("timestamp", timestamp,  envir = self[["last_event"]])
-          assign("caller", caller, envir = self[["last_event"]])
-          assign("msg", msg, envir = self[["last_event"]])
-
-          # custom fields
-          dots <- list(...)
-          assert(
-            identical(length(names(dots)), length(dots)),
-            "Custom fields supplied to Logger must be named"
-          )
-          for (nm in names(dots)){
-            assign(nm, dots[[nm]], envir = self[["last_event"]])
+        if (length(dots) > 0){
+          if (is.null(names(dots))){
+            msg <- sprintf(msg, ...)
+          } else {
+            not_named <- vapply(names(dots), is_blank, TRUE, USE.NAMES = FALSE)
+            msg <- do.call(sprintf, c(list(msg), dots[not_named]))
+            custom_vals <- dots[!not_named]
           }
+        }
 
+        private[[".last_event"]] <- do.call(
+          get("new", envir = LogEvent),
+          c(
+            list(
+              logger = self,
+              level = level,
+              timestamp = timestamp,
+              caller = caller,
+              msg = msg
+            ),
+            custom_vals
+          )
+        )
 
         # emit
         if (self$filter(self$last_event)){
@@ -271,49 +282,61 @@ Logger <- R6::R6Class(
 
     fatal = function(msg, ...){
       self$log(
-        msg = sprintf(as.character(msg), ...),
+        msg = msg,
         caller = get_caller(-4L),
-        level = 100
+        level = 100,
+        timestamp = Sys.time(),
+        ...
       )
     },
 
     error = function(msg, ...){
       self$log(
-        msg = sprintf(as.character(msg), ...),
+        msg = msg,
         caller = get_caller(-4L),
-        level = 200
+        level = 200,
+        timestamp = Sys.time(),
+        ...
       )
     },
 
     warn = function(msg, ...){
       self$log(
-        msg = sprintf(as.character(msg), ...),
+        msg = msg,
         caller = get_caller(-4L),
-        level = 300
+        level = 300,
+        timestamp = Sys.time(),
+        ...
       )
     },
 
     info = function(msg, ...){
       self$log(
-        msg = sprintf(as.character(msg), ...),
+        msg = msg,
         caller = get_caller(-4L),
-        level = 400
+        level = 400,
+        timestamp = Sys.time(),
+        ...
       )
     },
 
     debug = function(msg, ...){
       self$log(
-        msg = sprintf(as.character(msg), ...),
+        msg = msg,
         caller = get_caller(-4L),
-        level = 500
+        level = 500,
+        timestamp = Sys.time(),
+        ...
       )
     },
 
     trace = function(msg, ...){
       self$log(
-        msg = sprintf(as.character(msg), ...),
+        msg = msg,
         caller = get_caller(-4L),
-        level = 600
+        level = 600,
+        timestamp = Sys.time(),
+        ...
       )
     },
 

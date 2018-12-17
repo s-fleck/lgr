@@ -86,14 +86,26 @@ LogEvent <- R6::R6Class(
       level = 400,
       timestamp = Sys.time(),
       caller = NA,
-      msg = NA
+      msg = NA,
+      ...
     ){
       assert(inherits(logger, "Logger"))
-      self$logger <- logger
-      self$level  <- level
-      self$timestamp <- timestamp
-      self$caller <- caller
-      self$msg <- msg
+
+      assign("logger", logger, self)
+      assign("level", level, self)
+      assign("timestamp", timestamp, self)
+      assign("caller", caller, self)
+      assign("msg", msg, self)
+
+      # custom values
+      dots <- list(...)
+      if (length(...) > 0){
+        assert(all_are_distinct(names(dots)))
+        for (nm in names(dots)){
+          assign(nm, dots[[nm]], self)
+        }
+      }
+
       invisible(self)
     },
     logger = NULL,
@@ -105,10 +117,12 @@ LogEvent <- R6::R6Class(
 
   active = list(
     values = function(){
-      valnames <- setdiff(
+      fixed_vals   <- c("level", "timestamp", "caller", "msg")
+      custom_vals <- setdiff(
         names(self[[".__enclos_env__"]][["self"]]),
         c(".__enclos_env__", "level_name", "initialize", "clone", "values", "logger")
       )
+      valnames <- union(fixed_vals, custom_vals)
       mget(valnames, envir = self)
     },
     level_name = function(){

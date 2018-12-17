@@ -12,7 +12,7 @@ contains at minimum the \link{log_level}, a timestamp and the log message.
 }
 \section{Usage}{
 \preformatted{x <- LogEvent$new(logger, level = 400, timestamp = Sys.time(), caller = NA,
-  msg = NA)
+  msg = NA, ...)
 
 x$clone(deep = FALSE)
 

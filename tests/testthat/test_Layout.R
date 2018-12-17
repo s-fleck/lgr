@@ -1,4 +1,4 @@
-context("layouts")
+context("Layout")
 
 
 x <- LogEvent$new(
