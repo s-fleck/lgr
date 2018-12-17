@@ -91,6 +91,8 @@ LogEvent <- R6::R6Class(
     ){
       assert(inherits(logger, "Logger"))
 
+      # assign has less overhead than [[ and event creation needs to be as fast
+      # as possible
       assign("logger", logger, self)
       assign("level", level, self)
       assign("timestamp", timestamp, self)

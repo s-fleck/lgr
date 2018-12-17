@@ -269,9 +269,12 @@ Logger <- R6::R6Class(
           }
         }
 
-        private[[".last_event"]] <- do.call(
-          get("new", envir = LogEvent),
-          vals
+        # event creation needs to be as fast as possible, so we are using assign
+        # to prevent the overhead of [[
+        assign(
+          ".last_event",
+          do.call(get("new", envir = LogEvent), vals),
+          private
         )
 
         # emit
@@ -537,7 +540,7 @@ Logger <- R6::R6Class(
         lvl <- ll[[i]]
         private$suspended_loggers[[nm]] <- self[[nm]]
         unlockBinding(nm, env = self)
-        self[[nm]] <- function(...) invisible()
+        self[[nm]] <- function(...) NULL
         lockBinding(nm, env = self)
       }
       invisible(self)
