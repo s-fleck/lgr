@@ -14,6 +14,7 @@ Format a \link{LogEvent} as data.frame for inserting into a Database.
 
 x$format_event(event)
 x$set_col_types(x)
+x$sql_create_table(table)
 x$clone(deep = FALSE)
 
 x$col_names

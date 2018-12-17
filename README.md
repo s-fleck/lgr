@@ -58,7 +58,7 @@ mentained:
     `LayoutJson`. JSON is a populat plaintext based file format that is easy to 
     read for humans and machines alike.
   * [DBI](https://github.com/r-dbi/DBI) for logging to databases. Logging with
-    yog has been tested for the following DBI compatible backends: 
+    yog has been tested with the following backends: 
     - [RSQLite](https://github.com/r-dbi/RSQLite), 
     - [RMariaDB](https://cran.r-project.org/web/packages/RMySQL/index.html) for MariaDB and MySQL,
     - [RPostgreSQL](https://cran.r-project.org/web/packages/RPostgreSQL/index.html),

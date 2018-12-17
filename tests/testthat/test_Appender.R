@@ -1,4 +1,4 @@
-context("appenders")
+context("Appender")
 
 
 
@@ -107,25 +107,160 @@ test_that("AppenderMemoryDt: appending multiple rows works", {
 
 
 
+# AppenderBuffer ----------------------------------------------------
+
+test_that("AppenderBuffer behaves as expected", {
+  tf <- tempfile()
+
+  # Sub sub appenders must have a reference to the original logger
+  l <- Logger$new(
+    "dummy",
+    appenders = list(
+      buffer = AppenderBuffer$new(
+        appenders = list(file = AppenderFile$new(file = tf)),
+        buffer_size = 10
+      )
+    ),
+    parent = NULL
+  )
+  l$info(LETTERS[1:3])
+  expect_identical(length(l$appenders$buffer$buffered_events), 1L)
+  l$info(LETTERS[4:7])
+  expect_identical(length(l$appenders$buffer$buffered_events), 2L)
+
+
+  # FATAL log level triggers flush
+  l$fatal(letters[1:3])
+  expect_identical(l$appenders$buffer$buffered_events, list())
+  expect_match(
+    paste(readLines(tf), collapse = "#"),
+    "INFO.*A#INFO.*B#INFO.*C#INFO.*D#INFO.*E#INFO.*F#INFO.*G#FATAL.*a#FATAL.*b#FATAL.*c"
+  )
+
+  # Does the next flush flush the correct event?
+  l$fatal("x")
+  expect_identical(length(readLines(tf)), 11L)
+  expect_identical(l$appenders$buffer$buffered_events, list())
+  expect_match(paste(readLines(tf), collapse = "#"), ".*A#.*B#.*C#.*a#.*b#.*c#.*x")
+
+  # does flushing on memory cycling work?
+  replicate(10, l$info("z"))
+  expect_identical(length(l$appenders$buffer$buffered_events), 10L)
+  l$info(c("y", "y", "y"))
+  expect_identical(length(readLines(tf)), 24L)
+  expect_identical(l$appenders$buffer$buffered_events, list())
+  expect_match(
+    paste(readLines(tf), collapse = "#"),
+    ".*A#.*B#.*C#.*a#.*b#.*c#.*x(.*z.*){10}(.*y.*){3}"
+  )
+
+  # manual flushing works
+  l$info(c("y", "y", "y"))
+  l$appenders$buffer$flush()
+  expect_identical(length(readLines(tf)), 27L)
+  eres <- readLines(tf)
+  expect_match(paste(eres, collapse = "#"), "(.*z.*){10}(.*y.*){6}")
+
+
+  # memory cycling without flushing also works
+  l$appenders$buffer$set_flush_on_rotate(FALSE)
+  for (i in 1:15) l$info(i)
+  expect_identical(length(l$appenders$buffer$buffered_events), 10L)
+  msgs <- sapply(l$appenders$buffer$buffered_events, `[[`, "msg")
+  expect_identical(msgs, as.character(6:15))
+  # Nothing should have been flushed to the log file
+  expect_identical(readLines(tf), eres)
+
+
+  # does flushing on object destruction work?
+  l$appenders$buffer$flush()  # ensure empty appender
+  l$info(c("destruction", "destruction"))
+  expect_identical(length(l$appenders$buffer$buffered_events), 1L)
+  rm(l)
+  gc()
+  expect_match(
+    paste(readLines(tf), collapse = "#"),
+    "(.*destruction){2}"
+  )
+
+
+
+  # does flushing honor log levels and filters??
+  try(file.remove(tf), silent = TRUE)
+})
+
+
+
+
+test_that("AppenderBuffer: dont flush on object destruction if switched of", {
+  tf <- tempfile()
+
+  # Sub sub appenders must have a reference to the original logger
+  l <- Logger$new(
+    "dummy",
+    appenders = list(
+      buffer = AppenderBuffer$new(
+        appenders = list(file = AppenderFile$new(file = tf)),
+        buffer_size = 10
+      )
+    ),
+    parent = NULL
+  )
+  l$info(LETTERS[1:3])
+  l$appenders$buffer$set_flush_on_exit(FALSE)
+  rm(l)
+  gc()
+  expect_true(!file.exists(tf))
+  suppressWarnings(file.remove(tf))
+})
+
+
+
+
+test_that("AppenderMemory: memory cycling works", {
+  app1 <- AppenderMemoryDt$new(buffer_size = 10)
+  replicate(12, app1$append(x))
+  expect_equal(app1$data$.id, 3:12)
+  r1 <- app1$data
+
+  # bulk insert behaves like sepparate inserts
+  app2 <- AppenderMemoryDt$new(buffer_size = 10)
+  y <- x$clone()
+  y$msg <- rep(y$msg, 12)
+
+  app2$append(y)
+  expect_equal(app2$data$.id,  3:12)
+  expect_equal(app2$data, r1)
+})
+
+
+
+
+test_that("Appender: filters work", {
+  app1 <- AppenderConsole$new()
+  expect_true(app1$filter(x))
+  app1$set_threshold(100)
+  expect_false(app1$filter(x))
+})
+
+
+
+
+
 # AppenderDbi + AppenderRjdbc ---------------------------------------------
 
 # +- Multiple RDMS ----------------------------------------------------------
 
+dt_sp <- options("datatable.showProgress")
 options("datatable.showProgress" = FALSE)
 
 dbs <- list(
-  "SQLite via RSQLite" = list(
-    conn = DBI::dbConnect(RSQLite::SQLite(), ":memory:"),
-    ctor = AppenderDbi
-  ),
-
   "MySQL via RMySQL" = list(
     conn = try(silent = TRUE, DBI::dbConnect(
       RMySQL::MySQL(),
-      user="root",
-      password="",
-      dbname="travis_ci_test",
-      host="localhost"
+      username = "travis",
+      dbname = "travis_ci_test",
+      host = "localhost"
     )),
     ctor = AppenderDbi
   ),
@@ -133,9 +268,9 @@ dbs <- list(
   "MySQL via RMariaDB" = list(
     conn = try(silent = TRUE, DBI::dbConnect(
       RMariaDB::MariaDB(),
-      user="travis",
-      dbname="travis_ci_test",
-      host="localhost"
+      username = "travis",
+      dbname = "travis_ci_test",
+      host = "localhost"
     )),
     ctor = AppenderDbi
   ),
@@ -152,15 +287,23 @@ dbs <- list(
   "DB2 via RJDBC" = list(
     conn = try(silent = TRUE, dataSTAT::dbConnectDB2("RTEST", "rtest", "rtest")),
     ctor = AppenderRjdbc
+  ),
+
+  # keep SQLite last so that the testthat::context calls stay correct
+  "SQLite via RSQLite" = list(
+    conn = DBI::dbConnect(RSQLite::SQLite(), ":memory:"),
+    ctor = AppenderDbi
   )
 )
 
-
+options("datatable.showProgress" = dt_sp)
 
 
 for (nm in names(dbs)){
   conn <- dbs[[nm]]$conn
   ctor <- dbs[[nm]]$ctor
+
+  context(paste("AppenderDbi /", nm))
 
   test_that(paste("AppenderDbi /", nm), {
     if (inherits(conn, "try-error")){
@@ -346,142 +489,4 @@ test_that("AppenderDbi / RSQlite: Automatic closing of connections works", {
   rm(lg)
   gc()
   expect_silent(DBI::dbDisconnect(conn))
-})
-
-
-
-# AppenderBuffer ----------------------------------------------------
-
-test_that("AppenderBuffer behaves as expected", {
-  tf <- tempfile()
-
-  # Sub sub appenders must have a reference to the original logger
-  l <- Logger$new(
-    "dummy",
-    appenders = list(
-      buffer = AppenderBuffer$new(
-        appenders = list(file = AppenderFile$new(file = tf)),
-        buffer_size = 10
-      )
-    ),
-    parent = NULL
-  )
-  l$info(LETTERS[1:3])
-  expect_identical(length(l$appenders$buffer$buffered_events), 1L)
-  l$info(LETTERS[4:7])
-  expect_identical(length(l$appenders$buffer$buffered_events), 2L)
-
-
-  # FATAL log level triggers flush
-  l$fatal(letters[1:3])
-  expect_identical(l$appenders$buffer$buffered_events, list())
-  expect_match(
-    paste(readLines(tf), collapse = "#"),
-    "INFO.*A#INFO.*B#INFO.*C#INFO.*D#INFO.*E#INFO.*F#INFO.*G#FATAL.*a#FATAL.*b#FATAL.*c"
-  )
-
-  # Does the next flush flush the correct event?
-  l$fatal("x")
-  expect_identical(length(readLines(tf)), 11L)
-  expect_identical(l$appenders$buffer$buffered_events, list())
-  expect_match(paste(readLines(tf), collapse = "#"), ".*A#.*B#.*C#.*a#.*b#.*c#.*x")
-
-  # does flushing on memory cycling work?
-  replicate(10, l$info("z"))
-  expect_identical(length(l$appenders$buffer$buffered_events), 10L)
-  l$info(c("y", "y", "y"))
-  expect_identical(length(readLines(tf)), 24L)
-  expect_identical(l$appenders$buffer$buffered_events, list())
-  expect_match(
-    paste(readLines(tf), collapse = "#"),
-    ".*A#.*B#.*C#.*a#.*b#.*c#.*x(.*z.*){10}(.*y.*){3}"
-  )
-
-  # manual flushing works
-  l$info(c("y", "y", "y"))
-  l$appenders$buffer$flush()
-  expect_identical(length(readLines(tf)), 27L)
-  eres <- readLines(tf)
-  expect_match(paste(eres, collapse = "#"), "(.*z.*){10}(.*y.*){6}")
-
-
-  # memory cycling without flushing also works
-  l$appenders$buffer$set_flush_on_rotate(FALSE)
-  for (i in 1:15) l$info(i)
-  expect_identical(length(l$appenders$buffer$buffered_events), 10L)
-  msgs <- sapply(l$appenders$buffer$buffered_events, `[[`, "msg")
-  expect_identical(msgs, as.character(6:15))
-  # Nothing should have been flushed to the log file
-  expect_identical(readLines(tf), eres)
-
-
-  # does flushing on object destruction work?
-  l$appenders$buffer$flush()  # ensure empty appender
-  l$info(c("destruction", "destruction"))
-  expect_identical(length(l$appenders$buffer$buffered_events), 1L)
-  rm(l)
-  gc()
-  expect_match(
-    paste(readLines(tf), collapse = "#"),
-    "(.*destruction){2}"
-  )
-
-
-
-  # does flushing honor log levels and filters??
-  try(file.remove(tf), silent = TRUE)
-})
-
-
-
-
-test_that("AppenderBuffer: dont flush on object destruction if switched of", {
-  tf <- tempfile()
-
-  # Sub sub appenders must have a reference to the original logger
-  l <- Logger$new(
-    "dummy",
-    appenders = list(
-      buffer = AppenderBuffer$new(
-        appenders = list(file = AppenderFile$new(file = tf)),
-        buffer_size = 10
-      )
-    ),
-    parent = NULL
-  )
-  l$info(LETTERS[1:3])
-  l$appenders$buffer$set_flush_on_exit(FALSE)
-  rm(l)
-  gc()
-  expect_true(!file.exists(tf))
-  suppressWarnings(file.remove(tf))
-})
-
-
-
-
-test_that("AppenderMemory: memory cycling works", {
-  app1 <- AppenderMemoryDt$new(buffer_size = 10)
-  replicate(12, app1$append(x))
-  expect_equal(app1$data$.id, 3:12)
-  r1 <- app1$data
-
-  # bulk insert behaves like sepparate inserts
-  app2 <- AppenderMemoryDt$new(buffer_size = 10)
-  y <- x$clone()
-  y$msg <- rep(y$msg, 12)
-
-  app2$append(y)
-  expect_equal(app2$data$.id,  3:12)
-  expect_equal(app2$data, r1)
-})
-
-
-
-
-test_that("Appender: filters work", {
-  app1 <- AppenderConsole$new()
-  expect_true(app1$filter(x))
-  app1$set_threshold(100)
-  expect_false(app1$filter(x))
 })

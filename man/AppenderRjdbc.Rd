@@ -9,12 +9,12 @@ somewhat  \strong{DBI} compliant and does not work with \link{AppenderDbi}.
 }
 \section{Usage}{
 \preformatted{x <- AppenderRjdbc$new(conn, table, threshold = NA_integer_,
-  layout = LayoutDbi$new(), close_on_exit = TRUE)
+  layout = select_dbi_layout(conn), close_on_exit = TRUE)
 
 x$append(event)
 x$clone(deep = FALSE)
 
-x$destination
+x$
 }
 }
 
@@ -23,7 +23,6 @@ x$destination
 
 \describe{
 \item{conn}{an RJDBC connection}
-\item{col_types}{a named \code{character} vector of field names and types.}
 }
 
 

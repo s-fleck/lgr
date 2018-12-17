@@ -662,7 +662,8 @@ AppenderDbi <- R6::R6Class(
 #' AppenderRjdbc
 #'
 #' Log to a database table with the **RJDBC** package. **RJDBC** is only
-#' somewhat  **DBI** compliant and does not work with [AppenderDbi].
+#' somewhat  **DBI** compliant and does not work with [AppenderDbi]. I
+#' personally do not recommend using **RJDBC** if it can be avoided.
 #'
 #' @eval r6_usage(AppenderRjdbc)
 #'

@@ -28,7 +28,6 @@ x$table
 
 \describe{
 \item{conn}{a DBI connection}
-\item{col_types}{a named \code{character} vector of field names and types.}
 }
 
 
