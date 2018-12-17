@@ -528,7 +528,6 @@ AppenderMemoryDt <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{conn}{a DBI connection}
-#'   \item{col_types}{a named `character` vector of field names and types.}
 #'  }
 #'
 #' @inheritSection AppenderTable Fields and Methods
@@ -572,15 +571,10 @@ AppenderDbi <- R6::R6Class(
       if (table_exists){
         message("Logging to existing table '", table, "'")
       } else if (is.null(self$layout$col_types)) {
-        message("Table '", table, "' %s will be created on first log")
+        message("Creating '", table, "' on first log")
       } else {
         message("Creating '", table, "' with manual column types")
-        q <- generate_sql_create_table(
-          tname = table,
-          col_types = layout$col_types,
-          col_names = layout$col_names
-        )
-        DBI::dbExecute(conn, q)
+        DBI::dbExecute(conn, layout$sql_create_table(table))
       }
     },
 
@@ -645,6 +639,8 @@ AppenderDbi <- R6::R6Class(
     data = function(){
       dd <- DBI::dbGetQuery(private$.conn, sprintf("SELECT * FROM %s", private$.table))
       names(dd) <- tolower(names(dd))
+      dd[["timestamp"]] <- as.POSIXct(dd[["timestamp"]])
+      dd[["level"]] <- as.integer(dd[["level"]])
       dd
     },
 
@@ -675,7 +671,6 @@ AppenderDbi <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{conn}{an RJDBC connection}
-#'   \item{col_types}{a named `character` vector of field names and types.}
 #'  }
 #'
 #' @inheritSection AppenderDbi Fields and Methods
@@ -698,7 +693,7 @@ AppenderRjdbc <- R6::R6Class(
       conn,
       table,
       threshold = NA_integer_,
-      layout = LayoutDbi$new(),
+      layout = select_dbi_layout(conn),
       close_on_exit = TRUE
     ){
       assert_namespace("RJDBC")
@@ -720,13 +715,8 @@ AppenderRjdbc <- R6::R6Class(
       if (table_exists){
         message("Logging to existing table ", table)
       } else {
-        message("Creating new logging table ", table)
-        q <- generate_sql_create_table(
-          tname = table,
-          col_types = layout$col_types,
-          col_names = layout$col_names
-        )
-        RJDBC::dbSendUpdate(conn, q)
+        message("Creating '", table, "' with manual column types")
+        RJDBC::dbSendUpdate(conn, layout$sql_create_table(table))
       }
     },
 
@@ -737,18 +727,15 @@ AppenderRjdbc <- R6::R6Class(
         data <- as.list(dd[i, ])
         RJDBC::dbSendUpdate(
           private$.conn, sprintf(
-          "insert into %s values (%s)",
+          "insert into %s (%s) values (%s)",
           private$.table,
-          paste0("'", data, "'", collapse = ", ")
+          paste(self$layout$col_names, collapse = ", "),
+          paste0("'", data, "'", collapse = ", "))
         )
-      )}
+      }
 
       return(invisible())
     }
-  ),
-
-  active = list(
-    destination = function() private$.table
   ),
 
   private = list(

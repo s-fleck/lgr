@@ -393,6 +393,14 @@ LayoutDbi <- R6::R6Class(
       }
       private$.col_types <- x
       invisible(self)
+    },
+
+    sql_create_table = function(table){
+      generate_sql_create_table(
+        tname = table,
+        col_types = private$.col_types,
+        col_names = names(private$.col_types)
+      )
     }
   ),
 
@@ -458,6 +466,14 @@ select_dbi_layout <- function(conn){
   switch(
     cls,
     "SQLiteConnection" = LayoutSqlite$new(),
+    "JDBCConnection" = LayoutSqlite$new(
+      col_types = c(
+        level = "smallint",
+        timestamp = "timestamp",
+        caller = "varchar(1024)",
+        msg = "varchar(2048)"
+      )
+    ),
     LayoutDbi$new()
   )
 }

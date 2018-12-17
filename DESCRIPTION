@@ -24,7 +24,7 @@ Suggests:
     jsonlite,
     knitr,
     rmarkdown,
-    RSQLite,
+    RSQLite (>= 2.0),
     RMariaDB,
     DBI,
     RPostgreSQL,

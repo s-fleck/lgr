@@ -107,88 +107,130 @@ test_that("AppenderMemoryDt: appending multiple rows works", {
 
 
 
-# AppenderDbi -------------------------------------------------------------
+# AppenderDbi + AppenderRjdbc ---------------------------------------------
 
+# +- Multiple RDMS ----------------------------------------------------------
 
-# +- RSQLite --------------------------------------------------------------
+options("datatable.showProgress" = FALSE)
 
-test_that("AppenderDbi / RSQLite: basic operations work", {
-  if (!requireNamespace("RSQLite", quietly = TRUE))
-    skip("Test requires RSQLite")
+dbs <- list(
+  "SQLite via RSQLite" = list(
+    conn = DBI::dbConnect(RSQLite::SQLite(), ":memory:"),
+    ctor = AppenderDbi
+  ),
 
-  # setup test environment
-  tname <- "LOGGING_TEST"
-  expect_message(
-    app <- AppenderDbi$new(
-      conn = DBI::dbConnect(RSQLite::SQLite(), ":memory:"),
-      table = tname
-    ),
-    "will be created"
+  "MySQL via RMySQL" = list(
+    conn = try(silent = TRUE, DBI::dbConnect(
+      RMySQL::MySQL(),
+      user="root",
+      password="",
+      dbname="travis_ci_test",
+      host="localhost"
+    )),
+    ctor = AppenderDbi
+  ),
+
+  "MySQL via RMariaDB" = list(
+    conn = try(silent = TRUE, DBI::dbConnect(
+      RMariaDB::MariaDB(),
+      user="travis",
+      dbname="travis_ci_test",
+      host="localhost"
+    )),
+    ctor = AppenderDbi
+  ),
+
+  "PostgreSQL" = list(
+    conn = try(silent = TRUE, DBI::dbConnect(
+      RPostgreSQL::PostgreSQL(),
+      host = "localhost",
+      dbname = "travis_ci_test"
+    )),
+    ctor = AppenderDbi
+  ),
+
+  "DB2 via RJDBC" = list(
+    conn = try(silent = TRUE, dataSTAT::dbConnectDB2("RTEST", "rtest", "rtest")),
+    ctor = AppenderRjdbc
   )
-  e <- LogEvent$new(yog, level = 600, msg = "ohno", caller = "nope()", timestamp = Sys.time())
+)
 
-  # round trip event inserts
-    expect_silent(app$append(e))
-    expect_silent(app$append(e))
-    tres <- app$data
-    eres <- rbind(
-      as.data.frame(e, stringsAsFactors = FALSE),
-      as.data.frame(e, stringsAsFactors = FALSE)
+
+
+
+for (nm in names(dbs)){
+  conn <- dbs[[nm]]$conn
+  ctor <- dbs[[nm]]$ctor
+
+  test_that(paste("AppenderDbi /", nm), {
+    if (inherits(conn, "try-error")){
+      skip(trimws(paste("Cannot connect to", nm, "database: ", conn)))
+    }
+
+    # setup test environment
+      tname <- "logging_test"
+      expect_message(
+        app <- ctor$new(
+          conn = conn,
+          table = tname,
+          close_on_exit = FALSE  # we are closing manually and dont want warnings
+        ),
+        "Creating"
+      )
+      e <- LogEvent$new(
+        yog, level = 600L, msg = "ohno", caller = "nope()", timestamp = Sys.time()
+      )
+
+    # round trip event inserts
+      expect_silent(app$append(e))
+      expect_silent(app$append(e))
+      tres <- app$data
+      eres <- rbind(
+        as.data.frame(e, stringsAsFactors = FALSE),
+        as.data.frame(e, stringsAsFactors = FALSE)
+      )
+      expect_equal(tres[, -2], eres[, -2])
+      # small tolerance is allowed for timestamps
+      tdiff <- as.numeric(tres[, 2]) - as.numeric(eres[, 2])
+      expect_true(all(tdiff < 1), info = tdiff)
+      expect_true(all(tres$timestamp == format(e$timestamp)))
+
+    # col order does not impact inserts
+      for (i in 1:20){
+        app$layout$set_col_types(sample(app$layout$col_types))
+        expect_silent(app$append(e))
+      }
+      expect_true(all(vapply(app$data$timestamp, all_are_identical, logical(1))))
+      expect_true(all(format(app$data$timestamp) == format(e$timestamp)))
+
+
+    # log display
+      expect_output(app$show(5), paste(rep("TRACE.*", 5), collapse = "") )
+      expect_output(expect_identical(nrow(app$show(1)), 1L), "TRACE")
+      expect_output(expect_identical(show_log(target = app), app$show()))
+      expect_identical(
+        capture.output(show_log(target = app)),
+        capture.output(app$show())
+      )
+
+
+    # cleanup
+    expect_true(
+      DBI::dbExistsTable(conn, tname) ||
+      DBI::dbExistsTable(conn, toupper(tname))
     )
-    # timestamps are saved as text in SQLite :(
-    expect_identical(tres[, -2], eres[, -2])
-    expect_identical(nrow(tres), 2L)
-    expect_true(all(tres$timestamp == format(e$timestamp)))
-
-
-  # test vectorized logging
-    e$msg <- rep("ohyeah", 3)
-    expect_silent(app$append(e))
-    tres <- app$data
-    expect_identical(tres$msg, c(rep("ohno", 2), rep("ohyeah", 3)))
-
-
-  # test show method
-    e$msg <- rep(1:20, 3)
-    expect_silent(app$append(e))
-    expect_output(app$show(5), paste(16:20, collapse = ".*"))
-    expect_output(expect_identical(
-      app$show(10),
-      show_log(10, target = app)
-    ))
-})
+    expect_silent({
+      DBI::dbRemoveTable(conn, tname)
+      expect_false(DBI::dbExistsTable(conn, tname))
+      DBI::dbDisconnect(conn)
+    })
+  })
+}
 
 
 
 
-test_that("AppenderDbi / RSQLite:: shuffling column order does not impact inserts", {
-  if (!requireNamespace("RSQLite", quietly = TRUE))
-    skip("Test requires RSQLite")
-
-  # setup test environment
-  tdb <- tempfile()
-  tname <- "LOGGING_TEST"
-  app <- AppenderDbi$new(
-    conn = DBI::dbConnect(RSQLite::SQLite(), tdb),
-    table = tname
-  )
-  e <- LogEvent$new(yog, level = 600, msg = "ohno", caller = "nope()", timestamp = Sys.time())
-
-  # test shuffled inserts
-  for (i in 1:20){
-    app$layout$set_col_types(sample(app$layout$col_types))
-    expect_silent(app$append(e))
-  }
-  expect_true(all(vapply(app$data$timestamp, all_are_identical, logical(1))))
-  expect_true(all(format(app$data$timestamp) == format(e$timestamp)))
-
-  # cleanup
-  rm(app)
-  gc()
-  unlink(tdb)
-})
-
-
+# +- RSQLite extra tests --------------------------------------------------
 
 test_that("AppenderDbi / RSQLite: manual field types work", {
   if (!requireNamespace("RSQLite", quietly = TRUE))
@@ -233,7 +275,7 @@ test_that("AppenderDbi / RSQLite: manual field types work", {
 
 
 
-test_that("AppenderDbi / RSQLite: displaying logs works", {
+test_that("AppenderDbi / RSQLite: displaying logs works for Loggers", {
   if (!requireNamespace("RSQLite", quietly = TRUE))
     skip("Test requires RSQLite")
 
@@ -247,7 +289,7 @@ test_that("AppenderDbi / RSQLite: displaying logs works", {
       appenders = list(db = AppenderDbi$new(conn = conn, table = tname, close_on_exit = FALSE)),
       propagate = FALSE
     ),
-    "created"
+    "Creating.*on first log"
   )
 
   lg$fatal("blubb")
@@ -270,6 +312,7 @@ test_that("AppenderDbi / RSQLite: displaying logs works", {
 
   expect_silent(DBI::dbDisconnect(conn))
 })
+
 
 
 
@@ -304,185 +347,6 @@ test_that("AppenderDbi / RSQlite: Automatic closing of connections works", {
   gc()
   expect_silent(DBI::dbDisconnect(conn))
 })
-
-
-
-
-# +- Remote RDMS ----------------------------------------------------------
-
-cons <- list()
-
-cons[["MySQL via RMySQL"]] <- try(DBI::dbConnect(
-  RMySQL::MySQL(),
-  user="root",
-  password="",
-  dbname="travis_ci_test",
-  host="localhost"
-), silent = TRUE)
-
-
-cons[["MySQL via RMariaDB"]]<- try(DBI::dbConnect(
-  RMariaDB::MariaDB(),
-  user="travis",
-  dbname="travis_ci_test",
-  host="localhost"
-), silent = TRUE)
-
-
-cons$PostgreSQL <- try(DBI::dbConnect(
-  RPostgreSQL::PostgreSQL(),
-  host = "localhost",
-  dbname = "travis_ci_test"
-), silent = TRUE)
-
-
-for (nm in names(cons)){
-
-  test_that(paste("AppenderDbi /", nm), {
-    conn <- cons[[nm]]
-    if (inherits(conn, "try-error")){
-      skip(trimws(paste("Cannot connect to", nm, "database: ", conn)))
-    }
-
-    # setup test environment
-    tname <- "logging_test"
-    expect_message(
-      app <- AppenderDbi$new(
-        conn = conn,
-        table = tname
-      ),
-      "will be created"
-    )
-    e <- LogEvent$new(
-      yog, level = 600, msg = "ohno", caller = "nope()", timestamp = Sys.time()
-    )
-
-    # round trip event inserts
-    expect_silent(app$append(e))
-    expect_silent(app$append(e))
-    tres <- app$data
-    eres <- rbind(
-      as.data.frame(e, stringsAsFactors = FALSE),
-      as.data.frame(e, stringsAsFactors = FALSE)
-    )
-    expect_identical(tres[, -2], eres[, -2])
-    # small tolerance is allowed for timestamps
-    expect_true(all(as.numeric(tres[, 2]) - as.numeric(eres[, 2]) < 1))
-    expect_true(all(tres$timestamp == format(e$timestamp)))
-
-    # col order does not impact inserts
-    for (i in 1:20){
-      app$layout$set_col_types(sample(app$layout$col_types))
-      expect_silent(app$append(e))
-    }
-    expect_true(all(vapply(app$data$timestamp, all_are_identical, logical(1))))
-    expect_true(all(format(app$data$timestamp) == format(e$timestamp)))
-
-    # cleanup
-    expect_true(DBI::dbExistsTable(conn, tname))
-    DBI::dbExecute(conn, sprintf("DROP TABLE %s", tname))
-    expect_false(DBI::dbExistsTable(conn, tname))
-    DBI::dbDisconnect(conn)
-  })
-}
-
-
-
-
-# AppenderRjdbc -------------------------------------------------------------
-
-test_that("AppenderRjdbc: appending multiple rows works", {
-  if (!requireNamespace("dataSTAT", quietly = TRUE))
-    skip("Currently only tested at work")
-
-  tname <- "TMP.LOGGING_TEST"
-  conn <- dataSTAT::dbConnectDB2("RTEST", "rtest", "rtest")
-  try(DBI::dbRemoveTable(conn, tname), silent = TRUE)
-
-  app <- expect_message(
-    AppenderRjdbc$new(conn = conn, table = tname),
-    "new"
-  )
-
-  expect_message(
-    app <- AppenderRjdbc$new(conn = conn, table = tname),
-    "existing"
-  )
-
-  e <- LogEvent$new(yog, level = 600, msg = "ohno", caller = "nope()", timestamp = Sys.time())
-
-  expect_silent(app$append(e))
-  expect_silent(app$append(e))
-  tres <- DBI::dbGetQuery(conn, sprintf("select * from %s", tname))
-  expect_identical(nrow(tres), 2L)
-
-
-  # test vectorized logging
-  e$msg <- rep("ohyeah", 3)
-  expect_silent(app$append(e))
-  tres <- app$data
-  expect_identical(tres$msg, c(rep("ohno", 2), rep("ohyeah", 3)))
-
-
-  # test show method
-  e$msg <- rep(1:20, 3)
-  expect_silent(app$append(e))
-  expect_output(
-    app$show(5),
-    paste(16:20, collapse = ".*")
-  )
-
-  expect_silent(app$append(e))
-  DBI::dbDisconnect(conn)
-})
-
-
-
-
-
-test_that("AppenderRjdbc: log access works", {
-
-  if (!requireNamespace("dataSTAT", quietly = TRUE))
-    skip("Currently only tested at work")
-
-  tname <- "TMP.LOGGING_TEST"
-  conn <- dataSTAT::dbConnectDB2("RTEST", "rtest", "rtest")
-  try(DBI::dbRemoveTable(conn, tname), silent = TRUE)
-
-  expect_message(
-    lg <- Logger$new(
-      "test_rjdbc",
-      threshold = "trace",
-      appenders = list(db = AppenderRjdbc$new(conn = conn, table = tname))
-    ),
-    "new"
-  )
-
-
-  expect_output({
-    lg$fatal("blubb")
-    lg$trace("blah")
-  })
-
-
-  expect_output(lg$appenders$db$show(), "FATAL.*TRACE")
-  expect_output(
-    expect_identical(nrow(lg$appenders$db$show(1)), 1L),
-    "TRACE"
-  )
-
-  expect_identical(nrow(lg$appenders$db$data), 2L)
-
-  expect_output(
-    expect_identical(
-      show_log(target = lg),
-      lg$appenders$db$show()
-    )
-  )
-
-  DBI::dbDisconnect(conn)
-})
-
 
 
 
