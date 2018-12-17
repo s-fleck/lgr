@@ -11,7 +11,7 @@ contains at minimum the \link{log_level}, a timestamp and the log message.
 \link{Layouts}.
 }
 \section{Usage}{
-\preformatted{x <- LogEvent$new(logger, level = NA, timestamp = Sys.time(), caller = NA,
+\preformatted{x <- LogEvent$new(logger, level = 400, timestamp = Sys.time(), caller = NA,
   msg = NA)
 
 x$clone(deep = FALSE)

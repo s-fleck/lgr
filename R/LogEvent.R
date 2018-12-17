@@ -79,10 +79,11 @@ NULL
 #' @export
 LogEvent <- R6::R6Class(
   "LogEvent",
+  lock_objects = FALSE,
   public = list(
     initialize = function(
       logger,
-      level = NA,
+      level = 400,
       timestamp = Sys.time(),
       caller = NA,
       msg = NA
@@ -93,7 +94,6 @@ LogEvent <- R6::R6Class(
       self$timestamp <- timestamp
       self$caller <- caller
       self$msg <- msg
-
       invisible(self)
     },
     logger = NULL,
@@ -105,7 +105,11 @@ LogEvent <- R6::R6Class(
 
   active = list(
     values = function(){
-      mget(c("level", "timestamp", "caller", "msg"), envir = self)
+      valnames <- setdiff(
+        names(self[[".__enclos_env__"]][["self"]]),
+        c(".__enclos_env__", "level_name", "initialize", "clone", "values", "logger")
+      )
+      mget(valnames, envir = self)
     },
     level_name = function(){
       label_levels(self$level)

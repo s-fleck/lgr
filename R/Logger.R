@@ -214,7 +214,8 @@ Logger <- R6::R6Class(
       level,
       msg,
       timestamp = Sys.time(),
-      caller = get_caller(-3)
+      caller = get_caller(-3),
+      ...
     ){
       force(caller)
 
@@ -237,10 +238,22 @@ Logger <- R6::R6Class(
 
 
         # update log event
-        assign("level", level, envir = self$last_event)
-        assign("timestamp", timestamp,  envir = self$last_event)
-        assign("caller", caller, envir = self$last_event)
-        assign("msg", msg, envir = self$last_event)
+          # standard fields
+          assign("level", level, envir = self[["last_event"]])
+          assign("timestamp", timestamp,  envir = self[["last_event"]])
+          assign("caller", caller, envir = self[["last_event"]])
+          assign("msg", msg, envir = self[["last_event"]])
+
+          # custom fields
+          dots <- list(...)
+          assert(
+            identical(length(names(dots)), length(dots)),
+            "Custom fields supplied to Logger must be named"
+          )
+          for (nm in names(dots)){
+            assign(nm, dots[[nm]], envir = self[["last_event"]])
+          }
+
 
         # emit
         if (self$filter(self$last_event)){

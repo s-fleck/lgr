@@ -62,6 +62,4 @@ dd <- c(dd, hist)
 
 print(dd[1:2])
 
-stop()
-
 saveRDS(dd, "benchmarks/history.rds")

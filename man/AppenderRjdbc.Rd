@@ -5,7 +5,8 @@
 \title{AppenderRjdbc}
 \description{
 Log to a database table with the \strong{RJDBC} package. \strong{RJDBC} is only
-somewhat  \strong{DBI} compliant and does not work with \link{AppenderDbi}.
+somewhat  \strong{DBI} compliant and does not work with \link{AppenderDbi}. I
+personally do not recommend using \strong{RJDBC} if it can be avoided.
 }
 \section{Usage}{
 \preformatted{x <- AppenderRjdbc$new(conn, table, threshold = NA_integer_,
