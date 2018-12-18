@@ -225,9 +225,9 @@ Logger <- R6::R6Class(
     log = function(
       level,
       msg,
+      ...,
       timestamp = Sys.time(),
-      caller = get_caller(-3),
-      ...
+      caller = get_caller(-3)
     ){
       force(caller)
 
