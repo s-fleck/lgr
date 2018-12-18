@@ -15,24 +15,26 @@ Description: A flexible R6 based logging framework. Yog is under
 License: MIT + file LICENSE
 URL: https://github.com/s-fleck/yog
 BugReports: https://github.com/s-fleck/dint/yog
-Imports:
+Imports: 
     R6
 Suggests: 
+    covr,
     crayon,
     data.table,
+    DBI,
+    desc,
     glue,
     jsonlite,
     knitr,
-    rmarkdown,
-    RSQLite (>= 2.0),
     RMariaDB,
-    DBI,
+    rmarkdown,
     RPostgreSQL,
+    rprojroot,
+    RSQLite (>= 2.0),
     testthat,
     tools,
     utils,
-    whoami,
-    covr
+    whoami
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
@@ -53,6 +55,7 @@ Collate:
     'print_Logger.R'
     'read_json_log.R'
     'simple_logging.R'
+    'use_logger.R'
     'utils-print.R'
     'utils-rd.R'
     'yog-package.R'
