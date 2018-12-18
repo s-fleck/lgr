@@ -473,6 +473,11 @@ LayoutSqlite <- R6::R6Class(
 
 
 
+# +- LayoutRjdbc ----------------------------------------------------------
+
+LayoutRjdbc <- LayoutSqlite
+
+
 # +- LayoutDBI utils ------------------------------------------------------
 
 #' @export
