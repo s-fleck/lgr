@@ -66,3 +66,32 @@ test_that("add/remove_appender", {
   expect_silent(tlg$warn("test"))
   expect_error(show_log(tlg))
 })
+
+
+
+test_that("option appenders setup", {
+  options("yog.log_file" = tempfile())
+
+  res <- default_appenders()
+  expect_identical(length(res), 1L)
+  expect_s3_class(res[[1]], "AppenderFile")
+  expect_s3_class(res[[1]]$layout, "LayoutFormat")
+  expect_true(is.na(res[[1]]$threshold))
+
+  options("yog.log_file" = tempfile(pattern = ".json"))
+  res <- default_appenders()
+  expect_identical(length(res), 1L)
+  expect_s3_class(res[[1]], "AppenderFile")
+  expect_s3_class(res[[1]]$layout, "LayoutJson")
+  expect_true(is.na(res[[1]]$threshold))
+
+  options("yog.log_file" = c(trace = tempfile(pattern = ".json")))
+  res <- default_appenders()
+  expect_identical(length(res), 1L)
+  expect_s3_class(res[[1]], "AppenderFile")
+  expect_s3_class(res[[1]]$layout, "LayoutJson")
+  expect_identical(res[[1]]$threshold, 600L)
+
+  options("yog.log_file" = c(blubb = tempfile('_fail')))
+  expect_warning(res <- default_appenders(), "_fail")
+})

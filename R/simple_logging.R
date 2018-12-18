@@ -264,3 +264,48 @@ without_logging <- function(code){
   on.exit(unsuspend_logging())
   force(code)
 }
+
+
+
+
+# simple setup ------------------------------------------------------------
+
+default_appenders <- function()
+{
+  log_files  <- getOption("yog.log_file", NULL)
+  thresholds <- names(log_files)
+
+  if (is.null(thresholds)){
+    thresholds <- rep(NA, length(log_files))
+  }
+
+  lf <- lapply(seq_along(log_files), function(i){
+    tryCatch(
+      setup_file_appender(log_files[[i]], thresholds[[i]]),
+      error = function(e){
+        warning(
+          sprintf(paste(
+            "Cannot setup logfile '%s' as specified in the global options:",
+            "%s\nSee '?yog' for help."),
+            log_files[[i]], e)
+        )
+        NULL
+      }
+    )
+
+  })
+}
+
+
+
+
+setup_file_appender <- function(path, threshold = NA){
+
+  if (grepl("\\.json.*", path)){
+    lo <- LayoutJson$new()
+  } else {
+    lo <- LayoutFormat$new()
+  }
+
+  AppenderFile$new(file = path, threshold = threshold, layout = lo)
+}
