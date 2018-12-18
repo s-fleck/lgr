@@ -683,6 +683,9 @@ AppenderDbi <- R6::R6Class(
 #' @name AppenderRjdbc
 NULL
 
+
+
+
 # exclude from coverage because relies on external ressources
 # nocov start
 #' @export

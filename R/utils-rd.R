@@ -10,12 +10,14 @@ r6_usage <- function(
   ctor <- public_methods[["initialize"]]
   ctor <- gsub("^initialize", paste0(deparse(substitute(x)), "$new"), ctor)
 
+  fields <- c(names(x$public_fields), names(x$active))
+  if (!is.null(fields)) fields <- sort(fields)
+
   els <- list(
     ctor = ctor,
     methods =
       public_methods[!names(public_methods) %in% c("initialize", "finalize")],
-    fields =
-      sort(c(names(x$public_fields), names(x$active)))
+    fields = fields
   )
 
 

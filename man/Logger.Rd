@@ -19,7 +19,7 @@ for more info.
   format(Sys.time(), format = "\%Y-\%m-\%d \%H:\%M:\%OS3"), "] ", "An error occured
   in the logging sub system: ", e) }, propagate = TRUE)
 
-x$log(level, msg, timestamp = Sys.time(), caller = get_caller(-3), ...)
+x$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-3))
 x$fatal(msg, ...)
 x$error(msg, ...)
 x$warn(msg, ...)

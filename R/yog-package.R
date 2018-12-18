@@ -47,7 +47,7 @@
     style_accent  <- style_warning
     col_nchar     <- crayon::col_nchar
 
-    op.this[["yog.colors"]] = list(
+    op.this[["yog.colors"]] <- list(
       "fatal" = style_fatal,
       "error" = style_error,
       "warn"  = style_warning,
