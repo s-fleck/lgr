@@ -19,11 +19,6 @@ to include in the output object.
 \item{\code{logger_vals}}{Names of the fields of the \link{Logger} that produced the
 \link{LogEvent} to include in the output object.
 }
-
-\item{\code{other_vals}}{A named \code{list} of any kind of \R values. Functions in
-this `list`` will be executed with no arguments and their results will
-be included in the results object (see examples)
-}
 }
 }
 

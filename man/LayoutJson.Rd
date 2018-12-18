@@ -7,8 +7,8 @@
 Format a LogEvent as JSON
 }
 \section{Usage}{
-\preformatted{x <- LayoutJson$new(event_vals = c("level", "timestamp", "caller", "msg"),
-  logger_vals = NULL, other_vals = NULL, toJSON_args = list(auto_unbox = TRUE))
+\preformatted{x <- LayoutJson$new(event_vals = NULL, logger_vals = character(),
+  toJSON_args = list(auto_unbox = TRUE))
 
 x$format_event(event)
 x$set_toJSON_args(x)
@@ -34,11 +34,6 @@ to include in the output object.
 \item{\code{logger_vals}}{Names of the fields of the \link{Logger} that produced the
 \link{LogEvent} to include in the output object.
 }
-
-\item{\code{other_vals}}{A named \code{list} of any kind of \R values. Functions in
-this `list`` will be executed with no arguments and their results will
-be included in the results object (see examples)
-}
 }
 }
 
@@ -58,19 +53,27 @@ be included in the results object (see examples)
 \examples{
 
 # setup a dummy LogEvent
+
 event <- LogEvent$new(
   logger = Logger$new("dummy logger", user = "testuser"),
   level = 200,
   timestamp = Sys.time(),
   caller = NA_character_,
-  msg = "a test message"
+  msg = "a test message",
+  custom_field = "LayoutJson can handle arbitrary fields"
 )
+
+# Default settings show all event fals
+lo <- LayoutJson$new()
+lo$format_event(event)
+
+
+# Values from the LogEvent can be suppressed, and values from the Logger
+# can be added
 lo <- LayoutJson$new(
   event_vals = c("level", "timestamp", "msg"),
-  logger_vals = "user",
-  other_vals = list(pid = Sys.getpid, random_number = function() runif(3), teststring = "blah")
+  logger_vals = c("user", logger_name = "name")
 )
-lo$format_event(event)
 lo$format_event(event)
 
 }

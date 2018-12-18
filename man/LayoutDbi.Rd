@@ -10,7 +10,7 @@ Format a \link{LogEvent} as data.frame for inserting into a Database.
 }
 \section{Usage}{
 \preformatted{x <- LayoutDbi$new(event_vals = c("level", "timestamp", "caller", "msg"),
-  logger_vals = NULL, other_vals = NULL, col_types = NULL)
+  logger_vals = character(), col_types = NULL)
 
 x$format_event(event)
 x$set_col_types(x)
@@ -27,7 +27,7 @@ x$col_types
 \describe{
 \item{\code{col_types}}{a named \code{character} vector of column types supported by
 the target database. Must include all columns described in \code{event_vals},
-\code{logger_vals} and \code{other_vals}. If a new database table is created by
+\code{logger_vals}. If a new database table is created by
 LayoutDbi its column order will correspond to the order of \code{col_types}.
 }
 }
@@ -41,11 +41,6 @@ to include in the output object.
 
 \item{\code{logger_vals}}{Names of the fields of the \link{Logger} that produced the
 \link{LogEvent} to include in the output object.
-}
-
-\item{\code{other_vals}}{A named \code{list} of any kind of \R values. Functions in
-this `list`` will be executed with no arguments and their results will
-be included in the results object (see examples)
 }
 }
 }
@@ -100,22 +95,31 @@ lo$format_event(event)
 lo <- LayoutSqlite$new()
 str(lo$format_event(event))
 
-# advanced example:
+# advanced example that supports a custom_field:
 lo <- LayoutDbi$new(
-  event_vals = c("level", "timestamp", "msg"),
-  logger_vals = "user",
-  other_vals = list(pid = Sys.getpid, teststring = "blah"),
+  event_vals = c("level", "timestamp", "msg", "custom_field"),
+  logger_vals = c(logger_name = "name", "user"),
   col_types =  c(
     timestamp = "timestamp",
-    level = "smallint",
-    msg = "varchar(1024)",
     user = "varchar(256)",
-    pid = "integer",
-    teststring = "varchar(256)"
+    logger_name = "varchar(256)",
+    level = "smallint",
+    msg = "varchar(2048)",
+    custom_field = "integer"
   )
 )
-lo$format_event(event)
 
+event <- LogEvent$new(
+  logger = Logger$new("dummy logger", user = "testuser"),
+  level = 200,
+  timestamp = Sys.time(),
+  caller = NA_character_,
+  msg = "a test message",
+  custom_field = "blubb"
+)
+
+lo$format_event(event)
+#'
 }
 \seealso{
 \link[DBI:DBI]{DBI::DBI}

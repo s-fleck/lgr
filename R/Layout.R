@@ -200,29 +200,43 @@ LayoutTable <- R6::R6Class(
   "LayoutTable",
   inherit = Layout,
   public = list(
-    format_event = function(event) {NULL},
+    format_event = function(event) { as.data.frame(event) },
 
     set_event_vals = function(x){
-      names(x)[names(x) == ""] <- x[names(x) == ""]
+      assert(is.character(x) || is.null(x))
       private$.event_vals <- x
       invisible(self)
     },
 
     set_logger_vals = function(x){
-      names(x)[names(x) == ""] <- x[names(x) == ""]
+      assert(
+        is.character(x) || (length(x) == 0 && !is.null(x)),
+        "'logger_vals' must be a character vector. For no logger vals use the",
+        "empty character vector: `character()`"
+      )
+
       private$.logger_vals <- x
       invisible(self)
+    },
+
+    set_val_names = function(x){
+      assert(is.null(x) || is.character(x))
+      private$.val_names <- x
+      invisible(self)
     }
+
   ),
 
   active = list(
     event_vals  = function() get(".event_vals", private),
-    logger_vals = function() get(".logger_vals", private)
+    logger_vals = function() get(".logger_vals", private),
+    val_names   = function() get(".val_names", private)
   ),
 
   private = list(
-    .event_vals = NULL,
-    .logger_vals = NULL
+    .event_vals  = NULL,
+    .logger_vals = NULL,
+    .val_names   = NULL
   )
 )
 
@@ -298,21 +312,31 @@ LayoutTable <- R6::R6Class(
 #' lo <- LayoutSqlite$new()
 #' str(lo$format_event(event))
 #'
-#' # advanced example:
+#' # advanced example that supports a custom_field:
 #' lo <- LayoutDbi$new(
-#'   event_vals = c("level", "timestamp", "msg"),
-#'   logger_vals = "user",
+#'   event_vals = c("level", "timestamp", "msg", "custom_field"),
+#'   logger_vals = c(logger_name = "name", "user"),
 #'   col_types =  c(
 #'     timestamp = "timestamp",
-#'     level = "smallint",
-#'     msg = "varchar(1024)",
 #'     user = "varchar(256)",
-#'     pid = "integer",
-#'     teststring = "varchar(256)"
+#'     logger_name = "varchar(256)",
+#'     level = "smallint",
+#'     msg = "varchar(2048)",
+#'     custom_field = "integer"
 #'   )
 #' )
-#' lo$format_event(event)
 #'
+#' event <- LogEvent$new(
+#'   logger = Logger$new("dummy logger", user = "testuser"),
+#'   level = 200,
+#'   timestamp = Sys.time(),
+#'   caller = NA_character_,
+#'   msg = "a test message",
+#'   custom_field = "blubb"
+#' )
+#'
+#' lo$format_event(event)
+#' #'
 NULL
 
 
@@ -325,50 +349,48 @@ LayoutDbi <- R6::R6Class(
   public = list(
     initialize = function(
       event_vals  = c("level", "timestamp", "caller", "msg"),
-      logger_vals = NULL,
+      logger_vals = character(),
       col_types = NULL
     ){
-      if (!is.null(col_types)){
-        assert(all_are_distinct(names(col_types)))
+      event_vals  <- name_vals(event_vals)
+      logger_vals <- name_vals(logger_vals)
+      val_names   <- c(names(event_vals), c(names(logger_vals)))
 
-        if (!setequal(names(col_types), c(event_vals, logger_vals))){
-          msg <- ""
-          mis_ct <- setdiff(c(event_vals, logger_vals), names(col_types))
-          ext_ct <- setdiff(names(col_types), c(event_vals, logger_vals))
-
-          if (length(mis_ct)){
-            msg <- paste0(
-              "col_type missing: ", paste(mis_ct, collapse = ", "), "."
-            )
-          }
-
-          if (length(ext_ct)){
-            msg <- paste0(
-              msg, "col_type defined but not part of layout: ",
-              paste(ext_ct, collapse = ", "),
-              "."
-            )
-          }
-
-          stop(msg, call. = FALSE)
-        }
-      }
+      if (!is.null(col_types))
+        assert_colnames_match_valnames(names(col_types), val_names)
 
       self$set_event_vals(event_vals)
       self$set_logger_vals(logger_vals)
       self$set_col_types(col_types)
     },
 
-    format_event = function(event) {
-      vals <- mget(self$event_vals, event)
+    format_event = function(event){
+      ev <- get(".event_vals", private)
+      lv <- get(".logger_vals", private)
 
-      if (!is.null(self$logger_vals)){
-        vals <- c(vals, mget(self$logger_vals, event[["logger"]]))
+      if (length(ev)){
+        vals <- mget(ev, event, ifnotfound = NA)
+        names(vals) <- names(ev)
+      } else {
+        if (is.null(ev)){
+          vals <- get("values", event)
+        } else {
+          vals <- c()
+        }
       }
 
-      if (!is.null(private$.col_types)){
+      if (length(lv)){
+        valsl  <- mget(lv, get("logger", event), ifnotfound = NA)
+        names(valsl) <- names(lv)
+        vals <- c(vals, valsl)
+      }
+
+      ct <- get(".col_types", private)
+      if (length(ct)){
+        assert(setequal(names(vals), names(ct)))
         vals <- vals[names(private$.col_types)]
       }
+
       vals <- c(vals, list(stringsAsFactors = FALSE))
       do.call(data.frame, args = vals)
     },
@@ -412,10 +434,30 @@ LayoutSqlite <- R6::R6Class(
   inherit = LayoutDbi,
   public = list(
     format_event = function(event) {
-      vals <- mget(self$event_vals, event)
+      ev <- get(".event_vals", private)
+      lv <- get(".logger_vals", private)
 
-      if (!is.null(self$logger_vals)){
-        vals <- c(vals, mget(self$logger_vals, event[["logger"]]))
+      if (length(ev)){
+        vals <- mget(ev, event, ifnotfound = NA)
+        names(vals) <- names(ev)
+      } else {
+        if (is.null(ev)){
+          vals <- get("values", event)
+        } else {
+          vals <- c()
+        }
+      }
+
+      if (length(lv)){
+        valsl  <- mget(lv, get("logger", event), ifnotfound = NA)
+        names(valsl) <- names(lv)
+        vals <- c(vals, valsl)
+      }
+
+      ct <- get(".col_types", private)
+      if (length(ct)){
+        assert(setequal(names(vals), names(ct)))
+        vals <- vals[names(private$.col_types)]
       }
 
       vals <- lapply(
@@ -423,9 +465,6 @@ LayoutSqlite <- R6::R6Class(
         function(.x) if (inherits(.x, "POSIXt")) format(.x) else .x
       )
 
-      if (!is.null(private$.col_types)){
-        vals <- vals[names(private$.col_types)]
-      }
       vals <- c(vals, list(stringsAsFactors = FALSE))
       do.call(data.frame, args = vals)
     }
@@ -518,29 +557,40 @@ LayoutJson <- R6::R6Class(
   public = list(
     initialize = function(
       event_vals  = NULL,
-      logger_vals = NULL,
+      logger_vals = character(),
       toJSON_args = list(auto_unbox = TRUE)
     ){
-      self$set_toJSON_args(toJSON_args)
+      # init
+      event_vals  <- name_vals(event_vals)
+      logger_vals <- name_vals(logger_vals)
+
       self$set_event_vals(event_vals)
       self$set_logger_vals(logger_vals)
+      self$set_toJSON_args(toJSON_args)
     },
 
     format_event = function(event) {
-      if (is.null(self$event_vals)){
-        vals <- get("values", event)
+      ev <- get(".event_vals", private)
+      lv <- get(".logger_vals", private)
+
+      if (length(ev)){
+        vals <- mget(ev, event, ifnotfound = NA)
+        names(vals) <- names(ev)
       } else {
-        vals <- mget(self$event_vals, event)
-        names(vals) <- names(self$event_vals)
+        if (is.null(ev)){
+          vals <- get("values", event)
+        } else {
+          vals <- c()
+        }
       }
 
-      if (!is.null(self$logger_vals)){
-        lvs <- mget(self$logger_vals, event[["logger"]])
-        names(lvs) <- names(self$logger_vals)
-        vals <- c(vals, lvs)
+      if (length(lv)){
+        valsl  <- mget(lv, get("logger", event), ifnotfound = NA)
+        names(valsl) <- names(lv)
+        vals <- c(vals, valsl)
       }
 
-      do.call(jsonlite::toJSON, args = c(list(vals), self$toJSON_args))
+      do.call(jsonlite::toJSON, args = c(list(vals), get(".toJSON_args", private)))
     },
 
     set_toJSON_args = function(x){
@@ -559,3 +609,51 @@ LayoutJson <- R6::R6Class(
     .toJSON_args = NULL
   )
 )
+
+
+
+
+# utils -------------------------------------------------------------------
+
+assert_colnames_match_valnames <- function(
+  colnames,
+  valnames
+){
+  assert(all_are_distinct(colnames))
+  assert(all_are_distinct(valnames))
+
+  if (!setequal(colnames, valnames)){
+    msg <- ""
+    mis_ct <- setdiff(valnames, names(colnames))
+    ext_ct <- setdiff(colnames, valnames)
+
+    if (length(mis_ct)){
+      msg <- paste0(
+        "col_type missing: ", paste(mis_ct, collapse = ", "), "."
+      )
+    }
+
+    if (length(ext_ct)){
+      msg <- paste0(
+        msg, "col_type defined but not part of layout: ",
+        paste(ext_ct, collapse = ", "),
+        "."
+      )
+    }
+
+    stop(msg, call. = FALSE)
+  }
+
+  TRUE
+}
+
+
+
+name_vals <- function(x){
+  if (is.null(names(x)))
+    names(x) <- x
+  else
+    names(x)[names(x) == ""] <- x[names(x) == ""]
+
+  x
+}

@@ -72,7 +72,7 @@
 #'     The arguments are interpreted as for `fatal()`.}
 #'
 #'   \item{`trace(msg, ...)`}{Logs a message with level `trace` on this logger.
-#'   `msg` and `...` are passed on to [base::fatal()].}
+#'   The arguments are interpreted as for `fatal()`.}
 #'
 #'   \item{`log(level, msg, timestamp, caller)`}{Logs a message with `level`.}
 #'

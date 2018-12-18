@@ -128,23 +128,26 @@ maximum log level that this Logger processes)}
 
 
 \describe{
-\item{\code{fatal(msg, ...)}}{Logs a message with level \code{FATAL} on this logger.
-The arguments are interpreted as for \code{trace()}.}
+\item{\code{fatal(msg, ...)}}{Logs a message with level \code{fatal} on this logger.
+If there are \emph{unnamed} arguments in \code{...}, they will be pased to
+\code{base::sprintf()} along with message. Named arguments will be passed
+as custom fields to \link{LogEvent}. If there are named arguments the names
+must be unique}
 
-\item{\code{error(msg, ...)}}{Logs a message with level \code{ERROR} on this logger.
-The arguments are interpreted as for \code{trace()}.}
+\item{\code{error(msg, ...)}}{Logs a message with level \code{error} on this logger.
+The arguments are interpreted as for \code{fatal()}.}
 
-\item{\code{warn(msg, ...)}}{Logs a message with level \code{WARN} on this logger.
-The arguments are interpreted as for \code{trace()}.}
+\item{\code{warn(msg, ...)}}{Logs a message with level \code{warn} on this logger.
+The arguments are interpreted as for \code{fatal()}.}
 
-\item{\code{info(msg, ...)}}{Logs a message with level \code{INFO} on this logger.
-The arguments are interpreted as for \code{trace()}.}
+\item{\code{info(msg, ...)}}{Logs a message with level \code{info} on this logger.
+The arguments are interpreted as for \code{fatal()}.}
 
-\item{\code{debug(msg, ...)}}{Logs a message with level \code{DEBUG} on this logger.
-The arguments are interpreted as for \code{trace()}.}
+\item{\code{debug(msg, ...)}}{Logs a message with level \code{debug} on this logger.
+The arguments are interpreted as for \code{fatal()}.}
 
-\item{\code{trace(msg, ...)}}{Logs a message with level \code{TRACE} on this logger.
-\code{msg} and \code{...} are passed on to \code{\link[base:sprintf]{base::sprintf()}}.}
+\item{\code{trace(msg, ...)}}{Logs a message with level \code{trace} on this logger.
+The arguments are interpreted as for \code{fatal()}.}
 
 \item{\code{log(level, msg, timestamp, caller)}}{Logs a message with \code{level}.}
 
@@ -178,7 +181,7 @@ yog$info("Today is \%s", Sys.Date() )
 yog$fatal("This is a serious error")
 
 # if you want to take advantage of hierarchical logging, you can create new loggers.
-# the following creates a new logger that logs to a temporary file.
+#' # the following creates a new logger that logs to a temporary file.
 tf <- tempfile()
 mylogger <- Logger$new(
   "mylogger",
@@ -190,5 +193,12 @@ mylogger <- Logger$new(
 # writes not only the file 'tf', but also to the console.
 mylogger$fatal("blubb")
 readLines(tf)
+
+# use string inerpolation and custom fields
+tf2 <- tempfile()
+mylogger$add_appender(AppenderFile$new(tf2, layout = LayoutJson$new()))
+mylogger$info("Not all \%s support custom fields", "appenders", type = "test")
+readLines(tf)
+readLines(tf2)
 
 }
