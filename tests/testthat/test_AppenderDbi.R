@@ -111,6 +111,17 @@ for (nm in names(dbs)){
   })
 
 
+  test_that("SQL is sanitzed", {
+    msg <- ";*/;   \"' /* blubb;"
+    e <- LogEvent$new(
+      yog, level = 600L, msg = msg, caller = "nope()", timestamp = Sys.time()
+    )
+    app$append(e)
+    res <- app$data$msg
+    expect_identical(res[length(res)], msg)
+  })
+
+
   test_that("cleanup behaves as expected", {
     expect_true(
       DBI::dbExistsTable(conn, tname) ||
@@ -127,6 +138,7 @@ for (nm in names(dbs)){
 
 
 
+context("AppenderDbi / SQLite: Extra Tests")
 
 test_that("AppenderDbi / RSQLite: manual field types work", {
   if (!requireNamespace("RSQLite", quietly = TRUE))
@@ -169,8 +181,6 @@ test_that("AppenderDbi / RSQLite: manual field types work", {
 })
 
 
-
-context("AppenderDbi / SQLite: Extra Tests")
 
 
 test_that("displaying logs works for Loggers", {

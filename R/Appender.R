@@ -726,13 +726,15 @@ AppenderRjdbc <- R6::R6Class(
 
       for (i in seq_len(nrow(dd))){
         data <- as.list(dd[i, ])
-        RJDBC::dbSendUpdate(
-          private$.conn, sprintf(
-          "insert into %s (%s) values (%s)",
+
+        q <-  sprintf(
+          "INSERT INTO %s (%s) VALUES (%s)",
           private$.table,
           paste(self$layout$col_names, collapse = ", "),
-          paste0("'", data, "'", collapse = ", "))
+          paste(rep("?", length(data)), collapse = ", ")
         )
+
+        RJDBC::dbSendUpdate(get(".conn", private), q, list=data)
       }
 
       return(invisible())
