@@ -167,7 +167,7 @@ yog$set_threshold(NA)
 yog$appenders$console$set_threshold("info")
 yog$appenders$file$set_threshold(NA)
 yog$info("Another informational message")
-yog$debug("A debug message that the console appender doesn't show.")
+yog$debug("A debug message not shown by the console appender")
 
 readLines(tf)
 
@@ -190,14 +190,80 @@ Appenders).
 ![](log_flow.svg)
 
 
+# Examples
+
+## Logging to the console
+
+yog comes with simple formatting syntax. The configuration possibilites are 
+limited, but should be sufficient for most users.
+
+```{r}
+lg <- Logger$new(
+  "test", 
+  appenders = list(cons = AppenderConsole$new()), 
+  propagate = FALSE
+)
+
+lg$info("the default format")
+
+lg$appenders$cons$layout$set_fmt("%L (%n) [%t] %c(): !! %m !!")
+lg$info("A more involved custom format")
+```
+
+More complex formats are possible with `LayoutGlue` powered by the awesome
+[glue](https://github.com/tidyverse/glue) package, at the cost of slightly
+worse performance.
+```{r}
+# install.packages("glue")
+
+# WIP
+```
 
 
 
-# Outlook
+## Logging to JSON files
 
-The following features are planned, but have no fixed release date yet. If they
-are important to you please comment on the approriate issue in the issue tracker
+JavaScript Object Notation (JSON) is an open-standard file format that uses 
+human-readable text to transmit data objects consisting of attribute–value 
+pairs and array data types ([wikipedia](https://en.wikipedia.org/wiki/JSON)).
+JSON is the **recommended text-based logging format when logging to files**
+  ^[Technically, the logger does not produce standard JSON files but 
+  [JSON lines](http://jsonlines.org/)], 
+as it is human- as well as machine readable. You should only log to a different 
+format if you have very good reasons for it. 
 
-* Arbitrary fields in LogRecords
-* A RollingFileAppender that supports log rotation
-* A Buffered Appender
+
+```{r}
+# install.packages("jsonlite")
+tf <- tempfile()
+
+# AppenderJson is just a shortcut for AppenderFile with LayotJson as default
+# instead of Layout Format
+lg <- Logger$new(
+  "test logger",
+  appenders = AppenderJson$new(file = tf), 
+  propagate = FALSE
+)
+
+lg$info("JSON naturally supports custom log fields", field = "custom")
+lg$info("You can serialize most R data types to JSON", numbers = 1:5)
+lg$info("If you ever want to analyse your log files", use = "JSON")
+
+```
+
+JSON is easy to parse and analyse with R
+```{r}
+read_json_lines(tf)
+```
+
+It is also human readable, though maybe this vignett does not 
+transport that fact very well because of the lack of horizontal space
+```{r}
+cat(readLines(tf), sep = "\n\n")
+```
+
+```{r, echo = FALSE}
+unlink(tf)
+```
+
+
