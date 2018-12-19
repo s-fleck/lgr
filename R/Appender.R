@@ -170,7 +170,9 @@ AppenderConsole <- R6::R6Class(
 
 #' AppenderFile
 #'
-#' A simple Appender that outputs to a file in the file system.
+#' A simple Appender that outputs to a file in the file system. `AppenderJson`
+#' is just a shortcut for `AppenderFile` with [`LayoutJson`] as the default
+#' [Layout]
 #'
 #' @eval r6_usage(AppenderFile)
 #'
@@ -192,6 +194,7 @@ AppenderConsole <- R6::R6Class(
 #'
 #' @export
 #' @seealso [LayoutFormat], [LayoutJson]
+#' @aliases AppenderJson
 #'
 #' @examples
 #' logger <- Logger$new("loggername")
@@ -263,6 +266,23 @@ AppenderFile <- R6::R6Class(
 )
 
 
+
+#' @export
+AppenderJson <- R6::R6Class(
+  "AppenderJson",
+  inherit = AppenderFile,
+  public = list(
+    initialize = function(
+      file,
+      threshold = NA_integer_,
+      layout = LayoutJson$new()
+    ){
+      self$set_file(file)
+      self$set_threshold(threshold)
+      self$set_layout(layout)
+    }
+  )
+)
 
 
 # AppenderTable -----------------------------------------------------------

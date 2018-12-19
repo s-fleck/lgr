@@ -2,9 +2,12 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderFile}
 \alias{AppenderFile}
+\alias{AppenderJson}
 \title{AppenderFile}
 \description{
-A simple Appender that outputs to a file in the file system.
+A simple Appender that outputs to a file in the file system. \code{AppenderJson}
+is just a shortcut for \code{AppenderFile} with \code{\link{LayoutJson}} as the default
+\link{Layout}
 }
 \section{Usage}{
 \preformatted{x <- AppenderFile$new(file, threshold = NA_integer_,
