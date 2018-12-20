@@ -2,8 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderFile}
 \alias{AppenderFile}
-\alias{AppenderJson}
-\title{AppenderFile}
+\title{Log to a File}
 \description{
 A simple Appender that outputs to a file in the file system. \code{AppenderJson}
 is just a shortcut for \code{AppenderFile} with \code{\link{LayoutJson}} as the default
@@ -84,6 +83,7 @@ readLines(json)
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
+  \code{\link{AppenderJson}},
   \code{\link{AppenderMemoryDt}},
   \code{\link{AppenderRjdbc}}, \code{\link{AppenderTable}},
   \code{\link{Appender}}

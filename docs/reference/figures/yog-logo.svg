@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="129.47585mm"
+   height="150.48361mm"
+   viewBox="0 0 129.47585 150.48361"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="yog-logo.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.5"
+     inkscape:cx="-232.9739"
+     inkscape:cy="390.91124"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:snap-grids="true"
+     inkscape:snap-to-guides="false"
+     inkscape:snap-global="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1135"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4835"
+       dotted="true"
+       spacingx="4.2333333"
+       spacingy="4.2333333"
+       originx="-41.095415"
+       originy="-125.84152" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-41.095413,-20.674865)">
+    <path
+       sodipodi:type="star"
+       style="opacity:0.98999999;fill:#374845;fill-opacity:0.98173517;stroke:#005544;stroke-width:1.86863804;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path4681"
+       sodipodi:sides="6"
+       sodipodi:cx="101.6"
+       sodipodi:cy="73.892227"
+       sodipodi:r1="68.992226"
+       sodipodi:r2="59.749023"
+       sodipodi:arg1="1.5707963"
+       sodipodi:arg2="2.0943951"
+       inkscape:flatsided="true"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="M 101.6,142.88445 41.850979,108.38834 41.850977,39.396116 101.6,4.9000015 l 59.74902,34.4961115 0,68.992227 z"
+       inkscape:transform-center-x="1.3178224e-05"
+       transform="matrix(1.0668154,0,0,1.0737925,-2.6008225,16.57175)"
+       inkscape:export-filename="/home/hoelk/logo.png"
+       inkscape:export-xdpi="31.394781"
+       inkscape:export-ydpi="31.394781" />
+    <circle
+       style="opacity:0.98999999;fill:#536c67;fill-opacity:0.98173517;stroke:none;stroke-width:0.36178559;stroke-opacity:1"
+       id="path4786-3-0"
+       cx="-105.78762"
+       cy="95.916672"
+       transform="scale(-1,1)"
+       inkscape:export-filename="/home/hoelk/logo.png"
+       inkscape:export-xdpi="31.394781"
+       inkscape:export-ydpi="31.394781"
+       r="65" />
+    <ellipse
+       style="opacity:0.98999999;fill:#6f917c;fill-opacity:0.98173517;stroke:none;stroke-width:0.29107457;stroke-opacity:1"
+       id="path4786-3"
+       cx="-105.78762"
+       cy="95.916672"
+       transform="scale(-1,1)"
+       rx="52.166138"
+       ry="52.425674"
+       inkscape:export-filename="/home/hoelk/logo.png"
+       inkscape:export-xdpi="31.394781"
+       inkscape:export-ydpi="31.394781" />
+    <ellipse
+       style="opacity:0.98999999;fill:#536c5d;fill-opacity:0.98173517;stroke:none;stroke-width:0.17827716;stroke-opacity:1"
+       id="path4786"
+       cx="105.78762"
+       cy="95.916672"
+       rx="32.2043"
+       ry="31.856768"
+       inkscape:export-filename="/home/hoelk/logo.png"
+       inkscape:export-xdpi="31.394781"
+       inkscape:export-ydpi="31.394781" />
+    <ellipse
+       style="opacity:0.98999999;fill:#552200;fill-opacity:0.98173517;stroke:#a02c2c;stroke-width:0.08487618;stroke-opacity:1"
+       id="path4786-6-0"
+       cx="105.78762"
+       cy="95.916672"
+       rx="15.249229"
+       ry="15.249228"
+       inkscape:export-filename="/home/hoelk/logo.png"
+       inkscape:export-xdpi="31.394781"
+       inkscape:export-ydpi="31.394781" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:52.85741425px;line-height:125%;font-family:'Bitstream Charter';-inkscape-font-specification:'Bitstream Charter, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffeeaa;fill-opacity:1;stroke:none;stroke-width:1.32143283px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="66.478699"
+       y="84.877563"
+       id="text827"
+       transform="matrix(0.99624044,0.26694182,-0.25094344,0.93653366,0,0)"
+       inkscape:export-filename="/home/hoelk/logo.png"
+       inkscape:export-xdpi="31.394781"
+       inkscape:export-ydpi="31.394781"><tspan
+         sodipodi:role="line"
+         id="tspan825"
+         x="66.478699"
+         y="84.877563"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:52.85741425px;font-family:'Bitstream Charter';-inkscape-font-specification:'Bitstream Charter, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffeeaa;stroke:none;stroke-width:1.32143283px"
+         dx="0 3.7740648"><tspan
+           style="fill:#ffeeaa;stroke:none;stroke-width:1.32143283px"
+           id="tspan875"
+           dx="0 0 3.9960682">Y<tspan
+   style="fill:#ffeeaa;stroke:none;stroke-width:1.32143283px"
+   id="tspan913"
+   dx="4.4400764">O</tspan>G</tspan></tspan></text>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3758"
+       style="fill:black;stroke:none;stroke-opacity:1;stroke-width:1px;stroke-linejoin:miter;stroke-linecap:butt;fill-opacity:1;font-family:Sans;font-style:normal;font-weight:normal;font-size:40px;line-height:125%;letter-spacing:0px;word-spacing:0px"><flowRegion
+         id="flowRegion3760"><rect
+           id="rect3762"
+           width="0"
+           height="48"
+           x="1308"
+           y="1076.757" /></flowRegion><flowPara
+         id="flowPara3764"></flowPara></flowRoot>  </g>
+</svg>

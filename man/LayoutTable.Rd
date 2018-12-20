@@ -2,11 +2,11 @@
 % Please edit documentation in R/Layout.R
 \name{LayoutTable}
 \alias{LayoutTable}
-\title{LayoutTable}
+\title{Abstract Class for Logging to Tabular Structures}
 \description{
-\code{LayoutTable} is an internal class that is only exported for developers that
-want to extend yog. You are probably looking for either \link{LayoutDbi} or
-\link{LayoutJson}.
+Abstract classes are exported for developers that want to extend them, they
+are not useful to casual users. \link{LayoutDbi} and \link{LayoutJson} are derived
+from LayoutTabel.
 }
 \section{Creating a New Layout}{
 

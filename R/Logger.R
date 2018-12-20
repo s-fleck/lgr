@@ -1,4 +1,4 @@
-#' Loggers
+#' Create a new Logger
 #'
 #' A Logger records the log message and some metadata (timestamp,
 #' calling function) as a [LogEvent] and passes this event on to one or

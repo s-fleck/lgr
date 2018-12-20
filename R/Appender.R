@@ -1,9 +1,11 @@
-#' Appenders
+#' Abstract Class for Appenders
 #'
-#' Appenders are assigned to [Loggers] and manage the output of the [LogEvents]
-#' to a destination, such as the console or a text file. An appender must have
-#' a single [Layout] that tells it how to format the LogEvent. For details
-#' please refer to the documentations of the specific Appenders.
+#' Abstract classes are exported for developers that want to extend them, they
+#' are not useful to casual users. Appenders are assigned to [Loggers] and
+#' manage the output of the [LogEvents] to a destination, such as the console or
+#' a text file. An appender must have a single [Layout] that tells it how to
+#' format the LogEvent. For details please refer to the documentations of the
+#' specific Appenders.
 #'
 #' @eval r6_usage(Appender)
 #'
@@ -100,7 +102,7 @@ Appender <- R6::R6Class(
 
 # AppenderConsole ---------------------------------------------------------
 
-#' AppenderConsole
+#' Log to the Console
 #'
 #' A simple Appender that outputs to the console. If you
 #' have the package **crayon** installed log levels will be coloured by default
@@ -168,7 +170,7 @@ AppenderConsole <- R6::R6Class(
 
 # AppenderFile ------------------------------------------------------------
 
-#' AppenderFile
+#' Log to a File
 #'
 #' A simple Appender that outputs to a file in the file system. `AppenderJson`
 #' is just a shortcut for `AppenderFile` with [`LayoutJson`] as the default
@@ -194,7 +196,6 @@ AppenderConsole <- R6::R6Class(
 #'
 #' @export
 #' @seealso [LayoutFormat], [LayoutJson]
-#' @aliases AppenderJson
 #'
 #' @examples
 #' logger <- Logger$new("loggername")
@@ -267,6 +268,52 @@ AppenderFile <- R6::R6Class(
 
 
 
+
+# AppenderJson ------------------------------------------------------------
+
+#' Log to a JSON File
+#'
+#' A simple Appender that outputs to a file in the file system. `AppenderJson`
+#' is just a shortcut for `AppenderFile` with [`LayoutJson`], but comes with
+#' an extra method `show()` and an extra argument `data` to access the
+#' underlying file.
+#'
+#' @eval r6_usage(AppenderFile)
+#'
+#' @inheritSection AppenderFile Creating a New Appender
+#' @section Creating a New Appender:
+#'
+#' @inheritSection AppenderFile Fields and Methods
+#' @section Fields and Methods:
+#'
+#' \describe{
+#'   \item{`show(n, threshold)`}{Show the last `n` log entries with a log level
+#'   bellow `threshold`. The log entries will be formated as in the source
+#'   JSON file}
+#'   \item{`data`}{Get the log recorded by this `Appender` as a `data.frame`}
+#' }
+#'
+#' @export
+#' @seealso [LayoutFormat], [LayoutJson]
+#'
+#' @examples
+#' tf <- tempfile()
+#' l <- Logger$new("testlogger", appenders = AppenderJson$new(tf), propagate = FALSE)
+#'
+#' l$info("A test message")
+#' l$info("A test message %s strings", "with format strings", and = "custom_fields")
+#'
+#' l$appenders[[1]]$show()
+#' l$appenders[[1]]$data
+#'
+#' @family Appenders
+#' @name AppenderJson
+#'
+NULL
+
+
+
+
 #' @export
 AppenderJson <- R6::R6Class(
   "AppenderJson",
@@ -280,17 +327,35 @@ AppenderJson <- R6::R6Class(
       self$set_file(file)
       self$set_threshold(threshold)
       self$set_layout(layout)
+    },
+
+    show = function(n = 20, threshold = NA){
+      if (!is.na(threshold)){
+        sel <- self$data$level <= threshold
+      } else {
+        sel <- TRUE
+      }
+      dd <- tail(readLines(self$file)[sel], n)
+      cat(dd, sep = "\n")
+      invisible(dd)
+    }
+  ),
+  active = list(
+    data = function(){
+      read_json_lines(self$file)
     }
   )
+
 )
 
 
 # AppenderTable -----------------------------------------------------------
 
-#' AppenderTable
+#' Abstract Class for Logging to Tabular Structures
 #'
-#' `AppenderTable` is an internal class that is only exported for developers
-#' that want to extend yog.
+#' Abstract classes are exported for developers that want to extend them, they
+#' are not useful to casual users. [AppenderDbi], [AppenderRjdbc] and
+#' [AppenderMemoryDt] are derived from AppenderTabel.
 #'
 #' @inheritSection Appender Creating a New Appender
 #' @section Creating a New Appender:
@@ -337,7 +402,7 @@ AppenderTable <- R6::R6Class(
 
 # AppenderMemoryDt ----------------------------------------------------------
 
-#' AppenderMemoryDt
+#' Log to an In-Memory Data.Table
 #'
 #' An Appender that outputs to an in-memory `data.table`. This requires that
 #' you have the suggested package **data.table** installed. This kind of appender
@@ -537,7 +602,7 @@ AppenderMemoryDt <- R6::R6Class(
 # AppenderDbi -------------------------------------------------------------
 
 
-#' AppenderDbi
+#' Log to Databases via DBI
 #'
 #' Log to a database table with any **DBI** compatabile backend.
 #'
@@ -679,7 +744,7 @@ AppenderDbi <- R6::R6Class(
 
 # AppenderRjdbc -------------------------------------------------------------
 
-#' AppenderRjdbc
+#' Log to Databases via RJDBC
 #'
 #' Log to a database table with the **RJDBC** package. **RJDBC** is only
 #' somewhat  **DBI** compliant and does not work with [AppenderDbi]. I
@@ -775,7 +840,7 @@ AppenderRjdbc <- R6::R6Class(
 
 # AppenderBuffer --------------------------------------------------
 
-#' AppenderBuffer
+#' Log to a Memory Buffer
 #'
 #' An Appender that Buffers LogEvents in-memory and and redirects them to other
 #' appenders once certain conditions are met.

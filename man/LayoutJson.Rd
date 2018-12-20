@@ -2,7 +2,7 @@
 % Please edit documentation in R/Layout.R
 \name{LayoutJson}
 \alias{LayoutJson}
-\title{LayoutJson}
+\title{Format LogEvents as JSON}
 \description{
 Format a LogEvent as JSON
 }
