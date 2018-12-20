@@ -5,6 +5,7 @@ date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
+    number_sections: true
 vignette: >
   %\VignetteIndexEntry{yog}
   %\VignetteEncoding{UTF-8}
@@ -75,12 +76,20 @@ of the logging process.
   hierarchical logging)
 * An **Appender** writes the log message to destination (the console, a file, 
   a database, etc...).
-* A **Layout** is used by an *Appender* to format *LogRecords*. For example,
+* A **Layout** is used by an Appender to format LogRecords. For example,
   `AppenderFile` uses `LayoutFormat` by default to write human readable log
   events to a text file, but can also use `LayoutJson` produce machine 
   readable JSON lines logfiles.
-* **LogRecords** are produced by the *Logger* and dispatched to *Appenders* and
-  *Layouts*. 
+* **LogEvents** are produced by the Logger and dispatched to Appenders. They 
+  contain all the information that is beeing logged (think of
+  it as a row in table). LogEvents usually contain the log level, a timestamp,
+  a message, the name of the calling function, and a 
+  [reference](https://adv-r.hadley.nz/r6.html#r6-semantics]) to the Logger
+  that created it. In addition, a LogEvent can contain any number of custom
+  fields, but not all Appenders/Layouts support custom fields. For example
+  if you use `AppenderFormat` with `LayoutFormat` you can only use the standard 
+  fields in your log message, while `LayoutJson` supports custom fields in 
+  a quite natural manner. See [examples 1 & 2](#examples)
 
 
 
@@ -190,9 +199,9 @@ Appenders).
 ![](log_flow.svg)
 
 
-# Examples
+# Examples {#examples}
 
-## Logging to the console
+## Logging to the console 
 
 yog comes with simple formatting syntax. The configuration possibilites are 
 limited, but should be sufficient for most users.
