@@ -106,7 +106,9 @@ appenders from ancestral Loggers of the current Logger}
 
 \item{\code{filters}}{a \code{list} of predicates (functions that return either
 \code{TRUE} or \code{FALSE}). If all of these functions evaluate to \code{TRUE} the
-LogEvent is passed on to the Logger's Appenders}
+LogEvent is passed on to the Logger's Appenders. See the source code of
+\code{\link[=with_log_level]{with_log_level()}} for an example of how this mechanic can be abused to
+modify LogEvents before they are processed further.}
 
 \item{\code{last_event}}{The last LogEvent produced by the current Logger}
 

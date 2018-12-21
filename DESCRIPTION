@@ -53,6 +53,7 @@ Collate:
     'read_json_log.R'
     'simple_logging.R'
     'use_logger.R'
+    'utils-logging.R'
     'utils-print.R'
     'utils-rd.R'
     'yog-package.R'

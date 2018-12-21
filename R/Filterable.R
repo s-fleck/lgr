@@ -15,17 +15,20 @@ Filterable <- R6::R6Class(
         if (!identical(f(event, self), TRUE)) return(FALSE)
       }
       TRUE
+    },
+
+    set_filters = function(filters){
+      assert(
+        is.list(filters) && all(vapply(filters, is_filter, logical(1))),
+        "'filters' must be a list of functions with the arguments 'event' and 'obj'"
+      )
+      private$.filters <- filters
     }
   ),
 
   active = list(
-    filters = function(value){
-      if (missing(value))  return(private$.filters)
-      assert(
-        is.list(value) && all(vapply(value, is_filter, logical(1))),
-        "'filters' must be a list of functions with the arguments 'event' and 'obj'"
-      )
-      private$.filters <- value
+    filters = function(){
+      private$.filters
     }
   ),
 

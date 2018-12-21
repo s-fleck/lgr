@@ -113,7 +113,9 @@
 #'
 #'   \item{`filters`}{a `list` of predicates (functions that return either
 #'   `TRUE` or `FALSE`). If all of these functions evaluate to `TRUE` the
-#'   LogEvent is passed on to the Logger's Appenders}
+#'   LogEvent is passed on to the Logger's Appenders. See the source code of
+#'   [with_log_level()] for an example of how this mechanic can be abused to
+#'   modify LogEvents before they are processed further.}
 #'
 #'   \item{`last_event`}{The last LogEvent produced by the current Logger}
 #'

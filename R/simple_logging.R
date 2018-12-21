@@ -223,51 +223,6 @@ show_log = function(
 
 
 
-#' Suspend all logging
-#'
-#' Completely disable logging for all loggers. This is for example useful for
-#' automated test code.
-#'
-#' @return
-#'   `suspend_logging()` and `unsuspend_logging()` return `NULL` (invisibly),
-#'   `without_logging` returns whatever `code` returns
-#' @export
-suspend_logging <- function(){
-  options("yog.logging_suspended" = TRUE)
-  invisible()
-}
-
-
-
-
-#' @rdname suspend_logging
-#' @export
-unsuspend_logging <- function(){
-  options("yog.logging_suspended" = FALSE)
-  invisible()
-}
-
-
-
-
-#' @rdname suspend_logging
-#' @param code Any \R code
-#' @export
-#' @examples
-#' without_logging({
-#'   FATAL("FOO")
-#'   INFO("BAR")
-#' })
-#'
-without_logging <- function(code){
-  suspend_logging()
-  on.exit(unsuspend_logging())
-  force(code)
-}
-
-
-
-
 # simple setup ------------------------------------------------------------
 
 default_appenders <- function()

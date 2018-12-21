@@ -153,3 +153,32 @@ generate_sql_create_table <- function(
   sprintf("CREATE TABLE %s (%s)", tname, cols)
 }
 
+
+
+standardize_log_level <- function(
+  x,
+  log_levels = getOption("yog.log_levels")
+){
+  assert(is_scalar(x))
+  standardize_log_levels(x, log_levels = log_levels)
+}
+
+
+
+
+standardize_log_levels <- function(
+  x,
+  log_levels = getOption("yog.log_levels")
+){
+  if (is_integerish(x)){
+    assert(all(x > 0))
+    return(as.integer(x))
+  }
+
+  if (is.character(x)){
+    all(x %in% names(log_levels))
+    return(log_levels[match(labels, names(log_levels))])
+  }
+
+  stop("'x' is not valid log_levels")
+}

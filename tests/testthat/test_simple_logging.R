@@ -30,19 +30,6 @@ test_that("simple_logging works as expected", {
 
 
 
-test_that("log suppression", {
-  expect_output(FATAL("test"), "FATAL")
-  expect_silent(without_logging(FATAL("test")))
-  expect_output(FATAL("test"), "FATAL")
-
-  suspend_logging()
-  expect_silent(FATAL("test"))
-  unsuspend_logging()
-  expect_output(FATAL("test"), "FATAL")
-})
-
-
-
 
 test_that("show_log", {
   expect_output(expect_true(is.data.frame(show_log())))
@@ -95,3 +82,5 @@ test_that("option appenders setup", {
   options("yog.log_file" = c(blubb = tempfile('_fail')))
   expect_warning(res <- default_appenders(), "_fail")
 })
+
+
