@@ -111,6 +111,8 @@
 #'   \item{`inherited_appenders`}{*read only*. A `list` of all inherited
 #'   appenders from ancestral Loggers of the current Logger}
 #'
+#'   \item{`elapsed`}{Seconds since the last log event as `difftime`}
+#'
 #'   \item{`filters`}{a `list` of predicates (functions that return either
 #'   `TRUE` or `FALSE`). If all of these functions evaluate to `TRUE` the
 #'   LogEvent is passed on to the Logger's Appenders. See the source code of
@@ -521,7 +523,9 @@ Logger <- R6::R6Class(
 
     appenders = function()  private$.appenders,
 
-    user = function() private$.user
+    user = function() private$.user,
+
+    elapsed = function() difftime(Sys.time(), self$last_event$timestamp, units = "secs")
   ),
 
 

@@ -39,6 +39,7 @@ x$set_user(x)
 
 x$ancestry
 x$appenders
+x$elapsed
 x$exception_handler
 x$inherited_appenders
 x$last_event
@@ -103,6 +104,8 @@ Loggers that are ancestors to the current Logger}
 
 \item{\code{inherited_appenders}}{\emph{read only}. A \code{list} of all inherited
 appenders from ancestral Loggers of the current Logger}
+
+\item{\code{elapsed}}{Seconds since the last log event as \code{difftime}}
 
 \item{\code{filters}}{a \code{list} of predicates (functions that return either
 \code{TRUE} or \code{FALSE}). If all of these functions evaluate to \code{TRUE} the
