@@ -6,8 +6,8 @@
 \title{Log to an In-Memory Data.Table}
 \description{
 An Appender that outputs to an in-memory \code{data.table}. This requires that
-you have the suggested package \strong{data.table} installed. This kind of appender
-is pretty useful for interactive use, and hast very little overhead.
+you have the suggested package \strong{data.table} installed. This kind of
+Appender is pretty useful for interactive use, and hast very little overhead.
 }
 \section{Usage}{
 \preformatted{x <- AppenderMemoryDt$new(threshold = NA_integer_,

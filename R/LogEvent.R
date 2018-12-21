@@ -1,9 +1,9 @@
-#' Log Events
+#' Events - The Atomic Unit of Logging
 #'
 #' A `LogEvent` is a single unit of data that should be logged. It usually
-#' contains at minimum the [log_level], a timestamp and the log message.
-#' `LogEvents` are created by a [Logger], and then processed a [Appenders] and
-#' [Layouts].
+#' contains at minimum the [log_level], a timestamp, the name of the calling
+#' function, the log message and a reference to the Logger that created it.
+#' `LogEvents` are created by a [Logger], and then processed by an [Appenders].
 #'
 #' @eval r6_usage(LogEvent)
 #'

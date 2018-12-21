@@ -29,7 +29,7 @@ Yog is a logging framework for R inspired by
 [Apache Log4j](https://logging.apache.org/log4j/2.x/) and
 [Python logging](https://docs.python.org/3/library/logging.html).
 It is based on [R6 classes](https://github.com/r-lib/R6) that 
-focuses on extensibility, ease of use, and performance
+focuses on extensibility, ease of use, and performance.
 
 ## Quickstart
 
@@ -265,7 +265,7 @@ JSON is easy to parse and analyse with R
 read_json_lines(tf)
 ```
 
-It is also human readable, though maybe this vignett does not 
+It is also human readable, though maybe this vignette does not 
 transport that fact very well because of the lack of horizontal space
 ```{r}
 cat(readLines(tf), sep = "\n\n")

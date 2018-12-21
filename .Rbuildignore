@@ -6,4 +6,7 @@
 ^LICENSE\.md$
 ^benchmarks$
 ^\.travis\.yml$
-^vignettes/rsconnect/.*$
+^vignettes/rsconnect.*$
+^README\.Rmd$
+^_pkgdown\.yml$
+^docs$

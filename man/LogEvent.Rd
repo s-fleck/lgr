@@ -3,12 +3,12 @@
 \name{LogEvent}
 \alias{LogEvent}
 \alias{LogEvents}
-\title{Log Events}
+\title{Events - The Atomic Unit of Logging}
 \description{
 A \code{LogEvent} is a single unit of data that should be logged. It usually
-contains at minimum the \link{log_level}, a timestamp and the log message.
-\code{LogEvents} are created by a \link{Logger}, and then processed a \link{Appenders} and
-\link{Layouts}.
+contains at minimum the \link{log_level}, a timestamp, the name of the calling
+function, the log message and a reference to the Logger that created it.
+\code{LogEvents} are created by a \link{Logger}, and then processed by an \link{Appenders}.
 }
 \section{Usage}{
 \preformatted{x <- LogEvent$new(logger, level = 400, timestamp = Sys.time(), caller = NA,

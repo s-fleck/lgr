@@ -37,7 +37,7 @@ sense.
 Useful links:
 \itemize{
   \item \url{https://github.com/s-fleck/yog}
-  \item Report bugs at \url{https://github.com/s-fleck/dint/yog}
+  \item Report bugs at \url{https://github.com/s-fleck/yog}
 }
 
 }

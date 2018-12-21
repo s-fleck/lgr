@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Log to Databases via RJDBC — AppenderRjdbc • yog</title>
+<title>Information About the System — system_infos • yog</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,13 @@
 
 
 
-<meta property="og:title" content="Log to Databases via RJDBC — AppenderRjdbc" />
+<meta property="og:title" content="Information About the System — system_infos" />
 
-<meta property="og:description" content="Log to a database table with the RJDBC package. RJDBC is only
-somewhat  DBI compliant and does not work with AppenderDbi. I
-personally do not recommend using RJDBC if it can be avoided." />
+<meta property="og:description" content="get_user() tries to determine the current user. Defaults to
+getOption(&quot;yog.user&quot;). If the option is not set, Sys.info()[[&quot;user&quot;]]
+is used. If the option is not set and the package whoami is available,
+the user name is guessed based on whichever of the following is available:
+email_address, fullname, gh_username, username." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -116,84 +118,65 @@ personally do not recommend using RJDBC if it can be avoided." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Log to Databases via RJDBC</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/yog/blob/master/R/Appender.R'><code>R/Appender.R</code></a></small>
-    <div class="hidden name"><code>AppenderRjdbc.Rd</code></div>
+    <h1>Information About the System</h1>
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/yog/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
+    <div class="hidden name"><code>system_infos.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Log to a database table with the <strong>RJDBC</strong> package. <strong>RJDBC</strong> is only
-somewhat  <strong>DBI</strong> compliant and does not work with <a href='AppenderDbi.html'>AppenderDbi</a>. I
-personally do not recommend using <strong>RJDBC</strong> if it can be avoided.</p>
+    <p><code>get_user()</code> tries to determine the current user. Defaults to
+<code><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption("yog.user")</a></code>. If the option is not set, <code>Sys.info()[["user"]]</code>
+is used. If the option is not set and the package <strong>whoami</strong> is available,
+the user name is guessed based on whichever of the following is available:
+<code>email_address</code>, <code>fullname</code>, <code>gh_username</code>, <code>username</code>.</p>
     
     </div>
 
-        
-    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
+    <pre class="usage"><span class='fu'>get_user</span>(<span class='kw'>fallback</span> <span class='kw'>=</span> <span class='st'>"unknown user"</span>)
 
-    <pre>x &lt;- AppenderRjdbc$new(conn, table, threshold = NA_integer_,
-  layout = select_dbi_layout(conn), close_on_exit = TRUE)
-    x$append(event)
-x$clone(deep = FALSE)
-    x$
-</pre>
+<span class='fu'>get_caller</span>(<span class='kw'>where</span> <span class='kw'>=</span> -<span class='fl'>1L</span>)</pre>
     
-    <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>fallback</th>
+      <td><p>A fallback in case the user name could not be determined</p></td>
+    </tr>
+    <tr>
+      <th>where</th>
+      <td><p><code>integer</code> scalar (usually negative). Look up that many frames
+up the call stack</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    
-    <dl class='dl-horizontal'>
-<dt>conn</dt><dd><p>an RJDBC connection</p></dd>
-</dl>
-    <dl class='dl-horizontal'>
-<dt><code>threshold</code></dt><dd><p><code>character</code> or <code>integer</code> scalar. The minimum log level
-that triggers this logger. See <a href='get_log_levels.html'>log_levels</a></p></dd>
-<dt><code>layout</code></dt><dd><p>a <code>Layout</code> that will be used for formatting the <code>LogEvents</code>
-passed to this Appender</p></dd>
-</dl>
-    
-    <h2 class="hasAnchor" id="fields-and-methods"><a class="anchor" href="#fields-and-methods"></a>Fields and Methods</h2>
-
-    
-    <dl class='dl-horizontal'>
-<dt><code>close_on_exit</code>, <code>set_close_on_exit()</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>. Close the
-Database connection when the Logger is removed?</p></dd>
-<dt><code>data</code></dt><dd><p>Querry the whole log from the Database and return it as a
-<code>data.frame</code></p></dd>
-<dt><code>conn</code></dt><dd><p>get the DBI connection object</p></dd>
-<dt><code>table</code></dt><dd><p>Name of the target database table</p></dd>
-</dl>
-    <dl class='dl-horizontal'>
-<dt><code>show(n, threshold)</code></dt><dd><p>Show the last <code>n</code> log entries with a log level
-bellow <code>threshold</code>. The log entries will be formated for console output
-via the defined <a href='Layout.html'>Layout</a></p></dd>
-<dt><code>data</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a <code>data.table</code>
-with a maximum of <code>buffer_size</code> rows</p></dd>
-</dl>
+    <p>a <code>character</code> scalar.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a>, <a href='simple_logging.html'>simple_logging</a>, <a href='https://www.rdocumentation.org/packages/data.table/topics/data.table'>data.table::data.table</a></p>
-<p>Other Appenders: <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
-  <code><a href='AppenderConsole.html'>AppenderConsole</a></code>, <code><a href='AppenderDbi.html'>AppenderDbi</a></code>,
-  <code><a href='AppenderFile.html'>AppenderFile</a></code>, <code><a href='AppenderJson.html'>AppenderJson</a></code>,
-  <code><a href='AppenderMemoryDt.html'>AppenderMemoryDt</a></code>,
-  <code><a href='AppenderTable.html'>AppenderTable</a></code>, <code><a href='Appender.html'>Appender</a></code></p></div>
+    <div class='dont-index'><p><code><a href='https://www.rdocumentation.org/packages/whoami/topics/whoami'>whoami::whoami()</a></code></p>
+<p><code><a href='https://www.rdocumentation.org/packages/base/topics/sys.parent'>base::sys.call()</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>get_user</span>()</div><div class='output co'>#&gt; [1] "stefan.fleck@statistik.gv.at"</div><div class='input'>
+<span class='no'>foo</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>get_caller</span>(-<span class='fl'>1L</span>)
+<span class='fu'>foo</span>()</div><div class='output co'>#&gt; [1] "foo"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#usage">Usage</a></li>
-
-      <li><a href="#creating-a-new-appender">Creating a New Appender</a></li>
-
-      <li><a href="#fields-and-methods">Fields and Methods</a></li>
+      <li><a href="#value">Value</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

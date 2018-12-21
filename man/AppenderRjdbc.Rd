@@ -42,8 +42,10 @@ passed to this Appender
 
 
 \describe{
-\item{\code{close_on_exit}, \code{set_close_on_exit()}}{...}
-\item{\code{data}}{...}
+\item{\code{close_on_exit}, \code{set_close_on_exit()}}{\code{TRUE} or \code{FALSE}. Close the
+Database connection when the Logger is removed?}
+\item{\code{data}}{Querry the whole log from the Database and return it as a
+\code{data.frame}}
 \item{\code{conn}}{get the DBI connection object}
 \item{\code{table}}{Name of the target database table}
 }

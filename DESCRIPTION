@@ -1,7 +1,7 @@
 Type: Package
 Package: yog
 Title: Yet Another Log4j Inspired Logging Framework
-Version: 0.0.5.9008
+Version: 0.0.5.9009
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -14,7 +14,7 @@ Description: A flexible R6 based logging framework. Yog is under
     maintainer with bug reports, wishes, suggestions, etc...
 License: MIT + file LICENSE
 URL: https://github.com/s-fleck/yog
-BugReports: https://github.com/s-fleck/dint/yog
+BugReports: https://github.com/s-fleck/yog
 Imports: 
     R6
 Suggests: 

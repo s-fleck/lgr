@@ -1,19 +1,24 @@
-#' Get the Current System User
+#' Information About the System
 #'
-#' Try to determine the current user. Defaults to `getOption("yog.user")`. If
-#' the option is not set, `Sys.info()[["user"]]` is used. If the option is not
-#' set and the package **whoami** is available, the user name
-#' is guessed based on whichever of the following is available: `email_address`,
-#' `fullname`, `gh_username`, `username`.
+#' `get_user()` tries to determine the current user. Defaults to
+#' `getOption("yog.user")`. If the option is not set, `Sys.info()[["user"]]`
+#' is used. If the option is not set and the package **whoami** is available,
+#' the user name is guessed based on whichever of the following is available:
+#' `email_address`, `fullname`, `gh_username`, `username`.
+#'
+#'
+#' @return a `character` scalar.
+#'
+#'
+#' @seealso [whoami::whoami()]
+#'
+#' @name system_infos
+#' @examples
+#' get_user()
 #'
 #' @param fallback A fallback in case the user name could not be determined
-#'
-#' @return
-#'   a `character` scalar.
+#' @rdname system_infos
 #' @export
-#'
-#' @examples
-#'   get_user()
 get_user <- function(fallback = "unknown user"){
   guess_user <- function(){
     if (requireNamespace("whoami", quietly = TRUE)){
@@ -52,22 +57,20 @@ get_user <- function(fallback = "unknown user"){
 
 
 
-#' Get the Calling Function
-#'
-#' Tries to determine the calling functions based on `where`.
+#' `get_caller()` Tries to determine the calling functions based on `where`.
 #'
 #' @param where `integer` scalar (usually negative). Look up that many frames
 #'   up the call stack
 #'
-#' @return a `character` scalar
 #' @seealso [base::sys.call()]
+#' @export
+#'
+#' @rdname system_infos
 #' @export
 #'
 #' @examples
 #' foo <- function() get_caller(-1L)
 #' foo()
-#'
-#'
 get_caller <- function(
   where = -1L
 ){

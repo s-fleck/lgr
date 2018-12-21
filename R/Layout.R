@@ -43,7 +43,7 @@ Layout <- R6::R6Class(
 
 # LayoutFormat ------------------------------------------------------------
 
-#' Format Log Events to Text
+#' Format Log Events as Text
 #'
 #' Format a [LogEvent] as human readable text using [format.LogEvent()]
 #'
@@ -168,7 +168,7 @@ LayoutFormat <- R6::R6Class(
 
 # LayoutTable -------------------------------------------------------------
 
-#' Abstract Class for Logging to Tabular Structures
+#' Abstract Class for Formatting data as Tabular Structures
 #'
 #' Abstract classes are exported for developers that want to extend them, they
 #' are not useful to casual users. [LayoutDbi] and [LayoutJson] are derived

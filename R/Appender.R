@@ -405,8 +405,8 @@ AppenderTable <- R6::R6Class(
 #' Log to an In-Memory Data.Table
 #'
 #' An Appender that outputs to an in-memory `data.table`. This requires that
-#' you have the suggested package **data.table** installed. This kind of appender
-#' is pretty useful for interactive use, and hast very little overhead.
+#' you have the suggested package **data.table** installed. This kind of
+#' Appender is pretty useful for interactive use, and hast very little overhead.
 #'
 #' @eval r6_usage(AppenderMemoryDt)
 #'
@@ -618,8 +618,10 @@ AppenderMemoryDt <- R6::R6Class(
 #' @inheritSection AppenderTable Fields and Methods
 #' @section Fields and Methods:
 #' \describe{
-#'   \item{`close_on_exit`, `set_close_on_exit()`}{...}
-#'   \item{`data`}{...}
+#'   \item{`close_on_exit`, `set_close_on_exit()`}{`TRUE` or `FALSE`. Close the
+#'   Database connection when the Logger is removed?}
+#'   \item{`data`}{Querry the whole log from the Database and return it as a
+#'   `data.frame`}
 #'   \item{`conn`}{get the DBI connection object}
 #'   \item{`table`}{Name of the target database table}
 #' }

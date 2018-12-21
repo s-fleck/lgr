@@ -1,5 +1,9 @@
 #' Simple Logging
 #'
+#' These functions provide a simple interface to the root logger. If you do not
+#' need any of the more advanced features of yog, start here.
+#'
+#'
 #' @name simple_logging
 #'
 #' @examples

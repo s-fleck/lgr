@@ -1,12 +1,17 @@
 ---
 title: "Example Configurations for yog"
-author: "Vignette Author"
+author: "Stefan Fleck"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: true
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{yog-examples}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include = FALSE}
@@ -15,6 +20,9 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+
+
+**work in progress**
 
 # Adding a Custom Logger to a Package
 

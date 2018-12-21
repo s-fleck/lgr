@@ -68,6 +68,9 @@ as \code{integer} (invisibly)
 \code{add_appender()} and \code{remove_appender()} return \code{target}.
 }
 \description{
+These functions provide a simple interface to the root logger. If you do not
+need any of the more advanced features of yog, start here.
+
 Yog provides convenience functions to manage the root Logger. These
 are intended for interactive use, and for people who just need basic
 logging facilities and don't want to worry about hierarchical loggers and

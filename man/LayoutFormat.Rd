@@ -2,7 +2,7 @@
 % Please edit documentation in R/Layout.R
 \name{LayoutFormat}
 \alias{LayoutFormat}
-\title{Format Log Events to Text}
+\title{Format Log Events as Text}
 \description{
 Format a \link{LogEvent} as human readable text using \code{\link[=format.LogEvent]{format.LogEvent()}}
 }
