@@ -2,9 +2,12 @@
 % Please edit documentation in R/utils-logging.R
 \name{with_log_level}
 \alias{with_log_level}
-\title{Override Log Level}
+\alias{with_log_value}
+\title{Inject Values into Logging Calls}
 \usage{
 with_log_level(level, code, logger = yog::yog)
+
+with_log_value(values, code, logger = yog::yog)
 }
 \arguments{
 \item{level}{\code{integer} or \code{character} scalar: the desired log level}
@@ -12,18 +15,29 @@ with_log_level(level, code, logger = yog::yog)
 \item{code}{Any \R code}
 
 \item{logger}{a \link{Logger}. defaults to the root logger (yog::yog).}
+
+\item{values}{a named \code{list} of values to be injected into the logging calls}
+}
+\value{
+whatever \code{code} would return
 }
 \description{
-Temporarily override the log level of all \link{LogEvents} created by target
-\link{Logger}
+\code{with_log_level} temporarily overrides the log level of all \link{LogEvents}
+created by target \link{Logger}.
 }
 \details{
-This abuses yog's \link{filter} mechanic to modify LogEvents in-place before it
-is passed on the appenders.
+These functions abuses yog's filter mechanic to modify LogEvents in-place
+before it is passed on the appenders.
 }
 \examples{
 with_log_level("warn", {
   yog$info("More important than it seems")
   FATAL("Really not so bad")
+})
+
+with_log_value(
+  list(msg = "overriden msg"),  {
+  yog$info("bar")
+  INFO("FOO")
 })
 }

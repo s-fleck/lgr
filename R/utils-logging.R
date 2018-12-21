@@ -45,17 +45,19 @@ without_logging <- function(code){
 
 
 
-#' Override Log Level
+#' Inject Values into Logging Calls
 #'
-#' Temporarily override the log level of all [LogEvents] created by target
-#' [Logger]
+#' `with_log_level` temporarily overrides the log level of all [LogEvents]
+#' created by target [Logger].
 #'
-#' This abuses yog's [filter] mechanic to modify LogEvents in-place before it
-#' is passed on the appenders.
+#' These functions abuses yog's filter mechanic to modify LogEvents in-place
+#' before it is passed on the appenders.
 #'
 #' @param level `integer` or `character` scalar: the desired log level
 #' @param code Any \R code
 #' @param logger a [Logger]. defaults to the root logger (yog::yog).
+#'
+#' @return whatever `code` would return
 #' @export
 #' @examples
 #' with_log_level("warn", {
@@ -71,16 +73,62 @@ with_log_level <- function(
   if (is.character(level)){
     level <- unlabel_levels(level)
   }
-
   force(level)
+
+  # fix the caller
+  caller <- get_caller(-2L)
+  force(caller)
+
   set_level <- function(event, obj){
-    event[["level"]] <- level
+    event[["level"]]  <- level
+    event[["caller"]] <- caller
     TRUE
   }
 
   filters_orig <- logger$filters
   on.exit(logger$set_filters(c(filters_orig)))
+  logger$set_filters(c(set_level, filters_orig))
 
+  force(code)
+}
+
+
+
+#' `with_log_value()` injects arbitrary values into all [LogEvents] (overriding
+#' existing ones). This is especially powerfull in combination with Appenders
+#' that support arbitrary log fields, like [AppenderJson].
+#'
+#' @param values a named `list` of values to be injected into the logging calls
+#' @rdname with_log_level
+#' @export
+#' @examples
+#'
+#' with_log_value(
+#'   list(msg = "overriden msg"),  {
+#'   yog$info("bar")
+#'   INFO("FOO")
+#' })
+with_log_value <- function(
+  values,
+  code,
+  logger = yog::yog
+){
+  assert(is_equal_length(names(values), values))
+
+  # fix the caller
+  if (!"caller" %in% names(values)){
+    values[["caller"]] <- get_caller(-2L)
+  }
+
+  set_level <- function(event, obj){
+    for (i in seq_along(values)){
+      event[[names(values)[[i]] ]] <- values[[i]]
+    }
+    TRUE
+  }
+
+  filters_orig <- logger$filters
+  on.exit(logger$set_filters(c(filters_orig)))
   logger$set_filters(c(set_level, filters_orig))
 
   force(code)

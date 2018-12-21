@@ -20,7 +20,37 @@ test_that("log suppression", {
 test_that("with_log_level works", {
   lg <- Logger$new("test")
 
-  with_log_level("warn", {
-    lg$info("blubb")
-  }, logger = lg)
+  expect_output(
+    with_log_level("warn", lg$info("blubb"), logger = lg),
+    "WARN"
+  )
+
+  foo <- function(){
+    with_log_level("trace", lg$info("blubb"), logger = lg)
+  }
+  foo()
+
+  expect_identical(lg$last_event$caller, "foo")
+})
+
+
+
+test_that("with_log_level works", {
+  lg <- Logger$new(
+    "test",
+    appenders = AppenderConsole$new(layout = LayoutJson$new()),
+    propagate = FALSE
+  )
+
+  expect_output(
+    with_log_value(list(foo = "bar", a = 1:2), lg$info("blubb"), logger = lg),
+    '"a":\\[1,2\\],"foo":"bar"'
+  )
+
+  foo <- function(){
+    with_log_value(list(foo = "bar"), lg$info("blubb"), logger = lg)
+  }
+  expect_output(foo())
+
+  expect_identical(lg$last_event$caller, "foo")
 })

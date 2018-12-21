@@ -76,7 +76,7 @@ other Appenders." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">yog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9010</span>
       </span>
     </div>
 
@@ -221,13 +221,13 @@ as <code>integer</code> (invisibly)</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>FATAL</span>(<span class='st'>"This is an important message about %s going wrong"</span>, <span class='st'>"something"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [15:03:57.837] This is an important message about something going wrong</div><div class='input'><span class='fu'>DEBUG</span>(<span class='st'>"Debug messages are hidden by default"</span>)
+    <pre class="examples"><div class='input'><span class='fu'>FATAL</span>(<span class='st'>"This is an important message about %s going wrong"</span>, <span class='st'>"something"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [20:15:57.722] This is an important message about something going wrong</div><div class='input'><span class='fu'>DEBUG</span>(<span class='st'>"Debug messages are hidden by default"</span>)
 <span class='fu'>console_threshold</span>(<span class='st'>"debug"</span>)  <span class='co'># you must use lower case names here</span>
-<span class='fu'>DEBUG</span>(<span class='st'>"Unless we lower the threshold"</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [15:03:57.841] Unless we lower the threshold</div><div class='input'>
+<span class='fu'>DEBUG</span>(<span class='st'>"Unless we lower the threshold"</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [20:15:57.727] Unless we lower the threshold</div><div class='input'>
 <span class='fu'>add_appender</span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(), <span class='st'>"second_console_appender"</span>)
-<span class='fu'>FATAL</span>(<span class='st'>"Multiple console appenders are a bad idea"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [15:03:57.845] Multiple console appenders are a bad idea
-#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [15:03:57.845] Multiple console appenders are a bad idea</div><div class='input'><span class='fu'>remove_appender</span>(<span class='st'>"second_console_appender"</span>)
-<span class='fu'>INFO</span>(<span class='st'>"Good that we defined an appender name, so it's easy to remove"</span>)</div><div class='output co'>#&gt; INFO  [15:03:57.849] Good that we defined an appender name, so it's easy to remove</div></span></pre>
+<span class='fu'>FATAL</span>(<span class='st'>"Multiple console appenders are a bad idea"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [20:15:57.736] Multiple console appenders are a bad idea
+#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [20:15:57.736] Multiple console appenders are a bad idea</div><div class='input'><span class='fu'>remove_appender</span>(<span class='st'>"second_console_appender"</span>)
+<span class='fu'>INFO</span>(<span class='st'>"Good that we defined an appender name, so it's easy to remove"</span>)</div><div class='output co'>#&gt; INFO  [20:15:57.740] Good that we defined an appender name, so it's easy to remove</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">yog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9010</span>
       </span>
     </div>
 
@@ -112,19 +112,19 @@ l &lt;-<span class="st"> </span>Logger<span class="op">$</span><span class="kw">
 )</code></pre></div>
 <p><strong>Usage:</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l<span class="op">$</span><span class="kw">info</span>(<span class="st">"Everything is okay"</span>)
-<span class="co">#&gt; INFO  [15:04:04.576] Everything is okay</span>
+<span class="co">#&gt; INFO  [20:16:03.522] Everything is okay</span>
 l<span class="op">$</span><span class="kw">error</span>(<span class="st">"Everything is NOT okay"</span>)
-<span class="co">#&gt; ERROR [15:04:04.652] Everything is NOT okay</span>
+<span class="co">#&gt; ERROR [20:16:03.567] Everything is NOT okay</span>
 l<span class="op">$</span><span class="kw">fatal</span>(<span class="st">"NOTHING is okay"</span>)
-<span class="co">#&gt; FATAL [15:04:04.682] NOTHING is okay</span>
+<span class="co">#&gt; FATAL [20:16:03.602] NOTHING is okay</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(tfi)
-<span class="co">#&gt; [1] "INFO  [2018-12-21 15:04:04.576] Everything is okay"    </span>
-<span class="co">#&gt; [2] "ERROR [2018-12-21 15:04:04.652] Everything is NOT okay"</span>
-<span class="co">#&gt; [3] "FATAL [2018-12-21 15:04:04.682] NOTHING is okay"</span>
+<span class="co">#&gt; [1] "INFO  [2018-12-21 20:16:03.522] Everything is okay"    </span>
+<span class="co">#&gt; [2] "ERROR [2018-12-21 20:16:03.567] Everything is NOT okay"</span>
+<span class="co">#&gt; [3] "FATAL [2018-12-21 20:16:03.602] NOTHING is okay"</span>
 <span class="kw"><a href="../reference/read_json_lines.html">read_json_lines</a></span>(tfe)
 <span class="co">#&gt;   level           timestamp caller                    msg</span>
-<span class="co">#&gt; 1   200 2018-12-21 15:04:04   eval Everything is NOT okay</span>
-<span class="co">#&gt; 2   100 2018-12-21 15:04:04   eval        NOTHING is okay</span>
+<span class="co">#&gt; 1   200 2018-12-21 20:16:03   eval Everything is NOT okay</span>
+<span class="co">#&gt; 2   100 2018-12-21 20:16:03   eval        NOTHING is okay</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/files">file.remove</a></span>(tfi, tfe)
 <span class="co">#&gt; [1] TRUE TRUE</span></code></pre></div>
 </div>
@@ -205,25 +205,25 @@ l<span class="op">$</span><span class="kw">fatal</span>(<span class="st">"NOTHIN
 <a href="#simple-logging-with-the-root-logger" class="anchor"></a>Simple Logging With the Root Logger</h2>
 <p>Yog comes with a pre-configured Root Logger. If you do not care about using multiple loggers, and do not want to deal with R6 classes you still use yog as a performant and easy to use logging solution.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/simple_logging.html">FATAL</a></span>(<span class="st">"This is an important message about %s going wrong"</span>, <span class="st">"something"</span>)
-<span class="co">#&gt; FATAL [15:04:04.804] This is an important message about something going wrong</span>
+<span class="co">#&gt; FATAL [20:16:03.683] This is an important message about something going wrong</span>
 <span class="kw"><a href="../reference/simple_logging.html">ERROR</a></span>(<span class="st">"A less severe error"</span>)
-<span class="co">#&gt; ERROR [15:04:04.807] A less severe error</span>
+<span class="co">#&gt; ERROR [20:16:03.685] A less severe error</span>
 <span class="kw"><a href="../reference/simple_logging.html">WARN</a></span>(<span class="st">"something likely went wrong"</span>)
-<span class="co">#&gt; WARN  [15:04:04.809] something likely went wrong</span>
+<span class="co">#&gt; WARN  [20:16:03.688] something likely went wrong</span>
 <span class="kw"><a href="../reference/simple_logging.html">INFO</a></span>(<span class="st">"Everything is ok"</span>)
-<span class="co">#&gt; INFO  [15:04:04.811] Everything is ok</span>
+<span class="co">#&gt; INFO  [20:16:03.690] Everything is ok</span>
 <span class="kw"><a href="../reference/simple_logging.html">DEBUG</a></span>(<span class="st">"Debug messages are hidden by default"</span>)
 <span class="kw"><a href="../reference/simple_logging.html">console_threshold</a></span>(<span class="st">"debug"</span>)  <span class="co"># you must use lower case names here</span>
 <span class="kw"><a href="../reference/simple_logging.html">DEBUG</a></span>(<span class="st">"unless we lower the threshold"</span>)
-<span class="co">#&gt; DEBUG [15:04:04.816] unless we lower the threshold</span>
+<span class="co">#&gt; DEBUG [20:16:03.694] unless we lower the threshold</span>
 <span class="kw"><a href="../reference/simple_logging.html">TRACE</a></span>(<span class="st">"Trace is even lower than debug"</span>)</code></pre></div>
 <p>You can also directly use Logger R6 objects to log. This package comes with a default root logger named like the package (<code>"yog"</code>). This method of referring to the logger is more explicit (and therefore arguably better). The examples in this vignette will moslty use the notation below.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">yog<span class="op">$</span><span class="kw">fatal</span>(<span class="st">"This is an important message about %s going wrong"</span>, <span class="st">"-&gt;something&lt;-"</span>)
-<span class="co">#&gt; FATAL [15:04:04.826] This is an important message about -&gt;something&lt;- going wrong</span>
+<span class="co">#&gt; FATAL [20:16:03.703] This is an important message about -&gt;something&lt;- going wrong</span>
 yog<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/trace">trace</a></span>(<span class="st">"Trace messages are still hidden"</span>)
 yog<span class="op">$</span>appenders<span class="op">$</span>console<span class="op">$</span><span class="kw">set_threshold</span>(<span class="st">"trace"</span>)
 yog<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/trace">trace</a></span>(<span class="st">"Unless we lower the threshold"</span>)
-<span class="co">#&gt; TRACE [15:04:04.830] Unless we lower the threshold</span></code></pre></div>
+<span class="co">#&gt; TRACE [20:16:03.710] Unless we lower the threshold</span></code></pre></div>
 </div>
 <div id="thresholds-controlling-output-detail" class="section level2">
 <h2 class="hasAnchor">
@@ -246,12 +246,12 @@ yog<span class="op">$</span><span class="kw">set_threshold</span>(<span class="o
 yog<span class="op">$</span>appenders<span class="op">$</span>console<span class="op">$</span><span class="kw">set_threshold</span>(<span class="st">"info"</span>)
 yog<span class="op">$</span>appenders<span class="op">$</span>file<span class="op">$</span><span class="kw">set_threshold</span>(<span class="ot">NA</span>)
 yog<span class="op">$</span><span class="kw">info</span>(<span class="st">"Another informational message"</span>)
-<span class="co">#&gt; INFO  [15:04:04.875] Another informational message</span>
+<span class="co">#&gt; INFO  [20:16:03.769] Another informational message</span>
 yog<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/debug">debug</a></span>(<span class="st">"A debug message not shown by the console appender"</span>)
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(tf)
-<span class="co">#&gt; [1] "INFO  [2018-12-21 15:04:04.875] Another informational message"                    </span>
-<span class="co">#&gt; [2] "DEBUG [2018-12-21 15:04:04.878] A debug message not shown by the console appender"</span>
+<span class="co">#&gt; [1] "INFO  [2018-12-21 20:16:03.769] Another informational message"                    </span>
+<span class="co">#&gt; [2] "DEBUG [2018-12-21 20:16:03.772] A debug message not shown by the console appender"</span>
 
 <span class="co"># Remove the appender again</span>
 yog<span class="op">$</span><span class="kw"><a href="../reference/simple_logging.html">remove_appender</a></span>(<span class="st">"file"</span>)</code></pre></div>
@@ -279,11 +279,11 @@ yog<span class="op">$</span><span class="kw"><a href="../reference/simple_loggin
 )
 
 lg<span class="op">$</span><span class="kw">info</span>(<span class="st">"the default format"</span>)
-<span class="co">#&gt; INFO  [15:04:04.897] the default format</span>
+<span class="co">#&gt; INFO  [20:16:03.798] the default format</span>
 
 lg<span class="op">$</span>appenders<span class="op">$</span>cons<span class="op">$</span>layout<span class="op">$</span><span class="kw">set_fmt</span>(<span class="st">"%L (%n) [%t] %c(): !! %m !!"</span>)
 lg<span class="op">$</span><span class="kw">info</span>(<span class="st">"A more involved custom format"</span>)
-<span class="co">#&gt; INFO  (400) [15:04:04.900] eval(): !! A more involved custom format !!</span></code></pre></div>
+<span class="co">#&gt; INFO  (400) [20:16:03.804] eval(): !! A more involved custom format !!</span></code></pre></div>
 <p>More complex formats are possible with <code>LayoutGlue</code> powered by the awesome <a href="https://github.com/tidyverse/glue">glue</a> package, at the cost of slightly worse performance.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("glue")</span>
 
@@ -310,20 +310,20 @@ lg<span class="op">$</span><span class="kw">info</span>(<span class="st">"If you
 <p>JSON is easy to parse and analyse with R</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/read_json_lines.html">read_json_lines</a></span>(tf)
 <span class="co">#&gt;   level           timestamp caller</span>
-<span class="co">#&gt; 1   400 2018-12-21 15:04:04   eval</span>
-<span class="co">#&gt; 2   400 2018-12-21 15:04:04   eval</span>
-<span class="co">#&gt; 3   400 2018-12-21 15:04:04   eval</span>
+<span class="co">#&gt; 1   400 2018-12-21 20:16:03   eval</span>
+<span class="co">#&gt; 2   400 2018-12-21 20:16:03   eval</span>
+<span class="co">#&gt; 3   400 2018-12-21 20:16:03   eval</span>
 <span class="co">#&gt;                                           msg  field       numbers  use</span>
 <span class="co">#&gt; 1   JSON naturally supports custom log fields custom          NULL &lt;NA&gt;</span>
 <span class="co">#&gt; 2 You can serialize most R data types to JSON   &lt;NA&gt; 1, 2, 3, 4, 5 &lt;NA&gt;</span>
 <span class="co">#&gt; 3  If you ever want to analyse your log files   &lt;NA&gt;          NULL JSON</span></code></pre></div>
 <p>It is also human readable, though maybe this vignette does not transport that fact very well because of the lack of horizontal space</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(tf), <span class="dt">sep =</span> <span class="st">"</span><span class="ch">\n\n</span><span class="st">"</span>)
-<span class="co">#&gt; {"level":400,"timestamp":"2018-12-21 15:04:04","caller":"eval","msg":"JSON naturally supports custom log fields","field":"custom"}</span>
+<span class="co">#&gt; {"level":400,"timestamp":"2018-12-21 20:16:03","caller":"eval","msg":"JSON naturally supports custom log fields","field":"custom"}</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; {"level":400,"timestamp":"2018-12-21 15:04:04","caller":"eval","msg":"You can serialize most R data types to JSON","numbers":[1,2,3,4,5]}</span>
+<span class="co">#&gt; {"level":400,"timestamp":"2018-12-21 20:16:03","caller":"eval","msg":"You can serialize most R data types to JSON","numbers":[1,2,3,4,5]}</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; {"level":400,"timestamp":"2018-12-21 15:04:04","caller":"eval","msg":"If you ever want to analyse your log files","use":"JSON"}</span></code></pre></div>
+<span class="co">#&gt; {"level":400,"timestamp":"2018-12-21 20:16:03","caller":"eval","msg":"If you ever want to analyse your log files","use":"JSON"}</span></code></pre></div>
 </div>
 </div>
 <div class="footnotes">
