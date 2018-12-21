@@ -2,7 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderBuffer}
 \alias{AppenderBuffer}
-\title{AppenderBuffer}
+\title{Log to a Memory Buffer}
 \description{
 An Appender that Buffers LogEvents in-memory and and redirects them to other
 appenders once certain conditions are met.
@@ -102,6 +102,7 @@ human-readable form (mainly for print output)}
 
 Other Appenders: \code{\link{AppenderConsole}},
   \code{\link{AppenderDbi}}, \code{\link{AppenderFile}},
+  \code{\link{AppenderJson}},
   \code{\link{AppenderMemoryDt}},
   \code{\link{AppenderRjdbc}}, \code{\link{AppenderTable}},
   \code{\link{Appender}}

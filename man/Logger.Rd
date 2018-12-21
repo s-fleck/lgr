@@ -3,7 +3,7 @@
 \name{Logger}
 \alias{Logger}
 \alias{Loggers}
-\title{Loggers}
+\title{Create a new Logger}
 \description{
 A Logger records the log message and some metadata (timestamp,
 calling function) as a \link{LogEvent} and passes this event on to one or

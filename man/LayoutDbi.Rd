@@ -4,9 +4,9 @@
 \alias{LayoutDbi}
 \alias{LayoutSqlite}
 \alias{select_dbi_layout}
-\title{LayoutDbi}
+\title{Format Log Events for Output to Databases}
 \description{
-Format a \link{LogEvent} as data.frame for inserting into a Database.
+Format a \link{LogEvent} as \code{data.frame} for inserting into a Database.
 }
 \section{Usage}{
 \preformatted{x <- LayoutDbi$new(event_vals = c("level", "timestamp", "caller", "msg"),

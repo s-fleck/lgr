@@ -1,9 +1,10 @@
-#' Layouts
+#' Abstract Class for Layouts
 #'
-#' Layouts get a [LogEvent] passed down from an [Appender], and format them
-#' for output. How this formatting works exactly varries widely. For example
-#' for file or console output the log event is usually formatted into a single
-#' character line.
+#' Abstract classes are exported for developers that want to extend them, they
+#' are not useful to casual users.  Layouts get a [LogEvent] passed down from an
+#' [Appender], and format them for output. How this formatting works exactly
+#' varries widely. For example for file or console output the log event is
+#' usually formatted into a single character line.
 #'
 #'
 #' @section Fields and Methods:
@@ -42,7 +43,7 @@ Layout <- R6::R6Class(
 
 # LayoutFormat ------------------------------------------------------------
 
-#' LayoutFormat
+#' Format Log Events to Text
 #'
 #' Format a [LogEvent] as human readable text using [format.LogEvent()]
 #'
@@ -167,11 +168,11 @@ LayoutFormat <- R6::R6Class(
 
 # LayoutTable -------------------------------------------------------------
 
-#' LayoutTable
+#' Abstract Class for Logging to Tabular Structures
 #'
-#' `LayoutTable` is an internal class that is only exported for developers that
-#' want to extend yog. You are probably looking for either [LayoutDbi] or
-#' [LayoutJson].
+#' Abstract classes are exported for developers that want to extend them, they
+#' are not useful to casual users. [LayoutDbi] and [LayoutJson] are derived
+#' from LayoutTabel.
 #'
 #' @section Creating a New Layout:
 #'
@@ -246,9 +247,9 @@ LayoutTable <- R6::R6Class(
 # LayoutDbi ---------------------------------------------------------------
 
 
-#' LayoutDbi
+#' Format Log Events for Output to Databases
 #'
-#' Format a [LogEvent] as data.frame for inserting into a Database.
+#' Format a [LogEvent] as `data.frame` for inserting into a Database.
 #'
 #' @eval r6_usage(LayoutDbi)
 #'
@@ -500,7 +501,7 @@ select_dbi_layout <- function(conn){
 
 # LayoutJson --------------------------------------------------------------
 
-#' LayoutJson
+#' Format LogEvents as JSON
 #'
 #' Format a LogEvent as JSON
 #'

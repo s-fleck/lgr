@@ -2,10 +2,11 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderTable}
 \alias{AppenderTable}
-\title{AppenderTable}
+\title{Abstract Class for Logging to Tabular Structures}
 \description{
-\code{AppenderTable} is an internal class that is only exported for developers
-that want to extend yog.
+Abstract classes are exported for developers that want to extend them, they
+are not useful to casual users. \link{AppenderDbi}, \link{AppenderRjdbc} and
+\link{AppenderMemoryDt} are derived from AppenderTabel.
 }
 \section{Creating a New Appender}{
 
@@ -38,7 +39,7 @@ with a maximum of \code{buffer_size} rows}
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderFile}},
+  \code{\link{AppenderFile}}, \code{\link{AppenderJson}},
   \code{\link{AppenderMemoryDt}},
   \code{\link{AppenderRjdbc}}, \code{\link{Appender}}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderConsole}
 \alias{AppenderConsole}
-\title{AppenderConsole}
+\title{Log to the Console}
 \description{
 A simple Appender that outputs to the console. If you
 have the package \strong{crayon} installed log levels will be coloured by default
@@ -63,6 +63,7 @@ logger$warn("A test message")
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderDbi}}, \code{\link{AppenderFile}},
+  \code{\link{AppenderJson}},
   \code{\link{AppenderMemoryDt}},
   \code{\link{AppenderRjdbc}}, \code{\link{AppenderTable}},
   \code{\link{Appender}}

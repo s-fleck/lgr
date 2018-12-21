@@ -2,7 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderRjdbc}
 \alias{AppenderRjdbc}
-\title{AppenderRjdbc}
+\title{Log to Databases via RJDBC}
 \description{
 Log to a database table with the \strong{RJDBC} package. \strong{RJDBC} is only
 somewhat  \strong{DBI} compliant and does not work with \link{AppenderDbi}. I
@@ -64,7 +64,7 @@ with a maximum of \code{buffer_size} rows}
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderFile}},
+  \code{\link{AppenderFile}}, \code{\link{AppenderJson}},
   \code{\link{AppenderMemoryDt}},
   \code{\link{AppenderTable}}, \code{\link{Appender}}
 }

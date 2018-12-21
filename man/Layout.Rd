@@ -3,12 +3,13 @@
 \name{Layout}
 \alias{Layout}
 \alias{Layouts}
-\title{Layouts}
+\title{Abstract Class for Layouts}
 \description{
-Layouts get a \link{LogEvent} passed down from an \link{Appender}, and format them
-for output. How this formatting works exactly varries widely. For example
-for file or console output the log event is usually formatted into a single
-character line.
+Abstract classes are exported for developers that want to extend them, they
+are not useful to casual users.  Layouts get a \link{LogEvent} passed down from an
+\link{Appender}, and format them for output. How this formatting works exactly
+varries widely. For example for file or console output the log event is
+usually formatted into a single character line.
 }
 \section{Fields and Methods}{
 

@@ -67,6 +67,26 @@ test_that("AppenderFile works as expected", {
 
 
 
+
+# AppenderJson ------------------------------------------------------------
+
+test_that("AppenderJson works as expected", {
+  tf <- tempfile()
+
+  # with default format
+  app <- AppenderJson$new(file = tf)
+
+  for (i in 1:10) app$append(x)
+  r <- capture_output(app$show(3))
+  expect_true(grepl( "(level.*)[3]", r))
+  expect_false(grepl("(level.*)[4]", r))
+
+  r <- capture_output(app$show(threshold = 100))
+  expect_identical(r, "")
+})
+
+
+
 # AppenderConsole ---------------------------------------------------------
 
 test_that("AppenderConsole works as expected", {

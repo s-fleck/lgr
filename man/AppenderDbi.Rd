@@ -2,7 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderDbi}
 \alias{AppenderDbi}
-\title{AppenderDbi}
+\title{Log to Databases via DBI}
 \description{
 Log to a database table with any \strong{DBI} compatabile backend.
 }
@@ -64,7 +64,7 @@ with a maximum of \code{buffer_size} rows}
 \seealso{
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}},
-  \code{\link{AppenderFile}},
+  \code{\link{AppenderFile}}, \code{\link{AppenderJson}},
   \code{\link{AppenderMemoryDt}},
   \code{\link{AppenderRjdbc}}, \code{\link{AppenderTable}},
   \code{\link{Appender}}

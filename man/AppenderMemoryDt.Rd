@@ -3,7 +3,7 @@
 \name{AppenderMemoryDt}
 \alias{AppenderMemoryDt}
 \alias{yog_data}
-\title{AppenderMemoryDt}
+\title{Log to an In-Memory Data.Table}
 \description{
 An Appender that outputs to an in-memory \code{data.table}. This requires that
 you have the suggested package \strong{data.table} installed. This kind of appender
@@ -83,7 +83,8 @@ show_log(target = lg)
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderFile}}, \code{\link{AppenderRjdbc}},
-  \code{\link{AppenderTable}}, \code{\link{Appender}}
+  \code{\link{AppenderFile}}, \code{\link{AppenderJson}},
+  \code{\link{AppenderRjdbc}}, \code{\link{AppenderTable}},
+  \code{\link{Appender}}
 }
 \concept{Appenders}
