@@ -25,3 +25,4 @@ Other Layouts: \code{\link{LayoutDbi}},
   \code{\link{LayoutTable}}
 }
 \concept{Layouts}
+\keyword{internal}

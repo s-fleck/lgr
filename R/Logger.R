@@ -42,8 +42,8 @@
 #'     descentents of the Root logger for yog to work as intended.}
 #'
 #'   \item{`exception_handler`}{a `function` that takes a single argument `e`.
-#'     The function used to handle errors that occur durring loging. Default
-#'     to demoting any error to a [warning]}
+#'     The function used to handle errors that occur durring loging. Defaults
+#'     to demoting errors to [warnings]}
 #'
 #'   \item{`propagate`}{`TRUE` or `FALSE`. Should log messages be passed on to
 #'     the appenders of the ancestral Loggers?}
@@ -99,12 +99,16 @@
 #'   \item{`exception_handler(e)`}{Used to handle errors that occur durring the
 #'   logging process. The defaul is to convert errors to warnings.}
 #'
-#'   \item{`filter(x)`}{Determine whether the LogEvent `x` should be passed
-#'   on to Appenders (`TRUE`) or not (`FALSE`). See also the active binding
-#'   `filters`}
-#'
 #'   \item{`set_name(x)`}{Set the Logger name to the `character` scalar `x`}
 #'
+#'   \item{`filter(x)`}{Determine whether the LogEvent `x` should be passed
+#'     on to Appenders (`TRUE`) or not (`FALSE`). See also the active binding
+#'     `filters`}
+#'
+#'   \item{`set_filters(filters)`}{set a list of `filters`. The filters must
+#'     be functions that take exactly two named arguments: the LogEvent
+#'     `event` and the Logger `obj`.
+#'   }
 #' }
 #'
 #'
@@ -123,10 +127,11 @@
 #'   appenders from ancestral Loggers of the current Logger}
 #'
 #'   \item{`filters`}{a `list` of predicates (functions that return either
-#'   `TRUE` or `FALSE`). If all of these functions evaluate to `TRUE` the
-#'   LogEvent is passed on to the Logger's Appenders. See the source code of
-#'   [with_log_level()] for an example of how this mechanic can be abused to
-#'   modify LogEvents before they are processed further.}
+#'     `TRUE` or `FALSE`). If all of these functions evaluate to `TRUE` the
+#'     LogEvent is passed on to the Logger's Appenders. Since LogEvents have
+#'     reference semantics, filters can also be abused to modify LogEvents
+#'     before they are passed on. Look at the source code of [with_log_level()]
+#'     or [with_log_value()] for examples.}
 #'
 #'   \item{`last_event`}{The last LogEvent produced by the current Logger}
 #'
@@ -196,12 +201,7 @@ Logger <- R6::R6Class(
       threshold = 400L,
       user = get_user(),
       parent = yog::yog,
-      exception_handler = function(e){
-        warning(
-          "[", format(Sys.time(), format = "%Y-%m-%d %H:%M:%OS3"), "] ",
-          "An error occured in the logging sub system: ", e
-        )
-      },
+      exception_handler = default_exception_handler,
       propagate = TRUE
     ){
       # fields
@@ -603,6 +603,22 @@ Logger <- R6::R6Class(
 
 
 # utils -------------------------------------------------------------------
+
+#' Demote an Exception to a Warning
+#'
+#' Throws a warning instead of stopping the program.
+#'
+#' @param e a `character` scalar (usually a `try-error`)
+#'
+#' @return The warning as `character` vector
+#'
+default_exception_handler <- function(e){
+  warning(
+    "[", format(Sys.time(), format = "%Y-%m-%d %H:%M:%OS3"), "] ",
+    "An error occured during logging: ", e, call. = FALSE
+  )
+}
+
 
 # Given a string, indent every line by some number of spaces.
 # The exception is to not add spaces after a trailing \n.

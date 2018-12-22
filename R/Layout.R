@@ -22,6 +22,7 @@
 #' @include utils.R
 #' @include utils-sfmisc.R
 #' @include Filterable.R
+#' @keywords internal
 NULL
 
 

@@ -170,6 +170,12 @@ passed to this Appender</p></dd>
 <dt><code>destination</code></dt><dd><p>The output destination of the <code>Appender</code> in
 human-readable form (mainly for print output)</p></dd>
 </dl>
+    <dl class='dl-horizontal'>
+<dt><code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter(event)</a></code></dt><dd><p>Check if an event passes all filters</p></dd>
+<dt><code>filters</code>,<code>set_filters(filters)</code></dt><dd><p>get/set a list of <code>filters</code>. A
+filter is a function that takes exactly two named arguments: the LogEvent
+<code>event</code> and the Filterable <code>obj</code> (usually a Logger or Appender)</p></dd>
+</dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -196,8 +202,8 @@ human-readable form (mainly for print output)</p></dd>
   <span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>json</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()), <span class='st'>"json"</span>
 )
 
-<span class='no'>logger</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; INFO  [17:41:39.536] A test message</div><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>default</span>)</div><div class='output co'>#&gt; [1] "INFO  [2018-12-22 17:41:39.536] A test message"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>fancy</span>)</div><div class='output co'>#&gt; [1] "[2018-12-22 17:41:39.536] eval(): INFO  A test message from user "</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>json</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2018-12-22 17:41:39\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div></pre>
+<span class='no'>logger</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; INFO  [22:09:34.426] A test message</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>default</span>)</div><div class='output co'>#&gt; [1] "INFO  [2018-12-22 22:09:34.426] A test message"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>fancy</span>)</div><div class='output co'>#&gt; [1] "[2018-12-22 22:09:34.426] eval(): INFO  A test message from user "</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>json</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2018-12-22 22:09:34\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Log to the Console — AppenderConsole • yog</title>
+<title>Abstract Class for Filterables — Filterable • yog</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,11 @@
 
 
 
-<meta property="og:title" content="Log to the Console — AppenderConsole" />
+<meta property="og:title" content="Abstract Class for Filterables — Filterable" />
 
-<meta property="og:description" content="A simple Appender that outputs to the console. If you
-have the package crayon installed log levels will be coloured by default
-(but you can modify this behaviour by passing a custom Layout)" />
+<meta property="og:description" content="Superclass for classes that have a filter() method such as Appenders and
+Loggers. This class is only exported for package developers that want to
+extend it." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -116,50 +116,28 @@ have the package crayon installed log levels will be coloured by default
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Log to the Console</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/yog/blob/master/R/Appender.R'><code>R/Appender.R</code></a></small>
-    <div class="hidden name"><code>AppenderConsole.Rd</code></div>
+    <h1>Abstract Class for Filterables</h1>
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/yog/blob/master/R/Filterable.R'><code>R/Filterable.R</code></a></small>
+    <div class="hidden name"><code>Filterable.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A simple Appender that outputs to the console. If you
-have the package <strong>crayon</strong> installed log levels will be coloured by default
-(but you can modify this behaviour by passing a custom <a href='Layout.html'>Layout</a>)</p>
+    <p>Superclass for classes that have a <code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter()</a></code> method such as Appenders and
+Loggers. This class is only exported for package developers that want to
+extend it.</p>
     
     </div>
 
+    <pre class="usage"><span class='no'>Filterable</span></pre>
         
-    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <pre>x &lt;- AppenderConsole$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt
-  = "%L [%t] %m", timestamp_fmt = "%H:%M:%OS3", colors =
-  getOption("yog.colors", list())))
-    x$append(event)
-x$clone(deep = FALSE)
-    x$destination
-</pre>
-    
-    <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
-
-    
-    <dl class='dl-horizontal'>
-<dt><code>threshold</code></dt><dd><p><code>character</code> or <code>integer</code> scalar. The minimum log level
-that triggers this logger. See <a href='get_log_levels.html'>log_levels</a></p></dd>
-<dt><code>layout</code></dt><dd><p>a <code>Layout</code> that will be used for formatting the <code>LogEvents</code>
-passed to this Appender</p></dd>
-</dl>
+    <p>An object of class <code>R6ClassGenerator</code> of length 24.</p>
     
     <h2 class="hasAnchor" id="fields-and-methods"><a class="anchor" href="#fields-and-methods"></a>Fields and Methods</h2>
 
     
-    <dl class='dl-horizontal'>
-<dt><code><a href='https://www.rdocumentation.org/packages/base/topics/append'>append(event)</a></code></dt><dd><p>Write the <a href='LogEvent.html'>LogEvent</a> <code>event</code> to a destination</p></dd>
-<dt><code>threshold</code>, <code>set_threshold(level)</code></dt><dd><p>get/set the <code>Appender</code> threshold</p></dd>
-<dt><code>layout</code>, <code>set_layout(layout)</code></dt><dd><p>get/set the <code>Layout</code></p></dd>
-<dt><code>destination</code></dt><dd><p>The output destination of the <code>Appender</code> in
-human-readable form (mainly for print output)</p></dd>
-</dl>
     <dl class='dl-horizontal'>
 <dt><code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter(event)</a></code></dt><dd><p>Check if an event passes all filters</p></dd>
 <dt><code>filters</code>,<code>set_filters(filters)</code></dt><dd><p>get/set a list of <code>filters</code>. A
@@ -167,46 +145,16 @@ filter is a function that takes exactly two named arguments: the LogEvent
 <code>event</code> and the Filterable <code>obj</code> (usually a Logger or Appender)</p></dd>
 </dl>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a></p>
-<p>Other Appenders: <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
-  <code><a href='AppenderDbi.html'>AppenderDbi</a></code>, <code><a href='AppenderFile.html'>AppenderFile</a></code>,
-  <code><a href='AppenderJson.html'>AppenderJson</a></code>,
-  <code><a href='AppenderMemoryDt.html'>AppenderMemoryDt</a></code>,
-  <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>, <code><a href='AppenderTable.html'>AppenderTable</a></code>,
-  <code><a href='Appender.html'>Appender</a></code></p></div>
-    
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># create a new logger with propagate = FALSE to prevent routing to the root</span>
-<span class='co'># logger. Please look at the section "Logger Hirarchies" in the package</span>
-<span class='co'># vignette for more info.</span>
-<span class='no'>logger</span>  <span class='kw'>&lt;-</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"testlogger"</span>, <span class='kw'>propagate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='no'>logger</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>())
-<span class='no'>logger</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(
-  <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(<span class='st'>"[%t] %c(): [%n] %m from user %u"</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"yog.colors"</span>))))
-
-<span class='co'># Will output the message twice because we attached two console appenders</span>
-<span class='no'>logger</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [22:09:34.097] A test message
-#&gt; [2018-12-22 22:09:34.097] eval(): [</span><span style='color: #FFD75F;'>300</span><span>] A test message from user </div><div class='input'>
-</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
-      <li><a href="#usage">Usage</a></li>
-
-      <li><a href="#creating-a-new-appender">Creating a New Appender</a></li>
+      <li><a href="#format">Format</a></li>
 
       <li><a href="#fields-and-methods">Fields and Methods</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

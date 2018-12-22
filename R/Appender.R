@@ -19,6 +19,7 @@
 #'    }
 #'  }
 #'
+#' @inheritSection Filterable Fields and Methods
 #' @section Fields and Methods:
 #'
 #' \describe{
@@ -36,6 +37,7 @@
 #' @include utils.R
 #' @include utils-sfmisc.R
 #' @include Filterable.R
+#' @keywords internal
 NULL
 
 
@@ -109,7 +111,8 @@ Appender <- R6::R6Class(
 #' @inheritSection Appender Creating a New Appender
 #' @inheritSection Appender Fields and Methods
 #'
-#'
+#' @family Appenders
+#' @name AppenderConsole
 #' @export
 #' @seealso [LayoutFormat]
 #'
@@ -126,8 +129,6 @@ Appender <- R6::R6Class(
 #' # Will output the message twice because we attached two console appenders
 #' logger$warn("A test message")
 #'
-#' @family Appenders
-#' @name AppenderConsole
 NULL
 
 
@@ -193,6 +194,8 @@ AppenderConsole <- R6::R6Class(
 #'
 #' @export
 #' @seealso [LayoutFormat], [LayoutJson]
+#' @family Appenders
+#' @name AppenderFile
 #'
 #' @examples
 #' logger <- Logger$new("loggername")
@@ -213,8 +216,6 @@ AppenderConsole <- R6::R6Class(
 #' readLines(default)
 #' readLines(fancy)
 #' readLines(json)
-#' @family Appenders
-#' @name AppenderFile
 NULL
 
 
@@ -289,9 +290,10 @@ AppenderFile <- R6::R6Class(
 #'   \item{`data`}{The log recorded by this `Appender` as a `data.frame`}
 #' }
 #'
+#' @family Appenders
+#' @name AppenderJson
 #' @export
 #' @seealso [LayoutFormat], [LayoutJson]
-#'
 #' @examples
 #' tf <- tempfile()
 #' l <- Logger$new("testlogger", appenders = AppenderJson$new(tf), propagate = FALSE)
@@ -301,9 +303,6 @@ AppenderFile <- R6::R6Class(
 #'
 #' l$appenders[[1]]$show()
 #' l$appenders[[1]]$data
-#'
-#' @family Appenders
-#' @name AppenderJson
 #'
 NULL
 

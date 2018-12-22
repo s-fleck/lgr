@@ -42,6 +42,15 @@ passed to this Appender
 \item{\code{destination}}{The output destination of the \code{Appender} in
 human-readable form (mainly for print output)}
 }
+
+
+
+\describe{
+\item{\code{filter(event)}}{Check if an event passes all filters}
+\item{\code{filters},\code{set_filters(filters)}}{get/set a list of \code{filters}. A
+filter is a function that takes exactly two named arguments: the LogEvent
+\code{event} and the Filterable \code{obj} (usually a Logger or Appender)}
+}
 }
 
 \examples{

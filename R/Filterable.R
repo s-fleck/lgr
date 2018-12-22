@@ -1,10 +1,25 @@
-#' Filterables
+#' Abstract Class for Filterables
 #'
-#' Superclass for classes that have a filter method, such as Appenders an
-#' Loggers.
+#' Superclass for classes that have a `filter()` method such as Appenders and
+#' Loggers. This class is only exported for package developers that want to
+#' extend it.
+#' @name Filterable
+#' @section Fields and Methods:
 #'
-#' @noRd
-#'
+#' \describe{
+#'   \item{`filter(event)`}{Check if an event passes all filters}
+#'   \item{`filters`,`set_filters(filters)`}{get/set a list of `filters`. A
+#'   filter is a function that takes exactly two named arguments: the LogEvent
+#'   `event` and the Filterable `obj` (usually a Logger or Appender)}
+#'  }
+#' @keywords internal
+NULL
+
+
+
+
+#'  @rdname Filterable
+#'  @export
 Filterable <- R6::R6Class(
   "Filterable",
   cloneable = FALSE,

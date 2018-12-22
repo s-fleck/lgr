@@ -15,11 +15,10 @@ for more info.
 }
 \section{Usage}{
 \preformatted{x <- Logger$new(name, appenders = list(), threshold = 400L, user = get_user(),
-  parent = yog::yog, exception_handler = function(e) { warning("[",
-  format(Sys.time(), format = "\%Y-\%m-\%d \%H:\%M:\%OS3"), "] ", "An error occured
-  in the logging sub system: ", e) }, propagate = TRUE)
+  parent = yog::yog, exception_handler = default_exception_handler,
+  propagate = TRUE)
 
-x$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-3))
+x$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
 x$fatal(msg, ...)
 x$error(msg, ...)
 x$warn(msg, ...)
@@ -84,8 +83,8 @@ This information can be used by the appenders}
 descentents of the Root logger for yog to work as intended.}
 
 \item{\code{exception_handler}}{a \code{function} that takes a single argument \code{e}.
-The function used to handle errors that occur durring loging. Default
-to demoting any error to a \link{warning}}
+The function used to handle errors that occur durring loging. Defaults
+to demoting errors to \link{warnings}}
 
 \item{\code{propagate}}{\code{TRUE} or \code{FALSE}. Should log messages be passed on to
 the appenders of the ancestral Loggers?}
@@ -107,9 +106,10 @@ appenders from ancestral Loggers of the current Logger}
 
 \item{\code{filters}}{a \code{list} of predicates (functions that return either
 \code{TRUE} or \code{FALSE}). If all of these functions evaluate to \code{TRUE} the
-LogEvent is passed on to the Logger's Appenders. See the source code of
-\code{\link[=with_log_level]{with_log_level()}} for an example of how this mechanic can be abused to
-modify LogEvents before they are processed further.}
+LogEvent is passed on to the Logger's Appenders. Since LogEvents have
+reference semantics, filters can also be abused to modify LogEvents
+before they are passed on. Look at the source code of \code{\link[=with_log_level]{with_log_level()}}
+or \code{\link[=with_log_value]{with_log_value()}} for examples.}
 
 \item{\code{last_event}}{The last LogEvent produced by the current Logger}
 
@@ -177,12 +177,16 @@ or names of the Appenders to be removed.}
 \item{\code{exception_handler(e)}}{Used to handle errors that occur durring the
 logging process. The defaul is to convert errors to warnings.}
 
+\item{\code{set_name(x)}}{Set the Logger name to the \code{character} scalar \code{x}}
+
 \item{\code{filter(x)}}{Determine whether the LogEvent \code{x} should be passed
 on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 \code{filters}}
 
-\item{\code{set_name(x)}}{Set the Logger name to the \code{character} scalar \code{x}}
-
+\item{\code{set_filters(filters)}}{set a list of \code{filters}. The filters must
+be functions that take exactly two named arguments: the LogEvent
+\code{event} and the Logger \code{obj}.
+}
 }
 }
 

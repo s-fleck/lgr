@@ -141,10 +141,9 @@ for more info.</p>
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre>x &lt;- Logger$new(name, appenders = list(), threshold = 400L, user = get_user(),
-  parent = yog::yog, exception_handler = function(e) { warning("[",
-  format(Sys.time(), format = "%Y-%m-%d %H:%M:%OS3"), "] ", "An error occured
-  in the logging sub system: ", e) }, propagate = TRUE)
-    x$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-3))
+  parent = yog::yog, exception_handler = default_exception_handler,
+  propagate = TRUE)
+    x$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
 x$fatal(msg, ...)
 x$error(msg, ...)
 x$warn(msg, ...)
@@ -163,7 +162,6 @@ x$set_appenders(x)
 x$set_user(x)
     x$ancestry
 x$appenders
-x$elapsed
 x$exception_handler
 x$inherited_appenders
 x$last_event
@@ -201,8 +199,8 @@ This information can be used by the appenders</p></dd>
     <dt><code>parent</code></dt><dd><p>a <code>Logger</code>. Usually the Root logger. All Loggers must be
 descentents of the Root logger for yog to work as intended.</p></dd>
     <dt><code>exception_handler</code></dt><dd><p>a <code>function</code> that takes a single argument <code>e</code>.
-The function used to handle errors that occur durring loging. Default
-to demoting any error to a <a href='https://www.rdocumentation.org/packages/base/topics/warning'>warning</a></p></dd>
+The function used to handle errors that occur durring loging. Defaults
+to demoting errors to <a href='https://www.rdocumentation.org/packages/base/topics/warnings'>warnings</a></p></dd>
     <dt><code>propagate</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>. Should log messages be passed on to
 the appenders of the ancestral Loggers?</p></dd>
 </dl>
@@ -214,15 +212,12 @@ the propagate value of each Logger upper the inheritance tree. The names
 are the names of the appenders.</p></dd>
     <dt><code>inherited_appenders</code></dt><dd><p>A <code>list</code> of all inherited
 appenders from ancestral Loggers of the current Logger</p></dd>
-    <dt><code>elapsed</code></dt><dd><p>Seconds since the last LogEvent as <code>difftime</code>. Use this
-feature only to track the time between LogEvents wth the same log level,
-or you will get inconsistent results depending on which threshold is
-set for the logger</p></dd>
     <dt><code>filters</code></dt><dd><p>a <code>list</code> of predicates (functions that return either
 <code>TRUE</code> or <code>FALSE</code>). If all of these functions evaluate to <code>TRUE</code> the
-LogEvent is passed on to the Logger's Appenders. See the source code of
-<code><a href='with_log_level.html'>with_log_level()</a></code> for an example of how this mechanic can be abused to
-modify LogEvents before they are processed further.</p></dd>
+LogEvent is passed on to the Logger's Appenders. Since LogEvents have
+reference semantics, filters can also be abused to modify LogEvents
+before they are passed on. Look at the source code of <code><a href='with_log_level.html'>with_log_level()</a></code>
+or <code><a href='with_log_level.html'>with_log_value()</a></code> for examples.</p></dd>
     <dt><code>last_event</code></dt><dd><p>The last LogEvent produced by the current Logger</p></dd>
     <dt><code>name</code></dt><dd><p>Name of the Logger. Mainly used for display purposes. If
 you define a Logger for a package, this should be the same name as
@@ -252,7 +247,14 @@ The arguments are interpreted as for <code>fatal()</code>.</p></dd>
 The arguments are interpreted as for <code>fatal()</code>.</p></dd>
     <dt><code><a href='https://www.rdocumentation.org/packages/base/topics/trace'>trace(msg, ...)</a></code></dt><dd><p>Logs a message with level <code>trace</code> on this logger.
 The arguments are interpreted as for <code>fatal()</code>.</p></dd>
-    <dt><code><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log(level, msg, timestamp, caller)</a></code></dt><dd><p>Logs a message with <code>level</code>.</p></dd>
+    <dt><code><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log(level, msg, ..., timestamp, caller)</a></code></dt><dd><p>If the <code>level</code> passes the Logger <code>threshold</code> a new <a href='LogEvent.html'>LogEvent</a>
+with <code>level</code>, <code>msg</code>, <code>timestamp</code> and <code>caller</code> is created. Unnamed
+arguments in <code>...</code> will be combined with <code>msg</code> via <code><a href='https://www.rdocumentation.org/packages/base/topics/sprintf'>base::sprintf()</a></code>.
+Named arguments in <code>...</code> will be passed on to <code>LogEvent$new()</code> as custom
+fields.<pre>If the new LogEvent passes this Loggers filters, it will be dispatched
+to the relevant [Appenders] and checked against their thresholds and
+filters.
+</pre></p></dd>
     <dt><code><a href='simple_logging.html'>add_appender(appender, name = NULL)</a></code></dt><dd><p>Adds a new Appender to the
 Logger. <code>appender</code> must be an <a href='Appender.html'>Appender</a> object. <code>name</code> is optional and
 will be used as name in the list of appenders, i.e if you do
@@ -263,18 +265,21 @@ can be an <code>integer</code> or <code>character</code> vector referring either
 or names of the Appenders to be removed.</p></dd>
     <dt><code>exception_handler(e)</code></dt><dd><p>Used to handle errors that occur durring the
 logging process. The defaul is to convert errors to warnings.</p></dd>
+    <dt><code>set_name(x)</code></dt><dd><p>Set the Logger name to the <code>character</code> scalar <code>x</code></p></dd>
     <dt><code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter(x)</a></code></dt><dd><p>Determine whether the LogEvent <code>x</code> should be passed
 on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the active binding
 <code>filters</code></p></dd>
-    <dt><code>set_name(x)</code></dt><dd><p>Set the Logger name to the <code>character</code> scalar <code>x</code></p></dd>
-    </dl>
+    <dt><code>set_filters(filters)</code></dt><dd><p>set a list of <code>filters</code>. The filters must
+be functions that take exactly two named arguments: the LogEvent
+<code>event</code> and the Logger <code>obj</code>.</p></dd>
+</dl>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>yog</span>$<span class='fu'>info</span>(<span class='st'>"Today is %s"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>() )</div><div class='output co'>#&gt; INFO  [17:41:43.778] Today is 2018-12-22</div><div class='input'>
+<span class='no'>yog</span>$<span class='fu'>info</span>(<span class='st'>"Today is %s"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>() )</div><div class='output co'>#&gt; INFO  [22:09:38.449] Today is 2018-12-22</div><div class='input'>
 <span class='co'># yog includes a pre-configured root logger</span>
-<span class='no'>yog</span>$<span class='fu'>fatal</span>(<span class='st'>"This is a serious error"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [17:41:43.781] This is a serious error</div><div class='input'>
+<span class='no'>yog</span>$<span class='fu'>fatal</span>(<span class='st'>"This is a serious error"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [22:09:38.452] This is a serious error</div><div class='input'>
 <span class='co'># if you want to take advantage of hierarchical logging, you can create new loggers.</span>
 <span class='co'>#' # the following creates a new logger that logs to a temporary file.</span>
 <span class='no'>tf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>()
@@ -286,12 +291,12 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 <span class='co'># The new logger passes the log message on to the appenders of its parent</span>
 <span class='co'># logger, which is by default the root logger. This is why the following</span>
 <span class='co'># writes not only the file 'tf', but also to the console.</span>
-<span class='no'>mylogger</span>$<span class='fu'>fatal</span>(<span class='st'>"blubb"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [17:41:43.806] blubb</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2018-12-22 17:41:43.806] blubb"</div><div class='input'>
+<span class='no'>mylogger</span>$<span class='fu'>fatal</span>(<span class='st'>"blubb"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [22:09:38.467] blubb</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2018-12-22 22:09:38.467] blubb"</div><div class='input'>
 <span class='co'># use string inerpolation and custom fields</span>
 <span class='no'>tf2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>()
 <span class='no'>mylogger</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>tf2</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()))
-<span class='no'>mylogger</span>$<span class='fu'>info</span>(<span class='st'>"Not all %s support custom fields"</span>, <span class='st'>"appenders"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"test"</span>)</div><div class='output co'>#&gt; INFO  [17:41:43.834] Not all appenders support custom fields</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2018-12-22 17:41:43.806] blubb"                                  
-#&gt; [2] "INFO  [2018-12-22 17:41:43.834] Not all appenders support custom fields"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf2</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2018-12-22 17:41:43\",\"caller\":\"eval\",\"msg\":\"Not all appenders support custom fields\",\"type\":\"test\"}"</div><div class='input'>
+<span class='no'>mylogger</span>$<span class='fu'>info</span>(<span class='st'>"Not all %s support custom fields"</span>, <span class='st'>"appenders"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"test"</span>)</div><div class='output co'>#&gt; INFO  [22:09:38.476] Not all appenders support custom fields</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2018-12-22 22:09:38.467] blubb"                                  
+#&gt; [2] "INFO  [2018-12-22 22:09:38.476] Not all appenders support custom fields"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf2</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2018-12-22 22:09:38\",\"caller\":\"eval\",\"msg\":\"Not all appenders support custom fields\",\"type\":\"test\"}"</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

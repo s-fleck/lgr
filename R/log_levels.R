@@ -23,7 +23,6 @@
 #'  `600` \tab trace \tab An even finer grained message than debug\cr
 #'   `NA` \tab all   \tab A log level of NA/all tells a Logger or Appender to process all log events
 #' }
-#'
 #' @aliases log_levels log_level
 #' @examples
 #' get_log_levels()
@@ -144,11 +143,10 @@ colorize_levels <- function(
 #' @param log_levels a named `integer` vector, should usually not be set
 #'   manually.
 #'
-#' @seealso also see [get_log_levels]
-#' @return
-#' a `character` vector for `label_levels()` and an integer vector for
-#' `unlabel_levels`
+#' @return a `character` vector for `label_levels()` and an integer vector for
+#'   `unlabel_levels`
 #'
+#' @seealso also see [get_log_levels]
 #' @export
 #' @examples
 #'
