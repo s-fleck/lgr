@@ -1,4 +1,4 @@
-#' Create a new Logger
+#' Loggers
 #'
 #' A Logger records the log message and some metadata (timestamp,
 #' calling function) as a [LogEvent] and passes this event on to one or
@@ -105,13 +105,17 @@
 #'   \item{`appenders`}{A `list` of all Appenders attached to the current
 #'     logger}
 #'
-#'   \item{`ancestry`}{*read only*. A `character` vector of the names of all
-#'     Loggers that are ancestors to the current Logger}
+#'   \item{`ancestry`}{A named `logical` vector of containing
+#'   the propagate value of each Logger upper the inheritance tree. The names
+#'   are the names of the appenders.}
 #'
-#'   \item{`inherited_appenders`}{*read only*. A `list` of all inherited
+#'   \item{`inherited_appenders`}{A `list` of all inherited
 #'   appenders from ancestral Loggers of the current Logger}
 #'
-#'   \item{`elapsed`}{Seconds since the last log event as `difftime`}
+#'   \item{`elapsed`}{Seconds since the last LogEvent as `difftime`. Use this
+#'   feature only to track the time between LogEvents wth the same log level,
+#'   or you will get inconsistent results depending on which threshold is
+#'   set for the logger}
 #'
 #'   \item{`filters`}{a `list` of predicates (functions that return either
 #'   `TRUE` or `FALSE`). If all of these functions evaluate to `TRUE` the
@@ -127,7 +131,6 @@
 #'   }
 #'
 #'   \item{`parent`}{Parent Logger of the current Logger (`NULL` for the Root Logger)}
-#'
 #'
 #'   \item{`threshold`}{An `integer`. Threshold of the current Logger (i.e the
 #'   maximum log level that this Logger processes)}
@@ -497,8 +500,8 @@ Logger <- R6::R6Class(
 
     ancestry = function(){
       structure(
-        c(self$name, private$.parent$ancestry),
-        class = c("ancestry", "character")
+        c(setNames(self$propagate, self$name), private$.parent$ancestry),
+        class = c("ancestry", "list")
       )
     },
 

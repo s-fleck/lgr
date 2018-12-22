@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">yog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9011</span>
       </span>
     </div>
 
@@ -182,7 +182,7 @@ to include in the output object.</p></dd>
 
 <span class='co'># Default settings show all event fals</span>
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()
-<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; {"level":200,"timestamp":"2018-12-21 20:15:53","caller":null,"msg":"a test message","custom_field":"LayoutJson can handle arbitrary fields"} </div><div class='input'>
+<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; {"level":200,"timestamp":"2018-12-22 17:41:41","caller":null,"msg":"a test message","custom_field":"LayoutJson can handle arbitrary fields"} </div><div class='input'>
 
 <span class='co'># Values from the LogEvent can be suppressed, and values from the Logger</span>
 <span class='co'># can be added</span>
@@ -190,7 +190,7 @@ to include in the output object.</p></dd>
   <span class='kw'>event_vals</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"level"</span>, <span class='st'>"timestamp"</span>, <span class='st'>"msg"</span>),
   <span class='kw'>logger_vals</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"user"</span>, <span class='kw'>logger_name</span> <span class='kw'>=</span> <span class='st'>"name"</span>)
 )
-<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; {"level":200,"timestamp":"2018-12-21 20:15:53","msg":"a test message","user":"testuser","logger_name":"dummy logger"} </div><div class='input'>
+<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; {"level":200,"timestamp":"2018-12-22 17:41:41","msg":"a test message","user":"testuser","logger_name":"dummy logger"} </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

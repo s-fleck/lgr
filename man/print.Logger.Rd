@@ -5,16 +5,16 @@
 \alias{format.Logger}
 \title{Print a Logger Object}
 \usage{
-\method{print}{Logger}(x, colors = requireNamespace("crayon", quietly =
+\method{print}{Logger}(x, color = requireNamespace("crayon", quietly =
   TRUE), ...)
 
-\method{format}{Logger}(x, colors = requireNamespace("crayon", quietly =
+\method{format}{Logger}(x, color = requireNamespace("crayon", quietly =
   TRUE), ...)
 }
 \arguments{
 \item{x}{any \R Object}
 
-\item{colors}{\code{TRUE} or \code{FALSE}: Output with colors? Requires the Package
+\item{color}{\code{TRUE} or \code{FALSE}: Output with color? Requires the Package
 \strong{crayon}}
 
 \item{...}{ignored}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/use_logger.R
 \name{use_logger}
 \alias{use_logger}
-\title{Setup a Simple logger for a Package}
+\title{Setup a Simple Logger for a Package}
 \usage{
 use_logger(pkg = desc::desc_get("Package",
   rprojroot::find_package_root_file("DESCRIPTION"))[[1]])

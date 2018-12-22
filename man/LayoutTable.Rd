@@ -2,7 +2,7 @@
 % Please edit documentation in R/Layout.R
 \name{LayoutTable}
 \alias{LayoutTable}
-\title{Abstract Class for Formatting data as Tabular Structures}
+\title{Abstract Class for Formatting Data as Tabular Structures}
 \description{
 Abstract classes are exported for developers that want to extend them, they
 are not useful to casual users. \link{LayoutDbi} and \link{LayoutJson} are derived

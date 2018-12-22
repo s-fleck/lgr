@@ -1,4 +1,4 @@
-#' Setup a Simple logger for a Package
+#' Setup a Simple Logger for a Package
 #'
 #' This gives you a minimal logger with no appenders that you can use inside
 #' your package under the name `lg` (exmaple lg$fatal("test")). `use_logger()`

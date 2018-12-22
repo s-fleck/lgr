@@ -187,3 +187,14 @@ test_that("filters work", {
   c1$set_threshold(100)
   expect_silent(c1$error("blubb"))
 })
+
+
+
+test_that("ancestry query works", {
+  l1 <- Logger$new("l1", appenders = AppenderBuffer$new())
+  l2 <- Logger$new("l2", propagate = FALSE, parent = l1, appenders = AppenderConsole$new())
+  l3 <- Logger$new("l3", parent = l2, appenders = AppenderFile$new(tempfile()))
+  l4 <- Logger$new("l4", parent = l3, appenders = AppenderBuffer$new())
+
+  expect_match(format(l4$ancestry), "(->.*){2}.*|")
+})

@@ -168,7 +168,7 @@ LayoutFormat <- R6::R6Class(
 
 # LayoutTable -------------------------------------------------------------
 
-#' Abstract Class for Formatting data as Tabular Structures
+#' Abstract Class for Formatting Data as Tabular Structures
 #'
 #' Abstract classes are exported for developers that want to extend them, they
 #' are not useful to casual users. [LayoutDbi] and [LayoutJson] are derived

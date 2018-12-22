@@ -168,9 +168,10 @@ AppenderConsole <- R6::R6Class(
 
 #' Log to a File
 #'
-#' A simple Appender that outputs to a file in the file system. `AppenderJson`
-#' is just a shortcut for `AppenderFile` with [`LayoutJson`] as the default
-#' [Layout]
+#' A simple Appender that outputs to a file in the file system. If you plan
+#' to log to text files, consider logging to JSON files and take a look at
+#' [AppenderJson], which is more or less a shortcut for `AppenderFile` with
+#' [`LayoutJson`] and a few extra methods for convenience.
 #'
 #' @eval r6_usage(AppenderFile)
 #'
@@ -269,10 +270,9 @@ AppenderFile <- R6::R6Class(
 
 #' Log to a JSON File
 #'
-#' A simple Appender that outputs to a file in the file system. `AppenderJson`
-#' is just a shortcut for `AppenderFile` with [`LayoutJson`], but comes with
-#' an extra method `show()` and an extra argument `data` to access the
-#' underlying file.
+#' `AppenderJson` is a shortcut for `AppenderFile` with [`LayoutJson`], but
+#' comes with an extra method `show()` and an extra active field `data` to
+#'  access the underlying file.
 #'
 #' @eval r6_usage(AppenderFile)
 #'
@@ -286,7 +286,7 @@ AppenderFile <- R6::R6Class(
 #'   \item{`show(n, threshold)`}{Show the last `n` log entries with a log level
 #'   bellow `threshold`. The log entries will be formated as in the source
 #'   JSON file}
-#'   \item{`data`}{Get the log recorded by this `Appender` as a `data.frame`}
+#'   \item{`data`}{The log recorded by this `Appender` as a `data.frame`}
 #' }
 #'
 #' @export

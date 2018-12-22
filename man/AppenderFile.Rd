@@ -4,9 +4,10 @@
 \alias{AppenderFile}
 \title{Log to a File}
 \description{
-A simple Appender that outputs to a file in the file system. \code{AppenderJson}
-is just a shortcut for \code{AppenderFile} with \code{\link{LayoutJson}} as the default
-\link{Layout}
+A simple Appender that outputs to a file in the file system. If you plan
+to log to text files, consider logging to JSON files and take a look at
+\link{AppenderJson}, which is more or less a shortcut for \code{AppenderFile} with
+\code{\link{LayoutJson}} and a few extra methods for convenience.
 }
 \section{Usage}{
 \preformatted{x <- AppenderFile$new(file, threshold = NA_integer_,

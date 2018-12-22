@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a new Logger — Logger • yog</title>
+<title>Loggers — Logger • yog</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:title" content="Create a new Logger — Logger" />
+<meta property="og:title" content="Loggers — Logger" />
 
 <meta property="og:description" content="A Logger records the log message and some metadata (timestamp,
 calling function) as a LogEvent and passes this event on to one or
@@ -69,7 +69,7 @@ for more info." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">yog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9011</span>
       </span>
     </div>
 
@@ -120,7 +120,7 @@ for more info." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a new Logger</h1>
+    <h1>Loggers</h1>
     <small class="dont-index">Source: <a href='https://github.com/s-fleck/yog/blob/master/R/Logger.R'><code>R/Logger.R</code></a></small>
     <div class="hidden name"><code>Logger.Rd</code></div>
     </div>
@@ -209,11 +209,15 @@ the appenders of the ancestral Loggers?</p></dd>
     <dl class='dl-horizontal'>
     <dt><code>appenders</code></dt><dd><p>A <code>list</code> of all Appenders attached to the current
 logger</p></dd>
-    <dt><code>ancestry</code></dt><dd><p><em>read only</em>. A <code>character</code> vector of the names of all
-Loggers that are ancestors to the current Logger</p></dd>
-    <dt><code>inherited_appenders</code></dt><dd><p><em>read only</em>. A <code>list</code> of all inherited
+    <dt><code>ancestry</code></dt><dd><p>A named <code>logical</code> vector of containing
+the propagate value of each Logger upper the inheritance tree. The names
+are the names of the appenders.</p></dd>
+    <dt><code>inherited_appenders</code></dt><dd><p>A <code>list</code> of all inherited
 appenders from ancestral Loggers of the current Logger</p></dd>
-    <dt><code>elapsed</code></dt><dd><p>Seconds since the last log event as <code>difftime</code></p></dd>
+    <dt><code>elapsed</code></dt><dd><p>Seconds since the last LogEvent as <code>difftime</code>. Use this
+feature only to track the time between LogEvents wth the same log level,
+or you will get inconsistent results depending on which threshold is
+set for the logger</p></dd>
     <dt><code>filters</code></dt><dd><p>a <code>list</code> of predicates (functions that return either
 <code>TRUE</code> or <code>FALSE</code>). If all of these functions evaluate to <code>TRUE</code> the
 LogEvent is passed on to the Logger's Appenders. See the source code of
@@ -268,9 +272,9 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>yog</span>$<span class='fu'>info</span>(<span class='st'>"Today is %s"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>() )</div><div class='output co'>#&gt; INFO  [20:15:55.875] Today is 2018-12-21</div><div class='input'>
+<span class='no'>yog</span>$<span class='fu'>info</span>(<span class='st'>"Today is %s"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>() )</div><div class='output co'>#&gt; INFO  [17:41:43.778] Today is 2018-12-22</div><div class='input'>
 <span class='co'># yog includes a pre-configured root logger</span>
-<span class='no'>yog</span>$<span class='fu'>fatal</span>(<span class='st'>"This is a serious error"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [20:15:55.878] This is a serious error</div><div class='input'>
+<span class='no'>yog</span>$<span class='fu'>fatal</span>(<span class='st'>"This is a serious error"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [17:41:43.781] This is a serious error</div><div class='input'>
 <span class='co'># if you want to take advantage of hierarchical logging, you can create new loggers.</span>
 <span class='co'>#' # the following creates a new logger that logs to a temporary file.</span>
 <span class='no'>tf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>()
@@ -282,12 +286,12 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 <span class='co'># The new logger passes the log message on to the appenders of its parent</span>
 <span class='co'># logger, which is by default the root logger. This is why the following</span>
 <span class='co'># writes not only the file 'tf', but also to the console.</span>
-<span class='no'>mylogger</span>$<span class='fu'>fatal</span>(<span class='st'>"blubb"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [20:15:55.893] blubb</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2018-12-21 20:15:55.893] blubb"</div><div class='input'>
+<span class='no'>mylogger</span>$<span class='fu'>fatal</span>(<span class='st'>"blubb"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [17:41:43.806] blubb</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2018-12-22 17:41:43.806] blubb"</div><div class='input'>
 <span class='co'># use string inerpolation and custom fields</span>
 <span class='no'>tf2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>()
 <span class='no'>mylogger</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>tf2</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()))
-<span class='no'>mylogger</span>$<span class='fu'>info</span>(<span class='st'>"Not all %s support custom fields"</span>, <span class='st'>"appenders"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"test"</span>)</div><div class='output co'>#&gt; INFO  [20:15:55.907] Not all appenders support custom fields</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2018-12-21 20:15:55.893] blubb"                                  
-#&gt; [2] "INFO  [2018-12-21 20:15:55.907] Not all appenders support custom fields"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf2</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2018-12-21 20:15:55\",\"caller\":\"eval\",\"msg\":\"Not all appenders support custom fields\",\"type\":\"test\"}"</div><div class='input'>
+<span class='no'>mylogger</span>$<span class='fu'>info</span>(<span class='st'>"Not all %s support custom fields"</span>, <span class='st'>"appenders"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"test"</span>)</div><div class='output co'>#&gt; INFO  [17:41:43.834] Not all appenders support custom fields</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2018-12-22 17:41:43.806] blubb"                                  
+#&gt; [2] "INFO  [2018-12-22 17:41:43.834] Not all appenders support custom fields"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf2</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2018-12-22 17:41:43\",\"caller\":\"eval\",\"msg\":\"Not all appenders support custom fields\",\"type\":\"test\"}"</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -1,5 +1,5 @@
-
-
+#' Information About the System
+#'
 #' `get_caller()` Tries to determine the calling functions based on `where`.
 #'
 #' @param where `integer` scalar (usually negative). Look up that many frames
@@ -30,20 +30,16 @@ get_caller <- function(
 
 
 
-#' Information About the System
-#'
+
 #' `get_user()` tries to determine the current user. Defaults to
 #' `getOption("yog.user")`. If the option is not set, `Sys.info()[["user"]]`
 #' is used. If the option is not set and the package **whoami** is available,
 #' the user name is guessed based on whichever of the following is available:
 #' `email_address`, `fullname`, `gh_username`, `username`.
 #'
-#'
 #' @return a `character` scalar.
 #'
-#'
 #' @seealso [whoami::whoami()]
-#'
 #' @name system_infos
 #' @examples
 #' get_user()

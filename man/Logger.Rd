@@ -3,7 +3,7 @@
 \name{Logger}
 \alias{Logger}
 \alias{Loggers}
-\title{Create a new Logger}
+\title{Loggers}
 \description{
 A Logger records the log message and some metadata (timestamp,
 calling function) as a \link{LogEvent} and passes this event on to one or
@@ -99,13 +99,17 @@ the appenders of the ancestral Loggers?}
 \item{\code{appenders}}{A \code{list} of all Appenders attached to the current
 logger}
 
-\item{\code{ancestry}}{\emph{read only}. A \code{character} vector of the names of all
-Loggers that are ancestors to the current Logger}
+\item{\code{ancestry}}{A named \code{logical} vector of containing
+the propagate value of each Logger upper the inheritance tree. The names
+are the names of the appenders.}
 
-\item{\code{inherited_appenders}}{\emph{read only}. A \code{list} of all inherited
+\item{\code{inherited_appenders}}{A \code{list} of all inherited
 appenders from ancestral Loggers of the current Logger}
 
-\item{\code{elapsed}}{Seconds since the last log event as \code{difftime}}
+\item{\code{elapsed}}{Seconds since the last LogEvent as \code{difftime}. Use this
+feature only to track the time between LogEvents wth the same log level,
+or you will get inconsistent results depending on which threshold is
+set for the logger}
 
 \item{\code{filters}}{a \code{list} of predicates (functions that return either
 \code{TRUE} or \code{FALSE}). If all of these functions evaluate to \code{TRUE} the

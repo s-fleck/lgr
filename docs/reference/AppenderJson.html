@@ -32,10 +32,9 @@
 
 <meta property="og:title" content="Log to a JSON File — AppenderJson" />
 
-<meta property="og:description" content="A simple Appender that outputs to a file in the file system. AppenderJson
-is just a shortcut for AppenderFile with LayoutJson, but comes with
-an extra method show() and an extra argument data to access the
-underlying file." />
+<meta property="og:description" content="AppenderJson is a shortcut for AppenderFile with LayoutJson, but
+comes with an extra method show() and an extra active field data to
+access the underlying file." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -66,7 +65,7 @@ underlying file." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">yog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9011</span>
       </span>
     </div>
 
@@ -124,10 +123,9 @@ underlying file." />
 
     <div class="ref-description">
     
-    <p>A simple Appender that outputs to a file in the file system. <code>AppenderJson</code>
-is just a shortcut for <code>AppenderFile</code> with <code><a href='LayoutJson.html'>LayoutJson</a></code>, but comes with
-an extra method <code>show()</code> and an extra argument <code>data</code> to access the
-underlying file.</p>
+    <p><code>AppenderJson</code> is a shortcut for <code>AppenderFile</code> with <code><a href='LayoutJson.html'>LayoutJson</a></code>, but
+comes with an extra method <code>show()</code> and an extra active field <code>data</code> to
+access the underlying file.</p>
     
     </div>
 
@@ -164,7 +162,7 @@ passed to this Appender</p></dd>
 <dt><code>show(n, threshold)</code></dt><dd><p>Show the last <code>n</code> log entries with a log level
 bellow <code>threshold</code>. The log entries will be formated as in the source
 JSON file</p></dd>
-<dt><code>data</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a <code>data.frame</code></p></dd>
+<dt><code>data</code></dt><dd><p>The log recorded by this <code>Appender</code> as a <code>data.frame</code></p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>file, set_file(file)</code></dt><dd><p>get/set the log file</p></dd>
@@ -195,10 +193,10 @@ human-readable form (mainly for print output)</p></dd>
 <span class='no'>l</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)
 <span class='no'>l</span>$<span class='fu'>info</span>(<span class='st'>"A test message %s strings"</span>, <span class='st'>"with format strings"</span>, <span class='kw'>and</span> <span class='kw'>=</span> <span class='st'>"custom_fields"</span>)
 
-<span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2018-12-21 20:15:51","caller":"eval","msg":"A test message"}
-#&gt; {"level":400,"timestamp":"2018-12-21 20:15:51","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp caller                                        msg
-#&gt; 1   400 2018-12-21 20:15:51   eval                             A test message
-#&gt; 2   400 2018-12-21 20:15:51   eval A test message with format strings strings
+<span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2018-12-22 17:41:39","caller":"eval","msg":"A test message"}
+#&gt; {"level":400,"timestamp":"2018-12-22 17:41:39","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp caller                                        msg
+#&gt; 1   400 2018-12-22 17:41:39   eval                             A test message
+#&gt; 2   400 2018-12-22 17:41:39   eval A test message with format strings strings
 #&gt;             and
 #&gt; 1          &lt;NA&gt;
 #&gt; 2 custom_fields</div><div class='input'>

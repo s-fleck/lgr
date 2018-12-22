@@ -4,10 +4,9 @@
 \alias{AppenderJson}
 \title{Log to a JSON File}
 \description{
-A simple Appender that outputs to a file in the file system. \code{AppenderJson}
-is just a shortcut for \code{AppenderFile} with \code{\link{LayoutJson}}, but comes with
-an extra method \code{show()} and an extra argument \code{data} to access the
-underlying file.
+\code{AppenderJson} is a shortcut for \code{AppenderFile} with \code{\link{LayoutJson}}, but
+comes with an extra method \code{show()} and an extra active field \code{data} to
+access the underlying file.
 }
 \section{Usage}{
 \preformatted{x <- AppenderFile$new(file, threshold = NA_integer_,
@@ -50,7 +49,7 @@ passed to this Appender
 \item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a log level
 bellow \code{threshold}. The log entries will be formated as in the source
 JSON file}
-\item{\code{data}}{Get the log recorded by this \code{Appender} as a \code{data.frame}}
+\item{\code{data}}{The log recorded by this \code{Appender} as a \code{data.frame}}
 }
 
 

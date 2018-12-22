@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Information About the System — system_infos • yog</title>
+<title>Information About the System — get_caller • yog</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,13 +30,9 @@
 
 
 
-<meta property="og:title" content="Information About the System — system_infos" />
+<meta property="og:title" content="Information About the System — get_caller" />
 
-<meta property="og:description" content="get_user() tries to determine the current user. Defaults to
-getOption(&quot;yog.user&quot;). If the option is not set, Sys.info()[[&quot;user&quot;]]
-is used. If the option is not set and the package whoami is available,
-the user name is guessed based on whichever of the following is available:
-email_address, fullname, gh_username, username." />
+<meta property="og:description" content="get_caller() Tries to determine the calling functions based on where." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -67,7 +63,7 @@ email_address, fullname, gh_username, username." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">yog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9011</span>
       </span>
     </div>
 
@@ -125,29 +121,25 @@ email_address, fullname, gh_username, username." />
 
     <div class="ref-description">
     
-    <p><code>get_user()</code> tries to determine the current user. Defaults to
-<code><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption("yog.user")</a></code>. If the option is not set, <code>Sys.info()[["user"]]</code>
-is used. If the option is not set and the package <strong>whoami</strong> is available,
-the user name is guessed based on whichever of the following is available:
-<code>email_address</code>, <code>fullname</code>, <code>gh_username</code>, <code>username</code>.</p>
+    <p><code>get_caller()</code> Tries to determine the calling functions based on <code>where</code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_user</span>(<span class='kw'>fallback</span> <span class='kw'>=</span> <span class='st'>"unknown user"</span>)
+    <pre class="usage"><span class='fu'>get_caller</span>(<span class='kw'>where</span> <span class='kw'>=</span> -<span class='fl'>1L</span>)
 
-<span class='fu'>get_caller</span>(<span class='kw'>where</span> <span class='kw'>=</span> -<span class='fl'>1L</span>)</pre>
+<span class='fu'>get_user</span>(<span class='kw'>fallback</span> <span class='kw'>=</span> <span class='st'>"unknown user"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>fallback</th>
-      <td><p>A fallback in case the user name could not be determined</p></td>
-    </tr>
-    <tr>
       <th>where</th>
       <td><p><code>integer</code> scalar (usually negative). Look up that many frames
 up the call stack</p></td>
+    </tr>
+    <tr>
+      <th>fallback</th>
+      <td><p>A fallback in case the user name could not be determined</p></td>
     </tr>
     </table>
     
@@ -157,14 +149,14 @@ up the call stack</p></td>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://www.rdocumentation.org/packages/whoami/topics/whoami'>whoami::whoami()</a></code></p>
-<p><code><a href='https://www.rdocumentation.org/packages/base/topics/sys.parent'>base::sys.call()</a></code></p></div>
+    <div class='dont-index'><p><code><a href='https://www.rdocumentation.org/packages/base/topics/sys.parent'>base::sys.call()</a></code></p>
+<p><code><a href='https://www.rdocumentation.org/packages/whoami/topics/whoami'>whoami::whoami()</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>get_user</span>()</div><div class='output co'>#&gt; [1] "stefan.b.fleck@gmail.com"</div><div class='input'>
-<span class='no'>foo</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>get_caller</span>(-<span class='fl'>1L</span>)
-<span class='fu'>foo</span>()</div><div class='output co'>#&gt; [1] "foo"</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>foo</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>get_caller</span>(-<span class='fl'>1L</span>)
+<span class='fu'>foo</span>()</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'><span class='fu'>get_user</span>()</div><div class='output co'>#&gt; [1] "stefan.b.fleck@gmail.com"</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

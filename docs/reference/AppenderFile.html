@@ -32,9 +32,10 @@
 
 <meta property="og:title" content="Log to a File — AppenderFile" />
 
-<meta property="og:description" content="A simple Appender that outputs to a file in the file system. AppenderJson
-is just a shortcut for AppenderFile with LayoutJson as the default
-Layout" />
+<meta property="og:description" content="A simple Appender that outputs to a file in the file system. If you plan
+to log to text files, consider logging to JSON files and take a look at
+AppenderJson, which is more or less a shortcut for AppenderFile with
+LayoutJson and a few extra methods for convenience." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -65,7 +66,7 @@ Layout" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">yog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9011</span>
       </span>
     </div>
 
@@ -123,9 +124,10 @@ Layout" />
 
     <div class="ref-description">
     
-    <p>A simple Appender that outputs to a file in the file system. <code>AppenderJson</code>
-is just a shortcut for <code>AppenderFile</code> with <code><a href='LayoutJson.html'>LayoutJson</a></code> as the default
-<a href='Layout.html'>Layout</a></p>
+    <p>A simple Appender that outputs to a file in the file system. If you plan
+to log to text files, consider logging to JSON files and take a look at
+<a href='AppenderJson.html'>AppenderJson</a>, which is more or less a shortcut for <code>AppenderFile</code> with
+<code><a href='LayoutJson.html'>LayoutJson</a></code> and a few extra methods for convenience.</p>
     
     </div>
 
@@ -194,8 +196,8 @@ human-readable form (mainly for print output)</p></dd>
   <span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>json</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()), <span class='st'>"json"</span>
 )
 
-<span class='no'>logger</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; INFO  [20:15:51.257] A test message</div><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>default</span>)</div><div class='output co'>#&gt; [1] "INFO  [2018-12-21 20:15:51.257] A test message"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>fancy</span>)</div><div class='output co'>#&gt; [1] "[2018-12-21 20:15:51.257] eval(): INFO  A test message from user "</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>json</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2018-12-21 20:15:51\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div></pre>
+<span class='no'>logger</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; INFO  [17:41:39.536] A test message</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>default</span>)</div><div class='output co'>#&gt; [1] "INFO  [2018-12-22 17:41:39.536] A test message"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>fancy</span>)</div><div class='output co'>#&gt; [1] "[2018-12-22 17:41:39.536] eval(): INFO  A test message from user "</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>json</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2018-12-22 17:41:39\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
