@@ -27,7 +27,8 @@ created by target \link{Logger}.
 }
 \details{
 These functions abuses yog's filter mechanic to modify LogEvents in-place
-before it is passed on the appenders.
+before they passed on the Appenders. Use with care as they can
+produce hard to reason about code.
 }
 \examples{
 with_log_level("warn", {

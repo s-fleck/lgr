@@ -64,11 +64,7 @@ Appender <- R6::R6Class(
     },
 
     set_threshold = function(level){
-      assert_valid_threshold(level)
-
-      if (is_scalar_character(level))
-        level <- unlabel_levels(level)
-
+      level <- standardize_threshold(level)
       private$.threshold <- as.integer(level)
       invisible(self)
     },

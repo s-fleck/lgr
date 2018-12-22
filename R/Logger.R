@@ -237,8 +237,7 @@ Logger <- R6::R6Class(
 
       tryCatch({
         # preconditions
-        if (is.character(level)) level <- unlabel_levels(level)
-        assert_valid_log_levels(level)
+        level <- standardize_log_levels(level)
         assert(
           identical(length(unique(level)), 1L),
           "Can only utilize vectorized logging if log level is the same for all entries"
@@ -454,8 +453,7 @@ Logger <- R6::R6Class(
 
 
     set_threshold = function(level){
-      assert_valid_threshold(level)
-      if (is_scalar_character(level))  level <- unlabel_levels(level)
+      level <- standardize_threshold(level)
 
       private$unsuspend()
       private$suspend(level, inclusive = FALSE)
@@ -538,14 +536,10 @@ Logger <- R6::R6Class(
       inclusive = TRUE
     ){
       assert(is_scalar_bool(inclusive))
-      assert(is_valid_log_levels(threshold))
+      threshold <- standardize_threshold(threshold)
+
       if (is.na(threshold))
         threshold <- Inf
-
-      if (is.character(threshold))
-        threshold <- unlabel_levels(threshold)
-
-      assert(is.numeric(threshold))
 
       if (inclusive){
         ll <- private$.log_levels[private$.log_levels >= threshold]
@@ -570,23 +564,15 @@ Logger <- R6::R6Class(
       inclusive = TRUE
     ){
       assert(is_scalar_bool(inclusive))
-      assert(is_valid_log_levels(threshold, private$.log_levels))
+      threshold <- standardize_threshold(threshold)
       if (is.na(threshold))
         threshold <- Inf
-
-      if (is.character(threshold))
-        threshold <- unlabel_levels(threshold, private$.log_levels)
-
-      assert(is.numeric(threshold))
 
       if (inclusive){
         ll <- private$.log_levels[private$.log_levels >= threshold]
       } else {
         ll <- private$.log_levels[private$.log_levels > threshold]
       }
-
-      if (is.na(threshold)) threshold <- Inf
-      ll <- private$.log_levels[private$.log_levels >= threshold]
 
       for (i in seq_along(private$suspended_loggers)){
         nm  <- names(private$suspended_loggers)[[i]]

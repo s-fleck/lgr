@@ -48,7 +48,6 @@ Collate:
     'Layout.R'
     'LogEvent.R'
     'Logger.R'
-    'predicates.R'
     'print_Logger.R'
     'read_json_log.R'
     'simple_logging.R'

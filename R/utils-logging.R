@@ -51,7 +51,8 @@ without_logging <- function(code){
 #' created by target [Logger].
 #'
 #' These functions abuses yog's filter mechanic to modify LogEvents in-place
-#' before it is passed on the appenders.
+#' before they passed on the Appenders. Use with care as they can
+#' produce hard to reason about code.
 #'
 #' @param level `integer` or `character` scalar: the desired log level
 #' @param code Any \R code
@@ -69,10 +70,7 @@ with_log_level <- function(
   code,
   logger = yog::yog
 ){
-  assert_valid_log_levels(level)
-  if (is.character(level)){
-    level <- unlabel_levels(level)
-  }
+  level <- standardize_log_level(level)
   force(level)
 
   # fix the caller
