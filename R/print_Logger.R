@@ -41,47 +41,24 @@ format.Logger = function(
     format(x$ancestry, color = color)
   )
 
-  appenders <-
-    do.call(rbind, lapply(x$appenders, srs_appender))
-  inherited_appenders <-
-    do.call(rbind, lapply(x$inherited_appenders, srs_appender))
+  appenders <- appender_summary(x$appenders)
+  inherited_appenders  <- appender_summary(x$inherited_appenders)
 
-  fmt_appenders <- function(.x){
-    if (is.null(.x)) return(NULL)
-
-    .x$name <- rownames(.x)
-    .x$destination <- ifelse(
-      !is_blank(.x$destination),
-      paste("->", .x$destination),
-      ""
-    )
-
-    with(
-      .x,
-      paste0(
-        pad_right(name), ": ",
-        pad_right(class), " [",
-        pad_left(fmt_threshold(threshold, type = "character")), "] ",
-        destination
-      )
-    )
-  }
 
   ind <- "  "
-
   res <- header
 
   if (!is.null(appenders)){
     res <-c(
       res, "",
-      "appenders:", paste0(ind, fmt_appenders(appenders))
+      "appenders:", paste0(ind, appenders)
     )
   }
 
   if (!is.null(inherited_appenders)){
-    res <-c(
+    res <- c(
       res, "",
-      "inherited appenders:", paste0(ind, fmt_appenders(inherited_appenders))
+      "inherited appenders:", paste0(ind, inherited_appenders)
     )
   }
 
@@ -90,7 +67,39 @@ format.Logger = function(
 
 
 
+appender_summary <- function(x){
+  dd <- lapply(x, srs_appender)
 
+  names(dd) <- ifelse(
+    is.na(names(x)) | is_blank(names(x)),
+    paste0("[[", seq_len(length(x)), "]]"),
+    names(x)
+  )
+  dd <- do.call(rbind, dd)
+
+  if (is.null(dd)) return(NULL)
+
+  dd$name <- rownames(dd)
+  dd$destination <- ifelse(
+    !is_blank(dd$destination),
+    paste("->", dd$destination),
+    ""
+  )
+
+  with(
+    dd,
+    paste0(
+      pad_right(name), ": ",
+      pad_right(class), " [",
+      pad_left(fmt_threshold(threshold, type = "character")), "] ",
+      destination
+    )
+  )
+}
+
+
+
+# single-row-summary
 srs_appender <- function(x){
   data.frame(
     class = class_fmt(x, ignore = c("R6", "Filterable", "Appender")),

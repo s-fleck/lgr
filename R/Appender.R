@@ -345,6 +345,8 @@ AppenderJson <- R6::R6Class(
 )
 
 
+
+
 # AppenderTable -----------------------------------------------------------
 
 #' Abstract Class for Logging to Tabular Structures
@@ -372,6 +374,8 @@ AppenderJson <- R6::R6Class(
 NULL
 
 
+
+
 # exclude from coverage because AppenderTable is just a metaclass
 # nocov start
 #' @export
@@ -392,6 +396,10 @@ AppenderTable <- R6::R6Class(
     .table = NULL
   )
 )
+
+
+
+
 # nocov end
 
 
@@ -832,6 +840,10 @@ AppenderRjdbc <- R6::R6Class(
     .table = NULL
   )
 )
+
+
+
+
 # nocov end
 
 

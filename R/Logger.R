@@ -180,8 +180,6 @@ NULL
 
 
 
-
-
 #' @export
 Logger <- R6::R6Class(
   "Logger",
