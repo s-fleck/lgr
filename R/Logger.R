@@ -74,7 +74,17 @@
 #'   \item{`trace(msg, ...)`}{Logs a message with level `trace` on this logger.
 #'   The arguments are interpreted as for `fatal()`.}
 #'
-#'   \item{`log(level, msg, timestamp, caller)`}{Logs a message with `level`.}
+#'   \item{`log(level, msg, ..., timestamp, caller)`}{
+#'     If the `level` passes the Logger `threshold` a new [LogEvent]
+#'     with `level`, `msg`, `timestamp` and `caller` is created. Unnamed
+#'     arguments in `...` will be combined with `msg` via `base::sprintf()`.
+#'     Named arguments in `...` will be passed on to `LogEvent$new()` as custom
+#'     fields.
+#'
+#'     If the new LogEvent passes this Loggers filters, it will be dispatched
+#'     to the relevant [Appenders] and checked against their thresholds and
+#'     filters.
+#'   }
 #'
 #'   \item{`add_appender(appender, name = NULL)`}{Adds a new Appender to the
 #'   Logger. `appender` must be an [Appender] object. `name` is optional and
@@ -111,11 +121,6 @@
 #'
 #'   \item{`inherited_appenders`}{A `list` of all inherited
 #'   appenders from ancestral Loggers of the current Logger}
-#'
-#'   \item{`elapsed`}{Seconds since the last LogEvent as `difftime`. Use this
-#'   feature only to track the time between LogEvents wth the same log level,
-#'   or you will get inconsistent results depending on which threshold is
-#'   set for the logger}
 #'
 #'   \item{`filters`}{a `list` of predicates (functions that return either
 #'   `TRUE` or `FALSE`). If all of these functions evaluate to `TRUE` the
@@ -234,10 +239,8 @@ Logger <- R6::R6Class(
       msg,
       ...,
       timestamp = Sys.time(),
-      caller = get_caller(-3)
+      caller = get_caller(-7)
     ){
-      force(caller)
-
       tryCatch({
         # preconditions
         level <- standardize_log_levels(level)
@@ -256,6 +259,7 @@ Logger <- R6::R6Class(
 
         # init
         msg <- as.character(msg)
+        force(caller)
 
         if (missing(...)){
           vals <- list(
@@ -312,7 +316,7 @@ Logger <- R6::R6Class(
     fatal = function(msg, ...){
       self$log(
         msg = msg,
-        caller = get_caller(-4L),
+        caller = get_caller(-8L),
         level = 100,
         timestamp = Sys.time(),
         ...
@@ -322,7 +326,7 @@ Logger <- R6::R6Class(
     error = function(msg, ...){
       self$log(
         msg = msg,
-        caller = get_caller(-4L),
+        caller = get_caller(-8L),
         level = 200,
         timestamp = Sys.time(),
         ...
@@ -332,7 +336,7 @@ Logger <- R6::R6Class(
     warn = function(msg, ...){
       self$log(
         msg = msg,
-        caller = get_caller(-4L),
+        caller = get_caller(-8L),
         level = 300,
         timestamp = Sys.time(),
         ...
@@ -342,7 +346,7 @@ Logger <- R6::R6Class(
     info = function(msg, ...){
       self$log(
         msg = msg,
-        caller = get_caller(-4L),
+        caller = get_caller(-8L),
         level = 400,
         timestamp = Sys.time(),
         ...
@@ -352,7 +356,7 @@ Logger <- R6::R6Class(
     debug = function(msg, ...){
       self$log(
         msg = msg,
-        caller = get_caller(-4L),
+        caller = get_caller(-8L),
         level = 500,
         timestamp = Sys.time(),
         ...
@@ -362,7 +366,7 @@ Logger <- R6::R6Class(
     trace = function(msg, ...){
       self$log(
         msg = msg,
-        caller = get_caller(-4L),
+        caller = get_caller(-8L),
         level = 600,
         timestamp = Sys.time(),
         ...
@@ -520,13 +524,12 @@ Logger <- R6::R6Class(
       }
     },
 
-    exception_handler = function() private$.exception_handler,
+    exception_handler = function() {private$.exception_handler},
 
-    appenders = function()  private$.appenders,
+    appenders = function() {private$.appenders},
 
-    user = function() private$.user,
+    user = function() {private$.user}
 
-    elapsed = function() difftime(Sys.time(), self$last_event$timestamp, units = "secs")
   ),
 
 

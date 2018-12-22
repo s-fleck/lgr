@@ -39,7 +39,6 @@ x$set_user(x)
 
 x$ancestry
 x$appenders
-x$elapsed
 x$exception_handler
 x$inherited_appenders
 x$last_event
@@ -106,11 +105,6 @@ are the names of the appenders.}
 \item{\code{inherited_appenders}}{A \code{list} of all inherited
 appenders from ancestral Loggers of the current Logger}
 
-\item{\code{elapsed}}{Seconds since the last LogEvent as \code{difftime}. Use this
-feature only to track the time between LogEvents wth the same log level,
-or you will get inconsistent results depending on which threshold is
-set for the logger}
-
 \item{\code{filters}}{a \code{list} of predicates (functions that return either
 \code{TRUE} or \code{FALSE}). If all of these functions evaluate to \code{TRUE} the
 LogEvent is passed on to the Logger's Appenders. See the source code of
@@ -158,7 +152,17 @@ The arguments are interpreted as for \code{fatal()}.}
 \item{\code{trace(msg, ...)}}{Logs a message with level \code{trace} on this logger.
 The arguments are interpreted as for \code{fatal()}.}
 
-\item{\code{log(level, msg, timestamp, caller)}}{Logs a message with \code{level}.}
+\item{\code{log(level, msg, ..., timestamp, caller)}}{
+If the \code{level} passes the Logger \code{threshold} a new \link{LogEvent}
+with \code{level}, \code{msg}, \code{timestamp} and \code{caller} is created. Unnamed
+arguments in \code{...} will be combined with \code{msg} via \code{base::sprintf()}.
+Named arguments in \code{...} will be passed on to \code{LogEvent$new()} as custom
+fields.\preformatted{If the new LogEvent passes this Loggers filters, it will be dispatched
+to the relevant [Appenders] and checked against their thresholds and
+filters.
+}
+
+}
 
 \item{\code{add_appender(appender, name = NULL)}}{Adds a new Appender to the
 Logger. \code{appender} must be an \link{Appender} object. \code{name} is optional and

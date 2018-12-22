@@ -36,7 +36,10 @@ test_that("basic logging", {
     testfun()
   })
 
-  expect_true(all(ml$appenders$memory$data$caller == "testfun"))
+  expect_true(
+    all(ml$appenders$memory$data$caller == "testfun"),
+    info = ml$appenders$memory$data$caller
+  )
 })
 
 
