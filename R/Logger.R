@@ -378,23 +378,7 @@ Logger <- R6::R6Class(
       name = NULL
     ){
       assert(inherits(appender, "Appender"))
-
-      for(app in self$appenders){
-        # appender is already attached to logger, nothing to do, this is
-        # necessary because `logger$appender$blubb <- blagh` tries to readd the
-        # whole appender list
-        if (identical(app, appender)) return(invisible(self))
-      }
-
-      assert(
-        is.null(appender$logger) || identical(appender$logger, self),
-        "Cannot add appender to logger as it is already attached to another",
-        "logger. Please create a new appender or clone the old one with",
-        "`appender$clone()`, but be aware that this can cause weird bugs",
-        "for some appender types."
-        )
-
-      private$.appenders[length(private$.appenders) + 1L] <- list(appender)
+      private$.appenders[[length(private$.appenders) + 1L]] <- appender
 
       if (!is.null(name))
         names(private$.appenders)[length(private$.appenders)] <- name
