@@ -67,7 +67,7 @@ dd <- c(dd, hist)
 print(dd[1:2])
 
 
-pdat <- lapply(dd[1:5], function(.x) {
+pdat <- lapply(dd[1:2], function(.x) {
   as.data.table(.x)[, .(expression = as.character(.x$expression), median)]
 })
 

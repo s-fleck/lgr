@@ -33,11 +33,17 @@ Filterable <- R6::R6Class(
     },
 
     set_filters = function(filters){
-      assert(
-        is.list(filters) && all(vapply(filters, is_filter, logical(1))),
-        "'filters' must be a list of functions with the arguments 'event' and 'obj'"
-      )
-      private$.filters <- filters
+      if (is.null(filters)){
+        private$.filters <- NULL
+      } else {
+        assert(
+          is.list(filters) && all(vapply(filters, is_filter, logical(1))),
+          "'filters' must be a list of functions with the arguments 'event' and 'obj'"
+        )
+        private$.filters <- filters
+      }
+
+      invisible(self)
     }
   ),
 
@@ -59,14 +65,4 @@ is_filter <- function(
   x
 ){
   is.function(x) && identical(names(formals(x)), c("event", "obj"))
-}
-
-
-
-
-check_threshold <- function(
-  event,
-  obj
-){
-  is.na(obj$threshold) || event[["level"]] <= obj$threshold
 }

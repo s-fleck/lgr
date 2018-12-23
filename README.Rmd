@@ -30,7 +30,7 @@ Loggers are configured in yog a bit strange, but I did my best to compose a
 hopefully helpful . 
 Users that come from python or Java, will feel at home as yog borrows heavily 
 from [Apache Log4j](https://logging.apache.org/log4j/2.x/) and
-[Python logging](https://docs.python.org/3/library/logging.html). 
+[Python logging](https://docs.python.org/3/library/logging.html).
 
 
 ## Usage

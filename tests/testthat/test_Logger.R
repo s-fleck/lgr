@@ -195,7 +195,7 @@ test_that("Logger inheritance and event propagation", {
 
 
 
-test_that("filters work", {
+test_that("thresholds work", {
   c1  <- Logger$new("c1")
   expect_output(c1$error("blubb"), "ERROR")
   c1$set_threshold(100)

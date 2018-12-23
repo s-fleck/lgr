@@ -28,7 +28,7 @@ test_that("with_log_level works", {
   foo <- function(){
     with_log_level("trace", lg$info("blubb"), logger = lg)
   }
-  foo()
+  expect_silent(foo())
 
   expect_identical(lg$last_event$caller, "foo")
 })

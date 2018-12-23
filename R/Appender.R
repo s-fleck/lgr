@@ -89,7 +89,7 @@ Appender <- R6::R6Class(
   ),
 
   private = list(
-    .filters = list(check_threshold),
+    .filters = NULL,
     .threshold = NA,
     .layout = NULL
   )

@@ -320,6 +320,6 @@ test_that("AppenderMemory: memory cycling works", {
 test_that("Appender: filters work", {
   app1 <- AppenderConsole$new()
   expect_true(app1$filter(x))
-  app1$set_threshold(100)
+  app1$set_filters(list(function(event, obj) FALSE))
   expect_false(app1$filter(x))
 })
