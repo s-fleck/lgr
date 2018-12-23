@@ -1,17 +1,40 @@
 reference:
 - title: Logger
+  desc: Creates and dispatches LogEvents
   contents:
   - Logger
+  - print.Logger
+  - print.ancestry
+  - default_exception_handler
+  - get_log_levels
+  - simple_logging
 - title: Appenders
+  desc: Output destinations for LogEvents
   contents:
   - starts_with("Appender")
 - title: Layouts
+  desc: Formatting of LogEvents
   contents:
   - starts_with("Layout")
-- title: Abstract Classes
-  desc: For package developers that want to extend yog
+- title: LogEvent
+  desc: Contains the Data that is beeing logged
   contents:
-  - "Appender"
-  - "Layout"
-  - "Filterable"
+  - LogEvent
+  - as.data.frame.LogEvent
+  - print.LogEvent
+- title: Utilities
+  contents:
+  - suspend_logging
+  - with_log_level
+  - get_caller
+  - get_user
+  - read_json_lines
+  - use_logger
+  - label_levels
+- title: Abstract Classes
+  desc: For Package developers that want to build new Appenders, Layouts or Loggers
+  contents:
+  - Appender
+  - Layout
+  - Filterable
 

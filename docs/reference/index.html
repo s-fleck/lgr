@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">yog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9011</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9012</span>
       </span>
     </div>
 
@@ -126,7 +126,7 @@
       <tr>
         <th colspan="2">
           <h2 id="section-logger" class="hasAnchor"><a href="#section-logger" class="anchor"></a>Logger</h2>
-          <p class="section-desc"></p>
+          <p class="section-desc"><p>Creates and dispatches LogEvents</p></p>
         </th>
       </tr>
       <tr>
@@ -135,12 +135,42 @@
           <p><code><a href="Logger.html">Logger</a></code> </p>
         </td>
         <td><p>Loggers</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="print.Logger.html">print(<i>&lt;Logger&gt;</i>)</a></code> <code><a href="print.Logger.html">format(<i>&lt;Logger&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Print a Logger Object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="print.ancestry.html">print(<i>&lt;ancestry&gt;</i>)</a></code> <code><a href="print.ancestry.html">format(<i>&lt;ancestry&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Print Ancestry of a Logger</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="default_exception_handler.html">default_exception_handler()</a></code> </p>
+        </td>
+        <td><p>Demote an Exception to a Warning</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_log_levels.html">get_log_levels()</a></code> <code><a href="get_log_levels.html">add_log_levels()</a></code> <code><a href="get_log_levels.html">remove_log_levels()</a></code> </p>
+        </td>
+        <td><p>Manage Log Levels</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="simple_logging.html">FATAL()</a></code> <code><a href="simple_logging.html">ERROR()</a></code> <code><a href="simple_logging.html">WARN()</a></code> <code><a href="simple_logging.html">INFO()</a></code> <code><a href="simple_logging.html">DEBUG()</a></code> <code><a href="simple_logging.html">TRACE()</a></code> <code><a href="simple_logging.html">log_exception()</a></code> <code><a href="simple_logging.html">threshold()</a></code> <code><a href="simple_logging.html">console_threshold()</a></code> <code><a href="simple_logging.html">add_appender()</a></code> <code><a href="simple_logging.html">remove_appender()</a></code> <code><a href="simple_logging.html">show_log()</a></code> </p>
+        </td>
+        <td><p>Simple Logging</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
           <h2 id="section-appenders" class="hasAnchor"><a href="#section-appenders" class="anchor"></a>Appenders</h2>
-          <p class="section-desc"></p>
+          <p class="section-desc"><p>Output destinations for LogEvents</p></p>
         </th>
       </tr>
       <tr>
@@ -196,7 +226,7 @@
       <tr>
         <th colspan="2">
           <h2 id="section-layouts" class="hasAnchor"><a href="#section-layouts" class="anchor"></a>Layouts</h2>
-          <p class="section-desc"></p>
+          <p class="section-desc"><p>Formatting of LogEvents</p></p>
         </th>
       </tr>
       <tr>
@@ -227,8 +257,78 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
+          <h2 id="section-logevent" class="hasAnchor"><a href="#section-logevent" class="anchor"></a>LogEvent</h2>
+          <p class="section-desc"><p>Contains the Data that is beeing logged</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="LogEvent.html">LogEvent</a></code> </p>
+        </td>
+        <td><p>Events - The Atomic Unit of Logging</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="as.data.frame.LogEvent.html">as.data.frame(<i>&lt;LogEvent&gt;</i>)</a></code> <code><a href="as.data.frame.LogEvent.html">as.data.table(<i>&lt;LogEvent&gt;</i>)</a></code> <code><a href="as.data.frame.LogEvent.html">as_tibble.LogEvent()</a></code> </p>
+        </td>
+        <td><p>Coerce LogEvents to Data Frames</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="print.LogEvent.html">print(<i>&lt;LogEvent&gt;</i>)</a></code> <code><a href="print.LogEvent.html">format(<i>&lt;LogEvent&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Print or Format Logging Data</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-utilities" class="hasAnchor"><a href="#section-utilities" class="anchor"></a>Utilities</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="suspend_logging.html">suspend_logging()</a></code> <code><a href="suspend_logging.html">unsuspend_logging()</a></code> <code><a href="suspend_logging.html">without_logging()</a></code> </p>
+        </td>
+        <td><p>Suspend All Logging</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="with_log_level.html">with_log_level()</a></code> <code><a href="with_log_level.html">with_log_value()</a></code> </p>
+        </td>
+        <td><p>Inject Values into Logging Calls</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="system_infos.html">get_caller()</a></code> <code><a href="system_infos.html">get_user()</a></code> </p>
+        </td>
+        <td><p>Information About the System</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="read_json_lines.html">read_json_lines()</a></code> </p>
+        </td>
+        <td><p>Read a JSON logfile</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="use_logger.html">use_logger()</a></code> </p>
+        </td>
+        <td><p>Setup a Simple Logger for a Package</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="label_levels.html">label_levels()</a></code> <code><a href="label_levels.html">unlabel_levels()</a></code> </p>
+        </td>
+        <td><p>Label/Unlabel Log Levels</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
           <h2 id="section-abstract-classes" class="hasAnchor"><a href="#section-abstract-classes" class="anchor"></a>Abstract Classes</h2>
-          <p class="section-desc"><p>For package developers that want to extend yog</p></p>
+          <p class="section-desc"><p>For Package developers that want to build new Appenders, Layouts or Loggers</p></p>
         </th>
       </tr>
       <tr>
@@ -260,6 +360,8 @@
       <li><a href="#section-logger">Logger</a></li>
       <li><a href="#section-appenders">Appenders</a></li>
       <li><a href="#section-layouts">Layouts</a></li>
+      <li><a href="#section-logevent">LogEvent</a></li>
+      <li><a href="#section-utilities">Utilities</a></li>
       <li><a href="#section-abstract-classes">Abstract Classes</a></li>
     </ul>
   </div>

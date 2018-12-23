@@ -109,7 +109,6 @@ test_that("AppenderMemoryDt: appending multiple rows works", {
 
   expect_silent(app$append(y))
 
-
   expect_true(data.table::is.data.table(app$data))
   expect_identical(app$data$level[1:3], y$level)
   expect_identical(app$data$timestamp[1:3], rep(y$timestamp, 3))
@@ -125,6 +124,68 @@ test_that("AppenderMemoryDt: appending multiple rows works", {
 })
 
 
+
+test_that("AppenderMemoryDt: works with list columns", {
+  app <- AppenderMemoryDt$new(
+    prototype = data.table::data.table(
+      .id = NA_integer_,
+      level = NA_integer_,
+      timestamp = Sys.Date(),
+      msg = NA_character_,
+      caller = NA_character_,
+      list = list(list())
+    )
+  )
+
+  e <- LogEvent$new(
+    level = 100,
+    timestamp = Sys.Date(),
+    msg = "blubb",
+    caller = "blubb()",
+    logger = yog
+  )
+  app$append(e)
+  expect_true(is.na(app$data$list[[1]]))
+
+  e <- LogEvent$new(
+    level = 100,
+    timestamp = Sys.Date(),
+    msg = "blubb",
+    caller = "blubb()",
+    logger = yog,
+    list = environment()
+  )
+  app$append(e)
+  expect_true(is.environment(app$data$list[[2]]))
+
+  e <- LogEvent$new(
+    level = c(100L, 100L),
+    timestamp = Sys.Date(),
+    msg = "blubb",
+    caller = "blubb()",
+    logger = yog,
+    list = iris
+  )
+  app$append(e)
+  expect_true(is.data.frame(app$data$list[[3]]))
+  expect_true(is.data.frame(app$data$list[[4]]))
+
+  e <- LogEvent$new(
+    level = 100L,
+    timestamp = Sys.Date(),
+    msg = "blubb",
+    caller = "blubb()",
+    logger = yog,
+    foo = "bar"
+  )
+  app$append(e)
+  expect_false("foo" %in% names(app$data))
+
+  expect_identical(
+    sapply(app$data$list, class),
+    c("logical", "environment", "data.frame", "data.frame", "logical")
+  )
+})
 
 
 # AppenderBuffer ----------------------------------------------------

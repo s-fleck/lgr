@@ -138,21 +138,72 @@ LogEvent <- R6::R6Class(
 
 #' Coerce LogEvents to Data Frames
 #'
+#' Coerce LogEvents to `data.frames`, [`data.tables`][data.table::data.table],
+#' [`tibbles`][tibble::tibble]
+#'
 #' @inheritParams base::as.data.frame
-#' @param ... passed on to `as.data.frame.list`
+#' @param ... passed on to `data.frame()`
+#' @param optional currenctly ignored
+#' @param strict If `TRUE` as.data.frame will fail if `x` contains values that
+#'   cannot be included in a data.frame. Ff `FALSE` (the default) they will
+#'   be coerced
 #' @export
+#' @seealso [data.table::data.table], [tibble::tibble]
+#'
+#' @examples
+#' l <- Logger$new("test")
+#' l$info("lorem ipsum")
+#' as.data.frame(l$last_event)
+#'
+#' l$info("rememver LogEvents can store any custom log values", df = iris)
+#' as.data.frame(l$last_event)
+#' head(as.data.frame(l$last_event)$df[[1]])
+#'
 as.data.frame.LogEvent <- function(
   x,
   row.names = NULL,
   optional = FALSE,
   stringsAsFactors = default.stringsAsFactors(),
+  strict = FALSE,
   ...
 ){
-  as.data.frame(
-    x$values,
-    row.names = row.names,
-    optional = FALSE,
-    stringsAsFactors = stringsAsFactors,
-    ...
+  values <- x$values
+  needs_boxing <- !vapply(values, is.atomic, logical(1))
+  values[needs_boxing] <- lapply(values[needs_boxing], function(.x) I(list(.x)))
+
+  do.call(
+    data.frame,
+    c(values,
+      stringsAsFactors = stringsAsFactors,
+      row.names = row.names,
+      ...
+    )
   )
+}
+
+
+
+#' @rdname as.data.frame.LogEvent
+as.data.table.LogEvent <- function(
+  x,
+  ...
+){
+  values <- x$values
+  needs_boxing <- !vapply(values, is.atomic, logical(1))
+  values[needs_boxing] <- lapply(values[needs_boxing], function(.x) list(.x))
+  data.table::as.data.table(values)
+}
+
+
+
+
+#' @rdname as.data.frame.LogEvent
+as_tibble.LogEvent <- function(
+  x,
+  ...
+){
+  values <- x$values
+  needs_boxing <- !vapply(values, is.atomic, logical(1))
+  values[needs_boxing] <- lapply(values[needs_boxing], function(.x) list(.x))
+  tibble::as_tibble(values)
 }

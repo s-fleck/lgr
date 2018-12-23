@@ -65,7 +65,7 @@ Appender is pretty useful for interactive use, and hast very little overhead." /
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">yog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9011</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9012</span>
       </span>
     </div>
 
@@ -193,14 +193,15 @@ with a maximum of <code>buffer_size</code> rows</p></dd>
 <span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"test"</span>)
 
 <span class='co'># Displaying the log</span>
-<span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span></div><div class='output co'>#&gt; <span style='color: #808080;'>DEBUG</span><span> [2018-12-22 22:09:35] test
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [2018-12-22 22:09:35] test</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='fu'>show</span>()</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [22:09:35] test
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [22:09:35] test</div><div class='input'><span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [22:09:35] test
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [22:09:35] test</div><div class='input'>
+<span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span></div><div class='output co'>#&gt;    .id level           timestamp caller  msg
+#&gt; 1:   1   500 2018-12-23 10:13:21   eval test
+#&gt; 2:   2   200 2018-12-23 10:13:21   eval test</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='fu'>show</span>()</div><div class='output co'>#&gt; <span style='color: #808080;'>DEBUG</span><span> [10:13:21] test
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [10:13:21] test</div><div class='input'><span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [10:13:21] test
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [10:13:21] test</div><div class='input'>
 <span class='co'># If you pass a Logger to show_log, it looks for the first MemoryAppender it</span>
 <span class='co'># can find.</span>
-<span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [22:09:35] test
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [22:09:35] test</div></span></pre>
+<span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [10:13:21] test
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [10:13:21] test</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

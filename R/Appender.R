@@ -499,7 +499,11 @@ AppenderMemoryDt <- R6::R6Class(
       # initialize empty dt
       prototype <- data.table::copy(prototype)
       for (j in seq_along(prototype)){
-        data.table::set(prototype, i = 1L, j = j, value = NA)
+        if (is.list(prototype[[j]])){
+          data.table::set(prototype, i = 1L, j = j, value = list(list(NULL)))
+        } else {
+          data.table::set(prototype, i = 1L, j = j, value = NA)
+        }
       }
       dd <- list(
         prototype,
@@ -509,11 +513,12 @@ AppenderMemoryDt <- R6::R6Class(
         dd,
         fill = TRUE
       )
-      data.table::setattr(
-        private$.data,
-        "class",
-        c("yog_data", "data.table", "data.frame")
-      )
+
+      # store names list columsn for use in append()
+      list_cols <- vapply(private$.data, is.list, logical(1))
+      private$list_cols <- names(list_cols[list_cols])
+
+
 
       invisible(self)
     },
@@ -523,8 +528,18 @@ AppenderMemoryDt <- R6::R6Class(
       event
     ){
       vals <- event[["values"]]
-      lengths <- vapply(vals, length, integer(1), USE.NAMES = FALSE)
+      valnames <- setdiff(names(get(".data", private)), ".id")
+      vals <- vals[valnames]
+      names(vals) <-  valnames
+      vals[vapply(vals, is.null, FALSE)] <- NA
+      list_cols <- get("list_cols", private)
+
+      vals[list_cols] <- lapply(vals[list_cols], list)
+
+
+      lengths <- vapply(vals, length, 1L, USE.NAMES = FALSE)
       lenmax  <- max(lengths)
+
       assert(all(lengths %in% c(1, lenmax)))
 
       if (lenmax > nrow(private$.data)){
@@ -544,6 +559,8 @@ AppenderMemoryDt <- R6::R6Class(
         # cycle cache
         private[["current_row"]] <- lenmax
       }
+
+
 
       data.table::set(
         private$.data,
@@ -595,7 +612,8 @@ AppenderMemoryDt <- R6::R6Class(
   private = list(
     id = NULL,
     current_row = NULL,
-    .data = NULL
+    .data = NULL,
+    list_cols = NULL
   )
 )
 

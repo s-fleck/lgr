@@ -111,11 +111,24 @@ srs_appender <- function(x){
 
 
 
-#' Print an Ancenstry Object
+#' Print Ancestry of a Logger
+#'
+#' Print the LogEvent propagation structure of a chain of Loggers. Usually you
+#' won't have many chained loggers, but if you do this might proof useful.
 #'
 #' @inheritParams print.Logger
 #' @return `x` (invisibly)
 #' @export
+#'
+#' @examples
+#'  l1 <- Logger$new("AegonV")
+#'  l2 <- Logger$new("Aerys", parent = l1)
+#'  l3 <- Logger$new("Rheagar", parent = l2, propagate = FALSE)
+#'  l4 <- Logger$new("Aegon", parent = l3)
+#'
+#'  print(l4$ancestry)
+#'  unclass(l4$ancestry)
+#'
 print.ancestry <- function(
   x,
   color = requireNamespace("crayon", quietly = TRUE),

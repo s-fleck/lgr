@@ -2,10 +2,16 @@
 % Please edit documentation in R/LogEvent.R
 \name{as.data.frame.LogEvent}
 \alias{as.data.frame.LogEvent}
+\alias{as.data.table.LogEvent}
+\alias{as_tibble.LogEvent}
 \title{Coerce LogEvents to Data Frames}
 \usage{
 \method{as.data.frame}{LogEvent}(x, row.names = NULL, optional = FALSE,
-  stringsAsFactors = default.stringsAsFactors(), ...)
+  stringsAsFactors = default.stringsAsFactors(), strict = FALSE, ...)
+
+\method{as.data.table}{LogEvent}(x, ...)
+
+as_tibble.LogEvent(x, ...)
 }
 \arguments{
 \item{x}{any \R object.}
@@ -13,19 +19,31 @@
 \item{row.names}{\code{NULL} or a character vector giving the row
     names for the data frame.  Missing values are not allowed.}
 
-\item{optional}{logical. If \code{TRUE}, setting row names and
-    converting column names (to syntactic names: see
-    \code{\link{make.names}}) is optional.  Note that all of \R's
-    \pkg{base} package \code{as.data.frame()} methods use
-    \code{optional} only for column names treatment, basically with the
-    meaning of \code{\link{data.frame}(*, check.names = !optional)}.
-    See also the \code{make.names} argument of the \code{matrix} method.}
+\item{optional}{currenctly ignored}
 
 \item{stringsAsFactors}{logical: should the character vector be converted
     to a factor?}
 
-\item{...}{passed on to \code{as.data.frame.list}}
+\item{strict}{If \code{TRUE} as.data.frame will fail if \code{x} contains values that
+cannot be included in a data.frame. Ff \code{FALSE} (the default) they will
+be coerced}
+
+\item{...}{passed on to \code{data.frame()}}
 }
 \description{
-Coerce LogEvents to Data Frames
+Coerce LogEvents to \code{data.frames}, \code{\link[data.table:data.table]{data.tables}},
+\code{\link[tibble:tibble]{tibbles}}
+}
+\examples{
+l <- Logger$new("test")
+l$info("lorem ipsum")
+as.data.frame(l$last_event)
+
+l$info("rememver LogEvents can store any custom log values", df = iris)
+as.data.frame(l$last_event)
+head(as.data.frame(l$last_event)$df[[1]])
+
+}
+\seealso{
+\link[data.table:data.table]{data.table::data.table}, \link[tibble:tibble]{tibble::tibble}
 }

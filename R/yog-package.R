@@ -35,6 +35,12 @@
   op <- options()
   op.this <- list()
 
+  # dyn s3 methods ----------------------------------------------------------
+  if (requireNamespace("data.table", quietly = TRUE)){
+    dyn_register_s3_method("data.table", "as.data.table", "LogEvent")
+    dyn_register_s3_method("tibble", "as_tibble", "LogEvent")
+  }
+
 
 
   # +- colors ------------------------------------------------------------------
