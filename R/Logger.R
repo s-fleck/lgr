@@ -249,7 +249,7 @@ Logger <- R6::R6Class(
 
         # Check if LogEvent should be created
         if (
-          identical(level[[1]] > get(".threshold", private), TRUE) ||
+          identical(level[[1]] > get(".threshold", envir = private), TRUE) ||
           identical(getOption("yog.logging_suspended"), TRUE)
         ){
           return(invisible(msg))
@@ -295,25 +295,25 @@ Logger <- R6::R6Class(
         event <- do.call(get("new", envir = LogEvent), vals)
         assign(".last_event", event, private)
 
-        if (get("filter", self)(event)){
+        if (get("filter", envir = self)(event)){
           for (app in unlist(mget(c("appenders", "inherited_appenders"), self), recursive = FALSE)){
-            app_thresh <- get("threshold", app)
+            app_thresh <- get("threshold", envir = app)
             if (
-              (is.na(app_thresh) || get("level", event)  <= get("threshold", app)) &&
-              get("filter", app)(event)
+              (is.na(app_thresh) || get("level", envir = event) <= app_thresh) &&
+              get("filter", envir = app)(event)
             ){
-              get("append", app)(event)
+              get("append", envir = app)(event)
             }
           }
         }
       },
-        error = get("handle_exception", self)
+        error = get("handle_exception", envir = self)
       )
     },
 
 
     fatal = function(msg, ...){
-      get("log", self)(
+      get("log", envir = self)(
         msg = msg,
         caller = get_caller(-8L),
         level = 100,
@@ -323,7 +323,7 @@ Logger <- R6::R6Class(
     },
 
     error = function(msg, ...){
-      get("log", self)(
+      get("log", envir = self)(
         msg = msg,
         caller = get_caller(-8L),
         level = 200,
@@ -333,7 +333,7 @@ Logger <- R6::R6Class(
     },
 
     warn = function(msg, ...){
-      get("log", self)(
+      get("log", envir = self)(
         msg = msg,
         caller = get_caller(-8L),
         level = 300,
@@ -343,7 +343,7 @@ Logger <- R6::R6Class(
     },
 
     info = function(msg, ...){
-      get("log", self)(
+      get("log", envir = self)(
         msg = msg,
         caller = get_caller(-8L),
         level = 400,
@@ -353,7 +353,7 @@ Logger <- R6::R6Class(
     },
 
     debug = function(msg, ...){
-      get("log", self)(
+      get("log", envir = self)(
         msg = msg,
         caller = get_caller(-8L),
         level = 500,
@@ -363,7 +363,7 @@ Logger <- R6::R6Class(
     },
 
     trace = function(msg, ...){
-      get("log", self)(
+      get("log", envir = self)(
         msg = msg,
         caller = get_caller(-8L),
         level = 600,

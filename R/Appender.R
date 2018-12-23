@@ -153,7 +153,6 @@ AppenderConsole <- R6::R6Class(
 
     append = function(event){
       cat(private$.layout$format_event(event), sep = "\n")
-      return(invisible())
     }
   ),
 
@@ -241,7 +240,6 @@ AppenderFile <- R6::R6Class(
         private$.layout$format_event(event),
         sep = "\n", file = private$.file, append = TRUE
       )
-      return(invisible())
     },
 
     set_file = function(file){
@@ -737,7 +735,7 @@ AppenderDbi <- R6::R6Class(
         dd,
         append = TRUE
       )
-      return(invisible())
+      NULL
     }
   ),
 
@@ -857,7 +855,7 @@ AppenderRjdbc <- R6::R6Class(
         RJDBC::dbSendUpdate(get(".conn", private), q, list=data)
       }
 
-      return(invisible())
+      NULL
     }
   ),
 
@@ -990,7 +988,7 @@ AppenderBuffer <- R6::R6Class(
           }
         }
       }
-      invisible(NULL)
+      NULL
     },
 
     flush = function(

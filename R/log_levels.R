@@ -120,9 +120,6 @@ colorize_levels <- function(
   colors,
   num_levels_colors
 ){
-  if (is.null(colors))
-    return(x)
-
   for (i in seq_along(colors)){
     sel <- num_levels == num_levels_colors[[i]]
     x[sel] <- colors[[i]](x[sel])

@@ -107,8 +107,6 @@ LogEvent <- R6::R6Class(
           assign(nm, dots[[nm]], self)
         }
       }
-
-      invisible(self)
     },
     logger = NULL,
     level = NULL,
@@ -128,7 +126,7 @@ LogEvent <- R6::R6Class(
       mget(valnames, envir = self)
     },
     level_name = function(){
-      label_levels(self$level)
+      label_levels(get("level", envir = self))
     }
   )
 )

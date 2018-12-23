@@ -66,13 +66,22 @@ Log a simple log message (without colors)
 # yog uses color output by default, which slows down logging
 yog$set_appenders(AppenderConsole$new(layout = LayoutFormat$new(colors = NULL)))
 
+
+shmock <- function() yog$log(100, "test", caller = NULL)
+
 sink("/dev/null")
+
+for (i in 1:1e3){
+  yog$fatal("test")
+}
+
 
 res <- bench::mark(
   logger = logger::log_info("test"),
   futile.logger = futile.logger::flog.info("test"),
   logging = logging::logerror("test", logger = "logging"),
   yog = yog::yog$info("test"),
+  schock = shmock(),
   check = FALSE
 )
 sink()

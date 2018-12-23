@@ -12,6 +12,29 @@ t2 <- tempfile()
 #devtools::install_github("smbache/loggr")
 
 
+# get vs [[ ---------------------------------------------------------------
+
+bench::mark(
+  yog$fatal,
+  yog[["fatal"]],
+  get("fatal", yog),
+  get("fatal", envir = yog),
+  get("fatal", e = yog),
+  get("fatal", -1, yog),
+  iterations = 1e6
+)
+
+sink("/dev/null")
+res <- bench::mark(
+  yog$fatal("test"),
+  yog[["fatal"]]("test"),
+  get("fatal", yog)("test")
+)
+sink()
+
+print(res)
+
+plot(res)
 # Compare appenders -------------------------------------------------------
 
 ml <- list()

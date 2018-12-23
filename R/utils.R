@@ -17,16 +17,16 @@
 get_caller <- function(
   where = -1L
 ){
-  res <- try(sys.call(where)[[1]], silent = TRUE)
+  res <- tryCatch(
+    sys.call(where)[[1]],
+    error = function(e) NULL
+  )
 
-  if (is.null(res) || inherits(res, "try-error")){
-    return("(shell)")
-
-  } else {
-    return(deparse(res))
-  }
+  if (is.null(res))
+    "(shell)"
+  else
+    deparse(res)
 }
-
 
 
 
