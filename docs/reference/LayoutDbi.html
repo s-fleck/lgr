@@ -200,12 +200,12 @@ Layout for a DBI connection.</p>
 <span class='co'># defaults</span>
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutDbi</span>$<span class='fu'>new</span>()
 <span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt;   level           timestamp caller            msg
-#&gt; 1   200 2018-12-23 12:32:12   &lt;NA&gt; a test message</div><div class='input'>
+#&gt; 1   200 2018-12-23 18:45:09   &lt;NA&gt; a test message</div><div class='input'>
 <span class='co'># SQLite does not support timestamps so LayoutSqlite converts them to text</span>
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutSqlite</span>$<span class='fu'>new</span>()
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>))</div><div class='output co'>#&gt; 'data.frame':	1 obs. of  4 variables:
 #&gt;  $ level    : num 200
-#&gt;  $ timestamp: chr "2018-12-23 12:32:12"
+#&gt;  $ timestamp: chr "2018-12-23 18:45:09"
 #&gt;  $ caller   : chr NA
 #&gt;  $ msg      : chr "a test message"</div><div class='input'>
 <span class='co'># advanced example that supports a custom_field:</span>
@@ -232,7 +232,7 @@ Layout for a DBI connection.</p>
 )
 
 <span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt;             timestamp     user  logger_name level            msg custom_field
-#&gt; 1 2018-12-23 12:32:12 testuser dummy logger   200 a test message        blubb</div><div class='input'>#'
+#&gt; 1 2018-12-23 18:45:09 testuser dummy logger   200 a test message        blubb</div><div class='input'>#'
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Log to Databases via RJDBC — AppenderRjdbc • yog</title>
+<title>Log to an In-Memory Data.Table — AppenderDt • yog</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,11 @@
 
 
 
-<meta property="og:title" content="Log to Databases via RJDBC — AppenderRjdbc" />
+<meta property="og:title" content="Log to an In-Memory Data.Table — AppenderDt" />
 
-<meta property="og:description" content="Log to a database table with the RJDBC package. RJDBC is only
-somewhat  DBI compliant and does not work with AppenderDbi. I
-personally do not recommend using RJDBC if it can be avoided." />
+<meta property="og:description" content="An Appender that outputs to an in-memory data.table. This requires that
+you have the suggested package data.table installed. This kind of
+Appender is pretty useful for interactive use, and hast very little overhead." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -116,34 +116,44 @@ personally do not recommend using RJDBC if it can be avoided." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Log to Databases via RJDBC</h1>
+    <h1>Log to an In-Memory Data.Table</h1>
     <small class="dont-index">Source: <a href='https://github.com/s-fleck/yog/blob/master/R/Appender.R'><code>R/Appender.R</code></a></small>
-    <div class="hidden name"><code>AppenderRjdbc.Rd</code></div>
+    <div class="hidden name"><code>AppenderDt.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Log to a database table with the <strong>RJDBC</strong> package. <strong>RJDBC</strong> is only
-somewhat  <strong>DBI</strong> compliant and does not work with <a href='AppenderDbi.html'>AppenderDbi</a>. I
-personally do not recommend using <strong>RJDBC</strong> if it can be avoided.</p>
+    <p>An Appender that outputs to an in-memory <code>data.table</code>. This requires that
+you have the suggested package <strong>data.table</strong> installed. This kind of
+Appender is pretty useful for interactive use, and hast very little overhead.</p>
     
     </div>
 
         
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
-    <pre>x &lt;- AppenderRjdbc$new(conn, table, threshold = NA_integer_,
-  layout = select_dbi_layout(conn), close_on_exit = TRUE)
+    <pre>x &lt;- AppenderDt$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt =
+  "%L [%t] %m", timestamp_fmt = "%H:%M:%S", colors = getOption("yog.colors")),
+  prototype = data.table::data.table(.id = NA_integer_, level = NA_integer_,
+  timestamp = Sys.time(), caller = NA_character_, msg = NA_character_, value =
+  list(list())), buffer_size = 1e+05)
     x$append(event)
+x$show(n = 20, threshold = NA_integer_)
 x$clone(deep = FALSE)
-    x$
+    x$data
+x$destination
 </pre>
     
     <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
 
     
     <dl class='dl-horizontal'>
-<dt>conn</dt><dd><p>an RJDBC connection</p></dd>
+<dt>buffer_size</dt><dd><p><code>integer</code> scalar. Number of rows of the in-memory
+<code>data.table</code></p></dd>
+<dt>prototype</dt><dd><p>A prototype <code>data.table</code>. This is only necessary to set
+manually if you use custom <a href='LogEvent.html'>LogEvents</a>. The default prototype already
+contains a list column called <code>value</code> that can hold arbitrary R values
+(see examples)</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>threshold</code></dt><dd><p><code>character</code> or <code>integer</code> scalar. The minimum log level
@@ -155,14 +165,6 @@ passed to this Appender</p></dd>
     <h2 class="hasAnchor" id="fields-and-methods"><a class="anchor" href="#fields-and-methods"></a>Fields and Methods</h2>
 
     
-    <dl class='dl-horizontal'>
-<dt><code>close_on_exit</code>, <code>set_close_on_exit()</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>. Close the
-Database connection when the Logger is removed?</p></dd>
-<dt><code>data</code></dt><dd><p>Querry the whole log from the Database and return it as a
-<code>data.frame</code></p></dd>
-<dt><code>conn</code></dt><dd><p>get the DBI connection object</p></dd>
-<dt><code>table</code></dt><dd><p>Name of the target database table</p></dd>
-</dl>
     <dl class='dl-horizontal'>
 <dt><code>show(n, threshold)</code></dt><dd><p>Show the last <code>n</code> log entries with a log level
 bellow <code>threshold</code>. The log entries will be formated for console output
@@ -176,11 +178,45 @@ with a maximum of <code>buffer_size</code> rows</p></dd>
     <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a>, <a href='simple_logging.html'>simple_logging</a>, <a href='https://www.rdocumentation.org/packages/data.table/topics/data.table'>data.table::data.table</a></p>
 <p>Other Appenders: <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
   <code><a href='AppenderConsole.html'>AppenderConsole</a></code>, <code><a href='AppenderDbi.html'>AppenderDbi</a></code>,
-  <code><a href='AppenderDt.html'>AppenderDt</a></code>, <code><a href='AppenderFile.html'>AppenderFile</a></code>,
-  <code><a href='AppenderJson.html'>AppenderJson</a></code>, <code><a href='AppenderTable.html'>AppenderTable</a></code>,
+  <code><a href='AppenderFile.html'>AppenderFile</a></code>, <code><a href='AppenderJson.html'>AppenderJson</a></code>,
+  <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>, <code><a href='AppenderTable.html'>AppenderTable</a></code>,
   <code><a href='Appender.html'>Appender</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(
+  <span class='st'>"test"</span>,
+  <span class='kw'>appenders</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>memory</span> <span class='kw'>=</span> <span class='no'>AppenderDt</span>$<span class='fu'>new</span>()),
+  <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>parent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>  <span class='co'># to prevent routing to root logger for this example</span>
+)
+<span class='no'>lg</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/debug'>debug</a></span>(<span class='st'>"test"</span>)
+<span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"test"</span>)
+
+<span class='co'># Displaying the log</span>
+<span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span></div><div class='output co'>#&gt;    .id level           timestamp caller  msg value
+#&gt; 1:   1   500 2018-12-23 18:45:06   eval test    NA
+#&gt; 2:   2   200 2018-12-23 18:45:06   eval test    NA</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='fu'>show</span>()</div><div class='output co'>#&gt; <span style='color: #808080;'>DEBUG</span><span> [18:45:06] test
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [18:45:06] test</div><div class='input'><span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [18:45:06] test
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [18:45:06] test</div><div class='input'>
+<span class='co'># If you pass a Logger to show_log, it looks for the first MemoryAppender it</span>
+<span class='co'># can find.</span>
+<span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [18:45:06] test
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [18:45:06] test</div><div class='input'>
+<span class='co'># Data tables can store arbitrary R values in list columns. The default</span>
+<span class='co'># AppenderDt comes with a single list column called "value" that you can use</span>
+<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"the iris data frame"</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='no'>iris</span>)
+<span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span></div><div class='output co'>#&gt;    .id level           timestamp caller                 msg        value
+#&gt; 1:   1   500 2018-12-23 18:45:06   eval                test           NA
+#&gt; 2:   2   200 2018-12-23 18:45:06   eval                test           NA
+#&gt; 3:   3   400 2018-12-23 18:45:06   eval the iris data frame &lt;data.frame&gt;</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span>$<span class='no'>value</span><span class='kw'>[[</span><span class='fl'>3</span>]])</div><div class='output co'>#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+#&gt; 1          5.1         3.5          1.4         0.2  setosa
+#&gt; 2          4.9         3.0          1.4         0.2  setosa
+#&gt; 3          4.7         3.2          1.3         0.2  setosa
+#&gt; 4          4.6         3.1          1.5         0.2  setosa
+#&gt; 5          5.0         3.6          1.4         0.2  setosa
+#&gt; 6          5.4         3.9          1.7         0.4  setosa</div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -193,7 +229,9 @@ with a maximum of <code>buffer_size</code> rows</p></dd>
       <li><a href="#fields-and-methods">Fields and Methods</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

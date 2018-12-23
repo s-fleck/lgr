@@ -13,8 +13,8 @@ Appender is pretty useful for interactive use, and hast very little overhead.
 \preformatted{x <- AppenderDt$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt =
   "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S", colors = getOption("yog.colors")),
   prototype = data.table::data.table(.id = NA_integer_, level = NA_integer_,
-  timestamp = Sys.time(), caller = NA_character_, msg = NA_character_),
-  buffer_size = 1e+05)
+  timestamp = Sys.time(), caller = NA_character_, msg = NA_character_, value =
+  list(list())), buffer_size = 1e+05)
 
 x$append(event)
 x$show(n = 20, threshold = NA_integer_)
@@ -32,8 +32,9 @@ x$destination
 \item{buffer_size}{\code{integer} scalar. Number of rows of the in-memory
 \code{data.table}}
 \item{prototype}{A prototype \code{data.table}. This is only necessary to set
-manually if you use custom \link{LogEvents} (which is not yet supported by yog,
-but planned for the future)}
+manually if you use custom \link{LogEvents}. The default prototype already
+contains a list column called \code{value} that can hold arbitrary R values
+(see examples)}
 }
 
 
@@ -77,6 +78,13 @@ show_log(target = lg$appenders$memory)
 # If you pass a Logger to show_log, it looks for the first MemoryAppender it
 # can find.
 show_log(target = lg)
+
+# Data tables can store arbitrary R values in list columns. The default
+# AppenderDt comes with a single list column called "value" that you can use
+lg$info("the iris data frame", value = iris)
+lg$appenders$memory$data
+head(lg$appenders$memory$data$value[[3]])
+
 }
 \seealso{
 \link{LayoutFormat}, \link{simple_logging}, \link[data.table:data.table]{data.table::data.table}

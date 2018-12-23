@@ -186,8 +186,7 @@ filter is a function that takes exactly two named arguments: the LogEvent
     <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a>, <a href='LayoutJson.html'>LayoutJson</a></p>
 <p>Other Appenders: <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
   <code><a href='AppenderConsole.html'>AppenderConsole</a></code>, <code><a href='AppenderDbi.html'>AppenderDbi</a></code>,
-  <code><a href='AppenderFile.html'>AppenderFile</a></code>,
-  <code><a href='AppenderMemoryDt.html'>AppenderMemoryDt</a></code>,
+  <code><a href='AppenderDt.html'>AppenderDt</a></code>, <code><a href='AppenderFile.html'>AppenderFile</a></code>,
   <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>, <code><a href='AppenderTable.html'>AppenderTable</a></code>,
   <code><a href='Appender.html'>Appender</a></code></p></div>
     
@@ -199,10 +198,10 @@ filter is a function that takes exactly two named arguments: the LogEvent
 <span class='no'>l</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)
 <span class='no'>l</span>$<span class='fu'>info</span>(<span class='st'>"A test message %s strings"</span>, <span class='st'>"with format strings"</span>, <span class='kw'>and</span> <span class='kw'>=</span> <span class='st'>"custom_fields"</span>)
 
-<span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2018-12-23 12:32:11","caller":"eval","msg":"A test message"}
-#&gt; {"level":400,"timestamp":"2018-12-23 12:32:11","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp caller                                        msg
-#&gt; 1   400 2018-12-23 12:32:11   eval                             A test message
-#&gt; 2   400 2018-12-23 12:32:11   eval A test message with format strings strings
+<span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2018-12-23 18:45:08","caller":"eval","msg":"A test message"}
+#&gt; {"level":400,"timestamp":"2018-12-23 18:45:08","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp caller                                        msg
+#&gt; 1   400 2018-12-23 18:45:08   eval                             A test message
+#&gt; 2   400 2018-12-23 18:45:08   eval A test message with format strings strings
 #&gt;             and
 #&gt; 1          &lt;NA&gt;
 #&gt; 2 custom_fields</div><div class='input'>

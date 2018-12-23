@@ -420,8 +420,9 @@ AppenderTable <- R6::R6Class(
 #'   \item{buffer_size}{`integer` scalar. Number of rows of the in-memory
 #'   `data.table`}
 #'   \item{prototype}{A prototype `data.table`. This is only necessary to set
-#'   manually if you use custom [LogEvents] (which is not yet supported by yog,
-#'   but planned for the future)}
+#'   manually if you use custom [LogEvents]. The default prototype already
+#'   contains a list column called `value` that can hold arbitrary R values
+#'   (see examples)}
 #'  }
 #'
 #' @section Fields and Methods:
@@ -459,6 +460,13 @@ AppenderTable <- R6::R6Class(
 #' # If you pass a Logger to show_log, it looks for the first MemoryAppender it
 #' # can find.
 #' show_log(target = lg)
+#'
+#' # Data tables can store arbitrary R values in list columns. The default
+#' # AppenderDt comes with a single list column called "value" that you can use
+#' lg$info("the iris data frame", value = iris)
+#' lg$appenders$memory$data
+#' head(lg$appenders$memory$data$value[[3]])
+#'
 NULL
 
 
@@ -481,7 +489,8 @@ AppenderDt <- R6::R6Class(
         level = NA_integer_,
         timestamp = Sys.time(),
         caller = NA_character_,
-        msg = NA_character_
+        msg = NA_character_,
+        value = list(list())
       ),
       buffer_size = 1e5
     ){
@@ -518,8 +527,6 @@ AppenderDt <- R6::R6Class(
       list_cols <- vapply(private$.data, is.list, logical(1))
       private$list_cols <- names(list_cols[list_cols])
 
-
-
       invisible(self)
     },
 
@@ -527,47 +534,49 @@ AppenderDt <- R6::R6Class(
     append = function(
       event
     ){
-      vals <- event[["values"]]
-      valnames <- setdiff(names(get(".data", private)), ".id")
-      vals <- vals[valnames]
-      names(vals) <-  valnames
-      vals[vapply(vals, is.null, FALSE)] <- NA
-      list_cols <- get("list_cols", private)
+      # Select and prepare event values to be inserted into data
+        vals <- event[["values"]]
+        valnames <- setdiff(names(get(".data", private)), ".id")
+        vals <- vals[valnames]
+        names(vals) <-  valnames
 
-      vals[list_cols] <- lapply(vals[list_cols], list)
+        # handle list-columns
+        vals[vapply(vals, is.null, FALSE)] <- NA
+        list_cols <- get("list_cols", private)
+        vals[list_cols] <- lapply(vals[list_cols], list)
 
+      # Prepare values for vectorized insert (if necessary)
+        lengths <- vapply(vals, length, 1L, USE.NAMES = FALSE)
+        lenmax  <- max(lengths)
+        assert(all(lengths %in% c(1, lenmax)))
 
-      lengths <- vapply(vals, length, 1L, USE.NAMES = FALSE)
-      lenmax  <- max(lengths)
+        # take special care if vectorized insert is bigger than buffer size
+        if (lenmax > nrow(private$.data)){
+          vals <- lapply(vals, trim_last_event, nrow(private$.data))
+          private[["id"]] <- private[["id"]] + lenmax - nrow(private$.data)
+          lenmax <- nrow(private$.data)
+        }
+        i   <- seq_len(lenmax)
 
-      assert(all(lengths %in% c(1, lenmax)))
+      # generate new ids
+        ids <- i + private[["id"]]
 
-      if (lenmax > nrow(private$.data)){
-        vals <- lapply(vals, trim_last_event, nrow(private$.data))
-        # ensure .id would be the same as without cycling
-        private[["id"]] <- private[["id"]] + lenmax - nrow(private$.data)
-        lenmax <- nrow(private$.data)
-      }
+      # check if rotation is necessary
+        if (private[["current_row"]] + lenmax <= nrow(private$.data)){
+          i   <- i + private[["current_row"]]
+          private[["current_row"]] <- private[["current_row"]] + lenmax
+        } else {
+          # rotate buffer
+          private[["current_row"]] <- lenmax
+        }
 
-      i   <- seq_len(lenmax)
-      ids <- i + private[["id"]]
-
-      if (private[["current_row"]] + lenmax <= nrow(private$.data)){
-        i   <- i + private[["current_row"]]
-        private[["current_row"]] <- private[["current_row"]] + lenmax
-      } else {
-        # cycle cache
-        private[["current_row"]] <- lenmax
-      }
-
-
-
-      data.table::set(
-        private$.data,
-        i,
-        j = c(".id", names(vals)),
-        value = c(list(ids), vals)
-      )
+      # Perform the insert
+        data.table::set(
+          private$.data,
+          i,
+          j = c(".id", names(vals)),
+          value = c(list(ids), vals)
+        )
 
       private[["id"]] <- private[["id"]] + lenmax
     },
