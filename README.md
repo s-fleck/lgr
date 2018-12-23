@@ -16,13 +16,13 @@ To log an *event* with with yog we call `yog$<logging function>()`. Unnamed argu
 
 ``` r
 yog$fatal("A critical error")
-#> FATAL [15:03:34.674] A critical error
+#> FATAL [12:31:34.222] A critical error
 yog$error("A less severe error")
-#> ERROR [15:03:34.701] A less severe error
+#> ERROR [12:31:34.266] A less severe error
 yog$warn("A potentially bad situation")
-#> WARN  [15:03:34.758] A potentially bad situation
+#> WARN  [12:31:34.300] A potentially bad situation
 yog$info("iris has %s rows", nrow(iris))
-#> INFO  [15:03:34.761] iris has 150 rows
+#> INFO  [12:31:34.303] iris has 150 rows
 
 # the following log levels are hidden by default
 yog$debug("A debug message")
@@ -35,21 +35,21 @@ A Logger can have several Appenders. For example, we can add a JSON appender to 
 tf <- tempfile()
 yog$add_appender(AppenderJson$new(tf))
 yog$info("cars has %s rows", nrow(cars))
-#> INFO  [15:03:34.777] cars has 50 rows
+#> INFO  [12:31:34.438] cars has 50 rows
 
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2018-12-21 15:03:34","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2018-12-23 12:31:34","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 JSON naturally supports custom fields. Named arguments passed to `info()`, `warn()`, etc... are intepreted as custom fields.
 
 ``` r
 yog$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [15:03:34.786] loading cars
+#> INFO  [12:31:34.448] loading cars
 
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2018-12-21 15:03:34","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2018-12-21 15:03:34","caller":"eval","msg":"loading cars","cols":2,"rows":50}
+#> {"level":400,"timestamp":"2018-12-23 12:31:34","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2018-12-23 12:31:34","caller":"eval","msg":"loading cars","cols":2,"rows":50}
 ```
 
 For more examples please see the package [vignette](https://s-fleck.github.io/yog/articles/yog.html) and [documentation](https://s-fleck.github.io/yog/)
@@ -69,7 +69,7 @@ Features
 Development Status
 ------------------
 
-The internal architecture of yog stable and tested. The current development focus is on completing the documentation and irioning out the details for database appenders
+The core of yog is more or less complete and usable. What is currently lacking is the documentation. I also want to conduct a proper field-test before I release it on CRAN, so don't expect a CRAN release before Februar/March 2019.
 
 Dependencies
 ------------

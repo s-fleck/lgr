@@ -101,9 +101,10 @@ package
 
 ## Development Status
 
-The internal architecture of yog stable and tested. The current development 
-focus is on completing the documentation and irioning out the details for
-database appenders
+The core of yog is more or less complete and usable. What is currently lacking 
+is the documentation. I also want to conduct a proper field-test before I
+release it on CRAN, so don't expect a CRAN release before Februar/March 2019.
+
 
 
 
