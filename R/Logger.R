@@ -249,7 +249,7 @@ Logger <- R6::R6Class(
 
         # Check if LogEvent should be created
         if (
-          identical(level[[1]] > private[[".threshold"]], TRUE) ||
+          identical(level[[1]] > get(".threshold", private), TRUE) ||
           identical(getOption("yog.logging_suspended"), TRUE)
         ){
           return(invisible(msg))
@@ -289,30 +289,31 @@ Logger <- R6::R6Class(
           }
         }
 
-        # event creation needs to be as fast as possible, so we are using assign
-        # to prevent the overhead of [[
-        assign(
-          ".last_event",
-          do.call(get("new", envir = LogEvent), vals),
-          private
-        )
+        # This code looks really weird, but it really is just replacing all
+        # instances of [[ with get() for minimal overhead. We want event
+        # dispatch to be as quick as possible.
+        event <- do.call(get("new", envir = LogEvent), vals)
+        assign(".last_event", event, private)
 
-        # emit
-        if (self$filter(self$last_event)){
-          for (app in c(self$appenders, self$inherited_appenders)) {
-            if (app$filter(self$last_event)){
-              app$append(self$last_event)
+        if (get("filter", self)(event)){
+          for (app in unlist(mget(c("appenders", "inherited_appenders"), self), recursive = FALSE)){
+            app_thresh <- get("threshold", app)
+            if (
+              (is.na(app_thresh) || get("level", event)  <= get("threshold", app)) &&
+              get("filter", app)(event)
+            ){
+              get("append", app)(event)
             }
           }
         }
       },
-        error = self$handle_exception
+        error = get("handle_exception", self)
       )
     },
 
 
     fatal = function(msg, ...){
-      self$log(
+      get("log", self)(
         msg = msg,
         caller = get_caller(-8L),
         level = 100,
@@ -322,7 +323,7 @@ Logger <- R6::R6Class(
     },
 
     error = function(msg, ...){
-      self$log(
+      get("log", self)(
         msg = msg,
         caller = get_caller(-8L),
         level = 200,
@@ -332,7 +333,7 @@ Logger <- R6::R6Class(
     },
 
     warn = function(msg, ...){
-      self$log(
+      get("log", self)(
         msg = msg,
         caller = get_caller(-8L),
         level = 300,
@@ -342,7 +343,7 @@ Logger <- R6::R6Class(
     },
 
     info = function(msg, ...){
-      self$log(
+      get("log", self)(
         msg = msg,
         caller = get_caller(-8L),
         level = 400,
@@ -352,7 +353,7 @@ Logger <- R6::R6Class(
     },
 
     debug = function(msg, ...){
-      self$log(
+      get("log", self)(
         msg = msg,
         caller = get_caller(-8L),
         level = 500,
@@ -362,7 +363,7 @@ Logger <- R6::R6Class(
     },
 
     trace = function(msg, ...){
-      self$log(
+      get("log", self)(
         msg = msg,
         caller = get_caller(-8L),
         level = 600,
@@ -579,7 +580,7 @@ Logger <- R6::R6Class(
 
     # +- fields ---------------------------------------------------------------
     .propagate = NULL,
-    .filters = list(check_threshold),
+    .filters = NULL,
     .exception_handler = NULL,
     .name = NULL,
     .parent = NULL,
