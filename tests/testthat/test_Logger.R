@@ -21,6 +21,17 @@ test_that("active bindings", {
 
 
 
+test_that("set_appenders", {
+  ml <- Logger$new("test_logger")
+
+  ml$set_appenders(list(AppenderBuffer$new(), AppenderConsole$new()))
+  expect_length(ml$appenders, 2)
+  ml$set_appenders(list(AppenderBuffer$new(), AppenderConsole$new()))
+  expect_length(ml$appenders, 2)
+
+})
+
+
 
 test_that("basic logging", {
   ml <- Logger$new("test_logger", appenders = list(memory = AppenderMemoryDt$new()))

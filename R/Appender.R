@@ -1007,7 +1007,11 @@ AppenderBuffer <- R6::R6Class(
         "'appenders' must either be a single Appender, a list thereof, or ",
         "NULL for no appenders."
       )
-      for (i in seq_along(x))  self$add_appender(x[[i]], name = names(x)[[i]])
+
+      private$.appenders <- list()
+
+      for (i in seq_along(x))
+        self$add_appender(x[[i]], name = names(x)[[i]])
 
       invisible(self)
     },
