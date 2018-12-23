@@ -34,7 +34,7 @@ test_that("set_appenders", {
 
 
 test_that("basic logging", {
-  ml <- Logger$new("test_logger", appenders = list(memory = AppenderMemoryDt$new()))
+  ml <- Logger$new("test_logger", appenders = list(memory = AppenderDt$new()))
   ts <- structure(1540486764.41946, class = c("POSIXct", "POSIXt"))
 
   testfun <- function(){
@@ -116,7 +116,7 @@ test_that("add/remove appenders", {
 
   ml$add_appender(app1)
   ml$add_appender(app2, "blah")
-  ml$add_appender(AppenderMemoryDt$new(), "blubb")
+  ml$add_appender(AppenderDt$new(), "blubb")
 
   # because the now have the logger proerty set
   expect_identical(ml$appenders[[2]], app1)

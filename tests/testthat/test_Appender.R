@@ -100,10 +100,10 @@ test_that("AppenderConsole works as expected", {
 
 
 
-# AppenderMemoryDt ----------------------------------------------------------
+# AppenderDt ----------------------------------------------------------
 
-test_that("AppenderMemoryDt: appending multiple rows works", {
-  app <- AppenderMemoryDt$new()
+test_that("AppenderDt: appending multiple rows works", {
+  app <- AppenderDt$new()
   y <- x$clone()
   y$level <- seq(100L, 300L, 100L)
 
@@ -125,8 +125,8 @@ test_that("AppenderMemoryDt: appending multiple rows works", {
 
 
 
-test_that("AppenderMemoryDt: works with list columns", {
-  app <- AppenderMemoryDt$new(
+test_that("AppenderDt: works with list columns", {
+  app <- AppenderDt$new(
     prototype = data.table::data.table(
       .id = NA_integer_,
       level = NA_integer_,
@@ -299,13 +299,13 @@ test_that("AppenderBuffer: dont flush on object destruction if switched of", {
 
 
 test_that("AppenderMemory: memory cycling works", {
-  app1 <- AppenderMemoryDt$new(buffer_size = 10)
+  app1 <- AppenderDt$new(buffer_size = 10)
   replicate(12, app1$append(x))
   expect_equal(app1$data$.id, 3:12)
   r1 <- app1$data
 
   # bulk insert behaves like sepparate inserts
-  app2 <- AppenderMemoryDt$new(buffer_size = 10)
+  app2 <- AppenderDt$new(buffer_size = 10)
   y <- x$clone()
   y$msg <- rep(y$msg, 12)
 

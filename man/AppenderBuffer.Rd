@@ -110,9 +110,8 @@ filter is a function that takes exactly two named arguments: the LogEvent
 \link{LayoutFormat}
 
 Other Appenders: \code{\link{AppenderConsole}},
-  \code{\link{AppenderDbi}}, \code{\link{AppenderFile}},
-  \code{\link{AppenderJson}},
-  \code{\link{AppenderMemoryDt}},
+  \code{\link{AppenderDbi}}, \code{\link{AppenderDt}},
+  \code{\link{AppenderFile}}, \code{\link{AppenderJson}},
   \code{\link{AppenderRjdbc}}, \code{\link{AppenderTable}},
   \code{\link{Appender}}
 }

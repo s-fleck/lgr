@@ -23,9 +23,9 @@ test_that("formatting Loggers works as expected", {
       AppenderFile$new(file = tempfile()),
       AppenderConsole$new(),
       AppenderFile$new(threshold = 100, file = paste0(tempfile(), tempfile(), tempfile())),
-      AppenderMemoryDt$new(),
+      AppenderDt$new(),
       AppenderBuffer$new(
-        appenders = list(AppenderMemoryDt$new(), AppenderFile$new(tempfile())))
+        appenders = list(AppenderDt$new(), AppenderFile$new(tempfile())))
     )
   )
 

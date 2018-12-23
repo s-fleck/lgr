@@ -352,7 +352,7 @@ AppenderJson <- R6::R6Class(
 #'
 #' Abstract classes are exported for developers that want to extend them, they
 #' are not useful to casual users. [AppenderDbi], [AppenderRjdbc] and
-#' [AppenderMemoryDt] are derived from AppenderTabel.
+#' [AppenderDt] are derived from AppenderTabel.
 #'
 #' @inheritSection Appender Creating a New Appender
 #' @section Creating a New Appender:
@@ -403,7 +403,7 @@ AppenderTable <- R6::R6Class(
 
 
 
-# AppenderMemoryDt ----------------------------------------------------------
+# AppenderDt ----------------------------------------------------------
 
 #' Log to an In-Memory Data.Table
 #'
@@ -411,7 +411,7 @@ AppenderTable <- R6::R6Class(
 #' you have the suggested package **data.table** installed. This kind of
 #' Appender is pretty useful for interactive use, and hast very little overhead.
 #'
-#' @eval r6_usage(AppenderMemoryDt)
+#' @eval r6_usage(AppenderDt)
 #'
 #' @inheritSection Appender Creating a New Appender
 #' @section Creating a New Appender:
@@ -439,12 +439,12 @@ AppenderTable <- R6::R6Class(
 #' @seealso [LayoutFormat], [simple_logging], [data.table::data.table]
 #' @family Appenders
 #' @aliases yog_data
-#' @name AppenderMemoryDt
+#' @name AppenderDt
 #'
 #' @examples
 #' lg <- Logger$new(
 #'   "test",
-#'   appenders = list(memory = AppenderMemoryDt$new()),
+#'   appenders = list(memory = AppenderDt$new()),
 #'   threshold = NA,
 #'   parent = NULL  # to prevent routing to root logger for this example
 #' )
@@ -465,8 +465,8 @@ NULL
 
 
 #' @export
-AppenderMemoryDt <- R6::R6Class(
-  "AppenderMemoryDt",
+AppenderDt <- R6::R6Class(
+  "AppenderDt",
   inherit = Appender,
   public = list(
     initialize = function(

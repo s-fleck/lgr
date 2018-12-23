@@ -6,7 +6,7 @@
 \description{
 Abstract classes are exported for developers that want to extend them, they
 are not useful to casual users. \link{AppenderDbi}, \link{AppenderRjdbc} and
-\link{AppenderMemoryDt} are derived from AppenderTabel.
+\link{AppenderDt} are derived from AppenderTabel.
 }
 \section{Creating a New Appender}{
 
@@ -39,8 +39,8 @@ with a maximum of \code{buffer_size} rows}
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderFile}}, \code{\link{AppenderJson}},
-  \code{\link{AppenderMemoryDt}},
-  \code{\link{AppenderRjdbc}}, \code{\link{Appender}}
+  \code{\link{AppenderDt}}, \code{\link{AppenderFile}},
+  \code{\link{AppenderJson}}, \code{\link{AppenderRjdbc}},
+  \code{\link{Appender}}
 }
 \concept{Appenders}

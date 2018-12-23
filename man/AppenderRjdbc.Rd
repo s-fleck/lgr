@@ -66,8 +66,8 @@ with a maximum of \code{buffer_size} rows}
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderFile}}, \code{\link{AppenderJson}},
-  \code{\link{AppenderMemoryDt}},
-  \code{\link{AppenderTable}}, \code{\link{Appender}}
+  \code{\link{AppenderDt}}, \code{\link{AppenderFile}},
+  \code{\link{AppenderJson}}, \code{\link{AppenderTable}},
+  \code{\link{Appender}}
 }
 \concept{Appenders}

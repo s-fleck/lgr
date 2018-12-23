@@ -71,9 +71,8 @@ logger$warn("A test message")
 \link{LayoutFormat}
 
 Other Appenders: \code{\link{AppenderBuffer}},
-  \code{\link{AppenderDbi}}, \code{\link{AppenderFile}},
-  \code{\link{AppenderJson}},
-  \code{\link{AppenderMemoryDt}},
+  \code{\link{AppenderDbi}}, \code{\link{AppenderDt}},
+  \code{\link{AppenderFile}}, \code{\link{AppenderJson}},
   \code{\link{AppenderRjdbc}}, \code{\link{AppenderTable}},
   \code{\link{Appender}}
 }

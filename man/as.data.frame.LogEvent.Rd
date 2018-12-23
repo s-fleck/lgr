@@ -11,7 +11,7 @@
 
 as.data.table.LogEvent(x, ...)
 
-\method{as_tibble}{LogEvent}(x, ...)
+as_tibble.LogEvent(x, ...)
 }
 \arguments{
 \item{x}{any \R object.}

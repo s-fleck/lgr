@@ -100,7 +100,7 @@
   # root looger -------------------------------------------------------------
   appenders <- list(console = AppenderConsole$new(threshold = 400L))
   if (requireNamespace("data.table", quietly = TRUE))
-    appenders[["memory"]] <- AppenderMemoryDt$new()
+    appenders[["memory"]] <- AppenderDt$new()
 
   assign(
     "yog",

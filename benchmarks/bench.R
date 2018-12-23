@@ -34,7 +34,7 @@ ml[["no appenders"]] <-
   Logger$new("no appenders", appenders = NULL, parent = NULL)
 
 ml[["memory only"]] <-
-  Logger$new("memory only", appenders = AppenderMemoryDt$new(), parent = NULL)
+  Logger$new("memory only", appenders = AppenderDt$new(), parent = NULL)
 
 ml[["memory buffer"]] <-
   Logger$new("memory buffer", appenders = AppenderBuffer$new(buffer_size = 1e5), parent = NULL)
