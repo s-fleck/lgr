@@ -186,9 +186,9 @@ above values.</p></li>
 <span class='co'># by the Logger</span>
 
 <span class='no'>l</span> <span class='kw'>&lt;-</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"dummy logger"</span>, <span class='kw'>appenders</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-<span class='no'>l</span>$<span class='fu'>error</span>(<span class='st'>"foo bar"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;'>ERROR</span><span> [10:13:25.948] foo bar</div><div class='input'>
+<span class='no'>l</span>$<span class='fu'>error</span>(<span class='st'>"foo bar"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;'>ERROR</span><span> [12:21:35.857] foo bar</div><div class='input'>
 <span class='co'># The last LogEvent produced by a logger is saved to the last_event field</span>
-<span class='no'>l</span>$<span class='no'>last_event</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [2018-12-23 10:13:25] foo bar</div><div class='input'><span class='no'>l</span>$<span class='no'>last_event</span>$<span class='no'>level</span></div><div class='output co'>#&gt; [1] 200</div><div class='input'><span class='no'>l</span>$<span class='no'>last_event</span>$<span class='no'>level_name</span></div><div class='output co'>#&gt;     200 
+<span class='no'>l</span>$<span class='no'>last_event</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [2018-12-23 12:21:35] foo bar</div><div class='input'><span class='no'>l</span>$<span class='no'>last_event</span>$<span class='no'>level</span></div><div class='output co'>#&gt; [1] 200</div><div class='input'><span class='no'>l</span>$<span class='no'>last_event</span>$<span class='no'>level_name</span></div><div class='output co'>#&gt;     200 
 #&gt; "error" </div><div class='input'><span class='no'>l</span>$<span class='no'>last_event</span>$<span class='no'>msg</span></div><div class='output co'>#&gt; [1] "foo bar"</div><div class='input'>
 <span class='co'># Also contains a reference to the complete logger that created it</span>
 <span class='no'>l</span>$<span class='no'>last_event</span>$<span class='no'>logger</span>$<span class='no'>name</span></div><div class='output co'>#&gt; [1] "dummy logger"</div><div class='input'><span class='no'>l</span>$<span class='no'>last_event</span>$<span class='no'>logger</span>$<span class='no'>user</span></div><div class='output co'>#&gt; [1] "stefan.b.fleck@gmail.com"</div><div class='input'>
@@ -196,10 +196,10 @@ above values.</p></li>
 <span class='co'># also possible (though nonsensical)</span>
 <span class='no'>l</span>$<span class='no'>last_event</span>$<span class='no'>logger</span>$<span class='no'>last_event</span>$<span class='no'>msg</span></div><div class='output co'>#&gt; [1] "foo bar"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='no'>l</span>, <span class='no'>l</span>$<span class='no'>last_event</span>$<span class='no'>logger</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># Because LogEvents can also be vectors, the following works:</span>
-<span class='no'>l</span>$<span class='fu'>warn</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"a"</span>, <span class='st'>"vector"</span>, <span class='st'>"log"</span>, <span class='st'>"message"</span>))</div><div class='output co'>#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [10:13:25.972] a
-#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [10:13:25.972] vector
-#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [10:13:25.972] log
-#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [10:13:25.972] message</div><div class='input'>
+<span class='no'>l</span>$<span class='fu'>warn</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"a"</span>, <span class='st'>"vector"</span>, <span class='st'>"log"</span>, <span class='st'>"message"</span>))</div><div class='output co'>#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [12:21:35.877] a
+#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [12:21:35.877] vector
+#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [12:21:35.877] log
+#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [12:21:35.877] message</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

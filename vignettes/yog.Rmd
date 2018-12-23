@@ -188,12 +188,31 @@ yog$remove_appender("file")
 
 ## Inheritance: Hierarchical Loggers
 
+Logger hierarchies are a powerful concept to organize logging for different
+parts of a larger system. This is mainly relevant for package developers. It
+is good practice to have a sepparate Logger for each package. Since it is not
+common in R to build complex systems of hierarchically organised packages,
+hierarchies will usually be pretty flat (i.e. most Loggers will only inherit
+from the root logger). 
+
 Each newly created Logger is child to a parent Logger. If no parent Logger
 is specified manually during a Logger's creation, its parent is the Root 
 Logger. A logger dispatches the LogRecords it creates not only to its own
-Appenders, but also to the Appenders of all its ancestral Appenders (ignoring
+Appenders, but also to the Appenders of all its ancestral Loggers (ignoring
 the threshold and Filters of the ancestral Loggers, but not of the ancestral 
-Appenders).
+Appenders). 
+
+If all this sounds confusing to you, take a look at the
+[examples](#examples-hierarchy). The common use cases are pretty easy to 
+understand and illustrate the *how* and *why* pretty well.
+
+
+
+### Log Flow
+
+The graph bellow outlines the flow of LogEvents through the logging system.
+This is an important reference if you want to work with Filters and Logger
+hierarchies.
 
 
 ![](log_flow.svg)
@@ -273,6 +292,52 @@ cat(readLines(tf), sep = "\n\n")
 
 ```{r, echo = FALSE}
 unlink(tf)
+```
+
+
+## Logger Hierarchies  {#examples-hierarchy}
+
+The most common usecases for creating a new Logger rather than just using the
+root Logger is if you create a Package that should contain logging. This
+way you can have separate Appenders (e.g logfiles) and thresholds for each
+package. 
+
+```{r}
+# The logger name should be the same as the package name
+lg <- Logger$new("mypackage")  
+```
+
+The `print()` method for Loggers gives a nice overview of the newly created
+logger:
+
+```{r}
+print(lg)
+```
+
+This tells us that `lg` logs all events of at least level `info`. It does not 
+have any Appenders on its own, but it dispatches all the LogEvents it creates 
+to the Appenders of the root Logger (ignoring the threshold and filters of the 
+root Logger, but not of the Appenders).
+
+We can now use `lg$fatal()`, `lg$info()`, etc.. to log messages with this Logger:
+```{r}
+lg$info("A test message for lg")
+```
+
+If we do not want `lg` to dispatch to the root logger, we can simply switch
+`propagate` to `FALSE`.
+```{r}
+lg$set_propagate(FALSE)
+```
+When we take a look at the Logger again, we now see that it does not inherit
+any Appenders anymore
+```{r}
+print(lg)
+```
+
+Consequently, `lg` no longer outputs log messages
+```{r}
+lg$info("nothing will happen, since now there are no Appenders for lg")
 ```
 
 
