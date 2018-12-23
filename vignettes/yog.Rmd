@@ -96,9 +96,10 @@ of the logging process.
 ## Log Levels
 
 Yog supports the standard log4j Log Levels outlined bellow. The Log Level of
-an event represents its severity. Log levels have numeric and character 
-representations. Creation of custom log levels ist not yet supported by yog 
-(but planned for the future).
+an event represents its severity. The named log levels are really just 
+nicknames vor integer values, and you can use the `character` or `integer` 
+representations interchangably. You can also use arbitrary integer values 
+(greater than `0`), but you are encouraged to stick to the ones bellow. 
 
 ```{r, echo = FALSE}
 ll <- data.frame(
@@ -119,7 +120,11 @@ ll <- data.frame(
 knitr::kable(ll)
 ```
 
-
+The list of named log levels is stored as an option 
+(`getOption("yog.log_levels")`) and you can use `add_log_levels()` and 
+`remove_log_levels()` to define your own named levels if you want to.
+There are only predefined logging methods (`yog$fatal()`, etc..) for the
+standard log levels though.
 
 ## Simple Logging With the Root Logger
 
@@ -152,9 +157,32 @@ yog$trace("Unless we lower the threshold")
 ```
 
 
-## Thresholds: Controlling Output Detail
+## Thresholds & Filters: Controlling Output Detail
 
-(wip)
+To control the level of detail of the log output, you can set **thresholds** for
+Loggers and Appenders. A Logger with a threshold of `warn` will only create
+LogEvents of the priorities `warn`, `error` and `fatal` and dispatch them
+to its Appenders.
+
+> A **threshold** of a Logger or Appender is the minimum **log level** a 
+> LogEvent must have so that that Logger/Appender processes it.
+
+If you require more complex logic to decide whether a LogEvent should be
+created/processed you can also assign **filters** to Loggers/Appenders. They
+will be applied after the threshold is checked. 
+
+examples:
+```{r}
+# Only log on weekends
+f1 <- function(event, obj) { as.POSIXlt(Sys.Date())$wday %in% c(7, 0) }
+# Only log messages that contain the word bird
+f2 <- function(event, obj) { grepl("bird", event$msg) }
+yog$set_filters(list(f1, f2))
+
+# since this is not very useful, we remove the filters again
+yog$set_filters(NULL)
+
+```
 
 
 
@@ -182,6 +210,9 @@ readLines(tf)
 
 # Remove the appender again
 yog$remove_appender("file")
+```
+```{r echo = FALSE}
+unlink(tf)
 ```
 
 
