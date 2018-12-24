@@ -64,23 +64,22 @@ Log a simple log message (without colors)
 # log4r does not support logging to the console
 
 # yog uses color output by default, which slows down logging
-yog$set_appenders(AppenderConsole$new(layout = LayoutFormat$new(colors = NULL)))
+# yog$set_appenders(AppenderConsole$new(layout = LayoutFormat$new(colors = NULL)))
+
+library(yog)
+
+lg2 <- Logger$new("blubb", appenders = AppenderConsole$new(layout = LayoutFormat$new()), parent = NULL)
 
 
 shmock <- function() yog$log(100, "test", caller = NULL)
 
 sink("/dev/null")
-
-for (i in 1:1e3){
-  yog$fatal("test")
-}
-
-
 res <- bench::mark(
   logger = logger::log_info("test"),
   futile.logger = futile.logger::flog.info("test"),
   logging = logging::logerror("test", logger = "logging"),
   yog = yog::yog$info("test"),
+  lg2 = lg2$info("test"),
   schock = shmock(),
   check = FALSE
 )

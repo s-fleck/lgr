@@ -126,11 +126,23 @@ The list of named log levels is stored as an option
 There are only predefined logging methods (`yog$fatal()`, etc..) for the
 standard log levels though.
 
-## Simple Logging With the Root Logger
 
-Yog comes with a pre-configured Root Logger. If you do not care about 
-using multiple loggers, and do not want to deal with R6 classes you still use 
-yog as a performant and easy to use logging solution.
+## Logging With the Root Logger
+
+Yog comes with a pre-configured root Logger. It is called *root* because
+you can [set up a tree of Loggers](#hierarchy) that descent from it, but for 
+basic use you will not have to worry about that.
+
+
+### Simplified Logging Syntax
+
+If you care about terse syntax you can use the following `UPPERCASE`^[
+If you are wondering why I decided on `ALL-CAPS` for the logging functions: It
+distinquishes log calls well from normal code, and also all the good names are 
+already taken by base R functions (`log()`, `trace()`, `debug()`). Many R 
+packages deal with this issue by using prefixes (like `log_debug()`), but I do 
+not like that idea. In any case that is pretty to close to what you get when 
+you use the R6 logging syntax] commands to log:
 
 ```{r}
 FATAL("This is an important message about %s going wrong", "something")
@@ -141,23 +153,53 @@ DEBUG("Debug messages are hidden by default")
 console_threshold("debug")  # you must use lower case names here
 DEBUG("unless we lower the threshold")
 TRACE("Trace is even lower than debug")
-
 ```
 
-You can also directly use Logger R6 objects to log. This package comes with a
-default root logger named like the package (`"yog"`). This method of referring
-to the logger is more explicit (and therefore arguably better). The examples
-in this vignette will moslty use the notation below.
+If you have the package **data.table** installed, yog does not only log to the 
+console, but also to an in memory `data.table`. You can use `show_log()` to 
+quickly display this in memory log^[If you want to know more about interacting 
+with the data.table Appender see the help for `?AppenderDt`.]. 
+
+```{r}
+show_log(3)  # show the last 3 log entries
+```
+If you looked carefully, you see that both debug messages were logged to 
+memory (not only the one that you saw in the console). This is explained in the
+section on [thresholds](#thresholds).
+
+
+### R6 Logging Syntax
+
+You can also directly use Logger R6 objects to log. You can refer to the 
+*root* logger with `yog$`. This is especially useful if you are working with
+multiple loggers (e.g. if you set up a separate Logger for a package you have
+developed). The examples in this vignette mostly use the notation below as it
+is more explicit:
 
 ```{r}
 yog$fatal("This is an important message about %s going wrong", "->something<-")
 yog$trace("Trace messages are still hidden")
 yog$appenders$console$set_threshold("trace")
 yog$trace("Unless we lower the threshold")
+yog$appenders$memory$show(3)
+
+```
+
+### Formatting Strings 
+
+You can use `sprintf()` style formatting strings directly in log messages. 
+```{r}
+yog$info("The sky was the color of %s, tuned to a dead chanel", "television")
+INFO("There are %.1f lights", 4.5321)
 ```
 
 
-## Thresholds & Filters: Controlling Output Detail
+## Log Events: The Atomic Unit of Logging
+
+wip
+
+
+## Thresholds & Filters: Controlling Output Detail {#thresholds}
 
 To control the level of detail of the log output, you can set **thresholds** for
 Loggers and Appenders. A Logger with a threshold of `warn` will only create
@@ -183,7 +225,6 @@ yog$set_filters(list(f1, f2))
 yog$set_filters(NULL)
 
 ```
-
 
 
 ## Appenders: Managing Log Destinations
@@ -216,8 +257,7 @@ unlink(tf)
 ```
 
 
-
-## Inheritance: Hierarchical Loggers
+## Inheritance: Hierarchical Loggers {#hierarchy}
 
 Logger hierarchies are a powerful concept to organize logging for different
 parts of a larger system. This is mainly relevant for package developers. It
@@ -335,7 +375,8 @@ package.
 
 ```{r}
 # The logger name should be the same as the package name
-lg <- Logger$new("mypackage")  
+tf <- tempfile()
+lg <- Logger$new("mypackage", appenders = AppenderFile$new(tf))  
 ```
 
 The `print()` method for Loggers gives a nice overview of the newly created
@@ -345,17 +386,17 @@ logger:
 print(lg)
 ```
 
-This tells us that `lg` logs all events of at least level `info`. It does not 
-have any Appenders on its own, but it dispatches all the LogEvents it creates 
-to the Appenders of the root Logger (ignoring the threshold and filters of the 
-root Logger, but not of the Appenders).
+This tells us that `lg` logs all events of at least level `info`. It does 
+have a single (unnamed) Appender that logs to a temporary file, and dispatches 
+all LogEvents it creates to the Appenders of the root Logger (ignoring the 
+threshold and filters of the root Logger, but not of the Appenders).
 
-We can now use `lg$fatal()`, `lg$info()`, etc.. to log messages with this Logger:
+We can use `lg$fatal()`, `lg$info()`, etc.. to log messages with this Logger:
 ```{r}
 lg$info("A test message for lg")
 ```
 
-If we do not want `lg` to dispatch to the root logger, we can simply switch
+If we do not want `lg` to dispatch to the root Logger, we can set 
 `propagate` to `FALSE`.
 ```{r}
 lg$set_propagate(FALSE)
@@ -366,9 +407,12 @@ any Appenders anymore
 print(lg)
 ```
 
-Consequently, `lg` no longer outputs log messages
+Consequently, `lg` no longer outputs log messages to he console
 ```{r}
-lg$info("nothing will happen, since now there are no Appenders for lg")
+lg$info("Nothing to see here")
+```
+```{r echo = FALSE}
+unlink(tf)
 ```
 
 
