@@ -98,13 +98,13 @@
 <a href="#usage" class="anchor"></a>Usage</h2>
 <p>To log an <em>event</em> with with yog we call <code>yog$&lt;logging function&gt;()</code>. Unnamed arguments to the logging function are interpreted by <code><a href="https://www.rdocumentation.org/packages/base/topics/sprintf">sprintf()</a></code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">yog<span class="op">$</span><span class="kw">fatal</span>(<span class="st">"A critical error"</span>)
-<span class="co">#&gt; FATAL [09:44:28.086] A critical error</span>
+<span class="co">#&gt; FATAL [13:09:44.579] A critical error</span>
 yog<span class="op">$</span><span class="kw">error</span>(<span class="st">"A less severe error"</span>)
-<span class="co">#&gt; ERROR [09:44:28.162] A less severe error</span>
+<span class="co">#&gt; ERROR [13:09:44.633] A less severe error</span>
 yog<span class="op">$</span><span class="kw">warn</span>(<span class="st">"A potentially bad situation"</span>)
-<span class="co">#&gt; WARN  [09:44:28.198] A potentially bad situation</span>
+<span class="co">#&gt; WARN  [13:09:44.659] A potentially bad situation</span>
 yog<span class="op">$</span><span class="kw">info</span>(<span class="st">"iris has %s rows"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(iris))
-<span class="co">#&gt; INFO  [09:44:28.204] iris has 150 rows</span>
+<span class="co">#&gt; INFO  [13:09:44.662] iris has 150 rows</span>
 
 <span class="co"># the following log levels are hidden by default</span>
 yog<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/debug">debug</a></span>(<span class="st">"A debug message"</span>)
@@ -113,17 +113,17 @@ yog<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tf &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempfile</a></span>()
 yog<span class="op">$</span><span class="kw"><a href="reference/simple_logging.html">add_appender</a></span>(AppenderJson<span class="op">$</span><span class="kw">new</span>(tf))
 yog<span class="op">$</span><span class="kw">info</span>(<span class="st">"cars has %s rows"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(cars))
-<span class="co">#&gt; INFO  [09:44:28.386] cars has 50 rows</span>
+<span class="co">#&gt; INFO  [13:09:44.799] cars has 50 rows</span>
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(tf))
-<span class="co">#&gt; {"level":400,"timestamp":"2018-12-24 09:44:28","caller":"eval","msg":"cars has 50 rows"}</span></code></pre></div>
+<span class="co">#&gt; {"level":400,"timestamp":"2018-12-24 13:09:44","caller":"eval","msg":"cars has 50 rows"}</span></code></pre></div>
 <p>JSON naturally supports custom fields. Named arguments passed to <code>info()</code>, <code>warn()</code>, etc… are intepreted as custom fields.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">yog<span class="op">$</span><span class="kw">info</span>(<span class="st">"loading cars"</span>, <span class="st">"cars"</span>, <span class="dt">rows =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(cars), <span class="dt">cols =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">ncol</a></span>(cars))
-<span class="co">#&gt; INFO  [09:44:28.397] loading cars</span>
+<span class="co">#&gt; INFO  [13:09:44.809] loading cars</span>
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(tf), <span class="dt">sep =</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)
-<span class="co">#&gt; {"level":400,"timestamp":"2018-12-24 09:44:28","caller":"eval","msg":"cars has 50 rows"}</span>
-<span class="co">#&gt; {"level":400,"timestamp":"2018-12-24 09:44:28","caller":"eval","msg":"loading cars","cols":2,"rows":50}</span></code></pre></div>
+<span class="co">#&gt; {"level":400,"timestamp":"2018-12-24 13:09:44","caller":"eval","msg":"cars has 50 rows"}</span>
+<span class="co">#&gt; {"level":400,"timestamp":"2018-12-24 13:09:44","caller":"eval","msg":"loading cars","cols":2,"rows":50}</span></code></pre></div>
 <p>For more examples please see the package <a href="https://s-fleck.github.io/yog/articles/yog.html">vignette</a> and <a href="https://s-fleck.github.io/yog/">documentation</a></p>
 </div>
 <div id="features" class="section level2">

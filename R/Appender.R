@@ -407,7 +407,17 @@ AppenderTable <- R6::R6Class(
 #'
 #' An Appender that outputs to an in-memory `data.table`. This requires that
 #' you have the suggested package **data.table** installed. This kind of
-#' Appender is pretty useful for interactive use, and hast very little overhead.
+#' Appender is useful for interactive use, and has very little overhead.
+#'
+#' @section Custom Fields:
+#'
+#' `AppenderDt` supports [custom fields][LogEvent], but they have to be
+#' pre-allocated in the `prototype` argument. Custom fields that are not
+#' part of the prototype are discarded.
+#'
+#' With the default settings, the custom field `value` is included in the
+#' `data.table` as a list column to store arbitrary \R objects (see example).
+#' It is recommended to use this feature only `TRACE` level.
 #'
 #' @eval r6_usage(AppenderDt)
 #'

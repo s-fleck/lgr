@@ -7,8 +7,20 @@
 \description{
 An Appender that outputs to an in-memory \code{data.table}. This requires that
 you have the suggested package \strong{data.table} installed. This kind of
-Appender is pretty useful for interactive use, and hast very little overhead.
+Appender is useful for interactive use, and has very little overhead.
 }
+\section{Custom Fields}{
+
+
+\code{AppenderDt} supports \link[=LogEvent]{custom fields}, but they have to be
+pre-allocated in the \code{prototype} argument. Custom fields that are not
+part of the prototype are discarded.
+
+With the default settings, the custom field \code{value} is included in the
+\code{data.table} as a list column to store arbitrary \R objects (see example).
+It is recommended to use this feature only \code{TRACE} level.
+}
+
 \section{Usage}{
 \preformatted{x <- AppenderDt$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt =
   "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S", colors = getOption("yog.colors")),

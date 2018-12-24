@@ -34,7 +34,7 @@
 
 <meta property="og:description" content="An Appender that outputs to an in-memory data.table. This requires that
 you have the suggested package data.table installed. This kind of
-Appender is pretty useful for interactive use, and hast very little overhead." />
+Appender is useful for interactive use, and has very little overhead." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -125,11 +125,21 @@ Appender is pretty useful for interactive use, and hast very little overhead." /
     
     <p>An Appender that outputs to an in-memory <code>data.table</code>. This requires that
 you have the suggested package <strong>data.table</strong> installed. This kind of
-Appender is pretty useful for interactive use, and hast very little overhead.</p>
+Appender is useful for interactive use, and has very little overhead.</p>
     
     </div>
 
         
+    <h2 class="hasAnchor" id="custom-fields"><a class="anchor" href="#custom-fields"></a>Custom Fields</h2>
+
+    
+    <p><code>AppenderDt</code> supports <a href='LogEvent.html'>custom fields</a>, but they have to be
+pre-allocated in the <code>prototype</code> argument. Custom fields that are not
+part of the prototype are discarded.</p>
+<p>With the default settings, the custom field <code>value</code> is included in the
+<code>data.table</code> as a list column to store arbitrary <span style="R">R</span> objects (see example).
+It is recommended to use this feature only <code>TRACE</code> level.</p>
+    
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre>x &lt;- AppenderDt$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt =
@@ -195,21 +205,21 @@ with a maximum of <code>buffer_size</code> rows</p></dd>
 
 <span class='co'># Displaying the log</span>
 <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span></div><div class='output co'>#&gt;    .id level           timestamp caller  msg value
-#&gt; 1:   1   500 2018-12-24 09:44:33   eval test    NA
-#&gt; 2:   2   200 2018-12-24 09:44:33   eval test    NA</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='fu'>show</span>()</div><div class='output co'>#&gt; <span style='color: #808080;'>DEBUG</span><span> [09:44:33] test
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [09:44:33] test</div><div class='input'><span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [09:44:33] test
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [09:44:33] test</div><div class='input'>
+#&gt; 1:   1   500 2018-12-24 13:09:49   eval test    NA
+#&gt; 2:   2   200 2018-12-24 13:09:49   eval test    NA</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='fu'>show</span>()</div><div class='output co'>#&gt; <span style='color: #808080;'>DEBUG</span><span> [13:09:49] test
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [13:09:49] test</div><div class='input'><span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [13:09:49] test
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [13:09:49] test</div><div class='input'>
 <span class='co'># If you pass a Logger to show_log, it looks for the first MemoryAppender it</span>
 <span class='co'># can find.</span>
-<span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [09:44:33] test
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [09:44:33] test</div><div class='input'>
+<span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [13:09:49] test
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [13:09:49] test</div><div class='input'>
 <span class='co'># Data tables can store arbitrary R values in list columns. The default</span>
 <span class='co'># AppenderDt comes with a single list column called "value" that you can use</span>
 <span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"the iris data frame"</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='no'>iris</span>)
 <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span></div><div class='output co'>#&gt;    .id level           timestamp caller                 msg        value
-#&gt; 1:   1   500 2018-12-24 09:44:33   eval                test           NA
-#&gt; 2:   2   200 2018-12-24 09:44:33   eval                test           NA
-#&gt; 3:   3   400 2018-12-24 09:44:33   eval the iris data frame &lt;data.frame&gt;</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span>$<span class='no'>value</span><span class='kw'>[[</span><span class='fl'>3</span>]])</div><div class='output co'>#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+#&gt; 1:   1   500 2018-12-24 13:09:49   eval                test           NA
+#&gt; 2:   2   200 2018-12-24 13:09:49   eval                test           NA
+#&gt; 3:   3   400 2018-12-24 13:09:49   eval the iris data frame &lt;data.frame&gt;</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span>$<span class='no'>value</span><span class='kw'>[[</span><span class='fl'>3</span>]])</div><div class='output co'>#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
 #&gt; 1          5.1         3.5          1.4         0.2  setosa
 #&gt; 2          4.9         3.0          1.4         0.2  setosa
 #&gt; 3          4.7         3.2          1.3         0.2  setosa
@@ -222,6 +232,8 @@ with a maximum of <code>buffer_size</code> rows</p></dd>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
+      <li><a href="#custom-fields">Custom Fields</a></li>
+
       <li><a href="#usage">Usage</a></li>
 
       <li><a href="#creating-a-new-appender">Creating a New Appender</a></li>

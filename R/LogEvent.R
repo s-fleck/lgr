@@ -1,75 +1,69 @@
 #' Events - The Atomic Unit of Logging
 #'
-#' A `LogEvent` is a single unit of data that should be logged. It usually
-#' contains at minimum the [log_level], a timestamp, the name of the calling
-#' function, the log message and a reference to the Logger that created it.
-#' `LogEvents` are created by a [Logger], and then processed by an [Appenders].
+#' A `LogEvent` is a single unit of data that should be logged. `LogEvents` are
+#' usualy created by a [Logger], and then processed by [Appenders].
 #'
 #' @eval r6_usage(LogEvent)
 #'
+#' @section Creating LogEvents / Fields:
 #'
-#' @section Creating LogEvents:
-#'
-#' **not yet stable**
-#' Currently custom LogEvents are not officially supported in yog, but a lot of
-#' the infrastructure to make them possible is already in place. If you require
-#' this function, please upvote
-#' [this issue](https://github.com/s-fleck/yog/issues/4)
+#' The arguments to `LogEvent$new()` directly translate to the fields stored in
+#' the LogEvent:
 #'
 #' \describe{
-#'   \item{logger}{[`Logger`] scalar. The `Logger` this `LogEvent` is
-#'     associated with}
-#'  }
+#'   \item{`level`}{`integer`: the [log_level] / priority of the LogEvent}
 #'
-#' @section Fields:
+#'   \item{`timestamp`}{[`POSIXct`][base::POSIXct] the time when then the
+#'   LogEvent was created}
 #'
-#' Log Evnets contain the following data fields
+#'   \item{`caller`}{`character`. The name of the calling function}
 #'
-#' * `level`: The [log_level] of the event
-#' * `timestamp`: `POSIXct`.
-#' * `caller`: `character`. the function that called this event
-#' * `msg`: `character`. the log message.
-#' * `logger` the `Logger` that created the `LogEvent`. See examples.
+#'   \item{`msg`}{`character`. A message}
+#'
+#'   \item{`logger`}{a `Logger`. A reference to the Logger that created the
+#'     event
+#'   }
+#'
+#'   \item{`...`}{All named arguments in `...` will be added to the LogEvent
+#'   as **custom fields**. You can store arbitrary \R objects in LogEvents
+#'   this way, but not all Appenders will support them. See [AppenderJson] for
+#'   an Appender that supports custom fields quite naturally}
+#' }
+#'
 #'
 #' Usually the above values will be scalars, but (except for `"logger"`) they
 #' can also be vectors if they are all of the same length (or scalars that will
 #' be recycled). In this case the event will be treated by the [Appenders] and
 #' [Layouts] as if several separate events.
 #'
-#' Log events also contain the following active bindings:
+#' @section Active Bindings:
 #'
-#' * `value`: an active binding that returns a named `list` containing all the
-#'   above values.
-#' * `level_name`  the log level as a `character` string.
-#'
+#' \describe{
+#'   \item{`level_name`}{`character`: the [log_level] / priority of the
+#'     LogEvent labelled accoring to `getOption("yog.log_levels")`}
+#'   \item{`values`}{`list`: All values stored in the LogEvent (including
+#'     *custom fields*, but not including `event$logger`)}
+#'   }
 #'
 #' @name LogEvent
+#' @seealso [as.data.frame.LogEvent()]
 #' @aliases LogEvents
 #' @examples
-#'
-#' # Usually you do not create a LogEvent in this manner, it is rather provided
-#' # by the Logger
-#'
 #' l <- Logger$new("dummy logger", appenders = NULL)
 #' l$error("foo bar")
 #'
-#' # The last LogEvent produced by a logger is saved to the last_event field
-#' l$last_event
-#' l$last_event$level
-#' l$last_event$level_name
-#' l$last_event$msg
+#' # The last LogEvent produced by a Logger is stored in the last_event field
+#' l$last_event  # formated by default
+#' l$last_event$values  # values stored in the event
 #'
-#' # Also contains a reference to the complete logger that created it
+#' # Also contains the Logger that created it
 #' l$last_event$logger$name
 #' l$last_event$logger$user
 #'
-#' # This is really a reference to the complete logger, so the following is
-#' # also possible (though nonsensical)
+#' # This is really a reference to the complete Logger, so the following is
+#' # possible (though nonsensical)
 #' l$last_event$logger$last_event$msg
 #' identical(l, l$last_event$logger)
-#'
-#' # Because LogEvents can also be vectors, the following works:
-#' l$warn(c("a", "vector", "log", "message"))
 #'
 NULL
 
@@ -137,7 +131,7 @@ LogEvent <- R6::R6Class(
 #' Coerce LogEvents to Data Frames
 #'
 #' Coerce LogEvents to `data.frames`, [`data.tables`][data.table::data.table],
-#' [`tibbles`][tibble::tibble]
+#' or [`tibbles`][tibble::tibble].
 #'
 #' @inheritParams base::as.data.frame
 #' @param ... passed on to `data.frame()`

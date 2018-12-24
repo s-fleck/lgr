@@ -32,7 +32,7 @@ be coerced}
 }
 \description{
 Coerce LogEvents to \code{data.frames}, \code{\link[data.table:data.table]{data.tables}},
-\code{\link[tibble:tibble]{tibbles}}
+or \code{\link[tibble:tibble]{tibbles}}.
 }
 \examples{
 l <- Logger$new("test")

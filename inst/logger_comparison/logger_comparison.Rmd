@@ -49,45 +49,38 @@ futile.logger::flog.info("an informative message")
 
 # Syntax Examples
 
+wip
 
 # Feature Matrix
+
+wip
 
 
 # Performance
 
+This section reviews the performance of available logging packages against 
+`cat()`.
+
 ## Simple Console Logging Call
 
-Log a simple log message (without colors)
+Log a simple log message 
 
 ```{r, results='hide'}
-
-# log4r does not support logging to the console
-
-# yog uses color output by default, which slows down logging
-# yog$set_appenders(AppenderConsole$new(layout = LayoutFormat$new(colors = NULL)))
-
-library(yog)
-
-lg2 <- Logger$new("blubb", appenders = AppenderConsole$new(layout = LayoutFormat$new()), parent = NULL)
-
-
-shmock <- function() yog$log(100, "test", caller = NULL)
-
+# By default yog is configured for color output, so we disable that for a fair
+# comparison
+yog$set_appenders(AppenderConsole$new(layout = LayoutFormat$new()))
 sink("/dev/null")
 res <- bench::mark(
+  cat  = cat("FATAL", " [", format(Sys.time()), "] ", "test", sep = ""),
   logger = logger::log_info("test"),
   futile.logger = futile.logger::flog.info("test"),
   logging = logging::logerror("test", logger = "logging"),
   yog = yog::yog$info("test"),
-  lg2 = lg2$info("test"),
-  schock = shmock(),
   check = FALSE
 )
 sink()
-
 ```
 ```{r}
-
 res %>% 
   select(expression, min, mean, median, mem_alloc) %>% 
   arrange(median) %>% 
@@ -99,25 +92,33 @@ plot(res)
 
 ```
 
+For simple log messages **logging* and *logger** are in the clear lead 
+perfomance wise
+
 
 # Log a simple log message (with colors)
+
+The only packages that support color output are **yog** and **logger**. Both
+do not allow much configuration of the color output. Here yog is in the lead,
+mainly because **logger** relies on **glue** for the color formatting. Both
+
 
 ```{r, results='hide'}
 yog$set_appenders(AppenderConsole$new())
 log_layout(layout_glue_colors)
+library(crayon)
 
 sink("/dev/null")
 res <- bench::mark(
+  cat  = cat(red("FATAL"), " [", format(Sys.time()), "] ", "test", sep = ""),
   logger = logger::log_fatal("test"),
   yog = yog::yog$info("test"),
   check = FALSE
 )
 sink()
-
 ```
 
 ```{r}
-
 res %>% 
   select(expression, min, mean, median, mem_alloc) %>% 
   arrange(median) %>% 
@@ -132,10 +133,13 @@ plot(res)
 
 # Log a suppressed message
 
+
+
 ```{r}
 yog$set_threshold("info")
 
 res <- bench::mark(
+  cat = cat(),
   logger = logger::log_debug("test"),
   futile.logger = futile.logger::flog.debug("test"),
   logging = logging::logdebug("test", logger = "logging"),
@@ -147,6 +151,14 @@ res <- bench::mark(
 
 ```{r}
 plot(res)
-
 ```
 
+Here yog is pretty much in the lead, because it completely disables the 
+logging functions that are under the loggers threshold.
+
+
+### Conclusion
+
+While there are subtle differences in the perfomance of the available logging
+packages, all perform pretty well. Nothing can compare with a simple `cat()`,
+but that was to be expected.

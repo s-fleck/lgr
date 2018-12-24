@@ -28,8 +28,11 @@ knitr::opts_chunk$set(
 Yog is a logging framework for R inspired by 
 [Apache Log4j](https://logging.apache.org/log4j/2.x/) and
 [Python logging](https://docs.python.org/3/library/logging.html).
-It is based on [R6 classes](https://github.com/r-lib/R6) that 
-focuses on extensibility, ease of use, and performance.
+It follows a traditional object oriented design implemented through
+[R6 classes](https://github.com/r-lib/R6). This enables yog to have a larger
+set of features than other logging packages for R, and makes it easy to extend 
+for people that have experience with R6 classes.
+
 
 ## Quickstart
 
@@ -57,10 +60,11 @@ l$error("Everything is NOT okay")
 l$fatal("NOTHING is okay")
 readLines(tfi)
 read_json_lines(tfe)
-file.remove(tfi, tfe)
-
 ```
-  
+
+```{r echo=FALSE, results='hide'}
+file.remove(tfi, tfe)
+```
 
 
 
@@ -90,6 +94,26 @@ of the logging process.
   if you use `AppenderFormat` with `LayoutFormat` you can only use the standard 
   fields in your log message, while `LayoutJson` supports custom fields in 
   a quite natural manner. See [examples 1 & 2](#examples)
+
+
+### On R6 Classes
+
+The elements described above are R6 classes. R6 is an object orientation
+system for R that is used by many popular packages such as shiny, dplyr, 
+plumber, roxygen2, and testthat but often behind the scenes and not as exposed
+as in yog.
+
+You recognize R6 classes in this package because they are named following the 
+UpperCamelCase naming convention. While there is only one kind of Logger and 
+one kind of LogEvent, there are several subclasses of Appenders and Layouts.
+
+An introduction to R6 classes is beyond the scope of this document, but you
+can find the official documentation [here](https://r6.r-lib.org/) and there is
+also this [talk on youtube](https://www.youtube.com/watch?v=3GEFd8rZQgY). In
+short R6 classes store data (fields) together with functions (methods) and
+have to be instantiated with `<classname>$new()`. So if you want to create
+a new `AppenderFile`, you do this by calling 
+`AppenderFile$new(file = tempfile())`.
 
 
 

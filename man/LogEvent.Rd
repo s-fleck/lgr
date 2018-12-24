@@ -5,10 +5,8 @@
 \alias{LogEvents}
 \title{Events - The Atomic Unit of Logging}
 \description{
-A \code{LogEvent} is a single unit of data that should be logged. It usually
-contains at minimum the \link{log_level}, a timestamp, the name of the calling
-function, the log message and a reference to the Logger that created it.
-\code{LogEvents} are created by a \link{Logger}, and then processed by an \link{Appenders}.
+A \code{LogEvent} is a single unit of data that should be logged. \code{LogEvents} are
+usualy created by a \link{Logger}, and then processed by \link{Appenders}.
 }
 \section{Usage}{
 \preformatted{x <- LogEvent$new(logger, level = 400, timestamp = Sys.time(), caller = NA,
@@ -26,70 +24,67 @@ x$values
 }
 }
 
-\section{Creating LogEvents}{
+\section{Creating LogEvents / Fields}{
 
 
-\strong{not yet stable}
-Currently custom LogEvents are not officially supported in yog, but a lot of
-the infrastructure to make them possible is already in place. If you require
-this function, please upvote
-\href{https://github.com/s-fleck/yog/issues/4}{this issue}
+The arguments to \code{LogEvent$new()} directly translate to the fields stored in
+the LogEvent:
 
 \describe{
-\item{logger}{\code{\link{Logger}} scalar. The \code{Logger} this \code{LogEvent} is
-associated with}
+\item{\code{level}}{\code{integer}: the \link{log_level} / priority of the LogEvent}
+
+\item{\code{timestamp}}{\code{\link[base:POSIXct]{POSIXct}} the time when then the
+LogEvent was created}
+
+\item{\code{caller}}{\code{character}. The name of the calling function}
+
+\item{\code{msg}}{\code{character}. A message}
+
+\item{\code{logger}}{a \code{Logger}. A reference to the Logger that created the
+event
 }
-}
 
-\section{Fields}{
-
-
-Log Evnets contain the following data fields
-\itemize{
-\item \code{level}: The \link{log_level} of the event
-\item \code{timestamp}: \code{POSIXct}.
-\item \code{caller}: \code{character}. the function that called this event
-\item \code{msg}: \code{character}. the log message.
-\item \code{logger} the \code{Logger} that created the \code{LogEvent}. See examples.
+\item{\code{...}}{All named arguments in \code{...} will be added to the LogEvent
+as \strong{custom fields}. You can store arbitrary \R objects in LogEvents
+this way, but not all Appenders will support them. See \link{AppenderJson} for
+an Appender that supports custom fields quite naturally}
 }
 
 Usually the above values will be scalars, but (except for \code{"logger"}) they
 can also be vectors if they are all of the same length (or scalars that will
 be recycled). In this case the event will be treated by the \link{Appenders} and
 \link{Layouts} as if several separate events.
+}
 
-Log events also contain the following active bindings:
-\itemize{
-\item \code{value}: an active binding that returns a named \code{list} containing all the
-above values.
-\item \code{level_name}  the log level as a \code{character} string.
+\section{Active Bindings}{
+
+
+\describe{
+\item{\code{level_name}}{\code{character}: the \link{log_level} / priority of the
+LogEvent labelled accoring to \code{getOption("yog.log_levels")}}
+\item{\code{values}}{\code{list}: All values stored in the LogEvent (including
+\emph{custom fields}, but not including \code{event$logger})}
 }
 }
 
 \examples{
-
-# Usually you do not create a LogEvent in this manner, it is rather provided
-# by the Logger
-
 l <- Logger$new("dummy logger", appenders = NULL)
 l$error("foo bar")
 
-# The last LogEvent produced by a logger is saved to the last_event field
-l$last_event
-l$last_event$level
-l$last_event$level_name
-l$last_event$msg
+# The last LogEvent produced by a Logger is stored in the last_event field
+l$last_event  # formated by default
+l$last_event$values  # values stored in the event
 
-# Also contains a reference to the complete logger that created it
+# Also contains the Logger that created it
 l$last_event$logger$name
 l$last_event$logger$user
 
-# This is really a reference to the complete logger, so the following is
-# also possible (though nonsensical)
+# This is really a reference to the complete Logger, so the following is
+# possible (though nonsensical)
 l$last_event$logger$last_event$msg
 identical(l, l$last_event$logger)
 
-# Because LogEvents can also be vectors, the following works:
-l$warn(c("a", "vector", "log", "message"))
-
+}
+\seealso{
+\code{\link[=as.data.frame.LogEvent]{as.data.frame.LogEvent()}}
 }
