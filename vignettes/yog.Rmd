@@ -220,7 +220,46 @@ INFO("There are %.1f lights", 4.5321)
 
 ## Log Events: The Atomic Unit of Logging
 
-wip
+LogEvents are objects that store all information collected by the Logger. They
+are passed on to Appenders that output them, but Appenders usually don't 
+utilise all the information present in a log event. The last event produced
+by a Logger is stored in its last_event field.
+
+```{r}
+yog$info("Vampire stories are generally located in Styria")
+yog$last_event  # a summary output of the event
+yog$last_event$values  # all values stored in the event as a list
+```
+
+LogEvents can contain not only these standard values, but an arbitrary number
+of extra values. These extra values are passed as named arguments to the logging
+function (as opposed as to paramters to `sprintf()`, which are passed as 
+unnamed arguments). It is up to the Appender whether to process them further or 
+not. 
+
+You should consider making use of custom fields liberally and using output
+formats that support them (such as JSON), rather than producing elaborately 
+formatted but hard to parse log messages. If you ever want to analyse your 
+log data, you will thank me for this tip.
+
+```{r}
+# bad
+yog$info("Processing track '%s' with %s waypoints", "track.gpx", 32)
+
+# Good
+tf <- tempfile()
+yog$add_appender(AppenderJson$new(tf), "json")
+yog$info("Processing track", file = "track.gpx", waypoints = 32)
+yog$appenders$json$data
+
+```
+```{r echo = FALSE}
+yog$remove_appender("json")
+unlink(tf)
+```
+
+
+
 
 
 ## Thresholds & Filters: Controlling Output Detail {#thresholds}
