@@ -43,7 +43,6 @@ test_that("LayoutDbi works as expected", {
   expect_error(
     lo <- LayoutDbi$new(
       event_vals = c("level", "timestamp", "msg"),
-      logger_vals = "user",
       col_types = col_types
     ), "foo"
   )
@@ -51,19 +50,18 @@ test_that("LayoutDbi works as expected", {
   expect_error(
     lo <- LayoutDbi$new(
       event_vals = c("level", "timestamp", "msg", "foo", "caller"),
-      logger_vals = "user",
       col_types = col_types
     ), "caller"
   )
 
   lo <- LayoutDbi$new(
-    event_vals = c("level", "timestamp", "msg", "foo"),
-    logger_vals = "user",
+    event_vals = c("level", "timestamp", "msg", "foo", "user"),
     col_types = col_types
   )
 
   x <- tevent$clone()
   x$foo <- "bar"
+  x$user <- "blubb"
 
   eres <- c(x$values, user = x$logger$user)
   tres <- lo$format_event(x)
@@ -83,8 +81,7 @@ test_that("LayoutDbi works as expected", {
 
 test_that("LayoutDbi works with custom fields", {
   lo <- LayoutDbi$new(
-    event_vals = c("level", "timestamp", "msg", "custom_field"),
-    logger_vals = c(logger_name = "name", "user"),
+    event_vals = c("level", "timestamp", "msg", "custom_field", "logger_name", "user"),
     col_types =  c(
       timestamp = "timestamp",
       user = "varchar(256)",
@@ -104,20 +101,14 @@ test_that("LayoutDbi works with custom fields", {
   # custom fields
     te3 <- tevent$clone()
     te3$foo <- "blah"
-    lo <- LayoutDbi$new(
-      event_vals  = c(event_foo = "foo"),
-      logger_vals = c(logger_user = "user")
-    )
+    lo <- LayoutDbi$new(event_vals  = c(event_foo = "foo"))
     expect_identical(
       lo$format_event(te3),
-      data.frame(event_foo = "blah", logger_user = "testuser", stringsAsFactors = FALSE)
+      data.frame(event_foo = "blah", stringsAsFactors = FALSE)
     )
 
   # no fields
-    lo <- LayoutDbi$new(
-      event_vals  = character(),
-      logger_vals = character()
-    )
+    lo <- LayoutDbi$new(event_vals  = character())
     expect_identical(lo$format_event(x), data.frame())
 })
 
@@ -125,14 +116,13 @@ test_that("LayoutDbi works with custom fields", {
 
 
 test_that("LayoutJson works as expected", {
-  lo <- LayoutJson$new(
-    logger_vals = c(logger_user = "user")
-  )
+  lo <- LayoutJson$new()
 
   x <- tevent$clone()
   x$foo <- "bar"
+  x$user <- "testuser"
 
-  eres <- c(x$values, logger_user = x$logger$user, foo = "bar")
+  eres <- x$values
   json <- lo$format_event(x)
   tres <- jsonlite::fromJSON(json)
 
@@ -149,19 +139,14 @@ test_that("LayoutJson works as expected", {
 
   # named event vals
   lo <- LayoutJson$new(
-    event_vals  = c(event_foo = "foo"),
-    logger_vals = c(logger_user = "user", "ancestry")
+    event_vals  = c(event_foo = "foo")
   )
-
   expect_match(lo$format_event(x), "event_foo")
-  expect_match(lo$format_event(x), "logger_user")
-  expect_match(lo$format_event(x), "ancestry")
 
 
   # no vals
   lo <- LayoutJson$new(
-    event_vals  = character(),
-    logger_vals = character()
+    event_vals  = character()
   )
   expect_identical(as.character(lo$format_event(x)), "{}")
 })

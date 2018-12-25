@@ -181,10 +181,6 @@ LayoutFormat <- R6::R6Class(
 #'   \item{`event_vals`}{Names of the fields of the [LogEvent]
 #'     to include in the output object.
 #'   }
-#'
-#'   \item{`logger_vals`}{Names of the fields of the [Logger] that produced the
-#'     [LogEvent] to include in the output object.
-#'   }
 #' }
 #'
 #'
@@ -210,17 +206,6 @@ LayoutTable <- R6::R6Class(
       invisible(self)
     },
 
-    set_logger_vals = function(x){
-      assert(
-        is.character(x) || (length(x) == 0 && !is.null(x)),
-        "'logger_vals' must be a character vector. For no logger vals use the",
-        "empty character vector: `character()`"
-      )
-
-      private$.logger_vals <- x
-      invisible(self)
-    },
-
     set_val_names = function(x){
       assert(is.null(x) || is.character(x))
       private$.val_names <- x
@@ -231,13 +216,11 @@ LayoutTable <- R6::R6Class(
 
   active = list(
     event_vals  = function() get(".event_vals", private),
-    logger_vals = function() get(".logger_vals", private),
     val_names   = function() get(".val_names", private)
   ),
 
   private = list(
     .event_vals  = NULL,
-    .logger_vals = NULL,
     .val_names   = NULL
   )
 )
@@ -250,7 +233,7 @@ LayoutTable <- R6::R6Class(
 
 #' Format Log Events for Output to Databases
 #'
-#' Format a [LogEvent] as `data.frame` for inserting into a Database.
+#' Format a [LogEvent] as `data.frame` for inserting into a relational database.
 #'
 #' @eval r6_usage(LayoutDbi)
 #'
@@ -259,9 +242,10 @@ LayoutTable <- R6::R6Class(
 #' @section Creating a New Layout:
 #' \describe{
 #'   \item{`col_types`}{a named `character` vector of column types supported by
-#'     the target database. Must include all columns described in `event_vals`,
-#'     `logger_vals`. If a new database table is created by
-#'     LayoutDbi its column order will correspond to the order of `col_types`.
+#'     the target database. This information is used by [AppenderDbi]
+#'     or similar Appenders to create a new database table, either on
+#'     instantion of the Appender or on writing of the first LogEvent.
+#'     Must include all columns described in `event_vals`.
 #'   }
 #' }
 #'
@@ -317,11 +301,8 @@ LayoutTable <- R6::R6Class(
 #' # advanced example that supports a custom_field:
 #' lo <- LayoutDbi$new(
 #'   event_vals = c("level", "timestamp", "msg", "custom_field"),
-#'   logger_vals = c(logger_name = "name", "user"),
 #'   col_types =  c(
 #'     timestamp = "timestamp",
-#'     user = "varchar(256)",
-#'     logger_name = "varchar(256)",
 #'     level = "smallint",
 #'     msg = "varchar(2048)",
 #'     custom_field = "integer"
@@ -351,24 +332,19 @@ LayoutDbi <- R6::R6Class(
   public = list(
     initialize = function(
       event_vals  = c("level", "timestamp", "caller", "msg"),
-      logger_vals = character(),
       col_types = NULL
     ){
       event_vals  <- name_vals(event_vals)
-      logger_vals <- name_vals(logger_vals)
-      val_names   <- c(names(event_vals), c(names(logger_vals)))
 
       if (!is.null(col_types))
-        assert_colnames_match_valnames(names(col_types), val_names)
+        assert_colnames_match_valnames(names(col_types), names(event_vals))
 
       self$set_event_vals(event_vals)
-      self$set_logger_vals(logger_vals)
       self$set_col_types(col_types)
     },
 
     format_event = function(event){
       ev <- get(".event_vals", private)
-      lv <- get(".logger_vals", private)
 
       if (length(ev)){
         vals <- mget(ev, event, ifnotfound = NA)
@@ -379,12 +355,6 @@ LayoutDbi <- R6::R6Class(
         } else {
           vals <- c()
         }
-      }
-
-      if (length(lv)){
-        valsl  <- mget(lv, get("logger", event), ifnotfound = NA)
-        names(valsl) <- names(lv)
-        vals <- c(vals, valsl)
       }
 
       ct <- get(".col_types", private)
@@ -437,7 +407,6 @@ LayoutSqlite <- R6::R6Class(
   public = list(
     format_event = function(event) {
       ev <- get(".event_vals", private)
-      lv <- get(".logger_vals", private)
 
       if (length(ev)){
         vals <- mget(ev, event, ifnotfound = NA)
@@ -450,11 +419,6 @@ LayoutSqlite <- R6::R6Class(
         }
       }
 
-      if (length(lv)){
-        valsl  <- mget(lv, get("logger", event), ifnotfound = NA)
-        names(valsl) <- names(lv)
-        vals <- c(vals, valsl)
-      }
 
       ct <- get(".col_types", private)
       if (length(ct)){
@@ -483,9 +447,12 @@ LayoutRjdbc <- LayoutSqlite
 # +- LayoutDBI utils ------------------------------------------------------
 
 #' @export
-select_dbi_layout <- function(conn){
+select_dbi_layout <- function(conn, table){
   cls <- c(class(conn))
-  switch(
+
+  event_vals <-
+
+  ctor <- switch(
     cls,
     "SQLiteConnection" = LayoutSqlite$new(),
     "JDBCConnection" = LayoutSqlite$new(
@@ -498,6 +465,10 @@ select_dbi_layout <- function(conn){
     ),
     LayoutDbi$new()
   )
+
+
+
+
 }
 
 # LayoutJson --------------------------------------------------------------
@@ -544,11 +515,9 @@ select_dbi_layout <- function(conn){
 #' lo$format_event(event)
 #'
 #'
-#' # Values from the LogEvent can be suppressed, and values from the Logger
-#' # can be added
+#' # Values from the LogEvent can be suppressed
 #' lo <- LayoutJson$new(
-#'   event_vals = c("level", "timestamp", "msg"),
-#'   logger_vals = c("user", logger_name = "name")
+#'   vals = c("level", "timestamp", "msg")
 #' )
 #' lo$format_event(event)
 #'
@@ -564,21 +533,17 @@ LayoutJson <- R6::R6Class(
   public = list(
     initialize = function(
       event_vals  = NULL,
-      logger_vals = character(),
       toJSON_args = list(auto_unbox = TRUE)
     ){
       # init
       event_vals  <- name_vals(event_vals)
-      logger_vals <- name_vals(logger_vals)
 
       self$set_event_vals(event_vals)
-      self$set_logger_vals(logger_vals)
       self$set_toJSON_args(toJSON_args)
     },
 
     format_event = function(event) {
       ev <- get(".event_vals", private)
-      lv <- get(".logger_vals", private)
 
       if (length(ev)){
         vals <- mget(ev, event, ifnotfound = NA)
@@ -589,12 +554,6 @@ LayoutJson <- R6::R6Class(
         } else {
           vals <- c()
         }
-      }
-
-      if (length(lv)){
-        valsl  <- mget(lv, get("logger", event), ifnotfound = NA)
-        names(valsl) <- names(lv)
-        vals <- c(vals, valsl)
       }
 
       do.call(jsonlite::toJSON, args = c(list(vals), get(".toJSON_args", private)))
