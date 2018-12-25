@@ -21,16 +21,6 @@ test_that("active bindings", {
 
 
 
-test_that("set_appenders", {
-  ml <- Logger$new("test_logger")
-
-  ml$set_appenders(list(AppenderBuffer$new(), AppenderConsole$new()))
-  expect_length(ml$appenders, 2)
-  ml$set_appenders(list(AppenderBuffer$new(), AppenderConsole$new()))
-  expect_length(ml$appenders, 2)
-
-})
-
 
 
 test_that("basic logging", {
@@ -114,18 +104,26 @@ test_that("add/remove appenders", {
   app1 <- AppenderConsole$new(threshold = 100)
   app2 <- AppenderConsole$new(threshold = 300)
 
+  # add
   ml$add_appender(app1)
   ml$add_appender(app2, "blah")
   ml$add_appender(AppenderDt$new(), "blubb")
-
-  # because the now have the logger proerty set
   expect_identical(ml$appenders[[2]], app1)
   expect_identical(ml$appenders$blah, app2)
 
+  # remove
   ml$remove_appender(2)
-  expect_identical(length(ml$appenders), 3L)
+  expect_length(ml$appenders, 3)
   ml$remove_appender(c("blah", "blubb"))
-  expect_identical(length(ml$appenders), 1L)
+  expect_length(ml$appenders, 1L)
+
+  # set
+  ml$set_appenders(list(app1, app2))
+  expect_length(ml$appenders, 2)
+  ml$set_appenders(list(app1, app2))
+  expect_length(ml$appenders, 2)
+  expect_identical(ml$appenders[[1]], app1)
+  expect_identical(ml$appenders[[2]], app2)
 })
 
 

@@ -100,6 +100,17 @@ test_that("AppenderConsole works as expected", {
 
 
 
+
+test_that("Appender: filters work", {
+  app1 <- AppenderConsole$new()
+  expect_true(app1$filter(x))
+  app1$set_filters(list(function(event, obj) FALSE))
+  expect_false(app1$filter(x))
+})
+
+
+
+
 # AppenderDt ----------------------------------------------------------
 
 test_that("AppenderDt: appending multiple rows works", {
@@ -186,6 +197,26 @@ test_that("AppenderDt: works with list columns", {
     c("logical", "environment", "data.frame", "data.frame", "logical")
   )
 })
+
+
+
+test_that("AppenderDt: memory cycling works", {
+  app1 <- AppenderDt$new(buffer_size = 10)
+  replicate(12, app1$append(x))
+  expect_equal(app1$data$.id, 3:12)
+  r1 <- app1$data
+
+  # bulk insert behaves like sepparate inserts
+  app2 <- AppenderDt$new(buffer_size = 10)
+  y <- x$clone()
+  y$msg <- rep(y$msg, 12)
+
+  app2$append(y)
+  expect_equal(app2$data$.id,  3:12)
+  expect_equal(app2$data, r1)
+})
+
+
 
 
 # AppenderBuffer ----------------------------------------------------
@@ -298,28 +329,36 @@ test_that("AppenderBuffer: dont flush on object destruction if switched of", {
 
 
 
-test_that("AppenderMemory: memory cycling works", {
-  app1 <- AppenderDt$new(buffer_size = 10)
-  replicate(12, app1$append(x))
-  expect_equal(app1$data$.id, 3:12)
-  r1 <- app1$data
 
-  # bulk insert behaves like sepparate inserts
-  app2 <- AppenderDt$new(buffer_size = 10)
-  y <- x$clone()
-  y$msg <- rep(y$msg, 12)
+test_that("AppenderBuffer: add/remove appenders", {
+  sapp  <- AppenderBuffer$new()
+  app1 <- AppenderConsole$new(threshold = 100)
+  app2 <- AppenderConsole$new(threshold = 300)
 
-  app2$append(y)
-  expect_equal(app2$data$.id,  3:12)
-  expect_equal(app2$data, r1)
+  # add
+  expect_silent({
+    sapp$add_appender(app1)
+    sapp$add_appender(app2, "blah")
+    sapp$add_appender(AppenderDt$new(), "blubb")
+  })
+  expect_identical(sapp$appenders[[1]], app1)
+  expect_identical(sapp$appenders$blah, app2)
+
+  # remove
+  sapp$remove_appender(1)
+  expect_length(sapp$appenders, 2L)
+  sapp$remove_appender(c("blah", "blubb"))
+
+  # set appenders
+  sapp$set_appenders(list(app1, app2))
+  expect_length(sapp$appenders, 2)
+  sapp$set_appenders(list(app1, app2))
+  expect_length(sapp$appenders, 2)
+  expect_identical(sapp$appenders[[1]], app1)
+  expect_identical(sapp$appenders[[2]], app2)
 })
 
 
 
 
-test_that("Appender: filters work", {
-  app1 <- AppenderConsole$new()
-  expect_true(app1$filter(x))
-  app1$set_filters(list(function(event, obj) FALSE))
-  expect_false(app1$filter(x))
-})
+

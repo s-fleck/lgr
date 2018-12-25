@@ -1,3 +1,4 @@
+R/use_logger.R
 R/utils*.R
 R/yog-package.R
 
