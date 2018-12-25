@@ -7,8 +7,7 @@
 Format a LogEvent as JSON
 }
 \section{Usage}{
-\preformatted{x <- LayoutJson$new(event_vals = NULL, logger_vals = character(),
-  toJSON_args = list(auto_unbox = TRUE))
+\preformatted{x <- LayoutJson$new(event_values = NULL, toJSON_args = list(auto_unbox = TRUE))
 
 x$format_event(event)
 x$set_toJSON_args(x)
@@ -27,12 +26,8 @@ x$toJSON_args
 
 
 \describe{
-\item{\code{event_vals}}{Names of the fields of the \link{LogEvent}
+\item{\code{event_values}}{Names of the fields of the \link{LogEvent}
 to include in the output object.
-}
-
-\item{\code{logger_vals}}{Names of the fields of the \link{Logger} that produced the
-\link{LogEvent} to include in the output object.
 }
 }
 }
@@ -68,11 +63,9 @@ lo <- LayoutJson$new()
 lo$format_event(event)
 
 
-# Values from the LogEvent can be suppressed, and values from the Logger
-# can be added
+# Values from the LogEvent can be suppressed
 lo <- LayoutJson$new(
-  event_vals = c("level", "timestamp", "msg"),
-  logger_vals = c("user", logger_name = "name")
+  event_values = c("level", "timestamp", "msg")
 )
 lo$format_event(event)
 

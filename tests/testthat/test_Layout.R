@@ -42,20 +42,20 @@ test_that("LayoutDbi works as expected", {
 
   expect_error(
     lo <- LayoutDbi$new(
-      event_vals = c("level", "timestamp", "msg"),
+      event_values = c("level", "timestamp", "msg"),
       col_types = col_types
     ), "foo"
   )
 
   expect_error(
     lo <- LayoutDbi$new(
-      event_vals = c("level", "timestamp", "msg", "foo", "caller"),
+      event_values = c("level", "timestamp", "msg", "foo", "caller"),
       col_types = col_types
     ), "caller"
   )
 
   lo <- LayoutDbi$new(
-    event_vals = c("level", "timestamp", "msg", "foo", "user"),
+    event_values = c("level", "timestamp", "msg", "foo", "user"),
     col_types = col_types
   )
 
@@ -81,7 +81,7 @@ test_that("LayoutDbi works as expected", {
 
 test_that("LayoutDbi works with custom fields", {
   lo <- LayoutDbi$new(
-    event_vals = c("level", "timestamp", "msg", "custom_field", "logger_name", "user"),
+    event_values = c("level", "timestamp", "msg", "custom_field", "logger_name", "user"),
     col_types =  c(
       timestamp = "timestamp",
       user = "varchar(256)",
@@ -94,21 +94,21 @@ test_that("LayoutDbi works with custom fields", {
 
   tres1 <- lo$format_event(tevent)
   expect_identical(names(tres1), names(lo$col_types))
-  expect_setequal(names(tres1), c(names(lo$event_vals), names(lo$logger_vals)))
+  expect_setequal(names(tres1), lo$event_values)
   expect_true(is.na(tres1$custom_field))
 
 
   # custom fields
     te3 <- tevent$clone()
     te3$foo <- "blah"
-    lo <- LayoutDbi$new(event_vals  = c(event_foo = "foo"))
+    lo <- LayoutDbi$new(event_values  = "foo")
     expect_identical(
       lo$format_event(te3),
-      data.frame(event_foo = "blah", stringsAsFactors = FALSE)
+      data.frame(foo = "blah", stringsAsFactors = FALSE)
     )
 
   # no fields
-    lo <- LayoutDbi$new(event_vals  = character())
+    lo <- LayoutDbi$new(event_values  = character())
     expect_identical(lo$format_event(x), data.frame())
 })
 
@@ -138,15 +138,13 @@ test_that("LayoutJson works as expected", {
 
 
   # named event vals
-  lo <- LayoutJson$new(
-    event_vals  = c(event_foo = "foo")
-  )
-  expect_match(lo$format_event(x), "event_foo")
+  lo <- LayoutJson$new(event_values  = "foo")
+  expect_match(lo$format_event(x), "foo")
 
 
   # no vals
   lo <- LayoutJson$new(
-    event_vals  = character()
+    event_values  = character()
   )
   expect_identical(as.character(lo$format_event(x)), "{}")
 })

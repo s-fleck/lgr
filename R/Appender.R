@@ -1,3 +1,5 @@
+#* @testfile test_AppenderDbi.R
+
 #' Abstract Class for Appenders
 #'
 #' Abstract classes are exported for developers that want to extend them, they
@@ -642,7 +644,18 @@ AppenderDt <- R6::R6Class(
 
 #' Log to Databases via DBI
 #'
-#' Log to a database table with any **DBI** compatabile backend.
+#' Log to a database table with any **DBI** compatabile backend. AppenderDbi
+#' does *not* support case sensitive / quoted column names.
+#'
+#'
+#' @section DBI Layouts:
+#'
+#' Layouts for relational database tables are tricky as they have very strict
+#' column types and sizes, and on top of that details vary between
+#' database backends. To make setting up AppenderDbi as
+#' painless as possible, the helper function `select_dbi_layout()` tries
+#' to automatically determine sensible [LayoutDbi] settings based on `conn`,
+#' and, if it exists in the database already, `table`.
 #'
 #' @eval r6_usage(AppenderDbi)
 #'
@@ -650,7 +663,7 @@ AppenderDt <- R6::R6Class(
 #' @section Creating a New Appender:
 #'
 #' \describe{
-#'   \item{conn}{a DBI connection}
+#'   \item{`conn`}{a [DBI connection][DBI::dbConnect]}
 #'  }
 #'
 #' @inheritSection AppenderTable Fields and Methods
@@ -681,22 +694,31 @@ AppenderDbi <- R6::R6Class(
       conn,
       table,
       threshold = NA_integer_,
-      layout = select_dbi_layout(conn),
+      layout = select_dbi_layout(conn, table),
       close_on_exit = TRUE
     ){
       assert_namespace("DBI")
       self$set_threshold(threshold)
       self$set_layout(layout)
       self$set_close_on_exit(close_on_exit)
+
       private$.conn  <- conn
       private$.table <- table
 
-      table_exists <- DBI::dbExistsTable(self$conn, table)
-
-      if (table_exists){
-        message("Logging to existing table '", table, "'")
+      if (DBI::dbExistsTable(self$conn, table)){
+        # do nothing
       } else if (is.null(self$layout$col_types)) {
-        message("Creating '", table, "' on first log")
+        msg <- paste("Creating '", table, "' on first log.")
+        if (!setequal(layout$event_values, default_fields)){
+          warning(
+            msg,
+            "The Layout contains custom fields, but no `col_types`. ",
+            "The column types will be determined automaticaly",
+            "when the first event is beeing logged to the database table."
+          )
+        } else {
+          message(msg)
+        }
       } else {
         message("Creating '", table, "' with manual column types")
         DBI::dbExecute(conn, layout$sql_create_table(table))
@@ -734,7 +756,6 @@ AppenderDbi <- R6::R6Class(
 
       print(tail(dd[dd$level <= threshold, ], n))
     },
-
 
     append = function(event){
       dd <- private$.layout$format_event(event)

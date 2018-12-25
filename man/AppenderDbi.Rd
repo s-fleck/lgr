@@ -4,11 +4,23 @@
 \alias{AppenderDbi}
 \title{Log to Databases via DBI}
 \description{
-Log to a database table with any \strong{DBI} compatabile backend.
+Log to a database table with any \strong{DBI} compatabile backend. AppenderDbi
+does \emph{not} support case sensitive / quoted column names.
 }
+\section{DBI Layouts}{
+
+
+Layouts for relational database tables are tricky as they have very strict
+column types and sizes, and on top of that details vary between
+database backends. To make setting up AppenderDbi as
+painless as possible, the helper function \code{select_dbi_layout()} tries
+to automatically determine sensible \link{LayoutDbi} settings based on \code{conn},
+and, if it exists in the database already, \code{table}.
+}
+
 \section{Usage}{
 \preformatted{x <- AppenderDbi$new(conn, table, threshold = NA_integer_,
-  layout = select_dbi_layout(conn), close_on_exit = TRUE)
+  layout = select_dbi_layout(conn, table), close_on_exit = TRUE)
 
 x$set_close_on_exit(x)
 x$show(n = 20, threshold = NA_integer_)
@@ -27,7 +39,7 @@ x$table
 
 
 \describe{
-\item{conn}{a DBI connection}
+\item{\code{conn}}{a \link[DBI:dbConnect]{DBI connection}}
 }
 
 

@@ -178,7 +178,7 @@ LayoutFormat <- R6::R6Class(
 #' @section Creating a New Layout:
 #'
 #' \describe{
-#'   \item{`event_vals`}{Names of the fields of the [LogEvent]
+#'   \item{`event_values`}{Names of the fields of the [LogEvent]
 #'     to include in the output object.
 #'   }
 #' }
@@ -200,9 +200,9 @@ LayoutTable <- R6::R6Class(
   public = list(
     format_event = function(event) { as.data.frame(event) },
 
-    set_event_vals = function(x){
+    set_event_values = function(x){
       assert(is.character(x) || is.null(x))
-      private$.event_vals <- x
+      private$.event_values <- x
       invisible(self)
     },
 
@@ -215,12 +215,12 @@ LayoutTable <- R6::R6Class(
   ),
 
   active = list(
-    event_vals  = function() get(".event_vals", private),
+    event_values  = function() get(".event_values", private),
     val_names   = function() get(".val_names", private)
   ),
 
   private = list(
-    .event_vals  = NULL,
+    .event_values  = NULL,
     .val_names   = NULL
   )
 )
@@ -245,7 +245,8 @@ LayoutTable <- R6::R6Class(
 #'     the target database. This information is used by [AppenderDbi]
 #'     or similar Appenders to create a new database table, either on
 #'     instantion of the Appender or on writing of the first LogEvent.
-#'     Must include all columns described in `event_vals`.
+#'     If not null, it must include *all* columns described in `event_values`, and
+#'     it will decide the column order of the `$format_event()` output.
 #'   }
 #' }
 #'
@@ -300,7 +301,7 @@ LayoutTable <- R6::R6Class(
 #'
 #' # advanced example that supports a custom_field:
 #' lo <- LayoutDbi$new(
-#'   event_vals = c("level", "timestamp", "msg", "custom_field"),
+#'   event_values = c("level", "timestamp", "msg", "custom_field"),
 #'   col_types =  c(
 #'     timestamp = "timestamp",
 #'     level = "smallint",
@@ -331,24 +332,21 @@ LayoutDbi <- R6::R6Class(
   inherit = LayoutTable,
   public = list(
     initialize = function(
-      event_vals  = c("level", "timestamp", "caller", "msg"),
+      event_values  = c("level", "timestamp", "caller", "msg"),
       col_types = NULL
     ){
-      event_vals  <- name_vals(event_vals)
-
       if (!is.null(col_types))
-        assert_colnames_match_valnames(names(col_types), names(event_vals))
+        assert_colnames_match_valnames(names(col_types), event_values)
 
-      self$set_event_vals(event_vals)
+      self$set_event_values(event_values)
       self$set_col_types(col_types)
     },
 
     format_event = function(event){
-      ev <- get(".event_vals", private)
+      ev <- get(".event_values", private)
 
       if (length(ev)){
         vals <- mget(ev, event, ifnotfound = NA)
-        names(vals) <- names(ev)
       } else {
         if (is.null(ev)){
           vals <- get("values", event)
@@ -406,11 +404,10 @@ LayoutSqlite <- R6::R6Class(
   inherit = LayoutDbi,
   public = list(
     format_event = function(event) {
-      ev <- get(".event_vals", private)
+      ev <- get(".event_values", private)
 
       if (length(ev)){
         vals <- mget(ev, event, ifnotfound = NA)
-        names(vals) <- names(ev)
       } else {
         if (is.null(ev)){
           vals <- get("values", event)
@@ -422,11 +419,14 @@ LayoutSqlite <- R6::R6Class(
 
       ct <- get(".col_types", private)
       if (length(ct)){
+        if (!setequal(names(vals), names(ct))){
+          browser()
+        }
         assert(setequal(names(vals), names(ct)))
         vals <- vals[names(private$.col_types)]
       }
 
-      vals <- lapply(
+      vals[] <- lapply(
         vals,
         function(.x) if (inherits(.x, "POSIXt")) format(.x) else .x
       )
@@ -447,28 +447,46 @@ LayoutRjdbc <- LayoutSqlite
 # +- LayoutDBI utils ------------------------------------------------------
 
 #' @export
-select_dbi_layout <- function(conn, table){
+select_dbi_layout <- function(
+  conn,
+  table
+){
   cls <- c(class(conn))
 
-  event_vals <-
-
-  ctor <- switch(
+  res <- switch(
     cls,
-    "SQLiteConnection" = LayoutSqlite$new(),
-    "JDBCConnection" = LayoutSqlite$new(
+    "SQLiteConnection" = LayoutSqlite$new(
+      event_values = c("level", "timestamp",  "caller", "msg"),
+      col_types = c(
+        level = "integer",
+        timestamp = "character",
+        caller = "character",
+        msg = "character"
+      )),
+    "JDBCConnection" = LayoutRjdbc$new(
+      event_values = c("level", "timestamp",  "caller", "msg"),
       col_types = c(
         level = "smallint",
         timestamp = "timestamp",
         caller = "varchar(1024)",
         msg = "varchar(2048)"
-      )
-    ),
-    LayoutDbi$new()
+      )),
+    LayoutDbi$new(event_values = c("level", "timestamp",  "caller", "msg"))
   )
 
+  db_names <- tryCatch({
+    DBI::dbListFields(conn, table)
+  },
+    error = function(e) NULL
+  )
+
+  if (!is.null(db_names)){
+    res$set_col_types(NULL)
+    res$set_event_values(db_names)
+  }
 
 
-
+  res
 }
 
 # LayoutJson --------------------------------------------------------------
@@ -517,7 +535,7 @@ select_dbi_layout <- function(conn, table){
 #'
 #' # Values from the LogEvent can be suppressed
 #' lo <- LayoutJson$new(
-#'   vals = c("level", "timestamp", "msg")
+#'   event_values = c("level", "timestamp", "msg")
 #' )
 #' lo$format_event(event)
 #'
@@ -532,18 +550,17 @@ LayoutJson <- R6::R6Class(
   inherit = LayoutTable,
   public = list(
     initialize = function(
-      event_vals  = NULL,
+      event_values  = NULL,
       toJSON_args = list(auto_unbox = TRUE)
     ){
       # init
-      event_vals  <- name_vals(event_vals)
-
-      self$set_event_vals(event_vals)
+      event_values  <- name_vals(event_values)
+      self$set_event_values(event_values)
       self$set_toJSON_args(toJSON_args)
     },
 
     format_event = function(event) {
-      ev <- get(".event_vals", private)
+      ev <- get(".event_values", private)
 
       if (length(ev)){
         vals <- mget(ev, event, ifnotfound = NA)

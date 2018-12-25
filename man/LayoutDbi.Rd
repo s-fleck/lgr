@@ -6,11 +6,11 @@
 \alias{select_dbi_layout}
 \title{Format Log Events for Output to Databases}
 \description{
-Format a \link{LogEvent} as \code{data.frame} for inserting into a Database.
+Format a \link{LogEvent} as \code{data.frame} for inserting into a relational database.
 }
 \section{Usage}{
-\preformatted{x <- LayoutDbi$new(event_vals = c("level", "timestamp", "caller", "msg"),
-  logger_vals = character(), col_types = NULL)
+\preformatted{x <- LayoutDbi$new(event_values = c("level", "timestamp", "caller", "msg"),
+  col_types = NULL)
 
 x$format_event(event)
 x$set_col_types(x)
@@ -26,21 +26,19 @@ x$col_types
 
 \describe{
 \item{\code{col_types}}{a named \code{character} vector of column types supported by
-the target database. Must include all columns described in \code{event_vals},
-\code{logger_vals}. If a new database table is created by
-LayoutDbi its column order will correspond to the order of \code{col_types}.
+the target database. This information is used by \link{AppenderDbi}
+or similar Appenders to create a new database table, either on
+instantion of the Appender or on writing of the first LogEvent.
+If not null, it must include \emph{all} columns described in \code{event_values}, and
+it will decide the column order of the \code{$format_event()} output.
 }
 }
 
 
 
 \describe{
-\item{\code{event_vals}}{Names of the fields of the \link{LogEvent}
+\item{\code{event_values}}{Names of the fields of the \link{LogEvent}
 to include in the output object.
-}
-
-\item{\code{logger_vals}}{Names of the fields of the \link{Logger} that produced the
-\link{LogEvent} to include in the output object.
 }
 }
 }
@@ -97,12 +95,9 @@ str(lo$format_event(event))
 
 # advanced example that supports a custom_field:
 lo <- LayoutDbi$new(
-  event_vals = c("level", "timestamp", "msg", "custom_field"),
-  logger_vals = c(logger_name = "name", "user"),
+  event_values = c("level", "timestamp", "msg", "custom_field"),
   col_types =  c(
     timestamp = "timestamp",
-    user = "varchar(256)",
-    logger_name = "varchar(256)",
     level = "smallint",
     msg = "varchar(2048)",
     custom_field = "integer"

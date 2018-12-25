@@ -9,6 +9,7 @@ r_binary_packages:
   - RMariaDB
   - RMySQL
   - RPostgreSQL
+  - RPostgres
 services:
   - postgresql
   - mysql
@@ -17,4 +18,4 @@ after_success:
   - Rscript -e 'devtools::install();devtools::test()'
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS travis_ci_test;'
+  - mysql -e 'CREATE DATABASE travis_ci_test;'

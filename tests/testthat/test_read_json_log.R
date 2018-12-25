@@ -3,9 +3,7 @@ context("read_json_lines")
 
 test_that("read_json_lines works as expected", {
   tf <- tempfile()
-  lo <- LayoutJson$new(
-    logger_vals = c(logger_user = "user")
-  )
+  lo <- LayoutJson$new()
   lgr <- Logger$new(
     "test",
     appenders = AppenderFile$new(layout = lo, file = tf),
@@ -22,7 +20,7 @@ test_that("read_json_lines works as expected", {
 
   tres <- read_json_lines(tf)
 
-  expect_identical(names(tres), c("level", "timestamp", "caller", "msg", "logger_user"))
+  expect_identical(names(tres), c("level", "timestamp", "caller", "msg"))
   expect_true(all(tres$level == seq(100, 600, by = 100)))
   file.remove(tf)
 })

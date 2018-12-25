@@ -199,3 +199,10 @@ as_tibble.LogEvent <- function(
   values[needs_boxing] <- lapply(values[needs_boxing], function(.x) list(.x))
   tibble::as_tibble(values)
 }
+
+
+
+
+# global variables --------------------------------------------------------
+
+default_fields <- c("level", "timestamp", "caller", "msg")

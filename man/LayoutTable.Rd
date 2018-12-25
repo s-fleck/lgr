@@ -12,12 +12,8 @@ from LayoutTabel.
 
 
 \describe{
-\item{\code{event_vals}}{Names of the fields of the \link{LogEvent}
+\item{\code{event_values}}{Names of the fields of the \link{LogEvent}
 to include in the output object.
-}
-
-\item{\code{logger_vals}}{Names of the fields of the \link{Logger} that produced the
-\link{LogEvent} to include in the output object.
 }
 }
 }

@@ -3,6 +3,18 @@
 dt_sp <- options("datatable.showProgress")
 options("datatable.showProgress" = FALSE)
 
+
+
+
+# RDBMS batch tests -------------------------------------------------------
+
+
+# +- setup ----------------------------------------------------------------
+
+
+
+tsqlite <- tempfile()
+
 dbs <- list(
   "MySQL via RMySQL" = list(
     conn = try(silent = TRUE, DBI::dbConnect(
@@ -24,9 +36,19 @@ dbs <- list(
     ctor = AppenderDbi
   ),
 
-  "PostgreSQL" = list(
+  "PostgreSQL via RPostgreSQL" = list(
     conn = try(silent = TRUE, DBI::dbConnect(
       RPostgreSQL::PostgreSQL(),
+      host = "localhost",
+      dbname = "travis_ci_test"
+    )),
+    ctor = AppenderDbi
+  ),
+
+  "PostgreSQL via RPostgres" = list(
+    conn = try(silent = TRUE, DBI::dbConnect(
+      RPostgreSQL::PostgreSQL(),
+      user = "postgres",
       host = "localhost",
       dbname = "travis_ci_test"
     )),
@@ -39,21 +61,24 @@ dbs <- list(
   ),
 
   "SQLite via RSQLite" = list(
-    conn = DBI::dbConnect(RSQLite::SQLite(), ":memory:"),
+    conn = DBI::dbConnect(RSQLite::SQLite(), database = tsqlite),
     ctor = AppenderDbi
   )
 )
 
 options("datatable.showProgress" = dt_sp)
 
+nm <- "PostgreSQL via RPostgres"
 
+
+# +- tests -------------------------------------------------------------------
 
 for (nm in names(dbs)){
   conn <- dbs[[nm]]$conn
   ctor <- dbs[[nm]]$ctor
   title <- paste(ctor$classname, "/", nm)
-
   context(title)
+
   if (inherits(conn, "try-error")) {
     test_that(title, {trimws(strwrap(skip(conn)))})
     next
@@ -111,6 +136,95 @@ for (nm in names(dbs)){
   })
 
 
+  # custom fields
+  test_that("Creating tables with custom fields works", {
+    try(DBI::dbRemoveTable(conn, "logging_test_create"), silent = TRUE)
+
+    lg <- Logger$new(
+      "test_dbi",
+      threshold = "trace",
+      propagate = FALSE,
+      exception_handler = function (...) stop(...)
+    )
+
+    expect_warning(
+      lg$add_appender(
+        AppenderDbi$new(
+          conn = conn,
+          table = "logging_test_create",
+          layout = LayoutSqlite$new(
+            event_values = c("level", "timestamp", "msg", "caller", "foo")
+          ),
+          close_on_exit = FALSE
+        ), "db"
+      ),
+      "Creating"
+    )
+
+    lg$fatal("test", foo = "bar")
+    expect_false(is.na(lg$appenders$db$data$foo[[1]]))
+    lg$fatal("test")
+    expect_true(is.na(lg$appenders$db$data$foo[[2]]))
+    lg$remove_appender("db")
+  })
+
+
+  test_that("Logging to only selected columns works", {
+    lg <- Logger$new(
+      "test_dbi",
+      threshold = "trace",
+      propagate = FALSE,
+      exception_handler = function (...) stop(...)
+    )
+
+    expect_silent(
+      lg$add_appender(
+        AppenderDbi$new(
+          conn = conn,
+          table = "logging_test_create",
+          layout = LayoutSqlite$new(  # will work for SQLite and other DBs
+            event_values = c("level", "timestamp", "msg")
+          ),
+          close_on_exit = FALSE
+        ), "db"
+      )
+    )
+
+    lg$appenders$db$layout$format_event(lg$last_event)
+    lg$appenders$db$append(lg$last_event)
+    lg$fatal("test2")
+    expect_false(is.na(lg$appenders$db$data$caller[[2]]))
+    expect_true(is.na(lg$appenders$db$data$caller[[3]]))
+    lg$remove_appender("db")
+  })
+
+
+  test_that("Log to all fields that are already present n table by default", {
+    lg <- Logger$new(
+      "test_dbi",
+      threshold = "trace",
+      propagate = FALSE,
+      exception_handler = function (...) stop(...)
+    )
+
+    lg$set_appenders(list(db =
+      AppenderDbi$new(
+        conn = conn,
+        table = "logging_test_create",
+        close_on_exit = FALSE
+      ))
+    )
+    lg$fatal("test2", foo = "baz", blubb = "blah")
+    lg$appenders$db$layout$format_event(lg$last_event)
+    lg$appenders$db$append(lg$last_event)
+
+    debug(lg$appenders$db$layout$format_event)
+    expect_identical(tail(lg$appenders$db$data, 1)$foo, "baz")
+
+    try(DBI::dbRemoveTable(conn, "logging_test_create"), silent = TRUE)
+  })
+
+
   test_that("SQL is sanitzed", {
     msg <- ";*/;   \"' /* blubb;"
     e <- LogEvent$new(
@@ -136,6 +250,13 @@ for (nm in names(dbs)){
 }
 
 
+
+# +- teardown looped tests ---------------------------------------------------
+unlink(tsqlite)
+
+
+
+# SQLite extra tests ------------------------------------------------------
 
 
 context("AppenderDbi / SQLite: Extra Tests")
@@ -197,7 +318,7 @@ test_that("displaying logs works for Loggers", {
       appenders = list(db = AppenderDbi$new(conn = conn, table = tname, close_on_exit = FALSE)),
       propagate = FALSE
     ),
-    "Creating.*on first log"
+    "with manual column types"
   )
 
   lg$fatal("blubb")
@@ -255,3 +376,6 @@ test_that("Automatic closing of connections works", {
   gc()
   expect_silent(DBI::dbDisconnect(conn))
 })
+
+
+
