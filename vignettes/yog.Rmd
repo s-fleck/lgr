@@ -372,16 +372,6 @@ lg$appenders$cons$layout$set_fmt("%L (%n) [%t] %c(): !! %m !!")
 lg$info("A more involved custom format")
 ```
 
-More complex formats are possible with `LayoutGlue` powered by the awesome
-[glue](https://github.com/tidyverse/glue) package, at the cost of slightly
-worse performance.
-```{r}
-# install.packages("glue")
-
-# WIP
-```
-
-
 
 ## Logging to JSON files
 
@@ -399,8 +389,8 @@ format if you have very good reasons for it.
 # install.packages("jsonlite")
 tf <- tempfile()
 
-# AppenderJson is just a shortcut for AppenderFile with LayotJson as default
-# instead of Layout Format
+# AppenderJson is just an AppenderFile with LayotJson as default instead 
+# and a few extra features
 lg <- Logger$new(
   "test logger",
   appenders = AppenderJson$new(file = tf), 
