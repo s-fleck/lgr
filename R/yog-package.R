@@ -44,7 +44,7 @@
 
 
   # +- colors ------------------------------------------------------------------
-  if (requireNamespace("crayon", quietly = TRUE)){
+  if (requireNamespace("crayon", quietly = TRUE) && crayon::has_color()){
 
     style_error   <- crayon::make_style("#BB3333", colors = 256)
     style_fatal   <- function(...) style_error(crayon::bold(...))

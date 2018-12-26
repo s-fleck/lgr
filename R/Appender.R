@@ -1,5 +1,3 @@
-#* @testfile test_AppenderDbi.R
-
 #' Abstract Class for Appenders
 #'
 #' Abstract classes are exported for developers that want to extend them, they

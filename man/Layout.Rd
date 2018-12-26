@@ -21,8 +21,8 @@ usually formatted into a single character line.
 
 \seealso{
 Other Layouts: \code{\link{LayoutDbi}},
-  \code{\link{LayoutFormat}}, \code{\link{LayoutJson}},
-  \code{\link{LayoutTable}}
+  \code{\link{LayoutFormat}}, \code{\link{LayoutGlue}},
+  \code{\link{LayoutJson}}, \code{\link{LayoutTable}}
 }
 \concept{Layouts}
 \keyword{internal}

@@ -31,6 +31,30 @@ test_that("LayoutFormat works as expected", {
 
 
 
+test_that("LayoutGlue works as expected", {
+  # basic formatting works
+  lo <- LayoutGlue$new(fmt = "{level} [{timestamp}] msg")
+  expect_match(lo$format_event(tevent), "^200.*")
+
+  # active bindings work
+  lo <- LayoutGlue$new(fmt = "{level_name} [{timestamp}] msg")
+  expect_match(lo$format_event(tevent), "^error.*")
+
+  # functions work
+  lo <- LayoutGlue$new(fmt = "{toupper(level_name)} [{timestamp}] msg")
+  expect_match(lo$format_event(tevent), "^ERROR.*")
+
+  # default format works
+  lo <- LayoutGlue$new(fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)} [{timestamp}] msg")
+  expect_match(lo$format_event(tevent), "ERROR.*msg$")
+
+  if (crayon::has_color()){
+    expect_true(crayon::has_style(lo$format_event(tevent)))
+  }
+})
+
+
+
 test_that("LayoutDbi works as expected", {
   col_types <-  c(
     timestamp = "timestamp",

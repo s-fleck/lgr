@@ -29,3 +29,30 @@ test_that("labelling/unlabelling log levels is symetirc", {
   expect_warning(unlabel_levels(NA_character_))
   expect_warning(unlabel_levels("foo"))
 })
+
+
+
+
+test_that("colorize log levels works", {
+  if (!crayon::has_color()) skip("Terminal does not support colors")
+  # set colors manualy so that we also check on systems without real color support
+  colors <- list(
+    "fatal" = crayon::red,
+    "error" = crayon::blue,
+    "warn"  = crayon::yellow,
+    "debug" = crayon::silver,
+    "trace" = crayon::white
+  )
+
+  tdat <- setdiff(sample(seq(100, 600, by = 100)), 400)  # 400/info is not colored
+  tr1  <- colorize_levels(tdat, colors = colors)
+  walk(tr1, function(.x) expect_true(crayon::has_style(.x), info = .x))
+  tr2 <- colorize_levels(label_levels(tdat), colors = colors)
+  walk(tr2, function(.x) expect_true(crayon::has_style(.x), info = .x))
+
+
+  expect_true(is.null(colorize_levels(NULL)))
+  expect_identical(colorize_levels(integer()), integer())
+  expect_identical(colorize_levels(character()), character())
+  expect_identical(colorize_levels(tdat, NULL), tdat)
+})

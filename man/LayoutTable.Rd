@@ -28,7 +28,7 @@ to include in the output object.
 
 \seealso{
 Other Layouts: \code{\link{LayoutDbi}},
-  \code{\link{LayoutFormat}}, \code{\link{LayoutJson}},
-  \code{\link{Layout}}
+  \code{\link{LayoutFormat}}, \code{\link{LayoutGlue}},
+  \code{\link{LayoutJson}}, \code{\link{Layout}}
 }
 \concept{Layouts}

@@ -109,12 +109,13 @@ format.LogEvent <- function(
   # format
   len  <- length(tokens)
   res  <- vector("list", length(tokens))
+
   for(i in seq_len(len)){
     res[[i]] <- switch(
       tokens[[i]],
-      "%n" = colorize_levels(x$level, x$level, colors, unlabel_levels(names(colors), log_levels = log_levels  )),
-      "%l" = colorize_levels(lvls, x$level, colors, unlabel_levels(names(colors), log_levels = log_levels  )),
-      "%L" = colorize_levels(toupper(lvls), x$level, colors, unlabel_levels(names(colors), log_levels = log_levels )),
+      "%n" = colorize_levels(x$level, colors),
+      "%l" = colorize_levels(lvls, colors),
+      "%L" = colorize_levels(toupper(lvls), colors),
       "%t" = format(x$timestamp, format = timestamp_fmt),
       "%m" = x$msg,
       "%c" = x$caller %||% "(unknown function)",

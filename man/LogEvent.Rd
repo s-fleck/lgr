@@ -48,8 +48,9 @@ event
 
 \item{\code{...}}{All named arguments in \code{...} will be added to the LogEvent
 as \strong{custom fields}. You can store arbitrary \R objects in LogEvents
-this way, but not all Appenders will support them. See \link{AppenderJson} for
-an Appender that supports custom fields quite naturally}
+this way, but not all Appenders will support them.
+See \link{AppenderJson} for
+an Appender that supports custom fields quite naturally.}
 }
 
 Usually the above values will be scalars, but (except for \code{"logger"}) they

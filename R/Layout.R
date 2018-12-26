@@ -167,6 +167,105 @@ LayoutFormat <- R6::R6Class(
 
 
 
+# LayoutGlue ------------------------------------------------------------
+
+#' Format Log Events as Text
+#'
+#' Format a [LogEvent] as human readable text using [glue::glue]
+#'
+#' @eval r6_usage(LayoutGlue)
+#'
+#' @section Creating a New Layout:
+#'
+#'
+#' \describe{
+#'   \item{`fmt`}{see [format.LogEvent()]}
+#'   \item{`timestamp_fmt`}{see [base::format.POSIXct()]}
+#'   \item{`colors`}{see [format.LogEvent()]}
+#'   \item{`pad_levels`}{see [format.LogEvent()]}
+#'  }
+#'
+#'
+#' @inheritSection Layout Fields and Methods
+#'
+#'
+#' @name LayoutGlue
+#' @family Layouts
+#' @include Filterable.R
+#' @include log_levels.R
+#' @examples
+#'
+#' # setup a dummy LogEvent
+#' event <- LogEvent$new(
+#'   logger = Logger$new("dummy logger", user = "testuser"),
+#'   level = 200,
+#'   timestamp = Sys.time(),
+#'   caller = NA_character_,
+#'   msg = "a test message"
+#' )
+#' lo <- LayoutFormat$new()
+#' lo$format_event(event)
+#'
+NULL
+
+
+
+
+#' @export
+LayoutGlue <- R6::R6Class(
+  "LayoutGlue",
+  inherit = Layout,
+  public = list(
+    initialize = function(
+      fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)} [{timestamp}] msg",
+      colors = NULL
+    ){
+      assert_namespace("glue")
+      self$set_fmt(fmt)
+      self$set_colors(colors)
+    },
+
+    format_event = function(
+      event
+    ){
+      op <- parent.env(event)
+      on.exit(parent.env(event) <- op)
+      parent.env(event) <- environment()
+      unclass(glue::glue(get(".fmt", private), .envir = event))
+    },
+
+    set_fmt = function(x){
+      assert(is_scalar_character(x))
+      private$.fmt <- x
+      invisible(self)
+    },
+
+    set_colors = function(x){
+      assert(
+        is.null(x) || is.list(x),
+        "'colors' must either be NULL or a list of functions, not ",
+        class_fmt(x)
+      )
+      private$.colors <- x
+      invisible(self)
+    }
+  ),
+
+
+  active = list(
+    fmt = function()  private$.fmt,
+    colors = function() private$.colors
+  ),
+
+  private = list(
+    .fmt = NULL,
+    .colors = NULL
+  )
+)
+
+
+
+
 # LayoutTable -------------------------------------------------------------
 
 #' Abstract Class for Formatting Data as Tabular Structures
@@ -439,9 +538,12 @@ LayoutSqlite <- R6::R6Class(
 
 
 
+
 # +- LayoutRjdbc ----------------------------------------------------------
 
 LayoutRjdbc <- LayoutSqlite
+
+
 
 
 # +- LayoutDBI utils ------------------------------------------------------
@@ -488,6 +590,9 @@ select_dbi_layout <- function(
 
   res
 }
+
+
+
 
 # LayoutJson --------------------------------------------------------------
 
@@ -629,6 +734,7 @@ assert_colnames_match_valnames <- function(
 
   TRUE
 }
+
 
 
 

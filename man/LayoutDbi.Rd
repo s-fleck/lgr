@@ -126,8 +126,8 @@ lo$format_event(event)
 \link[DBI:DBI]{DBI::DBI}
 
 Other Layouts: \code{\link{LayoutFormat}},
-  \code{\link{LayoutJson}}, \code{\link{LayoutTable}},
-  \code{\link{Layout}}
+  \code{\link{LayoutGlue}}, \code{\link{LayoutJson}},
+  \code{\link{LayoutTable}}, \code{\link{Layout}}
 }
 \concept{Layouts}
 \concept{database layouts}

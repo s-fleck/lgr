@@ -80,7 +80,7 @@ lo$format_event(event)
 \code{\link[=read_json_lines]{read_json_lines()}}, \url{http://jsonlines.org/}
 
 Other Layouts: \code{\link{LayoutDbi}},
-  \code{\link{LayoutFormat}}, \code{\link{LayoutTable}},
-  \code{\link{Layout}}
+  \code{\link{LayoutFormat}}, \code{\link{LayoutGlue}},
+  \code{\link{LayoutTable}}, \code{\link{Layout}}
 }
 \concept{Layouts}
