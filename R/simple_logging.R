@@ -196,32 +196,31 @@ show_log = function(
   threshold = NA,
   target = yog::yog
 ){
-  if (!requireNamespace("data.table")){
-    stop(
-      "To use this feature, please install the package data.table via ",
-      "install.packages('data.table') and restart R."
-    )
-  }
+  assert_namespace("data.table")
 
   if (inherits(target, "Appender")){
-    if ("show" %in% names(target))
+    if ("show" %in% names(target)){
       return(target$show(n = n, threshold = threshold))
-    else
-      stop("This ", class_fmt(target), " does not have a 'show()' method")
+    } else {
+      stop(
+        "This ", class_fmt(target, c("R6", "Filterable", "Appender")),
+        " does not have a `show()` method"
+      )
+    }
+
+  } else if (inherits(target, "Logger")){
+    sel <- vapply(target$appenders, function(app) "show" %in% names(app), logical(1))
+    if (!any(sel)){
+      stop(sprintf(
+        "This %s has no Appender with a `show()` method (see ?AppenderTabular)",
+        class_fmt(target, c("R6", "Filterable", "Appender"))
+      ))
+      return(invisible())
+    }
+    return(target$appenders[sel][[1]]$show(n = n, threshold = threshold))
   }
 
-
-  sel <- vapply(target$appenders, function(app) "show" %in% names(app), logical(1))
-
-  if (!any(sel)){
-    warning(sprintf(
-      "This %s has no appender with a show method (see ?AppenderTabular)",
-      class_fmt(target)
-    ))
-    return(invisible())
-  }
-
-  target$appenders[sel][[1]]$show(n = n, threshold = threshold)
+  stop(sprintf("'%s' is not a valid `target` show_log()", class_fmt(target)))
 }
 
 

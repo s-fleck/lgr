@@ -32,7 +32,8 @@
 
 <meta property="og:title" content="Log to Databases via DBI — AppenderDbi" />
 
-<meta property="og:description" content="Log to a database table with any DBI compatabile backend." />
+<meta property="og:description" content="Log to a database table with any DBI compatabile backend. AppenderDbi
+does not support case sensitive / quoted column names." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,15 +122,26 @@
 
     <div class="ref-description">
     
-    <p>Log to a database table with any <strong>DBI</strong> compatabile backend.</p>
+    <p>Log to a database table with any <strong>DBI</strong> compatabile backend. AppenderDbi
+does <em>not</em> support case sensitive / quoted column names.</p>
     
     </div>
 
         
+    <h2 class="hasAnchor" id="dbi-layouts"><a class="anchor" href="#dbi-layouts"></a>DBI Layouts</h2>
+
+    
+    <p>Layouts for relational database tables are tricky as they have very strict
+column types and sizes, and on top of that details vary between
+database backends. To make setting up AppenderDbi as
+painless as possible, the helper function <code><a href='LayoutDbi.html'>select_dbi_layout()</a></code> tries
+to automatically determine sensible <a href='LayoutDbi.html'>LayoutDbi</a> settings based on <code>conn</code>,
+and, if it exists in the database already, <code>table</code>.</p>
+    
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre>x &lt;- AppenderDbi$new(conn, table, threshold = NA_integer_,
-  layout = select_dbi_layout(conn), close_on_exit = TRUE)
+  layout = select_dbi_layout(conn, table), close_on_exit = TRUE)
     x$set_close_on_exit(x)
 x$show(n = 20, threshold = NA_integer_)
 x$append(event)
@@ -145,7 +157,7 @@ x$table
 
     
     <dl class='dl-horizontal'>
-<dt>conn</dt><dd><p>a DBI connection</p></dd>
+<dt><code>conn</code></dt><dd><p>a <a href='https://www.rdocumentation.org/packages/DBI/topics/dbConnect'>DBI connection</a></p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>threshold</code></dt><dd><p><code>character</code> or <code>integer</code> scalar. The minimum log level
@@ -187,6 +199,8 @@ with a maximum of <code>buffer_size</code> rows</p></dd>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
+      <li><a href="#dbi-layouts">DBI Layouts</a></li>
+
       <li><a href="#usage">Usage</a></li>
 
       <li><a href="#creating-a-new-appender">Creating a New Appender</a></li>

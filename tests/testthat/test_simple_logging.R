@@ -24,22 +24,25 @@ test_that("simple_logging works as expected", {
     "oops"
   )
 
-  yog::yog$set_threshold(yth)
-  yog::yog$appenders$console$set_threshold(cth)
+  yog$set_threshold(yth)
+  yog$appenders$console$set_threshold(cth)
 })
 
 
 
 
-test_that("show_log", {
+test_that("show_log()", {
   expect_output(expect_true(is.data.frame(show_log())))
   expect_output(expect_true(nrow(show_log()) > 5))
   expect_output(
     expect_identical(show_log(), show_log(target = yog$appenders$memory))
   )
-  expect_error(
-    show_log(target = yog$appenders$console)
-  )
+  expect_error(show_log(target = yog$appenders$console), "does not have")
+
+  lg <- Logger$new("test", propagate = FALSE)
+  expect_error(show_log(target = lg), "has no Appender")
+  expect_error(show_log(target = iris), "not a valid")
+
 })
 
 
