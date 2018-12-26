@@ -2,27 +2,23 @@
 % Please edit documentation in R/Layout.R
 \name{LayoutGlue}
 \alias{LayoutGlue}
-\title{Format Log Events as Text}
+\title{Format Log Events as Text with Glue}
 \description{
-Format a \link{LogEvent} as human readable text using \link[glue:glue]{glue::glue}
+Format a \link{LogEvent} as human readable text using \link[glue:glue]{glue::glue}. The function
+is evaluated in an environment in which it has access to all elements of
+the \link{LogEvent} (see examples)
 }
 \section{Usage}{
 \preformatted{
 x <- x$new(fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)}
-  [{timestamp}] msg", timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3", colors = NULL,
-  pad_levels = "right")
+  [{timestamp}] msg", colors = NULL)
 
 x$format_event(event)
 x$set_fmt(x)
-x$set_timestamp_fmt(x)
 x$set_colors(x)
-x$set_pad_levels(x)
 x$clone(deep = FALSE)
 
-x$colors
 x$fmt
-x$pad_levels
-x$timestamp_fmt
 
 }
 }
@@ -31,10 +27,7 @@ x$timestamp_fmt
 
 
 \describe{
-\item{\code{fmt}}{see \code{\link[=format.LogEvent]{format.LogEvent()}}}
-\item{\code{timestamp_fmt}}{see \code{\link[base:format.POSIXct]{base::format.POSIXct()}}}
-\item{\code{colors}}{see \code{\link[=format.LogEvent]{format.LogEvent()}}}
-\item{\code{pad_levels}}{see \code{\link[=format.LogEvent]{format.LogEvent()}}}
+\item{\code{fmt}}{see \code{\link[glue:glue]{glue::glue()}}}
 }
 }
 
@@ -47,17 +40,15 @@ x$timestamp_fmt
 }
 
 \examples{
+lg <- Logger$new("testlogger", appenders = AppenderConsole$new(), propagate = FALSE)
+lg$appenders[[1]]$set_layout(LayoutGlue$new())
+lg$fatal("test")
 
-# setup a dummy LogEvent
-event <- LogEvent$new(
-  logger = Logger$new("dummy logger", user = "testuser"),
-  level = 200,
-  timestamp = Sys.time(),
-  caller = NA_character_,
-  msg = "a test message"
-)
-lo <- LayoutFormat$new()
-lo$format_event(event)
+
+# All fields of the LogEvent are available, even custom ones
+lg$appenders[[1]]$layout$set_fmt("{logger$name} {level_name}({level}) {caller}: {toupper(msg)} {{custom: {custom}}}")
+lg$fatal("test", custom = "foobar")
+
 
 }
 \seealso{

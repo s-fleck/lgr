@@ -50,7 +50,7 @@
     style_fatal   <- function(...) style_error(crayon::bold(...))
     style_warning <- crayon::make_style("#EEBB50", colors = 256)
     style_subtle  <- crayon::make_style(grDevices::grey(0.5), grey = TRUE)
-    style_accent  <- style_warning
+    style_accent  <- crayon::make_style("#7CB9E8", colors = 256)
     col_nchar     <- crayon::col_nchar
 
     op.this[["yog.colors"]] <- list(

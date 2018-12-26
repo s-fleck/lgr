@@ -36,7 +36,7 @@
 #'
 print.LogEvent <- function(
   x,
-  fmt = "%L [%t] %m",
+  fmt = "%L [%t] %m  %f",
   timestamp_fmt = "%Y-%m-%d %H:%M:%S",
   colors = getOption("yog.colors"),
   log_levels = getOption("yog.log_levels"),
@@ -62,7 +62,7 @@ print.LogEvent <- function(
 #' @export
 format.LogEvent <- function(
   x,
-  fmt = "%L [%t] %m",
+  fmt = "%L [%t] %m  %f",
   timestamp_fmt = "%Y-%m-%d %H:%M:%S",
   colors = NULL,
   log_levels = getOption("yog.log_levels"),
@@ -103,7 +103,7 @@ format.LogEvent <- function(
   # tokenize
   tokens <- tokenize_format(
     fmt,
-    valid_tokens = c("%t", "%u", "%p", "%c", "%m", "%l", "%L", "%n")
+    valid_tokens = c("%t", "%u", "%p", "%c", "%m", "%l", "%L", "%n", "%f")
   )
 
   # format
@@ -121,15 +121,52 @@ format.LogEvent <- function(
       "%c" = x$caller %||% "(unknown function)",
       "%u" = x$user,
       "%p" = Sys.getpid(),
+      "%f" = format_custom_fields(x$custom_fields, color = length(colors)),
       tokens[[i]]
     )
   }
+
   res <- do.call(paste0, res)
 
   res
 }
 
 
+
+format_custom_fields <- function(
+  x,
+  color = TRUE,
+  braces = c("{", "}")
+){
+  max_len = max(60 / length(x) - sum(nchar(names(x))), 16)
+
+  if (!color){
+    style_subtle <- identity
+    style_accent <- identity
+  } else {
+    braces <- style_subtle(braces)
+  }
+
+  res <- lapply(x, function(.x) {
+    if (is.atomic(.x)){
+      if (is.numeric(.x)) {
+        .x <- format(.x, justify = "none", drop0trailing = TRUE, trim = TRUE)
+      }
+
+      r <- ptrunc_col(.x, collapse = ", ", width = max_len, dots = style_subtle(".."))
+      if (length(.x) > 1) r <- paste0(style_subtle("["), r, style_subtle("]"))
+      r
+    } else {
+      class_fmt(.x)
+    }
+  })
+
+  paste(
+    braces[[1]], style_accent(names(res)), ": ", res, braces[[2]],
+    sep = "",
+    collapse  = ", "
+  )
+}
 
 
 #' @export

@@ -169,9 +169,11 @@ LayoutFormat <- R6::R6Class(
 
 # LayoutGlue ------------------------------------------------------------
 
-#' Format Log Events as Text
+#' Format Log Events as Text with Glue
 #'
-#' Format a [LogEvent] as human readable text using [glue::glue]
+#' Format a [LogEvent] as human readable text using [glue::glue]. The function
+#' is evaluated in an environment in which it has access to all elements of
+#' the [LogEvent] (see examples)
 #'
 #' @eval r6_usage(LayoutGlue)
 #'
@@ -179,10 +181,7 @@ LayoutFormat <- R6::R6Class(
 #'
 #'
 #' \describe{
-#'   \item{`fmt`}{see [format.LogEvent()]}
-#'   \item{`timestamp_fmt`}{see [base::format.POSIXct()]}
-#'   \item{`colors`}{see [format.LogEvent()]}
-#'   \item{`pad_levels`}{see [format.LogEvent()]}
+#'   \item{`fmt`}{see [glue::glue()]}
 #'  }
 #'
 #'
@@ -194,20 +193,17 @@ LayoutFormat <- R6::R6Class(
 #' @include Filterable.R
 #' @include log_levels.R
 #' @examples
+#' lg <- Logger$new("testlogger", appenders = AppenderConsole$new(), propagate = FALSE)
+#' lg$appenders[[1]]$set_layout(LayoutGlue$new())
+#' lg$fatal("test")
 #'
-#' # setup a dummy LogEvent
-#' event <- LogEvent$new(
-#'   logger = Logger$new("dummy logger", user = "testuser"),
-#'   level = 200,
-#'   timestamp = Sys.time(),
-#'   caller = NA_character_,
-#'   msg = "a test message"
-#' )
-#' lo <- LayoutFormat$new()
-#' lo$format_event(event)
+#'
+#' # All fields of the LogEvent are available, even custom ones
+#' lg$appenders[[1]]$layout$set_fmt("{logger$name} {level_name}({level}) {caller}: {toupper(msg)} {{custom: {custom}}}")
+#' lg$fatal("test", custom = "foobar")
+#'
 #'
 NULL
-
 
 
 
@@ -222,7 +218,6 @@ LayoutGlue <- R6::R6Class(
     ){
       assert_namespace("glue")
       self$set_fmt(fmt)
-      self$set_colors(colors)
     },
 
     format_event = function(
@@ -253,13 +248,11 @@ LayoutGlue <- R6::R6Class(
 
 
   active = list(
-    fmt = function()  private$.fmt,
-    colors = function() private$.colors
+    fmt = function()  private$.fmt
   ),
 
   private = list(
-    .fmt = NULL,
-    .colors = NULL
+    .fmt = NULL
   )
 )
 

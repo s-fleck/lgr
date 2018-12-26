@@ -16,9 +16,11 @@ x <- x$new(logger, level = 400, timestamp = Sys.time(), caller = NA, msg 
 x$clone(deep = FALSE)
 
 x$caller
+x$custom_values
 x$level
 x$level_name
 x$logger
+x$logger_name
 x$msg
 x$timestamp
 x$values
@@ -62,11 +64,16 @@ be recycled). In this case the event will be treated by the \link{Appenders} and
 \section{Active Bindings}{
 
 
+LogEvents contain some some active bindings that make it easier to retrieve
+commonly used values.
+
 \describe{
 \item{\code{level_name}}{\code{character}: the \link{log_level} / priority of the
 LogEvent labelled accoring to \code{getOption("yog.log_levels")}}
 \item{\code{values}}{\code{list}: All values stored in the LogEvent (including
 \emph{custom fields}, but not including \code{event$logger})}
+\item{\code{logger_name}}{\code{character} scalar: The name of the Logger that
+created this event, equivalent to \code{event$logger$name})}
 }
 }
 
