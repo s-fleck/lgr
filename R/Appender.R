@@ -140,6 +140,7 @@ NULL
 AppenderConsole <- R6::R6Class(
   "AppenderConsole",
   inherit = Appender,
+  cloneable = FALSE,
   public = list(
     initialize = function(
       threshold = NA_integer_,
@@ -226,6 +227,7 @@ NULL
 AppenderFile <- R6::R6Class(
   "AppenderFile",
   inherit = Appender,
+  cloneable = FALSE,
   public = list(
     initialize = function(
       file,
@@ -313,6 +315,7 @@ NULL
 AppenderJson <- R6::R6Class(
   "AppenderJson",
   inherit = AppenderFile,
+  cloneable = FALSE,
   public = list(
     initialize = function(
       file,
@@ -381,6 +384,7 @@ NULL
 AppenderTable <- R6::R6Class(
   "AppenderTable",
   inherit = Appender,
+  cloneable = FALSE,
   public = list(
     show = function(n = 20, threshold = NA_integer_) NULL
   ),
@@ -486,6 +490,7 @@ NULL
 AppenderDt <- R6::R6Class(
   "AppenderDt",
   inherit = Appender,
+  cloneable = FALSE,
   public = list(
     initialize = function(
       threshold = NA_integer_,
@@ -651,11 +656,16 @@ AppenderDt <- R6::R6Class(
 #' @section DBI Layouts:
 #'
 #' Layouts for relational database tables are tricky as they have very strict
-#' column types and sizes, and on top of that details vary between
-#' database backends. To make setting up AppenderDbi as
-#' painless as possible, the helper function `select_dbi_layout()` tries
-#' to automatically determine sensible [LayoutDbi] settings based on `conn`,
-#' and, if it exists in the database already, `table`.
+#' column types and further restrictions. On top of that implementation details
+#' vary between database backends.
+#'
+#' To make setting up `AppenderDbi` as painless as possible, the helper
+#' function [select_dbi_layout()] tries to automatically determine sensible
+#' [LayoutDbi] settings based on `conn` and
+#' - if it exists in the database already - `table`. If `table` does not
+#' exist in the database and you start logging, a new table will be created
+#' with the `col_types` from `layout`; however, a more flexible approach is
+#' to create the table manually first using an `SQL CREATE TABLE` statement.
 #'
 #' @eval r6_usage(AppenderDbi)
 #'
@@ -689,6 +699,7 @@ NULL
 AppenderDbi <- R6::R6Class(
   "AppenderDbi",
   inherit = AppenderTable,
+  cloneable = FALSE,
   public = list(
     initialize = function(
       conn,
@@ -809,7 +820,11 @@ AppenderDbi <- R6::R6Class(
 #'
 #' Log to a database table with the **RJDBC** package. **RJDBC** is only
 #' somewhat  **DBI** compliant and does not work with [AppenderDbi]. I
-#' personally do not recommend using **RJDBC** if it can be avoided.
+#' personally do not recommend using **RJDBC** if it can be avoided. As
+#' opposed to `AppenderDbi` you always need to specify the column types if you
+#' are logging to a non-existant table.
+#'
+#' @inheritSection AppenderDbi DBI Layouts
 #'
 #' @eval r6_usage(AppenderRjdbc)
 #'
@@ -838,12 +853,13 @@ NULL
 AppenderRjdbc <- R6::R6Class(
   "AppenderRjdbc",
   inherit = AppenderDbi,
+  cloneable = FALSE,
   public = list(
     initialize = function(
       conn,
       table,
       threshold = NA_integer_,
-      layout = select_dbi_layout(conn),
+      layout = select_dbi_layout(conn, table),
       close_on_exit = TRUE
     ){
       assert_namespace("RJDBC")
@@ -895,9 +911,6 @@ AppenderRjdbc <- R6::R6Class(
     .table = NULL
   )
 )
-
-
-
 
 # nocov end
 
@@ -966,6 +979,7 @@ NULL
 AppenderBuffer <- R6::R6Class(
   "AppenderBuffer",
   inherit = Appender,
+  cloneable = FALSE,
   public = list(
     initialize = function(
       threshold = NA_integer_,

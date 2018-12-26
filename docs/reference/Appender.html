@@ -138,14 +138,18 @@ specific Appenders.</p>
         
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
-    <pre>x &lt;- Appender$new(layout = Layout$new(), threshold = NA_integer_)
+    <pre>
+x &lt;- x$new(layout = Layout$new(), threshold = NA_integer_)
     x$append(event)
 x$set_threshold(level)
 x$set_layout(layout)
+x$filter(event)
+x$set_filters(filters)
     x$destination
 x$layout
 x$threshold
-</pre>
+x$filters
+    </pre>
     
     <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
 

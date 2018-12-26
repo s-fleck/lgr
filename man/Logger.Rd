@@ -14,7 +14,8 @@ the Appenders of it ancestral Loggers. See \code{vignette("yog", package = "yog"
 for more info.
 }
 \section{Usage}{
-\preformatted{x <- Logger$new(name, appenders = list(), threshold = 400L, user = get_user(),
+\preformatted{
+x <- x$new(name, appenders = list(), threshold = 400L, user = get_user(),
   parent = yog::yog, exception_handler = default_exception_handler,
   propagate = TRUE)
 
@@ -35,6 +36,8 @@ x$set_parent(logger)
 x$set_threshold(level)
 x$set_appenders(x)
 x$set_user(x)
+x$filter(event)
+x$set_filters(filters)
 
 x$ancestry
 x$appenders
@@ -46,6 +49,8 @@ x$parent
 x$propagate
 x$threshold
 x$user
+x$filters
+
 }
 }
 

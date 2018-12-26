@@ -34,7 +34,9 @@
 
 <meta property="og:description" content="Log to a database table with the RJDBC package. RJDBC is only
 somewhat  DBI compliant and does not work with AppenderDbi. I
-personally do not recommend using RJDBC if it can be avoided." />
+personally do not recommend using RJDBC if it can be avoided. As
+opposed to AppenderDbi you always need to specify the column types if you
+are logging to a non-existant table." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -125,19 +127,34 @@ personally do not recommend using RJDBC if it can be avoided." />
     
     <p>Log to a database table with the <strong>RJDBC</strong> package. <strong>RJDBC</strong> is only
 somewhat  <strong>DBI</strong> compliant and does not work with <a href='AppenderDbi.html'>AppenderDbi</a>. I
-personally do not recommend using <strong>RJDBC</strong> if it can be avoided.</p>
+personally do not recommend using <strong>RJDBC</strong> if it can be avoided. As
+opposed to <code>AppenderDbi</code> you always need to specify the column types if you
+are logging to a non-existant table.</p>
     
     </div>
 
         
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
-    <pre>x &lt;- AppenderRjdbc$new(conn, table, threshold = NA_integer_,
-  layout = select_dbi_layout(conn), close_on_exit = TRUE)
+    <pre>
+x &lt;- x$new(conn, table, threshold = NA_integer_,
+  layout = select_dbi_layout(conn, table), close_on_exit = TRUE)
     x$append(event)
-x$clone(deep = FALSE)
-    x$
-</pre>
+x$set_close_on_exit(x)
+x$show(n = 20, threshold = NA_integer_)
+x$set_threshold(level)
+x$set_layout(layout)
+x$filter(event)
+x$set_filters(filters)
+    x$close_on_exit
+x$conn
+x$data
+x$destination
+x$table
+x$layout
+x$threshold
+x$filters
+    </pre>
     
     <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
 
@@ -171,6 +188,21 @@ via the defined <a href='Layout.html'>Layout</a></p></dd>
 with a maximum of <code>buffer_size</code> rows</p></dd>
 </dl>
     
+    <h2 class="hasAnchor" id="dbi-layouts"><a class="anchor" href="#dbi-layouts"></a>DBI Layouts</h2>
+
+    
+    <p>Layouts for relational database tables are tricky as they have very strict
+column types and further restrictions. On top of that implementation details
+vary between database backends.</p>
+<p>To make setting up <code>AppenderDbi</code> as painless as possible, the helper
+function <code><a href='LayoutDbi.html'>select_dbi_layout()</a></code> tries to automatically determine sensible
+<a href='LayoutDbi.html'>LayoutDbi</a> settings based on <code>conn</code> and</p><ul>
+<li><p>if it exists in the database already - <code>table</code>. If <code>table</code> does not
+exist in the database and you start logging, a new table will be created
+with the <code>col_types</code> from <code>layout</code>; however, a more flexible approach is
+to create the table manually first using an <code>SQL CREATE TABLE</code> statement.</p></li>
+</ul>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a>, <a href='simple_logging.html'>simple_logging</a>, <a href='https://www.rdocumentation.org/packages/data.table/topics/data.table'>data.table::data.table</a></p>
@@ -191,6 +223,8 @@ with a maximum of <code>buffer_size</code> rows</p></dd>
       <li><a href="#creating-a-new-appender">Creating a New Appender</a></li>
 
       <li><a href="#fields-and-methods">Fields and Methods</a></li>
+
+      <li><a href="#dbi-layouts">DBI Layouts</a></li>
 
       <li><a href="#see-also">See also</a></li>
           </ul>

@@ -22,18 +22,26 @@ It is recommended to use this feature only \code{TRACE} level.
 }
 
 \section{Usage}{
-\preformatted{x <- AppenderDt$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt =
-  "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S", colors = getOption("yog.colors")),
+\preformatted{
+x <- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "\%L [\%t]
+  \%m", timestamp_fmt = "\%H:\%M:\%S", colors = getOption("yog.colors")),
   prototype = data.table::data.table(.id = NA_integer_, level = NA_integer_,
   timestamp = Sys.time(), caller = NA_character_, msg = NA_character_, value =
   list(list())), buffer_size = 1e+05)
 
 x$append(event)
 x$show(n = 20, threshold = NA_integer_)
-x$clone(deep = FALSE)
+x$set_threshold(level)
+x$set_layout(layout)
+x$filter(event)
+x$set_filters(filters)
 
 x$data
 x$destination
+x$layout
+x$threshold
+x$filters
+
 }
 }
 

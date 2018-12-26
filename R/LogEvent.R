@@ -26,8 +26,9 @@
 #'
 #'   \item{`...`}{All named arguments in `...` will be added to the LogEvent
 #'   as **custom fields**. You can store arbitrary \R objects in LogEvents
-#'   this way, but not all Appenders will support them. See [AppenderJson] for
-#'   an Appender that supports custom fields quite naturally}
+#'   this way, but not all Appenders will support them.
+#'   See [AppenderJson] for
+#'   an Appender that supports custom fields quite naturally.}
 #' }
 #'
 #'

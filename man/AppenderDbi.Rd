@@ -11,27 +11,42 @@ does \emph{not} support case sensitive / quoted column names.
 
 
 Layouts for relational database tables are tricky as they have very strict
-column types and sizes, and on top of that details vary between
-database backends. To make setting up AppenderDbi as
-painless as possible, the helper function \code{select_dbi_layout()} tries
-to automatically determine sensible \link{LayoutDbi} settings based on \code{conn},
-and, if it exists in the database already, \code{table}.
+column types and further restrictions. On top of that implementation details
+vary between database backends.
+
+To make setting up \code{AppenderDbi} as painless as possible, the helper
+function \code{\link[=select_dbi_layout]{select_dbi_layout()}} tries to automatically determine sensible
+\link{LayoutDbi} settings based on \code{conn} and
+\itemize{
+\item if it exists in the database already - \code{table}. If \code{table} does not
+exist in the database and you start logging, a new table will be created
+with the \code{col_types} from \code{layout}; however, a more flexible approach is
+to create the table manually first using an \code{SQL CREATE TABLE} statement.
+}
 }
 
 \section{Usage}{
-\preformatted{x <- AppenderDbi$new(conn, table, threshold = NA_integer_,
+\preformatted{
+x <- x$new(conn, table, threshold = NA_integer_,
   layout = select_dbi_layout(conn, table), close_on_exit = TRUE)
 
 x$set_close_on_exit(x)
 x$show(n = 20, threshold = NA_integer_)
 x$append(event)
-x$clone(deep = FALSE)
+x$set_threshold(level)
+x$set_layout(layout)
+x$filter(event)
+x$set_filters(filters)
 
 x$close_on_exit
 x$conn
 x$data
 x$destination
 x$table
+x$layout
+x$threshold
+x$filters
+
 }
 }
 

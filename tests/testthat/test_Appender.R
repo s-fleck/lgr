@@ -67,7 +67,6 @@ test_that("AppenderFile works as expected", {
 
 
 
-
 # AppenderJson ------------------------------------------------------------
 
 test_that("AppenderJson works as expected", {
@@ -87,6 +86,7 @@ test_that("AppenderJson works as expected", {
 
 
 
+
 # AppenderConsole ---------------------------------------------------------
 
 test_that("AppenderConsole works as expected", {
@@ -96,7 +96,6 @@ test_that("AppenderConsole works as expected", {
     "ERROR .*:19:33.* foo bar"
   )
 })
-
 
 
 
@@ -133,6 +132,7 @@ test_that("AppenderDt: appending multiple rows works", {
 
   expect_match(paste(capture.output(app$show()), collapse = ""), "ERROR.*WARN")
 })
+
 
 
 
@@ -197,6 +197,7 @@ test_that("AppenderDt: works with list columns", {
     c("logical", "environment", "data.frame", "data.frame", "logical")
   )
 })
+
 
 
 
@@ -329,7 +330,6 @@ test_that("AppenderBuffer: dont flush on object destruction if switched of", {
 
 
 
-
 test_that("AppenderBuffer: add/remove appenders", {
   sapp  <- AppenderBuffer$new()
   app1 <- AppenderConsole$new(threshold = 100)
@@ -357,8 +357,3 @@ test_that("AppenderBuffer: add/remove appenders", {
   expect_identical(sapp$appenders[[1]], app1)
   expect_identical(sapp$appenders[[2]], app2)
 })
-
-
-
-
-

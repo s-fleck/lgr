@@ -8,7 +8,8 @@ An Appender that Buffers LogEvents in-memory and and redirects them to other
 appenders once certain conditions are met.
 }
 \section{Usage}{
-\preformatted{x <- AppenderBuffer$new(threshold = NA_integer_, appenders = NULL,
+\preformatted{
+x <- x$new(threshold = NA_integer_, appenders = NULL,
   should_flush = function(event) isTRUE(event[["level"]] <= 100),
   flush_on_exit = TRUE, flush_on_rotate = TRUE, layout = LayoutFormat$new(fmt =
   "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S", colors = getOption("yog.colors")),
@@ -23,7 +24,11 @@ x$set_buffer_size(x)
 x$set_flush_on_exit(x)
 x$set_flush_on_rotate(x)
 x$set_should_flush(x)
-x$clone(deep = FALSE)
+x$append(event)
+x$set_threshold(level)
+x$set_layout(layout)
+x$filter(event)
+x$set_filters(filters)
 
 x$appenders
 x$buffer_size
@@ -31,6 +36,10 @@ x$buffered_events
 x$destination
 x$flush_on_exit
 x$flush_on_rotate
+x$layout
+x$threshold
+x$filters
+
 }
 }
 

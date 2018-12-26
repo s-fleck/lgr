@@ -130,7 +130,8 @@ appenders once certain conditions are met.</p>
         
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
-    <pre>x &lt;- AppenderBuffer$new(threshold = NA_integer_, appenders = NULL,
+    <pre>
+x &lt;- x$new(threshold = NA_integer_, appenders = NULL,
   should_flush = function(event) isTRUE(event[["level"]] &lt;= 100),
   flush_on_exit = TRUE, flush_on_rotate = TRUE, layout = LayoutFormat$new(fmt =
   "%L [%t] %m", timestamp_fmt = "%H:%M:%S", colors = getOption("yog.colors")),
@@ -144,14 +145,21 @@ x$set_buffer_size(x)
 x$set_flush_on_exit(x)
 x$set_flush_on_rotate(x)
 x$set_should_flush(x)
-x$clone(deep = FALSE)
+x$append(event)
+x$set_threshold(level)
+x$set_layout(layout)
+x$filter(event)
+x$set_filters(filters)
     x$appenders
 x$buffer_size
 x$buffered_events
 x$destination
 x$flush_on_exit
 x$flush_on_rotate
-</pre>
+x$layout
+x$threshold
+x$filters
+    </pre>
     
     <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
 

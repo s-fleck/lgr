@@ -132,13 +132,19 @@ have the package <strong>crayon</strong> installed log levels will be coloured b
         
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
-    <pre>x &lt;- AppenderConsole$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt
-  = "%L [%t] %m", timestamp_fmt = "%H:%M:%OS3", colors =
-  getOption("yog.colors", list())))
+    <pre>
+x &lt;- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "%L [%t]
+  %m", timestamp_fmt = "%H:%M:%OS3", colors = getOption("yog.colors", list())))
     x$append(event)
-x$clone(deep = FALSE)
+x$set_threshold(level)
+x$set_layout(layout)
+x$filter(event)
+x$set_filters(filters)
     x$destination
-</pre>
+x$layout
+x$threshold
+x$filters
+    </pre>
     
     <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
 
@@ -188,8 +194,8 @@ filter is a function that takes exactly two named arguments: the LogEvent
   <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(<span class='st'>"[%t] %c(): [%n] %m from user %u"</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"yog.colors"</span>))))
 
 <span class='co'># Will output the message twice because we attached two console appenders</span>
-<span class='no'>logger</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [01:06:01.306] A test message
-#&gt; [2018-12-26 01:06:01.306] eval(): [</span><span style='color: #FFD75F;'>300</span><span>] A test message from user </div><div class='input'>
+<span class='no'>logger</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [09:30:15.020] A test message
+#&gt; [2018-12-26 09:30:15.020] eval(): [</span><span style='color: #FFD75F;'>300</span><span>] A test message from user </div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

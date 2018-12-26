@@ -2,13 +2,38 @@ r6_usage <- function(
   x,
   name = "x"
 ){
+  els <- collect_usage(x)
+
+  c(
+    "@section Usage:",
+    "```", "",
+    strwrap(paste0(name, " <- ", els$ctor), width = 80, exdent = 2), "",
+    paste0(name, "$",  els$methods), "",
+    paste0(name, "$", els$fields), "",
+    "```"
+  )
+}
+
+
+
+collect_usage <- function(
+  x,
+  name = "x"
+){
   public_methods <- vapply(
     names(x$public_methods),
     function(nm) make_function_usage(nm, formals(x$public_methods[[nm]])),
     character(1)
   )
-  ctor <- public_methods[["initialize"]]
-  ctor <- gsub("^initialize", paste0(deparse(substitute(x)), "$new"), ctor)
+
+
+  if ("initialize" %in% names(public_methods)){
+    ctor <- public_methods[["initialize"]]
+    ctor <- gsub("^initialize", paste0(deparse(substitute(x)), "$new"), ctor)
+  } else {
+    ctor <- NULL
+  }
+
 
   fields <- c(names(x$public_fields), names(x$active))
   if (!is.null(fields)) fields <- sort(fields)
@@ -20,17 +45,19 @@ r6_usage <- function(
     fields = fields
   )
 
+  els <- els[!vapply(els, is_empty, FALSE)]
 
-  c(
-    "@section Usage:",
-    "```",
-    strwrap(paste(name, "<-", ctor), width = 80, exdent = 2), "",
-    paste0(name, "$",  els$methods), "",
-    paste0(name, "$", els$fields),
-    "```"
-  )
+  if ("get_inherit" %in% names(x)){
+    els <- c(els, collect_usage(x$get_inherit()))
+    list(
+      ctors   = els$ctor,  # the first one
+      fields  = unique(unlist(els[names(els) == "fields"])),
+      methods = unique(unlist(els[names(els) == "methods"]))
+    )
+  } else {
+    els
+  }
 }
-
 
 
 make_function_usage <- function(name, arglist){

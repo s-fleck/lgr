@@ -128,15 +128,20 @@
         
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
-    <pre>x &lt;- LayoutDbi$new(event_values = c("level", "timestamp", "caller", "msg"),
+    <pre>
+x &lt;- x$new(event_values = c("level", "timestamp", "caller", "msg"),
   col_types = NULL)
     x$format_event(event)
 x$set_col_types(x)
 x$sql_create_table(table)
 x$clone(deep = FALSE)
+x$set_event_values(x)
+x$set_val_names(x)
     x$col_names
 x$col_types
-</pre>
+x$event_values
+x$val_names
+    </pre>
     
     <h2 class="hasAnchor" id="creating-a-new-layout"><a class="anchor" href="#creating-a-new-layout"></a>Creating a New Layout</h2>
 
@@ -200,12 +205,12 @@ Layout for a DBI connection.</p>
 <span class='co'># defaults</span>
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutDbi</span>$<span class='fu'>new</span>()
 <span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt;   level           timestamp caller            msg
-#&gt; 1   200 2018-12-26 01:06:04   &lt;NA&gt; a test message</div><div class='input'>
+#&gt; 1   200 2018-12-26 09:30:17   &lt;NA&gt; a test message</div><div class='input'>
 <span class='co'># SQLite does not support timestamps so LayoutSqlite converts them to text</span>
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutSqlite</span>$<span class='fu'>new</span>()
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>))</div><div class='output co'>#&gt; 'data.frame':	1 obs. of  4 variables:
 #&gt;  $ level    : num 200
-#&gt;  $ timestamp: chr "2018-12-26 01:06:04"
+#&gt;  $ timestamp: chr "2018-12-26 09:30:17"
 #&gt;  $ caller   : chr NA
 #&gt;  $ msg      : chr "a test message"</div><div class='input'>
 <span class='co'># advanced example that supports a custom_field:</span>
@@ -229,7 +234,7 @@ Layout for a DBI connection.</p>
 )
 
 <span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt;             timestamp level            msg custom_field
-#&gt; 1 2018-12-26 01:06:04   200 a test message        blubb</div><div class='input'>#'
+#&gt; 1 2018-12-26 09:30:17   200 a test message        blubb</div><div class='input'>#'
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

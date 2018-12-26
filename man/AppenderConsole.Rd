@@ -9,14 +9,21 @@ have the package \strong{crayon} installed log levels will be coloured by defaul
 (but you can modify this behaviour by passing a custom \link{Layout})
 }
 \section{Usage}{
-\preformatted{x <- AppenderConsole$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt
-  = "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%OS3", colors =
-  getOption("yog.colors", list())))
+\preformatted{
+x <- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "\%L [\%t]
+  \%m", timestamp_fmt = "\%H:\%M:\%OS3", colors = getOption("yog.colors", list())))
 
 x$append(event)
-x$clone(deep = FALSE)
+x$set_threshold(level)
+x$set_layout(layout)
+x$filter(event)
+x$set_filters(filters)
 
 x$destination
+x$layout
+x$threshold
+x$filters
+
 }
 }
 

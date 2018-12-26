@@ -10,15 +10,22 @@ to log to text files, consider logging to JSON files and take a look at
 \code{\link{LayoutJson}} and a few extra methods for convenience.
 }
 \section{Usage}{
-\preformatted{x <- AppenderFile$new(file, threshold = NA_integer_,
-  layout = LayoutFormat$new())
+\preformatted{
+x <- x$new(file, threshold = NA_integer_, layout = LayoutFormat$new())
 
 x$append(event)
 x$set_file(file)
-x$clone(deep = FALSE)
+x$set_threshold(level)
+x$set_layout(layout)
+x$filter(event)
+x$set_filters(filters)
 
 x$destination
 x$file
+x$layout
+x$threshold
+x$filters
+
 }
 }
 

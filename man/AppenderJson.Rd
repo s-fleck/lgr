@@ -9,15 +9,22 @@ comes with an extra method \code{show()} and an extra active field \code{data} t
 access the underlying file.
 }
 \section{Usage}{
-\preformatted{x <- AppenderFile$new(file, threshold = NA_integer_,
-  layout = LayoutFormat$new())
+\preformatted{
+x <- x$new(file, threshold = NA_integer_, layout = LayoutFormat$new())
 
 x$append(event)
 x$set_file(file)
-x$clone(deep = FALSE)
+x$set_threshold(level)
+x$set_layout(layout)
+x$filter(event)
+x$set_filters(filters)
 
 x$destination
 x$file
+x$layout
+x$threshold
+x$filters
+
 }
 }
 

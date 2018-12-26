@@ -6,16 +6,32 @@
 \description{
 Log to a database table with the \strong{RJDBC} package. \strong{RJDBC} is only
 somewhat  \strong{DBI} compliant and does not work with \link{AppenderDbi}. I
-personally do not recommend using \strong{RJDBC} if it can be avoided.
+personally do not recommend using \strong{RJDBC} if it can be avoided. As
+opposed to \code{AppenderDbi} you always need to specify the column types if you
+are logging to a non-existant table.
 }
 \section{Usage}{
-\preformatted{x <- AppenderRjdbc$new(conn, table, threshold = NA_integer_,
-  layout = select_dbi_layout(conn), close_on_exit = TRUE)
+\preformatted{
+x <- x$new(conn, table, threshold = NA_integer_,
+  layout = select_dbi_layout(conn, table), close_on_exit = TRUE)
 
 x$append(event)
-x$clone(deep = FALSE)
+x$set_close_on_exit(x)
+x$show(n = 20, threshold = NA_integer_)
+x$set_threshold(level)
+x$set_layout(layout)
+x$filter(event)
+x$set_filters(filters)
 
-x$
+x$close_on_exit
+x$conn
+x$data
+x$destination
+x$table
+x$layout
+x$threshold
+x$filters
+
 }
 }
 
@@ -58,6 +74,24 @@ bellow \code{threshold}. The log entries will be formated for console output
 via the defined \link{Layout}}
 \item{\code{data}}{Get the log recorded by this \code{Appender} as a \code{data.table}
 with a maximum of \code{buffer_size} rows}
+}
+}
+
+\section{DBI Layouts}{
+
+
+Layouts for relational database tables are tricky as they have very strict
+column types and further restrictions. On top of that implementation details
+vary between database backends.
+
+To make setting up \code{AppenderDbi} as painless as possible, the helper
+function \code{\link[=select_dbi_layout]{select_dbi_layout()}} tries to automatically determine sensible
+\link{LayoutDbi} settings based on \code{conn} and
+\itemize{
+\item if it exists in the database already - \code{table}. If \code{table} does not
+exist in the database and you start logging, a new table will be created
+with the \code{col_types} from \code{layout}; however, a more flexible approach is
+to create the table manually first using an \code{SQL CREATE TABLE} statement.
 }
 }
 

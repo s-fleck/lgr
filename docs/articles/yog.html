@@ -112,19 +112,19 @@ l &lt;-<span class="st"> </span>Logger<span class="op">$</span><span class="kw">
 )</code></pre></div>
 <p><strong>Usage:</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l<span class="op">$</span><span class="kw">info</span>(<span class="st">"Everything is okay"</span>)
-<span class="co">#&gt; INFO  [01:06:15.714] Everything is okay</span>
+<span class="co">#&gt; INFO  [09:30:27.599] Everything is okay</span>
 l<span class="op">$</span><span class="kw">error</span>(<span class="st">"Everything is NOT okay"</span>)
-<span class="co">#&gt; ERROR [01:06:15.743] Everything is NOT okay</span>
+<span class="co">#&gt; ERROR [09:30:27.626] Everything is NOT okay</span>
 l<span class="op">$</span><span class="kw">fatal</span>(<span class="st">"NOTHING is okay"</span>)
-<span class="co">#&gt; FATAL [01:06:15.770] NOTHING is okay</span>
+<span class="co">#&gt; FATAL [09:30:27.653] NOTHING is okay</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(tfi)
-<span class="co">#&gt; [1] "INFO  [2018-12-26 01:06:15.714] Everything is okay"    </span>
-<span class="co">#&gt; [2] "ERROR [2018-12-26 01:06:15.743] Everything is NOT okay"</span>
-<span class="co">#&gt; [3] "FATAL [2018-12-26 01:06:15.770] NOTHING is okay"</span>
+<span class="co">#&gt; [1] "INFO  [2018-12-26 09:30:27.599] Everything is okay"    </span>
+<span class="co">#&gt; [2] "ERROR [2018-12-26 09:30:27.626] Everything is NOT okay"</span>
+<span class="co">#&gt; [3] "FATAL [2018-12-26 09:30:27.653] NOTHING is okay"</span>
 <span class="kw"><a href="../reference/read_json_lines.html">read_json_lines</a></span>(tfe)
 <span class="co">#&gt;   level           timestamp caller                    msg</span>
-<span class="co">#&gt; 1   200 2018-12-26 01:06:15   eval Everything is NOT okay</span>
-<span class="co">#&gt; 2   100 2018-12-26 01:06:15   eval        NOTHING is okay</span></code></pre></div>
+<span class="co">#&gt; 1   200 2018-12-26 09:30:27   eval Everything is NOT okay</span>
+<span class="co">#&gt; 2   100 2018-12-26 09:30:27   eval        NOTHING is okay</span></code></pre></div>
 </div>
 </div>
 <div id="usage" class="section level1">
@@ -215,23 +215,23 @@ l<span class="op">$</span><span class="kw">fatal</span>(<span class="st">"NOTHIN
 <a href="#simplified-logging-syntax" class="anchor"></a>Simplified Logging Syntax</h3>
 <p>If you care about terse syntax you can use the following <code>UPPERCASE</code><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> commands to log:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/simple_logging.html">FATAL</a></span>(<span class="st">"This is an important message about %s going wrong"</span>, <span class="st">"something"</span>)
-<span class="co">#&gt; FATAL [01:06:15.834] This is an important message about something going wrong</span>
+<span class="co">#&gt; FATAL [09:30:27.704] This is an important message about something going wrong</span>
 <span class="kw"><a href="../reference/simple_logging.html">ERROR</a></span>(<span class="st">"A less severe error"</span>)
-<span class="co">#&gt; ERROR [01:06:15.836] A less severe error</span>
+<span class="co">#&gt; ERROR [09:30:27.706] A less severe error</span>
 <span class="kw"><a href="../reference/simple_logging.html">WARN</a></span>(<span class="st">"something likely went wrong"</span>)
-<span class="co">#&gt; WARN  [01:06:15.838] something likely went wrong</span>
+<span class="co">#&gt; WARN  [09:30:27.708] something likely went wrong</span>
 <span class="kw"><a href="../reference/simple_logging.html">INFO</a></span>(<span class="st">"Everything is ok"</span>)
-<span class="co">#&gt; INFO  [01:06:15.840] Everything is ok</span>
+<span class="co">#&gt; INFO  [09:30:27.710] Everything is ok</span>
 <span class="kw"><a href="../reference/simple_logging.html">DEBUG</a></span>(<span class="st">"Debug messages are hidden by default"</span>)
 <span class="kw"><a href="../reference/simple_logging.html">console_threshold</a></span>(<span class="st">"debug"</span>)  <span class="co"># you must use lower case names here</span>
 <span class="kw"><a href="../reference/simple_logging.html">DEBUG</a></span>(<span class="st">"unless we lower the threshold"</span>)
-<span class="co">#&gt; DEBUG [01:06:15.845] unless we lower the threshold</span>
+<span class="co">#&gt; DEBUG [09:30:27.714] unless we lower the threshold</span>
 <span class="kw"><a href="../reference/simple_logging.html">TRACE</a></span>(<span class="st">"Trace is even lower than debug"</span>)</code></pre></div>
 <p>If you have the package <strong>data.table</strong> installed, yog does not only log to the console, but also to an in memory <code>data.table</code>. You can use <code><a href="../reference/simple_logging.html">show_log()</a></code> to quickly display this in memory log<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/simple_logging.html">show_log</a></span>(<span class="dv">3</span>)  <span class="co"># show the last 3 log entries</span>
-<span class="co">#&gt; DEBUG [01:06:15] Debug messages are hidden by default</span>
-<span class="co">#&gt; DEBUG [01:06:15] unless we lower the threshold</span>
-<span class="co">#&gt; TRACE [01:06:15] Trace is even lower than debug</span></code></pre></div>
+<span class="co">#&gt; DEBUG [09:30:27] Debug messages are hidden by default</span>
+<span class="co">#&gt; DEBUG [09:30:27] unless we lower the threshold</span>
+<span class="co">#&gt; TRACE [09:30:27] Trace is even lower than debug</span></code></pre></div>
 <p>If you looked carefully, you see that both debug messages were logged to memory (not only the one that you saw in the console). This is explained in the section on <a href="#thresholds">thresholds</a>.</p>
 </div>
 <div id="r6-logging-syntax" class="section level3">
@@ -239,24 +239,24 @@ l<span class="op">$</span><span class="kw">fatal</span>(<span class="st">"NOTHIN
 <a href="#r6-logging-syntax" class="anchor"></a>R6 Logging Syntax</h3>
 <p>You can also directly use Logger R6 objects to log. You can refer to the <em>root</em> logger with <code>yog$</code>. This is especially useful if you are working with multiple loggers (e.g. if you set up a separate Logger for a package you have developed). The examples in this vignette mostly use the notation below as it is more explicit:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">yog<span class="op">$</span><span class="kw">fatal</span>(<span class="st">"This is an important message about %s going wrong"</span>, <span class="st">"-&gt;something&lt;-"</span>)
-<span class="co">#&gt; FATAL [01:06:15.870] This is an important message about -&gt;something&lt;- going wrong</span>
+<span class="co">#&gt; FATAL [09:30:27.732] This is an important message about -&gt;something&lt;- going wrong</span>
 yog<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/trace">trace</a></span>(<span class="st">"Trace messages are still hidden"</span>)
 yog<span class="op">$</span>appenders<span class="op">$</span>console<span class="op">$</span><span class="kw">set_threshold</span>(<span class="st">"trace"</span>)
 yog<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/trace">trace</a></span>(<span class="st">"Unless we lower the threshold"</span>)
-<span class="co">#&gt; TRACE [01:06:15.875] Unless we lower the threshold</span>
+<span class="co">#&gt; TRACE [09:30:27.736] Unless we lower the threshold</span>
 yog<span class="op">$</span>appenders<span class="op">$</span>memory<span class="op">$</span><span class="kw">show</span>(<span class="dv">3</span>)
-<span class="co">#&gt; FATAL [01:06:15] This is an important message about -&gt;something&lt;- going wrong</span>
-<span class="co">#&gt; TRACE [01:06:15] Trace messages are still hidden</span>
-<span class="co">#&gt; TRACE [01:06:15] Unless we lower the threshold</span></code></pre></div>
+<span class="co">#&gt; FATAL [09:30:27] This is an important message about -&gt;something&lt;- going wrong</span>
+<span class="co">#&gt; TRACE [09:30:27] Trace messages are still hidden</span>
+<span class="co">#&gt; TRACE [09:30:27] Unless we lower the threshold</span></code></pre></div>
 </div>
 <div id="formatting-strings" class="section level3">
 <h3 class="hasAnchor">
 <a href="#formatting-strings" class="anchor"></a>Formatting Strings</h3>
 <p>You can use <code><a href="https://www.rdocumentation.org/packages/base/topics/sprintf">sprintf()</a></code> style formatting strings directly in log messages.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">yog<span class="op">$</span><span class="kw">info</span>(<span class="st">"The sky was the color of %s, tuned to a dead chanel"</span>, <span class="st">"television"</span>)
-<span class="co">#&gt; INFO  [01:06:15.887] The sky was the color of television, tuned to a dead chanel</span>
+<span class="co">#&gt; INFO  [09:30:27.746] The sky was the color of television, tuned to a dead chanel</span>
 <span class="kw"><a href="../reference/simple_logging.html">INFO</a></span>(<span class="st">"There are %.1f lights"</span>, <span class="fl">4.5321</span>)
-<span class="co">#&gt; INFO  [01:06:15.889] There are 4.5 lights</span></code></pre></div>
+<span class="co">#&gt; INFO  [09:30:27.748] There are 4.5 lights</span></code></pre></div>
 </div>
 </div>
 <div id="log-events-the-atomic-unit-of-logging" class="section level2">
@@ -264,15 +264,15 @@ yog<span class="op">$</span>appenders<span class="op">$</span>memory<span class=
 <a href="#log-events-the-atomic-unit-of-logging" class="anchor"></a>Log Events: The Atomic Unit of Logging</h2>
 <p>LogEvents are objects that store all information collected by the Logger. They are passed on to Appenders that output them, but Appenders usually don’t utilise all the information present in a log event. The last event produced by a Logger is stored in its last_event field.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">yog<span class="op">$</span><span class="kw">info</span>(<span class="st">"Vampire stories are generally located in Styria"</span>)
-<span class="co">#&gt; INFO  [01:06:15.895] Vampire stories are generally located in Styria</span>
+<span class="co">#&gt; INFO  [09:30:27.754] Vampire stories are generally located in Styria</span>
 yog<span class="op">$</span>last_event  <span class="co"># a summary output of the event</span>
-<span class="co">#&gt; INFO  [2018-12-26 01:06:15] Vampire stories are generally located in Styria</span>
+<span class="co">#&gt; INFO  [2018-12-26 09:30:27] Vampire stories are generally located in Styria</span>
 yog<span class="op">$</span>last_event<span class="op">$</span>values  <span class="co"># all values stored in the event as a list</span>
 <span class="co">#&gt; $level</span>
 <span class="co">#&gt; [1] 400</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $timestamp</span>
-<span class="co">#&gt; [1] "2018-12-26 01:06:15 CET"</span>
+<span class="co">#&gt; [1] "2018-12-26 09:30:27 CET"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $caller</span>
 <span class="co">#&gt; [1] "eval"</span>
@@ -283,16 +283,16 @@ yog<span class="op">$</span>last_event<span class="op">$</span>values  <span cla
 <p>You should consider making use of custom fields liberally and using output formats that support them (such as JSON), rather than producing elaborately formatted but hard to parse log messages. If you ever want to analyse your log data, you will thank me for this tip.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># bad</span>
 yog<span class="op">$</span><span class="kw">info</span>(<span class="st">"Processing track '%s' with %s waypoints"</span>, <span class="st">"track.gpx"</span>, <span class="dv">32</span>)
-<span class="co">#&gt; INFO  [01:06:15.913] Processing track 'track.gpx' with 32 waypoints</span>
+<span class="co">#&gt; INFO  [09:30:27.766] Processing track 'track.gpx' with 32 waypoints</span>
 
 <span class="co"># Good</span>
 tf &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempfile</a></span>()
 yog<span class="op">$</span><span class="kw"><a href="../reference/simple_logging.html">add_appender</a></span>(AppenderJson<span class="op">$</span><span class="kw">new</span>(tf), <span class="st">"json"</span>)
 yog<span class="op">$</span><span class="kw">info</span>(<span class="st">"Processing track"</span>, <span class="dt">file =</span> <span class="st">"track.gpx"</span>, <span class="dt">waypoints =</span> <span class="dv">32</span>)
-<span class="co">#&gt; INFO  [01:06:15.923] Processing track</span>
+<span class="co">#&gt; INFO  [09:30:27.777] Processing track</span>
 yog<span class="op">$</span>appenders<span class="op">$</span>json<span class="op">$</span>data
 <span class="co">#&gt;   level           timestamp caller              msg waypoints      file</span>
-<span class="co">#&gt; 1   400 2018-12-26 01:06:15   eval Processing track        32 track.gpx</span></code></pre></div>
+<span class="co">#&gt; 1   400 2018-12-26 09:30:27   eval Processing track        32 track.gpx</span></code></pre></div>
 </div>
 <div id="thresholds" class="section level2">
 <h2 class="hasAnchor">
@@ -328,12 +328,12 @@ yog<span class="op">$</span><span class="kw">set_threshold</span>(<span class="o
 yog<span class="op">$</span>appenders<span class="op">$</span>console<span class="op">$</span><span class="kw">set_threshold</span>(<span class="st">"info"</span>)
 yog<span class="op">$</span>appenders<span class="op">$</span>file<span class="op">$</span><span class="kw">set_threshold</span>(<span class="ot">NA</span>)
 yog<span class="op">$</span><span class="kw">info</span>(<span class="st">"Another informational message"</span>)
-<span class="co">#&gt; INFO  [01:06:15.981] Another informational message</span>
+<span class="co">#&gt; INFO  [09:30:27.829] Another informational message</span>
 yog<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/debug">debug</a></span>(<span class="st">"A debug message not shown by the console appender"</span>)
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(tf)
-<span class="co">#&gt; [1] "INFO  [2018-12-26 01:06:15.981] Another informational message"                    </span>
-<span class="co">#&gt; [2] "DEBUG [2018-12-26 01:06:15.988] A debug message not shown by the console appender"</span>
+<span class="co">#&gt; [1] "INFO  [2018-12-26 09:30:27.829] Another informational message"                    </span>
+<span class="co">#&gt; [2] "DEBUG [2018-12-26 09:30:27.831] A debug message not shown by the console appender"</span>
 
 <span class="co"># Remove the appender again</span>
 yog<span class="op">$</span><span class="kw"><a href="../reference/simple_logging.html">remove_appender</a></span>(<span class="st">"file"</span>)</code></pre></div>
@@ -368,11 +368,11 @@ yog<span class="op">$</span><span class="kw"><a href="../reference/simple_loggin
 )
 
 lg<span class="op">$</span><span class="kw">info</span>(<span class="st">"the default format"</span>)
-<span class="co">#&gt; INFO  [01:06:16.017] the default format</span>
+<span class="co">#&gt; INFO  [09:30:27.867] the default format</span>
 
 lg<span class="op">$</span>appenders<span class="op">$</span>cons<span class="op">$</span>layout<span class="op">$</span><span class="kw">set_fmt</span>(<span class="st">"%L (%n) [%t] %c(): !! %m !!"</span>)
 lg<span class="op">$</span><span class="kw">info</span>(<span class="st">"A more involved custom format"</span>)
-<span class="co">#&gt; INFO  (400) [01:06:16.021] eval(): !! A more involved custom format !!</span></code></pre></div>
+<span class="co">#&gt; INFO  (400) [09:30:27.870] eval(): !! A more involved custom format !!</span></code></pre></div>
 </div>
 <div id="logging-to-json-files" class="section level2">
 <h2 class="hasAnchor">
@@ -395,20 +395,20 @@ lg<span class="op">$</span><span class="kw">info</span>(<span class="st">"If you
 <p>JSON is easy to parse and analyse with R</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/read_json_lines.html">read_json_lines</a></span>(tf)
 <span class="co">#&gt;   level           timestamp caller</span>
-<span class="co">#&gt; 1   400 2018-12-26 01:06:16   eval</span>
-<span class="co">#&gt; 2   400 2018-12-26 01:06:16   eval</span>
-<span class="co">#&gt; 3   400 2018-12-26 01:06:16   eval</span>
+<span class="co">#&gt; 1   400 2018-12-26 09:30:27   eval</span>
+<span class="co">#&gt; 2   400 2018-12-26 09:30:27   eval</span>
+<span class="co">#&gt; 3   400 2018-12-26 09:30:27   eval</span>
 <span class="co">#&gt;                                           msg  field       numbers  use</span>
 <span class="co">#&gt; 1   JSON naturally supports custom log fields custom          NULL &lt;NA&gt;</span>
 <span class="co">#&gt; 2 You can serialize most R data types to JSON   &lt;NA&gt; 1, 2, 3, 4, 5 &lt;NA&gt;</span>
 <span class="co">#&gt; 3  If you ever want to analyse your log files   &lt;NA&gt;          NULL JSON</span></code></pre></div>
 <p>It is also human readable, though maybe this vignette does not transport that fact very well because of the lack of horizontal space</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(tf), <span class="dt">sep =</span> <span class="st">"</span><span class="ch">\n\n</span><span class="st">"</span>)
-<span class="co">#&gt; {"level":400,"timestamp":"2018-12-26 01:06:16","caller":"eval","msg":"JSON naturally supports custom log fields","field":"custom"}</span>
+<span class="co">#&gt; {"level":400,"timestamp":"2018-12-26 09:30:27","caller":"eval","msg":"JSON naturally supports custom log fields","field":"custom"}</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; {"level":400,"timestamp":"2018-12-26 01:06:16","caller":"eval","msg":"You can serialize most R data types to JSON","numbers":[1,2,3,4,5]}</span>
+<span class="co">#&gt; {"level":400,"timestamp":"2018-12-26 09:30:27","caller":"eval","msg":"You can serialize most R data types to JSON","numbers":[1,2,3,4,5]}</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; {"level":400,"timestamp":"2018-12-26 01:06:16","caller":"eval","msg":"If you ever want to analyse your log files","use":"JSON"}</span></code></pre></div>
+<span class="co">#&gt; {"level":400,"timestamp":"2018-12-26 09:30:27","caller":"eval","msg":"If you ever want to analyse your log files","use":"JSON"}</span></code></pre></div>
 </div>
 <div id="examples-hierarchy" class="section level2">
 <h2 class="hasAnchor">
@@ -422,7 +422,7 @@ lg &lt;-<span class="st"> </span>Logger<span class="op">$</span><span class="kw"
 <span class="co">#&gt; &lt;Logger&gt; [info] mypackage -&gt; root</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; appenders:</span>
-<span class="co">#&gt;   NA: &lt;AppenderFile&gt; [all] -&gt; /tmp/RtmpLU0smu/file191c4aaa670d</span>
+<span class="co">#&gt;   NA: &lt;AppenderFile&gt; [all] -&gt; /tmp/Rtmp5Tzc0g/file22d141eab37a</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; inherited appenders:</span>
 <span class="co">#&gt;   console: &lt;AppenderConsole&gt; [info] -&gt; console</span>
@@ -430,7 +430,7 @@ lg &lt;-<span class="st"> </span>Logger<span class="op">$</span><span class="kw"
 <p>This tells us that <code>lg</code> logs all events of at least level <code>info</code>. It does have a single (unnamed) Appender that logs to a temporary file, and dispatches all LogEvents it creates to the Appenders of the root Logger (ignoring the threshold and filters of the root Logger, but not of the Appenders).</p>
 <p>We can use <code>lg$fatal()</code>, <code>lg$info()</code>, etc.. to log messages with this Logger:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lg<span class="op">$</span><span class="kw">info</span>(<span class="st">"A test message for lg"</span>)
-<span class="co">#&gt; INFO  [01:06:16.237] A test message for lg</span></code></pre></div>
+<span class="co">#&gt; INFO  [09:30:27.948] A test message for lg</span></code></pre></div>
 <p>If we do not want <code>lg</code> to dispatch to the root Logger, we can set <code>propagate</code> to <code>FALSE</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lg<span class="op">$</span><span class="kw">set_propagate</span>(<span class="ot">FALSE</span>)</code></pre></div>
 <p>When we take a look at the Logger again, we now see that it does not inherit any Appenders anymore</p>
@@ -438,7 +438,7 @@ lg &lt;-<span class="st"> </span>Logger<span class="op">$</span><span class="kw"
 <span class="co">#&gt; &lt;Logger&gt; [info] mypackage | root</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; appenders:</span>
-<span class="co">#&gt;   NA: &lt;AppenderFile&gt; [all] -&gt; /tmp/RtmpLU0smu/file191c4aaa670d</span></code></pre></div>
+<span class="co">#&gt;   NA: &lt;AppenderFile&gt; [all] -&gt; /tmp/Rtmp5Tzc0g/file22d141eab37a</span></code></pre></div>
 <p>Consequently, <code>lg</code> no longer outputs log messages to he console</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lg<span class="op">$</span><span class="kw">info</span>(<span class="st">"Nothing to see here"</span>)</code></pre></div>
 </div>

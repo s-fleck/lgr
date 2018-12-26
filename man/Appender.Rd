@@ -13,15 +13,20 @@ format the LogEvent. For details please refer to the documentations of the
 specific Appenders.
 }
 \section{Usage}{
-\preformatted{x <- Appender$new(layout = Layout$new(), threshold = NA_integer_)
+\preformatted{
+x <- x$new(layout = Layout$new(), threshold = NA_integer_)
 
 x$append(event)
 x$set_threshold(level)
 x$set_layout(layout)
+x$filter(event)
+x$set_filters(filters)
 
 x$destination
 x$layout
 x$threshold
+x$filters
+
 }
 }
 

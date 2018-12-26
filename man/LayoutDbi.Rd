@@ -9,16 +9,22 @@
 Format a \link{LogEvent} as \code{data.frame} for inserting into a relational database.
 }
 \section{Usage}{
-\preformatted{x <- LayoutDbi$new(event_values = c("level", "timestamp", "caller", "msg"),
+\preformatted{
+x <- x$new(event_values = c("level", "timestamp", "caller", "msg"),
   col_types = NULL)
 
 x$format_event(event)
 x$set_col_types(x)
 x$sql_create_table(table)
 x$clone(deep = FALSE)
+x$set_event_values(x)
+x$set_val_names(x)
 
 x$col_names
 x$col_types
+x$event_values
+x$val_names
+
 }
 }
 

@@ -9,8 +9,9 @@ A \code{LogEvent} is a single unit of data that should be logged. \code{LogEvent
 usualy created by a \link{Logger}, and then processed by \link{Appenders}.
 }
 \section{Usage}{
-\preformatted{x <- LogEvent$new(logger, level = 400, timestamp = Sys.time(), caller = NA,
-  msg = NA, ...)
+\preformatted{
+x <- x$new(logger, level = 400, timestamp = Sys.time(), caller = NA, msg = NA,
+  ...)
 
 x$clone(deep = FALSE)
 
@@ -21,6 +22,7 @@ x$logger
 x$msg
 x$timestamp
 x$values
+
 }
 }
 
