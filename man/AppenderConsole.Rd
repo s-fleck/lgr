@@ -10,8 +10,8 @@ have the package \strong{crayon} installed log levels will be coloured by defaul
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "\%L [\%t]
-  \%m", timestamp_fmt = "\%H:\%M:\%OS3", colors = getOption("yog.colors", list())))
+x <- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "\%L [\%t] \%m
+  \%f", timestamp_fmt = "\%H:\%M:\%OS3", colors = getOption("yog.colors", list())))
 
 x$append(event)
 x$set_threshold(level)

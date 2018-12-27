@@ -718,7 +718,7 @@ AppenderDbi <- R6::R6Class(
         # do nothing
       } else if (is.null(self$layout$col_types)) {
         msg <- paste("Creating '", table, "' on first log.")
-        if (!setequal(layout$event_values, default_fields)){
+        if (!setequal(layout$event_values, DEFAULT_FIELDS)){
           warning(
             msg,
             "The Layout contains custom fields, but no `col_types`. ",

@@ -68,7 +68,7 @@ dbs <- list(
 
 options("datatable.showProgress" = dt_sp)
 
-nm <- "PostgreSQL via RPostgres"
+nm <- "SQLite via RSQLite"  # for manual testing, can be deleted
 
 
 # +- tests -------------------------------------------------------------------

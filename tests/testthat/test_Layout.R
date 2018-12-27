@@ -68,18 +68,11 @@ test_that("LayoutDbi works as expected", {
     lo <- LayoutDbi$new(
       event_values = c("level", "timestamp", "msg"),
       col_types = col_types
-    ), "foo"
+    ), "either"
   )
 
-  expect_error(
-    lo <- LayoutDbi$new(
-      event_values = c("level", "timestamp", "msg", "foo", "caller"),
-      col_types = col_types
-    ), "caller"
-  )
 
   lo <- LayoutDbi$new(
-    event_values = c("level", "timestamp", "msg", "foo", "user"),
     col_types = col_types
   )
 
@@ -105,7 +98,6 @@ test_that("LayoutDbi works as expected", {
 
 test_that("LayoutDbi works with custom fields", {
   lo <- LayoutDbi$new(
-    event_values = c("level", "timestamp", "msg", "custom_field", "logger_name", "user"),
     col_types =  c(
       timestamp = "timestamp",
       user = "varchar(256)",

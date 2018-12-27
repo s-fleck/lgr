@@ -10,8 +10,7 @@ Format a \link{LogEvent} as \code{data.frame} for inserting into a relational da
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(event_values = c("level", "timestamp", "caller", "msg"),
-  col_types = NULL)
+x <- x$new(event_values = NULL, col_types = NULL)
 
 x$format_event(event)
 x$set_col_types(x)
@@ -31,12 +30,14 @@ x$val_names
 \section{Creating a New Layout}{
 
 \describe{
-\item{\code{col_types}}{a named \code{character} vector of column types supported by
-the target database. This information is used by \link{AppenderDbi}
-or similar Appenders to create a new database table, either on
-instantion of the Appender or on writing of the first LogEvent.
-If not null, it must include \emph{all} columns described in \code{event_values}, and
-it will decide the column order of the \code{$format_event()} output.
+\item{\code{col_types}}{A named \code{character} vector of column types supported by
+the target database. If this is used instead of \code{event_values}, and
+the target logging \code{table} does not yet exist, the column type
+information is used by \link{AppenderDbi} or similar Appenders to create a
+new database table, either on instantion of the Appender or on writing
+of the first LogEvent. If the target database table already exists,
+the column type information is not used. You can only supply one of
+\code{event_values} and \code{col_types}.
 }
 }
 

@@ -333,12 +333,14 @@ LayoutTable <- R6::R6Class(
 #'
 #' @section Creating a New Layout:
 #' \describe{
-#'   \item{`col_types`}{a named `character` vector of column types supported by
-#'     the target database. This information is used by [AppenderDbi]
-#'     or similar Appenders to create a new database table, either on
-#'     instantion of the Appender or on writing of the first LogEvent.
-#'     If not null, it must include *all* columns described in `event_values`, and
-#'     it will decide the column order of the `$format_event()` output.
+#'   \item{`col_types`}{A named `character` vector of column types supported by
+#'     the target database. If this is used instead of `event_values`, and
+#'     the target logging `table` does not yet exist, the column type
+#'     information is used by [AppenderDbi] or similar Appenders to create a
+#'     new database table, either on instantion of the Appender or on writing
+#'     of the first LogEvent. If the target database table already exists,
+#'     the column type information is not used. You can only supply one of
+#'     `event_values` and `col_types`.
 #'   }
 #' }
 #'
@@ -424,11 +426,28 @@ LayoutDbi <- R6::R6Class(
   inherit = LayoutTable,
   public = list(
     initialize = function(
-      event_values  = c("level", "timestamp", "caller", "msg"),
+      event_values  = NULL,
       col_types = NULL
     ){
-      if (!is.null(col_types))
+      assert(
+        is.null(event_values) + is.null(col_types) >= 1,
+        "You can either supply `event_values` or `col_types`, not both. ",
+        "If you dont supply anything, `event_values` will default to: ",
+        paste(DEFAULT_FIELDS, collapse = ", ")
+      )
+
+
+      if (is.null(event_values))  event_values <- names(col_types)
+      if (is.null(event_values))  event_values <- DEFAULT_FIELDS
+
+
+      if (!is.null(col_types)){
+        if (is.null(event_values)){
+
+        }
         assert_colnames_match_valnames(names(col_types), event_values)
+
+      }
 
       self$set_event_values(event_values)
       self$set_col_types(col_types)
@@ -534,6 +553,7 @@ LayoutSqlite <- R6::R6Class(
 
 # +- LayoutRjdbc ----------------------------------------------------------
 
+#' @export
 LayoutRjdbc <- LayoutSqlite
 
 
@@ -551,7 +571,6 @@ select_dbi_layout <- function(
   res <- switch(
     cls,
     "SQLiteConnection" = LayoutSqlite$new(
-      event_values = c("level", "timestamp",  "caller", "msg"),
       col_types = c(
         level = "integer",
         timestamp = "character",
@@ -559,7 +578,6 @@ select_dbi_layout <- function(
         msg = "character"
       )),
     "JDBCConnection" = LayoutRjdbc$new(
-      event_values = c("level", "timestamp",  "caller", "msg"),
       col_types = c(
         level = "smallint",
         timestamp = "timestamp",
@@ -721,6 +739,12 @@ assert_colnames_match_valnames <- function(
         "."
       )
     }
+
+    msg <- paste(
+      msg,
+      "If you set `event_values` to NULL, they will automatically be overriden",
+      "by `col_types`."
+    )
 
     stop(msg, call. = FALSE)
   }

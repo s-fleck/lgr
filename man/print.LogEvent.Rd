@@ -5,13 +5,13 @@
 \alias{format.LogEvent}
 \title{Print or Format Logging Data}
 \usage{
-\method{print}{LogEvent}(x, fmt = "\%L [\%t] \%m",
+\method{print}{LogEvent}(x, fmt = "\%L [\%t] \%m  \%f",
   timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%S",
   colors = getOption("yog.colors"),
   log_levels = getOption("yog.log_levels"), pad_levels = "right",
   user = x$user, ...)
 
-\method{format}{LogEvent}(x, fmt = "\%L [\%t] \%m",
+\method{format}{LogEvent}(x, fmt = "\%L [\%t] \%m  \%f",
   timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%S", colors = NULL,
   log_levels = getOption("yog.log_levels"), pad_levels = "right",
   user = x$user, ...)

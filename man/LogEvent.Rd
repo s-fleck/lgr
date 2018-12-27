@@ -16,7 +16,7 @@ x <- x$new(logger, level = 400, timestamp = Sys.time(), caller = NA, msg 
 x$clone(deep = FALSE)
 
 x$caller
-x$custom_values
+x$custom_fields
 x$level
 x$level_name
 x$logger

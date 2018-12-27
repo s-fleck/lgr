@@ -120,7 +120,9 @@ LogEvent <- R6::R6Class(
       fixed_vals   <- c("level", "timestamp", "caller", "msg")
       custom_vals <- setdiff(
         names(self[[".__enclos_env__"]][["self"]]),
-        c(".__enclos_env__", "level_name", "initialize", "clone", "values", "logger", "logger_name", "custom_fields")
+        c(".__enclos_env__", "level_name", "initialize", "clone", "values",
+          "logger", "logger_name", "custom_fields"
+        )
       )
       valnames <- union(fixed_vals, custom_vals)
       mget(valnames, envir = self)
@@ -129,7 +131,9 @@ LogEvent <- R6::R6Class(
     custom_fields = function(){
       custom_vals <- setdiff(
         names(self[[".__enclos_env__"]][["self"]]),
-        c(".__enclos_env__", "level_name", "initialize", "clone", "values", "logger", "logger_name", "custom_fields", default_fields)
+        c(".__enclos_env__", "level_name", "initialize", "clone", "values",
+          "logger", "logger_name", "custom_fields", DEFAULT_FIELDS
+        )
       )
       mget(custom_vals, envir = self)
     },
@@ -224,4 +228,4 @@ as_tibble.LogEvent <- function(
 
 # global variables --------------------------------------------------------
 
-default_fields <- c("level", "timestamp", "caller", "msg")
+DEFAULT_FIELDS <- c("level", "timestamp", "caller", "msg")
