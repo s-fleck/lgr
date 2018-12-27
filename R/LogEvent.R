@@ -120,7 +120,7 @@ LogEvent <- R6::R6Class(
       fixed_vals   <- c("level", "timestamp", "caller", "msg")
       custom_vals <- setdiff(
         names(self[[".__enclos_env__"]][["self"]]),
-        c(".__enclos_env__", "level_name", "initialize", "clone", "values", "logger", "logger_name", "custom_values")
+        c(".__enclos_env__", "level_name", "initialize", "clone", "values", "logger", "logger_name", "custom_fields")
       )
       valnames <- union(fixed_vals, custom_vals)
       mget(valnames, envir = self)

@@ -50,7 +50,7 @@ test_that("add/remove_appender", {
   tlg <- Logger$new("test", propagate = FALSE)
 
   add_appender(AppenderConsole$new(), target = tlg)
-  expect_output(tlg$warn("test"), "WARN.*test$")
+  expect_output(tlg$warn("test"), "WARN.*test\\s*$")
   remove_appender(1, target = tlg)
   expect_silent(tlg$warn("test"))
   expect_error(show_log(tlg))

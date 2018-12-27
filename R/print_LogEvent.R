@@ -135,16 +135,27 @@ format.LogEvent <- function(
 
 format_custom_fields <- function(
   x,
-  color = TRUE,
-  braces = c("{", "}")
+  color = TRUE
 ){
+  if (!length(x)) return("")
+
   max_len = max(60 / length(x) - sum(nchar(names(x))), 16)
+
+  braces   <- c("{", "}")
+  brackets <- c("[", "]")
+  colon    <- ": "
+  comma    <- ", "
+  dots     <- ".."
 
   if (!color){
     style_subtle <- identity
     style_accent <- identity
   } else {
-    braces <- style_subtle(braces)
+    braces   <- style_subtle(braces)
+    brackets <- style_subtle(brackets)
+    colon    <- style_subtle(colon)
+    comma    <- style_subtle(comma)
+    dots     <- style_subtle("..")
   }
 
   res <- lapply(x, function(.x) {
@@ -153,18 +164,22 @@ format_custom_fields <- function(
         .x <- format(.x, justify = "none", drop0trailing = TRUE, trim = TRUE)
       }
 
-      r <- ptrunc_col(.x, collapse = ", ", width = max_len, dots = style_subtle(".."))
-      if (length(.x) > 1) r <- paste0(style_subtle("["), r, style_subtle("]"))
+      r <- ptrunc_col(.x, collapse = ", ", width = max_len, dots = dots)
+      if (length(.x) > 1) r <- paste0(brackets[[1]], r, brackets[[2]])
       r
     } else {
       class_fmt(.x)
     }
   })
 
-  paste(
-    braces[[1]], style_accent(names(res)), ": ", res, braces[[2]],
-    sep = "",
-    collapse  = ", "
+  paste0(
+    braces[[1]],
+    paste(
+      style_accent(names(res)), colon, res,
+      sep = "",
+      collapse  = comma
+    ),
+    braces[[2]]
   )
 }
 

@@ -70,6 +70,15 @@ format.Logger = function(
 appender_summary <- function(x){
   dd <- lapply(x, srs_appender)
 
+  if (!length(x)){
+    return(NULL)
+  }
+
+  if (is.null(names(x))){
+    names(x) <- ""
+  }
+
+
   names(dd) <- ifelse(
     is.na(names(x)) | is_blank(names(x)),
     paste0("[[", seq_len(length(x)), "]]"),

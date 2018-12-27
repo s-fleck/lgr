@@ -143,7 +143,7 @@ AppenderConsole <- R6::R6Class(
     initialize = function(
       threshold = NA_integer_,
       layout = LayoutFormat$new(
-        fmt = "%L [%t] %m",
+        fmt = "%L [%t] %m %f",
         timestamp_fmt = "%H:%M:%OS3",
         colors = getOption("yog.colors", list())
       )
