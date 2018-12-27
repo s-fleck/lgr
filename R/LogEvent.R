@@ -46,9 +46,11 @@
 #'   \item{`level_name`}{`character`: the [log_level] / priority of the
 #'     LogEvent labelled accoring to `getOption("yog.log_levels")`}
 #'   \item{`values`}{`list`: All values stored in the LogEvent (including
-#'     *custom fields*, but not including `event$logger`)}
+#'     all *custom fields*, but not including `event$logger`)}
 #'   \item{`logger_name`}{`character` scalar: The name of the Logger that
 #'     created this event, equivalent to `event$logger$name`)}
+#'   \item{`logger_user`}{`character` scalar: The user of the Logger that
+#'     created this event, equivalent to `event$logger_user`)}
 #' }
 #'
 #' @name LogEvent
@@ -121,21 +123,10 @@ LogEvent <- R6::R6Class(
       custom_vals <- setdiff(
         names(self[[".__enclos_env__"]][["self"]]),
         c(".__enclos_env__", "level_name", "initialize", "clone", "values",
-          "logger", "logger_name", "custom_fields"
-        )
+          "logger", "logger_name", "logger_user")
       )
-      valnames <- union(fixed_vals, custom_vals)
+      valnames <- union(fixed_vals, custom_vals) # to enforce order of fixed_vals
       mget(valnames, envir = self)
-    },
-
-    custom_fields = function(){
-      custom_vals <- setdiff(
-        names(self[[".__enclos_env__"]][["self"]]),
-        c(".__enclos_env__", "level_name", "initialize", "clone", "values",
-          "logger", "logger_name", "custom_fields", DEFAULT_FIELDS
-        )
-      )
-      mget(custom_vals, envir = self)
     },
 
     level_name = function(){
@@ -143,6 +134,10 @@ LogEvent <- R6::R6Class(
     },
 
     logger_name = function(){
+      get("name", envir = get("logger", envir = self))
+    },
+
+    logger_user = function(){
       get("name", envir = get("logger", envir = self))
     }
   )

@@ -121,7 +121,7 @@ format.LogEvent <- function(
       "%c" = x$caller %||% "(unknown function)",
       "%u" = x$user,
       "%p" = Sys.getpid(),
-      "%f" = format_custom_fields(x$custom_fields, color = length(colors)),
+      "%f" = format_custom_fields(get_custom_fields(x), color = length(colors)),
       tokens[[i]]
     )
   }
@@ -131,6 +131,11 @@ format.LogEvent <- function(
   res
 }
 
+
+
+get_custom_fields <- function(x){
+  x$values[!names(x$values) %in% DEFAULT_FIELDS]
+}
 
 
 format_custom_fields <- function(
