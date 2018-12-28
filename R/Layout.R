@@ -487,6 +487,11 @@ LayoutDbi <- R6::R6Class(
     },
 
     sql_create_table = function(table){
+      assert(
+        !is.null(private$.col_types),
+        "To create new database tables the Layout must contain `col_types`"
+      )
+
       generate_sql_create_table(
         tname = table,
         col_types = private$.col_types,
@@ -497,7 +502,14 @@ LayoutDbi <- R6::R6Class(
 
   active = list(
     col_types = function() private$.col_types,
-    col_names = function() names(private$.col_types)
+    col_names = function() {
+      ct <- get(".col_types", envir = private)
+      if (length(ct))
+          names(ct)
+      else
+        get(".event_values", private)
+
+    }
   ),
 
   private = list(
@@ -598,17 +610,18 @@ select_dbi_layout <- function(
     LayoutDbi$new(event_values = c("level", "timestamp",  "caller", "msg"))
   )
 
-  db_names <- tryCatch({
-    DBI::dbListFields(conn, table)
-  },
-    error = function(e) NULL
-  )
+  db_names <- try(DBI::dbListFields(conn, table), silent = TRUE)
 
-  if (!is.null(db_names)){
+  if (inherits(db_names, "try-error"))
+    db_names <- try(DBI::dbListFields(conn, toupper(table)), silent = TRUE)
+
+  if (inherits(db_names, "try-error"))
+    db_names <- try(DBI::dbListFields(conn, tolower(table)), silent = TRUE)
+
+  if (!inherits(db_names, "try-error")){
     res$set_col_types(NULL)
-    res$set_event_values(db_names)
+    res$set_event_values(tolower(db_names))
   }
-
 
   res
 }

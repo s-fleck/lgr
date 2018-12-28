@@ -68,7 +68,7 @@ dbs <- list(
 
 options("datatable.showProgress" = dt_sp)
 
-nm <- "SQLite via RSQLite"  # for manual testing, can be deleted
+nm <- "DB2 via RJDBC"  # for manual testing, can be deleted
 
 
 # +- tests -------------------------------------------------------------------
@@ -147,19 +147,35 @@ for (nm in names(dbs)){
       exception_handler = function (...) stop(...)
     )
 
-    expect_warning(
+
+    if (ctor$classname == "AppenderRjdbc"){
+      lo <- LayoutRjdbc$new(
+        col_types = c(
+          level = "smallint",
+          timestamp = "timestamp",
+          msg = "varchar(1024)",
+          caller = "varchar(1024)",
+          foo = "varchar(256)"
+        )
+      )
+    } else {
+      lo <- LayoutSqlite$new(
+        event_values = c("level", "timestamp", "msg", "caller", "foo")
+      )
+    }
+
+    expect_message(
       lg$add_appender(
-        AppenderDbi$new(
+        ctor$new(
           conn = conn,
           table = "logging_test_create",
-          layout = LayoutSqlite$new(
-            event_values = c("level", "timestamp", "msg", "caller", "foo")
-          ),
+          layout = lo,
           close_on_exit = FALSE
         ), "db"
       ),
-      "Creating"
+    "Creating"
     )
+
 
     lg$fatal("test", foo = "bar")
     expect_false(is.na(lg$appenders$db$data$foo[[1]]))
@@ -179,7 +195,7 @@ for (nm in names(dbs)){
 
     expect_silent(
       lg$add_appender(
-        AppenderDbi$new(
+        ctor$new(
           conn = conn,
           table = "logging_test_create",
           layout = LayoutSqlite$new(  # will work for SQLite and other DBs
@@ -199,7 +215,7 @@ for (nm in names(dbs)){
   })
 
 
-  test_that("Log to all fields that are already present n table by default", {
+  test_that("Log to all fields that are already present in table by default", {
     lg <- Logger$new(
       "test_dbi",
       threshold = "trace",
@@ -208,12 +224,18 @@ for (nm in names(dbs)){
     )
 
     lg$set_appenders(list(db =
-      AppenderDbi$new(
+      ctor$new(
         conn = conn,
         table = "logging_test_create",
         close_on_exit = FALSE
       ))
     )
+
+    lo <- select_dbi_layout(conn, "logging_test_create")
+    expect_true("foo" %in% lo$event_values)
+
+    expect_true("foo" %in% lg$appenders$db$layout$event_values)
+
     lg$fatal("test2", foo = "baz", blubb = "blah")
     lg$appenders$db$layout$format_event(lg$last_event)
     lg$appenders$db$append(lg$last_event)

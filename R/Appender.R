@@ -717,9 +717,9 @@ AppenderDbi <- R6::R6Class(
       if (DBI::dbExistsTable(self$conn, table)){
         # do nothing
       } else if (is.null(self$layout$col_types)) {
-        msg <- paste("Creating '", table, "' on first log.")
+        msg <- paste0("Creating '", table, "' on first log. ")
         if (!setequal(layout$event_values, DEFAULT_FIELDS)){
-          warning(
+          message(
             msg,
             "The Layout contains custom fields, but no `col_types`. ",
             "The column types will be determined automaticaly",
@@ -877,7 +877,7 @@ AppenderRjdbc <- R6::R6Class(
       )
 
       if (table_exists){
-        message("Logging to existing table ", table)
+        # do nothing
       } else {
         message("Creating '", table, "' with manual column types")
         RJDBC::dbSendUpdate(conn, layout$sql_create_table(table))
