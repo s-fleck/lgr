@@ -76,7 +76,6 @@ format.LogEvent <- function(
     is_scalar_character(pad_levels) || is.null(pad_levels)
   )
 
-
   # degenerate cases
   if (identical(nrow(x), 0L))  return("[empty log]")
 
