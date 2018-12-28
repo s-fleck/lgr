@@ -31,6 +31,9 @@ reference:
   - read_json_lines
   - use_logger
   - label_levels
+  - colorize_levels
+  - pad_right
+  - select_dbi_layout
 - title: Abstract Classes
   desc: For Package developers that want to build new Appenders, Layouts or Loggers
   contents:

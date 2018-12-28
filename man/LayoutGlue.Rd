@@ -46,7 +46,9 @@ lg$fatal("test")
 
 
 # All fields of the LogEvent are available, even custom ones
-lg$appenders[[1]]$layout$set_fmt("{logger$name} {level_name}({level}) {caller}: {toupper(msg)} {{custom: {custom}}}")
+lg$appenders[[1]]$layout$set_fmt(
+  "{logger$name} {level_name}({level}) {caller}: {toupper(msg)} {{custom: {custom}}}"
+)
 lg$fatal("test", custom = "foobar")
 
 

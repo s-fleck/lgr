@@ -199,7 +199,9 @@ LayoutFormat <- R6::R6Class(
 #'
 #'
 #' # All fields of the LogEvent are available, even custom ones
-#' lg$appenders[[1]]$layout$set_fmt("{logger$name} {level_name}({level}) {caller}: {toupper(msg)} {{custom: {custom}}}")
+#' lg$appenders[[1]]$layout$set_fmt(
+#'   "{logger$name} {level_name}({level}) {caller}: {toupper(msg)} {{custom: {custom}}}"
+#' )
 #' lg$fatal("test", custom = "foobar")
 #'
 #'
@@ -364,12 +366,12 @@ LayoutTable <- R6::R6Class(
 #'     `timestamps`
 #'   * `LayoutDBI`: For all other datbases
 #'
-#' The utility function `select_dbi_layout()` returns the appropriate
+#' The utility function [select_dbi_layout()] returns the appropriate
 #' Layout for a DBI connection.
 #'
 #'
 #' @name LayoutDbi
-#' @aliases LayoutSqlite select_dbi_layout
+#' @aliases LayoutSqlite LayoutRjdbc
 #' @family Layouts
 #' @family database layouts
 #' @include Filterable.R
@@ -395,7 +397,6 @@ LayoutTable <- R6::R6Class(
 #'
 #' # advanced example that supports a custom_field:
 #' lo <- LayoutDbi$new(
-#'   event_values = c("level", "timestamp", "msg", "custom_field"),
 #'   col_types =  c(
 #'     timestamp = "timestamp",
 #'     level = "smallint",
@@ -414,7 +415,7 @@ LayoutTable <- R6::R6Class(
 #' )
 #'
 #' lo$format_event(event)
-#' #'
+#'
 NULL
 
 
@@ -553,6 +554,7 @@ LayoutSqlite <- R6::R6Class(
 
 # +- LayoutRjdbc ----------------------------------------------------------
 
+
 #' @export
 LayoutRjdbc <- LayoutSqlite
 
@@ -561,6 +563,15 @@ LayoutRjdbc <- LayoutSqlite
 
 # +- LayoutDBI utils ------------------------------------------------------
 
+#' Select Appropriate Database Table Layout
+#'
+#' Selects an appropriate Layout for a database table based on
+#' a DBI connection and - if it already exists in the database -
+#' the table itself
+#'
+#' @param conn  a [DBI connection][DBI::dbConnect]
+#' @param table a `character` scalar. The name of the table to log to.
+#'
 #' @export
 select_dbi_layout <- function(
   conn,

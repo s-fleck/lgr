@@ -3,7 +3,7 @@
 \name{LayoutDbi}
 \alias{LayoutDbi}
 \alias{LayoutSqlite}
-\alias{select_dbi_layout}
+\alias{LayoutRjdbc}
 \title{Format Log Events for Output to Databases}
 \description{
 Format a \link{LogEvent} as \code{data.frame} for inserting into a relational database.
@@ -78,7 +78,7 @@ but this list is expected to grow as lgr matures:
 \item \code{LayoutDBI}: For all other datbases
 }
 
-The utility function \code{select_dbi_layout()} returns the appropriate
+The utility function \code{\link[=select_dbi_layout]{select_dbi_layout()}} returns the appropriate
 Layout for a DBI connection.
 }
 
@@ -102,7 +102,6 @@ str(lo$format_event(event))
 
 # advanced example that supports a custom_field:
 lo <- LayoutDbi$new(
-  event_values = c("level", "timestamp", "msg", "custom_field"),
   col_types =  c(
     timestamp = "timestamp",
     level = "smallint",
@@ -121,7 +120,7 @@ event <- LogEvent$new(
 )
 
 lo$format_event(event)
-#'
+
 }
 \seealso{
 \link[DBI:DBI]{DBI::DBI}

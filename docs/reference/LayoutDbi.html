@@ -182,7 +182,7 @@ but this list is expected to grow as lgr matures:</p><ul>
 <code>timestamps</code></p></li>
 <li><p><code>LayoutDBI</code>: For all other datbases</p></li>
 </ul>
-    <p>The utility function <code>select_dbi_layout()</code> returns the appropriate
+    <p>The utility function <code><a href='select_dbi_layout.html'>select_dbi_layout()</a></code> returns the appropriate
 Layout for a DBI connection.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -206,24 +206,24 @@ Layout for a DBI connection.</p>
 <span class='co'># defaults</span>
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutDbi</span>$<span class='fu'>new</span>()
 <span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt;   level           timestamp caller            msg
-#&gt; 1   200 2018-12-28 09:03:54   &lt;NA&gt; a test message</div><div class='input'>
+#&gt; 1   200 2018-12-28 09:14:50   &lt;NA&gt; a test message</div><div class='input'>
 <span class='co'># SQLite does not support timestamps so LayoutSqlite converts them to text</span>
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutSqlite</span>$<span class='fu'>new</span>()
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>))</div><div class='output co'>#&gt; 'data.frame':	1 obs. of  4 variables:
 #&gt;  $ level    : num 200
-#&gt;  $ timestamp: chr "2018-12-28 09:03:54"
+#&gt;  $ timestamp: chr "2018-12-28 09:14:50"
 #&gt;  $ caller   : chr NA
 #&gt;  $ msg      : chr "a test message"</div><div class='input'>
 <span class='co'># advanced example that supports a custom_field:</span>
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutDbi</span>$<span class='fu'>new</span>(
-  <span class='kw'>event_values</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"level"</span>, <span class='st'>"timestamp"</span>, <span class='st'>"msg"</span>, <span class='st'>"custom_field"</span>),
   <span class='kw'>col_types</span> <span class='kw'>=</span>  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(
     <span class='kw'>timestamp</span> <span class='kw'>=</span> <span class='st'>"timestamp"</span>,
     <span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"smallint"</span>,
     <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"varchar(2048)"</span>,
     <span class='kw'>custom_field</span> <span class='kw'>=</span> <span class='st'>"integer"</span>
   )
-)</div><div class='output co'>#&gt; <span class='error'>Error: You can either supply `event_values` or `col_types`, not both. If you dont supply anything, `event_values` will default to: level, timestamp, caller, msg</span></div><div class='input'>
+)
+
 <span class='no'>event</span> <span class='kw'>&lt;-</span> <span class='no'>LogEvent</span>$<span class='fu'>new</span>(
   <span class='kw'>logger</span> <span class='kw'>=</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"dummy logger"</span>, <span class='kw'>user</span> <span class='kw'>=</span> <span class='st'>"testuser"</span>),
   <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>200</span>,
@@ -233,8 +233,8 @@ Layout for a DBI connection.</p>
   <span class='kw'>custom_field</span> <span class='kw'>=</span> <span class='st'>"blubb"</span>
 )
 
-<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt;   level           timestamp caller            msg
-#&gt; 1   200 2018-12-28 09:03:54   &lt;NA&gt; a test message</div><div class='input'>#'
+<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt;             timestamp level            msg custom_field
+#&gt; 1 2018-12-28 09:14:50   200 a test message        blubb</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

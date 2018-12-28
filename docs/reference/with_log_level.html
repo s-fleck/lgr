@@ -167,14 +167,14 @@ produce hard to reason about code.</p>
     <pre class="examples"><div class='input'><span class='fu'>with_log_level</span>(<span class='st'>"warn"</span>, {
   <span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"More important than it seems"</span>)
   <span class='fu'><a href='simple_logging.html'>FATAL</a></span>(<span class='st'>"Really not so bad"</span>)
-})</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [09:04:03.176] More important than it seems 
-#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [09:04:03.179] Really not so bad </div><div class='input'>
+})</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [09:14:58.660] More important than it seems 
+#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [09:14:58.662] Really not so bad </div><div class='input'>
 <span class='fu'>with_log_value</span>(
   <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"overriden msg"</span>),  {
   <span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"bar"</span>)
   <span class='fu'><a href='simple_logging.html'>INFO</a></span>(<span class='st'>"FOO"</span>)
-})</div><div class='output co'>#&gt; INFO  [09:04:03.182] overriden msg 
-#&gt; INFO  [09:04:03.184] overriden msg </div></span></pre>
+})</div><div class='output co'>#&gt; INFO  [09:14:58.665] overriden msg 
+#&gt; INFO  [09:14:58.667] overriden msg </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
