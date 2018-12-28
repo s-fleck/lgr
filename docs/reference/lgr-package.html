@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Abstract Class for Filterables — Filterable • lgr</title>
+<title>A Fully Featured Logging Framework for R — lgr-package • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,9 @@
 
 
 
-<meta property="og:title" content="Abstract Class for Filterables — Filterable" />
+<meta property="og:title" content="A Fully Featured Logging Framework for R — lgr-package" />
 
-<meta property="og:description" content="Superclass for classes that have a filter() method such as Appenders and
-Loggers. This class is only exported for package developers that want to
-extend it." />
+<meta property="og:description" content="A flexible R6 based logging framework for advanced logging needs." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -116,34 +114,44 @@ extend it." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Abstract Class for Filterables</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/Filterable.R'><code>R/Filterable.R</code></a></small>
-    <div class="hidden name"><code>Filterable.Rd</code></div>
+    <h1>A Fully Featured Logging Framework for R</h1>
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/lgr-package.R'><code>R/lgr-package.R</code></a></small>
+    <div class="hidden name"><code>lgr-package.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Superclass for classes that have a <code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter()</a></code> method such as Appenders and
-Loggers. This class is only exported for package developers that want to
-extend it.</p>
+    <p>A flexible R6 based logging framework for advanced logging needs.</p>
     
     </div>
 
-    <pre class="usage"><span class='no'>Filterable</span></pre>
         
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>An object of class <code>R6ClassGenerator</code> of length 24.</p>
-    
-    <h2 class="hasAnchor" id="fields-and-methods"><a class="anchor" href="#fields-and-methods"></a>Fields and Methods</h2>
+    <h2 class="hasAnchor" id="options"><a class="anchor" href="#options"></a>Options</h2>
 
     
-    <dl class='dl-horizontal'>
-<dt><code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter(event)</a></code></dt><dd><p>Check if an event passes all filters</p></dd>
-<dt><code>filters</code>,<code>set_filters(filters)</code></dt><dd><p>get/set a list of <code>filters</code>. A
-filter is a function that takes exactly two named arguments: the LogEvent
-<code>event</code> and the Filterable <code>obj</code> (usually a Logger or Appender)</p></dd>
+    <p>You can also set these options in your <code>.Rprofile</code> to make them permanent</p>
+<dl class='dl-horizontal'>
+<dt><code>lgr.colors</code></dt><dd><p>a <code>list</code> of <code>functions</code> used for coloring the log
+levels in console output. Usually these will be functions from the
+package <strong>crayon</strong></p></dd>
+<dt><code>lgr.log_levels</code></dt><dd><p>A named <code>integer</code> vector of log levels that are
+known to lgr for labeling, setting thresholds, etc... . Instead of
+modifying this option manually use <code><a href='get_log_levels.html'>add_log_levels()</a></code> and
+<code><a href='get_log_levels.html'>remove_log_levels()</a></code></p></dd>
+<dt><code>lgr.suspend_logging</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>. Suspend all logging for
+all loggers.  Instead of modifying this option manually use
+<code><a href='suspend_logging.html'>suspend_logging()</a></code> and <code><a href='suspend_logging.html'>unsuspend_logging()</a></code></p></dd>
+<dt><code>lgr.user</code></dt><dd><p>a <code>character</code> scalar. The default username for new
+Loggers. Users can also be set per Logger, though this rarely makes
+sense.</p></dd>
 </dl>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Useful links:</p><ul>
+<li><p><a href='https://github.com/s-fleck/lgr'>https://github.com/s-fleck/lgr</a></p></li>
+<li><p>Report bugs at <a href='https://github.com/s-fleck/lgr'>https://github.com/s-fleck/lgr</a></p></li>
+</ul></div>
     
 
   </div>
@@ -151,11 +159,13 @@ filter is a function that takes exactly two named arguments: the LogEvent
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
-      <li><a href="#format">Format</a></li>
+      <li><a href="#options">Options</a></li>
 
-      <li><a href="#fields-and-methods">Fields and Methods</a></li>
+      <li><a href="#see-also">See also</a></li>
           </ul>
 
+    <h2>Author</h2>
+    <p><strong>Maintainer</strong>: Stefan Fleck <a href='mailto:stefan.b.fleck@gmail.com'>stefan.b.fleck@gmail.com</a> (0000-0003-3344-9851)</p>
   </div>
 </div>
 

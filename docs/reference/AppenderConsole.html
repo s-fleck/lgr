@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Log to the Console — AppenderConsole • yog</title>
+<title>Log to the Console — AppenderConsole • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -64,8 +64,8 @@ have the package crayon installed log levels will be coloured by default
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">yog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9012</span>
+        <a class="navbar-link" href="../index.html">lgr</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9000</span>
       </span>
     </div>
 
@@ -78,7 +78,7 @@ have the package crayon installed log levels will be coloured by default
   </a>
 </li>
 <li>
-  <a href="../articles/yog.html">Get started</a>
+  <a href="../articles/lgr.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -91,7 +91,7 @@ have the package crayon installed log levels will be coloured by default
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/yog-examples.html">Example Configurations for yog</a>
+      <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
     </li>
   </ul>
 </li>
@@ -99,7 +99,7 @@ have the package crayon installed log levels will be coloured by default
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/s-fleck/yog">
+  <a href="https://github.com/s-fleck/lgr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -117,7 +117,7 @@ have the package crayon installed log levels will be coloured by default
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Log to the Console</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/yog/blob/master/R/Appender.R'><code>R/Appender.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/Appender.R'><code>R/Appender.R</code></a></small>
     <div class="hidden name"><code>AppenderConsole.Rd</code></div>
     </div>
 
@@ -133,8 +133,8 @@ have the package <strong>crayon</strong> installed log levels will be coloured b
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre>
-x &lt;- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "%L [%t]
-  %m", timestamp_fmt = "%H:%M:%OS3", colors = getOption("yog.colors", list())))
+x &lt;- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "%L [%t] %m
+  %f", timestamp_fmt = "%H:%M:%OS3", colors = getOption("lgr.colors", list())))
     x$append(event)
 x$set_threshold(level)
 x$set_layout(layout)
@@ -191,11 +191,11 @@ filter is a function that takes exactly two named arguments: the LogEvent
 
 <span class='no'>logger</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>())
 <span class='no'>logger</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(
-  <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(<span class='st'>"[%t] %c(): [%n] %m from user %u"</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"yog.colors"</span>))))
+  <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(<span class='st'>"[%t] %c(): [%n] %m from user %u"</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"lgr.colors"</span>))))
 
 <span class='co'># Will output the message twice because we attached two console appenders</span>
-<span class='no'>logger</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [09:30:15.020] A test message
-#&gt; [2018-12-26 09:30:15.020] eval(): [</span><span style='color: #FFD75F;'>300</span><span>] A test message from user </div><div class='input'>
+<span class='no'>logger</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [09:03:53.075] A test message 
+#&gt; [2018-12-28 09:03:53.075] eval(): [</span><span style='color: #FFD75F;'>300</span><span>] A test message from user </div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

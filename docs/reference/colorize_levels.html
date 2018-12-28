@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Abstract Class for Filterables — Filterable • lgr</title>
+<title>Colorize Levels — colorize_levels • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,9 @@
 
 
 
-<meta property="og:title" content="Abstract Class for Filterables — Filterable" />
+<meta property="og:title" content="Colorize Levels — colorize_levels" />
 
-<meta property="og:description" content="Superclass for classes that have a filter() method such as Appenders and
-Loggers. This class is only exported for package developers that want to
-extend it." />
+<meta property="og:description" content="Colorize Levels" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -116,45 +114,59 @@ extend it." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Abstract Class for Filterables</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/Filterable.R'><code>R/Filterable.R</code></a></small>
-    <div class="hidden name"><code>Filterable.Rd</code></div>
+    <h1>Colorize Levels</h1>
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/utils-formatting.R'><code>R/utils-formatting.R</code></a></small>
+    <div class="hidden name"><code>colorize_levels.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Superclass for classes that have a <code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter()</a></code> method such as Appenders and
-Loggers. This class is only exported for package developers that want to
-extend it.</p>
+    <p>Colorize Levels</p>
     
     </div>
 
-    <pre class="usage"><span class='no'>Filterable</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>An object of class <code>R6ClassGenerator</code> of length 24.</p>
+    <pre class="usage"><span class='fu'>colorize_levels</span>(<span class='no'>x</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"lgr.colors"</span>, <span class='kw'>NULL</span>))</pre>
     
-    <h2 class="hasAnchor" id="fields-and-methods"><a class="anchor" href="#fields-and-methods"></a>Fields and Methods</h2>
-
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p><code>numeric</code> or <code>character</code> levels to be colored. Unlike in many other
+functions in lgr, <code>character</code> levels are <em>not</em> case sensitive in this
+function and leading/trailing whitespace is ignored to make it more
+comfortable to use <code>colorize_levels()</code> inside formatting functions.</p></td>
+    </tr>
+    <tr>
+      <th>colors</th>
+      <td><p>A <code>list</code> of <code>functions</code> that will be used to color the
+log levels (likely from <a href='https://www.rdocumentation.org/packages/crayon/topics/crayon'>crayon::crayon</a>).</p></td>
+    </tr>
+    </table>
     
-    <dl class='dl-horizontal'>
-<dt><code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter(event)</a></code></dt><dd><p>Check if an event passes all filters</p></dd>
-<dt><code>filters</code>,<code>set_filters(filters)</code></dt><dd><p>get/set a list of <code>filters</code>. A
-filter is a function that takes exactly two named arguments: the LogEvent
-<code>event</code> and the Filterable <code>obj</code> (usually a Logger or Appender)</p></dd>
-</dl>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a <code>character</code> vector wit color ansi codes</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other formatting utils: <code><a href='label_levels.html'>label_levels</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='fu'>colorize_levels</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>100</span>, <span class='fl'>200</span>)))</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>100</span><span> </span><span style='color: #D75F5F;'>200</span><span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='fu'>colorize_levels</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"trace"</span>, <span class='st'>"warn "</span>, <span class='st'>"DEBUG"</span>)))</div><div class='output co'>#&gt; </span><span style='color: #808080;'>trace</span><span> </span><span style='color: #FFD75F;'>warn </span><span> </span><span style='color: #808080;'>DEBUG</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#format">Format</a></li>
+      <li><a href="#value">Value</a></li>
 
-      <li><a href="#fields-and-methods">Fields and Methods</a></li>
-          </ul>
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

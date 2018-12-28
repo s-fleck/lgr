@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Log to a File — AppenderFile • yog</title>
+<title>Log to a File — AppenderFile • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -65,8 +65,8 @@ LayoutJson and a few extra methods for convenience." />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">yog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9012</span>
+        <a class="navbar-link" href="../index.html">lgr</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9000</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@ LayoutJson and a few extra methods for convenience." />
   </a>
 </li>
 <li>
-  <a href="../articles/yog.html">Get started</a>
+  <a href="../articles/lgr.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -92,7 +92,7 @@ LayoutJson and a few extra methods for convenience." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/yog-examples.html">Example Configurations for yog</a>
+      <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
     </li>
   </ul>
 </li>
@@ -100,7 +100,7 @@ LayoutJson and a few extra methods for convenience." />
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/s-fleck/yog">
+  <a href="https://github.com/s-fleck/lgr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -118,7 +118,7 @@ LayoutJson and a few extra methods for convenience." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Log to a File</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/yog/blob/master/R/Appender.R'><code>R/Appender.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/Appender.R'><code>R/Appender.R</code></a></small>
     <div class="hidden name"><code>AppenderFile.Rd</code></div>
     </div>
 
@@ -207,8 +207,8 @@ filter is a function that takes exactly two named arguments: the LogEvent
   <span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>json</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()), <span class='st'>"json"</span>
 )
 
-<span class='no'>logger</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; INFO  [09:30:16.040] A test message</div><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>default</span>)</div><div class='output co'>#&gt; [1] "INFO  [2018-12-26 09:30:16.040] A test message"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>fancy</span>)</div><div class='output co'>#&gt; [1] "[2018-12-26 09:30:16.040] eval(): INFO  A test message from user "</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>json</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2018-12-26 09:30:16\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div></pre>
+<span class='no'>logger</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; INFO  [09:03:53.813] A test message </div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>default</span>)</div><div class='output co'>#&gt; [1] "INFO  [2018-12-28 09:03:53.813] A test message"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>fancy</span>)</div><div class='output co'>#&gt; [1] "[2018-12-28 09:03:53.813] eval(): INFO  A test message from user "</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>json</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2018-12-28 09:03:53\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

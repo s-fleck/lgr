@@ -5,9 +5,9 @@
 \alias{unlabel_levels}
 \title{Label/Unlabel Log Levels}
 \usage{
-label_levels(levels, log_levels = getOption("yog.log_levels"))
+label_levels(levels, log_levels = getOption("lgr.log_levels"))
 
-unlabel_levels(labels, log_levels = getOption("yog.log_levels"))
+unlabel_levels(labels, log_levels = getOption("lgr.log_levels"))
 }
 \arguments{
 \item{levels}{an \code{integer} vector of log levels}

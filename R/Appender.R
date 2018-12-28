@@ -124,7 +124,7 @@ Appender <- R6::R6Class(
 #'
 #' logger$add_appender(AppenderConsole$new())
 #' logger$add_appender(AppenderConsole$new(
-#'   layout = LayoutFormat$new("[%t] %c(): [%n] %m from user %u", colors = getOption("yog.colors"))))
+#'   layout = LayoutFormat$new("[%t] %c(): [%n] %m from user %u", colors = getOption("lgr.colors"))))
 #'
 #' # Will output the message twice because we attached two console appenders
 #' logger$warn("A test message")
@@ -145,7 +145,7 @@ AppenderConsole <- R6::R6Class(
       layout = LayoutFormat$new(
         fmt = "%L [%t] %m %f",
         timestamp_fmt = "%H:%M:%OS3",
-        colors = getOption("yog.colors", list())
+        colors = getOption("lgr.colors", list())
       )
     ){
       self$set_threshold(threshold)
@@ -451,7 +451,7 @@ AppenderTable <- R6::R6Class(
 #' @export
 #' @seealso [LayoutFormat], [simple_logging], [data.table::data.table]
 #' @family Appenders
-#' @aliases yog_data
+#' @aliases lgr_data
 #' @name AppenderDt
 #'
 #' @examples
@@ -495,7 +495,7 @@ AppenderDt <- R6::R6Class(
       layout = LayoutFormat$new(
         fmt = "%L [%t] %m",
         timestamp_fmt = "%H:%M:%S",
-        colors = getOption("yog.colors")
+        colors = getOption("lgr.colors")
       ),
       prototype = data.table::data.table(
         .id  = NA_integer_,
@@ -750,7 +750,7 @@ AppenderDbi <- R6::R6Class(
       data.table::setattr(
         dd,
         "class",
-        c("yog_data", "data.table", "data.frame")
+        c("lgr_data", "data.table", "data.frame")
       )
 
       if (is.na(threshold)) threshold <- Inf
@@ -988,7 +988,7 @@ AppenderBuffer <- R6::R6Class(
       layout = LayoutFormat$new(
         fmt = "%L [%t] %m",
         timestamp_fmt = "%H:%M:%S",
-        colors = getOption("yog.colors")
+        colors = getOption("lgr.colors")
       ),
       buffer_size = 1e3
     ){

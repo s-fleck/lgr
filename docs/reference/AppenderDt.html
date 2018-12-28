@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Log to an In-Memory Data.Table — AppenderDt • yog</title>
+<title>Log to an In-Memory Data.Table — AppenderDt • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -64,8 +64,8 @@ Appender is useful for interactive use, and has very little overhead." />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">yog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9012</span>
+        <a class="navbar-link" href="../index.html">lgr</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9000</span>
       </span>
     </div>
 
@@ -78,7 +78,7 @@ Appender is useful for interactive use, and has very little overhead." />
   </a>
 </li>
 <li>
-  <a href="../articles/yog.html">Get started</a>
+  <a href="../articles/lgr.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -91,7 +91,7 @@ Appender is useful for interactive use, and has very little overhead." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/yog-examples.html">Example Configurations for yog</a>
+      <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
     </li>
   </ul>
 </li>
@@ -99,7 +99,7 @@ Appender is useful for interactive use, and has very little overhead." />
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/s-fleck/yog">
+  <a href="https://github.com/s-fleck/lgr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -117,7 +117,7 @@ Appender is useful for interactive use, and has very little overhead." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Log to an In-Memory Data.Table</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/yog/blob/master/R/Appender.R'><code>R/Appender.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/Appender.R'><code>R/Appender.R</code></a></small>
     <div class="hidden name"><code>AppenderDt.Rd</code></div>
     </div>
 
@@ -144,7 +144,7 @@ It is recommended to use this feature only <code>TRACE</code> level.</p>
 
     <pre>
 x &lt;- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "%L [%t]
-  %m", timestamp_fmt = "%H:%M:%S", colors = getOption("yog.colors")),
+  %m", timestamp_fmt = "%H:%M:%S", colors = getOption("lgr.colors")),
   prototype = data.table::data.table(.id = NA_integer_, level = NA_integer_,
   timestamp = Sys.time(), caller = NA_character_, msg = NA_character_, value =
   list(list())), buffer_size = 1e+05)
@@ -212,21 +212,21 @@ with a maximum of <code>buffer_size</code> rows</p></dd>
 
 <span class='co'># Displaying the log</span>
 <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span></div><div class='output co'>#&gt;    .id level           timestamp caller  msg value
-#&gt; 1:   1   500 2018-12-26 09:30:15   eval test    NA
-#&gt; 2:   2   200 2018-12-26 09:30:15   eval test    NA</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='fu'>show</span>()</div><div class='output co'>#&gt; <span style='color: #808080;'>DEBUG</span><span> [09:30:15] test
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [09:30:15] test</div><div class='input'><span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [09:30:15] test
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [09:30:15] test</div><div class='input'>
+#&gt; 1:   1   500 2018-12-28 09:03:53   eval test    NA
+#&gt; 2:   2   200 2018-12-28 09:03:53   eval test    NA</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='fu'>show</span>()</div><div class='output co'>#&gt; <span style='color: #808080;'>DEBUG</span><span> [09:03:53] test
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [09:03:53] test</div><div class='input'><span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [09:03:53] test
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [09:03:53] test</div><div class='input'>
 <span class='co'># If you pass a Logger to show_log, it looks for the first MemoryAppender it</span>
 <span class='co'># can find.</span>
-<span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [09:30:15] test
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [09:30:15] test</div><div class='input'>
+<span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [09:03:53] test
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [09:03:53] test</div><div class='input'>
 <span class='co'># Data tables can store arbitrary R values in list columns. The default</span>
 <span class='co'># AppenderDt comes with a single list column called "value" that you can use</span>
 <span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"the iris data frame"</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='no'>iris</span>)
 <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span></div><div class='output co'>#&gt;    .id level           timestamp caller                 msg        value
-#&gt; 1:   1   500 2018-12-26 09:30:15   eval                test           NA
-#&gt; 2:   2   200 2018-12-26 09:30:15   eval                test           NA
-#&gt; 3:   3   400 2018-12-26 09:30:15   eval the iris data frame &lt;data.frame&gt;</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span>$<span class='no'>value</span><span class='kw'>[[</span><span class='fl'>3</span>]])</div><div class='output co'>#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+#&gt; 1:   1   500 2018-12-28 09:03:53   eval                test           NA
+#&gt; 2:   2   200 2018-12-28 09:03:53   eval                test           NA
+#&gt; 3:   3   400 2018-12-28 09:03:53   eval the iris data frame &lt;data.frame&gt;</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span>$<span class='no'>value</span><span class='kw'>[[</span><span class='fl'>3</span>]])</div><div class='output co'>#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
 #&gt; 1          5.1         3.5          1.4         0.2  setosa
 #&gt; 2          4.9         3.0          1.4         0.2  setosa
 #&gt; 3          4.7         3.2          1.3         0.2  setosa

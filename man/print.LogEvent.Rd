@@ -7,17 +7,17 @@
 \usage{
 \method{print}{LogEvent}(x, fmt = "\%L [\%t] \%m  \%f",
   timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%S",
-  colors = getOption("yog.colors"),
-  log_levels = getOption("yog.log_levels"), pad_levels = "right",
+  colors = getOption("lgr.colors"),
+  log_levels = getOption("lgr.log_levels"), pad_levels = "right",
   user = x$user, ...)
 
 \method{format}{LogEvent}(x, fmt = "\%L [\%t] \%m  \%f",
   timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%S", colors = NULL,
-  log_levels = getOption("yog.log_levels"), pad_levels = "right",
+  log_levels = getOption("lgr.log_levels"), pad_levels = "right",
   user = x$user, ...)
 }
 \arguments{
-\item{x}{a \link{LogEvent} or \link{yog_data} Object}
+\item{x}{a \link{LogEvent} or \link{lgr_data} Object}
 
 \item{fmt}{A \code{character} scalar that may contain any of the tokens listed
 bellow in the section Format Tokens.}
@@ -58,7 +58,7 @@ multiple threads.}
 }
 
 \examples{
-x <- LogEvent$new(level = 300, msg = "a test event", logger = yog)
+x <- LogEvent$new(level = 300, msg = "a test event", logger = lgr)
 print(x)
 print(x, colors = NULL)
 

@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-#' print(yog)
+#' print(lgr)
 print.Logger <- function(
   x,
   color = requireNamespace("crayon", quietly = TRUE),

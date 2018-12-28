@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Inject Values into Logging Calls — with_log_level • yog</title>
+<title>Inject Values into Logging Calls — with_log_level • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -63,8 +63,8 @@ created by target Logger." />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">yog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9012</span>
+        <a class="navbar-link" href="../index.html">lgr</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9000</span>
       </span>
     </div>
 
@@ -77,7 +77,7 @@ created by target Logger." />
   </a>
 </li>
 <li>
-  <a href="../articles/yog.html">Get started</a>
+  <a href="../articles/lgr.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -90,7 +90,7 @@ created by target Logger." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/yog-examples.html">Example Configurations for yog</a>
+      <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
     </li>
   </ul>
 </li>
@@ -98,7 +98,7 @@ created by target Logger." />
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/s-fleck/yog">
+  <a href="https://github.com/s-fleck/lgr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -116,7 +116,7 @@ created by target Logger." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Inject Values into Logging Calls</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/yog/blob/master/R/utils-logging.R'><code>R/utils-logging.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/utils-logging.R'><code>R/utils-logging.R</code></a></small>
     <div class="hidden name"><code>with_log_level.Rd</code></div>
     </div>
 
@@ -127,9 +127,9 @@ created by target <a href='Logger.html'>Logger</a>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>with_log_level</span>(<span class='no'>level</span>, <span class='no'>code</span>, <span class='kw'>logger</span> <span class='kw'>=</span> <span class='kw pkg'>yog</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/yog/topics/yog-package'>yog</a></span>)
+    <pre class="usage"><span class='fu'>with_log_level</span>(<span class='no'>level</span>, <span class='no'>code</span>, <span class='kw'>logger</span> <span class='kw'>=</span> <span class='kw pkg'>lgr</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/lgr/topics/lgr-package'>lgr</a></span>)
 
-<span class='fu'>with_log_value</span>(<span class='no'>values</span>, <span class='no'>code</span>, <span class='kw'>logger</span> <span class='kw'>=</span> <span class='kw pkg'>yog</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/yog/topics/yog-package'>yog</a></span>)</pre>
+<span class='fu'>with_log_value</span>(<span class='no'>values</span>, <span class='no'>code</span>, <span class='kw'>logger</span> <span class='kw'>=</span> <span class='kw pkg'>lgr</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/lgr/topics/lgr-package'>lgr</a></span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -144,7 +144,7 @@ created by target <a href='Logger.html'>Logger</a>.</p>
     </tr>
     <tr>
       <th>logger</th>
-      <td><p>a <a href='Logger.html'>Logger</a>. defaults to the root logger (yog::yog).</p></td>
+      <td><p>a <a href='Logger.html'>Logger</a>. defaults to the root logger (lgr::lgr).</p></td>
     </tr>
     <tr>
       <th>values</th>
@@ -158,23 +158,23 @@ created by target <a href='Logger.html'>Logger</a>.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>These functions abuses yog's filter mechanic to modify LogEvents in-place
+    <p>These functions abuses lgr's filter mechanic to modify LogEvents in-place
 before they passed on the Appenders. Use with care as they can
 produce hard to reason about code.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>with_log_level</span>(<span class='st'>"warn"</span>, {
-  <span class='no'>yog</span>$<span class='fu'>info</span>(<span class='st'>"More important than it seems"</span>)
+  <span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"More important than it seems"</span>)
   <span class='fu'><a href='simple_logging.html'>FATAL</a></span>(<span class='st'>"Really not so bad"</span>)
-})</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [09:30:24.006] More important than it seems
-#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [09:30:24.009] Really not so bad</div><div class='input'>
+})</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [09:04:03.176] More important than it seems 
+#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [09:04:03.179] Really not so bad </div><div class='input'>
 <span class='fu'>with_log_value</span>(
   <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"overriden msg"</span>),  {
-  <span class='no'>yog</span>$<span class='fu'>info</span>(<span class='st'>"bar"</span>)
+  <span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"bar"</span>)
   <span class='fu'><a href='simple_logging.html'>INFO</a></span>(<span class='st'>"FOO"</span>)
-})</div><div class='output co'>#&gt; INFO  [09:30:24.013] overriden msg
-#&gt; INFO  [09:30:24.016] overriden msg</div></span></pre>
+})</div><div class='output co'>#&gt; INFO  [09:04:03.182] overriden msg 
+#&gt; INFO  [09:04:03.184] overriden msg </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

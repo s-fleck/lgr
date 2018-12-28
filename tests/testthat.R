@@ -1,4 +1,4 @@
 library(testthat)
-library(yog)
+library(lgr)
 
-test_check("yog")
+test_check("lgr")

@@ -10,7 +10,7 @@
 #'   `without_logging` returns whatever `code` returns
 #' @export
 suspend_logging <- function(){
-  options("yog.logging_suspended" = TRUE)
+  options("lgr.logging_suspended" = TRUE)
   invisible()
 }
 
@@ -20,7 +20,7 @@ suspend_logging <- function(){
 #' @rdname suspend_logging
 #' @export
 unsuspend_logging <- function(){
-  options("yog.logging_suspended" = FALSE)
+  options("lgr.logging_suspended" = FALSE)
   invisible()
 }
 
@@ -50,25 +50,25 @@ without_logging <- function(code){
 #' `with_log_level` temporarily overrides the log level of all [LogEvents]
 #' created by target [Logger].
 #'
-#' These functions abuses yog's filter mechanic to modify LogEvents in-place
+#' These functions abuses lgr's filter mechanic to modify LogEvents in-place
 #' before they passed on the Appenders. Use with care as they can
 #' produce hard to reason about code.
 #'
 #' @param level `integer` or `character` scalar: the desired log level
 #' @param code Any \R code
-#' @param logger a [Logger]. defaults to the root logger (yog::yog).
+#' @param logger a [Logger]. defaults to the root logger (lgr::lgr).
 #'
 #' @return whatever `code` would return
 #' @export
 #' @examples
 #' with_log_level("warn", {
-#'   yog$info("More important than it seems")
+#'   lgr$info("More important than it seems")
 #'   FATAL("Really not so bad")
 #' })
 with_log_level <- function(
   level,
   code,
-  logger = yog::yog
+  logger = lgr::lgr
 ){
   level <- standardize_log_level(level)
   force(level)
@@ -103,13 +103,13 @@ with_log_level <- function(
 #'
 #' with_log_value(
 #'   list(msg = "overriden msg"),  {
-#'   yog$info("bar")
+#'   lgr$info("bar")
 #'   INFO("FOO")
 #' })
 with_log_value <- function(
   values,
   code,
-  logger = yog::yog
+  logger = lgr::lgr
 ){
   assert(is_equal_length(names(values), values))
 

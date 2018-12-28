@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Label/Unlabel Log Levels — label_levels • yog</title>
+<title>Label/Unlabel Log Levels — label_levels • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -62,8 +62,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">yog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9012</span>
+        <a class="navbar-link" href="../index.html">lgr</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9000</span>
       </span>
     </div>
 
@@ -76,7 +76,7 @@
   </a>
 </li>
 <li>
-  <a href="../articles/yog.html">Get started</a>
+  <a href="../articles/lgr.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -89,7 +89,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/yog-examples.html">Example Configurations for yog</a>
+      <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
     </li>
   </ul>
 </li>
@@ -97,7 +97,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/s-fleck/yog">
+  <a href="https://github.com/s-fleck/lgr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -115,7 +115,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Label/Unlabel Log Levels</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/yog/blob/master/R/log_levels.R'><code>R/log_levels.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/utils-formatting.R'><code>R/utils-formatting.R</code></a></small>
     <div class="hidden name"><code>label_levels.Rd</code></div>
     </div>
 
@@ -125,9 +125,9 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>label_levels</span>(<span class='no'>levels</span>, <span class='kw'>log_levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"yog.log_levels"</span>))
+    <pre class="usage"><span class='fu'>label_levels</span>(<span class='no'>levels</span>, <span class='kw'>log_levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"lgr.log_levels"</span>))
 
-<span class='fu'>unlabel_levels</span>(<span class='no'>labels</span>, <span class='kw'>log_levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"yog.log_levels"</span>))</pre>
+<span class='fu'>unlabel_levels</span>(<span class='no'>labels</span>, <span class='kw'>log_levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"lgr.log_levels"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -156,7 +156,8 @@ in uppercase.</p></td>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>also see <a href='get_log_levels.html'>get_log_levels</a></p></div>
+    <div class='dont-index'><p><code><a href='get_log_levels.html'>get_log_levels()</a></code></p>
+<p>Other formatting utils: <code><a href='colorize_levels.html'>colorize_levels</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

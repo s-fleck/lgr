@@ -1,6 +1,6 @@
 library(bench)
 library(futile.logger)
-library(yog)
+library(lgr)
 library(magrittr)
 library(logging)
 library(ggplot2)
@@ -15,20 +15,20 @@ t2 <- tempfile()
 # get vs [[ ---------------------------------------------------------------
 
 bench::mark(
-  yog$fatal,
-  yog[["fatal"]],
-  get("fatal", yog),
-  get("fatal", envir = yog),
-  get("fatal", e = yog),
-  get("fatal", -1, yog),
+  lgr$fatal,
+  lgr[["fatal"]],
+  get("fatal", lgr),
+  get("fatal", envir = lgr),
+  get("fatal", e = lgr),
+  get("fatal", -1, lgr),
   iterations = 1e6
 )
 
 sink("/dev/null")
 res <- bench::mark(
-  yog$fatal("test"),
-  yog[["fatal"]]("test"),
-  get("fatal", yog)("test")
+  lgr$fatal("test"),
+  lgr[["fatal"]]("test"),
+  get("fatal", lgr)("test")
 )
 sink()
 
@@ -66,7 +66,7 @@ ml[["default (no colors)"]] <-
   Logger$new("default (no colors)", appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = NULL)), parent = NULL)
 
 ml[["default (colors)"]] <-
-  Logger$new("default (colors)", appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = getOption("yog.colors"))), parent = NULL)
+  Logger$new("default (colors)", appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = getOption("lgr.colors"))), parent = NULL)
 
 
 

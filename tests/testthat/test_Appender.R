@@ -153,7 +153,7 @@ test_that("AppenderDt: works with list columns", {
     timestamp = Sys.Date(),
     msg = "blubb",
     caller = "blubb()",
-    logger = yog
+    logger = lgr
   )
   app$append(e)
   expect_true(is.na(app$data$list[[1]]))
@@ -163,7 +163,7 @@ test_that("AppenderDt: works with list columns", {
     timestamp = Sys.Date(),
     msg = "blubb",
     caller = "blubb()",
-    logger = yog,
+    logger = lgr,
     list = environment()
   )
   app$append(e)
@@ -174,7 +174,7 @@ test_that("AppenderDt: works with list columns", {
     timestamp = Sys.Date(),
     msg = "blubb",
     caller = "blubb()",
-    logger = yog,
+    logger = lgr,
     list = iris
   )
   app$append(e)
@@ -186,7 +186,7 @@ test_that("AppenderDt: works with list columns", {
     timestamp = Sys.Date(),
     msg = "blubb",
     caller = "blubb()",
-    logger = yog,
+    logger = lgr,
     foo = "bar"
   )
   app$append(e)

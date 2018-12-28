@@ -1,7 +1,7 @@
 fmt_threshold <- function(
   x,
   type = "both",
-  log_levels = getOption("yog.log_levels")
+  log_levels = getOption("lgr.log_levels")
 ){
   assert(all(is.na(x)) || is_integerish(stats::na.omit(x)) || is.character(x))
 

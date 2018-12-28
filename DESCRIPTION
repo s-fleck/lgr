@@ -1,7 +1,7 @@
 Type: Package
-Package: yog
-Title: Yet Another Log4j Inspired Logging Framework
-Version: 0.0.5.9013
+Package: lgr
+Title: A Fully Featured Logging Framework
+Version: 0.0.6.9000
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -9,12 +9,10 @@ Authors@R:
            email = "stefan.b.fleck@gmail.com",
            comment = c(ORCID = "0000-0003-3344-9851"))
 Maintainer: Stefan Fleck <stefan.b.fleck@gmail.com>
-Description: A flexible R6 based logging framework. Yog is under
-    heavy development right now, please don't heistate to contact the
-    maintainer with bug reports, wishes, suggestions, etc...
+Description: A flexible R6 based logging framework for advanced logging needs.
 License: MIT + file LICENSE
-URL: https://github.com/s-fleck/yog
-BugReports: https://github.com/s-fleck/yog
+URL: https://github.com/s-fleck/lgr
+BugReports: https://github.com/s-fleck/lgr
 Imports: 
     R6
 Suggests: 
@@ -49,6 +47,7 @@ Collate:
     'Layout.R'
     'LogEvent.R'
     'Logger.R'
+    'lgr-package.R'
     'print_Logger.R'
     'read_json_log.R'
     'simple_logging.R'
@@ -57,4 +56,3 @@ Collate:
     'utils-logging.R'
     'utils-print.R'
     'utils-rd.R'
-    'yog-package.R'

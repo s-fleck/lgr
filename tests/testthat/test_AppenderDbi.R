@@ -95,7 +95,7 @@ for (nm in names(dbs)){
     "Creating"
   )
   e <- LogEvent$new(
-    yog, level = 600L, msg = "ohno", caller = "nope()", timestamp = Sys.time()
+    lgr, level = 600L, msg = "ohno", caller = "nope()", timestamp = Sys.time()
   )
 
 
@@ -228,7 +228,7 @@ for (nm in names(dbs)){
   test_that("SQL is sanitzed", {
     msg <- ";*/;   \"' /* blubb;"
     e <- LogEvent$new(
-      yog, level = 600L, msg = msg, caller = "nope()", timestamp = Sys.time()
+      lgr, level = 600L, msg = msg, caller = "nope()", timestamp = Sys.time()
     )
     app$append(e)
     res <- app$data$msg
@@ -281,7 +281,7 @@ test_that("AppenderDbi / RSQLite: manual field types work", {
     ),
   "column types"
   )
-  e <- LogEvent$new(yog, level = 600, msg = "ohno", caller = "nope()", timestamp = Sys.time())
+  e <- LogEvent$new(lgr, level = 600, msg = "ohno", caller = "nope()", timestamp = Sys.time())
 
   # do a few inserts
   for (i in 1:10){

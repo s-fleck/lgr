@@ -11,7 +11,7 @@ have the package \strong{crayon} installed log levels will be coloured by defaul
 \section{Usage}{
 \preformatted{
 x <- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "\%L [\%t] \%m
-  \%f", timestamp_fmt = "\%H:\%M:\%OS3", colors = getOption("yog.colors", list())))
+  \%f", timestamp_fmt = "\%H:\%M:\%OS3", colors = getOption("lgr.colors", list())))
 
 x$append(event)
 x$set_threshold(level)
@@ -68,7 +68,7 @@ logger  <- Logger$new("testlogger", propagate = FALSE)
 
 logger$add_appender(AppenderConsole$new())
 logger$add_appender(AppenderConsole$new(
-  layout = LayoutFormat$new("[\%t] \%c(): [\%n] \%m from user \%u", colors = getOption("yog.colors"))))
+  layout = LayoutFormat$new("[\%t] \%c(): [\%n] \%m from user \%u", colors = getOption("lgr.colors"))))
 
 # Will output the message twice because we attached two console appenders
 logger$warn("A test message")

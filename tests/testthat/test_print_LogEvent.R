@@ -6,7 +6,7 @@ test_that("format works as expected", {
   x <- list(level = 100, caller = "blubb()", timestamp = Sys.time(), msg = "this is a test message", user = "foobert")
 
   expect_match(
-    format.yog_data(x, fmt = "[%l -  %L -  %n]  %t -  %u -  %p -  %c:  %m", user = "foobert"),
+    format.lgr_data(x, fmt = "[%l -  %L -  %n]  %t -  %u -  %p -  %c:  %m", user = "foobert"),
     "fatal.*FATAL.*foobert.*blubb\\(\\).*message$"
   )
 
@@ -19,7 +19,7 @@ test_that("format works as expected", {
 test_that("format.LogEvent works as expected", {
   # common case
   x <- LogEvent$new(
-    logger = yog::yog,
+    logger = lgr::lgr,
     msg = "lorem skjdghsad akjsgh asdgjh asdgjshadk gklsd.",
     waypoints = 100,
     user = "max@company.com"
@@ -30,13 +30,13 @@ test_that("format.LogEvent works as expected", {
 
 
   x <- LogEvent$new(
-    logger = yog::yog,
+    logger = lgr::lgr,
     msg = "lorem skjdghsad akjsgh asdgjh asdgjshadk gklsd.",
     blah = "blubb",
     numbers = 1:100,
     large_number = c(23.525325235213525235525, 930.824687923409867298367293406),
     iris = iris,
-    logg = yog::yog,
+    logg = lgr::lgr,
     letters = letters
   )
 

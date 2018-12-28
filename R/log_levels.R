@@ -9,7 +9,7 @@
 #'
 #' @section Default Log Levels:
 #'
-#' Yog comes with the following predefined log levels that are identical to
+#' lgr comes with the following predefined log levels that are identical to
 #' the log levels of log4j.
 #'
 #'\tabular{rll}{
@@ -32,7 +32,7 @@
 #' get_log_levels()
 #'
 get_log_levels <- function(){
-  getOption("yog.log_levels")
+  getOption("lgr.log_levels")
 }
 
 
@@ -44,14 +44,14 @@ get_log_levels <- function(){
 add_log_levels <- function(
   levels
 ){
-  current_lvls <- getOption("yog.log_levels")
+  current_lvls <- getOption("lgr.log_levels")
   assert(
     !is.null(current_lvls),
-    "yog.log_levels option is not set. something is very wrong with yog, please file a bug report"
+    "lgr.log_levels option is not set. something is very wrong with lgr, please file a bug report"
   )
   levels <- setNames(as.integer(levels), names(levels))
   res <- as_log_levels(c(current_lvls, levels))
-  options(yog.log_levels = res)
+  options(lgr.log_levels = res)
   invisible(get_log_levels())
 }
 
@@ -69,11 +69,11 @@ remove_log_levels <- function(
     !any(c("fatal", "error", "warn", "info", "debug", "trace") %in% level_names),
     "Cannot remove default log levels"
   )
-  current_lvls <- getOption("yog.log_levels")
+  current_lvls <- getOption("lgr.log_levels")
   assert(all(level_names %in% names(current_lvls)))
   res <- current_lvls[!names(current_lvls) %in% level_names]
   res <- as_log_levels(res)
-  options(yog.log_levels = res)
+  options(lgr.log_levels = res)
   invisible(get_log_levels())
 }
 

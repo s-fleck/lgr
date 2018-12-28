@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Format Log Events as Text — LayoutFormat • yog</title>
+<title>Format Log Events as Text — LayoutFormat • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -62,8 +62,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">yog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9012</span>
+        <a class="navbar-link" href="../index.html">lgr</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9000</span>
       </span>
     </div>
 
@@ -76,7 +76,7 @@
   </a>
 </li>
 <li>
-  <a href="../articles/yog.html">Get started</a>
+  <a href="../articles/lgr.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -89,7 +89,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/yog-examples.html">Example Configurations for yog</a>
+      <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
     </li>
   </ul>
 </li>
@@ -97,7 +97,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/s-fleck/yog">
+  <a href="https://github.com/s-fleck/lgr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -115,7 +115,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Format Log Events as Text</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/yog/blob/master/R/Layout.R'><code>R/Layout.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/Layout.R'><code>R/Layout.R</code></a></small>
     <div class="hidden name"><code>LayoutFormat.Rd</code></div>
     </div>
 
@@ -164,8 +164,8 @@ x$timestamp_fmt
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Layouts: <code><a href='LayoutDbi.html'>LayoutDbi</a></code>,
-  <code><a href='LayoutJson.html'>LayoutJson</a></code>, <code><a href='LayoutTable.html'>LayoutTable</a></code>,
-  <code><a href='Layout.html'>Layout</a></code></p></div>
+  <code><a href='LayoutGlue.html'>LayoutGlue</a></code>, <code><a href='LayoutJson.html'>LayoutJson</a></code>,
+  <code><a href='LayoutTable.html'>LayoutTable</a></code>, <code><a href='Layout.html'>Layout</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -179,7 +179,7 @@ x$timestamp_fmt
   <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"a test message"</span>
 )
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>()
-<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; [1] "ERROR [2018-12-26 09:30:17.506] a test message"</div><div class='input'>
+<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; [1] "ERROR [2018-12-28 09:03:55.361] a test message"</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

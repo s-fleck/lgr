@@ -5,17 +5,17 @@
 #' You can also set these options in your `.Rprofile` to make them permanent
 #'
 #' \describe{
-#'   \item{`yog.colors`}{a `list` of `functions` used for coloring the log
+#'   \item{`lgr.colors`}{a `list` of `functions` used for coloring the log
 #'     levels in console output. Usually these will be functions from the
 #'     package **crayon**}
-#'   \item{`yog.log_levels`}{A named `integer` vector of log levels that are
-#'     known to yog for labeling, setting thresholds, etc... . Instead of
+#'   \item{`lgr.log_levels`}{A named `integer` vector of log levels that are
+#'     known to lgr for labeling, setting thresholds, etc... . Instead of
 #'     modifying this option manually use [add_log_levels()] and
 #'     [remove_log_levels()]}
-#'  \item{`yog.suspend_logging`}{`TRUE` or `FALSE`. Suspend all logging for
+#'  \item{`lgr.suspend_logging`}{`TRUE` or `FALSE`. Suspend all logging for
 #'    all loggers.  Instead of modifying this option manually use
 #'    [suspend_logging()] and [unsuspend_logging()]}
-#'  \item{`yog.user`}{a `character` scalar. The default username for new
+#'  \item{`lgr.user`}{a `character` scalar. The default username for new
 #'    Loggers. Users can also be set per Logger, though this rarely makes
 #'    sense.
 #'   }
@@ -28,7 +28,7 @@
 
 
 
-#' @export yog
+#' @export lgr
 .onLoad <- function(...){
 
   # options -----------------------------------------------------------------
@@ -54,7 +54,7 @@
 
     col_nchar     <- crayon::col_nchar
 
-    op.this[["yog.colors"]] <- list(
+    op.this[["lgr.colors"]] <- list(
       "fatal" = style_fatal,
       "error" = style_error,
       "warn"  = style_warning,
@@ -70,7 +70,7 @@
     style_accent  <- style_fatal
     col_nchar     <- function(...) nchar(...)
 
-    op.this[["yog.colors"]] = list()
+    op.this[["lgr.colors"]] = list()
   }
 
   assign("style_fatal", style_fatal, envir = parent.env(environment()))
@@ -82,7 +82,7 @@
 
 
   # +- log_levels --------------------------------------------------------------
-  op.this[["yog.log_levels"]] <- c(
+  op.this[["lgr.log_levels"]] <- c(
     "fatal" = 100L,
     "error" = 200L,
     "warn"  = 300L,
@@ -104,7 +104,7 @@
     appenders[["memory"]] <- AppenderDt$new()
 
   assign(
-    "yog",
+    "lgr",
     Logger$new(
       name = "root", # usally a logger should have the same name as the package it belongs to
       appenders = appenders,

@@ -5,16 +5,16 @@
 \alias{with_log_value}
 \title{Inject Values into Logging Calls}
 \usage{
-with_log_level(level, code, logger = yog::yog)
+with_log_level(level, code, logger = lgr::lgr)
 
-with_log_value(values, code, logger = yog::yog)
+with_log_value(values, code, logger = lgr::lgr)
 }
 \arguments{
 \item{level}{\code{integer} or \code{character} scalar: the desired log level}
 
 \item{code}{Any \R code}
 
-\item{logger}{a \link{Logger}. defaults to the root logger (yog::yog).}
+\item{logger}{a \link{Logger}. defaults to the root logger (lgr::lgr).}
 
 \item{values}{a named \code{list} of values to be injected into the logging calls}
 }
@@ -26,19 +26,19 @@ whatever \code{code} would return
 created by target \link{Logger}.
 }
 \details{
-These functions abuses yog's filter mechanic to modify LogEvents in-place
+These functions abuses lgr's filter mechanic to modify LogEvents in-place
 before they passed on the Appenders. Use with care as they can
 produce hard to reason about code.
 }
 \examples{
 with_log_level("warn", {
-  yog$info("More important than it seems")
+  lgr$info("More important than it seems")
   FATAL("Really not so bad")
 })
 
 with_log_value(
   list(msg = "overriden msg"),  {
-  yog$info("bar")
+  lgr$info("bar")
   INFO("FOO")
 })
 }

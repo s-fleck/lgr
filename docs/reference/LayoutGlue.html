@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Abstract Class for Filterables — Filterable • lgr</title>
+<title>Format Log Events as Text with Glue — LayoutGlue • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,11 @@
 
 
 
-<meta property="og:title" content="Abstract Class for Filterables — Filterable" />
+<meta property="og:title" content="Format Log Events as Text with Glue — LayoutGlue" />
 
-<meta property="og:description" content="Superclass for classes that have a filter() method such as Appenders and
-Loggers. This class is only exported for package developers that want to
-extend it." />
+<meta property="og:description" content="Format a LogEvent as human readable text using glue::glue. The function
+is evaluated in an environment in which it has access to all elements of
+the LogEvent (see examples)" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -116,45 +116,78 @@ extend it." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Abstract Class for Filterables</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/Filterable.R'><code>R/Filterable.R</code></a></small>
-    <div class="hidden name"><code>Filterable.Rd</code></div>
+    <h1>Format Log Events as Text with Glue</h1>
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/Layout.R'><code>R/Layout.R</code></a></small>
+    <div class="hidden name"><code>LayoutGlue.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Superclass for classes that have a <code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter()</a></code> method such as Appenders and
-Loggers. This class is only exported for package developers that want to
-extend it.</p>
+    <p>Format a <a href='LogEvent.html'>LogEvent</a> as human readable text using <a href='https://www.rdocumentation.org/packages/glue/topics/glue'>glue::glue</a>. The function
+is evaluated in an environment in which it has access to all elements of
+the <a href='LogEvent.html'>LogEvent</a> (see examples)</p>
     
     </div>
 
-    <pre class="usage"><span class='no'>Filterable</span></pre>
         
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
-    <p>An object of class <code>R6ClassGenerator</code> of length 24.</p>
+    <pre>
+x &lt;- x$new(fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)}
+  [{timestamp}] msg", colors = NULL)
+    x$format_event(event)
+x$set_fmt(x)
+x$set_colors(x)
+x$clone(deep = FALSE)
+    x$fmt
+    </pre>
+    
+    <h2 class="hasAnchor" id="creating-a-new-layout"><a class="anchor" href="#creating-a-new-layout"></a>Creating a New Layout</h2>
+
+    
+    <dl class='dl-horizontal'>
+<dt><code>fmt</code></dt><dd><p>see <code><a href='https://www.rdocumentation.org/packages/glue/topics/glue'>glue::glue()</a></code></p></dd>
+</dl>
     
     <h2 class="hasAnchor" id="fields-and-methods"><a class="anchor" href="#fields-and-methods"></a>Fields and Methods</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter(event)</a></code></dt><dd><p>Check if an event passes all filters</p></dd>
-<dt><code>filters</code>,<code>set_filters(filters)</code></dt><dd><p>get/set a list of <code>filters</code>. A
-filter is a function that takes exactly two named arguments: the LogEvent
-<code>event</code> and the Filterable <code>obj</code> (usually a Logger or Appender)</p></dd>
+<dt><code>format_event(event)</code></dt><dd><p>format a <a href='LogEvent.html'>LogEvent</a></p></dd>
 </dl>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
+    <div class='dont-index'><p>Other Layouts: <code><a href='LayoutDbi.html'>LayoutDbi</a></code>,
+  <code><a href='LayoutFormat.html'>LayoutFormat</a></code>, <code><a href='LayoutJson.html'>LayoutJson</a></code>,
+  <code><a href='LayoutTable.html'>LayoutTable</a></code>, <code><a href='Layout.html'>Layout</a></code></p></div>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"testlogger"</span>, <span class='kw'>appenders</span> <span class='kw'>=</span> <span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(), <span class='kw'>propagate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>set_layout</span>(<span class='no'>LayoutGlue</span>$<span class='fu'>new</span>())
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"test"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [2018-12-28 09:03:56] msg</div><div class='input'>
+
+<span class='co'># All fields of the LogEvent are available, even custom ones</span>
+<span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>layout</span>$<span class='fu'>set_fmt</span>(<span class='st'>"{logger$name} {level_name}({level}) {caller}: {toupper(msg)} {{custom: {custom}}}"</span>)
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"test"</span>, <span class='kw'>custom</span> <span class='kw'>=</span> <span class='st'>"foobar"</span>)</div><div class='output co'>#&gt; testlogger fatal(100) eval: TEST {custom: foobar}</div><div class='input'>
+
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
-      <li><a href="#format">Format</a></li>
+      <li><a href="#usage">Usage</a></li>
+
+      <li><a href="#creating-a-new-layout">Creating a New Layout</a></li>
 
       <li><a href="#fields-and-methods">Fields and Methods</a></li>
-          </ul>
+
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

@@ -12,7 +12,7 @@ appenders once certain conditions are met.
 x <- x$new(threshold = NA_integer_, appenders = NULL,
   should_flush = function(event) isTRUE(event[["level"]] <= 100),
   flush_on_exit = TRUE, flush_on_rotate = TRUE, layout = LayoutFormat$new(fmt =
-  "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S", colors = getOption("yog.colors")),
+  "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S", colors = getOption("lgr.colors")),
   buffer_size = 1000)
 
 x$append(x)

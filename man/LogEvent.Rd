@@ -69,11 +69,13 @@ commonly used values.
 
 \describe{
 \item{\code{level_name}}{\code{character}: the \link{log_level} / priority of the
-LogEvent labelled accoring to \code{getOption("yog.log_levels")}}
+LogEvent labelled accoring to \code{getOption("lgr.log_levels")}}
 \item{\code{values}}{\code{list}: All values stored in the LogEvent (including
-\emph{custom fields}, but not including \code{event$logger})}
+all \emph{custom fields}, but not including \code{event$logger})}
 \item{\code{logger_name}}{\code{character} scalar: The name of the Logger that
 created this event, equivalent to \code{event$logger$name})}
+\item{\code{logger_user}}{\code{character} scalar: The user of the Logger that
+created this event, equivalent to \code{event$logger_user})}
 }
 }
 

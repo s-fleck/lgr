@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Simple Logging — simple_logging • yog</title>
+<title>Simple Logging — simple_logging • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -33,8 +33,8 @@
 <meta property="og:title" content="Simple Logging — simple_logging" />
 
 <meta property="og:description" content="These functions provide a simple interface to the root logger. If you do not
-need any of the more advanced features of yog, start here.
-Yog provides convenience functions to manage the root Logger. These
+need any of the more advanced features of lgr, start here.
+lgr provides convenience functions to manage the root Logger. These
 are intended for interactive use, and for people who just need basic
 logging facilities and don't want to worry about hierarchical loggers and
 R6 classes.
@@ -75,8 +75,8 @@ other Appenders." />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">yog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9012</span>
+        <a class="navbar-link" href="../index.html">lgr</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9000</span>
       </span>
     </div>
 
@@ -89,7 +89,7 @@ other Appenders." />
   </a>
 </li>
 <li>
-  <a href="../articles/yog.html">Get started</a>
+  <a href="../articles/lgr.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -102,7 +102,7 @@ other Appenders." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/yog-examples.html">Example Configurations for yog</a>
+      <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
     </li>
   </ul>
 </li>
@@ -110,7 +110,7 @@ other Appenders." />
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/s-fleck/yog">
+  <a href="https://github.com/s-fleck/lgr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -128,15 +128,15 @@ other Appenders." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Simple Logging</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/yog/blob/master/R/simple_logging.R'><code>R/simple_logging.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/simple_logging.R'><code>R/simple_logging.R</code></a></small>
     <div class="hidden name"><code>simple_logging.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
     <p>These functions provide a simple interface to the root logger. If you do not
-need any of the more advanced features of yog, start here.</p>
-<p>Yog provides convenience functions to manage the root Logger. These
+need any of the more advanced features of lgr, start here.</p>
+<p>lgr provides convenience functions to manage the root Logger. These
 are intended for interactive use, and for people who just need basic
 logging facilities and don't want to worry about hierarchical loggers and
 R6 classes.</p>
@@ -165,15 +165,15 @@ other Appenders.</p>
 
 <span class='fu'>log_exception</span>(<span class='no'>...</span>)
 
-<span class='fu'>threshold</span>(<span class='no'>level</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='kw pkg'>yog</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/yog/topics/yog-package'>yog</a></span>)
+<span class='fu'>threshold</span>(<span class='no'>level</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='kw pkg'>lgr</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/lgr/topics/lgr-package'>lgr</a></span>)
 
-<span class='fu'>console_threshold</span>(<span class='no'>level</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='kw pkg'>yog</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/yog/topics/yog-package'>yog</a></span>$<span class='no'>appenders</span>$<span class='no'>console</span>)
+<span class='fu'>console_threshold</span>(<span class='no'>level</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='kw pkg'>lgr</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/lgr/topics/lgr-package'>lgr</a></span>$<span class='no'>appenders</span>$<span class='no'>console</span>)
 
-<span class='fu'>add_appender</span>(<span class='no'>appender</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='kw pkg'>yog</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/yog/topics/yog-package'>yog</a></span>)
+<span class='fu'>add_appender</span>(<span class='no'>appender</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='kw pkg'>lgr</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/lgr/topics/lgr-package'>lgr</a></span>)
 
-<span class='fu'>remove_appender</span>(<span class='no'>pos</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='kw pkg'>yog</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/yog/topics/yog-package'>yog</a></span>)
+<span class='fu'>remove_appender</span>(<span class='no'>pos</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='kw pkg'>lgr</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/lgr/topics/lgr-package'>lgr</a></span>)
 
-<span class='fu'>show_log</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='kw pkg'>yog</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/yog/topics/yog-package'>yog</a></span>)</pre>
+<span class='fu'>show_log</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='kw pkg'>lgr</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/lgr/topics/lgr-package'>lgr</a></span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -185,7 +185,7 @@ other Appenders.</p>
     <tr>
       <th>level, threshold</th>
       <td><p>an <code>integer</code> or <code>character</code> scalar, see
-<code><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption("yog.log_levels")</a></code> for possible values. For <code>threshold</code> <code>0</code>
+<code><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption("lgr.log_levels")</a></code> for possible values. For <code>threshold</code> <code>0</code>
 (<code>"off"</code>) and <code>NA</code> (<code>"all"</code>) are also valid.</p></td>
     </tr>
     <tr>
@@ -221,13 +221,13 @@ as <code>integer</code> (invisibly)</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>FATAL</span>(<span class='st'>"This is an important message about %s going wrong"</span>, <span class='st'>"something"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:30:22.279] This is an important message about something going wrong</div><div class='input'><span class='fu'>DEBUG</span>(<span class='st'>"Debug messages are hidden by default"</span>)
+    <pre class="examples"><div class='input'><span class='fu'>FATAL</span>(<span class='st'>"This is an important message about %s going wrong"</span>, <span class='st'>"something"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:04:01.425] This is an important message about something going wrong </div><div class='input'><span class='fu'>DEBUG</span>(<span class='st'>"Debug messages are hidden by default"</span>)
 <span class='fu'>console_threshold</span>(<span class='st'>"debug"</span>)  <span class='co'># you must use lower case names here</span>
-<span class='fu'>DEBUG</span>(<span class='st'>"Unless we lower the threshold"</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [09:30:22.284] Unless we lower the threshold</div><div class='input'>
+<span class='fu'>DEBUG</span>(<span class='st'>"Unless we lower the threshold"</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [09:04:01.429] Unless we lower the threshold </div><div class='input'>
 <span class='fu'>add_appender</span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(), <span class='st'>"second_console_appender"</span>)
-<span class='fu'>FATAL</span>(<span class='st'>"Multiple console appenders are a bad idea"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:30:22.288] Multiple console appenders are a bad idea
-#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:30:22.288] Multiple console appenders are a bad idea</div><div class='input'><span class='fu'>remove_appender</span>(<span class='st'>"second_console_appender"</span>)
-<span class='fu'>INFO</span>(<span class='st'>"Good that we defined an appender name, so it's easy to remove"</span>)</div><div class='output co'>#&gt; INFO  [09:30:22.293] Good that we defined an appender name, so it's easy to remove</div></span></pre>
+<span class='fu'>FATAL</span>(<span class='st'>"Multiple console appenders are a bad idea"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:04:01.434] Multiple console appenders are a bad idea 
+#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:04:01.434] Multiple console appenders are a bad idea </div><div class='input'><span class='fu'>remove_appender</span>(<span class='st'>"second_console_appender"</span>)
+<span class='fu'>INFO</span>(<span class='st'>"Good that we defined an appender name, so it's easy to remove"</span>)</div><div class='output co'>#&gt; INFO  [09:04:01.438] Good that we defined an appender name, so it's easy to remove </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

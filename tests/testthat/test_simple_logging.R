@@ -3,11 +3,11 @@ context("simple_logging")
 
 
 test_that("simple_logging works as expected", {
-  expect_identical(threshold(), yog::yog$threshold)
-  expect_identical(console_threshold(), yog::yog$appenders$console$threshold)
+  expect_identical(threshold(), lgr::lgr$threshold)
+  expect_identical(console_threshold(), lgr::lgr$appenders$console$threshold)
 
-  yth <- yog::yog$threshold
-  cth <- yog::yog$appenders$console$threshold
+  yth <- lgr::lgr$threshold
+  cth <- lgr::lgr$appenders$console$threshold
 
   threshold(NA)
   console_threshold(NA)
@@ -24,8 +24,8 @@ test_that("simple_logging works as expected", {
     "oops"
   )
 
-  yog$set_threshold(yth)
-  yog$appenders$console$set_threshold(cth)
+  lgr$set_threshold(yth)
+  lgr$appenders$console$set_threshold(cth)
 })
 
 
@@ -35,9 +35,9 @@ test_that("show_log()", {
   expect_output(expect_true(is.data.frame(show_log())))
   expect_output(expect_true(nrow(show_log()) > 5))
   expect_output(
-    expect_identical(show_log(), show_log(target = yog$appenders$memory))
+    expect_identical(show_log(), show_log(target = lgr$appenders$memory))
   )
-  expect_error(show_log(target = yog$appenders$console), "does not have")
+  expect_error(show_log(target = lgr$appenders$console), "does not have")
 
   lg <- Logger$new("test", propagate = FALSE)
   expect_error(show_log(target = lg), "has no Appender")
@@ -59,7 +59,7 @@ test_that("add/remove_appender", {
 
 
 test_that("option appenders setup", {
-  options("yog.log_file" = tempfile())
+  options("lgr.log_file" = tempfile())
 
   res <- default_appenders()
   expect_identical(length(res), 1L)
@@ -67,21 +67,21 @@ test_that("option appenders setup", {
   expect_s3_class(res[[1]]$layout, "LayoutFormat")
   expect_true(is.na(res[[1]]$threshold))
 
-  options("yog.log_file" = tempfile(pattern = ".json"))
+  options("lgr.log_file" = tempfile(pattern = ".json"))
   res <- default_appenders()
   expect_identical(length(res), 1L)
   expect_s3_class(res[[1]], "AppenderFile")
   expect_s3_class(res[[1]]$layout, "LayoutJson")
   expect_true(is.na(res[[1]]$threshold))
 
-  options("yog.log_file" = c(trace = tempfile(pattern = ".json")))
+  options("lgr.log_file" = c(trace = tempfile(pattern = ".json")))
   res <- default_appenders()
   expect_identical(length(res), 1L)
   expect_s3_class(res[[1]], "AppenderFile")
   expect_s3_class(res[[1]]$layout, "LayoutJson")
   expect_identical(res[[1]]$threshold, 600L)
 
-  options("yog.log_file" = c(blubb = tempfile('_fail')))
+  options("lgr.log_file" = c(blubb = tempfile('_fail')))
   expect_warning(res <- default_appenders(), "_fail")
 })
 

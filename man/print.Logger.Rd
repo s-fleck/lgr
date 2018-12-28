@@ -26,5 +26,5 @@
 Display a short summary of the most important aspects of the logger
 }
 \examples{
-print(yog)
+print(lgr)
 }

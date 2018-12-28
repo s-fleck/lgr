@@ -5,7 +5,7 @@
 #' several [Appenders] that write the event to a destination (a file,
 #' the console, ...). All Loggers of an R session are in a hierarchical
 #' structure, and each Logger (except the Root Looger) passes on LogEvents to
-#' the Appenders of it ancestral Loggers. See `vignette("yog", package = "yog")`
+#' the Appenders of it ancestral Loggers. See `vignette("lgr", package = "lgr")`
 #' for more info.
 #'
 #' @eval r6_usage(Logger)
@@ -39,7 +39,7 @@
 #'     This information can be used by the appenders}
 #'
 #'   \item{`parent`}{a `Logger`. Usually the Root logger. All Loggers must be
-#'     descentents of the Root logger for yog to work as intended.}
+#'     descentents of the Root logger for lgr to work as intended.}
 #'
 #'   \item{`exception_handler`}{a `function` that takes a single argument `e`.
 #'     The function used to handle errors that occur durring loging. Defaults
@@ -154,10 +154,10 @@
 #' @include log_levels.R
 #' @examples
 #'
-#' yog$info("Today is %s", Sys.Date() )
+#' lgr$info("Today is %s", Sys.Date() )
 #'
-#' # yog includes a pre-configured root logger
-#' yog$fatal("This is a serious error")
+#' # lgr includes a pre-configured root logger
+#' lgr$fatal("This is a serious error")
 #'
 #' # if you want to take advantage of hierarchical logging, you can create new loggers.
 #' #' # the following creates a new logger that logs to a temporary file.
@@ -200,7 +200,7 @@ Logger <- R6::R6Class(
       appenders = list(),
       threshold = 400L,
       user = get_user(),
-      parent = yog::yog,
+      parent = lgr::lgr,
       exception_handler = default_exception_handler,
       propagate = TRUE
     ){
@@ -250,7 +250,7 @@ Logger <- R6::R6Class(
         # Check if LogEvent should be created
         if (
           identical(level[[1]] > get(".threshold", envir = private), TRUE) ||
-          identical(getOption("yog.logging_suspended"), TRUE)
+          identical(getOption("lgr.logging_suspended"), TRUE)
         ){
           return(invisible(msg))
         }

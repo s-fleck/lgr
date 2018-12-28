@@ -32,7 +32,7 @@ get_caller <- function(
 
 
 #' `get_user()` tries to determine the current user. Defaults to
-#' `getOption("yog.user")`. If the option is not set, `Sys.info()[["user"]]`
+#' `getOption("lgr.user")`. If the option is not set, `Sys.info()[["user"]]`
 #' is used. If the option is not set and the package **whoami** is available,
 #' the user name is guessed based on whichever of the following is available:
 #' `email_address`, `fullname`, `gh_username`, `username`.
@@ -69,7 +69,7 @@ get_user <- function(fallback = "unknown user"){
   }
 
 
-  getOption("yog.user", guess_user())
+  getOption("lgr.user", guess_user())
 }
 
 
@@ -174,7 +174,7 @@ generate_sql_create_table <- function(
 #' @noRd
 standardize_threshold <- function(
   x,
-  log_levels = c(getOption("yog.log_levels"), c("all" = NA_integer_, "off" = 0L))
+  log_levels = c(getOption("lgr.log_levels"), c("all" = NA_integer_, "off" = 0L))
 ){
   assert(is_scalar(x), "A threshold must be a scalar (a vector of length 1)" )
 
@@ -198,7 +198,7 @@ standardize_threshold <- function(
 
 standardize_log_level <- function(
   x,
-  log_levels = getOption("yog.log_levels")
+  log_levels = getOption("lgr.log_levels")
 ){
   assert(is_scalar(x), "'", deparse(substitute(x)), "' must be a scalar log level")
 
@@ -218,7 +218,7 @@ standardize_log_level <- function(
 
 standardize_log_levels <- function(
   x,
-  log_levels = getOption("yog.log_levels")
+  log_levels = getOption("lgr.log_levels")
 ){
 
   if (is_integerish(x) && all(x > 0)){

@@ -1,7 +1,7 @@
 #' Colorize Levels
 #'
 #' @param x `numeric` or `character` levels to be colored. Unlike in many other
-#'   functions in yog, `character` levels are *not* case sensitive in this
+#'   functions in lgr, `character` levels are *not* case sensitive in this
 #'   function and leading/trailing whitespace is ignored to make it more
 #'   comfortable to use `colorize_levels()` inside formatting functions.
 #' @inheritParams format.LogEvent
@@ -15,7 +15,7 @@
 #' cat(colorize_levels(c("trace", "warn ", "DEBUG")))
 colorize_levels <- function(
   x,
-  colors = getOption("yog.colors", NULL)
+  colors = getOption("lgr.colors", NULL)
 ){
   if (length(x) && length(colors)){
     if (is.character(x))
@@ -59,7 +59,7 @@ colorize_levels <- function(
 #'
 label_levels = function(
   levels,
-  log_levels = getOption("yog.log_levels")
+  log_levels = getOption("lgr.log_levels")
 ){
   if (!is.numeric(levels))
     stop("Expected numeric 'levels'")
@@ -82,7 +82,7 @@ label_levels = function(
 #' @export
 unlabel_levels = function(
   labels,
-  log_levels = getOption("yog.log_levels")
+  log_levels = getOption("lgr.log_levels")
 ){
   if (!is.character(labels))
     stop("Expected character 'labels'")

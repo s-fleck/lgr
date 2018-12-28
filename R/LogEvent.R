@@ -44,7 +44,7 @@
 #'
 #' \describe{
 #'   \item{`level_name`}{`character`: the [log_level] / priority of the
-#'     LogEvent labelled accoring to `getOption("yog.log_levels")`}
+#'     LogEvent labelled accoring to `getOption("lgr.log_levels")`}
 #'   \item{`values`}{`list`: All values stored in the LogEvent (including
 #'     all *custom fields*, but not including `event$logger`)}
 #'   \item{`logger_name`}{`character` scalar: The name of the Logger that

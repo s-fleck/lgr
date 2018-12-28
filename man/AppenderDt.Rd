@@ -2,7 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderDt}
 \alias{AppenderDt}
-\alias{yog_data}
+\alias{lgr_data}
 \title{Log to an In-Memory Data.Table}
 \description{
 An Appender that outputs to an in-memory \code{data.table}. This requires that
@@ -24,7 +24,7 @@ It is recommended to use this feature only \code{TRACE} level.
 \section{Usage}{
 \preformatted{
 x <- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "\%L [\%t]
-  \%m", timestamp_fmt = "\%H:\%M:\%S", colors = getOption("yog.colors")),
+  \%m", timestamp_fmt = "\%H:\%M:\%S", colors = getOption("lgr.colors")),
   prototype = data.table::data.table(.id = NA_integer_, level = NA_integer_,
   timestamp = Sys.time(), caller = NA_character_, msg = NA_character_, value =
   list(list())), buffer_size = 1e+05)

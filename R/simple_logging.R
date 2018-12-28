@@ -1,7 +1,7 @@
 #' Simple Logging
 #'
 #' These functions provide a simple interface to the root logger. If you do not
-#' need any of the more advanced features of yog, start here.
+#' need any of the more advanced features of lgr, start here.
 #'
 #'
 #' @name simple_logging
@@ -20,7 +20,7 @@ NULL
 
 #' @param msg,... passed on to [base::sprintf()]
 #' @param level,threshold an `integer` or `character` scalar, see
-#'   `getOption("yog.log_levels")` for possible values. For `threshold` `0`
+#'   `getOption("lgr.log_levels")` for possible values. For `threshold` `0`
 #'   (`"off"`) and `NA` (`"all"`) are also valid.
 #' @param target a [Logger] or [Appender]. Defaults to the root logger.
 #'
@@ -29,7 +29,7 @@ NULL
 #'   as a `character` vector.
 #' @rdname simple_logging
 FATAL <- function(msg, ...){
-  yog$fatal(msg, ...)
+  lgr$fatal(msg, ...)
 }
 
 
@@ -38,7 +38,7 @@ FATAL <- function(msg, ...){
 #' @export
 #' @rdname simple_logging
 ERROR <- function(msg, ...){
-  yog$error(msg, ...)
+  lgr$error(msg, ...)
 }
 
 
@@ -47,7 +47,7 @@ ERROR <- function(msg, ...){
 #' @export
 #' @rdname simple_logging
 WARN <- function(msg, ...){
-  yog$warn(msg, ...)
+  lgr$warn(msg, ...)
 }
 
 
@@ -56,7 +56,7 @@ WARN <- function(msg, ...){
 #' @export
 #' @rdname simple_logging
 INFO <- function(msg, ...){
-  yog$info(msg, ...)
+  lgr$info(msg, ...)
 }
 
 
@@ -65,7 +65,7 @@ INFO <- function(msg, ...){
 #' @export
 #' @rdname simple_logging
 DEBUG <- function(msg, ...){
-  yog$debug(msg, ...)
+  lgr$debug(msg, ...)
 }
 
 
@@ -74,7 +74,7 @@ DEBUG <- function(msg, ...){
 #' @export
 #' @rdname simple_logging
 TRACE <- function(msg, ...){
-  yog$trace(msg, ...)
+  lgr$trace(msg, ...)
 }
 
 
@@ -102,7 +102,7 @@ log_exception <- function(
 
 
 #' @description
-#'   Yog provides convenience functions to manage the root Logger. These
+#'   lgr provides convenience functions to manage the root Logger. These
 #'   are intended for interactive use, and for people who just need basic
 #'   logging facilities and don't want to worry about hierarchical loggers and
 #'   R6 classes.
@@ -126,7 +126,7 @@ log_exception <- function(
 #' @export
 threshold <- function(
   level,
-  target = yog::yog
+  target = lgr::lgr
 ){
   if (missing(level))
     target$threshold
@@ -142,7 +142,7 @@ threshold <- function(
 #' @export
 console_threshold <- function(
   level,
-  target = yog::yog$appenders$console
+  target = lgr::lgr$appenders$console
 ){
   assert(inherits(target, "AppenderConsole"))
   if (missing(level))
@@ -167,7 +167,7 @@ console_threshold <- function(
 add_appender <- function(
   appender,
   name = NULL,
-  target = yog::yog
+  target = lgr::lgr
 ){
   target$add_appender(appender, name = name)
 }
@@ -179,7 +179,7 @@ add_appender <- function(
 #' @export
 remove_appender <- function(
   pos,
-  target = yog::yog
+  target = lgr::lgr
 ){
   target$remove_appender(pos)
 }
@@ -194,7 +194,7 @@ remove_appender <- function(
 show_log = function(
   n = 20,
   threshold = NA,
-  target = yog::yog
+  target = lgr::lgr
 ){
   assert_namespace("data.table")
 
@@ -230,7 +230,7 @@ show_log = function(
 
 default_appenders <- function()
 {
-  log_files  <- getOption("yog.log_file", NULL)
+  log_files  <- getOption("lgr.log_file", NULL)
   thresholds <- names(log_files)
 
   if (is.null(thresholds)){
@@ -244,7 +244,7 @@ default_appenders <- function()
         warning(
           sprintf(paste(
             "Cannot setup logfile '%s' as specified in the global options:",
-            "%s\nSee '?yog' for help."),
+            "%s\nSee '?lgr' for help."),
             log_files[[i]], e)
         )
         NULL

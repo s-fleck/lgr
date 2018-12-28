@@ -4,11 +4,11 @@
 \alias{colorize_levels}
 \title{Colorize Levels}
 \usage{
-colorize_levels(x, colors = getOption("yog.colors", NULL))
+colorize_levels(x, colors = getOption("lgr.colors", NULL))
 }
 \arguments{
 \item{x}{\code{numeric} or \code{character} levels to be colored. Unlike in many other
-functions in yog, \code{character} levels are \emph{not} case sensitive in this
+functions in lgr, \code{character} levels are \emph{not} case sensitive in this
 function and leading/trailing whitespace is ignored to make it more
 comfortable to use \code{colorize_levels()} inside formatting functions.}
 

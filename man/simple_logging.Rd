@@ -30,21 +30,21 @@ TRACE(msg, ...)
 
 log_exception(...)
 
-threshold(level, target = yog::yog)
+threshold(level, target = lgr::lgr)
 
-console_threshold(level, target = yog::yog$appenders$console)
+console_threshold(level, target = lgr::lgr$appenders$console)
 
-add_appender(appender, name = NULL, target = yog::yog)
+add_appender(appender, name = NULL, target = lgr::lgr)
 
-remove_appender(pos, target = yog::yog)
+remove_appender(pos, target = lgr::lgr)
 
-show_log(n = 20, threshold = NA, target = yog::yog)
+show_log(n = 20, threshold = NA, target = lgr::lgr)
 }
 \arguments{
 \item{msg, ...}{passed on to \code{\link[base:sprintf]{base::sprintf()}}}
 
 \item{level, threshold}{an \code{integer} or \code{character} scalar, see
-\code{getOption("yog.log_levels")} for possible values. For \code{threshold} \code{0}
+\code{getOption("lgr.log_levels")} for possible values. For \code{threshold} \code{0}
 (\code{"off"}) and \code{NA} (\code{"all"}) are also valid.}
 
 \item{target}{a \link{Logger} or \link{Appender}. Defaults to the root logger.}
@@ -69,9 +69,9 @@ as \code{integer} (invisibly)
 }
 \description{
 These functions provide a simple interface to the root logger. If you do not
-need any of the more advanced features of yog, start here.
+need any of the more advanced features of lgr, start here.
 
-Yog provides convenience functions to manage the root Logger. These
+lgr provides convenience functions to manage the root Logger. These
 are intended for interactive use, and for people who just need basic
 logging facilities and don't want to worry about hierarchical loggers and
 R6 classes.

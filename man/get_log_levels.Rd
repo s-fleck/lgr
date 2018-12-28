@@ -29,7 +29,7 @@ Display, add and remove character labels for log levels.
 \section{Default Log Levels}{
 
 
-Yog comes with the following predefined log levels that are identical to
+lgr comes with the following predefined log levels that are identical to
 the log levels of log4j.
 
 \tabular{rll}{

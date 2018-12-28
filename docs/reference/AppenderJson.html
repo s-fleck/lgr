@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Log to a JSON File — AppenderJson • yog</title>
+<title>Log to a JSON File — AppenderJson • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -64,8 +64,8 @@ access the underlying file." />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">yog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9012</span>
+        <a class="navbar-link" href="../index.html">lgr</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9000</span>
       </span>
     </div>
 
@@ -78,7 +78,7 @@ access the underlying file." />
   </a>
 </li>
 <li>
-  <a href="../articles/yog.html">Get started</a>
+  <a href="../articles/lgr.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -91,7 +91,7 @@ access the underlying file." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/yog-examples.html">Example Configurations for yog</a>
+      <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
     </li>
   </ul>
 </li>
@@ -99,7 +99,7 @@ access the underlying file." />
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/s-fleck/yog">
+  <a href="https://github.com/s-fleck/lgr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -117,7 +117,7 @@ access the underlying file." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Log to a JSON File</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/yog/blob/master/R/Appender.R'><code>R/Appender.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/Appender.R'><code>R/Appender.R</code></a></small>
     <div class="hidden name"><code>AppenderJson.Rd</code></div>
     </div>
 
@@ -204,10 +204,10 @@ filter is a function that takes exactly two named arguments: the LogEvent
 <span class='no'>l</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)
 <span class='no'>l</span>$<span class='fu'>info</span>(<span class='st'>"A test message %s strings"</span>, <span class='st'>"with format strings"</span>, <span class='kw'>and</span> <span class='kw'>=</span> <span class='st'>"custom_fields"</span>)
 
-<span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2018-12-26 09:30:16","caller":"eval","msg":"A test message"}
-#&gt; {"level":400,"timestamp":"2018-12-26 09:30:16","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp caller                                        msg
-#&gt; 1   400 2018-12-26 09:30:16   eval                             A test message
-#&gt; 2   400 2018-12-26 09:30:16   eval A test message with format strings strings
+<span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2018-12-28 09:03:54","caller":"eval","msg":"A test message"}
+#&gt; {"level":400,"timestamp":"2018-12-28 09:03:54","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp caller                                        msg
+#&gt; 1   400 2018-12-28 09:03:54   eval                             A test message
+#&gt; 2   400 2018-12-28 09:03:54   eval A test message with format strings strings
 #&gt;             and
 #&gt; 1          &lt;NA&gt;
 #&gt; 2 custom_fields</div><div class='input'>

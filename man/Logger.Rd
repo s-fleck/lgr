@@ -10,13 +10,13 @@ calling function) as a \link{LogEvent} and passes this event on to one or
 several \link{Appenders} that write the event to a destination (a file,
 the console, ...). All Loggers of an R session are in a hierarchical
 structure, and each Logger (except the Root Looger) passes on LogEvents to
-the Appenders of it ancestral Loggers. See \code{vignette("yog", package = "yog")}
+the Appenders of it ancestral Loggers. See \code{vignette("lgr", package = "lgr")}
 for more info.
 }
 \section{Usage}{
 \preformatted{
 x <- x$new(name, appenders = list(), threshold = 400L, user = get_user(),
-  parent = yog::yog, exception_handler = default_exception_handler,
+  parent = lgr::lgr, exception_handler = default_exception_handler,
   propagate = TRUE)
 
 x$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
@@ -85,7 +85,7 @@ that triggers this logger}
 This information can be used by the appenders}
 
 \item{\code{parent}}{a \code{Logger}. Usually the Root logger. All Loggers must be
-descentents of the Root logger for yog to work as intended.}
+descentents of the Root logger for lgr to work as intended.}
 
 \item{\code{exception_handler}}{a \code{function} that takes a single argument \code{e}.
 The function used to handle errors that occur durring loging. Defaults
@@ -197,10 +197,10 @@ be functions that take exactly two named arguments: the LogEvent
 
 \examples{
 
-yog$info("Today is \%s", Sys.Date() )
+lgr$info("Today is \%s", Sys.Date() )
 
-# yog includes a pre-configured root logger
-yog$fatal("This is a serious error")
+# lgr includes a pre-configured root logger
+lgr$fatal("This is a serious error")
 
 # if you want to take advantage of hierarchical logging, you can create new loggers.
 #' # the following creates a new logger that logs to a temporary file.

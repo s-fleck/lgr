@@ -71,7 +71,7 @@ vector}
 
 Different databases have different data types and features. Currently the
 following \code{LayoutDBI} subclasses exist that deal with specific databases,
-but this list is expected to grow as yog matures:
+but this list is expected to grow as lgr matures:
 \itemize{
 \item \code{LayoutSQLite}: Needs its own Layout because SQLite does not support
 \code{timestamps}

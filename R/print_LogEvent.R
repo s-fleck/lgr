@@ -1,6 +1,6 @@
 #' Print or Format Logging Data
 #'
-#' @param x a [LogEvent] or [yog_data] Object
+#' @param x a [LogEvent] or [lgr_data] Object
 #' @param timestamp_fmt see [format.POSIXct()]
 #' @param fmt A `character` scalar that may contain any of the tokens listed
 #'   bellow in the section Format Tokens.
@@ -29,7 +29,7 @@
 #' @export
 #'
 #' @examples
-#' x <- LogEvent$new(level = 300, msg = "a test event", logger = yog)
+#' x <- LogEvent$new(level = 300, msg = "a test event", logger = lgr)
 #' print(x)
 #' print(x, colors = NULL)
 #'
@@ -38,8 +38,8 @@ print.LogEvent <- function(
   x,
   fmt = "%L [%t] %m  %f",
   timestamp_fmt = "%Y-%m-%d %H:%M:%S",
-  colors = getOption("yog.colors"),
-  log_levels = getOption("yog.log_levels"),
+  colors = getOption("lgr.colors"),
+  log_levels = getOption("lgr.log_levels"),
   pad_levels = "right",
   user = x$user,
   ...
@@ -65,7 +65,7 @@ format.LogEvent <- function(
   fmt = "%L [%t] %m  %f",
   timestamp_fmt = "%Y-%m-%d %H:%M:%S",
   colors = NULL,
-  log_levels = getOption("yog.log_levels"),
+  log_levels = getOption("lgr.log_levels"),
   pad_levels = "right",
   user = x$user,
   ...
@@ -190,12 +190,12 @@ format_custom_fields <- function(
 
 
 #' @export
-format.yog_data <- format.LogEvent
+format.lgr_data <- format.LogEvent
 
 
 
 #' @export
-print.yog_data <- print.LogEvent
+print.lgr_data <- print.LogEvent
 
 
 tokenize_format <- function(

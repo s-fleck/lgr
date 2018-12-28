@@ -137,7 +137,7 @@ test_that("modify appenders for a logger", {
   # mak1es it easier to remove later.
   ml$add_appender(AppenderFile$new(file = tf), name = "file")
 
-  # configure yog so that it logs everything to the file, but only info and above
+  # configure lgr so that it logs everything to the file, but only info and above
   # to the console
   ml$set_threshold(NA)
   ml$appenders[[1]]$set_threshold("info")

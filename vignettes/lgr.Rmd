@@ -7,7 +7,7 @@ output:
     toc: true
     number_sections: true
 vignette: >
-  %\VignetteIndexEntry{yog}
+  %\VignetteIndexEntry{lgr}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -15,7 +15,7 @@ editor_options:
 ---
 
 ```{r setup, include = FALSE}
-library(yog)
+library(lgr)
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -25,11 +25,11 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-Yog is a logging framework for R inspired by 
+lgr is a logging framework for R inspired by 
 [Apache Log4j](https://logging.apache.org/log4j/2.x/) and
 [Python logging](https://docs.python.org/3/library/logging.html).
 It follows a traditional object oriented design implemented through
-[R6 classes](https://github.com/r-lib/R6). This enables yog to have a larger
+[R6 classes](https://github.com/r-lib/R6). This enables lgr to have a larger
 set of features than other logging packages for R, and makes it easy to extend 
 for people that have experience with R6 classes.
 
@@ -101,7 +101,7 @@ of the logging process.
 The elements described above are R6 classes. R6 is an object orientation
 system for R that is used by many popular packages such as shiny, dplyr, 
 plumber, roxygen2, and testthat but often behind the scenes and not as exposed
-as in yog.
+as in lgr.
 
 You recognize R6 classes in this package because they are named following the 
 UpperCamelCase naming convention. While there is only one kind of Logger and 
@@ -119,7 +119,7 @@ a new `AppenderFile`, you do this by calling
 
 ## Log Levels
 
-Yog supports the standard log4j Log Levels outlined bellow. The Log Level of
+lgr supports the standard log4j Log Levels outlined bellow. The Log Level of
 an event represents its severity. The named log levels are really just 
 nicknames vor integer values, and you can use the `character` or `integer` 
 representations interchangably. You can also use arbitrary integer values 
@@ -145,15 +145,15 @@ knitr::kable(ll)
 ```
 
 The list of named log levels is stored as an option 
-(`getOption("yog.log_levels")`) and you can use `add_log_levels()` and 
+(`getOption("lgr.log_levels")`) and you can use `add_log_levels()` and 
 `remove_log_levels()` to define your own named levels if you want to.
-There are only predefined logging methods (`yog$fatal()`, etc..) for the
+There are only predefined logging methods (`lgr$fatal()`, etc..) for the
 standard log levels though.
 
 
 ## Logging With the Root Logger
 
-Yog comes with a pre-configured root Logger. It is called *root* because
+lgr comes with a pre-configured root Logger. It is called *root* because
 you can [set up a tree of Loggers](#hierarchy) that descent from it, but for 
 basic use you will not have to worry about that.
 
@@ -179,7 +179,7 @@ DEBUG("unless we lower the threshold")
 TRACE("Trace is even lower than debug")
 ```
 
-If you have the package **data.table** installed, yog does not only log to the 
+If you have the package **data.table** installed, lgr does not only log to the 
 console, but also to an in memory `data.table`. You can use `show_log()` to 
 quickly display this in memory log^[If you want to know more about interacting 
 with the data.table Appender see the help for `?AppenderDt`.]. 
@@ -195,17 +195,17 @@ section on [thresholds](#thresholds).
 ### R6 Logging Syntax
 
 You can also directly use Logger R6 objects to log. You can refer to the 
-*root* logger with `yog$`. This is especially useful if you are working with
+*root* logger with `lgr$`. This is especially useful if you are working with
 multiple loggers (e.g. if you set up a separate Logger for a package you have
 developed). The examples in this vignette mostly use the notation below as it
 is more explicit:
 
 ```{r}
-yog$fatal("This is an important message about %s going wrong", "->something<-")
-yog$trace("Trace messages are still hidden")
-yog$appenders$console$set_threshold("trace")
-yog$trace("Unless we lower the threshold")
-yog$appenders$memory$show(3)
+lgr$fatal("This is an important message about %s going wrong", "->something<-")
+lgr$trace("Trace messages are still hidden")
+lgr$appenders$console$set_threshold("trace")
+lgr$trace("Unless we lower the threshold")
+lgr$appenders$memory$show(3)
 
 ```
 
@@ -213,7 +213,7 @@ yog$appenders$memory$show(3)
 
 You can use `sprintf()` style formatting strings directly in log messages. 
 ```{r}
-yog$info("The sky was the color of %s, tuned to a dead chanel", "television")
+lgr$info("The sky was the color of %s, tuned to a dead chanel", "television")
 INFO("There are %.1f lights", 4.5321)
 ```
 
@@ -226,9 +226,9 @@ utilise all the information present in a log event. The last event produced
 by a Logger is stored in its last_event field.
 
 ```{r}
-yog$info("Vampire stories are generally located in Styria")
-yog$last_event  # a summary output of the event
-yog$last_event$values  # all values stored in the event as a list
+lgr$info("Vampire stories are generally located in Styria")
+lgr$last_event  # a summary output of the event
+lgr$last_event$values  # all values stored in the event as a list
 ```
 
 LogEvents can contain not only these standard values, but an arbitrary number
@@ -244,17 +244,17 @@ log data, you will thank me for this tip.
 
 ```{r}
 # bad
-yog$info("Processing track '%s' with %s waypoints", "track.gpx", 32)
+lgr$info("Processing track '%s' with %s waypoints", "track.gpx", 32)
 
 # Good
 tf <- tempfile()
-yog$add_appender(AppenderJson$new(tf), "json")
-yog$info("Processing track", file = "track.gpx", waypoints = 32)
-yog$appenders$json$data
+lgr$add_appender(AppenderJson$new(tf), "json")
+lgr$info("Processing track", file = "track.gpx", waypoints = 32)
+lgr$appenders$json$data
 
 ```
 ```{r echo = FALSE}
-yog$remove_appender("json")
+lgr$remove_appender("json")
 unlink(tf)
 ```
 
@@ -282,10 +282,10 @@ examples:
 f1 <- function(event, obj) { as.POSIXlt(Sys.Date())$wday %in% c(7, 0) }
 # Only log messages that contain the word bird
 f2 <- function(event, obj) { grepl("bird", event$msg) }
-yog$set_filters(list(f1, f2))
+lgr$set_filters(list(f1, f2))
 
 # since this is not very useful, we remove the filters again
-yog$set_filters(NULL)
+lgr$set_filters(NULL)
 
 ```
 
@@ -293,27 +293,27 @@ yog$set_filters(NULL)
 ## Appenders: Managing Log Destinations
 
 The root logger only logs to the console by default. If you want to redirect 
-the output to a file you can just add a file appender to yog.
+the output to a file you can just add a file appender to lgr.
 
 ```{r}
 tf <- tempfile()
 
 # Add a new appender to a logger. We don't have to supply a name, but that
 # makes it easier to remove later.
-yog$add_appender(AppenderFile$new(file = tf), name = "file")
+lgr$add_appender(AppenderFile$new(file = tf), name = "file")
 
-# configure yog so that it logs everything to the file, but only info and above
+# configure lgr so that it logs everything to the file, but only info and above
 # to the console
-yog$set_threshold(NA)
-yog$appenders$console$set_threshold("info")
-yog$appenders$file$set_threshold(NA)
-yog$info("Another informational message")
-yog$debug("A debug message not shown by the console appender")
+lgr$set_threshold(NA)
+lgr$appenders$console$set_threshold("info")
+lgr$appenders$file$set_threshold(NA)
+lgr$info("Another informational message")
+lgr$debug("A debug message not shown by the console appender")
 
 readLines(tf)
 
 # Remove the appender again
-yog$remove_appender("file")
+lgr$remove_appender("file")
 ```
 ```{r echo = FALSE}
 unlink(tf)
@@ -356,7 +356,7 @@ hierarchies.
 
 ## Logging to the console 
 
-yog comes with simple formatting syntax. The configuration possibilites are 
+lgr comes with simple formatting syntax. The configuration possibilites are 
 limited, but should be sufficient for most users.
 
 ```{r}

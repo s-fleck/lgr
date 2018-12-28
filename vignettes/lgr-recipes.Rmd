@@ -1,5 +1,5 @@
 ---
-title: "Example Configurations for yog"
+title: "Example Configurations for lgr"
 author: "Stefan Fleck"
 date: "`r Sys.Date()`"
 output: 
@@ -7,7 +7,7 @@ output:
     toc: true
     number_sections: true
 vignette: >
-  %\VignetteIndexEntry{yog-examples}
+  %\VignetteIndexEntry{lgr-examples}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -36,7 +36,7 @@ into any `.R` file inside the `R/` directory of your package:
 .onLoad <- function(...){
   assign(
     "logger",
-    yog::Logger$new(name = "mypackage"),  # the logger name should be the same as the package name
+    lgr::Logger$new(name = "mypackage"),  # the logger name should be the same as the package name
     envir = asNamespace("mypackage")
   )
 }
@@ -45,7 +45,7 @@ into any `.R` file inside the `R/` directory of your package:
 After you set this up you can use `logger$fatal()`, `logger$info()`, etc... 
 inside your package. You do not have to define any appenders, since all log 
 events will get redirected to the Root Logger (see the chapter on hierarchical 
-logging in the `yog` main vignette). 
+logging in the `lgr` main vignette). 
 
 
 
@@ -55,7 +55,7 @@ The out-of-the-box setup for the Root Logger is minimal to make it easy
 to use for newcommers. I prefer to set up my logger like this:
 
 ```{r, eval = FALSE}
-yog$add_appender()
+lgr$add_appender()
 ```
 
 

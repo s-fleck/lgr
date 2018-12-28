@@ -29,7 +29,7 @@ install.packages("logging")
 ```
 
 ```{r}
-library(yog)
+library(lgr)
 library(logger)
 library(log4r)
 library(futile.logger)
@@ -41,7 +41,7 @@ Setup packages that do not work out-of-the-box
 ```{r}
 logging::addHandler(logging::writeToConsole, logger="logging")
 
-yog::yog$info("an informative message")
+lgr::lgr$info("an informative message")
 logging::loginfo("an informative message")
 futile.logger::flog.info("an informative message")
 
@@ -66,16 +66,16 @@ This section reviews the performance of available logging packages against
 Log a simple log message 
 
 ```{r, results='hide'}
-# By default yog is configured for color output, so we disable that for a fair
+# By default lgr is configured for color output, so we disable that for a fair
 # comparison
-yog$set_appenders(AppenderConsole$new(layout = LayoutFormat$new()))
+lgr$set_appenders(AppenderConsole$new(layout = LayoutFormat$new()))
 sink("/dev/null")
 res <- bench::mark(
   cat  = cat("FATAL", " [", format(Sys.time()), "] ", "test", sep = ""),
   logger = logger::log_info("test"),
   futile.logger = futile.logger::flog.info("test"),
   logging = logging::logerror("test", logger = "logging"),
-  yog = yog::yog$info("test"),
+  lgr = lgr::lgr$info("test"),
   check = FALSE
 )
 sink()
@@ -98,13 +98,13 @@ perfomance wise
 
 # Log a simple log message (with colors)
 
-The only packages that support color output are **yog** and **logger**. Both
-do not allow much configuration of the color output. Here yog is in the lead,
+The only packages that support color output are **lgr** and **logger**. Both
+do not allow much configuration of the color output. Here lgr is in the lead,
 mainly because **logger** relies on **glue** for the color formatting. Both
 
 
 ```{r, results='hide'}
-yog$set_appenders(AppenderConsole$new())
+lgr$set_appenders(AppenderConsole$new())
 log_layout(layout_glue_colors)
 library(crayon)
 
@@ -112,7 +112,7 @@ sink("/dev/null")
 res <- bench::mark(
   cat  = cat(red("FATAL"), " [", format(Sys.time()), "] ", "test", sep = ""),
   logger = logger::log_fatal("test"),
-  yog = yog::yog$info("test"),
+  lgr = lgr::lgr$info("test"),
   check = FALSE
 )
 sink()
@@ -136,14 +136,14 @@ plot(res)
 
 
 ```{r}
-yog$set_threshold("info")
+lgr$set_threshold("info")
 
 res <- bench::mark(
   cat = cat(),
   logger = logger::log_debug("test"),
   futile.logger = futile.logger::flog.debug("test"),
   logging = logging::logdebug("test", logger = "logging"),
-  yog = yog::yog$debug("test"),
+  lgr = lgr::lgr$debug("test"),
   check = FALSE
 )
 
@@ -153,7 +153,7 @@ res <- bench::mark(
 plot(res)
 ```
 
-Here yog is pretty much in the lead, because it completely disables the 
+Here lgr is pretty much in the lead, because it completely disables the 
 logging functions that are under the loggers threshold.
 
 
