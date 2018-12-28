@@ -138,7 +138,7 @@ LogEvent <- R6::R6Class(
     },
 
     logger_user = function(){
-      get("name", envir = get("logger", envir = self))
+      get("user", envir = get("logger", envir = self))
     }
   )
 )
