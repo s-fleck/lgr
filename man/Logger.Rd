@@ -15,9 +15,9 @@ for more info.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(name, appenders = list(), threshold = 400L, user = get_user(),
-  parent = lgr::lgr, exception_handler = default_exception_handler,
-  propagate = TRUE)
+x <- x$new(name = "(unnamed logger)", appenders = list(), threshold = 400L,
+  filters = NULL, user = get_user(), parent = lgr::lgr,
+  exception_handler = default_exception_handler, propagate = TRUE)
 
 x$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
 x$fatal(msg, ...)
@@ -66,42 +66,64 @@ logfiles) to the Root Logger, look into \link{Appenders}.
 \section{Fields}{
 
 
-You can either specify the fields in \code{Logger$new()} or modify them after
-creation with setter functions of the form \code{logger$set_fieldname(value)}
+You can either specify these fields in \code{Logger$new()} or modify them after
+creation with setter functions of the form \code{logger$set_<fieldname>(value)}
 (see examples)
 
 \describe{
-\item{\code{name}}{\code{character} scalar. Name of the Logger. Should be unique amongst
-Loggers. If you define a logger for an R Package, the logger should have
-the same name as the Package.}
+\item{\code{name}, \code{set_name(x)}}{\code{character} scalar. A name for the Logger that should be
+unique amongst Loggers. This logger name is used in the Loggers print
+method and can be used by Appenders to indicate which logger the
+log message came from. If you define a Logger for an R Package (the most
+common case for defining new Loggers), the logger name should be the
+same name as the Package name. If you do not define a Logger name
+manually, a warning will be thrown.}
 
-\item{\code{appenders}}{\code{list} of \link{Appender}s. The appenders used by this logger
-to write log entries to the console, to files, etc...}
+\item{\code{appenders}, \code{set_appenders(x)}}{A single \link{Appender} or a \code{list}
+thereof. Appenders control the output of a Logger. Be aware that a Logger
+also inherits the Appenders of its ancestors
+(see \code{vignette("lgr", package = "lgr")} for more info about Logger
+inheritance structures).}
 
-\item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
-that triggers this logger}
+\item{\code{threshold}, \code{set_threshold(level)}}{\code{character} or \code{integer} scalar.
+The minimum \link[=log_levels]{log level} that triggers this Logger}
 
-\item{\code{user}}{\code{character} scalar. The current user name or email adress.
-This information can be used by the appenders}
+\item{\code{user}, \code{set_user(x)}}{\code{character} scalar. The current user name or
+email adress. This information is saved so that it can be used by the
+Appenders}
 
-\item{\code{parent}}{a \code{Logger}. Usually the Root logger. All Loggers must be
-descentents of the Root logger for lgr to work as intended.}
+\item{\code{parent}, \code{set_parent(logger)}}{a \code{Logger}. Usually the root logger.
+Can also be \code{NULL}, but all Loggers must be descentents of the root logger
+for lgr to work as intended.}
 
-\item{\code{exception_handler}}{a \code{function} that takes a single argument \code{e}.
-The function used to handle errors that occur durring loging. Defaults
-to demoting errors to \link{warnings}}
+\item{\code{exception_handler}, \code{set_exception_handler()}}{a \code{function} that
+takes a single argument \code{e}. The function used to handle errors that occur
+durring loging. Defaults to demoting errors to \link{warnings}.}
 
-\item{\code{propagate}}{\code{TRUE} or \code{FALSE}. Should log messages be passed on to
-the appenders of the ancestral Loggers?}
+\item{\code{propagate}, \code{set_propagate()}}{\code{TRUE} or \code{FALSE}. Should LogEvents
+be passed on to the appenders of the ancestral Loggers?}
 }
 
 
 
 \describe{
+\item{\code{filters}, \code{set_filters(filters)}}{a \code{list} of predicates (functions
+that return either \code{TRUE} or \code{FALSE}). If all of these functions evaluate
+to \code{TRUE} the LogEvent is passed on. Since
+LogEvents have reference semantics, filters can also be abused to modify
+LogEvents before they are passed on. Look at the source code of
+\code{\link[=with_log_level]{with_log_level()}} or \code{\link[=with_log_value]{with_log_value()}} for examples.
+}
+}
+}
 
-\item{\code{appenders}}{A \code{list} of all Appenders attached to the current
-logger}
+\section{Read-Only Bindings}{
 
+
+In addition to the active bindings used to access the fields described above,
+Loggers also have the following additional read-only bindings:
+
+\describe{
 \item{\code{ancestry}}{A named \code{logical} vector of containing
 the propagate value of each Logger upper the inheritance tree. The names
 are the names of the appenders.}
@@ -109,26 +131,7 @@ are the names of the appenders.}
 \item{\code{inherited_appenders}}{A \code{list} of all inherited
 appenders from ancestral Loggers of the current Logger}
 
-\item{\code{filters}}{a \code{list} of predicates (functions that return either
-\code{TRUE} or \code{FALSE}). If all of these functions evaluate to \code{TRUE} the
-LogEvent is passed on to the Logger's Appenders. Since LogEvents have
-reference semantics, filters can also be abused to modify LogEvents
-before they are passed on. Look at the source code of \code{\link[=with_log_level]{with_log_level()}}
-or \code{\link[=with_log_value]{with_log_value()}} for examples.}
-
 \item{\code{last_event}}{The last LogEvent produced by the current Logger}
-
-\item{\code{name}}{Name of the Logger. Mainly used for display purposes. If
-you define a Logger for a package, this should be the same name as
-the packages
-}
-
-\item{\code{parent}}{Parent Logger of the current Logger (\code{NULL} for the Root Logger)}
-
-\item{\code{threshold}}{An \code{integer}. Threshold of the current Logger (i.e the
-maximum log level that this Logger processes)}
-
-\item{\code{user}}{The current user}
 }
 }
 
@@ -178,20 +181,13 @@ refer to it via \code{logger$appenders$console}.}
 \item{\code{remove_appender(pos)}}{Removes and Appender from a Logger. \code{pos}
 can be an \code{integer} or \code{character} vector referring either to the positions
 or names of the Appenders to be removed.}
+}
 
-\item{\code{exception_handler(e)}}{Used to handle errors that occur durring the
-logging process. The defaul is to convert errors to warnings.}
 
-\item{\code{set_name(x)}}{Set the Logger name to the \code{character} scalar \code{x}}
-
-\item{\code{filter(x)}}{Determine whether the LogEvent \code{x} should be passed
+\describe{
+\item{\code{filter(event)}}{Determine whether the LogEvent \code{x} should be passed
 on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 \code{filters}}
-
-\item{\code{set_filters(filters)}}{set a list of \code{filters}. The filters must
-be functions that take exactly two named arguments: the LogEvent
-\code{event} and the Logger \code{obj}.
-}
 }
 }
 
@@ -203,9 +199,9 @@ lgr$info("Today is \%s", Sys.Date() )
 lgr$fatal("This is a serious error")
 
 # if you want to take advantage of hierarchical logging, you can create new loggers.
-#' # the following creates a new logger that logs to a temporary file.
+# the following creates a new logger that logs to a temporary file.
 tf <- tempfile()
-mylogger <- Logger$new(
+lg <- Logger$new(
   "mylogger",
   appenders = AppenderFile$new(tf)
 )
@@ -213,13 +209,17 @@ mylogger <- Logger$new(
 # The new logger passes the log message on to the appenders of its parent
 # logger, which is by default the root logger. This is why the following
 # writes not only the file 'tf', but also to the console.
-mylogger$fatal("blubb")
+lg$fatal("blubb")
 readLines(tf)
+
+# This relationship is also depicted in the loggers print method
+print(lg)
+print(lg$ancestry)
 
 # use string inerpolation and custom fields
 tf2 <- tempfile()
-mylogger$add_appender(AppenderFile$new(tf2, layout = LayoutJson$new()))
-mylogger$info("Not all \%s support custom fields", "appenders", type = "test")
+lg$add_appender(AppenderFile$new(tf2, layout = LayoutJson$new()))
+lg$info("Not all \%s support custom fields", "appenders", type = "test")
 readLines(tf)
 readLines(tf2)
 

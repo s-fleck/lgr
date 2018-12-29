@@ -13,14 +13,26 @@ Superclass for classes that have a \code{filter()} method such as Appenders and
 Loggers. This class is only exported for package developers that want to
 extend it.
 }
-\section{Fields and Methods}{
+\section{Fields}{
 
 
 \describe{
-\item{\code{filter(event)}}{Check if an event passes all filters}
-\item{\code{filters},\code{set_filters(filters)}}{get/set a list of \code{filters}. A
-filter is a function that takes exactly two named arguments: the LogEvent
-\code{event} and the Filterable \code{obj} (usually a Logger or Appender)}
+\item{\code{filters}, \code{set_filters(filters)}}{a \code{list} of predicates (functions
+that return either \code{TRUE} or \code{FALSE}). If all of these functions evaluate
+to \code{TRUE} the LogEvent is passed on. Since
+LogEvents have reference semantics, filters can also be abused to modify
+LogEvents before they are passed on. Look at the source code of
+\code{\link[=with_log_level]{with_log_level()}} or \code{\link[=with_log_value]{with_log_value()}} for examples.
+}
+}
+}
+
+\section{Methods}{
+
+\describe{
+\item{\code{filter(event)}}{Determine whether the LogEvent \code{x} should be passed
+on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
+\code{filters}}
 }
 }
 

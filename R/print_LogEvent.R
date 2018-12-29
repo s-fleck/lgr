@@ -9,7 +9,6 @@
 #' @param log_levels a named `integer` vector of log levels.
 #' @param pad_levels `right`, `left` or `NULL`. Whether or not to pad the log
 #'   level names to the same width on the left or right side, or not at all.
-#' @param user The user
 #' @param ... ignored
 #'
 #' @section Format Tokens:
@@ -66,6 +65,7 @@ print.LogEvent <- function(
   ), sep = "\n")
   invisible(x)
 }
+
 
 
 
@@ -131,8 +131,9 @@ format.LogEvent <- function(
     )
   }
 
-  paste(res, collapse = "")
+  do.call(paste0, res)
 }
+
 
 
 
@@ -141,13 +142,15 @@ get_custom_fields <- function(x){
 }
 
 
+
+
 format_custom_fields <- function(
   x,
   color = TRUE
 ){
   if (!length(x)) return("")
 
-  max_len = max(60 / length(x) - sum(nchar(names(x))), 16)
+  max_len <- max(60 / length(x) - sum(nchar(names(x))), 16)
 
   braces   <- c("{", "}")
   brackets <- c("[", "]")
@@ -192,6 +195,8 @@ format_custom_fields <- function(
 }
 
 
+
+
 #' @export
 format.lgr_data <- function(x, ...) {
   if (identical(nrow(x), 0L))
@@ -203,8 +208,11 @@ format.lgr_data <- function(x, ...) {
 
 
 
+
 #' @export
 print.lgr_data <- print.LogEvent
+
+
 
 
 tokenize_format <- function(
@@ -217,13 +225,13 @@ tokenize_format <- function(
     return(x)
   pos <- sort(unique(c(1L, pos, pos + 2L, nchar(x) + 1L)))
   res <- vector("character", length(x))
-  begin <- 1L
-  for(i in seq_len(length(pos) -1L)) {
+
+  for(i in seq_len(length(pos) - 1L)) {
     res[[i]] <- substr(x, pos[[i]], pos[[i + 1]] - 1L)
   }
 
   if (!is.null(valid_tokens)){
-    placeholders <- grep("%", res, value = TRUE)
+    placeholders <- grep("%", res, value = TRUE, fixed = TRUE)
     assert(
       all(placeholders %in% valid_tokens),
       "'format' contains unrecognised format specifications: ",

@@ -6,7 +6,7 @@
 \description{
 \code{AppenderJson} is a shortcut for \code{AppenderFile} with \code{\link{LayoutJson}}, but
 comes with an extra method \code{show()} and an extra active field \code{data} to
-access the underlying file.
+comfortably access the underlying file.
 }
 \section{Usage}{
 \preformatted{
@@ -33,44 +33,33 @@ x$filters
 
 
 
-\describe{
-\item{file}{\code{character} scalar. Path to the desired log file. If the file
-does not exist it will be created}
+New Appenders are instantiated with \code{Appender$new()}. For the arguments to
+\code{new()} please refer to the section \emph{Fields}. You can also modify those
+fields after the Appender has been created with setters in the form of
+\code{appender$set_<fieldname>(value)}
 }
 
-
-
-\describe{
-\item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
-that triggers this logger. See \link{log_levels}}
-\item{\code{layout}}{a \code{Layout} that will be used for formatting the \code{LogEvents}
-passed to this Appender
-}
-}
-}
-
-\section{Fields and Methods}{
-
+\section{Fields}{
 
 \describe{
-\item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a log level
-bellow \code{threshold}. The log entries will be formated as in the source
-JSON file}
-\item{\code{data}}{The log recorded by this \code{Appender} as a \code{data.frame}}
+\item{\code{data}}{The log recorded by this \code{Appender} as a \code{data.frame}. This
+might become slow if the log files grow to large.}
 }
 
 
 
 \describe{
-\item{\code{file, set_file(file)}}{get/set the log file}
+\item{\code{file}, \code{set_file(file)}}{\code{character} scalar. Path to the desired log
+file. If the file does not exist it will be created}
 }
 
 
 
 \describe{
-\item{\code{append(event)}}{Write the \link{LogEvent} \code{event} to a destination}
-\item{\code{threshold}, \code{set_threshold(level)}}{get/set the \code{Appender} threshold}
-\item{\code{layout}, \code{set_layout(layout)}}{get/set the \code{Layout}}
+\item{\code{threshold}, \code{set_threshold(level)}}{\code{character} or \code{integer} scalar.
+The minimum log level that triggers this logger. See \link{log_levels}}
+\item{\code{layout}, \code{set_layout(layout)}}{a \code{Layout} that will be used for
+formatting the \code{LogEvents} passed to this Appender}
 \item{\code{destination}}{The output destination of the \code{Appender} in
 human-readable form (mainly for print output)}
 }
@@ -78,10 +67,35 @@ human-readable form (mainly for print output)}
 
 
 \describe{
-\item{\code{filter(event)}}{Check if an event passes all filters}
-\item{\code{filters},\code{set_filters(filters)}}{get/set a list of \code{filters}. A
-filter is a function that takes exactly two named arguments: the LogEvent
-\code{event} and the Filterable \code{obj} (usually a Logger or Appender)}
+\item{\code{filters}, \code{set_filters(filters)}}{a \code{list} of predicates (functions
+that return either \code{TRUE} or \code{FALSE}). If all of these functions evaluate
+to \code{TRUE} the LogEvent is passed on. Since
+LogEvents have reference semantics, filters can also be abused to modify
+LogEvents before they are passed on. Look at the source code of
+\code{\link[=with_log_level]{with_log_level()}} or \code{\link[=with_log_value]{with_log_value()}} for examples.
+}
+}
+}
+
+\section{Methods}{
+
+
+\describe{
+\item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a log level
+bellow \code{threshold}. The log entries will be formated as in the source
+JSON file}
+}
+
+
+\describe{
+\item{\code{append(event)}}{Write the \link{LogEvent} \code{event} to a destination}
+}
+
+
+\describe{
+\item{\code{filter(event)}}{Determine whether the LogEvent \code{x} should be passed
+on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
+\code{filters}}
 }
 }
 

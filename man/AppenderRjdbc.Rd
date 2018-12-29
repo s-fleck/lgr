@@ -44,16 +44,13 @@ x$filters
 
 
 
-\describe{
-\item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
-that triggers this logger. See \link{log_levels}}
-\item{\code{layout}}{a \code{Layout} that will be used for formatting the \code{LogEvents}
-passed to this Appender
-}
-}
+New Appenders are instantiated with \code{Appender$new()}. For the arguments to
+\code{new()} please refer to the section \emph{Fields}. You can also modify those
+fields after the Appender has been created with setters in the form of
+\code{appender$set_<fieldname>(value)}
 }
 
-\section{Fields and Methods}{
+\section{Fields}{
 
 
 
@@ -69,11 +66,54 @@ Database connection when the Logger is removed?}
 
 
 \describe{
-\item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a log level
-bellow \code{threshold}. The log entries will be formated for console output
-via the defined \link{Layout}}
-\item{\code{data}}{Get the log recorded by this \code{Appender} as a \code{data.table}
-with a maximum of \code{buffer_size} rows}
+\item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a
+log level bellow \code{threshold}.}
+}
+
+
+
+\describe{
+\item{\code{threshold}, \code{set_threshold(level)}}{\code{character} or \code{integer} scalar.
+The minimum log level that triggers this logger. See \link{log_levels}}
+\item{\code{layout}, \code{set_layout(layout)}}{a \code{Layout} that will be used for
+formatting the \code{LogEvents} passed to this Appender}
+\item{\code{destination}}{The output destination of the \code{Appender} in
+human-readable form (mainly for print output)}
+}
+
+
+
+\describe{
+\item{\code{filters}, \code{set_filters(filters)}}{a \code{list} of predicates (functions
+that return either \code{TRUE} or \code{FALSE}). If all of these functions evaluate
+to \code{TRUE} the LogEvent is passed on. Since
+LogEvents have reference semantics, filters can also be abused to modify
+LogEvents before they are passed on. Look at the source code of
+\code{\link[=with_log_level]{with_log_level()}} or \code{\link[=with_log_value]{with_log_value()}} for examples.
+}
+}
+}
+
+\section{Methods}{
+
+
+
+
+\describe{
+\item{\code{data}}{Get the log recorded by this \code{Appender} as a
+\code{data.table}}
+}
+
+
+\describe{
+\item{\code{append(event)}}{Write the \link{LogEvent} \code{event} to a destination}
+}
+
+
+\describe{
+\item{\code{filter(event)}}{Determine whether the LogEvent \code{x} should be passed
+on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
+\code{filters}}
 }
 }
 
@@ -86,13 +126,11 @@ vary between database backends.
 
 To make setting up \code{AppenderDbi} as painless as possible, the helper
 function \code{\link[=select_dbi_layout]{select_dbi_layout()}} tries to automatically determine sensible
-\link{LayoutDbi} settings based on \code{conn} and
-\itemize{
-\item if it exists in the database already - \code{table}. If \code{table} does not
+\link{LayoutDbi} settings based on \code{conn} and - if it exists in the database
+already - \code{table}. If \code{table} does not
 exist in the database and you start logging, a new table will be created
 with the \code{col_types} from \code{layout}; however, a more flexible approach is
 to create the table manually first using an \code{SQL CREATE TABLE} statement.
-}
 }
 
 \seealso{

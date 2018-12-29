@@ -11,25 +11,29 @@
 #'
 #' @section Creating a New Appender:
 #'
-#' \describe{
-#'   \item{`threshold`}{`character` or `integer` scalar. The minimum log level
-#'     that triggers this logger. See [log_levels]}
-#'   \item{`layout`}{a `Layout` that will be used for formatting the `LogEvents`
-#'     passed to this Appender
-#'    }
-#'  }
+#' New Appenders are instantiated with `Appender$new()`. For the arguments to
+#' `new()` please refer to the section *Fields*. You can also modify those
+#' fields after the Appender has been created with setters in the form of
+#' `appender$set_<fieldname>(value)`
 #'
-#' @inheritSection Filterable Fields and Methods
-#' @section Fields and Methods:
+#' @inheritSection Filterable Fields
+#' @inheritSection Filterable Methods
+#'
+#' @section Fields:
 #'
 #' \describe{
-#'   \item{`append(event)`}{Write the [LogEvent] `event` to a destination}
-#'   \item{`threshold`, `set_threshold(level)`}{get/set the `Appender` threshold}
-#'   \item{`layout`, `set_layout(layout)`}{get/set the `Layout`}
+#'   \item{`threshold`, `set_threshold(level)`}{`character` or `integer` scalar.
+#'     The minimum log level that triggers this logger. See [log_levels]}
+#'   \item{`layout`, `set_layout(layout)`}{a `Layout` that will be used for
+#'     formatting the `LogEvents` passed to this Appender}
 #'   \item{`destination`}{The output destination of the `Appender` in
 #'     human-readable form (mainly for print output)}
 #'  }
 #'
+#' @section Methods:
+#'  \describe{
+#'     \item{`append(event)`}{Write the [LogEvent] `event` to a destination}
+#'  }
 #'
 #' @name Appender
 #' @aliases Appenders
@@ -109,7 +113,8 @@ Appender <- R6::R6Class(
 #' @eval r6_usage(AppenderConsole)
 #'
 #' @inheritSection Appender Creating a New Appender
-#' @inheritSection Appender Fields and Methods
+#' @inheritSection Appender Fields
+#' @inheritSection Appender Methods
 #'
 #' @family Appenders
 #' @name AppenderConsole
@@ -177,20 +182,16 @@ AppenderConsole <- R6::R6Class(
 #' @eval r6_usage(AppenderFile)
 #'
 #' @inheritSection Appender Creating a New Appender
-#' @inheritSection Appender Fields and Methods
+#' @inheritSection Appender Fields
+#' @inheritSection Appender Methods
 #'
-#' @section Creating a New Appender:
+#' @section Fields:
 #'
 #' \describe{
-#'   \item{file}{`character` scalar. Path to the desired log file. If the file
-#'     does not exist it will be created}
+#'   \item{`file`, `set_file(file)`}{`character` scalar. Path to the desired log
+#'   file. If the file does not exist it will be created}
 #'  }
 #'
-#' @section Fields and Methods:
-#'
-#' \describe{
-#'   \item{`file, set_file(file)`}{get/set the log file}
-#' }
 #'
 #' @export
 #' @seealso [LayoutFormat], [LayoutJson]
@@ -273,21 +274,28 @@ AppenderFile <- R6::R6Class(
 #'
 #' `AppenderJson` is a shortcut for `AppenderFile` with [`LayoutJson`], but
 #' comes with an extra method `show()` and an extra active field `data` to
-#'  access the underlying file.
+#' comfortably access the underlying file.
 #'
 #' @eval r6_usage(AppenderFile)
 #'
 #' @inheritSection AppenderFile Creating a New Appender
 #' @section Creating a New Appender:
 #'
-#' @inheritSection AppenderFile Fields and Methods
-#' @section Fields and Methods:
+#' @inheritSection AppenderFile Fields
+#' @inheritSection AppenderFile Methods
+#'
+#' @section Fields:
+#' \describe{
+#'   \item{`data`}{The log recorded by this `Appender` as a `data.frame`. This
+#'   might become slow if the log files grow to large.}
+#' }
+#'
+#' @section Methods:
 #'
 #' \describe{
 #'   \item{`show(n, threshold)`}{Show the last `n` log entries with a log level
 #'   bellow `threshold`. The log entries will be formated as in the source
 #'   JSON file}
-#'   \item{`data`}{The log recorded by this `Appender` as a `data.frame`}
 #' }
 #'
 #' @family Appenders
@@ -357,16 +365,23 @@ AppenderJson <- R6::R6Class(
 #'
 #' @inheritSection Appender Creating a New Appender
 #' @section Creating a New Appender:
-#' @section Fields and Methods:
+#'
+#' @inheritSection Appender Fields
+#' @inheritSection Appender Methods
+#'
+#' @section Fields:
 #'
 #' \describe{
-#'   \item{`show(n, threshold)`}{Show the last `n` log entries with a log level
-#'   bellow `threshold`. The log entries will be formated for console output
-#'   via the defined [Layout]}
-#'   \item{`data`}{Get the log recorded by this `Appender` as a `data.table`
-#'   with a maximum of `buffer_size` rows}
+#'   \item{`show(n, threshold)`}{Show the last `n` log entries with a
+#'   log level bellow `threshold`.}
 #' }
 #'
+#' @section Methods:
+#'
+#' \describe{
+#'   \item{`data`}{Get the log recorded by this `Appender` as a
+#'   `data.table`}
+#' }
 #'
 #' @seealso [LayoutFormat], [simple_logging], [data.table::data.table]
 #' @family Appenders
@@ -425,8 +440,11 @@ AppenderTable <- R6::R6Class(
 #'
 #' @eval r6_usage(AppenderDt)
 #'
-#' @inheritSection Appender Creating a New Appender
-#' @section Creating a New Appender:
+#' @inheritSection Appender Fields
+#' @inheritSection Appender Methods
+#'
+#'
+#' @section Creating a Data Table Appender:
 #'
 #' \describe{
 #'   \item{buffer_size}{`integer` scalar. Number of rows of the in-memory
@@ -650,6 +668,26 @@ AppenderDt <- R6::R6Class(
 #' Log to a database table with any **DBI** compatabile backend. AppenderDbi
 #' does *not* support case sensitive / quoted column names.
 #'
+#' @eval r6_usage(AppenderDbi)
+#'
+#' @inheritSection Appender Creating a New Appender
+#' @section Creating a New AppenderDbi:
+#'
+#' \describe{
+#'   \item{`conn`}{a [DBI connection][DBI::dbConnect]}
+#'  }
+#'
+#' @inheritSection AppenderTable Fields
+#' @inheritSection AppenderTable Methods
+#' @section Fields:
+#' \describe{
+#'   \item{`close_on_exit`, `set_close_on_exit()`}{`TRUE` or `FALSE`. Close the
+#'   Database connection when the Logger is removed?}
+#'   \item{`data`}{Querry the whole log from the Database and return it as a
+#'   `data.frame`}
+#'   \item{`conn`}{get the DBI connection object}
+#'   \item{`table`}{Name of the target database table}
+#' }
 #'
 #' @section DBI Layouts:
 #'
@@ -659,31 +697,11 @@ AppenderDt <- R6::R6Class(
 #'
 #' To make setting up `AppenderDbi` as painless as possible, the helper
 #' function [select_dbi_layout()] tries to automatically determine sensible
-#' [LayoutDbi] settings based on `conn` and
-#' - if it exists in the database already - `table`. If `table` does not
+#' [LayoutDbi] settings based on `conn` and - if it exists in the database
+#' already - `table`. If `table` does not
 #' exist in the database and you start logging, a new table will be created
 #' with the `col_types` from `layout`; however, a more flexible approach is
 #' to create the table manually first using an `SQL CREATE TABLE` statement.
-#'
-#' @eval r6_usage(AppenderDbi)
-#'
-#' @inheritSection Appender Creating a New Appender
-#' @section Creating a New Appender:
-#'
-#' \describe{
-#'   \item{`conn`}{a [DBI connection][DBI::dbConnect]}
-#'  }
-#'
-#' @inheritSection AppenderTable Fields and Methods
-#' @section Fields and Methods:
-#' \describe{
-#'   \item{`close_on_exit`, `set_close_on_exit()`}{`TRUE` or `FALSE`. Close the
-#'   Database connection when the Logger is removed?}
-#'   \item{`data`}{Querry the whole log from the Database and return it as a
-#'   `data.frame`}
-#'   \item{`conn`}{get the DBI connection object}
-#'   \item{`table`}{Name of the target database table}
-#' }
 #'
 #' @export
 #' @family Appenders
@@ -822,19 +840,21 @@ AppenderDbi <- R6::R6Class(
 #' opposed to `AppenderDbi` you always need to specify the column types if you
 #' are logging to a non-existant table.
 #'
+#' @inheritSection Appender Creating a New Appender
 #' @inheritSection AppenderDbi DBI Layouts
+#' @inheritSection AppenderDbi Fields
+#' @inheritSection AppenderDbi Methods
 #'
 #' @eval r6_usage(AppenderRjdbc)
 #'
-#' @inheritSection Appender Creating a New Appender
 #' @section Creating a New Appender:
 #'
 #' \describe{
 #'   \item{conn}{an RJDBC connection}
 #'  }
 #'
-#' @inheritSection AppenderDbi Fields and Methods
-#' @section Fields and Methods:
+#' @section Fields:
+#' @section Methods:
 #'
 #' @export
 #' @seealso [LayoutFormat], [simple_logging], [data.table::data.table]
@@ -924,26 +944,10 @@ AppenderRjdbc <- R6::R6Class(
 #' @eval r6_usage(AppenderBuffer)
 #'
 #' @inheritSection Appender Creating a New Appender
-#' @section Creating a New Appender:
+#' @inheritSection Appender Fields
+#' @inheritSection Appender Methods
 #'
-#' \describe{
-#'   \item{`buffer_size`}{`integer` scalar. Number of [LogEvents] to buffer}
-#'   \item{`should_flush`}{A `function` with a single argument `event`
-#'     (a [LogEvent]) that must only return either `TRUE` or `FALSE`. If the
-#'     function returns `TRUE`, flushing of the buffer is triggered. Defaults
-#'     to flushing if a `FATAL` event is registered
-#'    }
-#'   \item{`flush_on_exit`}{`TRUE` or `FALSE`: Whether the buffer should be
-#'     flushed when the Appender is garbage collected (f.e when you close R)}
-#'   \item{`flush_on_rotate`}{`TRUE` or `FALSE`: Whether the buffer should be
-#'     flushed when the Buffer is full (f.e when you close R). Setting this
-#'     to off can have slighly negative perfomance impacts.}
-#'   \item{`appenders`}{Like for a [Logger]. Buffered events will be passed on
-#'     to these Appenders once a flush is triggered}
-#'  }
-#'
-#' @inheritSection Appender Fields and Methods
-#' @section Fields and Methods:
+#' @section Fields:
 #'
 #' \describe{
 #'   \item{`flush()`}{Manually trigger flushing}
@@ -951,17 +955,19 @@ AppenderRjdbc <- R6::R6Class(
 #'     see [Logger]}
 #'   \item{`remove_appender(pos)`}{Remove and Appender from this Appender.
 #'     see [Logger]}
-#'   \item{`appenders`, `set_appenders()`}{Get/set the `list` of `Appenders`
-#'     attached to this `Appender`}
-#'   \item{`buffer_size, set_buffer_size(x)`}{get/set the bufffer size}
-#'   \item{`flush_on_exit, set_flush_on_exit(x)`}{get/set whether the buffer
-#'    should be flushed when this `Appender` is garbage collected}
-#'   \item{`flush_on_rotate, set_flush_on_rotate`}{get/set whether the buffer
-#'     should be flushed once it is full}
-#'   \item{`should_flush(event)`, `set_should_flush(x)`}{Call or set the
-#'     function that determins whether an event should trigger flushing based
-#'     on its properties (e.g. its log level)
-#'   }
+#'   \item{`appenders`, `set_appenders()`}{Like for a [Logger]. Buffered events will be passed on
+#'     to these Appenders once a flush is triggered}
+#'   \item{`buffer_size, set_buffer_size(x)`}{`integer` scalar. Number of [LogEvents] to buffer}
+#'   \item{`flush_on_exit, set_flush_on_exit(x)`}{`TRUE` or `FALSE`: Whether the
+#'     buffer should be flushed when the Appender is garbage collected (f.e when
+#'     you close \R)}
+#'   \item{`flush_on_rotate, set_flush_on_rotate`}{`TRUE` or `FALSE`: Whether
+#'     the buffer should be flushed when the Buffer is full (f.e when you close
+#'     \R). Setting this to off can have slighly negative perfomance impacts.}
+#'   \item{`should_flush(event)`, `set_should_flush(x)`}{ A `function` with a
+#'     single argument `event` (a [LogEvent]) that must only return either `TRUE`
+#'     or `FALSE`. If the function returns `TRUE`, flushing of the buffer is
+#'     triggered. Defaults to flushing if a `FATAL` event is registered }
 #' }
 #'
 #' @export

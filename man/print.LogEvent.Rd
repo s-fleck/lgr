@@ -31,8 +31,6 @@ log levels (likely from \link[crayon:crayon]{crayon::crayon}).}
 level names to the same width on the left or right side, or not at all.}
 
 \item{...}{ignored}
-
-\item{user}{The user}
 }
 \value{
 \code{x} for \code{print()} and a \code{character} scalar for \code{format()}

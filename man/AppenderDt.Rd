@@ -45,7 +45,7 @@ x$filters
 }
 }
 
-\section{Creating a New Appender}{
+\section{Creating a Data Table Appender}{
 
 
 \describe{
@@ -55,16 +55,6 @@ x$filters
 manually if you use custom \link{LogEvents}. The default prototype already
 contains a list column called \code{value} that can hold arbitrary R values
 (see examples)}
-}
-
-
-
-\describe{
-\item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
-that triggers this logger. See \link{log_levels}}
-\item{\code{layout}}{a \code{Layout} that will be used for formatting the \code{LogEvents}
-passed to this Appender
-}
 }
 }
 
@@ -77,6 +67,45 @@ bellow \code{threshold}. The log entries will be formated for console output
 via the defined \link{Layout}}
 \item{\code{data}}{Get the log recorded by this \code{Appender} as a \code{data.table}
 with a maximum of \code{buffer_size} rows}
+}
+}
+
+\section{Fields}{
+
+
+\describe{
+\item{\code{threshold}, \code{set_threshold(level)}}{\code{character} or \code{integer} scalar.
+The minimum log level that triggers this logger. See \link{log_levels}}
+\item{\code{layout}, \code{set_layout(layout)}}{a \code{Layout} that will be used for
+formatting the \code{LogEvents} passed to this Appender}
+\item{\code{destination}}{The output destination of the \code{Appender} in
+human-readable form (mainly for print output)}
+}
+
+
+
+\describe{
+\item{\code{filters}, \code{set_filters(filters)}}{a \code{list} of predicates (functions
+that return either \code{TRUE} or \code{FALSE}). If all of these functions evaluate
+to \code{TRUE} the LogEvent is passed on. Since
+LogEvents have reference semantics, filters can also be abused to modify
+LogEvents before they are passed on. Look at the source code of
+\code{\link[=with_log_level]{with_log_level()}} or \code{\link[=with_log_value]{with_log_value()}} for examples.
+}
+}
+}
+
+\section{Methods}{
+
+\describe{
+\item{\code{append(event)}}{Write the \link{LogEvent} \code{event} to a destination}
+}
+
+
+\describe{
+\item{\code{filter(event)}}{Determine whether the LogEvent \code{x} should be passed
+on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
+\code{filters}}
 }
 }
 

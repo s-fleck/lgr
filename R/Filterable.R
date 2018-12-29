@@ -4,14 +4,25 @@
 #' Loggers. This class is only exported for package developers that want to
 #' extend it.
 #' @name Filterable
-#' @section Fields and Methods:
+#' @section Fields:
 #'
 #' \describe{
-#'   \item{`filter(event)`}{Check if an event passes all filters}
-#'   \item{`filters`,`set_filters(filters)`}{get/set a list of `filters`. A
-#'   filter is a function that takes exactly two named arguments: the LogEvent
-#'   `event` and the Filterable `obj` (usually a Logger or Appender)}
-#'  }
+#'   \item{`filters`, `set_filters(filters)`}{a `list` of predicates (functions
+#'     that return either `TRUE` or `FALSE`). If all of these functions evaluate
+#'     to `TRUE` the LogEvent is passed on. Since
+#'     LogEvents have reference semantics, filters can also be abused to modify
+#'     LogEvents before they are passed on. Look at the source code of
+#'     [with_log_level()] or [with_log_value()] for examples.
+#'   }
+#' }
+#'
+#' @section Methods:
+#' \describe{
+#'   \item{`filter(event)`}{Determine whether the LogEvent `x` should be passed
+#'     on to Appenders (`TRUE`) or not (`FALSE`). See also the active binding
+#'     `filters`}
+#' }
+#'
 #' @keywords internal
 NULL
 
