@@ -4,7 +4,10 @@
 \alias{LayoutFormat}
 \title{Format Log Events as Text}
 \description{
-Format a \link{LogEvent} as human readable text using \code{\link[=format.LogEvent]{format.LogEvent()}}
+Format a \link{LogEvent} as human readable text using \code{\link[=format.LogEvent]{format.LogEvent()}}, which
+provides a quick and easy way to customize log messages. If you need even
+more control and flexibility for formatting log messages, consider using
+\link{LayoutGlue} instead.
 }
 \section{Usage}{
 \preformatted{
@@ -29,17 +32,22 @@ x$timestamp_fmt
 \section{Creating a New LayoutFormat}{
 
 
-LayoutFormat passes it fields as arguments to \code{\link[=format.LogEvent]{format.LogEvent()}}.
+LayoutFormat passes it fields as arguments to \code{\link[=format.LogEvent]{format.LogEvent()}}. Please
+refer to the documentation of that function for details and examples.
 
 \describe{
-\item{\code{fmt}}{see \code{\link[=format.LogEvent]{format.LogEvent()}}}
-\item{\code{timestamp_fmt}}{see \code{\link[base:format.POSIXct]{base::format.POSIXct()}}}
-\item{\code{colors}}{see \code{\link[=format.LogEvent]{format.LogEvent()}}}
-\item{\code{pad_levels}}{see \code{\link[=format.LogEvent]{format.LogEvent()}}}
+\item{\code{fmt}}{
+a \code{character} scalar containing format tokens. See \code{\link[=format.LogEvent]{format.LogEvent()}}.}
+\item{\code{timestamp_fmt}}{
+a \code{character} scalar. See \code{\link[base:format.POSIXct]{base::format.POSIXct()}}}
+\item{\code{colors}}{a named \code{list} of functions passed on on \code{\link[=format.LogEvent]{format.LogEvent()}}}
+\item{\code{pad_levels}}{\code{right}, \code{left} or \code{NULL}. See \code{\link[=format.LogEvent]{format.LogEvent()}}}
 }
 }
 
 \section{Fields and Methods}{
+
+
 
 
 \describe{
@@ -47,8 +55,28 @@ LayoutFormat passes it fields as arguments to \code{\link[=format.LogEvent]{form
 }
 }
 
-\examples{
+\section{Format Tokens}{
 
+This is the same list of format tokens as for \code{\link[=format.LogEvent]{format.LogEvent()}}
+
+
+\describe{
+\item{\code{\%t}}{The timestamp of the message, formatted according to
+\code{timestamp_fmt})}
+\item{\code{\%l}}{the log level, lowercase \code{character} representation}
+\item{\code{\%L}}{the log level, uppercase \code{character} representation}
+\item{\code{\%n}}{the log level, \code{integer} representation}
+\item{\code{\%u}}{the \code{user} of the Logger. This is guessed via \code{\link[=get_user]{get_user()}}
+during the initalisation of the Logger.}
+\item{\code{\%p}}{the PID (process ID). Useful when logging code that uses
+multiple threads.}
+\item{\code{\%c}}{the calling function}
+\item{\code{\%m}}{the log message}
+\item{\code{\%f}}{all custom fields of \code{x} in a JSON like format}
+}
+}
+
+\examples{
 # setup a dummy LogEvent
 event <- LogEvent$new(
   logger = Logger$new("dummy logger", user = "testuser"),

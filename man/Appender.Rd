@@ -8,7 +8,7 @@
 Abstract classes are exported for developers that want to extend them, they
 are not useful to casual users. Appenders are assigned to \link{Loggers} and
 manage the output of the \link{LogEvents} to a destination, such as the console or
-a text file. An appender must have a single \link{Layout} that tells it how to
+a text file. An Appender must have a single \link{Layout} that tells it how to
 format the LogEvent. For details please refer to the documentations of the
 specific Appenders.
 }

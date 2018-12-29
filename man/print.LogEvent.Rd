@@ -8,13 +8,11 @@
 \method{print}{LogEvent}(x, fmt = "\%L [\%t] \%m  \%f",
   timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%S",
   colors = getOption("lgr.colors"),
-  log_levels = getOption("lgr.log_levels"), pad_levels = "right",
-  user = x$user, ...)
+  log_levels = getOption("lgr.log_levels"), pad_levels = "right", ...)
 
 \method{format}{LogEvent}(x, fmt = "\%L [\%t] \%m  \%f",
   timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%S", colors = NULL,
-  log_levels = getOption("lgr.log_levels"), pad_levels = "right",
-  user = x$user, ...)
+  log_levels = getOption("lgr.log_levels"), pad_levels = "right", ...)
 }
 \arguments{
 \item{x}{a \link{LogEvent} or \link{lgr_data} Object}
@@ -32,9 +30,9 @@ log levels (likely from \link[crayon:crayon]{crayon::crayon}).}
 \item{pad_levels}{\code{right}, \code{left} or \code{NULL}. Whether or not to pad the log
 level names to the same width on the left or right side, or not at all.}
 
-\item{user}{The user}
-
 \item{...}{ignored}
+
+\item{user}{The user}
 }
 \value{
 \code{x} for \code{print()} and a \code{character} scalar for \code{format()}
@@ -45,22 +43,35 @@ Print or Format Logging Data
 \section{Format Tokens}{
 
 \describe{
-\item{\code{\%t}}{A timestamp (see also \code{timestamp_fmt}) }
-\item{\code{\%l}}{the log level}
-\item{\code{\%L}}{the log level (uppercase)}
-\item{\code{\%n}}{the log level (numeric)}
-\item{\code{\%u}}{the current user}
+\item{\code{\%t}}{The timestamp of the message, formatted according to
+\code{timestamp_fmt})}
+\item{\code{\%l}}{the log level, lowercase \code{character} representation}
+\item{\code{\%L}}{the log level, uppercase \code{character} representation}
+\item{\code{\%n}}{the log level, \code{integer} representation}
+\item{\code{\%u}}{the \code{user} of the Logger. This is guessed via \code{\link[=get_user]{get_user()}}
+during the initalisation of the Logger.}
 \item{\code{\%p}}{the PID (process ID). Useful when logging code that uses
 multiple threads.}
 \item{\code{\%c}}{the calling function}
 \item{\code{\%m}}{the log message}
+\item{\code{\%f}}{all custom fields of \code{x} in a JSON like format}
 }
 }
 
 \examples{
-x <- LogEvent$new(level = 300, msg = "a test event", logger = lgr)
+# standard fields can be printed using special tokens
+x <- LogEvent$new(
+  level = 300, msg = "a test event", caller = "testfun()", logger = lgr
+)
 print(x)
+print(x, fmt = c("\%t (\%p) \%c: \%n - \%m"))
 print(x, colors = NULL)
 
+# custom values
+y <- LogEvent$new(
+  level = 300, msg = "a gps track", logger = lgr,
+  waypoints = 10, location = "Austria"
+)
+print(y)
 
 }

@@ -6,7 +6,8 @@
 \description{
 Format a \link{LogEvent} as human readable text using \link[glue:glue]{glue::glue}. The function
 is evaluated in an environment in which it has access to all elements of
-the \link{LogEvent} (see examples)
+the \link{LogEvent} (see examples). This is more flexible than \link{LayoutFormat},
+but also more complex and slightly less performant.
 }
 \section{Usage}{
 \preformatted{
@@ -54,6 +55,9 @@ lg$fatal("test", custom = "foobar")
 
 }
 \seealso{
+lgr exports a number of formatting utility functions that are
+useful for layout glue: \code{\link[=colorize_levels]{colorize_levels()}}, \code{\link[=pad_left]{pad_left()}}, \code{\link[=pad_right]{pad_right()}}.
+
 Other Layouts: \code{\link{LayoutDbi}},
   \code{\link{LayoutFormat}}, \code{\link{LayoutJson}},
   \code{\link{LayoutTable}}, \code{\link{Layout}}

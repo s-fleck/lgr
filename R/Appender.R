@@ -3,7 +3,7 @@
 #' Abstract classes are exported for developers that want to extend them, they
 #' are not useful to casual users. Appenders are assigned to [Loggers] and
 #' manage the output of the [LogEvents] to a destination, such as the console or
-#' a text file. An appender must have a single [Layout] that tells it how to
+#' a text file. An Appender must have a single [Layout] that tells it how to
 #' format the LogEvent. For details please refer to the documentations of the
 #' specific Appenders.
 #'
@@ -102,9 +102,9 @@ Appender <- R6::R6Class(
 
 #' Log to the Console
 #'
-#' A simple Appender that outputs to the console. If you
-#' have the package **crayon** installed log levels will be coloured by default
-#' (but you can modify this behaviour by passing a custom [Layout])
+#' A simple Appender that outputs to the console. If you have the package
+#' **crayon** installed log levels will be coloured by default
+#' (but you can modify this behaviour by passing a custom [Layout]).
 #'
 #' @eval r6_usage(AppenderConsole)
 #'

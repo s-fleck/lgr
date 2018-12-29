@@ -4,9 +4,9 @@
 \alias{AppenderConsole}
 \title{Log to the Console}
 \description{
-A simple Appender that outputs to the console. If you
-have the package \strong{crayon} installed log levels will be coloured by default
-(but you can modify this behaviour by passing a custom \link{Layout})
+A simple Appender that outputs to the console. If you have the package
+\strong{crayon} installed log levels will be coloured by default
+(but you can modify this behaviour by passing a custom \link{Layout}).
 }
 \section{Usage}{
 \preformatted{

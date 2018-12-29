@@ -46,23 +46,36 @@ Layout <- R6::R6Class(
 
 #' Format Log Events as Text
 #'
-#' Format a [LogEvent] as human readable text using [format.LogEvent()]
+#' Format a [LogEvent] as human readable text using [format.LogEvent()], which
+#' provides a quick and easy way to customize log messages. If you need even
+#' more control and flexibility for formatting log messages, consider using
+#' [LayoutGlue] instead.
+#'
+#' @inheritParams format.LogEvent
 #'
 #' @eval r6_usage(LayoutFormat)
 #'
 #' @section Creating a New LayoutFormat:
 #'
-#' LayoutFormat passes it fields as arguments to [format.LogEvent()].
+#' LayoutFormat passes it fields as arguments to [format.LogEvent()]. Please
+#' refer to the documentation of that function for details and examples.
 #'
 #' \describe{
-#'   \item{`fmt`}{see [format.LogEvent()]}
-#'   \item{`timestamp_fmt`}{see [base::format.POSIXct()]}
-#'   \item{`colors`}{see [format.LogEvent()]}
-#'   \item{`pad_levels`}{see [format.LogEvent()]}
+#'   \item{`fmt`}{
+#'     a `character` scalar containing format tokens. See [format.LogEvent()].}
+#'   \item{`timestamp_fmt`}{
+#'     a `character` scalar. See [base::format.POSIXct()]}
+#'   \item{`colors`}{a named `list` of functions passed on on [format.LogEvent()]}
+#'   \item{`pad_levels`}{`right`, `left` or `NULL`. See [format.LogEvent()]}
 #'  }
 #'
 #'
 #' @inheritSection Layout Fields and Methods
+#' @section Fields and Methods:
+#'
+#' @inheritSection print.LogEvent Format Tokens
+#' @section Format Tokens:
+#' This is the same list of format tokens as for [format.LogEvent()]
 #'
 #'
 #' @name LayoutFormat
@@ -70,7 +83,6 @@ Layout <- R6::R6Class(
 #' @include Filterable.R
 #' @include log_levels.R
 #' @examples
-#'
 #' # setup a dummy LogEvent
 #' event <- LogEvent$new(
 #'   logger = Logger$new("dummy logger", user = "testuser"),
@@ -173,12 +185,12 @@ LayoutFormat <- R6::R6Class(
 #'
 #' Format a [LogEvent] as human readable text using [glue::glue]. The function
 #' is evaluated in an environment in which it has access to all elements of
-#' the [LogEvent] (see examples)
+#' the [LogEvent] (see examples). This is more flexible than [LayoutFormat],
+#' but also more complex and slightly less performant.
 #'
 #' @eval r6_usage(LayoutGlue)
 #'
 #' @section Creating a New Layout:
-#'
 #'
 #' \describe{
 #'   \item{`fmt`}{see [glue::glue()]}
@@ -192,6 +204,8 @@ LayoutFormat <- R6::R6Class(
 #' @family Layouts
 #' @include Filterable.R
 #' @include log_levels.R
+#' @seealso lgr exports a number of formatting utility functions that are
+#'   useful for layout glue: [colorize_levels()], [pad_left()], [pad_right()].
 #' @examples
 #' lg <- Logger$new("testlogger", appenders = AppenderConsole$new(), propagate = FALSE)
 #' lg$appenders[[1]]$set_layout(LayoutGlue$new())

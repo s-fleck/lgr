@@ -14,25 +14,38 @@
 #'
 #' @section Format Tokens:
 #' \describe{
-#'   \item{`%t`}{A timestamp (see also `timestamp_fmt`) }
-#'   \item{`%l`}{the log level}
-#'   \item{`%L`}{the log level (uppercase)}
-#'   \item{`%n`}{the log level (numeric)}
-#'   \item{`%u`}{the current user}
+#'   \item{`%t`}{The timestamp of the message, formatted according to
+#'     `timestamp_fmt`)}
+#'   \item{`%l`}{the log level, lowercase `character` representation}
+#'   \item{`%L`}{the log level, uppercase `character` representation}
+#'   \item{`%n`}{the log level, `integer` representation}
+#'   \item{`%u`}{the `user` of the Logger. This is guessed via [`get_user()`]
+#'     during the initalisation of the Logger.}
 #'   \item{`%p`}{the PID (process ID). Useful when logging code that uses
 #'       multiple threads.}
 #'   \item{`%c`}{the calling function}
 #'   \item{`%m`}{the log message}
+#'   \item{`%f`}{all custom fields of `x` in a JSON like format}
 #' }
 #'
 #' @return `x` for `print()` and a `character` scalar for `format()`
 #' @export
 #'
 #' @examples
-#' x <- LogEvent$new(level = 300, msg = "a test event", logger = lgr)
+#' # standard fields can be printed using special tokens
+#' x <- LogEvent$new(
+#'   level = 300, msg = "a test event", caller = "testfun()", logger = lgr
+#' )
 #' print(x)
+#' print(x, fmt = c("%t (%p) %c: %n - %m"))
 #' print(x, colors = NULL)
 #'
+#' # custom values
+#' y <- LogEvent$new(
+#'   level = 300, msg = "a gps track", logger = lgr,
+#'   waypoints = 10, location = "Austria"
+#' )
+#' print(y)
 #'
 print.LogEvent <- function(
   x,
@@ -41,7 +54,6 @@ print.LogEvent <- function(
   colors = getOption("lgr.colors"),
   log_levels = getOption("lgr.log_levels"),
   pad_levels = "right",
-  user = x$user,
   ...
 ){
   cat(format(
@@ -50,8 +62,7 @@ print.LogEvent <- function(
     timestamp_fmt = timestamp_fmt,
     colors = colors,
     log_levels = log_levels,
-    pad_levels = pad_levels,
-    user = user
+    pad_levels = pad_levels
   ), sep = "\n")
   invisible(x)
 }
@@ -67,7 +78,6 @@ format.LogEvent <- function(
   colors = NULL,
   log_levels = getOption("lgr.log_levels"),
   pad_levels = "right",
-  user = x$user,
   ...
 ){
   stopifnot(
@@ -75,10 +85,6 @@ format.LogEvent <- function(
     is_scalar_character(timestamp_fmt),
     is_scalar_character(pad_levels) || is.null(pad_levels)
   )
-
-  # degenerate cases
-  if (identical(nrow(x), 0L))  return("[empty log]")
-
 
   # init
   lvls <- label_levels(x$level, log_levels = log_levels)
@@ -118,16 +124,14 @@ format.LogEvent <- function(
       "%t" = format(x$timestamp, format = timestamp_fmt),
       "%m" = x$msg,
       "%c" = x$caller %||% "(unknown function)",
-      "%u" = x$user,
+      "%u" = x$logger_user,
       "%p" = Sys.getpid(),
       "%f" = format_custom_fields(get_custom_fields(x), color = length(colors)),
       tokens[[i]]
     )
   }
 
-  res <- do.call(paste0, res)
-
-  res
+  paste(res, collapse = "")
 }
 
 
@@ -189,7 +193,13 @@ format_custom_fields <- function(
 
 
 #' @export
-format.lgr_data <- format.LogEvent
+format.lgr_data <- function(x, ...) {
+  if (identical(nrow(x), 0L))
+    return("[empty log]")
+  else {
+    format.LogEvent(x, ...)
+  }
+}
 
 
 
