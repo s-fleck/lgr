@@ -41,16 +41,42 @@ fields after the Appender has been created with setters in the form of
 
 \section{Fields}{
 
-\describe{
-\item{\code{data}}{The log recorded by this \code{Appender} as a \code{data.frame}. This
-might become slow if the log files grow to large.}
-}
 
 
 
 \describe{
 \item{\code{file}, \code{set_file(file)}}{\code{character} scalar. Path to the desired log
 file. If the file does not exist it will be created}
+}
+
+
+
+\describe{
+\item{\code{threshold}, \code{set_threshold(level)}}{\code{character} or \code{integer} scalar.
+The minimum log level that triggers this logger. See \link{log_levels}}
+\item{\code{layout}, \code{set_layout(layout)}}{a \code{Layout} that will be used for
+formatting the \code{LogEvents} passed to this Appender}
+\item{\code{destination}}{The output destination of the \code{Appender} in
+human-readable form (mainly for print output)}
+}
+
+
+
+\describe{
+\item{\code{filters}, \code{set_filters(filters)}}{a \code{list} of predicates (functions
+that return either \code{TRUE} or \code{FALSE}). If all of these functions evaluate
+to \code{TRUE} the LogEvent is passed on. Since
+LogEvents have reference semantics, filters can also be abused to modify
+LogEvents before they are passed on. Look at the source code of
+\code{\link[=with_log_level]{with_log_level()}} or \code{\link[=with_log_value]{with_log_value()}} for examples.
+}
+}
+
+
+
+\describe{
+\item{\code{data}}{Get the log recorded by this \code{Appender} as a
+\code{data.frame}}
 }
 
 

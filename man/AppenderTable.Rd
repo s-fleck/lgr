@@ -8,23 +8,12 @@ Abstract classes are exported for developers that want to extend them, they
 are not useful to casual users. \link{AppenderDbi}, \link{AppenderRjdbc} and
 \link{AppenderDt} are derived from AppenderTabel.
 }
-\section{Creating a New Appender}{
-
-
-
-
-New Appenders are instantiated with \code{Appender$new()}. For the arguments to
-\code{new()} please refer to the section \emph{Fields}. You can also modify those
-fields after the Appender has been created with setters in the form of
-\code{appender$set_<fieldname>(value)}
-}
-
 \section{Fields}{
 
 
 \describe{
-\item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a
-log level bellow \code{threshold}.}
+\item{\code{data}}{Get the log recorded by this \code{Appender} as a
+\code{data.frame}}
 }
 
 
@@ -55,8 +44,8 @@ LogEvents before they are passed on. Look at the source code of
 
 
 \describe{
-\item{\code{data}}{Get the log recorded by this \code{Appender} as a
-\code{data.table}}
+\item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a
+log level bellow \code{threshold}.}
 }
 
 
@@ -73,7 +62,7 @@ on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 }
 
 \seealso{
-\link{LayoutFormat}, \link{simple_logging}, \link[data.table:data.table]{data.table::data.table}
+\link{LayoutTable}
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},

@@ -28,6 +28,7 @@ x$conn
 x$data
 x$destination
 x$table
+x$dt
 x$layout
 x$threshold
 x$filters
@@ -66,8 +67,8 @@ Database connection when the Logger is removed?}
 
 
 \describe{
-\item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a
-log level bellow \code{threshold}.}
+\item{\code{data}}{Get the log recorded by this \code{Appender} as a
+\code{data.frame}}
 }
 
 
@@ -100,8 +101,8 @@ LogEvents before they are passed on. Look at the source code of
 
 
 \describe{
-\item{\code{data}}{Get the log recorded by this \code{Appender} as a
-\code{data.table}}
+\item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a
+log level bellow \code{threshold}.}
 }
 
 

@@ -119,7 +119,7 @@ test_that("AppenderDt: appending multiple rows works", {
 
   expect_silent(app$append(y))
 
-  expect_true(data.table::is.data.table(app$data))
+  expect_true(data.table::is.data.table(app$dt))
   expect_identical(app$data$level[1:3], y$level)
   expect_identical(app$data$timestamp[1:3], rep(y$timestamp, 3))
   expect_identical(app$data$msg[1:3], rep(y$msg, 3))

@@ -282,13 +282,10 @@ AppenderFile <- R6::R6Class(
 #' @section Creating a New Appender:
 #'
 #' @inheritSection AppenderFile Fields
+#' @inheritSection AppenderTable Fields
 #' @inheritSection AppenderFile Methods
 #'
 #' @section Fields:
-#' \describe{
-#'   \item{`data`}{The log recorded by this `Appender` as a `data.frame`. This
-#'   might become slow if the log files grow to large.}
-#' }
 #'
 #' @section Methods:
 #'
@@ -347,9 +344,12 @@ AppenderJson <- R6::R6Class(
   active = list(
     data = function(){
       read_json_lines(self$file)
+    },
+
+    dt = function(){
+      data.table::as.data.table(self$data)
     }
   )
-
 )
 
 
@@ -363,27 +363,24 @@ AppenderJson <- R6::R6Class(
 #' are not useful to casual users. [AppenderDbi], [AppenderRjdbc] and
 #' [AppenderDt] are derived from AppenderTabel.
 #'
-#' @inheritSection Appender Creating a New Appender
-#' @section Creating a New Appender:
-#'
 #' @inheritSection Appender Fields
 #' @inheritSection Appender Methods
 #'
 #' @section Fields:
 #'
 #' \describe{
-#'   \item{`show(n, threshold)`}{Show the last `n` log entries with a
-#'   log level bellow `threshold`.}
+#'   \item{`data`}{Get the log recorded by this `Appender` as a
+#'     `data.frame`}
 #' }
 #'
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{`data`}{Get the log recorded by this `Appender` as a
-#'   `data.table`}
+#'   \item{`show(n, threshold)`}{Show the last `n` log entries with a
+#'   log level bellow `threshold`.}
 #' }
 #'
-#' @seealso [LayoutFormat], [simple_logging], [data.table::data.table]
+#' @seealso [LayoutTable]
 #' @family Appenders
 #' @name AppenderTable
 NULL
@@ -398,24 +395,16 @@ AppenderTable <- R6::R6Class(
   "AppenderTable",
   inherit = Appender,
   cloneable = FALSE,
+
   public = list(
     show = function(n = 20, threshold = NA_integer_) NULL
   ),
-
   active = list(
     destination = function() "",
-    data = function() NULL
-  ),
-
-  private = list(
-    .conn = NULL,
-    .table = NULL
+    data = function() NULL,
+    dt   = function() NULL
   )
 )
-
-
-
-
 # nocov end
 
 
@@ -440,30 +429,42 @@ AppenderTable <- R6::R6Class(
 #'
 #' @eval r6_usage(AppenderDt)
 #'
-#' @inheritSection Appender Fields
+#' @inheritSection AppenderTable Fields
 #' @inheritSection Appender Methods
 #'
 #'
 #' @section Creating a Data Table Appender:
 #'
+#' In addition to the usual fields, AppenderDt requires that you supply a
+#' `buffer_size` and a `prototype`. These cannot be modified anymore after
+#' the creation of the appender.
+#'
 #' \describe{
 #'   \item{buffer_size}{`integer` scalar. Number of rows of the in-memory
 #'   `data.table`}
-#'   \item{prototype}{A prototype `data.table`. This is only necessary to set
-#'   manually if you use custom [LogEvents]. The default prototype already
-#'   contains a list column called `value` that can hold arbitrary R values
-#'   (see examples)}
-#'  }
+#'   \item{prototype}{A prototype `data.table`. The prototype must be a
+#'     `data.table` with the same columns and column types as the data
+#'     you want to log. The actual content of the `data.table` is irrelevant.
+#'     Supplying a custom prototype is only necessary if you use custom
+#'     fields in [LogEvents]. For convenience, the default prototype already
+#'     contains a list column called `value` that can hold arbitrary \R values
+#'     (see examples)
+#'   }
+#' }
 #'
-#' @section Fields and Methods:
+#' @section Fields:
 #'
+#' \describe{
+#'   \item{`dt`}{Get the log recorded by this `Appender` as a `data.table`
+#'     with a maximum of `buffer_size` rows}
+#' }
+#'
+#' @section Methods:
 #' \describe{
 #'   \item{`show(n, threshold)`}{Show the last `n` log entries with a log level
 #'   bellow `threshold`. The log entries will be formated for console output
-#'   via the defined [Layout]}
-#'   \item{`data`}{Get the log recorded by this `Appender` as a `data.table`
-#'   with a maximum of `buffer_size` rows}
-#' }
+#'   via this Appenders [Layout]}
+#'  }
 #'
 #'
 #' @export
@@ -487,9 +488,8 @@ AppenderTable <- R6::R6Class(
 #' lg$appenders$memory$show()
 #' show_log(target = lg$appenders$memory)
 #'
-#' # If you pass a Logger to show_log, it looks for the first MemoryAppender it
-#' # can find.
-#' show_log(target = lg)
+#' If you pass a Logger to show_log(), it looks for the first AppenderDt
+#' that it can find. show_log(target = lg)
 #'
 #' # Data tables can store arbitrary R values in list columns. The default
 #' # AppenderDt comes with a single list column called "value" that you can use
@@ -565,6 +565,10 @@ AppenderDt <- R6::R6Class(
     append = function(
       event
     ){
+      # AppenderDt is designed for minimum overhead, so it does not use a
+      # Layout for transforming the log event into a tabular structure but
+      # rather the process is hardcoded
+
       # Select and prepare event values to be inserted into data
         vals <- event[["values"]]
         valnames <- setdiff(names(get(".data", private)), ".id")
@@ -593,23 +597,24 @@ AppenderDt <- R6::R6Class(
         ids <- i + private[["id"]]
 
       # check if rotation is necessary
-        if (private[["current_row"]] + lenmax <= nrow(private$.data)){
+        if (get("current_row", private) + lenmax <= nrow(get(".data", private))){
           i   <- i + private[["current_row"]]
-          private[["current_row"]] <- private[["current_row"]] + lenmax
+          private[["current_row"]] <- get("current_row", envir = private) + lenmax
         } else {
           # rotate buffer
-          private[["current_row"]] <- lenmax
+          assign("current_row", lenmax, envir = private)
         }
 
       # Perform the insert
         data.table::set(
-          private$.data,
+          get(".data", private),
           i,
           j = c(".id", names(vals)),
           value = c(list(ids), vals)
         )
 
-      private[["id"]] <- private[["id"]] + lenmax
+
+      private[["id"]] <- get("id", envir = private) + lenmax
     },
 
 
@@ -638,9 +643,13 @@ AppenderDt <- R6::R6Class(
 
   # +- active ---------------------------------------------------------------
   active = list(
-    data = function(){
+    dt = function(){
       tmp <- private$.data[!is.na(private$.data$.id), ]
       tmp[order(tmp$.id), ]
+    },
+
+    data = function(){
+      as.data.frame(self$dt)
     },
 
     destination = {

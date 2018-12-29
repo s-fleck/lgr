@@ -38,6 +38,7 @@ x$set_filters(filters)
 
 x$data
 x$destination
+x$dt
 x$layout
 x$threshold
 x$filters
@@ -48,29 +49,39 @@ x$filters
 \section{Creating a Data Table Appender}{
 
 
+In addition to the usual fields, AppenderDt requires that you supply a
+\code{buffer_size} and a \code{prototype}. These cannot be modified anymore after
+the creation of the appender.
+
 \describe{
 \item{buffer_size}{\code{integer} scalar. Number of rows of the in-memory
 \code{data.table}}
-\item{prototype}{A prototype \code{data.table}. This is only necessary to set
-manually if you use custom \link{LogEvents}. The default prototype already
-contains a list column called \code{value} that can hold arbitrary R values
-(see examples)}
+\item{prototype}{A prototype \code{data.table}. The prototype must be a
+\code{data.table} with the same columns and column types as the data
+you want to log. The actual content of the \code{data.table} is irrelevant.
+Supplying a custom prototype is only necessary if you use custom
+fields in \link{LogEvents}. For convenience, the default prototype already
+contains a list column called \code{value} that can hold arbitrary \R values
+(see examples)
 }
-}
-
-\section{Fields and Methods}{
-
-
-\describe{
-\item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a log level
-bellow \code{threshold}. The log entries will be formated for console output
-via the defined \link{Layout}}
-\item{\code{data}}{Get the log recorded by this \code{Appender} as a \code{data.table}
-with a maximum of \code{buffer_size} rows}
 }
 }
 
 \section{Fields}{
+
+
+\describe{
+\item{\code{dt}}{Get the log recorded by this \code{Appender} as a \code{data.table}
+with a maximum of \code{buffer_size} rows}
+}
+
+
+
+\describe{
+\item{\code{data}}{Get the log recorded by this \code{Appender} as a
+\code{data.frame}}
+}
+
 
 
 \describe{
@@ -96,6 +107,13 @@ LogEvents before they are passed on. Look at the source code of
 }
 
 \section{Methods}{
+
+\describe{
+\item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a log level
+bellow \code{threshold}. The log entries will be formated for console output
+via the defined \link{Layout}}
+}
+
 
 \describe{
 \item{\code{append(event)}}{Write the \link{LogEvent} \code{event} to a destination}
@@ -124,9 +142,8 @@ lg$appenders$memory$data
 lg$appenders$memory$show()
 show_log(target = lg$appenders$memory)
 
-# If you pass a Logger to show_log, it looks for the first MemoryAppender it
-# can find.
-show_log(target = lg)
+If you pass a Logger to show_log(), it looks for the first AppenderDt
+that it can find. show_log(target = lg)
 
 # Data tables can store arbitrary R values in list columns. The default
 # AppenderDt comes with a single list column called "value" that you can use

@@ -7,22 +7,6 @@
 Log to a database table with any \strong{DBI} compatabile backend. AppenderDbi
 does \emph{not} support case sensitive / quoted column names.
 }
-\section{DBI Layouts}{
-
-
-Layouts for relational database tables are tricky as they have very strict
-column types and further restrictions. On top of that implementation details
-vary between database backends.
-
-To make setting up \code{AppenderDbi} as painless as possible, the helper
-function \code{\link[=select_dbi_layout]{select_dbi_layout()}} tries to automatically determine sensible
-\link{LayoutDbi} settings based on \code{conn} and - if it exists in the database
-already - \code{table}. If \code{table} does not
-exist in the database and you start logging, a new table will be created
-with the \code{col_types} from \code{layout}; however, a more flexible approach is
-to create the table manually first using an \code{SQL CREATE TABLE} statement.
-}
-
 \section{Usage}{
 \preformatted{
 x <- x$new(conn, table, threshold = NA_integer_,
@@ -41,6 +25,7 @@ x$conn
 x$data
 x$destination
 x$table
+x$dt
 x$layout
 x$threshold
 x$filters
@@ -48,19 +33,12 @@ x$filters
 }
 }
 
-\section{Creating a New Appender}{
+\section{Creating a New AppenderDbi}{
 
 
 \describe{
 \item{\code{conn}}{a \link[DBI:dbConnect]{DBI connection}}
 }
-
-
-
-New Appenders are instantiated with \code{Appender$new()}. For the arguments to
-\code{new()} please refer to the section \emph{Fields}. You can also modify those
-fields after the Appender has been created with setters in the form of
-\code{appender$set_<fieldname>(value)}
 }
 
 \section{Fields}{
@@ -77,8 +55,8 @@ Database connection when the Logger is removed?}
 
 
 \describe{
-\item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a
-log level bellow \code{threshold}.}
+\item{\code{data}}{Get the log recorded by this \code{Appender} as a
+\code{data.frame}}
 }
 
 
@@ -105,12 +83,37 @@ LogEvents before they are passed on. Look at the source code of
 }
 }
 
+\section{DBI Layouts}{
+
+
+Layouts for relational database tables are tricky as they have very strict
+column types and further restrictions. On top of that implementation details
+vary between database backends.
+
+To make setting up \code{AppenderDbi} as painless as possible, the helper
+function \code{\link[=select_dbi_layout]{select_dbi_layout()}} tries to automatically determine sensible
+\link{LayoutDbi} settings based on \code{conn} and - if it exists in the database
+already - \code{table}. If \code{table} does not
+exist in the database and you start logging, a new table will be created
+with the \code{col_types} from \code{layout}; however, a more flexible approach is
+to create the table manually first using an \code{SQL CREATE TABLE} statement.
+}
+
+\section{Creating a New Appender}{
+
+
+New Appenders are instantiated with \code{Appender$new()}. For the arguments to
+\code{new()} please refer to the section \emph{Fields}. You can also modify those
+fields after the Appender has been created with setters in the form of
+\code{appender$set_<fieldname>(value)}
+}
+
 \section{Methods}{
 
 
 \describe{
-\item{\code{data}}{Get the log recorded by this \code{Appender} as a
-\code{data.table}}
+\item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a
+log level bellow \code{threshold}.}
 }
 
 
