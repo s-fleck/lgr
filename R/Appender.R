@@ -413,8 +413,7 @@ AppenderTable <- R6::R6Class(
 
 #' Log to an In-Memory Data.Table
 #'
-#' An Appender that outputs to an in-memory `data.table`. This requires that
-#' you have the suggested package **data.table** installed. This kind of
+#' An Appender that outputs to an in-memory `data.table`. This kind of
 #' Appender is useful for interactive use, and has very little overhead.
 #'
 #' @section Custom Fields:
@@ -435,9 +434,12 @@ AppenderTable <- R6::R6Class(
 #'
 #' @section Creating a Data Table Appender:
 #'
-#' In addition to the usual fields, AppenderDt requires that you supply a
-#' `buffer_size` and a `prototype`. These cannot be modified anymore after
-#' the creation of the appender.
+#' In addition to the usual fields, `AppenderDt$new()` requires that you supply
+#' a `buffer_size` and a `prototype`. These determine the structure of the
+#' `data.table` used to store the log this appender creates and cannot be
+#' modified anymore after the instantion of the appender.
+#' The [Layout] for this Appender is used only to format console output of
+#' its `$show()` method.
 #'
 #' \describe{
 #'   \item{buffer_size}{`integer` scalar. Number of rows of the in-memory
@@ -488,8 +490,9 @@ AppenderTable <- R6::R6Class(
 #' lg$appenders$memory$show()
 #' show_log(target = lg$appenders$memory)
 #'
-#' If you pass a Logger to show_log(), it looks for the first AppenderDt
-#' that it can find. show_log(target = lg)
+#' # If you pass a Logger to show_log(), it looks for the first AppenderDt
+#' # that it can find.
+#' show_log(target = lg)
 #'
 #' # Data tables can store arbitrary R values in list columns. The default
 #' # AppenderDt comes with a single list column called "value" that you can use
@@ -680,25 +683,27 @@ AppenderDt <- R6::R6Class(
 #' @eval r6_usage(AppenderDbi)
 #'
 #' @inheritSection Appender Creating a New Appender
-#' @section Creating a New AppenderDbi:
-#'
-#' \describe{
-#'   \item{`conn`}{a [DBI connection][DBI::dbConnect]}
-#'  }
-#'
 #' @inheritSection AppenderTable Fields
 #' @inheritSection AppenderTable Methods
+#'
+#' @section Creating a New Appender:
+#'
+#' An AppenderDbi is linked to a database table via its `table` argument. If
+#' the table does not exist it is created either when the Appender is first
+#' instantiated or (more likely) when the first LogEvent would be written to
+#' that table. Rather than to rely on this feature, it is recommended that you
+#' create the target log table first manually using an `SQL CREATE TABLE`
+#' statement as this is safer and more flexible. See also [LayoutDbi].
+#'
 #' @section Fields:
 #' \describe{
 #'   \item{`close_on_exit`, `set_close_on_exit()`}{`TRUE` or `FALSE`. Close the
 #'   Database connection when the Logger is removed?}
-#'   \item{`data`}{Querry the whole log from the Database and return it as a
-#'   `data.frame`}
-#'   \item{`conn`}{get the DBI connection object}
+#'   \item{`conn`, `set_conn(conn)`}{a [DBI connection][DBI::dbConnect]}
 #'   \item{`table`}{Name of the target database table}
 #' }
 #'
-#' @section DBI Layouts:
+#' @section Choosing the Right DBI Layout:
 #'
 #' Layouts for relational database tables are tricky as they have very strict
 #' column types and further restrictions. On top of that implementation details
@@ -709,8 +714,7 @@ AppenderDt <- R6::R6Class(
 #' [LayoutDbi] settings based on `conn` and - if it exists in the database
 #' already - `table`. If `table` does not
 #' exist in the database and you start logging, a new table will be created
-#' with the `col_types` from `layout`; however, a more flexible approach is
-#' to create the table manually first using an `SQL CREATE TABLE` statement.
+#' with the `col_types` from `layout`.
 #'
 #' @export
 #' @family Appenders
@@ -769,6 +773,12 @@ AppenderDbi <- R6::R6Class(
     set_close_on_exit = function(x){
       assert(is_scalar_bool(x))
       private$.close_on_exit <- x
+      invisible(self)
+    },
+
+    set_conn = function(conn){
+      assert(inherits(conn, "DBIConnection"))
+      private$.conn <- conn
       invisible(self)
     },
 
@@ -849,18 +859,13 @@ AppenderDbi <- R6::R6Class(
 #' opposed to `AppenderDbi` you always need to specify the column types if you
 #' are logging to a non-existant table.
 #'
-#' @inheritSection Appender Creating a New Appender
-#' @inheritSection AppenderDbi DBI Layouts
+#' @inheritSection AppenderDbi Creating a New Appender
+#' @inheritSection AppenderDbi Choosing the Right DBI Layout
 #' @inheritSection AppenderDbi Fields
 #' @inheritSection AppenderDbi Methods
 #'
 #' @eval r6_usage(AppenderRjdbc)
 #'
-#' @section Creating a New Appender:
-#'
-#' \describe{
-#'   \item{conn}{an RJDBC connection}
-#'  }
 #'
 #' @section Fields:
 #' @section Methods:
@@ -948,7 +953,7 @@ AppenderRjdbc <- R6::R6Class(
 #' Log to a Memory Buffer
 #'
 #' An Appender that Buffers LogEvents in-memory and and redirects them to other
-#' appenders once certain conditions are met.
+#' Appenders once certain conditions are met.
 #'
 #' @eval r6_usage(AppenderBuffer)
 #'

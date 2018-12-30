@@ -5,7 +5,7 @@
 \title{Log to a Memory Buffer}
 \description{
 An Appender that Buffers LogEvents in-memory and and redirects them to other
-appenders once certain conditions are met.
+Appenders once certain conditions are met.
 }
 \section{Usage}{
 \preformatted{

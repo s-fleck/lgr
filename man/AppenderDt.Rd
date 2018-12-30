@@ -5,8 +5,7 @@
 \alias{lgr_data}
 \title{Log to an In-Memory Data.Table}
 \description{
-An Appender that outputs to an in-memory \code{data.table}. This requires that
-you have the suggested package \strong{data.table} installed. This kind of
+An Appender that outputs to an in-memory \code{data.table}. This kind of
 Appender is useful for interactive use, and has very little overhead.
 }
 \section{Custom Fields}{
@@ -49,9 +48,12 @@ x$filters
 \section{Creating a Data Table Appender}{
 
 
-In addition to the usual fields, AppenderDt requires that you supply a
-\code{buffer_size} and a \code{prototype}. These cannot be modified anymore after
-the creation of the appender.
+In addition to the usual fields, \code{AppenderDt$new()} requires that you supply
+a \code{buffer_size} and a \code{prototype}. These determine the structure of the
+\code{data.table} used to store the log this appender creates and cannot be
+modified anymore after the instantion of the appender.
+The \link{Layout} for this Appender is used only to format console output of
+its \code{$show()} method.
 
 \describe{
 \item{buffer_size}{\code{integer} scalar. Number of rows of the in-memory
@@ -111,7 +113,7 @@ LogEvents before they are passed on. Look at the source code of
 \describe{
 \item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a log level
 bellow \code{threshold}. The log entries will be formated for console output
-via the defined \link{Layout}}
+via this Appenders \link{Layout}}
 }
 
 
@@ -142,8 +144,9 @@ lg$appenders$memory$data
 lg$appenders$memory$show()
 show_log(target = lg$appenders$memory)
 
-If you pass a Logger to show_log(), it looks for the first AppenderDt
-that it can find. show_log(target = lg)
+# If you pass a Logger to show_log(), it looks for the first AppenderDt
+# that it can find.
+show_log(target = lg)
 
 # Data tables can store arbitrary R values in list columns. The default
 # AppenderDt comes with a single list column called "value" that you can use

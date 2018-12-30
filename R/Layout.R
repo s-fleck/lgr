@@ -341,7 +341,12 @@ LayoutTable <- R6::R6Class(
 
 #' Format Log Events for Output to Databases
 #'
-#' Format a [LogEvent] as `data.frame` for inserting into a relational database.
+#' DBI Layouts convert [LogEvents] to a `data.frames` that can
+#' be appended to an existing database table. Via the `col_types` parameter
+#' they can also store information that [AppenderDbi] can use to create new
+#' database tables; however, it is safer and more flexible to set up the log
+#' table up manually with an `SQL CREATE TABLE` statement instead.
+#'
 #'
 #' @eval r6_usage(LayoutDbi)
 #'

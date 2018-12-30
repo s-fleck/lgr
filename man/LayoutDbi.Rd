@@ -6,7 +6,11 @@
 \alias{LayoutRjdbc}
 \title{Format Log Events for Output to Databases}
 \description{
-Format a \link{LogEvent} as \code{data.frame} for inserting into a relational database.
+DBI Layouts convert \link{LogEvents} to a \code{data.frames} that can
+be appended to an existing database table. Via the \code{col_types} parameter
+they can also store information that \link{AppenderDbi} can use to create new
+database tables; however, it is safer and more flexible to set up the log
+table up manually with an \code{SQL CREATE TABLE} statement instead.
 }
 \section{Usage}{
 \preformatted{

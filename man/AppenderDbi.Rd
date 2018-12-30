@@ -13,6 +13,7 @@ x <- x$new(conn, table, threshold = NA_integer_,
   layout = select_dbi_layout(conn, table), close_on_exit = TRUE)
 
 x$set_close_on_exit(x)
+x$set_conn(conn)
 x$show(n = 20, threshold = NA_integer_)
 x$append(event)
 x$set_threshold(level)
@@ -33,12 +34,22 @@ x$filters
 }
 }
 
-\section{Creating a New AppenderDbi}{
+\section{Creating a New Appender}{
 
 
-\describe{
-\item{\code{conn}}{a \link[DBI:dbConnect]{DBI connection}}
-}
+An AppenderDbi is linked to a database table via its \code{table} argument. If
+the table does not exist it is created either when the Appender is first
+instantiated or (more likely) when the first LogEvent would be written to
+that table. Rather than to rely on this feature, it is recommended that you
+create the target log table first manually using an \code{SQL CREATE TABLE}
+statement as this is safer and more flexible. See also \link{LayoutDbi}.
+
+
+
+New Appenders are instantiated with \code{Appender$new()}. For the arguments to
+\code{new()} please refer to the section \emph{Fields}. You can also modify those
+fields after the Appender has been created with setters in the form of
+\code{appender$set_<fieldname>(value)}
 }
 
 \section{Fields}{
@@ -46,9 +57,7 @@ x$filters
 \describe{
 \item{\code{close_on_exit}, \code{set_close_on_exit()}}{\code{TRUE} or \code{FALSE}. Close the
 Database connection when the Logger is removed?}
-\item{\code{data}}{Querry the whole log from the Database and return it as a
-\code{data.frame}}
-\item{\code{conn}}{get the DBI connection object}
+\item{\code{conn}, \code{set_conn(conn)}}{a \link[DBI:dbConnect]{DBI connection}}
 \item{\code{table}}{Name of the target database table}
 }
 
@@ -83,7 +92,7 @@ LogEvents before they are passed on. Look at the source code of
 }
 }
 
-\section{DBI Layouts}{
+\section{Choosing the Right DBI Layout}{
 
 
 Layouts for relational database tables are tricky as they have very strict
@@ -95,17 +104,7 @@ function \code{\link[=select_dbi_layout]{select_dbi_layout()}} tries to automati
 \link{LayoutDbi} settings based on \code{conn} and - if it exists in the database
 already - \code{table}. If \code{table} does not
 exist in the database and you start logging, a new table will be created
-with the \code{col_types} from \code{layout}; however, a more flexible approach is
-to create the table manually first using an \code{SQL CREATE TABLE} statement.
-}
-
-\section{Creating a New Appender}{
-
-
-New Appenders are instantiated with \code{Appender$new()}. For the arguments to
-\code{new()} please refer to the section \emph{Fields}. You can also modify those
-fields after the Appender has been created with setters in the form of
-\code{appender$set_<fieldname>(value)}
+with the \code{col_types} from \code{layout}.
 }
 
 \section{Methods}{
