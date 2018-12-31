@@ -11,7 +11,14 @@ are not useful to casual users.  Layouts get a \link{LogEvent} passed down from 
 varries widely. For example for file or console output the log event is
 usually formatted into a single character line.
 }
-\section{Fields and Methods}{
+\section{Creating a New Layout}{
+
+
+Layouts are instantiated with \code{<LayoutSubclass>$new()}. For a description of
+the arguments to this function please refer to the Fields section.
+}
+
+\section{Methods}{
 
 
 \describe{

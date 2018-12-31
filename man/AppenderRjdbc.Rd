@@ -114,10 +114,10 @@ statement as this is safer and more flexible. See also \link{LayoutDbi}.
 
 
 
-New Appenders are instantiated with \code{Appender$new()}. For the arguments to
-\code{new()} please refer to the section \emph{Fields}. You can also modify those
-fields after the Appender has been created with setters in the form of
-\code{appender$set_<fieldname>(value)}
+New Appenders are instantiated with \code{<AppenderSubclass>$new()}. For the
+arguments to \code{new()} please refer to the section \emph{Fields}. You can also
+modify those fields after the Appender has been created with setters in the
+form of \code{appender$set_<fieldname>(value)}
 }
 
 \section{Choosing the Right DBI Layout}{

@@ -34,7 +34,8 @@
 
 <meta property="og:description" content="Format a LogEvent as human readable text using glue::glue. The function
 is evaluated in an environment in which it has access to all elements of
-the LogEvent (see examples)" />
+the LogEvent (see examples). This is more flexible than LayoutFormat,
+but also more complex and slightly less performant." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -65,7 +66,7 @@ the LogEvent (see examples)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9003</span>
       </span>
     </div>
 
@@ -92,6 +93,9 @@ the LogEvent (see examples)" />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
+    </li>
+    <li>
+      <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
   </ul>
 </li>
@@ -125,7 +129,8 @@ the LogEvent (see examples)" />
     
     <p>Format a <a href='LogEvent.html'>LogEvent</a> as human readable text using <a href='https://www.rdocumentation.org/packages/glue/topics/glue'>glue::glue</a>. The function
 is evaluated in an environment in which it has access to all elements of
-the <a href='LogEvent.html'>LogEvent</a> (see examples)</p>
+the <a href='LogEvent.html'>LogEvent</a> (see examples). This is more flexible than <a href='LayoutFormat.html'>LayoutFormat</a>,
+but also more complex and slightly less performant.</p>
     
     </div>
 
@@ -134,7 +139,7 @@ the <a href='LogEvent.html'>LogEvent</a> (see examples)</p>
 
     <pre>
 x &lt;- x$new(fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)}
-  [{timestamp}] msg", colors = NULL)
+  [{timestamp}] msg")
     x$format_event(event)
 x$set_fmt(x)
 x$set_colors(x)
@@ -142,14 +147,20 @@ x$clone(deep = FALSE)
     x$fmt
     </pre>
     
-    <h2 class="hasAnchor" id="creating-a-new-layout"><a class="anchor" href="#creating-a-new-layout"></a>Creating a New Layout</h2>
+    <h2 class="hasAnchor" id="creating-a-new-layoutglue"><a class="anchor" href="#creating-a-new-layoutglue"></a>Creating a New LayoutGlue</h2>
+
+    
+    <p>A new <code>LayoutGlue</code> is instantiated with <code>LayoutGlue$new()</code>. It takes a single
+argument <code>fmt</code> that is passed on to <code><a href='https://www.rdocumentation.org/packages/glue/topics/glue'>glue::glue()</a></code> for each LogEvent.</p>
+    
+    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
     <dl class='dl-horizontal'>
 <dt><code>fmt</code></dt><dd><p>see <code><a href='https://www.rdocumentation.org/packages/glue/topics/glue'>glue::glue()</a></code></p></dd>
 </dl>
     
-    <h2 class="hasAnchor" id="fields-and-methods"><a class="anchor" href="#fields-and-methods"></a>Fields and Methods</h2>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
     <dl class='dl-horizontal'>
@@ -158,7 +169,9 @@ x$clone(deep = FALSE)
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Layouts: <code><a href='LayoutDbi.html'>LayoutDbi</a></code>,
+    <div class='dont-index'><p>lgr exports a number of formatting utility functions that are
+useful for layout glue: <code><a href='colorize_levels.html'>colorize_levels()</a></code>, <code><a href='pad_right.html'>pad_left()</a></code>, <code><a href='pad_right.html'>pad_right()</a></code>.</p>
+<p>Other Layouts: <code><a href='LayoutDbi.html'>LayoutDbi</a></code>,
   <code><a href='LayoutFormat.html'>LayoutFormat</a></code>, <code><a href='LayoutJson.html'>LayoutJson</a></code>,
   <code><a href='LayoutTable.html'>LayoutTable</a></code>, <code><a href='Layout.html'>Layout</a></code></p></div>
     
@@ -166,7 +179,7 @@ x$clone(deep = FALSE)
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"testlogger"</span>, <span class='kw'>appenders</span> <span class='kw'>=</span> <span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(), <span class='kw'>propagate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>set_layout</span>(<span class='no'>LayoutGlue</span>$<span class='fu'>new</span>())
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"test"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [2018-12-28 09:14:51] msg</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"test"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [2018-12-31 11:02:08] msg</div><div class='input'>
 
 <span class='co'># All fields of the LogEvent are available, even custom ones</span>
 <span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>layout</span>$<span class='fu'>set_fmt</span>(
@@ -182,9 +195,11 @@ x$clone(deep = FALSE)
       
       <li><a href="#usage">Usage</a></li>
 
-      <li><a href="#creating-a-new-layout">Creating a New Layout</a></li>
+      <li><a href="#creating-a-new-layoutglue">Creating a New LayoutGlue</a></li>
 
-      <li><a href="#fields-and-methods">Fields and Methods</a></li>
+      <li><a href="#fields">Fields</a></li>
+
+      <li><a href="#methods">Methods</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

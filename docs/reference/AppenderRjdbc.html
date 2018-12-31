@@ -67,7 +67,7 @@ are logging to a non-existant table." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9003</span>
       </span>
     </div>
 
@@ -94,6 +94,9 @@ are logging to a non-existant table." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
+    </li>
+    <li>
+      <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
   </ul>
 </li>
@@ -141,6 +144,7 @@ x &lt;- x$new(conn, table, threshold = NA_integer_,
   layout = select_dbi_layout(conn, table), close_on_exit = TRUE)
     x$append(event)
 x$set_close_on_exit(x)
+x$set_conn(conn)
 x$show(n = 20, threshold = NA_integer_)
 x$set_threshold(level)
 x$set_layout(layout)
@@ -151,44 +155,73 @@ x$conn
 x$data
 x$destination
 x$table
+x$dt
 x$layout
 x$threshold
 x$filters
     </pre>
     
-    <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
-
-    
-    <dl class='dl-horizontal'>
-<dt>conn</dt><dd><p>an RJDBC connection</p></dd>
-</dl>
-    <dl class='dl-horizontal'>
-<dt><code>threshold</code></dt><dd><p><code>character</code> or <code>integer</code> scalar. The minimum log level
-that triggers this logger. See <a href='get_log_levels.html'>log_levels</a></p></dd>
-<dt><code>layout</code></dt><dd><p>a <code>Layout</code> that will be used for formatting the <code>LogEvents</code>
-passed to this Appender</p></dd>
-</dl>
-    
-    <h2 class="hasAnchor" id="fields-and-methods"><a class="anchor" href="#fields-and-methods"></a>Fields and Methods</h2>
+    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
     <dl class='dl-horizontal'>
 <dt><code>close_on_exit</code>, <code>set_close_on_exit()</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>. Close the
 Database connection when the Logger is removed?</p></dd>
-<dt><code>data</code></dt><dd><p>Querry the whole log from the Database and return it as a
-<code>data.frame</code></p></dd>
-<dt><code>conn</code></dt><dd><p>get the DBI connection object</p></dd>
+<dt><code>conn</code>, <code>set_conn(conn)</code></dt><dd><p>a <a href='https://www.rdocumentation.org/packages/DBI/topics/dbConnect'>DBI connection</a></p></dd>
 <dt><code>table</code></dt><dd><p>Name of the target database table</p></dd>
 </dl>
     <dl class='dl-horizontal'>
-<dt><code>show(n, threshold)</code></dt><dd><p>Show the last <code>n</code> log entries with a log level
-bellow <code>threshold</code>. The log entries will be formated for console output
-via the defined <a href='Layout.html'>Layout</a></p></dd>
-<dt><code>data</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a <code>data.table</code>
-with a maximum of <code>buffer_size</code> rows</p></dd>
+<dt><code>data</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a
+<code>data.frame</code></p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code>threshold</code>, <code>set_threshold(level)</code></dt><dd><p><code>character</code> or <code>integer</code> scalar.
+The minimum log level that triggers this logger. See <a href='get_log_levels.html'>log_levels</a></p></dd>
+<dt><code>layout</code>, <code>set_layout(layout)</code></dt><dd><p>a <code>Layout</code> that will be used for
+formatting the <code>LogEvents</code> passed to this Appender</p></dd>
+<dt><code>destination</code></dt><dd><p>The output destination of the <code>Appender</code> in
+human-readable form (mainly for print output)</p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code>filters</code>, <code>set_filters(filters)</code></dt><dd><p>a <code>list</code> of predicates (functions
+that return either <code>TRUE</code> or <code>FALSE</code>). If all of these functions evaluate
+to <code>TRUE</code> the LogEvent is passed on. Since
+LogEvents have reference semantics, filters can also be abused to modify
+LogEvents before they are passed on. Look at the source code of
+<code><a href='with_log_level.html'>with_log_level()</a></code> or <code><a href='with_log_level.html'>with_log_value()</a></code> for examples.</p></dd>
 </dl>
     
-    <h2 class="hasAnchor" id="dbi-layouts"><a class="anchor" href="#dbi-layouts"></a>DBI Layouts</h2>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+    <dl class='dl-horizontal'>
+<dt><code>show(n, threshold)</code></dt><dd><p>Show the last <code>n</code> log entries with a
+log level bellow <code>threshold</code>.</p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code><a href='https://www.rdocumentation.org/packages/base/topics/append'>append(event)</a></code></dt><dd><p>Write the <a href='LogEvent.html'>LogEvent</a> <code>event</code> to a destination</p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter(event)</a></code></dt><dd><p>Determine whether the LogEvent <code>x</code> should be passed
+on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the active binding
+<code>filters</code></p></dd>
+</dl>
+    
+    <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
+
+    
+    <p>An AppenderDbi is linked to a database table via its <code>table</code> argument. If
+the table does not exist it is created either when the Appender is first
+instantiated or (more likely) when the first LogEvent would be written to
+that table. Rather than to rely on this feature, it is recommended that you
+create the target log table first manually using an <code>SQL CREATE TABLE</code>
+statement as this is safer and more flexible. See also <a href='LayoutDbi.html'>LayoutDbi</a>.</p>
+    <p>New Appenders are instantiated with <code>&lt;AppenderSubclass&gt;$new()</code>. For the
+arguments to <code>new()</code> please refer to the section <em>Fields</em>. You can also
+modify those fields after the Appender has been created with setters in the
+form of <code>appender$set_&lt;fieldname&gt;(value)</code></p>
+    
+    <h2 class="hasAnchor" id="choosing-the-right-dbi-layout"><a class="anchor" href="#choosing-the-right-dbi-layout"></a>Choosing the Right DBI Layout</h2>
 
     
     <p>Layouts for relational database tables are tricky as they have very strict
@@ -196,12 +229,10 @@ column types and further restrictions. On top of that implementation details
 vary between database backends.</p>
 <p>To make setting up <code>AppenderDbi</code> as painless as possible, the helper
 function <code><a href='select_dbi_layout.html'>select_dbi_layout()</a></code> tries to automatically determine sensible
-<a href='LayoutDbi.html'>LayoutDbi</a> settings based on <code>conn</code> and</p><ul>
-<li><p>if it exists in the database already - <code>table</code>. If <code>table</code> does not
+<a href='LayoutDbi.html'>LayoutDbi</a> settings based on <code>conn</code> and - if it exists in the database
+already - <code>table</code>. If <code>table</code> does not
 exist in the database and you start logging, a new table will be created
-with the <code>col_types</code> from <code>layout</code>; however, a more flexible approach is
-to create the table manually first using an <code>SQL CREATE TABLE</code> statement.</p></li>
-</ul>
+with the <code>col_types</code> from <code>layout</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -220,11 +251,13 @@ to create the table manually first using an <code>SQL CREATE TABLE</code> statem
       
       <li><a href="#usage">Usage</a></li>
 
+      <li><a href="#fields">Fields</a></li>
+
+      <li><a href="#methods">Methods</a></li>
+
       <li><a href="#creating-a-new-appender">Creating a New Appender</a></li>
 
-      <li><a href="#fields-and-methods">Fields and Methods</a></li>
-
-      <li><a href="#dbi-layouts">DBI Layouts</a></li>
+      <li><a href="#choosing-the-right-dbi-layout">Choosing the Right DBI Layout</a></li>
 
       <li><a href="#see-also">See also</a></li>
           </ul>

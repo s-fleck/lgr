@@ -14,5 +14,5 @@ select_dbi_layout(conn, table)
 \description{
 Selects an appropriate Layout for a database table based on
 a DBI connection and - if it already exists in the database -
-the table itself
+the table itself.
 }

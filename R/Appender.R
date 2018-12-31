@@ -11,10 +11,10 @@
 #'
 #' @section Creating a New Appender:
 #'
-#' New Appenders are instantiated with `Appender$new()`. For the arguments to
-#' `new()` please refer to the section *Fields*. You can also modify those
-#' fields after the Appender has been created with setters in the form of
-#' `appender$set_<fieldname>(value)`
+#' New Appenders are instantiated with `<AppenderSubclass>$new()`. For the
+#' arguments to `new()` please refer to the section *Fields*. You can also
+#' modify those fields after the Appender has been created with setters in the
+#' form of `appender$set_<fieldname>(value)`
 #'
 #' @inheritSection Filterable Fields
 #' @inheritSection Filterable Methods
@@ -420,7 +420,9 @@ AppenderTable <- R6::R6Class(
 #'
 #' `AppenderDt` supports [custom fields][LogEvent], but they have to be
 #' pre-allocated in the `prototype` argument. Custom fields that are not
-#' part of the prototype are discarded.
+#' part of the prototype are discarded. If you want an Appender that retains
+#' all custom fields (at the cost of slightly less performance), take a look at
+#' [AppenderBuffer].
 #'
 #' With the default settings, the custom field `value` is included in the
 #' `data.table` as a list column to store arbitrary \R objects (see example).
@@ -438,8 +440,11 @@ AppenderTable <- R6::R6Class(
 #' a `buffer_size` and a `prototype`. These determine the structure of the
 #' `data.table` used to store the log this appender creates and cannot be
 #' modified anymore after the instantion of the appender.
+#'
 #' The [Layout] for this Appender is used only to format console output of
-#' its `$show()` method.
+#' its `$show()` method. By default, it is set to (and kept in sync with) the
+#' Layout of the console appender of the root logger
+#' (`lgr::lgr$appenders$console$layout`).
 #'
 #' \describe{
 #'   \item{buffer_size}{`integer` scalar. Number of rows of the in-memory
@@ -513,11 +518,7 @@ AppenderDt <- R6::R6Class(
   public = list(
     initialize = function(
       threshold = NA_integer_,
-      layout = LayoutFormat$new(
-        fmt = "%L [%t] %m",
-        timestamp_fmt = "%H:%M:%S",
-        colors = getOption("lgr.colors")
-      ),
+      layout = lgr::lgr$appenders$console$layout,
       prototype = data.table::data.table(
         .id  = NA_integer_,
         level = NA_integer_,
@@ -677,8 +678,10 @@ AppenderDt <- R6::R6Class(
 
 #' Log to Databases via DBI
 #'
-#' Log to a database table with any **DBI** compatabile backend. AppenderDbi
-#' does *not* support case sensitive / quoted column names.
+#' Log to a database table with any **DBI** compatabile backend. Please be
+#' aware that AppenderDbi does *not* support case sensitive / quoted column
+#' names, and you advised to only use all-lowercase names for
+#' custom fields (see `...` argument of [LogEvent]).
 #'
 #' @eval r6_usage(AppenderDbi)
 #'

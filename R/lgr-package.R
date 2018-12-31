@@ -101,7 +101,7 @@
   # root looger -------------------------------------------------------------
   appenders <- list(console = AppenderConsole$new(threshold = 400L))
   if (requireNamespace("data.table", quietly = TRUE))
-    appenders[["memory"]] <- AppenderDt$new()
+    appenders[["memory"]] <- AppenderDt$new(layout = appenders$console$layout)
 
   assign(
     "lgr",

@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9003</span>
       </span>
     </div>
 
@@ -90,6 +90,9 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
+    </li>
+    <li>
+      <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
   </ul>
 </li>
@@ -129,14 +132,12 @@
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='kw'>fmt</span> <span class='kw'>=</span> <span class='st'>"%L [%t] %m  %f"</span>,
   <span class='kw'>timestamp_fmt</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%S"</span>,
   <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"lgr.colors"</span>),
-  <span class='kw'>log_levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"lgr.log_levels"</span>), <span class='kw'>pad_levels</span> <span class='kw'>=</span> <span class='st'>"right"</span>,
-  <span class='kw'>user</span> <span class='kw'>=</span> <span class='no'>x</span>$<span class='no'>user</span>, <span class='no'>...</span>)
+  <span class='kw'>log_levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"lgr.log_levels"</span>), <span class='kw'>pad_levels</span> <span class='kw'>=</span> <span class='st'>"right"</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for LogEvent</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/format'>format</a></span>(<span class='no'>x</span>, <span class='kw'>fmt</span> <span class='kw'>=</span> <span class='st'>"%L [%t] %m  %f"</span>,
   <span class='kw'>timestamp_fmt</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%S"</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>log_levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"lgr.log_levels"</span>), <span class='kw'>pad_levels</span> <span class='kw'>=</span> <span class='st'>"right"</span>,
-  <span class='kw'>user</span> <span class='kw'>=</span> <span class='no'>x</span>$<span class='no'>user</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>log_levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"lgr.log_levels"</span>), <span class='kw'>pad_levels</span> <span class='kw'>=</span> <span class='st'>"right"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,10 +170,6 @@ log levels (likely from <a href='https://www.rdocumentation.org/packages/crayon/
 level names to the same width on the left or right side, or not at all.</p></td>
     </tr>
     <tr>
-      <th>user</th>
-      <td><p>The user</p></td>
-    </tr>
-    <tr>
       <th>...</th>
       <td><p>ignored</p></td>
     </tr>
@@ -186,22 +183,33 @@ level names to the same width on the left or right side, or not at all.</p></td>
 
     
     <dl class='dl-horizontal'>
-<dt><code>%t</code></dt><dd><p>A timestamp (see also <code>timestamp_fmt</code>)</p></dd>
-<dt><code>%l</code></dt><dd><p>the log level</p></dd>
-<dt><code>%L</code></dt><dd><p>the log level (uppercase)</p></dd>
-<dt><code>%n</code></dt><dd><p>the log level (numeric)</p></dd>
-<dt><code>%u</code></dt><dd><p>the current user</p></dd>
+<dt><code>%t</code></dt><dd><p>The timestamp of the message, formatted according to
+<code>timestamp_fmt</code>)</p></dd>
+<dt><code>%l</code></dt><dd><p>the log level, lowercase <code>character</code> representation</p></dd>
+<dt><code>%L</code></dt><dd><p>the log level, uppercase <code>character</code> representation</p></dd>
+<dt><code>%n</code></dt><dd><p>the log level, <code>integer</code> representation</p></dd>
+<dt><code>%u</code></dt><dd><p>the <code>user</code> of the Logger. This is guessed via <code><a href='system_infos.html'>get_user()</a></code>
+during the initalisation of the Logger.</p></dd>
 <dt><code>%p</code></dt><dd><p>the PID (process ID). Useful when logging code that uses
 multiple threads.</p></dd>
 <dt><code>%c</code></dt><dd><p>the calling function</p></dd>
 <dt><code>%m</code></dt><dd><p>the log message</p></dd>
+<dt><code>%f</code></dt><dd><p>all custom fields of <code>x</code> in a JSON like format</p></dd>
 </dl>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>LogEvent</span>$<span class='fu'>new</span>(<span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>300</span>, <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"a test event"</span>, <span class='kw'>logger</span> <span class='kw'>=</span> <span class='no'>lgr</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [2018-12-28 09:14:56] a test event  </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; WARN  [2018-12-28 09:14:56] a test event  </div><div class='input'>
-
+    <pre class="examples"><div class='input'><span class='co'># standard fields can be printed using special tokens</span>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>LogEvent</span>$<span class='fu'>new</span>(
+  <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>300</span>, <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"a test event"</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='st'>"testfun()"</span>, <span class='kw'>logger</span> <span class='kw'>=</span> <span class='no'>lgr</span>
+)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [2018-12-31 11:02:13] a test event  </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='kw'>fmt</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"%t (%p) %c: %n - %m"</span>))</div><div class='output co'>#&gt; 2018-12-31 11:02:13 (7016) testfun(): </span><span style='color: #FFD75F;'>300</span><span> - a test event</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; WARN  [2018-12-31 11:02:13] a test event  </div><div class='input'>
+<span class='co'># custom values</span>
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>LogEvent</span>$<span class='fu'>new</span>(
+  <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>300</span>, <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"a gps track"</span>, <span class='kw'>logger</span> <span class='kw'>=</span> <span class='no'>lgr</span>,
+  <span class='kw'>waypoints</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>location</span> <span class='kw'>=</span> <span class='st'>"Austria"</span>
+)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [2018-12-31 11:02:13] a gps track  </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>location</span><span style='color: #808080;'>: </span><span>Austria</span><span style='color: #808080;'>, </span><span style='color: #D75FAF;'>waypoints</span><span style='color: #808080;'>: </span><span>10</span><span style='color: #808080;'>}</span><span></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -33,6 +33,16 @@ x$val_names
 
 \section{Creating a New Layout}{
 
+
+
+
+Layouts are instantiated with \code{<LayoutSubclass>$new()}. For a description of
+the arguments to this function please refer to the Fields section.
+}
+
+\section{Fields}{
+
+
 \describe{
 \item{\code{col_types}}{A named \code{character} vector of column types supported by
 the target database. If this is used instead of \code{event_values}, and
@@ -43,25 +53,13 @@ of the first LogEvent. If the target database table already exists,
 the column type information is not used. You can only supply one of
 \code{event_values} and \code{col_types}.
 }
-}
-
-
-
-\describe{
-\item{\code{event_values}}{Names of the fields of the \link{LogEvent}
-to include in the output object.
-}
-}
-}
-
-\section{Fields and Methods}{
-
-
-\describe{
-\item{\code{col_types}, \code{set_col_types()}}{Get/set the col_types of this \code{Layout}}
 \item{\code{col_names}}{Convenience method to get the names of the \code{col_types}
 vector}
 }
+}
+
+\section{Methods}{
+
 
 
 
@@ -127,7 +125,7 @@ lo$format_event(event)
 
 }
 \seealso{
-\link[DBI:DBI]{DBI::DBI}
+\code{\link[=select_dbi_layout]{select_dbi_layout()}}, \link[DBI:DBI]{DBI::DBI},
 
 Other Layouts: \code{\link{LayoutFormat}},
   \code{\link{LayoutGlue}}, \code{\link{LayoutJson}},

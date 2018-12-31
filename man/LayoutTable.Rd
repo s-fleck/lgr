@@ -8,7 +8,7 @@ Abstract classes are exported for developers that want to extend them, they
 are not useful to casual users. \link{LayoutDbi} and \link{LayoutJson} are derived
 from LayoutTabel.
 }
-\section{Creating a New Layout}{
+\section{Fields}{
 
 
 \describe{
@@ -18,7 +18,7 @@ to include in the output object.
 }
 }
 
-\section{Fields and Methods}{
+\section{Methods}{
 
 
 \describe{

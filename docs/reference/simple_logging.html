@@ -76,7 +76,7 @@ other Appenders." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9003</span>
       </span>
     </div>
 
@@ -103,6 +103,9 @@ other Appenders." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
+    </li>
+    <li>
+      <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
   </ul>
 </li>
@@ -221,13 +224,13 @@ as <code>integer</code> (invisibly)</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>FATAL</span>(<span class='st'>"This is an important message about %s going wrong"</span>, <span class='st'>"something"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:14:57.341] This is an important message about something going wrong </div><div class='input'><span class='fu'>DEBUG</span>(<span class='st'>"Debug messages are hidden by default"</span>)
+    <pre class="examples"><div class='input'><span class='fu'>FATAL</span>(<span class='st'>"This is an important message about %s going wrong"</span>, <span class='st'>"something"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [11:02:15.740] This is an important message about something going wrong </div><div class='input'><span class='fu'>DEBUG</span>(<span class='st'>"Debug messages are hidden by default"</span>)
 <span class='fu'>console_threshold</span>(<span class='st'>"debug"</span>)  <span class='co'># you must use lower case names here</span>
-<span class='fu'>DEBUG</span>(<span class='st'>"Unless we lower the threshold"</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [09:14:57.346] Unless we lower the threshold </div><div class='input'>
+<span class='fu'>DEBUG</span>(<span class='st'>"Unless we lower the threshold"</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [11:02:15.748] Unless we lower the threshold </div><div class='input'>
 <span class='fu'>add_appender</span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(), <span class='st'>"second_console_appender"</span>)
-<span class='fu'>FATAL</span>(<span class='st'>"Multiple console appenders are a bad idea"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:14:57.350] Multiple console appenders are a bad idea 
-#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:14:57.350] Multiple console appenders are a bad idea </div><div class='input'><span class='fu'>remove_appender</span>(<span class='st'>"second_console_appender"</span>)
-<span class='fu'>INFO</span>(<span class='st'>"Good that we defined an appender name, so it's easy to remove"</span>)</div><div class='output co'>#&gt; INFO  [09:14:57.355] Good that we defined an appender name, so it's easy to remove </div></span></pre>
+<span class='fu'>FATAL</span>(<span class='st'>"Multiple console appenders are a bad idea"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [11:02:15.755] Multiple console appenders are a bad idea 
+#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [11:02:15.755] Multiple console appenders are a bad idea </div><div class='input'><span class='fu'>remove_appender</span>(<span class='st'>"second_console_appender"</span>)
+<span class='fu'>INFO</span>(<span class='st'>"Good that we defined an appender name, so it's easy to remove"</span>)</div><div class='output co'>#&gt; INFO  [11:02:15.764] Good that we defined an appender name, so it's easy to remove </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

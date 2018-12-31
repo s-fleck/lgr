@@ -4,8 +4,10 @@
 \alias{AppenderDbi}
 \title{Log to Databases via DBI}
 \description{
-Log to a database table with any \strong{DBI} compatabile backend. AppenderDbi
-does \emph{not} support case sensitive / quoted column names.
+Log to a database table with any \strong{DBI} compatabile backend. Please be
+aware that AppenderDbi does \emph{not} support case sensitive / quoted column
+names, and you advised to only use all-lowercase names for
+custom fields (see \code{...} argument of \link{LogEvent}).
 }
 \section{Usage}{
 \preformatted{
@@ -46,10 +48,10 @@ statement as this is safer and more flexible. See also \link{LayoutDbi}.
 
 
 
-New Appenders are instantiated with \code{Appender$new()}. For the arguments to
-\code{new()} please refer to the section \emph{Fields}. You can also modify those
-fields after the Appender has been created with setters in the form of
-\code{appender$set_<fieldname>(value)}
+New Appenders are instantiated with \code{<AppenderSubclass>$new()}. For the
+arguments to \code{new()} please refer to the section \emph{Fields}. You can also
+modify those fields after the Appender has been created with setters in the
+form of \code{appender$set_<fieldname>(value)}
 }
 
 \section{Fields}{

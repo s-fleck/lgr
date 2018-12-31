@@ -32,7 +32,10 @@
 
 <meta property="og:title" content="Format Log Events as Text — LayoutFormat" />
 
-<meta property="og:description" content="Format a LogEvent as human readable text using format.LogEvent()" />
+<meta property="og:description" content="Format a LogEvent as human readable text using format.LogEvent(), which
+provides a quick and easy way to customize log messages. If you need even
+more control and flexibility for formatting log messages, consider using
+LayoutGlue instead." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -63,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9003</span>
       </span>
     </div>
 
@@ -90,6 +93,9 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
+    </li>
+    <li>
+      <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
   </ul>
 </li>
@@ -121,7 +127,10 @@
 
     <div class="ref-description">
     
-    <p>Format a <a href='LogEvent.html'>LogEvent</a> as human readable text using <code><a href='print.LogEvent.html'>format.LogEvent()</a></code></p>
+    <p>Format a <a href='LogEvent.html'>LogEvent</a> as human readable text using <code><a href='print.LogEvent.html'>format.LogEvent()</a></code>, which
+provides a quick and easy way to customize log messages. If you need even
+more control and flexibility for formatting log messages, consider using
+<a href='LayoutGlue.html'>LayoutGlue</a> instead.</p>
     
     </div>
 
@@ -146,15 +155,40 @@ x$timestamp_fmt
     <h2 class="hasAnchor" id="creating-a-new-layoutformat"><a class="anchor" href="#creating-a-new-layoutformat"></a>Creating a New LayoutFormat</h2>
 
     
-    <p>LayoutFormat passes it fields as arguments to <code><a href='print.LogEvent.html'>format.LogEvent()</a></code>.</p>
-<dl class='dl-horizontal'>
-<dt><code>fmt</code></dt><dd><p>see <code><a href='print.LogEvent.html'>format.LogEvent()</a></code></p></dd>
-<dt><code>timestamp_fmt</code></dt><dd><p>see <code><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>base::format.POSIXct()</a></code></p></dd>
-<dt><code>colors</code></dt><dd><p>see <code><a href='print.LogEvent.html'>format.LogEvent()</a></code></p></dd>
-<dt><code>pad_levels</code></dt><dd><p>see <code><a href='print.LogEvent.html'>format.LogEvent()</a></code></p></dd>
+    <p>A new LayoutFormat is instantiated with <code>LayoutFormat$new()</code>. For a
+description of the arguments to this function please refer to the Fields,
+and the documentation of <code><a href='print.LogEvent.html'>format.LogEvent()</a></code>.</p>
+    
+    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
+
+    
+    <dl class='dl-horizontal'>
+<dt><code>fmt</code></dt><dd><p>a <code>character</code> scalar containing format tokens. See <code><a href='print.LogEvent.html'>format.LogEvent()</a></code>.</p></dd>
+<dt><code>timestamp_fmt</code></dt><dd><p>a <code>character</code> scalar. See <code><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>base::format.POSIXct()</a></code></p></dd>
+<dt><code>colors</code></dt><dd><p>a named <code>list</code> of functions passed on on <code><a href='print.LogEvent.html'>format.LogEvent()</a></code></p></dd>
+<dt><code>pad_levels</code></dt><dd><p><code>right</code>, <code>left</code> or <code>NULL</code>. See <code><a href='print.LogEvent.html'>format.LogEvent()</a></code></p></dd>
 </dl>
     
-    <h2 class="hasAnchor" id="fields-and-methods"><a class="anchor" href="#fields-and-methods"></a>Fields and Methods</h2>
+    <h2 class="hasAnchor" id="format-tokens"><a class="anchor" href="#format-tokens"></a>Format Tokens</h2>
+
+    
+    <p>This is the same list of format tokens as for <code><a href='print.LogEvent.html'>format.LogEvent()</a></code></p>
+    <dl class='dl-horizontal'>
+<dt><code>%t</code></dt><dd><p>The timestamp of the message, formatted according to
+<code>timestamp_fmt</code>)</p></dd>
+<dt><code>%l</code></dt><dd><p>the log level, lowercase <code>character</code> representation</p></dd>
+<dt><code>%L</code></dt><dd><p>the log level, uppercase <code>character</code> representation</p></dd>
+<dt><code>%n</code></dt><dd><p>the log level, <code>integer</code> representation</p></dd>
+<dt><code>%u</code></dt><dd><p>the <code>user</code> of the Logger. This is guessed via <code><a href='system_infos.html'>get_user()</a></code>
+during the initalisation of the Logger.</p></dd>
+<dt><code>%p</code></dt><dd><p>the PID (process ID). Useful when logging code that uses
+multiple threads.</p></dd>
+<dt><code>%c</code></dt><dd><p>the calling function</p></dd>
+<dt><code>%m</code></dt><dd><p>the log message</p></dd>
+<dt><code>%f</code></dt><dd><p>all custom fields of <code>x</code> in a JSON like format</p></dd>
+</dl>
+    
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
     <dl class='dl-horizontal'>
@@ -169,8 +203,7 @@ x$timestamp_fmt
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># setup a dummy LogEvent</span>
+    <pre class="examples"><div class='input'><span class='co'># setup a dummy LogEvent</span>
 <span class='no'>event</span> <span class='kw'>&lt;-</span> <span class='no'>LogEvent</span>$<span class='fu'>new</span>(
   <span class='kw'>logger</span> <span class='kw'>=</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"dummy logger"</span>, <span class='kw'>user</span> <span class='kw'>=</span> <span class='st'>"testuser"</span>),
   <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>200</span>,
@@ -179,7 +212,7 @@ x$timestamp_fmt
   <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"a test message"</span>
 )
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>()
-<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; [1] "ERROR [2018-12-28 09:14:51.105] a test message"</div><div class='input'>
+<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; [1] "ERROR [2018-12-31 11:02:07.946] a test message"</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -190,7 +223,11 @@ x$timestamp_fmt
 
       <li><a href="#creating-a-new-layoutformat">Creating a New LayoutFormat</a></li>
 
-      <li><a href="#fields-and-methods">Fields and Methods</a></li>
+      <li><a href="#fields">Fields</a></li>
+
+      <li><a href="#format-tokens">Format Tokens</a></li>
+
+      <li><a href="#methods">Methods</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

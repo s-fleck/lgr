@@ -32,7 +32,11 @@
 
 <meta property="og:title" content="Format Log Events for Output to Databases — LayoutDbi" />
 
-<meta property="og:description" content="Format a LogEvent as data.frame for inserting into a relational database." />
+<meta property="og:description" content="DBI Layouts convert LogEvents to a data.frames that can
+be appended to an existing database table. Via the col_types parameter
+they can also store information that AppenderDbi can use to create new
+database tables; however, it is safer and more flexible to set up the log
+table up manually with an SQL CREATE TABLE statement instead." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -63,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9003</span>
       </span>
     </div>
 
@@ -90,6 +94,9 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
+    </li>
+    <li>
+      <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
   </ul>
 </li>
@@ -121,7 +128,11 @@
 
     <div class="ref-description">
     
-    <p>Format a <a href='LogEvent.html'>LogEvent</a> as <code>data.frame</code> for inserting into a relational database.</p>
+    <p>DBI Layouts convert <a href='LogEvent.html'>LogEvents</a> to a <code>data.frames</code> that can
+be appended to an existing database table. Via the <code>col_types</code> parameter
+they can also store information that <a href='AppenderDbi.html'>AppenderDbi</a> can use to create new
+database tables; however, it is safer and more flexible to set up the log
+table up manually with an <code>SQL CREATE TABLE</code> statement instead.</p>
     
     </div>
 
@@ -145,6 +156,12 @@ x$val_names
     <h2 class="hasAnchor" id="creating-a-new-layout"><a class="anchor" href="#creating-a-new-layout"></a>Creating a New Layout</h2>
 
     
+    <p>Layouts are instantiated with <code>&lt;LayoutSubclass&gt;$new()</code>. For a description of
+the arguments to this function please refer to the Fields section.</p>
+    
+    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
+
+    
     <dl class='dl-horizontal'>
 <dt><code>col_types</code></dt><dd><p>A named <code>character</code> vector of column types supported by
 the target database. If this is used instead of <code>event_values</code>, and
@@ -154,20 +171,13 @@ new database table, either on instantion of the Appender or on writing
 of the first LogEvent. If the target database table already exists,
 the column type information is not used. You can only supply one of
 <code>event_values</code> and <code>col_types</code>.</p></dd>
-</dl>
-    <dl class='dl-horizontal'>
-<dt><code>event_values</code></dt><dd><p>Names of the fields of the <a href='LogEvent.html'>LogEvent</a>
-to include in the output object.</p></dd>
-</dl>
-    
-    <h2 class="hasAnchor" id="fields-and-methods"><a class="anchor" href="#fields-and-methods"></a>Fields and Methods</h2>
-
-    
-    <dl class='dl-horizontal'>
-<dt><code>col_types</code>, <code>set_col_types()</code></dt><dd><p>Get/set the col_types of this <code>Layout</code></p></dd>
 <dt><code>col_names</code></dt><dd><p>Convenience method to get the names of the <code>col_types</code>
 vector</p></dd>
 </dl>
+    
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
     <dl class='dl-horizontal'>
 <dt><code>format_event(event)</code></dt><dd><p>format a <a href='LogEvent.html'>LogEvent</a></p></dd>
 </dl>
@@ -187,7 +197,7 @@ Layout for a DBI connection.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='https://www.rdocumentation.org/packages/DBI/topics/DBI-package'>DBI::DBI</a></p>
+    <div class='dont-index'><p><code><a href='select_dbi_layout.html'>select_dbi_layout()</a></code>, <a href='https://www.rdocumentation.org/packages/DBI/topics/DBI-package'>DBI::DBI</a>,</p>
 <p>Other Layouts: <code><a href='LayoutFormat.html'>LayoutFormat</a></code>,
   <code><a href='LayoutGlue.html'>LayoutGlue</a></code>, <code><a href='LayoutJson.html'>LayoutJson</a></code>,
   <code><a href='LayoutTable.html'>LayoutTable</a></code>, <code><a href='Layout.html'>Layout</a></code></p></div>
@@ -206,12 +216,12 @@ Layout for a DBI connection.</p>
 <span class='co'># defaults</span>
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutDbi</span>$<span class='fu'>new</span>()
 <span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt;   level           timestamp caller            msg
-#&gt; 1   200 2018-12-28 09:14:50   &lt;NA&gt; a test message</div><div class='input'>
+#&gt; 1   200 2018-12-31 11:02:07   &lt;NA&gt; a test message</div><div class='input'>
 <span class='co'># SQLite does not support timestamps so LayoutSqlite converts them to text</span>
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutSqlite</span>$<span class='fu'>new</span>()
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>))</div><div class='output co'>#&gt; 'data.frame':	1 obs. of  4 variables:
 #&gt;  $ level    : num 200
-#&gt;  $ timestamp: chr "2018-12-28 09:14:50"
+#&gt;  $ timestamp: chr "2018-12-31 11:02:07"
 #&gt;  $ caller   : chr NA
 #&gt;  $ msg      : chr "a test message"</div><div class='input'>
 <span class='co'># advanced example that supports a custom_field:</span>
@@ -234,7 +244,7 @@ Layout for a DBI connection.</p>
 )
 
 <span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt;             timestamp level            msg custom_field
-#&gt; 1 2018-12-28 09:14:50   200 a test message        blubb</div><div class='input'>
+#&gt; 1 2018-12-31 11:02:07   200 a test message        blubb</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -245,7 +255,9 @@ Layout for a DBI connection.</p>
 
       <li><a href="#creating-a-new-layout">Creating a New Layout</a></li>
 
-      <li><a href="#fields-and-methods">Fields and Methods</a></li>
+      <li><a href="#fields">Fields</a></li>
+
+      <li><a href="#methods">Methods</a></li>
 
       <li><a href="#database-specific-layouts">Database Specific Layouts</a></li>
 

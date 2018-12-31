@@ -32,8 +32,12 @@ x$timestamp_fmt
 \section{Creating a New LayoutFormat}{
 
 
-LayoutFormat passes it fields as arguments to \code{\link[=format.LogEvent]{format.LogEvent()}}. Please
-refer to the documentation of that function for details and examples.
+A new LayoutFormat is instantiated with \code{LayoutFormat$new()}. For a
+description of the arguments to this function please refer to the Fields,
+and the documentation of \code{\link[=format.LogEvent]{format.LogEvent()}}.
+}
+
+\section{Fields}{
 
 \describe{
 \item{\code{fmt}}{
@@ -42,16 +46,6 @@ a \code{character} scalar containing format tokens. See \code{\link[=format.LogE
 a \code{character} scalar. See \code{\link[base:format.POSIXct]{base::format.POSIXct()}}}
 \item{\code{colors}}{a named \code{list} of functions passed on on \code{\link[=format.LogEvent]{format.LogEvent()}}}
 \item{\code{pad_levels}}{\code{right}, \code{left} or \code{NULL}. See \code{\link[=format.LogEvent]{format.LogEvent()}}}
-}
-}
-
-\section{Fields and Methods}{
-
-
-
-
-\describe{
-\item{\code{format_event(event)}}{format a \link{LogEvent}}
 }
 }
 
@@ -73,6 +67,14 @@ multiple threads.}
 \item{\code{\%c}}{the calling function}
 \item{\code{\%m}}{the log message}
 \item{\code{\%f}}{all custom fields of \code{x} in a JSON like format}
+}
+}
+
+\section{Methods}{
+
+
+\describe{
+\item{\code{format_event(event)}}{format a \link{LogEvent}}
 }
 }
 

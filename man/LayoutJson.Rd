@@ -25,6 +25,15 @@ x$val_names
 
 \section{Creating a New Layout}{
 
+
+
+
+Layouts are instantiated with \code{<LayoutSubclass>$new()}. For a description of
+the arguments to this function please refer to the Fields section.
+}
+
+\section{Fields}{
+
 \describe{
 \item{\code{toJSON_args}}{a list of values passed on to \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}}
 }
@@ -38,11 +47,8 @@ to include in the output object.
 }
 }
 
-\section{Fields and Methods}{
+\section{Methods}{
 
-\describe{
-\item{\code{toJSON_args}, \code{set_toJSON_args()}}{Get/set the \code{toJSON_args}}
-}
 
 
 

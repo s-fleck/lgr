@@ -32,9 +32,9 @@
 
 <meta property="og:title" content="Log to the Console — AppenderConsole" />
 
-<meta property="og:description" content="A simple Appender that outputs to the console. If you
-have the package crayon installed log levels will be coloured by default
-(but you can modify this behaviour by passing a custom Layout)" />
+<meta property="og:description" content="A simple Appender that outputs to the console. If you have the package
+crayon installed log levels will be coloured by default
+(but you can modify this behaviour by passing a custom Layout)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -65,7 +65,7 @@ have the package crayon installed log levels will be coloured by default
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9003</span>
       </span>
     </div>
 
@@ -92,6 +92,9 @@ have the package crayon installed log levels will be coloured by default
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
+    </li>
+    <li>
+      <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
   </ul>
 </li>
@@ -123,9 +126,9 @@ have the package crayon installed log levels will be coloured by default
 
     <div class="ref-description">
     
-    <p>A simple Appender that outputs to the console. If you
-have the package <strong>crayon</strong> installed log levels will be coloured by default
-(but you can modify this behaviour by passing a custom <a href='Layout.html'>Layout</a>)</p>
+    <p>A simple Appender that outputs to the console. If you have the package
+<strong>crayon</strong> installed log levels will be coloured by default
+(but you can modify this behaviour by passing a custom <a href='Layout.html'>Layout</a>).</p>
     
     </div>
 
@@ -149,28 +152,41 @@ x$filters
     <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
 
     
-    <dl class='dl-horizontal'>
-<dt><code>threshold</code></dt><dd><p><code>character</code> or <code>integer</code> scalar. The minimum log level
-that triggers this logger. See <a href='get_log_levels.html'>log_levels</a></p></dd>
-<dt><code>layout</code></dt><dd><p>a <code>Layout</code> that will be used for formatting the <code>LogEvents</code>
-passed to this Appender</p></dd>
-</dl>
+    <p>New Appenders are instantiated with <code>&lt;AppenderSubclass&gt;$new()</code>. For the
+arguments to <code>new()</code> please refer to the section <em>Fields</em>. You can also
+modify those fields after the Appender has been created with setters in the
+form of <code>appender$set_&lt;fieldname&gt;(value)</code></p>
     
-    <h2 class="hasAnchor" id="fields-and-methods"><a class="anchor" href="#fields-and-methods"></a>Fields and Methods</h2>
+    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code><a href='https://www.rdocumentation.org/packages/base/topics/append'>append(event)</a></code></dt><dd><p>Write the <a href='LogEvent.html'>LogEvent</a> <code>event</code> to a destination</p></dd>
-<dt><code>threshold</code>, <code>set_threshold(level)</code></dt><dd><p>get/set the <code>Appender</code> threshold</p></dd>
-<dt><code>layout</code>, <code>set_layout(layout)</code></dt><dd><p>get/set the <code>Layout</code></p></dd>
+<dt><code>threshold</code>, <code>set_threshold(level)</code></dt><dd><p><code>character</code> or <code>integer</code> scalar.
+The minimum log level that triggers this logger. See <a href='get_log_levels.html'>log_levels</a></p></dd>
+<dt><code>layout</code>, <code>set_layout(layout)</code></dt><dd><p>a <code>Layout</code> that will be used for
+formatting the <code>LogEvents</code> passed to this Appender</p></dd>
 <dt><code>destination</code></dt><dd><p>The output destination of the <code>Appender</code> in
 human-readable form (mainly for print output)</p></dd>
 </dl>
     <dl class='dl-horizontal'>
-<dt><code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter(event)</a></code></dt><dd><p>Check if an event passes all filters</p></dd>
-<dt><code>filters</code>,<code>set_filters(filters)</code></dt><dd><p>get/set a list of <code>filters</code>. A
-filter is a function that takes exactly two named arguments: the LogEvent
-<code>event</code> and the Filterable <code>obj</code> (usually a Logger or Appender)</p></dd>
+<dt><code>filters</code>, <code>set_filters(filters)</code></dt><dd><p>a <code>list</code> of predicates (functions
+that return either <code>TRUE</code> or <code>FALSE</code>). If all of these functions evaluate
+to <code>TRUE</code> the LogEvent is passed on. Since
+LogEvents have reference semantics, filters can also be abused to modify
+LogEvents before they are passed on. Look at the source code of
+<code><a href='with_log_level.html'>with_log_level()</a></code> or <code><a href='with_log_level.html'>with_log_value()</a></code> for examples.</p></dd>
+</dl>
+    
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+    <dl class='dl-horizontal'>
+<dt><code><a href='https://www.rdocumentation.org/packages/base/topics/append'>append(event)</a></code></dt><dd><p>Write the <a href='LogEvent.html'>LogEvent</a> <code>event</code> to a destination</p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter(event)</a></code></dt><dd><p>Determine whether the LogEvent <code>x</code> should be passed
+on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the active binding
+<code>filters</code></p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -194,8 +210,8 @@ filter is a function that takes exactly two named arguments: the LogEvent
   <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(<span class='st'>"[%t] %c(): [%n] %m from user %u"</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"lgr.colors"</span>))))
 
 <span class='co'># Will output the message twice because we attached two console appenders</span>
-<span class='no'>logger</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [09:14:48.745] A test message 
-#&gt; [2018-12-28 09:14:48.745] eval(): [</span><span style='color: #FFD75F;'>300</span><span>] A test message from user </div><div class='input'>
+<span class='no'>logger</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [11:02:04.836] A test message 
+#&gt; [2018-12-31 11:02:04.836] eval(): [</span><span style='color: #FFD75F;'>300</span><span>] A test message from user stefan.b.fleck@gmail.com</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -206,7 +222,9 @@ filter is a function that takes exactly two named arguments: the LogEvent
 
       <li><a href="#creating-a-new-appender">Creating a New Appender</a></li>
 
-      <li><a href="#fields-and-methods">Fields and Methods</a></li>
+      <li><a href="#fields">Fields</a></li>
+
+      <li><a href="#methods">Methods</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

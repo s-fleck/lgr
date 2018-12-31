@@ -32,8 +32,7 @@
 
 <meta property="og:title" content="Log to an In-Memory Data.Table — AppenderDt" />
 
-<meta property="og:description" content="An Appender that outputs to an in-memory data.table. This requires that
-you have the suggested package data.table installed. This kind of
+<meta property="og:description" content="An Appender that outputs to an in-memory data.table. This kind of
 Appender is useful for interactive use, and has very little overhead." />
 <meta name="twitter:card" content="summary" />
 
@@ -65,7 +64,7 @@ Appender is useful for interactive use, and has very little overhead." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9003</span>
       </span>
     </div>
 
@@ -92,6 +91,9 @@ Appender is useful for interactive use, and has very little overhead." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
+    </li>
+    <li>
+      <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
   </ul>
 </li>
@@ -123,8 +125,7 @@ Appender is useful for interactive use, and has very little overhead." />
 
     <div class="ref-description">
     
-    <p>An Appender that outputs to an in-memory <code>data.table</code>. This requires that
-you have the suggested package <strong>data.table</strong> installed. This kind of
+    <p>An Appender that outputs to an in-memory <code>data.table</code>. This kind of
 Appender is useful for interactive use, and has very little overhead.</p>
     
     </div>
@@ -135,7 +136,9 @@ Appender is useful for interactive use, and has very little overhead.</p>
     
     <p><code>AppenderDt</code> supports <a href='LogEvent.html'>custom fields</a>, but they have to be
 pre-allocated in the <code>prototype</code> argument. Custom fields that are not
-part of the prototype are discarded.</p>
+part of the prototype are discarded. If you want an Appender that retains
+all custom fields (at the cost of slightly less performance), take a look at
+<a href='AppenderBuffer.html'>AppenderBuffer</a>.</p>
 <p>With the default settings, the custom field <code>value</code> is included in the
 <code>data.table</code> as a list column to store arbitrary <span style="R">R</span> objects (see example).
 It is recommended to use this feature only <code>TRACE</code> level.</p>
@@ -143,8 +146,7 @@ It is recommended to use this feature only <code>TRACE</code> level.</p>
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre>
-x &lt;- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "%L [%t]
-  %m", timestamp_fmt = "%H:%M:%S", colors = getOption("lgr.colors")),
+x &lt;- x$new(threshold = NA_integer_, layout = lgr::lgr$appenders$console$layout,
   prototype = data.table::data.table(.id = NA_integer_, level = NA_integer_,
   timestamp = Sys.time(), caller = NA_character_, msg = NA_character_, value =
   list(list())), buffer_size = 1e+05)
@@ -156,38 +158,78 @@ x$filter(event)
 x$set_filters(filters)
     x$data
 x$destination
+x$dt
 x$layout
 x$threshold
 x$filters
     </pre>
     
-    <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
+    <h2 class="hasAnchor" id="creating-a-data-table-appender"><a class="anchor" href="#creating-a-data-table-appender"></a>Creating a Data Table Appender</h2>
+
+    
+    <p>In addition to the usual fields, <code>AppenderDt$new()</code> requires that you supply
+a <code>buffer_size</code> and a <code>prototype</code>. These determine the structure of the
+<code>data.table</code> used to store the log this appender creates and cannot be
+modified anymore after the instantion of the appender.</p>
+<p>The <a href='Layout.html'>Layout</a> for this Appender is used only to format console output of
+its <code>$show()</code> method. By default, it is set to (and kept in sync with) the
+Layout of the console appender of the root logger
+(<code>lgr::lgr$appenders$console$layout</code>).</p>
+<dl class='dl-horizontal'>
+<dt>buffer_size</dt><dd><p><code>integer</code> scalar. Number of rows of the in-memory
+<code>data.table</code></p></dd>
+<dt>prototype</dt><dd><p>A prototype <code>data.table</code>. The prototype must be a
+<code>data.table</code> with the same columns and column types as the data
+you want to log. The actual content of the <code>data.table</code> is irrelevant.
+Supplying a custom prototype is only necessary if you use custom
+fields in <a href='LogEvent.html'>LogEvents</a>. For convenience, the default prototype already
+contains a list column called <code>value</code> that can hold arbitrary <span style="R">R</span> values
+(see examples)</p></dd>
+</dl>
+    
+    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
     <dl class='dl-horizontal'>
-<dt>buffer_size</dt><dd><p><code>integer</code> scalar. Number of rows of the in-memory
-<code>data.table</code></p></dd>
-<dt>prototype</dt><dd><p>A prototype <code>data.table</code>. This is only necessary to set
-manually if you use custom <a href='LogEvent.html'>LogEvents</a>. The default prototype already
-contains a list column called <code>value</code> that can hold arbitrary R values
-(see examples)</p></dd>
+<dt><code>dt</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a <code>data.table</code>
+with a maximum of <code>buffer_size</code> rows</p></dd>
 </dl>
     <dl class='dl-horizontal'>
-<dt><code>threshold</code></dt><dd><p><code>character</code> or <code>integer</code> scalar. The minimum log level
-that triggers this logger. See <a href='get_log_levels.html'>log_levels</a></p></dd>
-<dt><code>layout</code></dt><dd><p>a <code>Layout</code> that will be used for formatting the <code>LogEvents</code>
-passed to this Appender</p></dd>
+<dt><code>data</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a
+<code>data.frame</code></p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code>threshold</code>, <code>set_threshold(level)</code></dt><dd><p><code>character</code> or <code>integer</code> scalar.
+The minimum log level that triggers this logger. See <a href='get_log_levels.html'>log_levels</a></p></dd>
+<dt><code>layout</code>, <code>set_layout(layout)</code></dt><dd><p>a <code>Layout</code> that will be used for
+formatting the <code>LogEvents</code> passed to this Appender</p></dd>
+<dt><code>destination</code></dt><dd><p>The output destination of the <code>Appender</code> in
+human-readable form (mainly for print output)</p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code>filters</code>, <code>set_filters(filters)</code></dt><dd><p>a <code>list</code> of predicates (functions
+that return either <code>TRUE</code> or <code>FALSE</code>). If all of these functions evaluate
+to <code>TRUE</code> the LogEvent is passed on. Since
+LogEvents have reference semantics, filters can also be abused to modify
+LogEvents before they are passed on. Look at the source code of
+<code><a href='with_log_level.html'>with_log_level()</a></code> or <code><a href='with_log_level.html'>with_log_value()</a></code> for examples.</p></dd>
 </dl>
     
-    <h2 class="hasAnchor" id="fields-and-methods"><a class="anchor" href="#fields-and-methods"></a>Fields and Methods</h2>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
     <dl class='dl-horizontal'>
 <dt><code>show(n, threshold)</code></dt><dd><p>Show the last <code>n</code> log entries with a log level
 bellow <code>threshold</code>. The log entries will be formated for console output
-via the defined <a href='Layout.html'>Layout</a></p></dd>
-<dt><code>data</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a <code>data.table</code>
-with a maximum of <code>buffer_size</code> rows</p></dd>
+via this Appenders <a href='Layout.html'>Layout</a></p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code><a href='https://www.rdocumentation.org/packages/base/topics/append'>append(event)</a></code></dt><dd><p>Write the <a href='LogEvent.html'>LogEvent</a> <code>event</code> to a destination</p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter(event)</a></code></dt><dd><p>Determine whether the LogEvent <code>x</code> should be passed
+on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the active binding
+<code>filters</code></p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -211,22 +253,26 @@ with a maximum of <code>buffer_size</code> rows</p></dd>
 <span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"test"</span>)
 
 <span class='co'># Displaying the log</span>
-<span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span></div><div class='output co'>#&gt;    .id level           timestamp caller  msg value
-#&gt; 1:   1   500 2018-12-28 09:14:49   eval test    NA
-#&gt; 2:   2   200 2018-12-28 09:14:49   eval test    NA</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='fu'>show</span>()</div><div class='output co'>#&gt; <span style='color: #808080;'>DEBUG</span><span> [09:14:49] test
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [09:14:49] test</div><div class='input'><span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [09:14:49] test
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [09:14:49] test</div><div class='input'>
-<span class='co'># If you pass a Logger to show_log, it looks for the first MemoryAppender it</span>
-<span class='co'># can find.</span>
-<span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [09:14:49] test
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [09:14:49] test</div><div class='input'>
+<span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span></div><div class='output co'>#&gt;   .id level           timestamp caller  msg value
+#&gt; 1   1   500 2018-12-31 11:02:05   eval test    NA
+#&gt; 2   2   200 2018-12-31 11:02:05   eval test    NA</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='fu'>show</span>()</div><div class='output co'>#&gt; <span style='color: #808080;'>DEBUG</span><span> [11:02:05.364] test 
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [11:02:05.406] test </div><div class='input'><span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [11:02:05.364] test 
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [11:02:05.406] test </div><div class='input'>
+<span class='co'># If you pass a Logger to show_log(), it looks for the first AppenderDt</span>
+<span class='co'># that it can find.</span>
+<span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [11:02:05.364] test 
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [11:02:05.406] test </div><div class='input'>
 <span class='co'># Data tables can store arbitrary R values in list columns. The default</span>
 <span class='co'># AppenderDt comes with a single list column called "value" that you can use</span>
 <span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"the iris data frame"</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='no'>iris</span>)
-<span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span></div><div class='output co'>#&gt;    .id level           timestamp caller                 msg        value
-#&gt; 1:   1   500 2018-12-28 09:14:49   eval                test           NA
-#&gt; 2:   2   200 2018-12-28 09:14:49   eval                test           NA
-#&gt; 3:   3   400 2018-12-28 09:14:49   eval the iris data frame &lt;data.frame&gt;</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span>$<span class='no'>value</span><span class='kw'>[[</span><span class='fl'>3</span>]])</div><div class='output co'>#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+<span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span></div><div class='output co'>#&gt;   .id level           timestamp caller                 msg
+#&gt; 1   1   500 2018-12-31 11:02:05   eval                test
+#&gt; 2   2   200 2018-12-31 11:02:05   eval                test
+#&gt; 3   3   400 2018-12-31 11:02:05   eval the iris data frame
+#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  value
+#&gt; 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   NA
+#&gt; 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   NA
+#&gt; 3 5.1, 4.9, 4.7, 4.6, 5.0, 5.4, 4.6, 5.0, 4.4, 4.9, 5.4, 4.8, 4.8, 4.3, 5.8, 5.7, 5.4, 5.1, 5.7, 5.1, 5.4, 5.1, 4.6, 5.1, 4.8, 5.0, 5.0, 5.2, 5.2, 4.7, 4.8, 5.4, 5.2, 5.5, 4.9, 5.0, 5.5, 4.9, 4.4, 5.1, 5.0, 4.5, 4.4, 5.0, 5.1, 4.8, 5.1, 4.6, 5.3, 5.0, 7.0, 6.4, 6.9, 5.5, 6.5, 5.7, 6.3, 4.9, 6.6, 5.2, 5.0, 5.9, 6.0, 6.1, 5.6, 6.7, 5.6, 5.8, 6.2, 5.6, 5.9, 6.1, 6.3, 6.1, 6.4, 6.6, 6.8, 6.7, 6.0, 5.7, 5.5, 5.5, 5.8, 6.0, 5.4, 6.0, 6.7, 6.3, 5.6, 5.5, 5.5, 6.1, 5.8, 5.0, 5.6, 5.7, 5.7, 6.2, 5.1, 5.7, 6.3, 5.8, 7.1, 6.3, 6.5, 7.6, 4.9, 7.3, 6.7, 7.2, 6.5, 6.4, 6.8, 5.7, 5.8, 6.4, 6.5, 7.7, 7.7, 6.0, 6.9, 5.6, 7.7, 6.3, 6.7, 7.2, 6.2, 6.1, 6.4, 7.2, 7.4, 7.9, 6.4, 6.3, 6.1, 7.7, 6.3, 6.4, 6.0, 6.9, 6.7, 6.9, 5.8, 6.8, 6.7, 6.7, 6.3, 6.5, 6.2, 5.9, 3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.4, 3.0, 3.0, 4.0, 4.4, 3.9, 3.5, 3.8, 3.8, 3.4, 3.7, 3.6, 3.3, 3.4, 3.0, 3.4, 3.5, 3.4, 3.2, 3.1, 3.4, 4.1, 4.2, 3.1, 3.2, 3.5, 3.6, 3.0, 3.4, 3.5, 2.3, 3.2, 3.5, 3.8, 3.0, 3.8, 3.2, 3.7, 3.3, 3.2, 3.2, 3.1, 2.3, 2.8, 2.8, 3.3, 2.4, 2.9, 2.7, 2.0, 3.0, 2.2, 2.9, 2.9, 3.1, 3.0, 2.7, 2.2, 2.5, 3.2, 2.8, 2.5, 2.8, 2.9, 3.0, 2.8, 3.0, 2.9, 2.6, 2.4, 2.4, 2.7, 2.7, 3.0, 3.4, 3.1, 2.3, 3.0, 2.5, 2.6, 3.0, 2.6, 2.3, 2.7, 3.0, 2.9, 2.9, 2.5, 2.8, 3.3, 2.7, 3.0, 2.9, 3.0, 3.0, 2.5, 2.9, 2.5, 3.6, 3.2, 2.7, 3.0, 2.5, 2.8, 3.2, 3.0, 3.8, 2.6, 2.2, 3.2, 2.8, 2.8, 2.7, 3.3, 3.2, 2.8, 3.0, 2.8, 3.0, 2.8, 3.8, 2.8, 2.8, 2.6, 3.0, 3.4, 3.1, 3.0, 3.1, 3.1, 3.1, 2.7, 3.2, 3.3, 3.0, 2.5, 3.0, 3.4, 3.0, 1.4, 1.4, 1.3, 1.5, 1.4, 1.7, 1.4, 1.5, 1.4, 1.5, 1.5, 1.6, 1.4, 1.1, 1.2, 1.5, 1.3, 1.4, 1.7, 1.5, 1.7, 1.5, 1.0, 1.7, 1.9, 1.6, 1.6, 1.5, 1.4, 1.6, 1.6, 1.5, 1.5, 1.4, 1.5, 1.2, 1.3, 1.4, 1.3, 1.5, 1.3, 1.3, 1.3, 1.6, 1.9, 1.4, 1.6, 1.4, 1.5, 1.4, 4.7, 4.5, 4.9, 4.0, 4.6, 4.5, 4.7, 3.3, 4.6, 3.9, 3.5, 4.2, 4.0, 4.7, 3.6, 4.4, 4.5, 4.1, 4.5, 3.9, 4.8, 4.0, 4.9, 4.7, 4.3, 4.4, 4.8, 5.0, 4.5, 3.5, 3.8, 3.7, 3.9, 5.1, 4.5, 4.5, 4.7, 4.4, 4.1, 4.0, 4.4, 4.6, 4.0, 3.3, 4.2, 4.2, 4.2, 4.3, 3.0, 4.1, 6.0, 5.1, 5.9, 5.6, 5.8, 6.6, 4.5, 6.3, 5.8, 6.1, 5.1, 5.3, 5.5, 5.0, 5.1, 5.3, 5.5, 6.7, 6.9, 5.0, 5.7, 4.9, 6.7, 4.9, 5.7, 6.0, 4.8, 4.9, 5.6, 5.8, 6.1, 6.4, 5.6, 5.1, 5.6, 6.1, 5.6, 5.5, 4.8, 5.4, 5.6, 5.1, 5.1, 5.9, 5.7, 5.2, 5.0, 5.2, 5.4, 5.1, 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.2, 0.1, 0.1, 0.2, 0.4, 0.4, 0.3, 0.3, 0.3, 0.2, 0.4, 0.2, 0.5, 0.2, 0.2, 0.4, 0.2, 0.2, 0.2, 0.2, 0.4, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.2, 0.2, 0.3, 0.3, 0.2, 0.6, 0.4, 0.3, 0.2, 0.2, 0.2, 0.2, 1.4, 1.5, 1.5, 1.3, 1.5, 1.3, 1.6, 1.0, 1.3, 1.4, 1.0, 1.5, 1.0, 1.4, 1.3, 1.4, 1.5, 1.0, 1.5, 1.1, 1.8, 1.3, 1.5, 1.2, 1.3, 1.4, 1.4, 1.7, 1.5, 1.0, 1.1, 1.0, 1.2, 1.6, 1.5, 1.6, 1.5, 1.3, 1.3, 1.3, 1.2, 1.4, 1.2, 1.0, 1.3, 1.2, 1.3, 1.3, 1.1, 1.3, 2.5, 1.9, 2.1, 1.8, 2.2, 2.1, 1.7, 1.8, 1.8, 2.5, 2.0, 1.9, 2.1, 2.0, 2.4, 2.3, 1.8, 2.2, 2.3, 1.5, 2.3, 2.0, 2.0, 1.8, 2.1, 1.8, 1.8, 1.8, 2.1, 1.6, 1.9, 2.0, 2.2, 1.5, 1.4, 2.3, 2.4, 1.8, 1.8, 2.1, 2.4, 2.3, 1.9, 2.3, 2.5, 2.3, 1.9, 2.0, 2.3, 1.8, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span>$<span class='no'>value</span><span class='kw'>[[</span><span class='fl'>3</span>]])</div><div class='output co'>#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
 #&gt; 1          5.1         3.5          1.4         0.2  setosa
 #&gt; 2          4.9         3.0          1.4         0.2  setosa
 #&gt; 3          4.7         3.2          1.3         0.2  setosa
@@ -243,9 +289,11 @@ with a maximum of <code>buffer_size</code> rows</p></dd>
 
       <li><a href="#usage">Usage</a></li>
 
-      <li><a href="#creating-a-new-appender">Creating a New Appender</a></li>
+      <li><a href="#creating-a-data-table-appender">Creating a Data Table Appender</a></li>
 
-      <li><a href="#fields-and-methods">Fields and Methods</a></li>
+      <li><a href="#fields">Fields</a></li>
+
+      <li><a href="#methods">Methods</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

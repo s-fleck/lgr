@@ -13,7 +13,9 @@ Appender is useful for interactive use, and has very little overhead.
 
 \code{AppenderDt} supports \link[=LogEvent]{custom fields}, but they have to be
 pre-allocated in the \code{prototype} argument. Custom fields that are not
-part of the prototype are discarded.
+part of the prototype are discarded. If you want an Appender that retains
+all custom fields (at the cost of slightly less performance), take a look at
+\link{AppenderBuffer}.
 
 With the default settings, the custom field \code{value} is included in the
 \code{data.table} as a list column to store arbitrary \R objects (see example).
@@ -22,8 +24,7 @@ It is recommended to use this feature only \code{TRACE} level.
 
 \section{Usage}{
 \preformatted{
-x <- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "\%L [\%t]
-  \%m", timestamp_fmt = "\%H:\%M:\%S", colors = getOption("lgr.colors")),
+x <- x$new(threshold = NA_integer_, layout = lgr::lgr$appenders$console$layout,
   prototype = data.table::data.table(.id = NA_integer_, level = NA_integer_,
   timestamp = Sys.time(), caller = NA_character_, msg = NA_character_, value =
   list(list())), buffer_size = 1e+05)
@@ -52,8 +53,11 @@ In addition to the usual fields, \code{AppenderDt$new()} requires that you suppl
 a \code{buffer_size} and a \code{prototype}. These determine the structure of the
 \code{data.table} used to store the log this appender creates and cannot be
 modified anymore after the instantion of the appender.
+
 The \link{Layout} for this Appender is used only to format console output of
-its \code{$show()} method.
+its \code{$show()} method. By default, it is set to (and kept in sync with) the
+Layout of the console appender of the root logger
+(\code{lgr::lgr$appenders$console$layout}).
 
 \describe{
 \item{buffer_size}{\code{integer} scalar. Number of rows of the in-memory

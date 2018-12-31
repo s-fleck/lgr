@@ -6,8 +6,12 @@
 #' varries widely. For example for file or console output the log event is
 #' usually formatted into a single character line.
 #'
+#' @section Creating a New Layout:
 #'
-#' @section Fields and Methods:
+#' Layouts are instantiated with `<LayoutSubclass>$new()`. For a description of
+#' the arguments to this function please refer to the Fields section.
+#'
+#' @section Methods:
 #'
 #' \describe{
 #'   \item{`format_event(event)`}{format a [LogEvent]}
@@ -52,14 +56,18 @@ Layout <- R6::R6Class(
 #' [LayoutGlue] instead.
 #'
 #' @inheritParams format.LogEvent
+#' @inheritSection Layout Methods
+#' @inheritSection print.LogEvent Format Tokens
 #'
 #' @eval r6_usage(LayoutFormat)
 #'
 #' @section Creating a New LayoutFormat:
 #'
-#' LayoutFormat passes it fields as arguments to [format.LogEvent()]. Please
-#' refer to the documentation of that function for details and examples.
+#' A new LayoutFormat is instantiated with `LayoutFormat$new()`. For a
+#' description of the arguments to this function please refer to the Fields,
+#' and the documentation of [format.LogEvent()].
 #'
+#' @section Fields:
 #' \describe{
 #'   \item{`fmt`}{
 #'     a `character` scalar containing format tokens. See [format.LogEvent()].}
@@ -69,11 +77,6 @@ Layout <- R6::R6Class(
 #'   \item{`pad_levels`}{`right`, `left` or `NULL`. See [format.LogEvent()]}
 #'  }
 #'
-#'
-#' @inheritSection Layout Fields and Methods
-#' @section Fields and Methods:
-#'
-#' @inheritSection print.LogEvent Format Tokens
 #' @section Format Tokens:
 #' This is the same list of format tokens as for [format.LogEvent()]
 #'
@@ -190,15 +193,17 @@ LayoutFormat <- R6::R6Class(
 #'
 #' @eval r6_usage(LayoutGlue)
 #'
-#' @section Creating a New Layout:
+#' @section Creating a New LayoutGlue:
+#'
+#' A new `LayoutGlue` is instantiated with `LayoutGlue$new()`. It takes a single
+#' argument `fmt` that is passed on to `glue::glue()` for each LogEvent.
+#'
+#' @inheritSection Layout Methods
+#' @section Fields:
 #'
 #' \describe{
 #'   \item{`fmt`}{see [glue::glue()]}
 #'  }
-#'
-#'
-#' @inheritSection Layout Fields and Methods
-#'
 #'
 #' @name LayoutGlue
 #' @family Layouts
@@ -229,8 +234,7 @@ LayoutGlue <- R6::R6Class(
   inherit = Layout,
   public = list(
     initialize = function(
-      fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)} [{timestamp}] msg",
-      colors = NULL
+      fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)} [{timestamp}] msg"
     ){
       assert_namespace("glue")
       self$set_fmt(fmt)
@@ -283,7 +287,9 @@ LayoutGlue <- R6::R6Class(
 #' are not useful to casual users. [LayoutDbi] and [LayoutJson] are derived
 #' from LayoutTabel.
 #'
-#' @section Creating a New Layout:
+#' @inheritSection Layout Methods
+#'
+#' @section Fields:
 #'
 #' \describe{
 #'   \item{`event_values`}{Names of the fields of the [LogEvent]
@@ -292,7 +298,6 @@ LayoutGlue <- R6::R6Class(
 #' }
 #'
 #'
-#' @inheritSection Layout Fields and Methods
 #' @family Layouts
 #'
 #' @name LayoutTable
@@ -349,10 +354,14 @@ LayoutTable <- R6::R6Class(
 #'
 #'
 #' @eval r6_usage(LayoutDbi)
-#'
-#' @inheritSection LayoutTable Creating a New Layout
+#' @inheritSection Layout Methods
+#' @inheritSection Layout Creating a New Layout
 #'
 #' @section Creating a New Layout:
+#'
+#'
+#' @section Fields:
+#'
 #' \describe{
 #'   \item{`col_types`}{A named `character` vector of column types supported by
 #'     the target database. If this is used instead of `event_values`, and
@@ -363,17 +372,11 @@ LayoutTable <- R6::R6Class(
 #'     the column type information is not used. You can only supply one of
 #'     `event_values` and `col_types`.
 #'   }
-#' }
-#'
-#' @inheritSection LayoutTable Fields and Methods
-#' @section Fields and Methods:
-#'
-#' \describe{
-#'   \item{`col_types`, `set_col_types()`}{Get/set the col_types of this `Layout`}
 #'   \item{`col_names`}{Convenience method to get the names of the `col_types`
 #'     vector}
 #' }
 #'
+#' @section Methods:
 #'
 #' @section Database Specific Layouts:
 #'
@@ -395,7 +398,7 @@ LayoutTable <- R6::R6Class(
 #' @family database layouts
 #' @include Filterable.R
 #' @include log_levels.R
-#' @seealso [DBI::DBI]
+#' @seealso [select_dbi_layout()], [DBI::DBI],
 #' @examples
 #' # setup a dummy LogEvent
 #' event <- LogEvent$new(
@@ -598,9 +601,9 @@ LayoutRjdbc <- LayoutSqlite
 #'
 #' Selects an appropriate Layout for a database table based on
 #' a DBI connection and - if it already exists in the database -
-#' the table itself
+#' the table itself.
 #'
-#' @param conn  a [DBI connection][DBI::dbConnect]
+#' @param conn  a [DBI connection][DBI::dbConnect()]
 #' @param table a `character` scalar. The name of the table to log to.
 #'
 #' @export
@@ -656,18 +659,18 @@ select_dbi_layout <- function(
 #'
 #' @eval r6_usage(LayoutJson)
 #'
-#' @inheritSection LayoutTable Creating a New Layout
+#' @inheritSection Layout Creating a New Layout
+#' @inheritSection LayoutTable Fields
+#' @inheritSection LayoutTable Methods
 #'
 #' @section Creating a New Layout:
+#'
+#' @section Fields:
 #' \describe{
 #'   \item{`toJSON_args`}{a list of values passed on to [jsonlite::toJSON()]}
 #' }
 #'
-#' @inheritSection LayoutTable Fields and Methods
-#' @section Fields and Methods:
-#' \describe{
-#'   \item{`toJSON_args`, `set_toJSON_args()`}{Get/set the `toJSON_args`}
-#' }
+#' @section Methods:
 #'
 #' @name LayoutJson
 #' @family Layouts

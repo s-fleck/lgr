@@ -196,7 +196,11 @@ show_log = function(
   threshold = NA,
   target = lgr::lgr
 ){
-  assert_namespace("data.table")
+  assert(
+    is_scalar_integerish(n),
+    "'n' must be an integer scalar, not a ", class_fmt(n)
+  )
+  threshold <- standardize_threshold(threshold)
 
   if (inherits(target, "Appender")){
     if ("show" %in% names(target)){
@@ -220,7 +224,7 @@ show_log = function(
     return(target$appenders[sel][[1]]$show(n = n, threshold = threshold))
   }
 
-  stop(sprintf("'%s' is not a valid `target` show_log()", class_fmt(target)))
+  stop(sprintf("'%s' is not a valid `target` for show_log()", class_fmt(target)))
 }
 
 

@@ -12,7 +12,7 @@ but also more complex and slightly less performant.
 \section{Usage}{
 \preformatted{
 x <- x$new(fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)}
-  [{timestamp}] msg", colors = NULL)
+  [{timestamp}] msg")
 
 x$format_event(event)
 x$set_fmt(x)
@@ -24,7 +24,14 @@ x$fmt
 }
 }
 
-\section{Creating a New Layout}{
+\section{Creating a New LayoutGlue}{
+
+
+A new \code{LayoutGlue} is instantiated with \code{LayoutGlue$new()}. It takes a single
+argument \code{fmt} that is passed on to \code{glue::glue()} for each LogEvent.
+}
+
+\section{Fields}{
 
 
 \describe{
@@ -32,7 +39,7 @@ x$fmt
 }
 }
 
-\section{Fields and Methods}{
+\section{Methods}{
 
 
 \describe{
