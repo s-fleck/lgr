@@ -22,10 +22,15 @@ get_caller <- function(
     error = function(e) NULL
   )
 
-  if (is.null(res))
-    "(shell)"
-  else
+  if (is.symbol(res)){
     deparse(res)
+  } else if (is.null(res)){
+    "(shell)"
+  } else if (inherits(res, "{")){
+    "{...}"
+  } else {
+    deparse(res)[[1]]
+  }
 }
 
 
