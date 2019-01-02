@@ -268,13 +268,20 @@ Logger <- R6::R6Class(
             )
           } else {
             not_named <- vapply(names(dots), is_blank, TRUE, USE.NAMES = FALSE)
-            vals <- c(list(
-              logger = self,
-              level = level,
-              timestamp = timestamp,
-              caller = caller,
-              msg = do.call(sprintf, c(list(msg), dots[not_named]))
-            ), dots[!not_named])
+            if (any(not_named)){
+              msg <- do.call(sprintf, c(list(msg), dots[not_named]))
+            }
+
+            vals <- c(
+              list(
+                logger = self,
+                level = level,
+                timestamp = timestamp,
+                caller = caller,
+                msg = msg
+              ),
+                dots[!not_named]
+              )
           }
         }
 

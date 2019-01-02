@@ -22,7 +22,6 @@ test_that("active bindings", {
 
 
 
-
 test_that("basic logging", {
   ml <- Logger$new("test_logger", appenders = list(memory = AppenderDt$new()))
   ts <- structure(1540486764.41946, class = c("POSIXct", "POSIXt"))
@@ -41,6 +40,25 @@ test_that("basic logging", {
     all(ml$appenders$memory$data$caller == "testfun"),
     info = ml$appenders$memory$data$caller
   )
+})
+
+
+
+
+test_that("string formatting is used when appropriate", {
+  lg <- Logger$new(
+    "test",
+    appenders = list(AppenderConsole$new()),
+    propagate = FALSE
+  )
+
+  # unnamed arguments trigger sprintf
+  expect_output(lg$fatal("foo %s", "bar"), "foo bar")
+  expect_output(lg$fatal("foo %s", "bar", fizz = "buzz"), "foo bar")
+
+  # otherwise msg is processed as-is
+  expect_output(lg$fatal("foo %s"), "foo %s")
+  expect_output(lg$fatal("foo %s", fizz = "buzz"), "foo %s")
 })
 
 
@@ -199,6 +217,7 @@ test_that("thresholds work", {
   c1$set_threshold(100)
   expect_silent(c1$error("blubb"))
 })
+
 
 
 
