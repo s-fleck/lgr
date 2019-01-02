@@ -1,12 +1,12 @@
 #' Loggers
 #'
-#' A Logger records the log message and some metadata (timestamp,
-#' calling function) as a [LogEvent] and passes this event on to one or
-#' several [Appenders] that write the event to a destination (a file,
-#' the console, ...). All Loggers of an R session are in a hierarchical
-#' structure, and each Logger (except the Root Looger) passes on LogEvents to
-#' the Appenders of it ancestral Loggers. See `vignette("lgr", package = "lgr")`
-#' for more info.
+#' A Logger produces a [LogEvent] that contains the log message along with
+#' metadata (timestamp, calling function) and dispatches it to one or several
+#' [Appenders] which are responsible for the output (console, file, ...) of the
+#' event. **lgr** alread comes with a single pre-configured Logger called the
+#' `root Logger` that can be accessed via `lgr$<...>`. Instantiation of new
+#' Loggers is only necessary if you want to take advantage of hierarchical
+#' logging as outlined in `vignette("lgr", package = "lgr")`.
 #'
 #' @eval r6_usage(Logger)
 #'
@@ -15,7 +15,7 @@
 #' If you want logging for a Project (f.e a Package you are developing) that is
 #' separate from the global logging, you can create a new logger with
 #' `Logger$new()`. If you just want to add different outputs (for example
-#' logfiles) to the Root Logger, look into [Appenders].
+#' logfiles) to the root Logger, look into [Appenders].
 #'
 #' @inheritSection Filterable Fields
 #' @section Fields:
@@ -106,8 +106,9 @@
 #'     with `level`, `msg`, `timestamp` and `caller` is created. Unnamed
 #'     arguments in `...` will be combined with `msg` via `base::sprintf()`.
 #'     Named arguments in `...` will be passed on to `LogEvent$new()` as custom
-#'     fields.
-#'
+#'     fields. If no unnamed arguments are present, `msg` will *not* be passed
+#'     to `sprintf()`, so in that case you do not have to escape `"%"`
+#'     characters.#'
 #'     If the new LogEvent passes this Loggers filters, it will be dispatched
 #'     to the relevant [Appenders] and checked against their thresholds and
 #'     filters.
@@ -153,12 +154,16 @@
 #' print(lg)
 #' print(lg$ancestry)
 #'
-#' # use string inerpolation and custom fields
+#' # use formatting strings and custom fields
 #' tf2 <- tempfile()
 #' lg$add_appender(AppenderFile$new(tf2, layout = LayoutJson$new()))
 #' lg$info("Not all %s support custom fields", "appenders", type = "test")
 #' readLines(tf)
 #' readLines(tf2)
+#'
+#' # This works because if no unnamed `...` are present, msg is not passed
+#' # through sprintf()
+#' lg$fatal("100%")
 #'
 NULL
 

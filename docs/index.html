@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9004</span>
       </span>
     </div>
 
@@ -91,20 +91,36 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#lgr" class="anchor"></a>lgr</h1></div>
 
-<p>lgr is a fully featured logging package for R built on the back of <a href="https://github.com/r-lib/R6">R6</a> classes. It is designed to be flexible, performant and extensible.</p>
-<p>Users that have not worked with R6 classes before, will find the way in which Loggers are configured in lgr a bit strange, but I did my best to compose a hopefully helpful . Users that come from python or Java, will feel at home as lgr borrows heavily from <a href="https://logging.apache.org/log4j/2.x/">Apache Log4j</a> and <a href="https://docs.python.org/3/library/logging.html">Python logging</a>.</p>
+<p>lgr is a logging package for R built on the back of <a href="https://github.com/r-lib/R6">R6</a> classes. It is designed to be flexible, performant and extensible.</p>
+<p>Users that have not worked with R6 classes before, will find the syntax for configuring Loggers a bit strange, but I did my best to compose a hopefully helpful <a href="https://s-fleck.github.io/lgr/articles/lgr.html">vignette</a>. Users that come from python or Java, will feel at home as lgr borrows heavily from <a href="https://logging.apache.org/log4j/2.x/">Apache Log4j</a> and <a href="https://docs.python.org/3/library/logging.html">Python logging</a>.</p>
+<div id="features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#features" class="anchor"></a>Features</h2>
+<ul>
+<li>
+<em>Hierarchical loggers</em> like in log4j and python logging. This is useful if you want to be able to configure logging on a per-package basis.</li>
+<li>An <em>arbitrary number of appenders</em> for each logger. A single logger can write values to the console, a logfile, a database, etc… .</li>
+<li>Allow for <em>custom fields</em> in log events. As opposed to many other logging packages for R a log event is not just a message with a timestamp, but can contain arbitrary data fields. This is very helpful if you want to produce logs that are machine readable and easy to analyze.</li>
+<li>
+<em>Vectorized</em> logging (so <code>lgr$fatal(capture.output(iris))</code> works)</li>
+<li>Lightning fast in-memory log based in <code>data.table</code> included for interactive use.</li>
+<li>Support for advanced appenders such as database appenders, cached appenders, etc… .</li>
+<li>Optional <em>color</em> support via <a href="https://github.com/r-lib/crayon">crayon</a>
+</li>
+</ul>
+</div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
 <p>To log an <em>event</em> with with lgr we call <code>lgr$&lt;logging function&gt;()</code>. Unnamed arguments to the logging function are interpreted by <code><a href="https://www.rdocumentation.org/packages/base/topics/sprintf">sprintf()</a></code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lgr<span class="op">$</span><span class="kw">fatal</span>(<span class="st">"A critical error"</span>)
-<span class="co">#&gt; FATAL [11:01:59.390] A critical error</span>
+<span class="co">#&gt; FATAL [09:59:25.414] A critical error</span>
 lgr<span class="op">$</span><span class="kw">error</span>(<span class="st">"A less severe error"</span>)
-<span class="co">#&gt; ERROR [11:01:59.444] A less severe error</span>
+<span class="co">#&gt; ERROR [09:59:25.478] A less severe error</span>
 lgr<span class="op">$</span><span class="kw">warn</span>(<span class="st">"A potentially bad situation"</span>)
-<span class="co">#&gt; WARN  [11:01:59.471] A potentially bad situation</span>
+<span class="co">#&gt; WARN  [09:59:25.558] A potentially bad situation</span>
 lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"iris has %s rows"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(iris))
-<span class="co">#&gt; INFO  [11:01:59.474] iris has 150 rows</span>
+<span class="co">#&gt; INFO  [09:59:25.560] iris has 150 rows</span>
 
 <span class="co"># the following log levels are hidden by default</span>
 lgr<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/debug">debug</a></span>(<span class="st">"A debug message"</span>)
@@ -113,33 +129,18 @@ lgr<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tf &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempfile</a></span>()
 lgr<span class="op">$</span><span class="kw"><a href="reference/simple_logging.html">add_appender</a></span>(AppenderJson<span class="op">$</span><span class="kw">new</span>(tf))
 lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"cars has %s rows"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(cars))
-<span class="co">#&gt; INFO  [11:01:59.615] cars has 50 rows</span>
+<span class="co">#&gt; INFO  [09:59:25.688] cars has 50 rows</span>
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(tf))
-<span class="co">#&gt; {"level":400,"timestamp":"2018-12-31 11:01:59","caller":"eval","msg":"cars has 50 rows"}</span></code></pre></div>
+<span class="co">#&gt; {"level":400,"timestamp":"2019-01-02 09:59:25","caller":"eval","msg":"cars has 50 rows"}</span></code></pre></div>
 <p>JSON naturally supports custom fields. Named arguments passed to <code>info()</code>, <code>warn()</code>, etc… are intepreted as custom fields.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"loading cars"</span>, <span class="st">"cars"</span>, <span class="dt">rows =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(cars), <span class="dt">cols =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">ncol</a></span>(cars))
-<span class="co">#&gt; INFO  [11:01:59.632] loading cars {cols: 2, rows: 50}</span>
+<span class="co">#&gt; INFO  [09:59:25.698] loading cars {cols: 2, rows: 50}</span>
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(tf), <span class="dt">sep =</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)
-<span class="co">#&gt; {"level":400,"timestamp":"2018-12-31 11:01:59","caller":"eval","msg":"cars has 50 rows"}</span>
-<span class="co">#&gt; {"level":400,"timestamp":"2018-12-31 11:01:59","caller":"eval","msg":"loading cars","cols":2,"rows":50}</span></code></pre></div>
+<span class="co">#&gt; {"level":400,"timestamp":"2019-01-02 09:59:25","caller":"eval","msg":"cars has 50 rows"}</span>
+<span class="co">#&gt; {"level":400,"timestamp":"2019-01-02 09:59:25","caller":"eval","msg":"loading cars","cols":2,"rows":50}</span></code></pre></div>
 <p>For more examples please see the package <a href="https://s-fleck.github.io/lgr/articles/lgr.html">vignette</a> and <a href="https://s-fleck.github.io/lgr/">documentation</a></p>
-</div>
-<div id="features" class="section level2">
-<h2 class="hasAnchor">
-<a href="#features" class="anchor"></a>Features</h2>
-<ul>
-<li>Sensible default configuration for basic usage</li>
-<li>Hierarchical loggers like in log4j and python logging. This is useful if you want to be able to configure logging on a per-package basis.</li>
-<li>An arbitrary number of appenders for each logger. A single logger can write values to the console, a logfile, a database, etc… .</li>
-<li>Vectorized logging (so <code>lgr$fatal(capture.output(iris))</code> works)</li>
-<li>Lightning fast in-memory appender based in <code>data.table</code> included for interactive use.</li>
-<li>Support for advanced appenders such as database appenders, a cached appender, etc… .</li>
-<li>Optional color support via <a href="https://github.com/r-lib/crayon">crayon</a>
-</li>
-<li>Fully featured, but also focused on performance. Benchmarks will follow in due time.</li>
-</ul>
 </div>
 <div id="development-status" class="section level2">
 <h2 class="hasAnchor">

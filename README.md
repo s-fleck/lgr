@@ -5,9 +5,20 @@ lgr
 
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing) [![Travis build status](https://travis-ci.org/s-fleck/lgr.svg?branch=master)](https://travis-ci.org/s-fleck/lgr) [![Codecov test coverage](https://codecov.io/gh/s-fleck/lgr/branch/master/graph/badge.svg)](https://codecov.io/gh/s-fleck/lgr?branch=master)
 
-lgr is a fully featured logging package for R built on the back of [R6](https://github.com/r-lib/R6) classes. It is designed to be flexible, performant and extensible.
+lgr is a logging package for R built on the back of [R6](https://github.com/r-lib/R6) classes. It is designed to be flexible, performant and extensible.
 
-Users that have not worked with R6 classes before, will find the way in which Loggers are configured in lgr a bit strange, but I did my best to compose a hopefully helpful . Users that come from python or Java, will feel at home as lgr borrows heavily from [Apache Log4j](https://logging.apache.org/log4j/2.x/) and [Python logging](https://docs.python.org/3/library/logging.html).
+Users that have not worked with R6 classes before, will find the syntax for configuring Loggers a bit strange, but I did my best to compose a hopefully helpful [vignette](https://s-fleck.github.io/lgr/articles/lgr.html). Users that come from python or Java, will feel at home as lgr borrows heavily from [Apache Log4j](https://logging.apache.org/log4j/2.x/) and [Python logging](https://docs.python.org/3/library/logging.html).
+
+Features
+--------
+
+-   *Hierarchical loggers* like in log4j and python logging. This is useful if you want to be able to configure logging on a per-package basis.
+-   An *arbitrary number of appenders* for each logger. A single logger can write values to the console, a logfile, a database, etc... .
+-   Allow for *custom fields* in log events. As opposed to many other logging packages for R a log event is not just a message with a timestamp, but can contain arbitrary data fields. This is very helpful if you want to produce logs that are machine readable and easy to analyze.
+-   *Vectorized* logging (so `lgr$fatal(capture.output(iris))` works)
+-   Lightning fast in-memory log based in `data.table` included for interactive use.
+-   Support for advanced appenders such as database appenders, cached appenders, etc... .
+-   Optional *color* support via [crayon](https://github.com/r-lib/crayon)
 
 Usage
 -----
@@ -16,13 +27,13 @@ To log an *event* with with lgr we call `lgr$<logging function>()`. Unnamed argu
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [09:03:34.452] A critical error
+#> FATAL [09:32:18.996] A critical error
 lgr$error("A less severe error")
-#> ERROR [09:03:34.478] A less severe error
+#> ERROR [09:32:19.051] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [09:03:34.503] A potentially bad situation
+#> WARN  [09:32:19.122] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [09:03:34.505] iris has 150 rows
+#> INFO  [09:32:19.124] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
@@ -35,36 +46,24 @@ A Logger can have several Appenders. For example, we can add a JSON appender to 
 tf <- tempfile()
 lgr$add_appender(AppenderJson$new(tf))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [09:03:34.527] cars has 50 rows
+#> INFO  [09:32:19.140] cars has 50 rows
 
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2018-12-28 09:03:34","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-01-02 09:32:19","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 JSON naturally supports custom fields. Named arguments passed to `info()`, `warn()`, etc... are intepreted as custom fields.
 
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [09:03:34.536] loading cars {cols: 2, rows: 50}
+#> INFO  [09:32:19.149] loading cars {cols: 2, rows: 50}
 
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2018-12-28 09:03:34","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2018-12-28 09:03:34","caller":"eval","msg":"loading cars","cols":2,"rows":50}
+#> {"level":400,"timestamp":"2019-01-02 09:32:19","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-01-02 09:32:19","caller":"eval","msg":"loading cars","cols":2,"rows":50}
 ```
 
 For more examples please see the package [vignette](https://s-fleck.github.io/lgr/articles/lgr.html) and [documentation](https://s-fleck.github.io/lgr/)
-
-Features
---------
-
--   Sensible default configuration for basic usage
--   Hierarchical loggers like in log4j and python logging. This is useful if you want to be able to configure logging on a per-package basis.
--   An arbitrary number of appenders for each logger. A single logger can write values to the console, a logfile, a database, etc... .
--   Vectorized logging (so `lgr$fatal(capture.output(iris))` works)
--   Lightning fast in-memory appender based in `data.table` included for interactive use.
--   Support for advanced appenders such as database appenders, a cached appender, etc... .
--   Optional color support via [crayon](https://github.com/r-lib/crayon)
--   Fully featured, but also focused on performance. Benchmarks will follow in due time.
 
 Development Status
 ------------------

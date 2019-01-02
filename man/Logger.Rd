@@ -5,13 +5,13 @@
 \alias{Loggers}
 \title{Loggers}
 \description{
-A Logger records the log message and some metadata (timestamp,
-calling function) as a \link{LogEvent} and passes this event on to one or
-several \link{Appenders} that write the event to a destination (a file,
-the console, ...). All Loggers of an R session are in a hierarchical
-structure, and each Logger (except the Root Looger) passes on LogEvents to
-the Appenders of it ancestral Loggers. See \code{vignette("lgr", package = "lgr")}
-for more info.
+A Logger produces a \link{LogEvent} that contains the log message along with
+metadata (timestamp, calling function) and dispatches it to one or several
+\link{Appenders} which are responsible for the output (console, file, ...) of the
+event. \strong{lgr} alread comes with a single pre-configured Logger called the
+\code{root Logger} that can be accessed via \code{lgr$<...>}. Instantiation of new
+Loggers is only necessary if you want to take advantage of hierarchical
+logging as outlined in \code{vignette("lgr", package = "lgr")}.
 }
 \section{Usage}{
 \preformatted{
@@ -60,7 +60,7 @@ x$filters
 If you want logging for a Project (f.e a Package you are developing) that is
 separate from the global logging, you can create a new logger with
 \code{Logger$new()}. If you just want to add different outputs (for example
-logfiles) to the Root Logger, look into \link{Appenders}.
+logfiles) to the root Logger, look into \link{Appenders}.
 }
 
 \section{Fields}{
@@ -165,11 +165,12 @@ If the \code{level} passes the Logger \code{threshold} a new \link{LogEvent}
 with \code{level}, \code{msg}, \code{timestamp} and \code{caller} is created. Unnamed
 arguments in \code{...} will be combined with \code{msg} via \code{base::sprintf()}.
 Named arguments in \code{...} will be passed on to \code{LogEvent$new()} as custom
-fields.\preformatted{If the new LogEvent passes this Loggers filters, it will be dispatched
-to the relevant [Appenders] and checked against their thresholds and
+fields. If no unnamed arguments are present, \code{msg} will \emph{not} be passed
+to \code{sprintf()}, so in that case you do not have to escape \code{"\%"}
+characters.#'
+If the new LogEvent passes this Loggers filters, it will be dispatched
+to the relevant \link{Appenders} and checked against their thresholds and
 filters.
-}
-
 }
 
 \item{\code{add_appender(appender, name = NULL)}}{Adds a new Appender to the
@@ -216,11 +217,15 @@ readLines(tf)
 print(lg)
 print(lg$ancestry)
 
-# use string inerpolation and custom fields
+# use formatting strings and custom fields
 tf2 <- tempfile()
 lg$add_appender(AppenderFile$new(tf2, layout = LayoutJson$new()))
 lg$info("Not all \%s support custom fields", "appenders", type = "test")
 readLines(tf)
 readLines(tf2)
+
+# This works because if no unnamed `...` are present, msg is not passed
+# through sprintf()
+lg$fatal("100\%")
 
 }
