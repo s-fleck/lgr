@@ -28,8 +28,11 @@ get_caller <- function(
     "(shell)"
   } else if (inherits(res, "{")){
     "{...}"
+  } else if (is.function(res)){
+    # rare, but can happen f.e. through plumber
+    fmt_function_signature(res)
   } else {
-    deparse(res)[[1]]
+    ptrunc(deparse(res))
   }
 }
 
@@ -81,6 +84,13 @@ get_user <- function(fallback = "unknown user"){
 
 
 # internal --------------------------------------------------------------
+
+fmt_function_signature <- function(x){
+  paste0("function(", paste(names(formals(x)), collapse = ", "), ")")
+}
+
+
+
 
 `%||%` <- function (x, y){
   if (is.null(x))
@@ -252,6 +262,7 @@ error_msg_log_levels <- function(varname, log_levels){
 
 
 
+
 # misc --------------------------------------------------------------------
 
 # nocov start
@@ -285,4 +296,8 @@ dyn_register_s3_method <- function(
     }
   )
 }
+
+
+
+
 # nocov end

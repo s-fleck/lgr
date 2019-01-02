@@ -89,8 +89,9 @@ test_that("get_caller() does something useful for corner cases", {
   foo <- function(arg){get_caller()}
   expect_identical(foo(), "foo")
 
-  bar <- lapply(1, function(x) get_caller() )
   r <- {function(arg){get_caller()}}()
   expect_identical(r, "{...}")
 
+  r <- (function(arg){"sgnasdkgshdkghsakdghskdjghsdkag"; get_caller()})()
+  expect_length(r, 1)
 })
