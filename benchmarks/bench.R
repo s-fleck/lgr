@@ -26,7 +26,7 @@ ml[["suspended"]] <- Logger$new(
 ml[["no appenders"]] <-
   Logger$new("no appenders", appenders = NULL, parent = NULL)
 
-ml[["memory only"]] <-
+ml[["memory dt"]] <-
   Logger$new("memory only", appenders = AppenderDt$new(), parent = NULL)
 
 ml[["memory buffer"]] <-
@@ -45,7 +45,13 @@ exps <- lapply(names(ml), function(x){
    bquote({for (i in seq_len(n)) ml[[.(x)]]$warn("blubb")})
 })
 names(exps) <- names(ml)
-exps <- c(exps, alist(flog = flog.fatal("test"), flog_off = flog.trace("test")))
+exps <- c(
+  exps,
+  alist(
+    flog = {for (i in seq_len(n)) flog.warn("blubb")},
+    flog_off = {for (i in seq_len(n)) flog.trace("blubb")}
+  )
+)
 opts <- list(check = FALSE, min_iterations = 10L)
 
 sink("/dev/null")
@@ -72,7 +78,7 @@ pdat[, expression := forcats::fct_reorder(expression, median)]
 
 pal <- "Oranges"
 
-ggplot(
+p <- ggplot(
   pdat,
   aes(
     x = expression,
@@ -83,28 +89,13 @@ ggplot(
 ) +
   geom_boxplot(outlier.shape = NA) +
   geom_boxplot(outlier.shape = NA, fill = "white", alpha = 0.3) +
-  scale_y_bench_time(limits = c(0.001, 0.2)) +
+  scale_y_continuous(limits = c(0.001, 0.25)) +
   scale_fill_brewer(palette = pal, direction = -1) +
   scale_color_brewer(palette = pal, direction = -1) +
   theme_dark()
 
-p <- ggplot(
-  pdat,
-  aes(
-    x = expression,
-    y = as.numeric(median),
-    fill = date
-  )
-) +
-  geom_col(position = "dodge") +
-  scale_fill_brewer() +
-  scale_y_bench_time()
-  theme_dark()
-
-
-auto
-
 plot(p)
+
 saveRDS(dd, "benchmarks/history.rds")
 
 
