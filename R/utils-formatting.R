@@ -122,3 +122,68 @@ NULL
 #' @rdname pad_right
 #' @name pad_left
 NULL
+
+
+
+
+# internal ----------------------------------------------------------------
+
+fmt_threshold <- function(
+  x,
+  type = "both",
+  log_levels = getOption("lgr.log_levels")
+){
+  assert(all(is.na(x)) || is_integerish(stats::na.omit(x)) || is.character(x))
+
+  log_levels = c("off" = 0L, log_levels)
+  if (is.character(x)){
+    assert(all(x %in% names(log_levels)))
+    x <- unlabel_levels(x, log_levels = log_levels)
+  }
+
+  impl <- function(.x){
+    assert((length(.x) == 1L) && (is.na(.x)) || is_integerish(.x))
+
+    if (.x %in% log_levels){
+      .r <- log_levels[which(log_levels == .x)]
+
+    } else if (is.na(.x)){
+      .r <- c("all" = NA)
+    } else {
+      return(format(.x))
+    }
+
+    if (identical(type, "character")){
+      return(names(.r))
+    }
+
+    paste0(names(.r), " (", .r, ")")
+  }
+
+  vapply(x, impl, character(1))
+}
+
+
+
+
+
+
+
+# Given a string, indent every line by some number of spaces.
+# The exception is to not add spaces after a trailing \n.
+indent <- function(str, indent = 0) {
+  gsub("(^|\\n)(?!$)",
+       paste0("\\1", paste(rep(" ", indent), collapse = "")),
+       str,
+       perl = TRUE
+  )
+}
+
+
+
+
+# Trim a string to n characters; if it's longer than n, add " ..." to the end
+trim <- function(str, n = 60) {
+  if (nchar(str) > n) paste(substr(str, 1, n-4), "...")
+  else str
+}

@@ -1,7 +1,7 @@
 Type: Package
 Package: lgr
 Title: A Fully Featured Logging Framework
-Version: 0.0.6.9009
+Version: 0.0.7.9000
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -54,5 +54,4 @@ Collate:
     'use_logger.R'
     'utils-formatting.R'
     'utils-logging.R'
-    'utils-print.R'
     'utils-rd.R'

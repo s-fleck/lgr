@@ -38,7 +38,8 @@ for people that have experience with R6 classes.
 
 lgr comes with a so-called **root logger** that is ready to go after you install 
 it. If you are a package developer you can (and should) set up a new Logger for
-your package, but more on that later.
+your package, but more on that later. For many usecases the root Logger will 
+suffice.
 
 ### Logging to the Console
 ```{r}
@@ -54,8 +55,8 @@ lgr$error("Vampires generally arrive in carriages drawn by %i black horses.", 2)
 ### Logging to Plain Files
 
 Usually you don't (only) want to log to the console, you want to log to files.
-Output of Loggers is managed via Appenders. The root Logger is preconfigured
-with a console Appender (that is why we see output int he console). Let's
+Output of Loggers is managed by Appenders. The root Logger is preconfigured
+with a console Appender (that is why we see output in the console). Let's
 add a file Appender:
 
 ```{r}
@@ -64,10 +65,14 @@ lgr$add_appender(AppenderFile$new(tf), name = "file")
 lgr$info("You must think I am joking")
 readLines(tf)
 ```
+The various Appenders available in lgr are R6 classes. To instantiate an object
+of that class (i.e. create a new appender) you have to use the `$new()` function
+as in the example above. Whenever you see something in lgr that 
+`IsNamedLikeThis`, you can be sure that it is such an R6 class. 
 
-You see that the timestamp format of the file appender is slightly different
-to the timestamp format of the console Appender. Formatting is handled by
-**Layouts**:
+If you look at the output, you see that the timestamp format of the file 
+appender is slightly different to the timestamp format of the console Appender. 
+Formatting is handled by **Layouts**, and each Appender has exactly one:
 
 ```{r}
 lgr$appenders$file$set_layout(LayoutFormat$new(timestamp_fmt = "%B %d %T"))
@@ -161,7 +166,7 @@ plumber, roxygen2, and testthat but often behind the scenes and not as exposed
 as in lgr.
 
 You recognize R6 classes in this package because they are named following the 
-UpperCamelCase naming convention. While there is only one kind of Logger and 
+`UpperCamelCase` naming convention. While there is only one kind of Logger and 
 one kind of LogEvent, there are several subclasses of Appenders and Layouts.
 
 An introduction to R6 classes is beyond the scope of this document, but you
@@ -234,7 +239,6 @@ lgr$appenders$memory$show(3)
 You can use `sprintf()` style formatting strings directly in log messages. 
 ```{r}
 lgr$info("The sky was the color of %s, tuned to a dead chanel", "television")
-INFO("There are %.1f lights", 4.5321)
 ```
 
 
@@ -243,7 +247,7 @@ INFO("There are %.1f lights", 4.5321)
 LogEvents are objects that store all information collected by the Logger. They
 are passed on to Appenders that output them, but Appenders usually don't 
 utilise all the information present in a log event. The last event produced
-by a Logger is stored in its last_event field.
+by a Logger is stored in its `last_event` field.
 
 ```{r}
 lgr$info("Vampire stories are generally located in Styria")
@@ -298,15 +302,14 @@ will be applied after the threshold is checked.
 
 examples:
 ```{r}
-# Only log on weekends
-f1 <- function(event, obj) { as.POSIXlt(Sys.Date())$wday %in% c(7, 0) }
-# Only log messages that contain the word bird
-f2 <- function(event, obj) { grepl("bird", event$msg) }
-lgr$set_filters(list(f1, f2))
+f1 <- function(event, obj) { grepl("bird", event$msg) }
+lgr$set_filters(list(f1))
 
-# since this is not very useful, we remove the filters again
+lgr$info("is it a plane?")
+lgr$info("no! is it a bird?")
+
+# since this is not a very useful filter, we better remove it again
 lgr$set_filters(NULL)
-
 ```
 
 
@@ -350,11 +353,10 @@ hierarchies will usually be pretty flat (i.e. most Loggers will only inherit
 from the root logger). 
 
 Each newly created Logger is child to a parent Logger. If no parent Logger
-is specified manually during a Logger's creation, its parent is the Root 
-Logger. A logger dispatches the LogRecords it creates not only to its own
+is specified manually during a Logger's creation, its parent is the root 
+Logger. A logger dispatches the LogEvents it creates not only to its own
 Appenders, but also to the Appenders of all its ancestral Loggers (ignoring
-the threshold and Filters of the ancestral Loggers, but not of the ancestral 
-Appenders). 
+the threshold and Filters of the ancestral Loggers, but not of the Appenders). 
 
 If all this sounds confusing to you, take a look at the
 [examples](#examples-hierarchy). The common use cases are pretty easy to 
@@ -387,10 +389,24 @@ lg <- Logger$new(
 )
 
 lg$info("the default format")
-
 lg$appenders$cons$layout$set_fmt("%L (%n) [%t] %c(): !! %m !!")
 lg$info("A more involved custom format")
 ```
+
+If this is not enough for you, you can use `LayoutGlue` based on the awesome
+[glue](https://github.com/tidyverse/glue) package. The syntax is a bit more
+verbose, and `AppenderGlue` is a bit less performant than `AppenderFormat`, but
+the possibilities are endless.
+
+```{r}
+# install.packages("glue")
+library(glue)
+lg$appenders$cons$set_layout(LayoutGlue$new(
+  fmt = "{logger$name} {level_name} {caller}: {toupper(msg)}"
+))
+lg$info("with glue")
+```
+
 
 
 ## Logging to JSON files

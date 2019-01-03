@@ -1,5 +1,7 @@
 #' A Fully Featured Logging Framework for R
 #'
+#' For Details please refer to `vignette("lgr", package = "lgr")`
+#'
 #' @section Options:
 #'
 #' You can also set these options in your `.Rprofile` to make them permanent

@@ -69,7 +69,7 @@ logging as outlined in vignette(&quot;lgr&quot;, package = &quot;lgr&quot;)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9000</span>
       </span>
     </div>
 
@@ -290,9 +290,9 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is %s"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>() )</div><div class='output co'>#&gt; INFO  [09:59:36.481] Today is 2019-01-02 </div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is %s"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>() )</div><div class='output co'>#&gt; INFO  [16:16:52.340] Today is 2019-01-03 </div><div class='input'>
 <span class='co'># lgr includes a pre-configured root logger</span>
-<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"This is a serious error"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:59:36.483] This is a serious error </div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"This is a serious error"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [16:16:52.344] This is a serious error </div><div class='input'>
 <span class='co'># if you want to take advantage of hierarchical logging, you can create new loggers.</span>
 <span class='co'># the following creates a new logger that logs to a temporary file.</span>
 <span class='no'>tf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>()
@@ -304,12 +304,12 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 <span class='co'># The new logger passes the log message on to the appenders of its parent</span>
 <span class='co'># logger, which is by default the root logger. This is why the following</span>
 <span class='co'># writes not only the file 'tf', but also to the console.</span>
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blubb"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:59:36.496] blubb </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2019-01-02 09:59:36.496] blubb"</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blubb"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [16:16:52.361] blubb </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2019-01-03 16:16:52.361] blubb"</div><div class='input'>
 <span class='co'># This relationship is also depicted in the loggers print method</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>lg</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [info] mylogger -&gt; root
 #&gt; 
 #&gt; appenders:
-#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/Rtmpvmvv80/file1e5ead12e5
+#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/Rtmpip0DFX/file7e66430bc808
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [info] -&gt; console
@@ -317,11 +317,11 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 <span class='co'># use formatting strings and custom fields</span>
 <span class='no'>tf2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>()
 <span class='no'>lg</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>tf2</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()))
-<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"Not all %s support custom fields"</span>, <span class='st'>"appenders"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"test"</span>)</div><div class='output co'>#&gt; INFO  [09:59:36.554] Not all appenders support custom fields </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>type</span><span style='color: #808080;'>: </span><span>test</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2019-01-02 09:59:36.496] blubb"                                  
-#&gt; [2] "INFO  [2019-01-02 09:59:36.554] Not all appenders support custom fields"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf2</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2019-01-02 09:59:36\",\"caller\":\"eval\",\"msg\":\"Not all appenders support custom fields\",\"type\":\"test\"}"</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"Not all %s support custom fields"</span>, <span class='st'>"appenders"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"test"</span>)</div><div class='output co'>#&gt; INFO  [16:16:52.820] Not all appenders support custom fields </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>type</span><span style='color: #808080;'>: </span><span>test</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2019-01-03 16:16:52.361] blubb"                                  
+#&gt; [2] "INFO  [2019-01-03 16:16:52.820] Not all appenders support custom fields"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf2</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2019-01-03 16:16:52\",\"caller\":\"eval\",\"msg\":\"Not all appenders support custom fields\",\"type\":\"test\"}"</div><div class='input'>
 <span class='co'># This works because if no unnamed `...` are present, msg is not passed</span>
 <span class='co'># through sprintf()</span>
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"100%"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:59:36.566] 100% </div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"100%"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [16:16:52.829] 100% </div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

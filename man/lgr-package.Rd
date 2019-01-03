@@ -6,7 +6,7 @@
 \alias{lgr-package}
 \title{A Fully Featured Logging Framework for R}
 \description{
-A flexible R6 based logging framework for advanced logging needs.
+For Details please refer to \code{vignette("lgr", package = "lgr")}
 }
 \section{Options}{
 

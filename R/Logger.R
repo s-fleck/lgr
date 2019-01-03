@@ -612,35 +612,21 @@ Logger <- R6::R6Class(
 
 #' Demote an Exception to a Warning
 #'
-#' Throws a warning instead of stopping the program.
+#' Throws a timestamped warning instead of stopping the program. This is
+#' the default exception handler used by [Loggers].
 #'
-#' @param e a `character` scalar (usually a `try-error`)
+#' @param e a `character` scalar, usually a `try-error` as thrown by
+#' [base::tryCatch()]
 #'
 #' @return The warning as `character` vector
+#' @export
+#'
+#' @examples
+#' tryCatch(stop("an error has occured"), error = default_exception_handler)
 #'
 default_exception_handler <- function(e){
   warning(
     "[", format(Sys.time(), format = "%Y-%m-%d %H:%M:%OS3"), "] ",
     "An error occured during logging: ", e, call. = FALSE
   )
-}
-
-
-# Given a string, indent every line by some number of spaces.
-# The exception is to not add spaces after a trailing \n.
-indent <- function(str, indent = 0) {
-  gsub("(^|\\n)(?!$)",
-       paste0("\\1", paste(rep(" ", indent), collapse = "")),
-       str,
-       perl = TRUE
-  )
-}
-
-
-
-
-# Trim a string to n characters; if it's longer than n, add " ..." to the end
-trim <- function(str, n = 60) {
-  if (nchar(str) > n) paste(substr(str, 1, n-4), "...")
-  else str
 }

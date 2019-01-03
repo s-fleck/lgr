@@ -7,11 +7,17 @@
 default_exception_handler(e)
 }
 \arguments{
-\item{e}{a \code{character} scalar (usually a \code{try-error})}
+\item{e}{a \code{character} scalar, usually a \code{try-error} as thrown by
+\code{\link[base:tryCatch]{base::tryCatch()}}}
 }
 \value{
 The warning as \code{character} vector
 }
 \description{
-Throws a warning instead of stopping the program.
+Throws a timestamped warning instead of stopping the program. This is
+the default exception handler used by \link{Loggers}.
+}
+\examples{
+tryCatch(stop("an error has occured"), error = default_exception_handler)
+
 }

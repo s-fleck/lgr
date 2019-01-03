@@ -27,13 +27,13 @@ To log an *event* with with lgr we call `lgr$<logging function>()`. Unnamed argu
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [09:32:18.996] A critical error
+#> FATAL [16:08:51.839] A critical error
 lgr$error("A less severe error")
-#> ERROR [09:32:19.051] A less severe error
+#> ERROR [16:08:51.868] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [09:32:19.122] A potentially bad situation
+#> WARN  [16:08:51.897] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [09:32:19.124] iris has 150 rows
+#> INFO  [16:08:51.899] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
@@ -46,21 +46,21 @@ A Logger can have several Appenders. For example, we can add a JSON appender to 
 tf <- tempfile()
 lgr$add_appender(AppenderJson$new(tf))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [09:32:19.140] cars has 50 rows
+#> INFO  [16:08:51.927] cars has 50 rows
 
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2019-01-02 09:32:19","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-01-03 16:08:51","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 JSON naturally supports custom fields. Named arguments passed to `info()`, `warn()`, etc... are intepreted as custom fields.
 
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [09:32:19.149] loading cars {cols: 2, rows: 50}
+#> INFO  [16:08:51.937] loading cars {cols: 2, rows: 50}
 
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2019-01-02 09:32:19","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2019-01-02 09:32:19","caller":"eval","msg":"loading cars","cols":2,"rows":50}
+#> {"level":400,"timestamp":"2019-01-03 16:08:51","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-01-03 16:08:51","caller":"eval","msg":"loading cars","cols":2,"rows":50}
 ```
 
 For more examples please see the package [vignette](https://s-fleck.github.io/lgr/articles/lgr.html) and [documentation](https://s-fleck.github.io/lgr/)
@@ -68,7 +68,7 @@ For more examples please see the package [vignette](https://s-fleck.github.io/lg
 Development Status
 ------------------
 
-The core of lgr is more or less complete and usable. What is currently lacking is the documentation. I also want to conduct a proper field-test before I release it on CRAN, so don't expect a CRAN release before Februar/March 2019.
+lgr is stable, but I want to conduct a some field-tests to iron out the last few bugs before I announce it. A CRAN release is planned for February 2019.
 
 Dependencies
 ------------

@@ -3,13 +3,19 @@
 \name{print.Logger}
 \alias{print.Logger}
 \alias{format.Logger}
+\alias{print.ancestry}
+\alias{format.ancestry}
 \title{Print a Logger Object}
 \usage{
 \method{print}{Logger}(x, color = requireNamespace("crayon", quietly =
   TRUE), ...)
 
-\method{format}{Logger}(x, color = requireNamespace("crayon", quietly =
+\method{format}{Logger}(x, color = FALSE, ...)
+
+\method{print}{ancestry}(x, color = requireNamespace("crayon", quietly =
   TRUE), ...)
+
+\method{format}{ancestry}(x, color = FALSE, ...)
 }
 \arguments{
 \item{x}{any \R Object}
@@ -23,8 +29,25 @@
 \code{print()} returns \code{x} (invisibly), \code{format()} returns a \code{character} vector.
 }
 \description{
-Display a short summary of the most important aspects of the logger
+The \code{print()} method for Loggers displays the most important aspects of
+the Logger.
+
+You can also print just the \code{ancestry} of a Logger which can be accessed with
+with \code{logger$ancestry()}. This returns a named \code{character} vector whose
+names correspond to the names of the Loggers \code{logger} inherits from. The
+\code{TRUE}/\code{FALSE} status of its elements corrsepond to the \code{propagate} values of
+these Loggers.
 }
 \examples{
+# print most important details of logger
 print(lgr)
+
+# print only the ancestry of a logger
+l1 <- Logger$new("AegonV")
+l2 <- Logger$new("Aerys", parent = l1)
+l3 <- Logger$new("Rheagar", parent = l2, propagate = FALSE)
+l4 <- Logger$new("Aegon", parent = l3)
+
+print(l4$ancestry)
+unclass(l4$ancestry)
 }

@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9000</span>
       </span>
     </div>
 
@@ -99,23 +99,23 @@
 <a href="#simplified-logging-syntax" class="anchor"></a>Simplified Logging Syntax</h3>
 <p>If you care about terse syntax you can use the following <code>UPPERCASE</code><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> commands to log:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/simple_logging.html">FATAL</a></span>(<span class="st">"This is an important message about %s going wrong"</span>, <span class="st">"something"</span>)
-<span class="co">#&gt; FATAL [09:59:45.737] This is an important message about something going wrong</span>
+<span class="co">#&gt; FATAL [16:17:00.905] This is an important message about something going wrong</span>
 <span class="kw"><a href="../reference/simple_logging.html">ERROR</a></span>(<span class="st">"A less severe error"</span>)
-<span class="co">#&gt; ERROR [09:59:45.808] A less severe error</span>
+<span class="co">#&gt; ERROR [16:17:00.966] A less severe error</span>
 <span class="kw"><a href="../reference/simple_logging.html">WARN</a></span>(<span class="st">"something likely went wrong"</span>)
-<span class="co">#&gt; WARN  [09:59:45.888] something likely went wrong</span>
+<span class="co">#&gt; WARN  [16:17:00.999] something likely went wrong</span>
 <span class="kw"><a href="../reference/simple_logging.html">INFO</a></span>(<span class="st">"Everything is ok"</span>)
-<span class="co">#&gt; INFO  [09:59:45.890] Everything is ok</span>
+<span class="co">#&gt; INFO  [16:17:01.002] Everything is ok</span>
 <span class="kw"><a href="../reference/simple_logging.html">DEBUG</a></span>(<span class="st">"Debug messages are hidden by default"</span>)
 <span class="kw"><a href="../reference/simple_logging.html">console_threshold</a></span>(<span class="st">"debug"</span>)  <span class="co"># you must use lower case names here</span>
 <span class="kw"><a href="../reference/simple_logging.html">DEBUG</a></span>(<span class="st">"unless we lower the threshold"</span>)
-<span class="co">#&gt; DEBUG [09:59:45.894] unless we lower the threshold</span>
+<span class="co">#&gt; DEBUG [16:17:01.007] unless we lower the threshold</span>
 <span class="kw"><a href="../reference/simple_logging.html">TRACE</a></span>(<span class="st">"Trace is even lower than debug"</span>)</code></pre></div>
 <p>If you have the package <strong>data.table</strong> installed, lgr does not only log to the console, but also to an in memory <code>data.table</code>. You can use <code><a href="../reference/simple_logging.html">show_log()</a></code> to quickly display this in memory log<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/simple_logging.html">show_log</a></span>(<span class="dv">3</span>)  <span class="co"># show the last 3 log entries</span>
-<span class="co">#&gt; DEBUG [09:59:45.892] Debug messages are hidden by default </span>
-<span class="co">#&gt; DEBUG [09:59:45.894] unless we lower the threshold </span>
-<span class="co">#&gt; TRACE [09:59:45.896] Trace is even lower than debug</span></code></pre></div>
+<span class="co">#&gt; DEBUG [16:17:01.004] Debug messages are hidden by default </span>
+<span class="co">#&gt; DEBUG [16:17:01.007] unless we lower the threshold </span>
+<span class="co">#&gt; TRACE [16:17:01.009] Trace is even lower than debug</span></code></pre></div>
 <p>If you looked carefully, you see that both debug messages were logged to memory (not only the one that you saw in the console). This is explained in the section on <a href="#thresholds">thresholds</a>.</p>
 </div>
 <div class="footnotes">

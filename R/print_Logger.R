@@ -1,6 +1,8 @@
 #' Print a Logger Object
 #'
-#' Display a short summary of the most important aspects of the logger
+#' The `print()` method for Loggers displays the most important aspects of
+#' the Logger.
+#'
 #'
 #' @param x any \R Object
 #' @param color `TRUE` or `FALSE`: Output with color? Requires the Package
@@ -12,7 +14,9 @@
 #' @export
 #'
 #' @examples
+#' # print most important details of logger
 #' print(lgr)
+#'
 print.Logger <- function(
   x,
   color = requireNamespace("crayon", quietly = TRUE),
@@ -20,6 +24,7 @@ print.Logger <- function(
 ){
   assert(is_scalar_bool(color))
   cat(format(x, color = color), sep = "\n")
+  invisible(x)
 }
 
 
@@ -29,7 +34,7 @@ print.Logger <- function(
 #' @rdname print.Logger
 format.Logger = function(
   x,
-  color = requireNamespace("crayon", quietly = TRUE),
+  color = FALSE,
   ...
 ){
   assert(is_scalar_bool(color))
@@ -120,24 +125,25 @@ srs_appender <- function(x){
 
 
 
-#' Print Ancestry of a Logger
+#' @description
+#' You can also print just the `ancestry` of a Logger which can be accessed with
+#' with `logger$ancestry()`. This returns a named `character` vector whose
+#' names correspond to the names of the Loggers `logger` inherits from. The
+#' `TRUE`/`FALSE` status of its elements corrsepond to the `propagate` values of
+#' these Loggers.
 #'
-#' Print the LogEvent propagation structure of a chain of Loggers. Usually you
-#' won't have many chained loggers, but if you do this might proof useful.
-#'
-#' @inheritParams print.Logger
-#' @return `x` (invisibly)
+#' @rdname print.Logger
 #' @export
 #'
 #' @examples
-#'  l1 <- Logger$new("AegonV")
-#'  l2 <- Logger$new("Aerys", parent = l1)
-#'  l3 <- Logger$new("Rheagar", parent = l2, propagate = FALSE)
-#'  l4 <- Logger$new("Aegon", parent = l3)
+#' # print only the ancestry of a logger
+#' l1 <- Logger$new("AegonV")
+#' l2 <- Logger$new("Aerys", parent = l1)
+#' l3 <- Logger$new("Rheagar", parent = l2, propagate = FALSE)
+#' l4 <- Logger$new("Aegon", parent = l3)
 #'
-#'  print(l4$ancestry)
-#'  unclass(l4$ancestry)
-#'
+#' print(l4$ancestry)
+#' unclass(l4$ancestry)
 print.ancestry <- function(
   x,
   color = requireNamespace("crayon", quietly = TRUE),
@@ -152,26 +158,27 @@ print.ancestry <- function(
 
 
 #' @export
-#' @rdname print.ancestry
+#' @rdname print.Logger
 format.ancestry <- function(
   x,
-  color = requireNamespace("crayon", quietly = TRUE),
+  color = FALSE,
   ...
 ){
   assert(is_scalar_bool(color))
   seps <- rep("||", length(x))
   seps <- ifelse(x, " -> ", " | ")
   seps[length(seps)] <- ""
+  l_names <- names(x)
 
   if (color){
-    names <- style_subtle(names(x))
+    l_names <- style_subtle(names(x))
     seps  <- style_subtle(seps)
     for (i in seq_along(x)){
       seps[[i]]  <- crayon::strip_style(seps[[i]])
-      names[[i]] <- crayon::strip_style(names[[i]])
+      l_names[[i]] <- crayon::strip_style(l_names[[i]])
       if (!x[[i]]) break
     }
   }
 
-  paste0(names, seps, collapse = "")
+  paste0(l_names, seps, collapse = "")
 }
