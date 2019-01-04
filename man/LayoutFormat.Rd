@@ -66,7 +66,12 @@ during the initalisation of the Logger.}
 multiple threads.}
 \item{\code{\%c}}{the calling function}
 \item{\code{\%m}}{the log message}
-\item{\code{\%f}}{all custom fields of \code{x} in a JSON like format}
+\item{\code{\%f}}{all custom fields of \code{x} in a pseudo-JSON like format that is
+optimized for human readability and console output}
+\item{\code{\%j}}{all custom fields of \code{x} in proper JSON. This requires that you
+have \strong{jsonlite} installed and does not support colors as opposed to
+\code{\%f}
+}
 }
 }
 

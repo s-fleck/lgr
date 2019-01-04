@@ -24,7 +24,12 @@
 #'       multiple threads.}
 #'   \item{`%c`}{the calling function}
 #'   \item{`%m`}{the log message}
-#'   \item{`%f`}{all custom fields of `x` in a JSON like format}
+#'   \item{`%f`}{all custom fields of `x` in a pseudo-JSON like format that is
+#'     optimized for human readability and console output}
+#'   \item{`%j`}{all custom fields of `x` in proper JSON. This requires that you
+#'     have **jsonlite** installed and does not support colors as opposed to
+#'     `%f`
+#'   }
 #' }
 #'
 #' @return `x` for `print()` and a `character` scalar for `format()`
@@ -44,7 +49,14 @@
 #'   level = 300, msg = "a gps track", logger = lgr,
 #'   waypoints = 10, location = "Austria"
 #' )
+#'
+#' # default output with %f
 #' print(y)
+#'
+#' # proper JSON output with %j
+#' if (requireNamespace("jsonlite")){
+#' print(y, fmt = "%L [%t] %m  %j")
+#' }
 #'
 print.LogEvent <- function(
   x,
@@ -108,7 +120,7 @@ format.LogEvent <- function(
   # tokenize
   tokens <- tokenize_format(
     fmt,
-    valid_tokens = c("%t", "%u", "%p", "%c", "%m", "%l", "%L", "%n", "%f")
+    valid_tokens = c("%t", "%u", "%p", "%c", "%m", "%l", "%L", "%n", "%f", "%j")
   )
 
   # format
@@ -127,6 +139,7 @@ format.LogEvent <- function(
       "%u" = x$logger_user,
       "%p" = Sys.getpid(),
       "%f" = format_custom_fields(get_custom_fields(x), color = length(colors)),
+      "%j" = jsonlite::toJSON(get_custom_fields(x), auto_unbox = TRUE),
       tokens[[i]]
     )
   }
