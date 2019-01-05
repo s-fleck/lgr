@@ -451,11 +451,15 @@ AppenderTable <- R6::R6Class(
 #'   `data.table`}
 #'   \item{prototype}{A prototype `data.table`. The prototype must be a
 #'     `data.table` with the same columns and column types as the data
-#'     you want to log. The actual content of the `data.table` is irrelevant.
-#'     Supplying a custom prototype is only necessary if you use custom
-#'     fields in [LogEvents]. For convenience, the default prototype already
-#'     contains a list column called `value` that can hold arbitrary \R values
-#'     (see examples)
+#'     you want to log. The actual content of the columns is irrelevant.
+#'     There are a few columns that have special meaning, based on their name:
+#'     \itemize{
+#'       \item{`.id`: `integer` (mandatory). Must always be the first column
+#'         and is used internally by the Appender}
+#'       \item{`.custom`: `list` (optional). If present all custom values of the
+#'         event (that are not already part of the prototype) are stored in
+#'         this list column.}
+#'     }
 #'   }
 #' }
 #'
@@ -499,11 +503,10 @@ AppenderTable <- R6::R6Class(
 #' # that it can find.
 #' show_log(target = lg)
 #'
-#' # Data tables can store arbitrary R values in list columns. The default
-#' # AppenderDt comes with a single list column called "value" that you can use
-#' lg$info("the iris data frame", value = iris)
+#' # Custom fields are stored in the list column .custom by default
+#' lg$info("the iris data frame", caps = LETTERS[1:5])
 #' lg$appenders$memory$data
-#' head(lg$appenders$memory$data$value[[3]])
+#' lg$appenders$memory$data$.custom[[3]]$caps
 #'
 NULL
 
@@ -525,7 +528,7 @@ AppenderDt <- R6::R6Class(
         timestamp = Sys.time(),
         caller = NA_character_,
         msg = NA_character_,
-        value = list(list())
+        .custom = list(list())
       ),
       buffer_size = 1e5
     ){
@@ -572,15 +575,24 @@ AppenderDt <- R6::R6Class(
       # AppenderDt is designed for minimum overhead, so it does not use a
       # Layout for transforming the log event into a tabular structure but
       # rather the process is hardcoded
+        dt <- get(".data", private)
+        datanames <- names(dt)
+        valnames  <- setdiff(datanames, ".id")
 
       # Select and prepare event values to be inserted into data
         vals <- event[["values"]]
-        valnames <- setdiff(names(get(".data", private)), ".id")
+
+        # handle .custom
+        if (".custom" %in% datanames){
+          vals[[".custom"]] <- vals[!names(vals) %in% valnames]
+        }
+
         vals <- vals[valnames]
-        names(vals) <-  valnames
+        names(vals) <- valnames
+
 
         # handle list-columns
-        vals[vapply(vals, is.null, FALSE)] <- NA
+        vals[vapply(vals, is.null, FALSE)] <- list(NULL)
         list_cols <- get("list_cols", private)
         vals[list_cols] <- lapply(vals[list_cols], list)
 
@@ -590,19 +602,19 @@ AppenderDt <- R6::R6Class(
         assert(all(lengths %in% c(1, lenmax)))
 
         # take special care if vectorized insert is bigger than buffer size
-        if (lenmax > nrow(private$.data)){
-          vals <- lapply(vals, trim_last_event, nrow(private$.data))
-          private[["id"]] <- private[["id"]] + lenmax - nrow(private$.data)
-          lenmax <- nrow(private$.data)
+        if (lenmax > nrow(dt)){
+          vals <- lapply(vals, trim_last_event, nrow(dt))
+          private[["id"]] <- get("id", envir = private) + lenmax - nrow(private$.data)
+          lenmax <- nrow(dt)
         }
         i   <- seq_len(lenmax)
 
       # generate new ids
-        ids <- i + private[["id"]]
+        ids <- i + get("id", private)
 
       # check if rotation is necessary
-        if (get("current_row", private) + lenmax <= nrow(get(".data", private))){
-          i   <- i + private[["current_row"]]
+        if (get("current_row", private) + lenmax <= nrow(dt)){
+          i   <- i + get("current_row", envir = private)
           private[["current_row"]] <- get("current_row", envir = private) + lenmax
         } else {
           # rotate buffer
@@ -611,12 +623,11 @@ AppenderDt <- R6::R6Class(
 
       # Perform the insert
         data.table::set(
-          get(".data", private),
+          dt,
           i,
           j = c(".id", names(vals)),
           value = c(list(ids), vals)
         )
-
 
       private[["id"]] <- get("id", envir = private) + lenmax
     },

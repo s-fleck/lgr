@@ -26,8 +26,8 @@ It is recommended to use this feature only \code{TRACE} level.
 \preformatted{
 x <- x$new(threshold = NA_integer_, layout = lgr::lgr$appenders$console$layout,
   prototype = data.table::data.table(.id = NA_integer_, level = NA_integer_,
-  timestamp = Sys.time(), caller = NA_character_, msg = NA_character_, value =
-  list(list())), buffer_size = 1e+05)
+  timestamp = Sys.time(), caller = NA_character_, msg = NA_character_, .custom
+  = list(list())), buffer_size = 1e+05)
 
 x$append(event)
 x$show(n = 20, threshold = NA_integer_)
@@ -64,11 +64,15 @@ Layout of the console appender of the root logger
 \code{data.table}}
 \item{prototype}{A prototype \code{data.table}. The prototype must be a
 \code{data.table} with the same columns and column types as the data
-you want to log. The actual content of the \code{data.table} is irrelevant.
-Supplying a custom prototype is only necessary if you use custom
-fields in \link{LogEvents}. For convenience, the default prototype already
-contains a list column called \code{value} that can hold arbitrary \R values
-(see examples)
+you want to log. The actual content of the columns is irrelevant.
+There are a few columns that have special meaning, based on their name:
+\itemize{
+\item{\code{.id}: \code{integer} (mandatory). Must always be the first column
+and is used internally by the Appender}
+\item{\code{.custom}: \code{list} (optional). If present all custom values of the
+event (that are not already part of the prototype) are stored in
+this list column.}
+}
 }
 }
 }
@@ -152,11 +156,10 @@ show_log(target = lg$appenders$memory)
 # that it can find.
 show_log(target = lg)
 
-# Data tables can store arbitrary R values in list columns. The default
-# AppenderDt comes with a single list column called "value" that you can use
-lg$info("the iris data frame", value = iris)
+# Custom fields are stored in the list column .custom by default
+lg$info("the iris data frame", caps = LETTERS[1:5])
 lg$appenders$memory$data
-head(lg$appenders$memory$data$value[[3]])
+lg$appenders$memory$data$.custom[[3]]$caps
 
 }
 \seealso{

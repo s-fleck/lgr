@@ -156,7 +156,7 @@ test_that("AppenderDt: works with list columns", {
     logger = lgr
   )
   app$append(e)
-  expect_true(is.na(app$data$list[[1]]))
+  expect_true(is.null(app$data$list[[1]]))
 
   e <- LogEvent$new(
     level = 100,
@@ -194,8 +194,33 @@ test_that("AppenderDt: works with list columns", {
 
   expect_identical(
     sapply(app$data$list, class),
-    c("logical", "environment", "data.frame", "data.frame", "logical")
+    c("NULL", "environment", "data.frame", "data.frame", "NULL")
   )
+})
+
+
+
+
+test_that("AppenderDt: .custom works", {
+  app <- AppenderDt$new()
+
+  e <- LogEvent$new(
+    level = 100,
+    timestamp = Sys.Date(),
+    msg = "blubb",
+    caller = "blubb()",
+    logger = lgr
+  )
+
+  app$append(e)
+  expect_true(is_empty(app$data$.custom[[1]]))
+  expect_true(is.list(app$data$.custom[[1]]))
+
+  e$envir <- environment()
+  e$schwupp = "foo"
+  app$append(e)
+  expect_identical(app$data$.custom[[2]]$schwupp, "foo")
+  expect_true(is.environment(app$data$.custom[[2]]$envir))
 })
 
 
