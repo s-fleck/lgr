@@ -67,7 +67,8 @@ on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
   \code{\link{AppenderDt}}, \code{\link{AppenderFile}},
-  \code{\link{AppenderJson}}, \code{\link{AppenderRjdbc}},
-  \code{\link{Appender}}
+  \code{\link{AppenderJson}}, \code{\link{AppenderMemory}},
+  \code{\link{AppenderPushbullet}},
+  \code{\link{AppenderRjdbc}}, \code{\link{Appender}}
 }
 \concept{Appenders}

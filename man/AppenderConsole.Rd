@@ -95,6 +95,8 @@ logger$warn("A test message")
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderDbi}}, \code{\link{AppenderDt}},
   \code{\link{AppenderFile}}, \code{\link{AppenderJson}},
+  \code{\link{AppenderMemory}},
+  \code{\link{AppenderPushbullet}},
   \code{\link{AppenderRjdbc}}, \code{\link{AppenderTable}},
   \code{\link{Appender}}
 }

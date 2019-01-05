@@ -59,6 +59,8 @@ This is the same list of format tokens as for \code{\link[=format.LogEvent]{form
 \code{timestamp_fmt})}
 \item{\code{\%l}}{the log level, lowercase \code{character} representation}
 \item{\code{\%L}}{the log level, uppercase \code{character} representation}
+\item{\code{\%k}}{the log level, first letter of lowercase \code{character} representation}
+\item{\code{\%K}}{the log level, first letter of uppercase \code{character} representation}
 \item{\code{\%n}}{the log level, \code{integer} representation}
 \item{\code{\%u}}{the \code{user} of the Logger. This is guessed via \code{\link[=get_user]{get_user()}}
 during the initalisation of the Logger.}

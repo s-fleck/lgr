@@ -998,16 +998,14 @@ AppenderRjdbc <- R6::R6Class(
 
 # nocov end
 
-
-
-# AppenderBuffer --------------------------------------------------
+# AppenderMemory  --------------------------------------------------
 
 #' Log to a Memory Buffer
 #'
-#' An Appender that Buffers LogEvents in-memory and and redirects them to other
-#' Appenders once certain conditions are met.
+#' This is an abstract class that powers [AppenderBuffer] and
+#' [AppenderPusbullet]
 #'
-#' @eval r6_usage(AppenderBuffer)
+#' @eval r6_usage(AppenderMemory)
 #'
 #' @section Creating a Buffer Appender:
 #'
@@ -1020,8 +1018,6 @@ AppenderRjdbc <- R6::R6Class(
 #' @section Fields:
 #'
 #' \describe{
-#'   \item{`appenders`, `set_appenders()`}{Like for a [Logger]. Buffered events will be passed on
-#'     to these Appenders once a flush is triggered}
 #'   \item{`buffer_size, set_buffer_size(x)`}{`integer` scalar. Number of [LogEvents] to buffer}
 #'   \item{`flush_on_exit, set_flush_on_exit(x)`}{`TRUE` or `FALSE`: Whether the
 #'     buffer should be flushed when the Appender is garbage collected (f.e when
@@ -1039,10 +1035,184 @@ AppenderRjdbc <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{`flush()`}{Manually trigger flushing}
-#'   \item{`add_appender(appender)`}{Add and Appender to this Appender.
-#'     see [Logger]}
-#'   \item{`remove_appender(pos)`}{Remove and Appender from this Appender.
-#'     see [Logger]}
+#' }
+#'
+#' @inheritSection AppenderDt Comparison AppenderBuffer and AppenderDt
+#'
+#' @export
+#' @seealso [LayoutFormat]
+#' @family Appenders
+#' @name AppenderMemory
+NULL
+
+
+
+
+#' @export
+AppenderMemory <- R6::R6Class(
+  "AppenderMemory",
+  inherit = Appender,
+  cloneable = FALSE,
+  public = list(
+    append = function(
+      event
+    ){
+      i <- get("insert_pos", envir = private) + 1L
+      assign("insert_pos", i, envir = private, inherits = TRUE)
+      private[["last_event"]] <- private[["last_event"]] + 1L
+      private[["event_order"]][[i]] <- private[["last_event"]]
+      private[[".buffered_events"]][[i]] <- event
+
+      bs <- get(".buffer_size", envir = private)
+
+      if (get(".should_flush", envir = private)(event) ){
+        self[["flush"]]()
+      } else if (i > bs){
+        if (get(".flush_on_rotate", envir = private) ){
+          self[["flush"]]()
+        } else {
+          assign("insert_pos", 0L, envir = private)
+        }
+      }
+
+      NULL
+    },
+
+    flush = function(){},
+
+
+    set_buffer_size = function(x){
+      assert(is_scalar_integerish(x))
+      private$.buffer_size <- x
+      invisible(self)
+    },
+
+    set_flush_on_exit = function(x){
+      assert(is_scalar_bool(x))
+      private$.flush_on_exit <- x
+      invisible(self)
+    },
+
+    set_flush_on_rotate = function(x){
+      assert(is_scalar_bool(x))
+      private$.flush_on_rotate <- x
+      invisible(self)
+    },
+
+    set_should_flush = function(x){
+      assert(is.function(x))
+      private$.should_flush <- x
+      invisible(self)
+    },
+
+    show = function(threshold = NA_integer_, n = 20L){
+      assert(is_scalar_integerish(n))
+      threshold <- standardize_threshold(threshold)
+
+      if (is.na(threshold)) threshold <- Inf
+      dd <- self$dt
+
+      if (identical(nrow(dd),  0L)){
+        cat("[empty log]")
+        return(invisible(NULL))
+      }
+
+      res <- tail(dd[dd$level <= threshold, ], n)
+      dd <- as.environment(res)
+      assign("logger", self$logger, dd)
+      cat(self$layout$format_event(dd), sep = "\n")
+      invisible(res)
+    }
+  ),
+
+
+
+  # +- active ---------------------------------------------------------------
+  active = list(
+    flush_on_exit = function() {
+      private$.flush_on_exit
+    },
+
+    flush_on_rotate = function() {
+      private$.flush_on_rotate
+    },
+
+    buffer_size = function() {
+      private$.buffer_size
+    },
+
+    buffered_events = function() {
+      ord <- get("event_order", envir = private)
+      ord <- ord - min(ord) + 1L
+      ord <- order(ord)
+      res <- get(".buffered_events", envir = private)[ord]
+      res[!vapply(res, is.null, FALSE)]
+    },
+
+    data = function(){
+      as.data.frame(self$dt)
+    },
+
+    dt = function(){
+      assert_namespace("data.table")
+      dd <- lapply(
+        get("buffered_events", self),
+        function(.x){
+          vals <- .x$values
+          list_cols <- !vapply(vals, is.atomic, TRUE)
+          vals[list_cols] <- lapply(vals[list_cols], list)
+          data.table::as.data.table(vals)
+        }
+      )
+
+      data.table::rbindlist(dd, fill = TRUE, use.names = TRUE)
+    }
+  ),
+
+  # +- private  ---------------------------------------------------------
+  private = list(
+    insert_pos = NULL,
+    last_event = NULL,
+    event_order = NULL,
+    .flush_on_exit = NULL,
+    .flush_on_rotate = NULL,
+    .should_flush = NULL,
+    .buffer_size = NULL,
+    .buffered_events = NULL
+  )
+)
+
+
+
+
+# AppenderBuffer --------------------------------------------------
+
+#' Log to a Memory Buffer
+#'
+#' An Appender that Buffers LogEvents in-memory and and redirects them to other
+#' Appenders once certain conditions are met.
+#'
+#' @eval r6_usage(AppenderBuffer)
+#'
+#' @section Creating a Buffer Appender:
+#'
+#' The [Layout] for this Appender is used only to format console output of
+#' its `$show()` method.
+#'
+#' @inheritSection AppenderMemory Methods
+#' @inheritSection AppenderMemory Fields
+#'
+#' @section Fields:
+#'
+#' \describe{
+#'   \item{`appenders`, `set_appenders()`}{Like for a [Logger]. Buffered events will be passed on
+#'     to these Appenders once a flush is triggered}
+#' }
+#'
+#' @section Methods:
+#'
+#' \describe{
+#'   \item{`flush()`}{Manually trigger flushing}
 #' }
 #'
 #' @inheritSection AppenderDt Comparison AppenderBuffer and AppenderDt
@@ -1337,13 +1507,15 @@ AppenderBuffer <- R6::R6Class(
 
 #' Log to Pushbullet
 #'
-#' Send push notifications to pushbullet
+#' Send push notifications to pushbullet. This Appender keeps an in-memory
+#' buffer like [AppenderBuffer], so that it can compose a log message based on
+#' the last `buffer_size` events instead of just the last one.
 #'
-#' @eval r6_usage(AppenderPushbullet)
+#' @eval r6_usage(AppenderPushbullet, ignore = c("set_flush_on_exit", "set_flush_on_rotate", "flush_on_exit", "flush_on_rotate"))
 #'
 #'
-#' @inheritSection AppenderDt Methods
-#' @inheritSection AppenderDt Fields
+#' @inheritSection AppenderMemory Methods
+#' @inheritSection AppenderMemory Fields
 #'
 #' @section Fields:
 #'
@@ -1361,22 +1533,18 @@ AppenderBuffer <- R6::R6Class(
 #'
 #' @section Methods:
 #'
-#' \describe{
-#'   \item{`flush()`}{Manually trigger flushing / pushing to pushbullet}
-#' }
-#'
 #'
 #' @export
 #' @seealso [LayoutFormat]
 #' @family Appenders
-#' @name AppenderBuffer
+#' @name AppenderPushbullet
 NULL
 
 
 #' @export
 AppenderPushbullet <- R6::R6Class(
   "AppenderPushbullet",
-  inherit = AppenderBuffer,
+  inherit = AppenderMemory,
   cloneable = FALSE,
 
   # +- public --------------------------------------------------------------
@@ -1408,7 +1576,6 @@ AppenderPushbullet <- R6::R6Class(
     },
 
     flush = function(
-      event
     ){
       assign("insert_pos", 0L, envir = private)
 
@@ -1446,19 +1613,25 @@ AppenderPushbullet <- R6::R6Class(
       assert(is.null(x) || is_scalar_character(x))
       private$.apikey <- x
       invisible(self)
+    },
+
+    set_flush_on_exit = function(x){
+      stop("Cannot be set for AppenderPushbullet")
+    },
+
+    set_flush_on_rotate = function(x){
+      stop("Cannot be set for AppenderPushbullet")
     }
+
 
   ),
 
 
   # +- active ---------------------------------------------------------------
   active = list(
-
     apikey     = function() private$.apikey,
     push_level = function() private$.push_level
-
   ),
-
 
 
   private = list(

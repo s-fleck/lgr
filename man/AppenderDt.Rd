@@ -183,6 +183,8 @@ lg$appenders$memory$data$.custom[[3]]$caps
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
   \code{\link{AppenderFile}}, \code{\link{AppenderJson}},
+  \code{\link{AppenderMemory}},
+  \code{\link{AppenderPushbullet}},
   \code{\link{AppenderRjdbc}}, \code{\link{AppenderTable}},
   \code{\link{Appender}}
 }

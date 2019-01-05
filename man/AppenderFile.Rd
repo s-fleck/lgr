@@ -110,6 +110,8 @@ readLines(json)
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
   \code{\link{AppenderDt}}, \code{\link{AppenderJson}},
+  \code{\link{AppenderMemory}},
+  \code{\link{AppenderPushbullet}},
   \code{\link{AppenderRjdbc}}, \code{\link{AppenderTable}},
   \code{\link{Appender}}
 }
