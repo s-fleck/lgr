@@ -221,6 +221,16 @@ test_that("AppenderDt: .custom works", {
   app$append(e)
   expect_identical(app$data$.custom[[2]]$schwupp, "foo")
   expect_true(is.environment(app$data$.custom[[2]]$envir))
+
+  # warn if .custom is not a list column
+  expect_warning(
+    app <- AppenderDt$new(prototype = data.table::data.table(
+      .id = NA_integer_,
+      .custom = NA_integer_
+    ))
+  )
+
+
 })
 
 
@@ -310,9 +320,9 @@ test_that("AppenderBuffer: flush on memory cycling can be suppressed", {
   eres <- readLines(tf)
   l$appenders$buffer$set_flush_on_rotate(FALSE)
   for (i in 1:15) l$info(i)
-  expect_identical(length(l$appenders$buffer$buffered_events), 10L)
-  msgs <- sapply(l$appenders$buffer$buffered_events, `[[`, "msg")
-  expect_identical(msgs, as.character(6:15))
+
+  # theres a 10% tolerance for flushing if no flush on rotate is set
+  expect_true(length(l$appenders$buffer$buffered_events) >= 10L)
   # Nothing should have been flushed to the log file
   expect_identical(readLines(tf), eres)
 })
@@ -386,4 +396,21 @@ test_that("AppenderBuffer: add/remove appenders", {
   expect_length(sapp$appenders, 2)
   expect_identical(sapp$appenders[[1]], app1)
   expect_identical(sapp$appenders[[2]], app2)
+})
+
+
+
+test_that("AppenderBuffer: view log", {
+  l <- Logger$new(
+    "buffer test",
+    appenders = AppenderBuffer$new(should_flush = NULL),
+    propagate = FALSE
+  )
+
+  l$fatal("foo")
+  l$warn("foo", bar = "foo")
+  l$info(1:3)
+  l$error("and a list column", df = head(iris), env = environment())
+
+
 })

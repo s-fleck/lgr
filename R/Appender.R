@@ -521,7 +521,11 @@ AppenderDt <- R6::R6Class(
   public = list(
     initialize = function(
       threshold = NA_integer_,
-      layout = lgr::lgr$appenders$console$layout,
+      layout = LayoutFormat$new(
+        fmt = "%L [%t] %m %f",
+        timestamp_fmt = "%H:%M:%OS3",
+        colors = getOption("lgr.colors", list())
+      ),
       prototype = data.table::data.table(
         .id  = NA_integer_,
         level = NA_integer_,
@@ -537,6 +541,14 @@ AppenderDt <- R6::R6Class(
         data.table::is.data.table(prototype) && is.integer(prototype$.id),
         "'prototype' must be a data.table with an integer column '.id'"
       )
+
+      if (".custom" %in% names(prototype) && !is.list(prototype$.custom)){
+        warning(
+          "`prototype` has the special column `.custom` but it is ",
+          class_fmt(prototype$.custom), " instead of a list-column. ",
+          "Coercing to list-column."
+        )
+      }
 
       private$current_row <- 0L
       private$id <- 0L
@@ -1032,6 +1044,8 @@ AppenderBuffer <- R6::R6Class(
         is_scalar_bool(flush_on_rotate)
       )
 
+      if (is.null(should_flush)) should_flush <- function(event) FALSE
+
       self$set_threshold(threshold)
       self$set_should_flush(should_flush)
       self$set_appenders(appenders)
@@ -1049,19 +1063,21 @@ AppenderBuffer <- R6::R6Class(
     append = function(
       x
     ){
-      len <- length(private$.buffered_events)
-      private$.buffered_events[[len + 1L]] <- x$clone()
-      if (private$.should_flush(x)){
-        self$flush()
-        return(invisible())
+      len <- length(get(".buffered_events", private))
+      private[[".buffered_events"]][[len + 1L]] <- x$clone()
+
+      if (get(".should_flush", envir = private)(x)){
+        self[["flush"]]()
+        return()
       } else {
-        if (len >= self$buffer_size){
-          if (self$flush_on_rotate){
-            self$flush()
-          } else {
-            len <- length(private$.buffered_events)
+        bs <- get(".buffer_size", envir = private)
+
+        if (len >= bs){
+          if (get(".flush_on_rotate", envir = private)){
+            self[["flush"]]()
+          } else if (len >= bs * 1.2) {
             private$.buffered_events <-
-              private$.buffered_events[seq.int(len + 1L - self$buffer_size, len)]
+              private$.buffered_events[seq.int(len - self$buffer_size, len + 1L)]
           }
         }
       }
@@ -1209,7 +1225,26 @@ AppenderBuffer <- R6::R6Class(
       invisible()
     },
 
-    destination = function() paste(length(self$appenders), "child Appenders")
+    destination = function() paste(length(self$appenders), "child Appenders"),
+
+    data = function(){
+      as.data.frame(self$dt)
+    },
+
+    dt = function(){
+      assert_namespace("data.table")
+      dd <- lapply(
+        get(".buffered_events", private),
+        function(.x){
+          vals <- .x$values
+          list_cols <- !vapply(vals, is.atomic, TRUE)
+          vals[list_cols] <- lapply(vals[list_cols], list)
+          data.table::as.data.table(vals)
+        }
+      )
+
+      data.table::rbindlist(dd, fill = TRUE, use.names = TRUE)
+    }
   ),
 
   private = list(

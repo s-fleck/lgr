@@ -30,7 +30,13 @@ ml[["memory dt"]] <-
   Logger$new("memory dt", appenders = AppenderDt$new(), parent = NULL)
 
 ml[["memory buffer"]] <-
-  Logger$new("memory buffer", appenders = AppenderBuffer$new(buffer_size = 1e5), parent = NULL)
+  Logger$new("memory buffer", appenders = AppenderBuffer$new(buffer_size = 20), parent = NULL)
+
+ml[["memory dt (small buffer)"]] <-
+  Logger$new("memory dt", appenders = AppenderDt$new(), parent = NULL)
+
+ml[["memory buffer (small buffer)"]] <-
+  Logger$new("memory buffer", appenders = AppenderBuffer$new(buffer_size = 20), parent = NULL)
 
 ml[["default (no colors)"]] <-
   Logger$new("default (no colors)", appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = NULL)), parent = NULL)
