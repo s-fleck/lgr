@@ -412,5 +412,7 @@ test_that("AppenderBuffer: view log", {
   l$info(1:3)
   l$error("and a list column", df = head(iris), env = environment())
 
-
+  expect_identical(nrow(l$appenders[[1]]$data), 6L)
+  expect_identical(nrow(l$appenders[[1]]$dt), 6L)
+  expect_length(capture.output(l$appenders[[1]]$show(5, "warn")), 3L)
 })

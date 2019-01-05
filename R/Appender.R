@@ -649,8 +649,11 @@ AppenderDt <- R6::R6Class(
       n = 20,
       threshold = NA_integer_
     ){
+      assert(is_scalar_integerish(n))
+      threshold <- standardize_threshold(threshold)
+
       if (is.na(threshold)) threshold <- Inf
-      dd <- self$data
+      dd <- self$dt
 
       if (identical(nrow(dd),  0L)){
         cat("[empty log]")
@@ -1052,6 +1055,7 @@ AppenderBuffer <- R6::R6Class(
       self$set_buffer_size(buffer_size)
       self$set_flush_on_exit(flush_on_exit)
       self$set_flush_on_rotate(flush_on_rotate)
+      self$set_layout(layout)
 
       # no speed advantage in pre allocating lists in R!
       private$.buffered_events <- list()
@@ -1184,6 +1188,24 @@ AppenderBuffer <- R6::R6Class(
       assert(is.function(x))
       private$.should_flush <- x
       invisible(self)
+    },
+
+    show = function(n = 20, threshold = NA_integer_){
+      assert(is_scalar_integerish(n))
+      threshold <- standardize_threshold(threshold)
+      if (is.na(threshold)) threshold <- Inf
+      dd <- self$dt
+
+      if (identical(nrow(dd),  0L)){
+        cat("[empty log]")
+        return(invisible(NULL))
+      }
+
+      res <- tail(dd[dd$level <= threshold, ], n)
+      dd <- as.environment(res)
+      assign("logger", self$logger, dd)
+      cat(self$layout$format_event(dd), sep = "\n")
+      invisible(res)
     }
   ),
 
