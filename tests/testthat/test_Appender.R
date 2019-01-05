@@ -438,3 +438,39 @@ test_that("AppenderBuffer: cycling is implemented correctly", {
   )
 })
 
+
+
+
+# AppenderPushbullet ----------------------------------------------------
+
+test_that("AppenderPushbullet: ERROR log level triggers push", {
+
+  if (requireNamespace("RPushbullet")){
+    tryCatch(
+      RPushbullet::pbGetUser(),
+      error = function(e) skip(e)
+    )
+  } else {
+    skip("Package RPushbullet not available")
+  }
+
+  l <- Logger$new(
+    "dummy",
+    threshold = NA_integer_,
+    appenders = list(
+      pb = AppenderPushbullet$new(
+        buffer_size = 3
+      )
+    ),
+    parent = NULL
+  )
+
+  l$info("1")
+  l$info("2")
+  l$trace("3")
+  l$debug("4")
+  l$debug("something something 5ish has occured")
+
+  l$fatal("Oh well, here we go", foo = "bar")
+})
+

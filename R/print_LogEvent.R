@@ -17,6 +17,8 @@
 #'     `timestamp_fmt`)}
 #'   \item{`%l`}{the log level, lowercase `character` representation}
 #'   \item{`%L`}{the log level, uppercase `character` representation}
+#'   \item{`%k`}{the log level, first letter of lowercase `character` representation}
+#'   \item{`%K`}{the log level, first letter of uppercase `character` representation}
 #'   \item{`%n`}{the log level, `integer` representation}
 #'   \item{`%u`}{the `user` of the Logger. This is guessed via [`get_user()`]
 #'     during the initalisation of the Logger.}
@@ -120,7 +122,9 @@ format.LogEvent <- function(
   # tokenize
   tokens <- tokenize_format(
     fmt,
-    valid_tokens = c("%t", "%u", "%p", "%c", "%m", "%l", "%L", "%n", "%f", "%j")
+    valid_tokens = paste0(
+      "%",
+      c("t", "u", "p", "c", "m", "l", "L", "n", "f", "j", "k", "K"))
   )
 
   # format
@@ -133,6 +137,8 @@ format.LogEvent <- function(
       "%n" = colorize_levels(x$level, colors),
       "%l" = colorize_levels(lvls, colors),
       "%L" = colorize_levels(toupper(lvls), colors),
+      "%k" = colorize_levels(substr(lvls, 1, 1), colors),
+      "%K" = colorize_levels(substr(toupper(lvls), 1, 1), colors),
       "%t" = format(x$timestamp, format = timestamp_fmt),
       "%m" = x$msg,
       "%c" = x$caller %||% "(unknown function)",

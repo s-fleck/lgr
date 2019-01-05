@@ -1332,6 +1332,143 @@ AppenderBuffer <- R6::R6Class(
 
 
 
+# AppenderPushbullet --------------------------------------------------------
+
+
+#' Log to Pushbullet
+#'
+#' Send push notifications to pushbullet
+#'
+#' @eval r6_usage(AppenderPushbullet)
+#'
+#'
+#' @inheritSection AppenderDt Methods
+#' @inheritSection AppenderDt Fields
+#'
+#' @section Fields:
+#'
+#' \describe{
+#'   \item{`push_level`, `set_push_level()`}{`integer` or `character`
+#'     [log level][log_level]. Push if a LogEvent of that level is registered
+#'   }
+#'   \item{`buffer_size, set_buffer_size(x)`}{`integer` scalar. Number of
+#'     [LogEvents] to buffer}
+#'   \item{`should_flush(event)`, `set_should_flush(x)`}{ A `function` with a
+#'     single argument `event` (a [LogEvent]) that must only return either `TRUE`
+#'     or `FALSE`. If the function returns `TRUE`, a log message is generated
+#'     from the last `buffer_size` events and sent to pushbullet}
+#' }
+#'
+#' @section Methods:
+#'
+#' \describe{
+#'   \item{`flush()`}{Manually trigger flushing / pushing to pushbullet}
+#' }
+#'
+#'
+#' @export
+#' @seealso [LayoutFormat]
+#' @family Appenders
+#' @name AppenderBuffer
+NULL
+
+
+#' @export
+AppenderPushbullet <- R6::R6Class(
+  "AppenderPushbullet",
+  inherit = AppenderBuffer,
+  cloneable = FALSE,
+
+  # +- public --------------------------------------------------------------
+  public = list(
+    initialize = function(
+      threshold = NA_integer_,
+      push_level = "error",
+      layout = LayoutFormat$new(
+        fmt = "%K  %t> %m %f",
+        timestamp_fmt = "%H:%M:%S",
+        colors = NULL
+      ),
+      buffer_size = 6,
+      apikey = NULL
+    ){
+      private$insert_pos <- 0L
+      private$last_event    <- 0L
+      private$event_order   <- seq_len(buffer_size)
+
+      self$set_layout(layout)
+      self$set_threshold(threshold)
+      self$set_push_level(push_level)
+      self$set_apikey(apikey)
+      self$set_buffer_size(buffer_size)
+      self$set_should_flush(function(event) event$level <= self$push_level)
+
+      private$.flush_on_exit   <- FALSE
+      private$.flush_on_rotate <- FALSE
+    },
+
+    flush = function(
+      event
+    ){
+      assign("insert_pos", 0L, envir = private)
+
+      body <- paste(
+        lapply(self$buffered_events, self$layout$format_event),
+        collapse = "\n"
+      )
+
+      le <- self$buffered_events[[length(self$buffered_events)]]
+      title <- paste0(label_levels(le$level), ": ", le$msg)
+
+      cl <- list(
+        type = "note",
+        title = title,
+        body  = body
+      )
+
+      if (!is.null(self$apikey)){
+        cl$apikey <- self$apikey
+      }
+
+      do.call(RPushbullet::pbPost, cl)
+      private$.buffered_events <- list()
+
+      invisible(self)
+    },
+
+    set_push_level = function(level){
+      level <- standardize_threshold(level)
+      private$.push_level <- level
+      invisible(self)
+    },
+
+    set_apikey = function(x){
+      assert(is.null(x) || is_scalar_character(x))
+      private$.apikey <- x
+      invisible(self)
+    }
+
+  ),
+
+
+  # +- active ---------------------------------------------------------------
+  active = list(
+
+    apikey     = function() private$.apikey,
+    push_level = function() private$.push_level
+
+  ),
+
+
+
+  private = list(
+    .push_level = NULL,
+    .apikey = NULL
+  )
+)
+
+
+
 # utils -------------------------------------------------------------------
 
 #TODO: function needs renaming and doc

@@ -31,7 +31,12 @@ lgr is a logging framework for R inspired by
 It follows a traditional object oriented design implemented through
 [R6 classes](https://github.com/r-lib/R6). This enables lgr to have a larger
 set of features than other logging packages for R, and makes it easy to extend 
-for people that have experience with R6 classes. 
+for people that have experience with R6 classes. This also makes Logger 
+configuration a bit more verbose than for other packages, but I hope
+also more flexible and transparent. 
+
+If you are not sure if lgr is the right package for you, take a look 
+[examples](#examples) to see what lgr can do for you.
 
 
 ## Quickstart
@@ -429,7 +434,7 @@ tf <- tempfile()
 # and a few extra features
 lg <- Logger$new(
   "test logger",
-  appenders = AppenderJson$new(file = tf), 
+  appenders = list(json = AppenderJson$new(file = tf)), 
   propagate = FALSE
 )
 
@@ -444,11 +449,24 @@ JSON is easy to parse and analyse with R
 read_json_lines(tf)
 ```
 
+For convenience, many appenders have a `$data` binding that automatically 
+reads and parses the logfile managed by the logger in question
+
+```{r, eval = FALSE}
+lg$appenders$json$data  # reads the logfile and returns a data.frame
+# same output as above
+```
+
+
+
 It is also human readable, though maybe this vignette does not 
 transport that fact very well because of the lack of horizontal space
 ```{r}
 cat(readLines(tf), sep = "\n\n")
 ```
+
+
+
 
 ```{r, echo = FALSE}
 unlink(tf)
@@ -504,10 +522,102 @@ lg$info("Nothing to see here")
 unlink(tf)
 ```
 
+
+## Buffered Logging
+
+The main purpose of AppenderBuffer is to retain LogEvents in memory and write
+them to destinations at a later point in time. For example, if you log to a 
+remote database you can postpone this costly operation until after your analysis
+is finished.
+
+You can also use AppenderBuffer to trigger on certain conditions. The following
+will output the last 5 LogEvents that happened before an `error` occured.
+
+```{r}
+lg <- Logger$new(
+  "buffer example",
+  threshold = NA,
+  propagate = FALSE,  # to suppress console output
+  appenders = AppenderBuffer$new(
+    threshold = NA,
+    buffer_size = 5, # can hold 5 events, the 6th will trigger flushing
+    flush_on_exit = FALSE,
+    flush_on_rotate = FALSE,
+    should_flush = function(event) event$level <= 200,
+    appenders = AppenderConsole$new(threshold = NA)
+  )
+)
+
+for (nm in month.name[1:8]) lg$debug("%s", nm)
+lg$error("But the days grow short when you reach September")
+```
+
+
+## Inject Values with with_log_value
+
+`with_log_value()` abuses lgr's powerfull filter mechanic to insert arbitrary
+values into all logging calls within a block of code. This is useful for 
+assigning a grouping identifier to a series of log calls.
+
+```{r}
+clean   <- function() lgr$info("cleaning data")
+process <- function() lgr$info("processing data")
+output  <- function() lgr$info("outputing data")
+
+analyze <- function(id){
+  with_log_value(list(dataset_id = id), {
+    clean()
+    process()
+    output()
+  })
+}
+
+analyze("datset1")
+```
+
+## Temporarily Disable Logging
+
+Temporary disabling logging for portions of code is straight forward and easy 
+with lgr
+
+```{r}
+without_logging({
+  lgr$warn("Oh Yeah?")
+  lgr$fatal("Oh No")
+})
+```
+
+
+
+## Adding a Custom Logger to a Package
+
+If you are a package author, it is good practice to define a separate logger
+for your package. This gives users the ability to easily enable/disable 
+logging on a per-package basis. Loggers must be initialized in the packages
+.onLoad hook. You can do this by adding the following code to any `.R` file 
+inside the `R/` directory of your package:
+
+```{r}
+# mypackage/R/mypackage-package.R
+.onLoad <- function(...){
+  assign(
+    "lg",  # the recommended name for a logger object
+    lgr::Logger$new(name = "mypackage"),  # should be the same as the package name
+    envir = parent.env(environment())
+  )
+}
+
+```
+
+You can also just use `lgr::use_logger()` to generate the appropriate code for 
+your package automatically.
+
+After you set this up you can use `lg$fatal()`, `lg$info()`, etc... 
+inside your package. You do not have to define any appenders, since all log 
+events will get redirected to the root Logger (see [Inheritance](#hierarchy)). 
+
 # References
 
 [Python Logging](https://docs.python.org/3/library/logging.html)
 
 [Eric Stenbock: The True Story of A Vampire](http://gutenberg.net.au/ebooks06/0606601h.html)
-
-
