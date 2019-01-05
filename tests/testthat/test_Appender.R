@@ -76,7 +76,7 @@ test_that("AppenderJson works as expected", {
   app <- AppenderJson$new(file = tf)
 
   for (i in 1:10) app$append(x)
-  r <- capture_output(app$show(3))
+  r <- capture_output(app$show(n = 3))
   expect_true(grepl( "(level.*)[3]", r))
   expect_false(grepl("(level.*)[4]", r))
 
@@ -414,5 +414,5 @@ test_that("AppenderBuffer: view log", {
 
   expect_identical(nrow(l$appenders[[1]]$data), 6L)
   expect_identical(nrow(l$appenders[[1]]$dt), 6L)
-  expect_length(capture.output(l$appenders[[1]]$show(5, "warn")), 3L)
+  expect_length(capture.output(l$appenders[[1]]$show(n = 5, threshold = "warn")), 3L)
 })

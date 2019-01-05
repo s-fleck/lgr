@@ -24,6 +24,7 @@ x$set_buffer_size(x)
 x$set_flush_on_exit(x)
 x$set_flush_on_rotate(x)
 x$set_should_flush(x)
+x$show(threshold = NA_integer_, n = 20L)
 x$append(event)
 x$set_threshold(level)
 x$set_layout(layout)
@@ -33,7 +34,9 @@ x$set_filters(filters)
 x$appenders
 x$buffer_size
 x$buffered_events
+x$data
 x$destination
+x$dt
 x$flush_on_exit
 x$flush_on_rotate
 x$layout
@@ -43,15 +46,17 @@ x$filters
 }
 }
 
+\section{Creating a Buffer Appender}{
+
+
+The \link{Layout} for this Appender is used only to format console output of
+its \code{$show()} method.
+}
+
 \section{Fields}{
 
 
 \describe{
-\item{\code{flush()}}{Manually trigger flushing}
-\item{\code{add_appender(appender)}}{Add and Appender to this Appender.
-see \link{Logger}}
-\item{\code{remove_appender(pos)}}{Remove and Appender from this Appender.
-see \link{Logger}}
 \item{\code{appenders}, \code{set_appenders()}}{Like for a \link{Logger}. Buffered events will be passed on
 to these Appenders once a flush is triggered}
 \item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar. Number of \link{LogEvents} to buffer}
@@ -65,6 +70,20 @@ the buffer should be flushed when the Buffer is full (f.e when you close
 single argument \code{event} (a \link{LogEvent}) that must only return either \code{TRUE}
 or \code{FALSE}. If the function returns \code{TRUE}, flushing of the buffer is
 triggered. Defaults to flushing if a \code{FATAL} event is registered }
+}
+
+
+
+\describe{
+\item{\code{dt}}{Get the log recorded by this \code{Appender} as a \code{data.table}
+with a maximum of \code{buffer_size} rows}
+}
+
+
+
+\describe{
+\item{\code{data}}{Get the log recorded by this \code{Appender} as a
+\code{data.frame}}
 }
 
 
@@ -91,16 +110,24 @@ LogEvents before they are passed on. Look at the source code of
 }
 }
 
-\section{Creating a New Appender}{
+\section{Methods}{
 
 
-New Appenders are instantiated with \code{<AppenderSubclass>$new()}. For the
-arguments to \code{new()} please refer to the section \emph{Fields}. You can also
-modify those fields after the Appender has been created with setters in the
-form of \code{appender$set_<fieldname>(value)}
+\describe{
+\item{\code{flush()}}{Manually trigger flushing}
+\item{\code{add_appender(appender)}}{Add and Appender to this Appender.
+see \link{Logger}}
+\item{\code{remove_appender(pos)}}{Remove and Appender from this Appender.
+see \link{Logger}}
 }
 
-\section{Methods}{
+
+\describe{
+\item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a log level
+bellow \code{threshold}. The log entries will be formated for console output
+via this Appenders \link{Layout}}
+}
+
 
 \describe{
 \item{\code{append(event)}}{Write the \link{LogEvent} \code{event} to a destination}
@@ -112,6 +139,19 @@ form of \code{appender$set_<fieldname>(value)}
 on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 \code{filters}}
 }
+}
+
+\section{Comparison AppenderBuffer and AppenderDt}{
+
+
+Both \link{AppenderBuffer} and \link{AppenderDt} do in memory buffering of events.
+AppenderBuffer retains a copies of the events it processes and has the
+abillity to pass the buffered events on to other Appenders. AppenderDt
+converts the events to rows in a \code{data.table} and is a bit harder to
+configure, but has much less overhead than AppenderBuffer.
+
+Use AppenderDt if you want an in-memory log for interactive use, and
+AppenderBuffer if you actually want to buffer events
 }
 
 \seealso{

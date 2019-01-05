@@ -330,7 +330,13 @@ AppenderJson <- R6::R6Class(
       self$set_layout(layout)
     },
 
-    show = function(n = 20, threshold = NA){
+    show = function(
+      threshold = NA_integer_,
+      n = 20L
+    ){
+      assert(is_scalar_integerish(n))
+      threshold <- standardize_threshold(threshold)
+
       if (!is.na(threshold)){
         sel <- self$data$level <= threshold
       } else {
@@ -397,7 +403,7 @@ AppenderTable <- R6::R6Class(
   cloneable = FALSE,
 
   public = list(
-    show = function(n = 20, threshold = NA_integer_) NULL
+    show = function(threshold = NA_integer_, n = 20L) NULL
   ),
   active = list(
     destination = function() "",
@@ -442,9 +448,7 @@ AppenderTable <- R6::R6Class(
 #' modified anymore after the instantion of the appender.
 #'
 #' The [Layout] for this Appender is used only to format console output of
-#' its `$show()` method. By default, it is set to (and kept in sync with) the
-#' Layout of the console appender of the root logger
-#' (`lgr::lgr$appenders$console$layout`).
+#' its `$show()` method.
 #'
 #' \describe{
 #'   \item{buffer_size}{`integer` scalar. Number of rows of the in-memory
@@ -477,6 +481,16 @@ AppenderTable <- R6::R6Class(
 #'   via this Appenders [Layout]}
 #'  }
 #'
+#' @section Comparison AppenderBuffer and AppenderDt:
+#'
+#' Both [AppenderBuffer] and [AppenderDt] do in memory buffering of events.
+#' AppenderBuffer retains a copies of the events it processes and has the
+#' abillity to pass the buffered events on to other Appenders. AppenderDt
+#' converts the events to rows in a `data.table` and is a bit harder to
+#' configure, but has much less overhead than AppenderBuffer.
+#'
+#' Use AppenderDt if you want an in-memory log for interactive use, and
+#' AppenderBuffer if you actually want to buffer events
 #'
 #' @export
 #' @seealso [LayoutFormat], [simple_logging], [data.table::data.table]
@@ -646,8 +660,8 @@ AppenderDt <- R6::R6Class(
 
 
     show = function(
-      n = 20,
-      threshold = NA_integer_
+      threshold = NA_integer_,
+      n = 20L
     ){
       assert(is_scalar_integerish(n))
       threshold <- standardize_threshold(threshold)
@@ -811,7 +825,13 @@ AppenderDbi <- R6::R6Class(
       invisible(self)
     },
 
-    show = function(n = 20, threshold = NA_integer_){
+    show = function(
+      threshold = NA_integer_,
+      n = 20
+    ){
+      assert(is_scalar_integerish(n))
+      threshold <- standardize_threshold(threshold)
+
       dd <- data.table::copy(self$data)
       data.table::setattr(
         dd,
@@ -986,18 +1006,17 @@ AppenderRjdbc <- R6::R6Class(
 #'
 #' @eval r6_usage(AppenderBuffer)
 #'
-#' @inheritSection Appender Creating a New Appender
-#' @inheritSection Appender Fields
-#' @inheritSection Appender Methods
+#' @section Creating a Buffer Appender:
+#'
+#' The [Layout] for this Appender is used only to format console output of
+#' its `$show()` method.
+#'
+#' @inheritSection AppenderDt Methods
+#' @inheritSection AppenderDt Fields
 #'
 #' @section Fields:
 #'
 #' \describe{
-#'   \item{`flush()`}{Manually trigger flushing}
-#'   \item{`add_appender(appender)`}{Add and Appender to this Appender.
-#'     see [Logger]}
-#'   \item{`remove_appender(pos)`}{Remove and Appender from this Appender.
-#'     see [Logger]}
 #'   \item{`appenders`, `set_appenders()`}{Like for a [Logger]. Buffered events will be passed on
 #'     to these Appenders once a flush is triggered}
 #'   \item{`buffer_size, set_buffer_size(x)`}{`integer` scalar. Number of [LogEvents] to buffer}
@@ -1012,6 +1031,18 @@ AppenderRjdbc <- R6::R6Class(
 #'     or `FALSE`. If the function returns `TRUE`, flushing of the buffer is
 #'     triggered. Defaults to flushing if a `FATAL` event is registered }
 #' }
+#'
+#' @section Methods:
+#'
+#' \describe{
+#'   \item{`flush()`}{Manually trigger flushing}
+#'   \item{`add_appender(appender)`}{Add and Appender to this Appender.
+#'     see [Logger]}
+#'   \item{`remove_appender(pos)`}{Remove and Appender from this Appender.
+#'     see [Logger]}
+#' }
+#'
+#' @inheritSection AppenderDt Comparison AppenderBuffer and AppenderDt
 #'
 #' @export
 #' @seealso [LayoutFormat]
@@ -1190,9 +1221,10 @@ AppenderBuffer <- R6::R6Class(
       invisible(self)
     },
 
-    show = function(n = 20, threshold = NA_integer_){
+    show = function(threshold = NA_integer_, n = 20L){
       assert(is_scalar_integerish(n))
       threshold <- standardize_threshold(threshold)
+
       if (is.na(threshold)) threshold <- Inf
       dd <- self$dt
 

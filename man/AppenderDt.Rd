@@ -24,13 +24,14 @@ It is recommended to use this feature only \code{TRACE} level.
 
 \section{Usage}{
 \preformatted{
-x <- x$new(threshold = NA_integer_, layout = lgr::lgr$appenders$console$layout,
+x <- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "\%L [\%t] \%m
+  \%f", timestamp_fmt = "\%H:\%M:\%OS3", colors = getOption("lgr.colors", list())),
   prototype = data.table::data.table(.id = NA_integer_, level = NA_integer_,
   timestamp = Sys.time(), caller = NA_character_, msg = NA_character_, .custom
   = list(list())), buffer_size = 1e+05)
 
 x$append(event)
-x$show(n = 20, threshold = NA_integer_)
+x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
@@ -55,9 +56,7 @@ a \code{buffer_size} and a \code{prototype}. These determine the structure of th
 modified anymore after the instantion of the appender.
 
 The \link{Layout} for this Appender is used only to format console output of
-its \code{$show()} method. By default, it is set to (and kept in sync with) the
-Layout of the console appender of the root logger
-(\code{lgr::lgr$appenders$console$layout}).
+its \code{$show()} method.
 
 \describe{
 \item{buffer_size}{\code{integer} scalar. Number of rows of the in-memory
@@ -135,6 +134,19 @@ via this Appenders \link{Layout}}
 on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 \code{filters}}
 }
+}
+
+\section{Comparison AppenderBuffer and AppenderDt}{
+
+
+Both \link{AppenderBuffer} and \link{AppenderDt} do in memory buffering of events.
+AppenderBuffer retains a copies of the events it processes and has the
+abillity to pass the buffered events on to other Appenders. AppenderDt
+converts the events to rows in a \code{data.table} and is a bit harder to
+configure, but has much less overhead than AppenderBuffer.
+
+Use AppenderDt if you want an in-memory log for interactive use, and
+AppenderBuffer if you actually want to buffer events
 }
 
 \examples{

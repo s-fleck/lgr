@@ -16,8 +16,9 @@ x <- x$new(conn, table, threshold = NA_integer_,
 
 x$set_close_on_exit(x)
 x$set_conn(conn)
-x$show(n = 20, threshold = NA_integer_)
+x$show(threshold = NA_integer_, n = 20)
 x$append(event)
+x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
