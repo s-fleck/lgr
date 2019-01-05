@@ -14,7 +14,6 @@ bench::mark(
   for (i in 1:1e4) lg1$fatal("blubb"),
   for (i in 1:1e4) lg2$fatal("blubb"),
   check = FALSE
-
 )
 
 

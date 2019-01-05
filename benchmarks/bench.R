@@ -26,17 +26,17 @@ ml[["suspended"]] <- Logger$new(
 ml[["no appenders"]] <-
   Logger$new("no appenders", appenders = NULL, parent = NULL)
 
-ml[["memory dt"]] <-
+ml[["dt"]] <-
   Logger$new("memory dt", appenders = AppenderDt$new(), parent = NULL)
 
-ml[["memory buffer"]] <-
-  Logger$new("memory buffer", appenders = AppenderBuffer$new(buffer_size = 20), parent = NULL)
+ml[["dt (cyle)"]] <-
+  Logger$new("memory dt", appenders = AppenderDt$new(buffer_size = 10), parent = NULL)
 
-ml[["memory dt (small buffer)"]] <-
-  Logger$new("memory dt", appenders = AppenderDt$new(), parent = NULL)
+ml[["buffer"]] <-
+  Logger$new("memory buffer", appenders = AppenderBuffer$new(), parent = NULL)
 
-ml[["memory buffer (small buffer)"]] <-
-  Logger$new("memory buffer", appenders = AppenderBuffer$new(buffer_size = 20), parent = NULL)
+ml[["buffer (cycle)"]] <-
+  Logger$new("memory buffer", appenders = AppenderBuffer$new(buffer_size = 10), parent = NULL)
 
 ml[["default (no colors)"]] <-
   Logger$new("default (no colors)", appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = NULL)), parent = NULL)
@@ -68,6 +68,9 @@ dd <- list(res) %>% setNames(Sys.time())
 # print output
 hist <- readRDS("benchmarks/history.rds")
 dd <- c(dd, hist)
+saveRDS(dd, "benchmarks/history.rds")
+
+
 print(dd[1:2])
 
 
@@ -95,14 +98,13 @@ p <- ggplot(
 ) +
   geom_boxplot(outlier.shape = NA) +
   geom_boxplot(outlier.shape = NA, fill = "white", alpha = 0.3) +
-  scale_y_continuous(limits = c(0.001, 0.25)) +
+  scale_y_continuous(limits = c(0.001, 0.4)) +
   scale_fill_brewer(palette = pal, direction = -1) +
   scale_color_brewer(palette = pal, direction = -1) +
   theme_dark()
 
 plot(p)
 
-saveRDS(dd, "benchmarks/history.rds")
 
 
 

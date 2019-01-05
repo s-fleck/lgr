@@ -15,8 +15,8 @@ x <- x$new(threshold = NA_integer_, appenders = NULL,
   "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S", colors = getOption("lgr.colors")),
   buffer_size = 1000)
 
-x$append(x)
-x$flush(x = private$.buffered_events)
+x$append(event)
+x$flush()
 x$set_appenders(x)
 x$add_appender(appender, name = NULL)
 x$remove_appender(pos)
@@ -25,7 +25,6 @@ x$set_flush_on_exit(x)
 x$set_flush_on_rotate(x)
 x$set_should_flush(x)
 x$show(threshold = NA_integer_, n = 20L)
-x$append(event)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
@@ -148,10 +147,13 @@ Both \link{AppenderBuffer} and \link{AppenderDt} do in memory buffering of event
 AppenderBuffer retains a copies of the events it processes and has the
 abillity to pass the buffered events on to other Appenders. AppenderDt
 converts the events to rows in a \code{data.table} and is a bit harder to
-configure, but has much less overhead than AppenderBuffer.
+configure. Used inside loops (several hundred iterations),
+AppenderDt has much less overhead than AppenderBuffer. For single logging
+calls and small loops, AppenderBuffer is more performant. This is related to
+how memory pre-allocation is handled by the appenders.
 
-Use AppenderDt if you want an in-memory log for interactive use, and
-AppenderBuffer if you actually want to buffer events
+In short: Use AppenderDt if you want an in-memory log for interactive use,
+and AppenderBuffer if you actually want to buffer events
 }
 
 \seealso{

@@ -22,8 +22,6 @@ knitr::opts_chunk$set(
 ```
 
 
-**work in progress**
-
 # Adding a Custom Logger to a Package
 
 If you are a package author, it is good practice to define a separate logger
@@ -35,14 +33,18 @@ into any `.R` file inside the `R/` directory of your package:
 # mypackage/R/mypackage-package.R
 .onLoad <- function(...){
   assign(
-    "logger",
+    "llg",
     lgr::Logger$new(name = "mypackage"),  # the logger name should be the same as the package name
-    envir = asNamespace("mypackage")
+    envir = parent.env(environment())
   )
 }
 
 ```
-After you set this up you can use `logger$fatal()`, `logger$info()`, etc... 
+
+You can also use `lgr::use_logger()` to generate the appropriate code for your
+page, so that you just have to copy and paste.
+
+After you set this up you can use `lg$fatal()`, `lg$info()`, etc... 
 inside your package. You do not have to define any appenders, since all log 
 events will get redirected to the Root Logger (see the chapter on hierarchical 
 logging in the `lgr` main vignette). 
@@ -55,7 +57,28 @@ The out-of-the-box setup for the Root Logger is minimal to make it easy
 to use for newcommers. I prefer to set up my logger like this:
 
 ```{r, eval = FALSE}
-lgr$add_appender()
+
+tf <- tempfile()
+
+lg <- Logger$new(
+  "buffer example",
+  propagate = FALSE,  # to suppress console output
+  appenders = AppenderBuffer$new(
+    buffer_size = 5,
+    flush_on_exit = FALSE,
+    flush_on_rotate = FALSE,
+    should_flush = function(event) event$level <= 200,
+    appenders = AppenderFile$new(tf)
+  )
+)
+
+for (i in 1:10) lg$info("Iteration %s", i)
+
+lg$error("A log level <= 200 ('error') triggers flushing")
+
+readLines(tf)
+
+
 ```
 
 

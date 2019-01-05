@@ -487,10 +487,13 @@ AppenderTable <- R6::R6Class(
 #' AppenderBuffer retains a copies of the events it processes and has the
 #' abillity to pass the buffered events on to other Appenders. AppenderDt
 #' converts the events to rows in a `data.table` and is a bit harder to
-#' configure, but has much less overhead than AppenderBuffer.
+#' configure. Used inside loops (several hundred iterations),
+#' AppenderDt has much less overhead than AppenderBuffer. For single logging
+#' calls and small loops, AppenderBuffer is more performant. This is related to
+#' how memory pre-allocation is handled by the appenders.
 #'
-#' Use AppenderDt if you want an in-memory log for interactive use, and
-#' AppenderBuffer if you actually want to buffer events
+#' In short: Use AppenderDt if you want an in-memory log for interactive use,
+#' and AppenderBuffer if you actually want to buffer events
 #'
 #' @export
 #' @seealso [LayoutFormat], [simple_logging], [data.table::data.table]
@@ -1080,6 +1083,10 @@ AppenderBuffer <- R6::R6Class(
 
       if (is.null(should_flush)) should_flush <- function(event) FALSE
 
+      private$insert_pos <- 0L
+      private$last_event    <- 0L
+      private$event_order   <- seq_len(buffer_size)
+
       self$set_threshold(threshold)
       self$set_should_flush(should_flush)
       self$set_appenders(appenders)
@@ -1096,38 +1103,39 @@ AppenderBuffer <- R6::R6Class(
 
 
     append = function(
-      x
+      event
     ){
-      len <- length(get(".buffered_events", private))
-      private[[".buffered_events"]][[len + 1L]] <- x$clone()
+      i <- get("insert_pos", envir = private) + 1L
+      assign("insert_pos", i, envir = private, inherits = TRUE)
+      private[["last_event"]] <- private[["last_event"]] + 1L
+      private[["event_order"]][[i]] <- private[["last_event"]]
+      private[[".buffered_events"]][[i]] <- event
 
-      if (get(".should_flush", envir = private)(x)){
+      bs <- get(".buffer_size", envir = private)
+
+     if (get(".should_flush", envir = private)(event) ){
         self[["flush"]]()
-        return()
-      } else {
-        bs <- get(".buffer_size", envir = private)
-
-        if (len >= bs){
-          if (get(".flush_on_rotate", envir = private)){
-            self[["flush"]]()
-          } else if (len >= bs * 1.2) {
-            private$.buffered_events <-
-              private$.buffered_events[seq.int(len - self$buffer_size, len + 1L)]
-          }
+      } else if (i > bs){
+        if (get(".flush_on_rotate", envir = private) ){
+          self[["flush"]]()
+        } else {
+          assign("insert_pos", 0L, envir = private)
         }
       }
+
       NULL
     },
 
-    flush = function(
-      x = private$.buffered_events
-    ){
-      for (event in private$.buffered_events){
+    flush = function(){
+      for (event in get("buffered_events", envir = self)){
         for (app in self$appenders) {
           if (app$filter(event))  app$append(event)
         }
       }
+
+      assign("insert_pos", 0L, envir = private)
       private$.buffered_events <- list()
+      invisible(self)
     },
 
     set_appenders = function(x){
@@ -1245,13 +1253,25 @@ AppenderBuffer <- R6::R6Class(
 
   # +- active ---------------------------------------------------------------
   active = list(
-    flush_on_exit = function() private$.flush_on_exit,
+    flush_on_exit = function() {
+      private$.flush_on_exit
+    },
 
-    flush_on_rotate = function() private$.flush_on_rotate,
+    flush_on_rotate = function() {
+      private$.flush_on_rotate
+    },
 
-    buffer_size = function() private$.buffer_size,
+    buffer_size = function() {
+      private$.buffer_size
+    },
 
-    buffered_events = function() private$.buffered_events,
+    buffered_events = function() {
+      ord <- get("event_order", envir = private)
+      ord <- ord - min(ord) + 1L
+      ord <- order(ord)
+      res <- get(".buffered_events", envir = private)[ord]
+      res[!vapply(res, is.null, FALSE)]
+    },
 
     appenders = function(value){
       if (missing(value)) return(c(private$.appenders))
@@ -1269,12 +1289,6 @@ AppenderBuffer <- R6::R6Class(
         "'appenders' must either be a single Appender, a list thereof, or NULL for no appenders."
       )
 
-      value <- lapply(value, function(app){
-        res <- app$clone()
-        # logger gets assigned to sub-appenders inside the `logger` active binding
-        res
-      })
-
       private$.appenders <- value
       invisible()
     },
@@ -1288,7 +1302,7 @@ AppenderBuffer <- R6::R6Class(
     dt = function(){
       assert_namespace("data.table")
       dd <- lapply(
-        get(".buffered_events", private),
+        get("buffered_events", self),
         function(.x){
           vals <- .x$values
           list_cols <- !vapply(vals, is.atomic, TRUE)
@@ -1301,7 +1315,11 @@ AppenderBuffer <- R6::R6Class(
     }
   ),
 
+  # +- private  ---------------------------------------------------------
   private = list(
+    insert_pos = NULL,
+    last_event = NULL,
+    event_order = NULL,
     .appenders = list(),
     .flush_on_exit = NULL,
     .flush_on_rotate = NULL,

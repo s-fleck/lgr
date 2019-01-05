@@ -143,10 +143,13 @@ Both \link{AppenderBuffer} and \link{AppenderDt} do in memory buffering of event
 AppenderBuffer retains a copies of the events it processes and has the
 abillity to pass the buffered events on to other Appenders. AppenderDt
 converts the events to rows in a \code{data.table} and is a bit harder to
-configure, but has much less overhead than AppenderBuffer.
+configure. Used inside loops (several hundred iterations),
+AppenderDt has much less overhead than AppenderBuffer. For single logging
+calls and small loops, AppenderBuffer is more performant. This is related to
+how memory pre-allocation is handled by the appenders.
 
-Use AppenderDt if you want an in-memory log for interactive use, and
-AppenderBuffer if you actually want to buffer events
+In short: Use AppenderDt if you want an in-memory log for interactive use,
+and AppenderBuffer if you actually want to buffer events
 }
 
 \examples{

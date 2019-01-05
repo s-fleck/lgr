@@ -416,3 +416,25 @@ test_that("AppenderBuffer: view log", {
   expect_identical(nrow(l$appenders[[1]]$dt), 6L)
   expect_length(capture.output(l$appenders[[1]]$show(n = 5, threshold = "warn")), 3L)
 })
+
+
+
+test_that("AppenderBuffer: cycling is implemented correctly", {
+  l <- Logger$new(
+    "buffer test",
+    appenders = AppenderBuffer$new(buffer_size = 3L, flush_on_rotate = FALSE),
+    propagate = FALSE
+  )
+
+  l$info("test1")
+  l$info("test2")
+  l$info("test3")
+  l$info("test4")
+  l$info("test5")
+
+  expect_identical(
+    sapply(l$appenders[[1]]$buffered_events, `[[`, "msg"),
+    paste0("test", 2:5)
+  )
+})
+
