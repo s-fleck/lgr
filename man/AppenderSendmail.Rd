@@ -2,7 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderSendmail}
 \alias{AppenderSendmail}
-\title{Log to Email via SendmailR}
+\title{Send Log Emails via SendmailR}
 \description{
 Send mails via \code{\link[sendmailR:sendmail]{sendmailR::sendmail()}}. This
 Appender keeps an in-memory buffer like \link{AppenderBuffer}. If the buffer is

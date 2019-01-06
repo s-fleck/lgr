@@ -51,9 +51,8 @@ Layout <- R6::R6Class(
 #' Format Log Events as Text
 #'
 #' Format a [LogEvent] as human readable text using [format.LogEvent()], which
-#' provides a quick and easy way to customize log messages. If you need even
-#' more control and flexibility for formatting log messages, consider using
-#' [LayoutGlue] instead.
+#' provides a quick and easy way to customize log messages. If you need
+#' more control and flexibility, consider using [LayoutGlue] instead.
 #'
 #' @inheritParams format.LogEvent
 #' @inheritSection Layout Methods
@@ -184,7 +183,7 @@ LayoutFormat <- R6::R6Class(
 
 # LayoutGlue ------------------------------------------------------------
 
-#' Format Log Events as Text with Glue
+#' Format Log Events as Text via glue
 #'
 #' Format a [LogEvent] as human readable text using [glue::glue]. The function
 #' is evaluated in an environment in which it has access to all elements of

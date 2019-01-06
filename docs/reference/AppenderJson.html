@@ -246,10 +246,10 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 <span class='no'>l</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)
 <span class='no'>l</span>$<span class='fu'>info</span>(<span class='st'>"A test message %s strings"</span>, <span class='st'>"with format strings"</span>, <span class='kw'>and</span> <span class='kw'>=</span> <span class='st'>"custom_fields"</span>)
 
-<span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2019-01-06 15:19:31","caller":"eval","msg":"A test message"}
-#&gt; {"level":400,"timestamp":"2019-01-06 15:19:32","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp caller                                        msg
-#&gt; 1   400 2019-01-06 15:19:31   eval                             A test message
-#&gt; 2   400 2019-01-06 15:19:32   eval A test message with format strings strings
+<span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2019-01-06 17:57:55","caller":"eval","msg":"A test message"}
+#&gt; {"level":400,"timestamp":"2019-01-06 17:57:55","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp caller                                        msg
+#&gt; 1   400 2019-01-06 17:57:55   eval                             A test message
+#&gt; 2   400 2019-01-06 17:57:55   eval A test message with format strings strings
 #&gt;             and
 #&gt; 1          &lt;NA&gt;
 #&gt; 2 custom_fields</div><div class='input'>

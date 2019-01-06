@@ -164,33 +164,15 @@
       <tr>
         <th colspan="2">
           <h2 id="section-appenders" class="hasAnchor"><a href="#section-appenders" class="anchor"></a>Appenders</h2>
-          <p class="section-desc"><p>Output destinations for LogEvents</p></p>
+          <p class="section-desc"><p>Output LogEvents to a destination</p></p>
         </th>
       </tr>
       <tr>
         
         <td>
-          <p><code><a href="AppenderBuffer.html">AppenderBuffer</a></code> </p>
-        </td>
-        <td><p>Log to a Memory Buffer</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="AppenderConsole.html">AppenderConsole</a></code> </p>
         </td>
         <td><p>Log to the Console</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="AppenderDbi.html">AppenderDbi</a></code> </p>
-        </td>
-        <td><p>Log to Databases via DBI</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="AppenderDigest.html">AppenderDigest</a></code> </p>
-        </td>
-        <td><p>Abstract Class for Digests</p></td>
       </tr><tr>
         
         <td>
@@ -200,15 +182,15 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="AppenderFile.html">AppenderFile</a></code> </p>
+          <p><code><a href="AppenderDbi.html">AppenderDbi</a></code> </p>
         </td>
-        <td><p>Log to a File</p></td>
+        <td><p>Log to Databases via DBI</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="AppenderGmail.html">AppenderGmail</a></code> </p>
+          <p><code><a href="AppenderFile.html">AppenderFile</a></code> </p>
         </td>
-        <td><p>Log to Email via gmailr</p></td>
+        <td><p>Log to a File</p></td>
       </tr><tr>
         
         <td>
@@ -218,39 +200,39 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="AppenderMemory.html">AppenderMemory</a></code> </p>
-        </td>
-        <td><p>Abstract Class for Logging to Memory Buffers</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="AppenderPushbullet.html">AppenderPushbullet</a></code> </p>
-        </td>
-        <td><p>Log to Pushbullet</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="AppenderRjdbc.html">AppenderRjdbc</a></code> </p>
         </td>
         <td><p>Log to Databases via RJDBC</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="AppenderSendmail.html">AppenderSendmail</a></code> </p>
+          <p><code><a href="AppenderBuffer.html">AppenderBuffer</a></code> </p>
         </td>
-        <td><p>Log to Email via SendmailR</p></td>
+        <td><p>Log to a Memory Buffer</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="AppenderTable.html">AppenderTable</a></code> </p>
+          <p><code><a href="AppenderGmail.html">AppenderGmail</a></code> </p>
         </td>
-        <td><p>Abstract Class for Logging to Tabular Structures</p></td>
+        <td><p>Send Log Emails via gmailr</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="AppenderSendmail.html">AppenderSendmail</a></code> </p>
+        </td>
+        <td><p>Send Log Emails via SendmailR</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="AppenderPushbullet.html">AppenderPushbullet</a></code> </p>
+        </td>
+        <td><p>Send Push-Notifications via RPushbullet</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
           <h2 id="section-layouts" class="hasAnchor"><a href="#section-layouts" class="anchor"></a>Layouts</h2>
-          <p class="section-desc"><p>Formatting of LogEvents</p></p>
+          <p class="section-desc"><p>Format LogEvents before output</p></p>
         </th>
       </tr>
       <tr>
@@ -270,19 +252,13 @@
         <td>
           <p><code><a href="LayoutGlue.html">LayoutGlue</a></code> </p>
         </td>
-        <td><p>Format Log Events as Text with Glue</p></td>
+        <td><p>Format Log Events as Text via glue</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="LayoutJson.html">LayoutJson</a></code> </p>
         </td>
         <td><p>Format LogEvents as JSON</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="LayoutTable.html">LayoutTable</a></code> </p>
-        </td>
-        <td><p>Abstract Class for Formatting Data as Tabular Structures</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -391,6 +367,12 @@
           <p><code><a href="Layout.html">Layout</a></code> </p>
         </td>
         <td><p>Abstract Class for Layouts</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="LayoutTable.html">LayoutTable</a></code> </p>
+        </td>
+        <td><p>Abstract Class for Formatting Data as Tabular Structures</p></td>
       </tr><tr>
         
         <td>

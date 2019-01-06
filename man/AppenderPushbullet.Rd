@@ -2,7 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderPushbullet}
 \alias{AppenderPushbullet}
-\title{Log to Pushbullet}
+\title{Send Push-Notifications via RPushbullet}
 \description{
 Send push notifications via \href{https://www.pushbullet.com/}{pushbullet}. This
 Appender keeps an in-memory buffer like \link{AppenderBuffer}. If the buffer is

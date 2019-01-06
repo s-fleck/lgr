@@ -5,9 +5,8 @@
 \title{Format Log Events as Text}
 \description{
 Format a \link{LogEvent} as human readable text using \code{\link[=format.LogEvent]{format.LogEvent()}}, which
-provides a quick and easy way to customize log messages. If you need even
-more control and flexibility for formatting log messages, consider using
-\link{LayoutGlue} instead.
+provides a quick and easy way to customize log messages. If you need
+more control and flexibility, consider using \link{LayoutGlue} instead.
 }
 \section{Usage}{
 \preformatted{

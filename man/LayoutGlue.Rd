@@ -2,7 +2,7 @@
 % Please edit documentation in R/Layout.R
 \name{LayoutGlue}
 \alias{LayoutGlue}
-\title{Format Log Events as Text with Glue}
+\title{Format Log Events as Text via glue}
 \description{
 Format a \link{LogEvent} as human readable text using \link[glue:glue]{glue::glue}. The function
 is evaluated in an environment in which it has access to all elements of

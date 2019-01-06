@@ -9,13 +9,25 @@ reference:
   - get_log_levels
   - simple_logging
 - title: Appenders
-  desc: Output destinations for LogEvents
+  desc: Output LogEvents to a destination
   contents:
-  - starts_with("Appender")
+  - AppenderConsole
+  - AppenderDt
+  - AppenderDbi
+  - AppenderFile
+  - AppenderJson
+  - AppenderRjdbc
+  - AppenderBuffer
+  - AppenderGmail
+  - AppenderSendmail
+  - AppenderPushbullet
 - title: Layouts
-  desc: Formatting of LogEvents
+  desc: Format LogEvents before output
   contents:
-  - starts_with("Layout")
+  - LayoutDbi
+  - LayoutFormat
+  - LayoutGlue
+  - LayoutJson
 - title: LogEvent
   desc: Contains the Data that is beeing logged
   contents:
@@ -39,6 +51,7 @@ reference:
   contents:
   - Appender
   - Layout
+  - LayoutTable
   - Filterable
   - AppenderTable
   - AppenderMemory

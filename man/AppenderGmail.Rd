@@ -2,7 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderGmail}
 \alias{AppenderGmail}
-\title{Log to Email via gmailr}
+\title{Send Log Emails via gmailr}
 \description{
 Send mails via \code{\link[gmailr:send_message]{gmailr::send_message()}}. This
 Appender keeps an in-memory buffer like \link{AppenderBuffer}. If the buffer is

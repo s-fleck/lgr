@@ -1524,7 +1524,7 @@ AppenderDigest <-  R6::R6Class(
 # AppenderPushbullet --------------------------------------------------------
 
 
-#' Log to Pushbullet
+#' Send Push-Notifications via RPushbullet
 #'
 #' Send push notifications via [pushbullet](https://www.pushbullet.com/). This
 #' Appender keeps an in-memory buffer like [AppenderBuffer]. If the buffer is
@@ -1561,6 +1561,8 @@ AppenderDigest <-  R6::R6Class(
 #' @seealso [LayoutFormat], [LayoutGlue]
 #' @name AppenderPushbullet
 NULL
+
+
 
 
 #' @export
@@ -1681,7 +1683,7 @@ AppenderPushbullet <- R6::R6Class(
 
 # AppenderSendmail --------------------------------------------------------
 
-#' Log to Email via SendmailR
+#' Send Log Emails via SendmailR
 #'
 #' Send mails via [sendmailR::sendmail()]. This
 #' Appender keeps an in-memory buffer like [AppenderBuffer]. If the buffer is
@@ -1849,7 +1851,7 @@ AppenderSendmail <- R6::R6Class(
 # AppenderGmail --------------------------------------------------------
 
 
-#' Log to Email via gmailr
+#' Send Log Emails via gmailr
 #'
 #' Send mails via [gmailr::send_message()]. This
 #' Appender keeps an in-memory buffer like [AppenderBuffer]. If the buffer is
