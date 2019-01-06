@@ -40,4 +40,7 @@ reference:
   - Appender
   - Layout
   - Filterable
+  - AppenderTable
+  - AppenderMemory
+  - AppenderDigest
 

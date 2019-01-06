@@ -74,15 +74,18 @@ on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 \seealso{
 \link{LayoutTable}
 
-Other abstract classes: \code{\link{AppenderMemory}},
-  \code{\link{Appender}}, \code{\link{Filterable}}
+Other abstract classes: \code{\link{AppenderDigest}},
+  \code{\link{AppenderMemory}}, \code{\link{Appender}},
+  \code{\link{Filterable}}
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderDt}}, \code{\link{AppenderFile}},
+  \code{\link{AppenderDigest}}, \code{\link{AppenderDt}},
+  \code{\link{AppenderFile}}, \code{\link{AppenderGmail}},
   \code{\link{AppenderJson}}, \code{\link{AppenderMemory}},
   \code{\link{AppenderPushbullet}},
-  \code{\link{AppenderRjdbc}}, \code{\link{Appender}}
+  \code{\link{AppenderRjdbc}},
+  \code{\link{AppenderSendmail}}, \code{\link{Appender}}
 }
 \concept{Appenders}
 \concept{abstract classes}

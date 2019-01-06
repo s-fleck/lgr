@@ -187,13 +187,13 @@ to include in the output object.</p></dd>
 
 <span class='co'># Default settings show all event fals</span>
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()
-<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; {"level":200,"timestamp":"2019-01-06 12:03:06","caller":null,"msg":"a test message","custom_field":"LayoutJson can handle arbitrary fields"} </div><div class='input'>
+<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; {"level":200,"timestamp":"2019-01-06 13:57:15","caller":null,"msg":"a test message","custom_field":"LayoutJson can handle arbitrary fields"} </div><div class='input'>
 
 <span class='co'># Values from the LogEvent can be suppressed</span>
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>(
   <span class='kw'>event_values</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"level"</span>, <span class='st'>"timestamp"</span>, <span class='st'>"msg"</span>)
 )
-<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; {"level":200,"timestamp":"2019-01-06 12:03:06","msg":"a test message"} </div><div class='input'>
+<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; {"level":200,"timestamp":"2019-01-06 13:57:15","msg":"a test message"} </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

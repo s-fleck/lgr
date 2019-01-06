@@ -11,3 +11,4 @@
 ^README\.Rmd$
 ^_pkgdown\.yml$
 ^docs$
+^\.httr-oauth$

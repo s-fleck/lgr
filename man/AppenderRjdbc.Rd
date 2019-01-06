@@ -148,9 +148,11 @@ with the \code{col_types} from \code{layout}.
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderDt}}, \code{\link{AppenderFile}},
+  \code{\link{AppenderDigest}}, \code{\link{AppenderDt}},
+  \code{\link{AppenderFile}}, \code{\link{AppenderGmail}},
   \code{\link{AppenderJson}}, \code{\link{AppenderMemory}},
   \code{\link{AppenderPushbullet}},
+  \code{\link{AppenderSendmail}},
   \code{\link{AppenderTable}}, \code{\link{Appender}}
 }
 \concept{Appenders}

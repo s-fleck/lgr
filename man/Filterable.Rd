@@ -45,7 +45,8 @@ on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 }
 
 \seealso{
-Other abstract classes: \code{\link{AppenderMemory}},
+Other abstract classes: \code{\link{AppenderDigest}},
+  \code{\link{AppenderMemory}},
   \code{\link{AppenderTable}}, \code{\link{Appender}}
 }
 \concept{abstract classes}

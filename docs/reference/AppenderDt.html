@@ -257,11 +257,13 @@ and AppenderBuffer if you actually want to buffer events</p>
     <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a>, <a href='simple_logging.html'>simple_logging</a>, <a href='https://www.rdocumentation.org/packages/data.table/topics/data.table'>data.table::data.table</a></p>
 <p>Other Appenders: <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
   <code><a href='AppenderConsole.html'>AppenderConsole</a></code>, <code><a href='AppenderDbi.html'>AppenderDbi</a></code>,
-  <code><a href='AppenderFile.html'>AppenderFile</a></code>, <code><a href='AppenderJson.html'>AppenderJson</a></code>,
+  <code><a href='AppenderDigest.html'>AppenderDigest</a></code>, <code><a href='AppenderFile.html'>AppenderFile</a></code>,
+  <code><a href='AppenderGmail.html'>AppenderGmail</a></code>, <code><a href='AppenderJson.html'>AppenderJson</a></code>,
   <code><a href='AppenderMemory.html'>AppenderMemory</a></code>,
   <code><a href='AppenderPushbullet.html'>AppenderPushbullet</a></code>,
-  <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>, <code><a href='AppenderTable.html'>AppenderTable</a></code>,
-  <code><a href='Appender.html'>Appender</a></code></p></div>
+  <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>,
+  <code><a href='AppenderSendmail.html'>AppenderSendmail</a></code>,
+  <code><a href='AppenderTable.html'>AppenderTable</a></code>, <code><a href='Appender.html'>Appender</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -276,20 +278,20 @@ and AppenderBuffer if you actually want to buffer events</p>
 
 <span class='co'># Displaying the log</span>
 <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span></div><div class='output co'>#&gt;   .id level           timestamp caller  msg .custom
-#&gt; 1   1   500 2019-01-06 12:03:02   eval test    NULL
-#&gt; 2   2   200 2019-01-06 12:03:02   eval test    NULL</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='fu'>show</span>()</div><div class='output co'>#&gt; <span style='color: #808080;'>DEBUG</span><span> [12:03:02.535] test 
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [12:03:02.589] test </div><div class='input'><span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [12:03:02.535] test 
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [12:03:02.589] test </div><div class='input'>
+#&gt; 1   1   500 2019-01-06 13:57:12   eval test    NULL
+#&gt; 2   2   200 2019-01-06 13:57:12   eval test    NULL</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='fu'>show</span>()</div><div class='output co'>#&gt; <span style='color: #808080;'>DEBUG</span><span> [13:57:12.048] test 
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [13:57:12.084] test </div><div class='input'><span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [13:57:12.048] test 
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [13:57:12.084] test </div><div class='input'>
 <span class='co'># If you pass a Logger to show_log(), it looks for the first AppenderDt</span>
 <span class='co'># that it can find.</span>
-<span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [12:03:02.535] test 
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [12:03:02.589] test </div><div class='input'>
+<span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [13:57:12.048] test 
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [13:57:12.084] test </div><div class='input'>
 <span class='co'># Custom fields are stored in the list column .custom by default</span>
 <span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"the iris data frame"</span>, <span class='kw'>caps</span> <span class='kw'>=</span> <span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])
 <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span></div><div class='output co'>#&gt;   .id level           timestamp caller                 msg       .custom
-#&gt; 1   1   500 2019-01-06 12:03:02   eval                test          NULL
-#&gt; 2   2   200 2019-01-06 12:03:02   eval                test          NULL
-#&gt; 3   3   400 2019-01-06 12:03:02   eval the iris data frame A, B, C, D, E</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span>$<span class='no'>.custom</span><span class='kw'>[[</span><span class='fl'>3</span>]]$<span class='no'>caps</span></div><div class='output co'>#&gt; [1] "A" "B" "C" "D" "E"</div><div class='input'>
+#&gt; 1   1   500 2019-01-06 13:57:12   eval                test          NULL
+#&gt; 2   2   200 2019-01-06 13:57:12   eval                test          NULL
+#&gt; 3   3   400 2019-01-06 13:57:12   eval the iris data frame A, B, C, D, E</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span>$<span class='no'>.custom</span><span class='kw'>[[</span><span class='fl'>3</span>]]$<span class='no'>caps</span></div><div class='output co'>#&gt; [1] "A" "B" "C" "D" "E"</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

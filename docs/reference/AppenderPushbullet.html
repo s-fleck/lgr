@@ -140,10 +140,12 @@ events in case a <code>fatal</code> event is encountered.</p>
 
     <pre>
 x &lt;- x$new(threshold = NA_integer_, flush_threshold = "fatal",
-  layout = LayoutFormat$new(fmt = "%K %t&gt; %m %f", timestamp_fmt = "%H:%M:%S",
-  colors = NULL), buffer_size = 6, apikey = NULL)
+  layout = LayoutFormat$new(fmt = "%K %t&gt; %m %f", timestamp_fmt = "%H:%M:%S"),
+  subject_layout = LayoutFormat$new(fmt = "[LGR] %L: %m"), buffer_size = 6,
+  apikey = NULL)
     x$flush()
 x$set_apikey(x)
+x$set_subject_layout(layout)
 x$append(event)
 x$set_buffer_size(x)
 x$set_should_flush(x)
@@ -154,6 +156,7 @@ x$set_layout(layout)
 x$filter(event)
 x$set_filters(filters)
     x$apikey
+x$subject_layout
 x$buffer_size
 x$buffered_events
 x$data
@@ -247,10 +250,12 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
     <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a></p>
 <p>Other Appenders: <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
   <code><a href='AppenderConsole.html'>AppenderConsole</a></code>, <code><a href='AppenderDbi.html'>AppenderDbi</a></code>,
-  <code><a href='AppenderDt.html'>AppenderDt</a></code>, <code><a href='AppenderFile.html'>AppenderFile</a></code>,
+  <code><a href='AppenderDigest.html'>AppenderDigest</a></code>, <code><a href='AppenderDt.html'>AppenderDt</a></code>,
+  <code><a href='AppenderFile.html'>AppenderFile</a></code>, <code><a href='AppenderGmail.html'>AppenderGmail</a></code>,
   <code><a href='AppenderJson.html'>AppenderJson</a></code>, <code><a href='AppenderMemory.html'>AppenderMemory</a></code>,
-  <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>, <code><a href='AppenderTable.html'>AppenderTable</a></code>,
-  <code><a href='Appender.html'>Appender</a></code></p></div>
+  <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>,
+  <code><a href='AppenderSendmail.html'>AppenderSendmail</a></code>,
+  <code><a href='AppenderTable.html'>AppenderTable</a></code>, <code><a href='Appender.html'>Appender</a></code></p></div>
     
 
   </div>

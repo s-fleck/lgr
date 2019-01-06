@@ -1430,6 +1430,70 @@ AppenderBuffer <- R6::R6Class(
 )
 
 
+# AppenderDigest --------------------------------------------------------
+
+#' Abstract Class for Email Like Appenders
+#'
+#' @template abstract_class
+#'
+#' @description
+#' Abstract class for Appenders that transmit digests of several log events
+#' at once, like [AppenderPushbullet], [AppenderGmail] and [AppenderSendmail]
+#'
+#' @inheritSection AppenderMemory Methods
+#' @inheritSection AppenderMemory Fields
+#'
+#' @section Fields:
+#'
+#' \describe{
+#'   \item{`subject_layout`, `set_layout(subject_layout)`}{Like `layout`, but
+#'     used to format the subject/title of the digest. Is usually applied to
+#'     the last log event.
+#'   }
+#' }
+#'
+#' @section Methods:
+#'
+#' @export
+#' @seealso [LayoutFormat]
+#' @family Appenders
+#' @name AppenderDigest
+NULL
+
+AppenderDigest <-  R6::R6Class(
+    "AppenderDigest",
+    inherit = AppenderMemory,
+    cloneable = FALSE,
+
+    # +- public --------------------------------------------------------------
+    public = list(
+
+      set_subject_layout = function(layout){
+        assert(inherits(layout, "Layout"))
+        private$.subject_layout <- layout
+        invisible(self)
+      },
+
+      set_flush_on_exit = function(x){
+        stop("`flush_on_exit` cannot be modified for AppenderPushbullet", call. = FALSE)
+      },
+
+      set_flush_on_rotate = function(x){
+        stop("`flush_on_rotate` cannot be modified for AppenderPushbullet", call. = FALSE)
+      }
+    ),
+
+    active = list(
+      subject_layout = function() get(".subject_layout", private)
+    ),
+
+    private = list(
+      .subject_layout = NULL
+    )
+  )
+
+
+
 
 
 # AppenderPushbullet --------------------------------------------------------
@@ -1476,7 +1540,7 @@ NULL
 #' @export
 AppenderPushbullet <- R6::R6Class(
   "AppenderPushbullet",
-  inherit = AppenderMemory,
+  inherit = AppenderDigest,
   cloneable = FALSE,
 
   # +- public --------------------------------------------------------------
@@ -1484,23 +1548,21 @@ AppenderPushbullet <- R6::R6Class(
     initialize = function(
       threshold = NA_integer_,
       flush_threshold = "fatal",
-      layout = LayoutFormat$new(
-        fmt = "%K  %t> %m %f",
-        timestamp_fmt = "%H:%M:%S",
-        colors = NULL
-      ),
+      layout = LayoutFormat$new(fmt = "%K  %t> %m %f", timestamp_fmt = "%H:%M:%S"),
+      subject_layout = LayoutFormat$new(fmt = "[LGR] %L: %m"),
       buffer_size = 6,
       apikey = NULL
     ){
-      private$insert_pos <- 0L
-      private$last_event    <- 0L
-      private$event_order   <- seq_len(buffer_size)
+      private$insert_pos  <- 0L
+      private$last_event  <- 0L
+      private$event_order <- seq_len(buffer_size)
 
       self$set_layout(layout)
       self$set_threshold(threshold)
       self$set_flush_threshold(flush_threshold)
       self$set_apikey(apikey)
       self$set_buffer_size(buffer_size)
+      self$set_subject_layout(subject_layout)
       self$set_should_flush(function(event, obj)
         is.na(obj[["flush_threshold"]]) || all(event[["level"]] <= obj[["flush_threshold"]])
       )
@@ -1517,9 +1579,8 @@ AppenderPushbullet <- R6::R6Class(
         lapply(self$buffered_events, self$layout$format_event),
         collapse = "\n"
       )
-
-      le <- self$buffered_events[[length(self$buffered_events)]]
-      title <- paste0(label_levels(le$level), ": ", le$msg)
+      le    <- self$buffered_events[[length(self$buffered_events)]]
+      title <- self$subject_layout$format_event(le)
 
       cl <- list(
         type = "note",
@@ -1561,6 +1622,330 @@ AppenderPushbullet <- R6::R6Class(
 
   private = list(
     .apikey = NULL
+  )
+)
+
+
+
+# AppenderSendmail --------------------------------------------------------
+
+#' Log to Email via SendmailR
+#'
+#' Send mails via [sendmailR::sendmail()]. This
+#' Appender keeps an in-memory buffer like [AppenderBuffer]. If the buffer is
+#' flushed, usually because an event of specified magnitutde is encountered, all
+#' buffered events are concatenated to a single message. The default behaviour
+#' is to push the last 30 log events in case a `fatal` event is encountered.
+#'
+#' @eval r6_usage(
+#'   AppenderSendmail,
+#'   ignore = c(
+#'     "set_flush_on_exit",
+#'     "set_flush_on_rotate",
+#'     "flush_on_exit",
+#'     "flush_on_rotate")
+#' )
+#'
+#'
+#' @inheritSection AppenderDigest Methods
+#' @inheritSection AppenderDigest Fields
+#'
+#' @section Fields:
+#'
+#' Please see the documentation of [sendmailR::sendmail()] for details.
+#'
+#' @section Methods:
+#'
+#'
+#' @export
+#' @seealso [LayoutFormat]
+#' @family Appenders
+#' @name AppenderSendmail
+NULL
+
+
+#' @export
+AppenderSendmail <- R6::R6Class(
+  "AppenderSendmail",
+  inherit = AppenderDigest,
+  cloneable = FALSE,
+
+  # +- public --------------------------------------------------------------
+  public = list(
+    initialize = function(
+      to,
+      control,
+      threshold = NA_integer_,
+      flush_threshold = "fatal",
+      layout = LayoutFormat$new(fmt = "%K  %t> %m %f", timestamp_fmt = "%H:%M:%S"),
+      subject_layout = LayoutFormat$new(fmt = "[LGR] %L: %m"),
+      buffer_size = 29,
+      from = get_user(),
+      cc = NULL,
+      bcc = NULL,
+      headers = NULL
+    ){
+      assert_namespace("sendmailR")
+
+      private$insert_pos <- 0L
+      private$last_event    <- 0L
+      private$event_order   <- seq_len(buffer_size)
+
+      self$set_to(to)
+      self$set_control(control)
+      self$set_from(from)
+      self$set_cc(cc)
+      self$set_bcc(bcc)
+      self$set_headers(headers)
+      self$set_subject_layout(subject_layout)
+
+      self$set_layout(layout)
+      self$set_threshold(threshold)
+      self$set_flush_threshold(flush_threshold)
+      self$set_buffer_size(buffer_size)
+      self$set_should_flush(function(event, obj)
+        is.na(obj[["flush_threshold"]]) || all(event[["level"]] <= obj[["flush_threshold"]])
+      )
+
+      private$.flush_on_exit   <- FALSE
+      private$.flush_on_rotate <- FALSE
+    },
+
+    flush = function(
+    ){
+      assign("insert_pos", 0L, envir = private)
+
+      body <- paste(
+        lapply(self$buffered_events, self$layout$format_event),
+        collapse = "\n"
+      )
+      le    <- self$buffered_events[[length(self$buffered_events)]]
+      title <- self$subject_layout$format_event(le)
+
+      args <- list(
+        from = self$from,
+        to   = self$to,
+        subject = title,
+        msg = body,
+        cc = self$cc,
+        bcc = self$bcc,
+        headers = self$headers,
+        control = self$control
+      )
+
+      # sendmailR expects missing() instead of NULL for default values
+      args <- compact(args)
+
+      do.call(sendmailR::sendmail, args)
+      private$.buffered_events <- list()
+
+      invisible(self)
+    },
+
+    set_to = function(x){
+      private$.to <- x
+    },
+
+    set_control = function(x){
+      private$.control <- x
+    },
+
+    set_from = function(x){
+      private$.from <- x
+    },
+
+    set_cc = function(x){
+      private$.cc <- x
+    },
+
+    set_bcc = function(x){
+      private$.bcc <- x
+    },
+
+    set_headers = function(x){
+      private$.headers <- x
+    }
+  ),
+
+
+  # +- active ---------------------------------------------------------------
+  active = list(
+    to = function() get(".to", envir = private),
+    control = function() get(".control", envir = private),
+    from = function() get(".from", envir = private),
+    cc = function() get(".cc", envir = private),
+    bcc = function() get(".bcc", envir = private),
+    headers = function() get(".headers", envir = private)
+  ),
+
+  private = list(
+    .to = NULL,
+    .control = NULL,
+    .from = NULL,
+    .cc = NULL,
+    .bcc = NULL,
+    .headers = NULL
+  )
+)
+
+
+
+# AppenderGmail --------------------------------------------------------
+
+
+#' Log to Email via gmailr
+#'
+#' Send mails via [gmailr::send_message()]. This
+#' Appender keeps an in-memory buffer like [AppenderBuffer]. If the buffer is
+#' flushed, usually because an event of specified magnitutde is encountered, all
+#' buffered events are concatenated to a single message. The default behaviour
+#' is to push the last 30 log events in case a `fatal` event is encountered.
+#'
+#' @eval r6_usage(
+#'   AppenderGmail,
+#'   ignore = c(
+#'     "set_flush_on_exit",
+#'     "set_flush_on_rotate",
+#'     "flush_on_exit",
+#'     "flush_on_rotate")
+#' )
+#'
+#' @inheritSection AppenderDigest Methods
+#' @inheritSection AppenderDigest Fields
+#'
+#' @section Fields:
+#'
+#' Please see the documentation of [gmailr::send_message()] for details.
+#'
+#' @section Methods:
+#'
+#' @export
+#' @seealso [LayoutFormat]
+#' @family Appenders
+#' @name AppenderGmail
+NULL
+
+
+#' @export
+AppenderGmail <- R6::R6Class(
+  "AppenderGmail",
+  inherit = AppenderDigest,
+  cloneable = FALSE,
+
+  # +- public --------------------------------------------------------------
+  public = list(
+    initialize = function(
+      to,
+      threshold = NA_integer_,
+      flush_threshold = "fatal",
+      layout = LayoutFormat$new(fmt = "%L [%t] %m %f", timestamp_fmt = "%H:%M:%S"),
+      subject_layout = LayoutFormat$new(fmt = "[LGR] %L: %m"),
+      buffer_size = 30,
+      from = get_user(),
+      html = FALSE,
+      cc = NULL,
+      bcc = NULL
+    ){
+      assert_namespace("gmailr")
+
+      private$insert_pos <- 0L
+      private$last_event    <- 0L
+      private$event_order   <- seq_len(buffer_size)
+
+      self$set_to(to)
+      self$set_from(from)
+      self$set_cc(cc)
+      self$set_bcc(bcc)
+      self$set_html(html)
+      self$set_subject_layout(subject_layout)
+
+      self$set_layout(layout)
+      self$set_threshold(threshold)
+      self$set_flush_threshold(flush_threshold)
+      self$set_buffer_size(buffer_size)
+      self$set_should_flush(function(event, obj)
+        is.na(obj[["flush_threshold"]]) || all(event[["level"]] <= obj[["flush_threshold"]])
+      )
+
+      private$.flush_on_exit   <- FALSE
+      private$.flush_on_rotate <- FALSE
+    },
+
+    flush = function(
+    ){
+      assign("insert_pos", 0L, envir = private)
+
+      body <- paste(
+        lapply(self$buffered_events, self$layout$format_event),
+        collapse = "\n"
+      )
+      le    <- self$buffered_events[[length(self$buffered_events)]]
+      title <- self$subject_layout$format_event(le)
+
+      mail <- gmailr::mime()
+      mail <- gmailr::to(mail, self$to)
+      mail <- gmailr::from(mail, self$from)
+      mail <- gmailr::cc(mail, self$cc)
+      mail <- gmailr::bcc(mail, self$bcc)
+      mail <- gmailr::subject(mail, title)
+
+      if (self$html){
+        mail <- gmailr::html_body(mail, paste0("<pre>\n", body, "</pre>\n"))
+      } else {
+        mail <- gmailr::text_body(mail, body)
+      }
+
+      gmailr::send_message(mail)
+      private$.buffered_events <- list()
+
+      invisible(self)
+    },
+
+    set_to = function(x){
+      private$.to <- x
+      invisible(self)
+    },
+
+    set_from = function(x){
+      private$.from <- x
+      invisible(self)
+    },
+
+    set_cc = function(x){
+      private$.cc <- x
+      invisible(self)
+    },
+
+    set_bcc = function(x){
+      private$.bcc <- x
+      invisible(self)
+    },
+
+    set_html = function(x){
+      assert(is_scalar_bool(x))
+      private$.html <- x
+      invisible(self)
+    }
+  ),
+
+
+  # +- active ---------------------------------------------------------------
+  active = list(
+    to = function() get(".to", envir = private),
+    control = function() get(".control", envir = private),
+    from = function() get(".from", envir = private),
+    cc = function() get(".cc", envir = private),
+    bcc = function() get(".bcc", envir = private),
+    html = function() get(".html", envir = private)
+  ),
+
+  private = list(
+    .to = NULL,
+    .control = NULL,
+    .from = NULL,
+    .cc = NULL,
+    .bcc = NULL,
+    .html = NULL
   )
 )
 

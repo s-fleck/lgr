@@ -14,11 +14,13 @@ events in case a \code{fatal} event is encountered.
 \section{Usage}{
 \preformatted{
 x <- x$new(threshold = NA_integer_, flush_threshold = "fatal",
-  layout = LayoutFormat$new(fmt = "\%K \%t> \%m \%f", timestamp_fmt = "\%H:\%M:\%S",
-  colors = NULL), buffer_size = 6, apikey = NULL)
+  layout = LayoutFormat$new(fmt = "\%K \%t> \%m \%f", timestamp_fmt = "\%H:\%M:\%S"),
+  subject_layout = LayoutFormat$new(fmt = "[LGR] \%L: \%m"), buffer_size = 6,
+  apikey = NULL)
 
 x$flush()
 x$set_apikey(x)
+x$set_subject_layout(layout)
 x$append(event)
 x$set_buffer_size(x)
 x$set_should_flush(x)
@@ -30,6 +32,7 @@ x$filter(event)
 x$set_filters(filters)
 
 x$apikey
+x$subject_layout
 x$buffer_size
 x$buffered_events
 x$data
@@ -154,9 +157,11 @@ on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderDt}}, \code{\link{AppenderFile}},
+  \code{\link{AppenderDigest}}, \code{\link{AppenderDt}},
+  \code{\link{AppenderFile}}, \code{\link{AppenderGmail}},
   \code{\link{AppenderJson}}, \code{\link{AppenderMemory}},
-  \code{\link{AppenderRjdbc}}, \code{\link{AppenderTable}},
-  \code{\link{Appender}}
+  \code{\link{AppenderRjdbc}},
+  \code{\link{AppenderSendmail}},
+  \code{\link{AppenderTable}}, \code{\link{Appender}}
 }
 \concept{Appenders}
