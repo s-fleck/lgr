@@ -9,21 +9,22 @@ Appenders once certain conditions are met.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(threshold = NA_integer_, appenders = NULL,
-  should_flush = function(event) isTRUE(event[["level"]] <= 100),
-  flush_on_exit = TRUE, flush_on_rotate = TRUE, layout = LayoutFormat$new(fmt =
-  "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S", colors = getOption("lgr.colors")),
-  buffer_size = 1000)
+x <- x$new(threshold = NA_integer_, appenders = NULL, flush_level = "fatal",
+  flush_on_exit = TRUE, flush_on_rotate = TRUE, should_flush = function(event,
+  obj) is.na(event[["level"]]) || event[["level"]] <= obj$flush_level,
+  layout = LayoutFormat$new(fmt = "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S",
+  colors = getOption("lgr.colors")), buffer_size = 1000)
 
-x$append(event)
 x$flush()
 x$set_appenders(x)
 x$add_appender(appender, name = NULL)
 x$remove_appender(pos)
+x$append(event)
 x$set_buffer_size(x)
 x$set_flush_on_exit(x)
 x$set_flush_on_rotate(x)
 x$set_should_flush(x)
+x$set_flush_level(level)
 x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
@@ -31,10 +32,10 @@ x$filter(event)
 x$set_filters(filters)
 
 x$appenders
+x$destination
 x$buffer_size
 x$buffered_events
 x$data
-x$destination
 x$dt
 x$flush_on_exit
 x$flush_on_rotate
@@ -70,10 +71,17 @@ you close \R)}
 \item{\code{flush_on_rotate, set_flush_on_rotate}}{\code{TRUE} or \code{FALSE}: Whether
 the buffer should be flushed when the Buffer is full (f.e when you close
 \R). Setting this to off can have slighly negative perfomance impacts.}
-\item{\code{should_flush(event)}, \code{set_should_flush(x)}}{ A \code{function} with a
-single argument \code{event} (a \link{LogEvent}) that must only return either \code{TRUE}
-or \code{FALSE}. If the function returns \code{TRUE}, flushing of the buffer is
-triggered. Defaults to flushing if a \code{FATAL} event is registered }
+\item{\code{flush_level}, \code{set_flush_level()}}{\code{integer} or \code{character}
+\link[=log_level]{log level}. Minimum event level that will trigger flushing of
+the buffer. This behaviour is implemented through \code{should_flush()},
+and you can modify that function for different behaviour.
+}
+\item{\code{should_flush(event, obj)}, \code{set_should_flush(x)}}{
+A function with exactly two arguments: \code{event} and \code{obj}. The LogEvent
+will be passed to \code{event}, the Appender will get passed to \code{obj}.
+This means that you can f.e. use \code{obj$threshold} to access the threshold
+of the Appender. If the function returns \code{TRUE}, flushing of the buffer
+is triggered. Defaults to flushing if a \code{FATAL} event is registered }
 }
 
 
@@ -86,8 +94,7 @@ with a maximum of \code{buffer_size} rows}
 
 
 \describe{
-\item{\code{data}}{Get the log recorded by this \code{Appender} as a
-\code{data.frame}}
+\item{\code{data}}{Get the log recorded by this \code{Appender} as a \code{data.frame}}
 }
 
 
@@ -105,10 +112,15 @@ human-readable form (mainly for print output)}
 
 \describe{
 \item{\code{filters}, \code{set_filters(filters)}}{a \code{list} of predicates (functions
-that return either \code{TRUE} or \code{FALSE}). If all of these functions evaluate
-to \code{TRUE} the LogEvent is passed on. Since
-LogEvents have reference semantics, filters can also be abused to modify
-LogEvents before they are passed on. Look at the source code of
+that return either \code{TRUE} or \code{FALSE}). These functions must have exactly
+two arguments: \code{event} and \code{obj}. When the \code{filter()} method of the
+Filterable is invoked on a LogEvent, that event will get passed to \code{event},
+the Filterable will get passed to \code{obj}. This means that you can,
+f.e. use \code{obj$threshold} to access the threshold of the Appender/Logger
+that is using the filter.
+If all of these functions evaluate to \code{TRUE} the LogEvent is passed on.
+Since LogEvents have reference semantics, filters can also be abused to
+modify them before they are passed on. Look at the source code of
 \code{\link[=with_log_level]{with_log_level()}} or \code{\link[=with_log_value]{with_log_value()}} for examples.
 }
 }
@@ -124,7 +136,7 @@ LogEvents before they are passed on. Look at the source code of
 
 
 \describe{
-\item{\code{flush()}}{Manually trigger flushing}
+\item{\code{flush()}}{Manually trigger flushing of the buffer}
 }
 
 
@@ -136,7 +148,10 @@ via this Appenders \link{Layout}}
 
 
 \describe{
-\item{\code{append(event)}}{Write the \link{LogEvent} \code{event} to a destination}
+\item{\code{append(event)}}{Tell the Appender to process a \link{LogEvent} \code{event}.
+This method is usually not called by the user, but invoked by a
+\link{Logger}
+}
 }
 
 

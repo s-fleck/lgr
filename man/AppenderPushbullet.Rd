@@ -4,22 +4,25 @@
 \alias{AppenderPushbullet}
 \title{Log to Pushbullet}
 \description{
-Send push notifications to pushbullet. This Appender keeps an in-memory
-buffer like \link{AppenderBuffer}, so that it can compose a log message based on
-the last \code{buffer_size} events instead of just the last one.
+Send push notifications to \href{https://www.pushbullet.com/}{pushbullet}. This
+Appender keeps an in-memory buffer like \link{AppenderBuffer}. If the buffer is
+flushed, usually becuase an event of specified magnitutde is encountered, all
+buffered events are concatenated to a single message that is sent to
+\code{\link[RPushbullet:pbPost]{RPushbullet::pbPost()}}. The default behaviour is to push the last 7 log
+events in case a \code{fatal} event is encountered.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(threshold = NA_integer_, push_level = "error",
+x <- x$new(threshold = NA_integer_, flush_level = "fatal",
   layout = LayoutFormat$new(fmt = "\%K \%t> \%m \%f", timestamp_fmt = "\%H:\%M:\%S",
   colors = NULL), buffer_size = 6, apikey = NULL)
 
 x$flush()
-x$set_push_level(level)
 x$set_apikey(x)
 x$append(event)
 x$set_buffer_size(x)
 x$set_should_flush(x)
+x$set_flush_level(level)
 x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
@@ -27,7 +30,6 @@ x$filter(event)
 x$set_filters(filters)
 
 x$apikey
-x$push_level
 x$buffer_size
 x$buffered_events
 x$data
@@ -44,15 +46,7 @@ x$filters
 
 
 \describe{
-\item{\code{push_level}, \code{set_push_level()}}{\code{integer} or \code{character}
-\link[=log_level]{log level}. Push if a LogEvent of that level is registered
-}
-\item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar. Number of
-\link{LogEvents} to buffer}
-\item{\code{should_flush(event)}, \code{set_should_flush(x)}}{ A \code{function} with a
-single argument \code{event} (a \link{LogEvent}) that must only return either \code{TRUE}
-or \code{FALSE}. If the function returns \code{TRUE}, a log message is generated
-from the last \code{buffer_size} events and sent to pushbullet}
+\item{\code{apikey}, \code{set_apikey()}}{See \code{\link[RPushbullet:pbPost]{RPushbullet::pbPost()}}}
 }
 
 
@@ -65,10 +59,17 @@ you close \R)}
 \item{\code{flush_on_rotate, set_flush_on_rotate}}{\code{TRUE} or \code{FALSE}: Whether
 the buffer should be flushed when the Buffer is full (f.e when you close
 \R). Setting this to off can have slighly negative perfomance impacts.}
-\item{\code{should_flush(event)}, \code{set_should_flush(x)}}{ A \code{function} with a
-single argument \code{event} (a \link{LogEvent}) that must only return either \code{TRUE}
-or \code{FALSE}. If the function returns \code{TRUE}, flushing of the buffer is
-triggered. Defaults to flushing if a \code{FATAL} event is registered }
+\item{\code{flush_level}, \code{set_flush_level()}}{\code{integer} or \code{character}
+\link[=log_level]{log level}. Minimum event level that will trigger flushing of
+the buffer. This behaviour is implemented through \code{should_flush()},
+and you can modify that function for different behaviour.
+}
+\item{\code{should_flush(event, obj)}, \code{set_should_flush(x)}}{
+A function with exactly two arguments: \code{event} and \code{obj}. The LogEvent
+will be passed to \code{event}, the Appender will get passed to \code{obj}.
+This means that you can f.e. use \code{obj$threshold} to access the threshold
+of the Appender. If the function returns \code{TRUE}, flushing of the buffer
+is triggered. Defaults to flushing if a \code{FATAL} event is registered }
 }
 
 
@@ -81,8 +82,7 @@ with a maximum of \code{buffer_size} rows}
 
 
 \describe{
-\item{\code{data}}{Get the log recorded by this \code{Appender} as a
-\code{data.frame}}
+\item{\code{data}}{Get the log recorded by this \code{Appender} as a \code{data.frame}}
 }
 
 
@@ -100,10 +100,15 @@ human-readable form (mainly for print output)}
 
 \describe{
 \item{\code{filters}, \code{set_filters(filters)}}{a \code{list} of predicates (functions
-that return either \code{TRUE} or \code{FALSE}). If all of these functions evaluate
-to \code{TRUE} the LogEvent is passed on. Since
-LogEvents have reference semantics, filters can also be abused to modify
-LogEvents before they are passed on. Look at the source code of
+that return either \code{TRUE} or \code{FALSE}). These functions must have exactly
+two arguments: \code{event} and \code{obj}. When the \code{filter()} method of the
+Filterable is invoked on a LogEvent, that event will get passed to \code{event},
+the Filterable will get passed to \code{obj}. This means that you can,
+f.e. use \code{obj$threshold} to access the threshold of the Appender/Logger
+that is using the filter.
+If all of these functions evaluate to \code{TRUE} the LogEvent is passed on.
+Since LogEvents have reference semantics, filters can also be abused to
+modify them before they are passed on. Look at the source code of
 \code{\link[=with_log_level]{with_log_level()}} or \code{\link[=with_log_value]{with_log_value()}} for examples.
 }
 }
@@ -115,7 +120,7 @@ LogEvents before they are passed on. Look at the source code of
 
 
 \describe{
-\item{\code{flush()}}{Manually trigger flushing}
+\item{\code{flush()}}{Manually trigger flushing of the buffer}
 }
 
 
@@ -127,7 +132,10 @@ via this Appenders \link{Layout}}
 
 
 \describe{
-\item{\code{append(event)}}{Write the \link{LogEvent} \code{event} to a destination}
+\item{\code{append(event)}}{Tell the Appender to process a \link{LogEvent} \code{event}.
+This method is usually not called by the user, but invoked by a
+\link{Logger}
+}
 }
 
 

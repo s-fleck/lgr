@@ -188,19 +188,11 @@ format_custom_fields <- function(
     dots     <- style_subtle("..")
   }
 
-  res <- lapply(x, function(.x) {
-    if (is.atomic(.x)){
-      if (is.numeric(.x)) {
-        .x <- format(.x, justify = "none", drop0trailing = TRUE, trim = TRUE)
-      }
-
-      r <- ptrunc_col(.x, collapse = ", ", width = max_len, dots = dots)
-      if (length(.x) > 1) r <- paste0(brackets[[1]], r, brackets[[2]])
-      r
-    } else {
-      class_fmt(.x)
-    }
-  })
+  res <- lapply(
+    x,
+    preview_object,
+    width = max_len, brackets = brackets, dots = dots, quotes = c("", "")
+  )
 
   paste0(
     braces[[1]],
@@ -214,6 +206,29 @@ format_custom_fields <- function(
 }
 
 
+
+preview_object <- function(
+  x,
+  width = 32,
+  brackets = c("(", ")"),
+  quotes   = c("`", "`"),
+  dots = ".."
+){
+  if (!is.atomic(x))
+    return(class_fmt(x))
+
+  if (is.numeric(x))
+    x <- format(x, justify = "none", drop0trailing = TRUE, trim = TRUE)
+
+  res <- ptrunc_col(x, collapse = ", ", width = width, dots = dots)
+
+  if (length(x) > 1)
+    res <- paste0(brackets[[1]], res, brackets[[2]])
+  else
+    res <- paste0(quotes[[1]], res, quotes[[2]])
+
+  res
+}
 
 
 #' @export

@@ -272,9 +272,8 @@ test_that("AppenderDt: memory cycling works", {
 
 
 test_that("AppenderBuffer: FATAL log level triggers flush", {
-
   l$info(LETTERS[1:3])
-  expect_identical(length(l$appenders$buffer$buffered_events), 1L)
+  expect_length(l$appenders$buffer$buffered_events, 1)
   l$info(LETTERS[4:7])
   expect_identical(length(l$appenders$buffer$buffered_events), 2L)
 
@@ -292,6 +291,7 @@ test_that("AppenderBuffer: FATAL log level triggers flush", {
   expect_identical(l$appenders$buffer$buffered_events, list())
   expect_match(paste(readLines(tf), collapse = "#"), ".*A#.*B#.*C#.*a#.*b#.*c#.*x")
 })
+
 
 
 test_that("AppenderBuffer: memory is flushed on buffer cycling", {
@@ -436,6 +436,39 @@ test_that("AppenderBuffer: cycling is implemented correctly", {
     sapply(l$appenders[[1]]$buffered_events, `[[`, "msg"),
     paste0("test", 2:5)
   )
+})
+
+
+
+test_that("AppenderBuffer: Custom should_flush can be defined", {
+  l <- Logger$new(
+    "buffer test",
+    appenders = AppenderBuffer$new(),
+    propagate = FALSE
+  )
+
+  # FALSE
+  l$appenders[[1]]$set_should_flush(function(event, obj) FALSE)
+  l$fatal("test")
+  expect_length(l$appenders[[1]]$buffered_events, 1L)
+
+  # TRUE
+  l$appenders[[1]]$set_should_flush(
+    function(event, obj) inherits(event, "LogEvent") && inherits(obj, "AppenderBuffer")
+  )
+  l$fatal("test")
+  expect_length(l$appenders[[1]]$buffered_events, 0L)
+
+  # Undefined
+  l$appenders[[1]]$set_should_flush(function(event, obj) NA)
+  expect_warning(l$fatal("test"))
+  expect_length(l$appenders[[1]]$buffered_events, 1L)
+  l$appenders[[1]]$set_should_flush(function(event, obj) iris)
+  expect_warning(l$fatal("test"))
+  expect_length(l$appenders[[1]]$buffered_events, 2L)
+
+  # illegal filter
+  expect_error(l$appenders[[1]]$set_should_flush(mean))
 })
 
 
