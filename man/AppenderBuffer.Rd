@@ -16,14 +16,14 @@ x <- x$new(threshold = NA_integer_, appenders = NULL,
   layout = LayoutFormat$new(fmt = "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S",
   colors = getOption("lgr.colors")), buffer_size = 1000)
 
+x$append(event)
 x$flush()
+x$set_flush_on_exit(x)
+x$set_flush_on_rotate(x)
 x$set_appenders(x)
 x$add_appender(appender, name = NULL)
 x$remove_appender(pos)
-x$append(event)
 x$set_buffer_size(x)
-x$set_flush_on_exit(x)
-x$set_flush_on_rotate(x)
 x$set_should_flush(x)
 x$set_flush_threshold(level)
 x$show(threshold = NA_integer_, n = 20L)
@@ -34,12 +34,12 @@ x$set_filters(filters)
 
 x$appenders
 x$destination
+x$flush_on_exit
+x$flush_on_rotate
 x$buffer_size
 x$buffered_events
 x$data
 x$dt
-x$flush_on_exit
-x$flush_on_rotate
 x$flush_threshold
 x$should_flush
 x$layout
@@ -62,18 +62,19 @@ its \code{$show()} method.
 \describe{
 \item{\code{appenders}, \code{set_appenders()}}{Like for a \link{Logger}. Buffered events will be passed on
 to these Appenders once a flush is triggered}
-}
-
-
-
-\describe{
-\item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar. Number of \link{LogEvents} to buffer}
 \item{\code{flush_on_exit, set_flush_on_exit(x)}}{\code{TRUE} or \code{FALSE}: Whether the
 buffer should be flushed when the Appender is garbage collected (f.e when
 you close \R)}
 \item{\code{flush_on_rotate, set_flush_on_rotate}}{\code{TRUE} or \code{FALSE}: Whether
 the buffer should be flushed when the Buffer is full (f.e when you close
 \R). Setting this to off can have slighly negative perfomance impacts.}
+}
+
+
+
+\describe{
+\item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar. Number of \link{LogEvents} to buffer}
+
 \item{\code{flush_threshold}, \code{set_flush_threshold()}}{\code{integer} or \code{character}
 \link[=log_level]{log level}. Minimum event level that will trigger flushing of
 the buffer. This behaviour is implemented through \code{should_flush()},
@@ -186,10 +187,8 @@ and AppenderBuffer if you actually want to buffer events
 \link{LayoutFormat}
 
 Other Appenders: \code{\link{AppenderConsole}},
-  \code{\link{AppenderDbi}}, \code{\link{AppenderDigest}},
-  \code{\link{AppenderDt}}, \code{\link{AppenderFile}},
+  \code{\link{AppenderDbi}}, \code{\link{AppenderFile}},
   \code{\link{AppenderGmail}}, \code{\link{AppenderJson}},
-  \code{\link{AppenderMemory}},
   \code{\link{AppenderPushbullet}},
   \code{\link{AppenderRjdbc}},
   \code{\link{AppenderSendmail}},

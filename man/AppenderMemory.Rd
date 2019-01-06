@@ -17,8 +17,6 @@ x <- x$get_inherit()$new(layout = Layout$new(), threshold = NA_integer_)
 x$append(event)
 x$flush()
 x$set_buffer_size(x)
-x$set_flush_on_exit(x)
-x$set_flush_on_rotate(x)
 x$set_should_flush(x)
 x$set_flush_threshold(level)
 x$show(threshold = NA_integer_, n = 20L)
@@ -31,8 +29,6 @@ x$buffer_size
 x$buffered_events
 x$data
 x$dt
-x$flush_on_exit
-x$flush_on_rotate
 x$flush_threshold
 x$should_flush
 x$destination
@@ -48,12 +44,7 @@ x$filters
 
 \describe{
 \item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar. Number of \link{LogEvents} to buffer}
-\item{\code{flush_on_exit, set_flush_on_exit(x)}}{\code{TRUE} or \code{FALSE}: Whether the
-buffer should be flushed when the Appender is garbage collected (f.e when
-you close \R)}
-\item{\code{flush_on_rotate, set_flush_on_rotate}}{\code{TRUE} or \code{FALSE}: Whether
-the buffer should be flushed when the Buffer is full (f.e when you close
-\R). Setting this to off can have slighly negative perfomance impacts.}
+
 \item{\code{flush_threshold}, \code{set_flush_threshold()}}{\code{integer} or \code{character}
 \link[=log_level]{log level}. Minimum event level that will trigger flushing of
 the buffer. This behaviour is implemented through \code{should_flush()},
@@ -144,18 +135,6 @@ on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 \link{LayoutFormat}
 
 Other abstract classes: \code{\link{AppenderDigest}},
-  \code{\link{AppenderTable}}, \code{\link{Appender}},
-  \code{\link{Filterable}}
-
-Other Appenders: \code{\link{AppenderBuffer}},
-  \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderDigest}}, \code{\link{AppenderDt}},
-  \code{\link{AppenderFile}}, \code{\link{AppenderGmail}},
-  \code{\link{AppenderJson}},
-  \code{\link{AppenderPushbullet}},
-  \code{\link{AppenderRjdbc}},
-  \code{\link{AppenderSendmail}},
-  \code{\link{AppenderTable}}, \code{\link{Appender}}
+  \code{\link{AppenderTable}}, \code{\link{Filterable}}
 }
-\concept{Appenders}
 \concept{abstract classes}

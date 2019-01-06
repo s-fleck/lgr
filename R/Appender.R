@@ -1,6 +1,4 @@
-#' Abstract Class for Appenders
-#'
-#' @template abstract_class
+#' Appenders
 #'
 #' @description
 #' Appenders are assigned to [Loggers] and
@@ -8,6 +6,10 @@
 #' a text file. An Appender must have a single [Layout] that tells it how to
 #' format the LogEvent. For details please refer to the documentations of the
 #' specific Appenders.
+#'
+#' **Appender is not designed for direct usage**, but it is the basis on which all
+#' other Appenders are built. Please see the **see also** section towards the
+#' end of this document a list of available Appenders.
 #'
 #' @eval r6_usage(Appender)
 #'
@@ -504,7 +506,6 @@ AppenderTable <- R6::R6Class(
 #'
 #' @export
 #' @seealso [LayoutFormat], [simple_logging], [data.table::data.table]
-#' @family Appenders
 #' @aliases lgr_data
 #' @name AppenderDt
 #'
@@ -1024,12 +1025,7 @@ AppenderRjdbc <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{`buffer_size, set_buffer_size(x)`}{`integer` scalar. Number of [LogEvents] to buffer}
-#'   \item{`flush_on_exit, set_flush_on_exit(x)`}{`TRUE` or `FALSE`: Whether the
-#'     buffer should be flushed when the Appender is garbage collected (f.e when
-#'     you close \R)}
-#'   \item{`flush_on_rotate, set_flush_on_rotate`}{`TRUE` or `FALSE`: Whether
-#'     the buffer should be flushed when the Buffer is full (f.e when you close
-#'     \R). Setting this to off can have slighly negative perfomance impacts.}
+#'
 #'  \item{`flush_threshold`, `set_flush_threshold()`}{`integer` or `character`
 #'     [log level][log_level]. Minimum event level that will trigger flushing of
 #'     the buffer. This behaviour is implemented through `should_flush()`,
@@ -1052,7 +1048,6 @@ AppenderRjdbc <- R6::R6Class(
 #'
 #' @export
 #' @seealso [LayoutFormat]
-#' @family Appenders
 #' @name AppenderMemory
 NULL
 
@@ -1089,11 +1084,8 @@ AppenderMemory <- R6::R6Class(
       if (sf){
         self[["flush"]]()
       } else if (i > bs){
-        if (get(".flush_on_rotate", envir = private) ){
-          self[["flush"]]()
-        } else {
-          assign("insert_pos", 0L, envir = private)
-        }
+        # rotate
+        assign("insert_pos", 0L, envir = private)
       }
 
       NULL
@@ -1105,18 +1097,6 @@ AppenderMemory <- R6::R6Class(
     set_buffer_size = function(x){
       assert(is_scalar_integerish(x))
       private$.buffer_size <- x
-      invisible(self)
-    },
-
-    set_flush_on_exit = function(x){
-      assert(is_scalar_bool(x))
-      private$.flush_on_exit <- x
-      invisible(self)
-    },
-
-    set_flush_on_rotate = function(x){
-      assert(is_scalar_bool(x))
-      private$.flush_on_rotate <- x
       invisible(self)
     },
 
@@ -1163,14 +1143,6 @@ AppenderMemory <- R6::R6Class(
 
   # +- active ---------------------------------------------------------------
   active = list(
-    flush_on_exit = function() {
-      get(".flush_on_exit", private)
-    },
-
-    flush_on_rotate = function() {
-      get(".flush_on_rotate", private)
-    },
-
     should_flush = function(){
       get(".should_flush", private)
     },
@@ -1217,8 +1189,6 @@ AppenderMemory <- R6::R6Class(
     last_event = NULL,
     event_order = NULL,
     .flush_threshold = NULL,
-    .flush_on_exit = NULL,
-    .flush_on_rotate = NULL,
     .should_flush = NULL,
     .buffer_size = NULL,
     .buffered_events = NULL
@@ -1250,6 +1220,12 @@ AppenderMemory <- R6::R6Class(
 #' \describe{
 #'   \item{`appenders`, `set_appenders()`}{Like for a [Logger]. Buffered events will be passed on
 #'     to these Appenders once a flush is triggered}
+#'   \item{`flush_on_exit, set_flush_on_exit(x)`}{`TRUE` or `FALSE`: Whether the
+#'     buffer should be flushed when the Appender is garbage collected (f.e when
+#'     you close \R)}
+#'   \item{`flush_on_rotate, set_flush_on_rotate`}{`TRUE` or `FALSE`: Whether
+#'     the buffer should be flushed when the Buffer is full (f.e when you close
+#'     \R). Setting this to off can have slighly negative perfomance impacts.}
 #' }
 #'
 #' @section Methods:
@@ -1315,6 +1291,40 @@ AppenderBuffer <- R6::R6Class(
       invisible(self)
     },
 
+    append = function(
+      event
+    ){
+      i <- get("insert_pos", envir = private) + 1L
+      assign("insert_pos", i, envir = private, inherits = TRUE)
+      private[["last_event"]] <- private[["last_event"]] + 1L
+      private[["event_order"]][[i]] <- private[["last_event"]]
+      private[[".buffered_events"]][[i]] <- event
+
+      bs <- get(".buffer_size", envir = private)
+
+      sf <- get(".should_flush", envir = private)(event, self)
+      if (!is_scalar_bool(sf)){
+        warning(
+          "`should_flush()` did not return `TRUE` or `FALSE` but ",
+          preview_object(sf), ". ",
+          "Please set a proper filter function with `$set_should_flush()`"
+        )
+        sf <- FALSE
+      }
+
+      if (sf){
+        self[["flush"]]()
+      } else if (i > bs){
+        if (get(".flush_on_rotate", envir = private) ){
+          self[["flush"]]()
+        } else {
+          assign("insert_pos", 0L, envir = private)
+        }
+      }
+
+      NULL
+    },
+
     flush = function(){
       for (event in get("buffered_events", envir = self)){
         for (app in self$appenders) {
@@ -1324,6 +1334,18 @@ AppenderBuffer <- R6::R6Class(
 
       assign("insert_pos", 0L, envir = private)
       private$.buffered_events <- list()
+      invisible(self)
+    },
+
+    set_flush_on_exit = function(x){
+      assert(is_scalar_bool(x))
+      private$.flush_on_exit <- x
+      invisible(self)
+    },
+
+    set_flush_on_rotate = function(x){
+      assert(is_scalar_bool(x))
+      private$.flush_on_rotate <- x
       invisible(self)
     },
 
@@ -1399,6 +1421,14 @@ AppenderBuffer <- R6::R6Class(
 
   # +- active ---------------------------------------------------------------
   active = list(
+    flush_on_exit = function() {
+      get(".flush_on_exit", private)
+    },
+
+    flush_on_rotate = function() {
+      get(".flush_on_rotate", private)
+    },
+
     appenders = function(value){
       if (missing(value)) return(c(private$.appenders))
 
@@ -1424,6 +1454,8 @@ AppenderBuffer <- R6::R6Class(
 
   # +- private  ---------------------------------------------------------
   private = list(
+    .flush_on_exit = NULL,
+    .flush_on_rotate = NULL,
     event_order = NULL,
     .appenders = list()
   )
@@ -1432,13 +1464,14 @@ AppenderBuffer <- R6::R6Class(
 
 # AppenderDigest --------------------------------------------------------
 
-#' Abstract Class for Email Like Appenders
+#' Abstract Class for Digests
 #'
 #' @template abstract_class
 #'
 #' @description
 #' Abstract class for Appenders that transmit digests of several log events
-#' at once, like [AppenderPushbullet], [AppenderGmail] and [AppenderSendmail]
+#' at once, for example [AppenderPushbullet], [AppenderGmail] and
+#' [AppenderSendmail].
 #'
 #' @inheritSection AppenderMemory Methods
 #' @inheritSection AppenderMemory Fields
@@ -1447,16 +1480,16 @@ AppenderBuffer <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{`subject_layout`, `set_layout(subject_layout)`}{Like `layout`, but
-#'     used to format the subject/title of the digest. Is usually applied to
-#'     the last log event.
+#'     used to format the subject/title of the digest. While `layout` is applied
+#'     to each LogEvent of the digest, `subject_layout` is only applied to
+#'     the last one.
 #'   }
 #' }
 #'
 #' @section Methods:
 #'
 #' @export
-#' @seealso [LayoutFormat]
-#' @family Appenders
+#' @seealso [LayoutFormat], [LayoutGlue]
 #' @name AppenderDigest
 NULL
 
@@ -1472,14 +1505,6 @@ AppenderDigest <-  R6::R6Class(
         assert(inherits(layout, "Layout"))
         private$.subject_layout <- layout
         invisible(self)
-      },
-
-      set_flush_on_exit = function(x){
-        stop("`flush_on_exit` cannot be modified for AppenderPushbullet", call. = FALSE)
-      },
-
-      set_flush_on_rotate = function(x){
-        stop("`flush_on_rotate` cannot be modified for AppenderPushbullet", call. = FALSE)
       }
     ),
 
@@ -1501,9 +1526,9 @@ AppenderDigest <-  R6::R6Class(
 
 #' Log to Pushbullet
 #'
-#' Send push notifications to [pushbullet](https://www.pushbullet.com/). This
+#' Send push notifications via [pushbullet](https://www.pushbullet.com/). This
 #' Appender keeps an in-memory buffer like [AppenderBuffer]. If the buffer is
-#' flushed, usually becuase an event of specified magnitutde is encountered, all
+#' flushed, usually because an event of specified magnitutde is encountered, all
 #' buffered events are concatenated to a single message that is sent to
 #' [RPushbullet::pbPost()]. The default behaviour is to push the last 7 log
 #' events in case a `fatal` event is encountered.
@@ -1524,15 +1549,16 @@ AppenderDigest <-  R6::R6Class(
 #' @section Fields:
 #'
 #' \describe{
-#'   \item{`apikey`, `set_apikey()`}{See [RPushbullet::pbPost()]}
+#'   \item{`apikey`, `recipients`, `email`, `channel`, `devices`}{
+#'     See [RPushbullet::pbPost()]
+#'   }
 #' }
 #'
 #' @section Methods:
 #'
-#'
 #' @export
-#' @seealso [LayoutFormat]
 #' @family Appenders
+#' @seealso [LayoutFormat], [LayoutGlue]
 #' @name AppenderPushbullet
 NULL
 
@@ -1551,6 +1577,10 @@ AppenderPushbullet <- R6::R6Class(
       layout = LayoutFormat$new(fmt = "%K  %t> %m %f", timestamp_fmt = "%H:%M:%S"),
       subject_layout = LayoutFormat$new(fmt = "[LGR] %L: %m"),
       buffer_size = 6,
+      recipients = NULL,
+      email = NULL,
+      channel = NULL,
+      devices = NULL,
       apikey = NULL
     ){
       private$insert_pos  <- 0L
@@ -1567,8 +1597,10 @@ AppenderPushbullet <- R6::R6Class(
         is.na(obj[["flush_threshold"]]) || all(event[["level"]] <= obj[["flush_threshold"]])
       )
 
-      private$.flush_on_exit   <- FALSE
-      private$.flush_on_rotate <- FALSE
+      self$set_recipients(recipients)
+      self$set_email(email)
+      self$set_channel(channel)
+      self$set_devices(devices)
     },
 
     flush = function(
@@ -1590,9 +1622,13 @@ AppenderPushbullet <- R6::R6Class(
 
       if (!is.null(self$apikey)){
         cl$apikey <- self$apikey
+        cl$recipients <- self$recipients
+        cl$email <- self$email
+        cl$channel <- self$channel
+        cl$devices <- self$devices
       }
 
-      do.call(RPushbullet::pbPost, cl)
+      do.call(RPushbullet::pbPost, compact(cl))
       private$.buffered_events <- list()
 
       invisible(self)
@@ -1604,12 +1640,24 @@ AppenderPushbullet <- R6::R6Class(
       invisible(self)
     },
 
-    set_flush_on_exit = function(x){
-      stop("`flush_on_exit` cannot be modified for AppenderPushbullet", call. = FALSE)
+    set_recipients = function(x){
+      private$.recipients <- x
+      invisible(self)
     },
 
-    set_flush_on_rotate = function(x){
-      stop("`flush_on_rotate` cannot be modified for AppenderPushbullet", call. = FALSE)
+    set_email = function(x){
+      private$.email <- x
+      invisible(self)
+    },
+
+    set_channel = function(x){
+      private$.channel <- x
+      invisible(self)
+    },
+
+    set_devices = function(x){
+      private$.devices <- x
+      invisible(self)
     }
   ),
 
@@ -1621,7 +1669,11 @@ AppenderPushbullet <- R6::R6Class(
 
 
   private = list(
-    .apikey = NULL
+    .apikey = NULL,
+    .recipients = NULL,
+    .email = NULL,
+    .channel = NULL,
+    .devices = NULL
   )
 )
 
@@ -1652,13 +1704,17 @@ AppenderPushbullet <- R6::R6Class(
 #'
 #' @section Fields:
 #'
-#' Please see the documentation of [sendmailR::sendmail()] for details.
+#' \describe{
+#'   \item{`to`, `control`, `from`, `cc`, `bcc`, `headers`}{
+#'     Please see the documentation of [sendmailR::sendmail()] for details.
+#'   }
+#' }
 #'
 #' @section Methods:
 #'
 #'
 #' @export
-#' @seealso [LayoutFormat]
+#' @seealso [LayoutFormat], [LayoutGlue]
 #' @family Appenders
 #' @name AppenderSendmail
 NULL
@@ -1815,12 +1871,21 @@ AppenderSendmail <- R6::R6Class(
 #'
 #' @section Fields:
 #'
-#' Please see the documentation of [gmailr::send_message()] for details.
+#' \describe{
+#'   \item{`to`, `from`, `cc`, `bcc`}{
+#'     Please see the documentation of [gmailr::send_message()] for details.
+#'   }
+#'   \item{`html`, `set_html()`}{`TRUE` or `FALSE`. Send a html email message?
+#'     This does currently only formats the log contents as monospace verbatim
+#'     text.
+#'   }
+#' }
+#'
 #'
 #' @section Methods:
 #'
 #' @export
-#' @seealso [LayoutFormat]
+#' @seealso [LayoutFormat], [LayoutGlue]
 #' @family Appenders
 #' @name AppenderGmail
 NULL
@@ -1842,9 +1907,9 @@ AppenderGmail <- R6::R6Class(
       subject_layout = LayoutFormat$new(fmt = "[LGR] %L: %m"),
       buffer_size = 30,
       from = get_user(),
-      html = FALSE,
       cc = NULL,
-      bcc = NULL
+      bcc = NULL,
+      html = FALSE
     ){
       assert_namespace("gmailr")
 

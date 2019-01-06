@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Abstract Class for Email Like Appenders — AppenderDigest • lgr</title>
+<title>Abstract Class for Digests — AppenderDigest • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,12 +30,13 @@
 
 
 
-<meta property="og:title" content="Abstract Class for Email Like Appenders — AppenderDigest" />
+<meta property="og:title" content="Abstract Class for Digests — AppenderDigest" />
 
 <meta property="og:description" content="Abstract classes are exported for package developers that want to extend
 them, they cannot be instantiated directly.
 Abstract class for Appenders that transmit digests of several log events
-at once, like AppenderPushbullet, AppenderGmail and AppenderSendmail" />
+at once, for example AppenderPushbullet, AppenderGmail and
+AppenderSendmail." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -117,7 +118,7 @@ at once, like AppenderPushbullet, AppenderGmail and AppenderSendmail" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Abstract Class for Email Like Appenders</h1>
+    <h1>Abstract Class for Digests</h1>
     <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/Appender.R'><code>R/Appender.R</code></a></small>
     <div class="hidden name"><code>AppenderDigest.Rd</code></div>
     </div>
@@ -127,7 +128,8 @@ at once, like AppenderPushbullet, AppenderGmail and AppenderSendmail" />
     <p><strong>Abstract classes</strong> are exported for package developers that want to extend
 them, they cannot be instantiated directly.</p>
 <p>Abstract class for Appenders that transmit digests of several log events
-at once, like <a href='AppenderPushbullet.html'>AppenderPushbullet</a>, <a href='AppenderGmail.html'>AppenderGmail</a> and <a href='AppenderSendmail.html'>AppenderSendmail</a></p>
+at once, for example <a href='AppenderPushbullet.html'>AppenderPushbullet</a>, <a href='AppenderGmail.html'>AppenderGmail</a> and
+<a href='AppenderSendmail.html'>AppenderSendmail</a>.</p>
     
     </div>
 
@@ -137,18 +139,13 @@ at once, like <a href='AppenderPushbullet.html'>AppenderPushbullet</a>, <a href=
     
     <dl class='dl-horizontal'>
 <dt><code>subject_layout</code>, <code>set_layout(subject_layout)</code></dt><dd><p>Like <code>layout</code>, but
-used to format the subject/title of the digest. Is usually applied to
-the last log event.</p></dd>
+used to format the subject/title of the digest. While <code>layout</code> is applied
+to each LogEvent of the digest, <code>subject_layout</code> is only applied to
+the last one.</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>buffer_size, set_buffer_size(x)</code></dt><dd><p><code>integer</code> scalar. Number of <a href='LogEvent.html'>LogEvents</a> to buffer</p></dd>
-<dt><code>flush_on_exit, set_flush_on_exit(x)</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>: Whether the
-buffer should be flushed when the Appender is garbage collected (f.e when
-you close <span style="R">R</span>)</p></dd>
-<dt><code>flush_on_rotate, set_flush_on_rotate</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>: Whether
-the buffer should be flushed when the Buffer is full (f.e when you close
-<span style="R">R</span>). Setting this to off can have slighly negative perfomance impacts.</p></dd>
-<dt><code>flush_threshold</code>, <code>set_flush_threshold()</code></dt><dd><p><code>integer</code> or <code>character</code>
+    <dt><code>flush_threshold</code>, <code>set_flush_threshold()</code></dt><dd><p><code>integer</code> or <code>character</code>
 <a href='get_log_levels.html'>log level</a>. Minimum event level that will trigger flushing of
 the buffer. This behaviour is implemented through <code>should_flush()</code>,
 and you can modify that function for different behaviour.</p></dd>
@@ -212,19 +209,9 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a></p>
+    <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a>, <a href='LayoutGlue.html'>LayoutGlue</a></p>
 <p>Other abstract classes: <code><a href='AppenderMemory.html'>AppenderMemory</a></code>,
-  <code><a href='AppenderTable.html'>AppenderTable</a></code>, <code><a href='Appender.html'>Appender</a></code>,
-  <code><a href='Filterable.html'>Filterable</a></code></p>
-<p>Other Appenders: <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
-  <code><a href='AppenderConsole.html'>AppenderConsole</a></code>, <code><a href='AppenderDbi.html'>AppenderDbi</a></code>,
-  <code><a href='AppenderDt.html'>AppenderDt</a></code>, <code><a href='AppenderFile.html'>AppenderFile</a></code>,
-  <code><a href='AppenderGmail.html'>AppenderGmail</a></code>, <code><a href='AppenderJson.html'>AppenderJson</a></code>,
-  <code><a href='AppenderMemory.html'>AppenderMemory</a></code>,
-  <code><a href='AppenderPushbullet.html'>AppenderPushbullet</a></code>,
-  <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>,
-  <code><a href='AppenderSendmail.html'>AppenderSendmail</a></code>,
-  <code><a href='AppenderTable.html'>AppenderTable</a></code>, <code><a href='Appender.html'>Appender</a></code></p></div>
+  <code><a href='AppenderTable.html'>AppenderTable</a></code>, <code><a href='Filterable.html'>Filterable</a></code></p></div>
     
 
   </div>

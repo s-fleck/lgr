@@ -139,8 +139,6 @@ x &lt;- x$get_inherit()$new(layout = Layout$new(), threshold = NA_integer_)
     x$append(event)
 x$flush()
 x$set_buffer_size(x)
-x$set_flush_on_exit(x)
-x$set_flush_on_rotate(x)
 x$set_should_flush(x)
 x$set_flush_threshold(level)
 x$show(threshold = NA_integer_, n = 20L)
@@ -152,8 +150,6 @@ x$set_filters(filters)
 x$buffered_events
 x$data
 x$dt
-x$flush_on_exit
-x$flush_on_rotate
 x$flush_threshold
 x$should_flush
 x$destination
@@ -167,13 +163,7 @@ x$filters
     
     <dl class='dl-horizontal'>
 <dt><code>buffer_size, set_buffer_size(x)</code></dt><dd><p><code>integer</code> scalar. Number of <a href='LogEvent.html'>LogEvents</a> to buffer</p></dd>
-<dt><code>flush_on_exit, set_flush_on_exit(x)</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>: Whether the
-buffer should be flushed when the Appender is garbage collected (f.e when
-you close <span style="R">R</span>)</p></dd>
-<dt><code>flush_on_rotate, set_flush_on_rotate</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>: Whether
-the buffer should be flushed when the Buffer is full (f.e when you close
-<span style="R">R</span>). Setting this to off can have slighly negative perfomance impacts.</p></dd>
-<dt><code>flush_threshold</code>, <code>set_flush_threshold()</code></dt><dd><p><code>integer</code> or <code>character</code>
+    <dt><code>flush_threshold</code>, <code>set_flush_threshold()</code></dt><dd><p><code>integer</code> or <code>character</code>
 <a href='get_log_levels.html'>log level</a>. Minimum event level that will trigger flushing of
 the buffer. This behaviour is implemented through <code>should_flush()</code>,
 and you can modify that function for different behaviour.</p></dd>
@@ -239,17 +229,7 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 
     <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a></p>
 <p>Other abstract classes: <code><a href='AppenderDigest.html'>AppenderDigest</a></code>,
-  <code><a href='AppenderTable.html'>AppenderTable</a></code>, <code><a href='Appender.html'>Appender</a></code>,
-  <code><a href='Filterable.html'>Filterable</a></code></p>
-<p>Other Appenders: <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
-  <code><a href='AppenderConsole.html'>AppenderConsole</a></code>, <code><a href='AppenderDbi.html'>AppenderDbi</a></code>,
-  <code><a href='AppenderDigest.html'>AppenderDigest</a></code>, <code><a href='AppenderDt.html'>AppenderDt</a></code>,
-  <code><a href='AppenderFile.html'>AppenderFile</a></code>, <code><a href='AppenderGmail.html'>AppenderGmail</a></code>,
-  <code><a href='AppenderJson.html'>AppenderJson</a></code>,
-  <code><a href='AppenderPushbullet.html'>AppenderPushbullet</a></code>,
-  <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>,
-  <code><a href='AppenderSendmail.html'>AppenderSendmail</a></code>,
-  <code><a href='AppenderTable.html'>AppenderTable</a></code>, <code><a href='Appender.html'>Appender</a></code></p></div>
+  <code><a href='AppenderTable.html'>AppenderTable</a></code>, <code><a href='Filterable.html'>Filterable</a></code></p></div>
     
 
   </div>

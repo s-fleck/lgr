@@ -101,10 +101,8 @@ logger$warn("A test message")
 \link{LayoutFormat}
 
 Other Appenders: \code{\link{AppenderBuffer}},
-  \code{\link{AppenderDbi}}, \code{\link{AppenderDigest}},
-  \code{\link{AppenderDt}}, \code{\link{AppenderFile}},
+  \code{\link{AppenderDbi}}, \code{\link{AppenderFile}},
   \code{\link{AppenderGmail}}, \code{\link{AppenderJson}},
-  \code{\link{AppenderMemory}},
   \code{\link{AppenderPushbullet}},
   \code{\link{AppenderRjdbc}},
   \code{\link{AppenderSendmail}},

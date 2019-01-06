@@ -3,16 +3,17 @@
 \name{Appender}
 \alias{Appender}
 \alias{Appenders}
-\title{Abstract Class for Appenders}
+\title{Appenders}
 \description{
-\strong{Abstract classes} are exported for package developers that want to extend
-them, they cannot be instantiated directly.
-
 Appenders are assigned to \link{Loggers} and
 manage the output of the \link{LogEvents} to a destination, such as the console or
 a text file. An Appender must have a single \link{Layout} that tells it how to
 format the LogEvent. For details please refer to the documentations of the
 specific Appenders.
+
+\strong{Appender is not designed for direct usage}, but it is the basis on which all
+other Appenders are built. Please see the \strong{see also} section towards the
+end of this document a list of available Appenders.
 }
 \section{Usage}{
 \preformatted{
@@ -89,20 +90,14 @@ on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 }
 
 \seealso{
-Other abstract classes: \code{\link{AppenderDigest}},
-  \code{\link{AppenderMemory}},
-  \code{\link{AppenderTable}}, \code{\link{Filterable}}
-
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderDigest}}, \code{\link{AppenderDt}},
   \code{\link{AppenderFile}}, \code{\link{AppenderGmail}},
-  \code{\link{AppenderJson}}, \code{\link{AppenderMemory}},
+  \code{\link{AppenderJson}},
   \code{\link{AppenderPushbullet}},
   \code{\link{AppenderRjdbc}},
   \code{\link{AppenderSendmail}},
   \code{\link{AppenderTable}}
 }
 \concept{Appenders}
-\concept{abstract classes}
 \keyword{internal}

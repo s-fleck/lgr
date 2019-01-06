@@ -59,14 +59,19 @@ x$filters
 \section{Fields}{
 
 
+\describe{
+\item{\code{to}, \code{control}, \code{from}, \code{cc}, \code{bcc}, \code{headers}}{
 Please see the documentation of \code{\link[sendmailR:sendmail]{sendmailR::sendmail()}} for details.
+}
+}
 
 
 
 \describe{
 \item{\code{subject_layout}, \code{set_layout(subject_layout)}}{Like \code{layout}, but
-used to format the subject/title of the digest. Is usually applied to
-the last log event.
+used to format the subject/title of the digest. While \code{layout} is applied
+to each LogEvent of the digest, \code{subject_layout} is only applied to
+the last one.
 }
 }
 
@@ -74,12 +79,7 @@ the last log event.
 
 \describe{
 \item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar. Number of \link{LogEvents} to buffer}
-\item{\code{flush_on_exit, set_flush_on_exit(x)}}{\code{TRUE} or \code{FALSE}: Whether the
-buffer should be flushed when the Appender is garbage collected (f.e when
-you close \R)}
-\item{\code{flush_on_rotate, set_flush_on_rotate}}{\code{TRUE} or \code{FALSE}: Whether
-the buffer should be flushed when the Buffer is full (f.e when you close
-\R). Setting this to off can have slighly negative perfomance impacts.}
+
 \item{\code{flush_threshold}, \code{set_flush_threshold()}}{\code{integer} or \code{character}
 \link[=log_level]{log level}. Minimum event level that will trigger flushing of
 the buffer. This behaviour is implemented through \code{should_flush()},
@@ -171,13 +171,12 @@ on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 }
 
 \seealso{
-\link{LayoutFormat}
+\link{LayoutFormat}, \link{LayoutGlue}
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderDigest}}, \code{\link{AppenderDt}},
   \code{\link{AppenderFile}}, \code{\link{AppenderGmail}},
-  \code{\link{AppenderJson}}, \code{\link{AppenderMemory}},
+  \code{\link{AppenderJson}},
   \code{\link{AppenderPushbullet}},
   \code{\link{AppenderRjdbc}}, \code{\link{AppenderTable}},
   \code{\link{Appender}}

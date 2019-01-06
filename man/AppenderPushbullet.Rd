@@ -4,9 +4,9 @@
 \alias{AppenderPushbullet}
 \title{Log to Pushbullet}
 \description{
-Send push notifications to \href{https://www.pushbullet.com/}{pushbullet}. This
+Send push notifications via \href{https://www.pushbullet.com/}{pushbullet}. This
 Appender keeps an in-memory buffer like \link{AppenderBuffer}. If the buffer is
-flushed, usually becuase an event of specified magnitutde is encountered, all
+flushed, usually because an event of specified magnitutde is encountered, all
 buffered events are concatenated to a single message that is sent to
 \code{\link[RPushbullet:pbPost]{RPushbullet::pbPost()}}. The default behaviour is to push the last 7 log
 events in case a \code{fatal} event is encountered.
@@ -16,10 +16,15 @@ events in case a \code{fatal} event is encountered.
 x <- x$new(threshold = NA_integer_, flush_threshold = "fatal",
   layout = LayoutFormat$new(fmt = "\%K \%t> \%m \%f", timestamp_fmt = "\%H:\%M:\%S"),
   subject_layout = LayoutFormat$new(fmt = "[LGR] \%L: \%m"), buffer_size = 6,
+  recipients = NULL, email = NULL, channel = NULL, devices = NULL,
   apikey = NULL)
 
 x$flush()
 x$set_apikey(x)
+x$set_recipients(x)
+x$set_email(x)
+x$set_channel(x)
+x$set_devices(x)
 x$set_subject_layout(layout)
 x$append(event)
 x$set_buffer_size(x)
@@ -51,19 +56,16 @@ x$filters
 
 
 \describe{
-\item{\code{apikey}, \code{set_apikey()}}{See \code{\link[RPushbullet:pbPost]{RPushbullet::pbPost()}}}
+\item{\code{apikey}, \code{recipients}, \code{email}, \code{channel}, \code{devices}}{
+See \code{\link[RPushbullet:pbPost]{RPushbullet::pbPost()}}
+}
 }
 
 
 
 \describe{
 \item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar. Number of \link{LogEvents} to buffer}
-\item{\code{flush_on_exit, set_flush_on_exit(x)}}{\code{TRUE} or \code{FALSE}: Whether the
-buffer should be flushed when the Appender is garbage collected (f.e when
-you close \R)}
-\item{\code{flush_on_rotate, set_flush_on_rotate}}{\code{TRUE} or \code{FALSE}: Whether
-the buffer should be flushed when the Buffer is full (f.e when you close
-\R). Setting this to off can have slighly negative perfomance impacts.}
+
 \item{\code{flush_threshold}, \code{set_flush_threshold()}}{\code{integer} or \code{character}
 \link[=log_level]{log level}. Minimum event level that will trigger flushing of
 the buffer. This behaviour is implemented through \code{should_flush()},
@@ -153,14 +155,12 @@ on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 }
 
 \seealso{
-\link{LayoutFormat}
+\link{LayoutFormat}, \link{LayoutGlue}
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderDigest}}, \code{\link{AppenderDt}},
   \code{\link{AppenderFile}}, \code{\link{AppenderGmail}},
-  \code{\link{AppenderJson}}, \code{\link{AppenderMemory}},
-  \code{\link{AppenderRjdbc}},
+  \code{\link{AppenderJson}}, \code{\link{AppenderRjdbc}},
   \code{\link{AppenderSendmail}},
   \code{\link{AppenderTable}}, \code{\link{Appender}}
 }

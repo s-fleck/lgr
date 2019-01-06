@@ -153,9 +153,7 @@ l$appenders[[1]]$data
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderDigest}}, \code{\link{AppenderDt}},
   \code{\link{AppenderFile}}, \code{\link{AppenderGmail}},
-  \code{\link{AppenderMemory}},
   \code{\link{AppenderPushbullet}},
   \code{\link{AppenderRjdbc}},
   \code{\link{AppenderSendmail}},

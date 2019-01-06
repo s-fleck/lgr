@@ -137,14 +137,14 @@ x &lt;- x$new(threshold = NA_integer_, appenders = NULL,
   all(event[["level"]] &lt;= obj[["flush_threshold"]]),
   layout = LayoutFormat$new(fmt = "%L [%t] %m", timestamp_fmt = "%H:%M:%S",
   colors = getOption("lgr.colors")), buffer_size = 1000)
-    x$flush()
+    x$append(event)
+x$flush()
+x$set_flush_on_exit(x)
+x$set_flush_on_rotate(x)
 x$set_appenders(x)
 x$add_appender(appender, name = NULL)
 x$remove_appender(pos)
-x$append(event)
 x$set_buffer_size(x)
-x$set_flush_on_exit(x)
-x$set_flush_on_rotate(x)
 x$set_should_flush(x)
 x$set_flush_threshold(level)
 x$show(threshold = NA_integer_, n = 20L)
@@ -154,12 +154,12 @@ x$filter(event)
 x$set_filters(filters)
     x$appenders
 x$destination
+x$flush_on_exit
+x$flush_on_rotate
 x$buffer_size
 x$buffered_events
 x$data
 x$dt
-x$flush_on_exit
-x$flush_on_rotate
 x$flush_threshold
 x$should_flush
 x$layout
@@ -179,16 +179,16 @@ its <code>$show()</code> method.</p>
     <dl class='dl-horizontal'>
 <dt><code>appenders</code>, <code>set_appenders()</code></dt><dd><p>Like for a <a href='Logger.html'>Logger</a>. Buffered events will be passed on
 to these Appenders once a flush is triggered</p></dd>
-</dl>
-    <dl class='dl-horizontal'>
-<dt><code>buffer_size, set_buffer_size(x)</code></dt><dd><p><code>integer</code> scalar. Number of <a href='LogEvent.html'>LogEvents</a> to buffer</p></dd>
 <dt><code>flush_on_exit, set_flush_on_exit(x)</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>: Whether the
 buffer should be flushed when the Appender is garbage collected (f.e when
 you close <span style="R">R</span>)</p></dd>
 <dt><code>flush_on_rotate, set_flush_on_rotate</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>: Whether
 the buffer should be flushed when the Buffer is full (f.e when you close
 <span style="R">R</span>). Setting this to off can have slighly negative perfomance impacts.</p></dd>
-<dt><code>flush_threshold</code>, <code>set_flush_threshold()</code></dt><dd><p><code>integer</code> or <code>character</code>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code>buffer_size, set_buffer_size(x)</code></dt><dd><p><code>integer</code> scalar. Number of <a href='LogEvent.html'>LogEvents</a> to buffer</p></dd>
+    <dt><code>flush_threshold</code>, <code>set_flush_threshold()</code></dt><dd><p><code>integer</code> or <code>character</code>
 <a href='get_log_levels.html'>log level</a>. Minimum event level that will trigger flushing of
 the buffer. This behaviour is implemented through <code>should_flush()</code>,
 and you can modify that function for different behaviour.</p></dd>
@@ -271,10 +271,8 @@ and AppenderBuffer if you actually want to buffer events</p>
 
     <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a></p>
 <p>Other Appenders: <code><a href='AppenderConsole.html'>AppenderConsole</a></code>,
-  <code><a href='AppenderDbi.html'>AppenderDbi</a></code>, <code><a href='AppenderDigest.html'>AppenderDigest</a></code>,
-  <code><a href='AppenderDt.html'>AppenderDt</a></code>, <code><a href='AppenderFile.html'>AppenderFile</a></code>,
+  <code><a href='AppenderDbi.html'>AppenderDbi</a></code>, <code><a href='AppenderFile.html'>AppenderFile</a></code>,
   <code><a href='AppenderGmail.html'>AppenderGmail</a></code>, <code><a href='AppenderJson.html'>AppenderJson</a></code>,
-  <code><a href='AppenderMemory.html'>AppenderMemory</a></code>,
   <code><a href='AppenderPushbullet.html'>AppenderPushbullet</a></code>,
   <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>,
   <code><a href='AppenderSendmail.html'>AppenderSendmail</a></code>,

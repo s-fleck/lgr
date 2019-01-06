@@ -186,15 +186,4 @@ lg$appenders$memory$data$.custom[[3]]$caps
 }
 \seealso{
 \link{LayoutFormat}, \link{simple_logging}, \link[data.table:data.table]{data.table::data.table}
-
-Other Appenders: \code{\link{AppenderBuffer}},
-  \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderDigest}}, \code{\link{AppenderFile}},
-  \code{\link{AppenderGmail}}, \code{\link{AppenderJson}},
-  \code{\link{AppenderMemory}},
-  \code{\link{AppenderPushbullet}},
-  \code{\link{AppenderRjdbc}},
-  \code{\link{AppenderSendmail}},
-  \code{\link{AppenderTable}}, \code{\link{Appender}}
 }
-\concept{Appenders}
