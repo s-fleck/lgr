@@ -64,7 +64,7 @@ Appenders once certain conditions are met." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9001</span>
       </span>
     </div>
 
@@ -89,9 +89,6 @@ Appenders once certain conditions are met." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
-    </li>
     <li>
       <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
@@ -135,46 +132,55 @@ Appenders once certain conditions are met.</p>
 
     <pre>
 x &lt;- x$new(threshold = NA_integer_, appenders = NULL,
-  should_flush = function(event) isTRUE(event[["level"]] &lt;= 100),
-  flush_on_exit = TRUE, flush_on_rotate = TRUE, layout = LayoutFormat$new(fmt =
-  "%L [%t] %m", timestamp_fmt = "%H:%M:%S", colors = getOption("lgr.colors")),
-  buffer_size = 1000)
-    x$append(x)
-x$flush(x = private$.buffered_events)
+  flush_threshold = "fatal", flush_on_exit = TRUE, flush_on_rotate = TRUE,
+  should_flush = function(event, obj) is.na(obj[["flush_threshold"]]) ||
+  all(event[["level"]] &lt;= obj[["flush_threshold"]]),
+  layout = LayoutFormat$new(fmt = "%L [%t] %m", timestamp_fmt = "%H:%M:%S",
+  colors = getOption("lgr.colors")), buffer_size = 1000)
+    x$flush()
 x$set_appenders(x)
 x$add_appender(appender, name = NULL)
 x$remove_appender(pos)
+x$append(event)
 x$set_buffer_size(x)
 x$set_flush_on_exit(x)
 x$set_flush_on_rotate(x)
 x$set_should_flush(x)
-x$append(event)
+x$set_flush_threshold(level)
+x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
 x$set_filters(filters)
     x$appenders
+x$destination
 x$buffer_size
 x$buffered_events
-x$destination
+x$data
+x$dt
 x$flush_on_exit
 x$flush_on_rotate
+x$flush_threshold
+x$should_flush
 x$layout
 x$threshold
 x$filters
     </pre>
     
+    <h2 class="hasAnchor" id="creating-a-buffer-appender"><a class="anchor" href="#creating-a-buffer-appender"></a>Creating a Buffer Appender</h2>
+
+    
+    <p>The <a href='Layout.html'>Layout</a> for this Appender is used only to format console output of
+its <code>$show()</code> method.</p>
+    
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code><a href='https://www.rdocumentation.org/packages/base/topics/connections'>flush()</a></code></dt><dd><p>Manually trigger flushing</p></dd>
-<dt><code><a href='simple_logging.html'>add_appender(appender)</a></code></dt><dd><p>Add and Appender to this Appender.
-see <a href='Logger.html'>Logger</a></p></dd>
-<dt><code><a href='simple_logging.html'>remove_appender(pos)</a></code></dt><dd><p>Remove and Appender from this Appender.
-see <a href='Logger.html'>Logger</a></p></dd>
 <dt><code>appenders</code>, <code>set_appenders()</code></dt><dd><p>Like for a <a href='Logger.html'>Logger</a>. Buffered events will be passed on
 to these Appenders once a flush is triggered</p></dd>
+</dl>
+    <dl class='dl-horizontal'>
 <dt><code>buffer_size, set_buffer_size(x)</code></dt><dd><p><code>integer</code> scalar. Number of <a href='LogEvent.html'>LogEvents</a> to buffer</p></dd>
 <dt><code>flush_on_exit, set_flush_on_exit(x)</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>: Whether the
 buffer should be flushed when the Appender is garbage collected (f.e when
@@ -182,10 +188,23 @@ you close <span style="R">R</span>)</p></dd>
 <dt><code>flush_on_rotate, set_flush_on_rotate</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>: Whether
 the buffer should be flushed when the Buffer is full (f.e when you close
 <span style="R">R</span>). Setting this to off can have slighly negative perfomance impacts.</p></dd>
-<dt><code>should_flush(event)</code>, <code>set_should_flush(x)</code></dt><dd><p>A <code>function</code> with a
-single argument <code>event</code> (a <a href='LogEvent.html'>LogEvent</a>) that must only return either <code>TRUE</code>
-or <code>FALSE</code>. If the function returns <code>TRUE</code>, flushing of the buffer is
-triggered. Defaults to flushing if a <code>FATAL</code> event is registered</p></dd>
+<dt><code>flush_threshold</code>, <code>set_flush_threshold()</code></dt><dd><p><code>integer</code> or <code>character</code>
+<a href='get_log_levels.html'>log level</a>. Minimum event level that will trigger flushing of
+the buffer. This behaviour is implemented through <code>should_flush()</code>,
+and you can modify that function for different behaviour.</p></dd>
+<dt><code>should_flush(event, obj)</code>, <code>set_should_flush(x)</code></dt><dd><p>A function with exactly two arguments: <code>event</code> and <code>obj</code>. When <code><a href='https://www.rdocumentation.org/packages/base/topics/append'>append()</a></code>
+is triggered for this Appender, the LogEvent will be passed to <code>event</code>,
+the Appender itself will get passed to <code>obj</code>.
+This means that you can f.e. use <code>obj$threshold</code> to access the threshold
+of the Appender. If the function returns <code>TRUE</code>, flushing of the buffer
+is triggered. Defaults to flushing if a <code>FATAL</code> event is registered</p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code>dt</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a <code>data.table</code>
+with a maximum of <code>buffer_size</code> rows</p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code>data</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a <code>data.frame</code></p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>threshold</code>, <code>set_threshold(level)</code></dt><dd><p><code>character</code> or <code>integer</code> scalar.
@@ -197,26 +216,36 @@ human-readable form (mainly for print output)</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>filters</code>, <code>set_filters(filters)</code></dt><dd><p>a <code>list</code> of predicates (functions
-that return either <code>TRUE</code> or <code>FALSE</code>). If all of these functions evaluate
-to <code>TRUE</code> the LogEvent is passed on. Since
-LogEvents have reference semantics, filters can also be abused to modify
-LogEvents before they are passed on. Look at the source code of
+that return either <code>TRUE</code> or <code>FALSE</code>). These functions must have exactly
+two arguments: <code>event</code> and <code>obj</code>. When the <code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter()</a></code> method of the
+Filterable is invoked on a LogEvent, that event will get passed to <code>event</code>,
+the Filterable will get passed to <code>obj</code>. This means that you can,
+f.e. use <code>obj$threshold</code> to access the threshold of the Appender/Logger
+that is using the filter.
+If all of these functions evaluate to <code>TRUE</code> the LogEvent is passed on.
+Since LogEvents have reference semantics, filters can also be abused to
+modify them before they are passed on. Look at the source code of
 <code><a href='with_log_level.html'>with_log_level()</a></code> or <code><a href='with_log_level.html'>with_log_value()</a></code> for examples.</p></dd>
 </dl>
-    
-    <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
-
-    
-    <p>New Appenders are instantiated with <code>&lt;AppenderSubclass&gt;$new()</code>. For the
-arguments to <code>new()</code> please refer to the section <em>Fields</em>. You can also
-modify those fields after the Appender has been created with setters in the
-form of <code>appender$set_&lt;fieldname&gt;(value)</code></p>
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code><a href='https://www.rdocumentation.org/packages/base/topics/append'>append(event)</a></code></dt><dd><p>Write the <a href='LogEvent.html'>LogEvent</a> <code>event</code> to a destination</p></dd>
+<dt><code><a href='https://www.rdocumentation.org/packages/base/topics/connections'>flush()</a></code></dt><dd><p>Manually trigger flushing</p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code><a href='https://www.rdocumentation.org/packages/base/topics/connections'>flush()</a></code></dt><dd><p>Manually trigger flushing of the buffer</p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code>show(n, threshold)</code></dt><dd><p>Show the last <code>n</code> log entries with a log level
+bellow <code>threshold</code>. The log entries will be formated for console output
+via this Appenders <a href='Layout.html'>Layout</a></p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code><a href='https://www.rdocumentation.org/packages/base/topics/append'>append(event)</a></code></dt><dd><p>Tell the Appender to process a <a href='LogEvent.html'>LogEvent</a> <code>event</code>.
+This method is usually not called by the user, but invoked by a
+<a href='Logger.html'>Logger</a></p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter(event)</a></code></dt><dd><p>Determine whether the LogEvent <code>x</code> should be passed
@@ -224,12 +253,28 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 <code>filters</code></p></dd>
 </dl>
     
+    <h2 class="hasAnchor" id="comparison-appenderbuffer-and-appenderdt"><a class="anchor" href="#comparison-appenderbuffer-and-appenderdt"></a>Comparison AppenderBuffer and AppenderDt</h2>
+
+    
+    <p>Both AppenderBuffer and <a href='AppenderDt.html'>AppenderDt</a> do in memory buffering of events.
+AppenderBuffer retains a copies of the events it processes and has the
+abillity to pass the buffered events on to other Appenders. AppenderDt
+converts the events to rows in a <code>data.table</code> and is a bit harder to
+configure. Used inside loops (several hundred iterations),
+AppenderDt has much less overhead than AppenderBuffer. For single logging
+calls and small loops, AppenderBuffer is more performant. This is related to
+how memory pre-allocation is handled by the appenders.</p>
+<p>In short: Use AppenderDt if you want an in-memory log for interactive use,
+and AppenderBuffer if you actually want to buffer events</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a></p>
 <p>Other Appenders: <code><a href='AppenderConsole.html'>AppenderConsole</a></code>,
   <code><a href='AppenderDbi.html'>AppenderDbi</a></code>, <code><a href='AppenderDt.html'>AppenderDt</a></code>,
   <code><a href='AppenderFile.html'>AppenderFile</a></code>, <code><a href='AppenderJson.html'>AppenderJson</a></code>,
+  <code><a href='AppenderMemory.html'>AppenderMemory</a></code>,
+  <code><a href='AppenderPushbullet.html'>AppenderPushbullet</a></code>,
   <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>, <code><a href='AppenderTable.html'>AppenderTable</a></code>,
   <code><a href='Appender.html'>Appender</a></code></p></div>
     
@@ -241,11 +286,13 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
       
       <li><a href="#usage">Usage</a></li>
 
+      <li><a href="#creating-a-buffer-appender">Creating a Buffer Appender</a></li>
+
       <li><a href="#fields">Fields</a></li>
 
-      <li><a href="#creating-a-new-appender">Creating a New Appender</a></li>
-
       <li><a href="#methods">Methods</a></li>
+
+      <li><a href="#comparison-appenderbuffer-and-appenderdt">Comparison AppenderBuffer and AppenderDt</a></li>
 
       <li><a href="#see-also">See also</a></li>
           </ul>

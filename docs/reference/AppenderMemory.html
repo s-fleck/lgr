@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Log to Databases via RJDBC — AppenderRjdbc • lgr</title>
+<title>Abstract Class for Logging to Memory Buffers — AppenderMemory • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,13 +30,12 @@
 
 
 
-<meta property="og:title" content="Log to Databases via RJDBC — AppenderRjdbc" />
+<meta property="og:title" content="Abstract Class for Logging to Memory Buffers — AppenderMemory" />
 
-<meta property="og:description" content="Log to a database table with the RJDBC package. RJDBC is only
-somewhat  DBI compliant and does not work with AppenderDbi. I
-personally do not recommend using RJDBC if it can be avoided. As
-opposed to AppenderDbi you always need to specify the column types if you
-are logging to a non-existant table." />
+<meta property="og:description" content="Abstract classes are exported for package developers that want to extend
+them, they cannot be instantiated directly.
+AppenderMemory is extended by Appenders that retain an in-memory event
+buffer, such as AppenderBuffer and AppenderPushbullet." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -118,18 +117,17 @@ are logging to a non-existant table." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Log to Databases via RJDBC</h1>
+    <h1>Abstract Class for Logging to Memory Buffers</h1>
     <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/Appender.R'><code>R/Appender.R</code></a></small>
-    <div class="hidden name"><code>AppenderRjdbc.Rd</code></div>
+    <div class="hidden name"><code>AppenderMemory.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Log to a database table with the <strong>RJDBC</strong> package. <strong>RJDBC</strong> is only
-somewhat  <strong>DBI</strong> compliant and does not work with <a href='AppenderDbi.html'>AppenderDbi</a>. I
-personally do not recommend using <strong>RJDBC</strong> if it can be avoided. As
-opposed to <code>AppenderDbi</code> you always need to specify the column types if you
-are logging to a non-existant table.</p>
+    <p><strong>Abstract classes</strong> are exported for package developers that want to extend
+them, they cannot be instantiated directly.</p>
+<p>AppenderMemory is extended by Appenders that retain an in-memory event
+buffer, such as <a href='AppenderBuffer.html'>AppenderBuffer</a> and <a href='AppenderPushbullet.html'>AppenderPushbullet</a>.</p>
     
     </div>
 
@@ -137,23 +135,28 @@ are logging to a non-existant table.</p>
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre>
-x &lt;- x$new(conn, table, threshold = NA_integer_,
-  layout = select_dbi_layout(conn, table), close_on_exit = TRUE)
+x &lt;- x$get_inherit()$new(layout = Layout$new(), threshold = NA_integer_)
     x$append(event)
-x$set_close_on_exit(x)
-x$set_conn(conn)
-x$show(threshold = NA_integer_, n = 20)
+x$flush()
+x$set_buffer_size(x)
+x$set_flush_on_exit(x)
+x$set_flush_on_rotate(x)
+x$set_should_flush(x)
+x$set_flush_threshold(level)
 x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
 x$set_filters(filters)
-    x$close_on_exit
-x$conn
+    x$buffer_size
+x$buffered_events
 x$data
-x$destination
-x$table
 x$dt
+x$flush_on_exit
+x$flush_on_rotate
+x$flush_threshold
+x$should_flush
+x$destination
 x$layout
 x$threshold
 x$filters
@@ -163,10 +166,27 @@ x$filters
 
     
     <dl class='dl-horizontal'>
-<dt><code>close_on_exit</code>, <code>set_close_on_exit()</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>. Close the
-Database connection when the Logger is removed?</p></dd>
-<dt><code>conn</code>, <code>set_conn(conn)</code></dt><dd><p>a <a href='https://www.rdocumentation.org/packages/DBI/topics/dbConnect'>DBI connection</a></p></dd>
-<dt><code>table</code></dt><dd><p>Name of the target database table</p></dd>
+<dt><code>buffer_size, set_buffer_size(x)</code></dt><dd><p><code>integer</code> scalar. Number of <a href='LogEvent.html'>LogEvents</a> to buffer</p></dd>
+<dt><code>flush_on_exit, set_flush_on_exit(x)</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>: Whether the
+buffer should be flushed when the Appender is garbage collected (f.e when
+you close <span style="R">R</span>)</p></dd>
+<dt><code>flush_on_rotate, set_flush_on_rotate</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>: Whether
+the buffer should be flushed when the Buffer is full (f.e when you close
+<span style="R">R</span>). Setting this to off can have slighly negative perfomance impacts.</p></dd>
+<dt><code>flush_threshold</code>, <code>set_flush_threshold()</code></dt><dd><p><code>integer</code> or <code>character</code>
+<a href='get_log_levels.html'>log level</a>. Minimum event level that will trigger flushing of
+the buffer. This behaviour is implemented through <code>should_flush()</code>,
+and you can modify that function for different behaviour.</p></dd>
+<dt><code>should_flush(event, obj)</code>, <code>set_should_flush(x)</code></dt><dd><p>A function with exactly two arguments: <code>event</code> and <code>obj</code>. When <code><a href='https://www.rdocumentation.org/packages/base/topics/append'>append()</a></code>
+is triggered for this Appender, the LogEvent will be passed to <code>event</code>,
+the Appender itself will get passed to <code>obj</code>.
+This means that you can f.e. use <code>obj$threshold</code> to access the threshold
+of the Appender. If the function returns <code>TRUE</code>, flushing of the buffer
+is triggered. Defaults to flushing if a <code>FATAL</code> event is registered</p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code>dt</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a <code>data.table</code>
+with a maximum of <code>buffer_size</code> rows</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>data</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a <code>data.frame</code></p></dd>
@@ -197,8 +217,12 @@ modify them before they are passed on. Look at the source code of
 
     
     <dl class='dl-horizontal'>
-<dt><code>show(n, threshold)</code></dt><dd><p>Show the last <code>n</code> log entries with a
-log level bellow <code>threshold</code>.</p></dd>
+<dt><code><a href='https://www.rdocumentation.org/packages/base/topics/connections'>flush()</a></code></dt><dd><p>Manually trigger flushing of the buffer</p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code>show(n, threshold)</code></dt><dd><p>Show the last <code>n</code> log entries with a log level
+bellow <code>threshold</code>. The log entries will be formated for console output
+via this Appenders <a href='Layout.html'>Layout</a></p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code><a href='https://www.rdocumentation.org/packages/base/topics/append'>append(event)</a></code></dt><dd><p>Tell the Appender to process a <a href='LogEvent.html'>LogEvent</a> <code>event</code>.
@@ -211,42 +235,18 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 <code>filters</code></p></dd>
 </dl>
     
-    <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
-
-    
-    <p>An AppenderDbi is linked to a database table via its <code>table</code> argument. If
-the table does not exist it is created either when the Appender is first
-instantiated or (more likely) when the first LogEvent would be written to
-that table. Rather than to rely on this feature, it is recommended that you
-create the target log table first manually using an <code>SQL CREATE TABLE</code>
-statement as this is safer and more flexible. See also <a href='LayoutDbi.html'>LayoutDbi</a>.</p>
-    <p>New Appenders are instantiated with <code>&lt;AppenderSubclass&gt;$new()</code>. For the
-arguments to <code>new()</code> please refer to the section <em>Fields</em>. You can also
-modify those fields after the Appender has been created with setters in the
-form of <code>appender$set_&lt;fieldname&gt;(value)</code></p>
-    
-    <h2 class="hasAnchor" id="choosing-the-right-dbi-layout"><a class="anchor" href="#choosing-the-right-dbi-layout"></a>Choosing the Right DBI Layout</h2>
-
-    
-    <p>Layouts for relational database tables are tricky as they have very strict
-column types and further restrictions. On top of that implementation details
-vary between database backends.</p>
-<p>To make setting up <code>AppenderDbi</code> as painless as possible, the helper
-function <code><a href='select_dbi_layout.html'>select_dbi_layout()</a></code> tries to automatically determine sensible
-<a href='LayoutDbi.html'>LayoutDbi</a> settings based on <code>conn</code> and - if it exists in the database
-already - <code>table</code>. If <code>table</code> does not
-exist in the database and you start logging, a new table will be created
-with the <code>col_types</code> from <code>layout</code>.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a>, <a href='simple_logging.html'>simple_logging</a>, <a href='https://www.rdocumentation.org/packages/data.table/topics/data.table'>data.table::data.table</a></p>
+    <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a></p>
+<p>Other abstract classes: <code><a href='AppenderTable.html'>AppenderTable</a></code>,
+  <code><a href='Appender.html'>Appender</a></code>, <code><a href='Filterable.html'>Filterable</a></code></p>
 <p>Other Appenders: <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
   <code><a href='AppenderConsole.html'>AppenderConsole</a></code>, <code><a href='AppenderDbi.html'>AppenderDbi</a></code>,
   <code><a href='AppenderDt.html'>AppenderDt</a></code>, <code><a href='AppenderFile.html'>AppenderFile</a></code>,
-  <code><a href='AppenderJson.html'>AppenderJson</a></code>, <code><a href='AppenderMemory.html'>AppenderMemory</a></code>,
+  <code><a href='AppenderJson.html'>AppenderJson</a></code>,
   <code><a href='AppenderPushbullet.html'>AppenderPushbullet</a></code>,
-  <code><a href='AppenderTable.html'>AppenderTable</a></code>, <code><a href='Appender.html'>Appender</a></code></p></div>
+  <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>, <code><a href='AppenderTable.html'>AppenderTable</a></code>,
+  <code><a href='Appender.html'>Appender</a></code></p></div>
     
 
   </div>
@@ -259,10 +259,6 @@ with the <code>col_types</code> from <code>layout</code>.</p>
       <li><a href="#fields">Fields</a></li>
 
       <li><a href="#methods">Methods</a></li>
-
-      <li><a href="#creating-a-new-appender">Creating a New Appender</a></li>
-
-      <li><a href="#choosing-the-right-dbi-layout">Choosing the Right DBI Layout</a></li>
 
       <li><a href="#see-also">See also</a></li>
           </ul>

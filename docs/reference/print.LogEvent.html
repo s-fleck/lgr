@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9001</span>
       </span>
     </div>
 
@@ -88,9 +88,6 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
-    </li>
     <li>
       <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
@@ -187,6 +184,8 @@ level names to the same width on the left or right side, or not at all.</p></td>
 <code>timestamp_fmt</code>)</p></dd>
 <dt><code>%l</code></dt><dd><p>the log level, lowercase <code>character</code> representation</p></dd>
 <dt><code>%L</code></dt><dd><p>the log level, uppercase <code>character</code> representation</p></dd>
+<dt><code>%k</code></dt><dd><p>the log level, first letter of lowercase <code>character</code> representation</p></dd>
+<dt><code>%K</code></dt><dd><p>the log level, first letter of uppercase <code>character</code> representation</p></dd>
 <dt><code>%n</code></dt><dd><p>the log level, <code>integer</code> representation</p></dd>
 <dt><code>%u</code></dt><dd><p>the <code>user</code> of the Logger. This is guessed via <code><a href='system_infos.html'>get_user()</a></code>
 during the initalisation of the Logger.</p></dd>
@@ -207,7 +206,7 @@ have <strong>jsonlite</strong> installed and does not support colors as opposed 
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>LogEvent</span>$<span class='fu'>new</span>(
   <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>300</span>, <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"a test event"</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='st'>"testfun()"</span>, <span class='kw'>logger</span> <span class='kw'>=</span> <span class='no'>lgr</span>
 )
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [2019-01-05 07:26:52] a test event  </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='kw'>fmt</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"%t (%p) %c: %n - %m"</span>))</div><div class='output co'>#&gt; 2019-01-05 07:26:52 (8815) testfun(): </span><span style='color: #FFD75F;'>300</span><span> - a test event</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; WARN  [2019-01-05 07:26:52] a test event  </div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [2019-01-06 12:03:12] a test event  </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='kw'>fmt</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"%t (%p) %c: %n - %m"</span>))</div><div class='output co'>#&gt; 2019-01-06 12:03:12 (10565) testfun(): </span><span style='color: #FFD75F;'>300</span><span> - a test event</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; WARN  [2019-01-06 12:03:12] a test event  </div><div class='input'>
 <span class='co'># custom values</span>
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>LogEvent</span>$<span class='fu'>new</span>(
   <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>300</span>, <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"a gps track"</span>, <span class='kw'>logger</span> <span class='kw'>=</span> <span class='no'>lgr</span>,
@@ -215,11 +214,11 @@ have <strong>jsonlite</strong> installed and does not support colors as opposed 
 )
 
 <span class='co'># default output with %f</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [2019-01-05 07:26:52] a gps track  </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>location</span><span style='color: #808080;'>: </span><span>Austria</span><span style='color: #808080;'>, </span><span style='color: #D75FAF;'>waypoints</span><span style='color: #808080;'>: </span><span>10</span><span style='color: #808080;'>}</span><span></div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [2019-01-06 12:03:12] a gps track  </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>location</span><span style='color: #808080;'>: </span><span>Austria</span><span style='color: #808080;'>, </span><span style='color: #D75FAF;'>waypoints</span><span style='color: #808080;'>: </span><span>10</span><span style='color: #808080;'>}</span><span></div><div class='input'>
 <span class='co'># proper JSON output with %j</span>
 <span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ns-load'>requireNamespace</a></span>(<span class='st'>"jsonlite"</span>)){
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>y</span>, <span class='kw'>fmt</span> <span class='kw'>=</span> <span class='st'>"%L [%t] %m  %j"</span>)
-}</div><div class='output co'>#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [2019-01-05 07:26:52] a gps track  {"location":"Austria","waypoints":10}</div><div class='input'>
+}</div><div class='output co'>#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [2019-01-06 12:03:12] a gps track  {"location":"Austria","waypoints":10}</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

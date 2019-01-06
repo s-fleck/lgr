@@ -1,3 +1,4 @@
+^man-roxygen$
 ^\.covrignore$
 ^codecov\.yml$
 ^.*\.Rproj$

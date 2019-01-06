@@ -64,7 +64,7 @@ Appender is useful for interactive use, and has very little overhead." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9001</span>
       </span>
     </div>
 
@@ -89,9 +89,6 @@ Appender is useful for interactive use, and has very little overhead." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
-    </li>
     <li>
       <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
@@ -146,12 +143,13 @@ It is recommended to use this feature only <code>TRACE</code> level.</p>
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre>
-x &lt;- x$new(threshold = NA_integer_, layout = lgr::lgr$appenders$console$layout,
+x &lt;- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "%L [%t] %m
+  %f", timestamp_fmt = "%H:%M:%OS3", colors = getOption("lgr.colors", list())),
   prototype = data.table::data.table(.id = NA_integer_, level = NA_integer_,
   timestamp = Sys.time(), caller = NA_character_, msg = NA_character_, .custom
   = list(list())), buffer_size = 1e+05)
     x$append(event)
-x$show(n = 20, threshold = NA_integer_)
+x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
@@ -172,9 +170,7 @@ a <code>buffer_size</code> and a <code>prototype</code>. These determine the str
 <code>data.table</code> used to store the log this appender creates and cannot be
 modified anymore after the instantion of the appender.</p>
 <p>The <a href='Layout.html'>Layout</a> for this Appender is used only to format console output of
-its <code>$show()</code> method. By default, it is set to (and kept in sync with) the
-Layout of the console appender of the root logger
-(<code>lgr::lgr$appenders$console$layout</code>).</p>
+its <code>$show()</code> method.</p>
 <dl class='dl-horizontal'>
 <dt>buffer_size</dt><dd><p><code>integer</code> scalar. Number of rows of the in-memory
 <code>data.table</code></p></dd>
@@ -199,8 +195,7 @@ this list column.</p></li>
 with a maximum of <code>buffer_size</code> rows</p></dd>
 </dl>
     <dl class='dl-horizontal'>
-<dt><code>data</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a
-<code>data.frame</code></p></dd>
+<dt><code>data</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a <code>data.frame</code></p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>threshold</code>, <code>set_threshold(level)</code></dt><dd><p><code>character</code> or <code>integer</code> scalar.
@@ -212,10 +207,15 @@ human-readable form (mainly for print output)</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>filters</code>, <code>set_filters(filters)</code></dt><dd><p>a <code>list</code> of predicates (functions
-that return either <code>TRUE</code> or <code>FALSE</code>). If all of these functions evaluate
-to <code>TRUE</code> the LogEvent is passed on. Since
-LogEvents have reference semantics, filters can also be abused to modify
-LogEvents before they are passed on. Look at the source code of
+that return either <code>TRUE</code> or <code>FALSE</code>). These functions must have exactly
+two arguments: <code>event</code> and <code>obj</code>. When the <code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter()</a></code> method of the
+Filterable is invoked on a LogEvent, that event will get passed to <code>event</code>,
+the Filterable will get passed to <code>obj</code>. This means that you can,
+f.e. use <code>obj$threshold</code> to access the threshold of the Appender/Logger
+that is using the filter.
+If all of these functions evaluate to <code>TRUE</code> the LogEvent is passed on.
+Since LogEvents have reference semantics, filters can also be abused to
+modify them before they are passed on. Look at the source code of
 <code><a href='with_log_level.html'>with_log_level()</a></code> or <code><a href='with_log_level.html'>with_log_value()</a></code> for examples.</p></dd>
 </dl>
     
@@ -228,7 +228,9 @@ bellow <code>threshold</code>. The log entries will be formated for console outp
 via this Appenders <a href='Layout.html'>Layout</a></p></dd>
 </dl>
     <dl class='dl-horizontal'>
-<dt><code><a href='https://www.rdocumentation.org/packages/base/topics/append'>append(event)</a></code></dt><dd><p>Write the <a href='LogEvent.html'>LogEvent</a> <code>event</code> to a destination</p></dd>
+<dt><code><a href='https://www.rdocumentation.org/packages/base/topics/append'>append(event)</a></code></dt><dd><p>Tell the Appender to process a <a href='LogEvent.html'>LogEvent</a> <code>event</code>.
+This method is usually not called by the user, but invoked by a
+<a href='Logger.html'>Logger</a></p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter(event)</a></code></dt><dd><p>Determine whether the LogEvent <code>x</code> should be passed
@@ -236,12 +238,28 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 <code>filters</code></p></dd>
 </dl>
     
+    <h2 class="hasAnchor" id="comparison-appenderbuffer-and-appenderdt"><a class="anchor" href="#comparison-appenderbuffer-and-appenderdt"></a>Comparison AppenderBuffer and AppenderDt</h2>
+
+    
+    <p>Both <a href='AppenderBuffer.html'>AppenderBuffer</a> and AppenderDt do in memory buffering of events.
+AppenderBuffer retains a copies of the events it processes and has the
+abillity to pass the buffered events on to other Appenders. AppenderDt
+converts the events to rows in a <code>data.table</code> and is a bit harder to
+configure. Used inside loops (several hundred iterations),
+AppenderDt has much less overhead than AppenderBuffer. For single logging
+calls and small loops, AppenderBuffer is more performant. This is related to
+how memory pre-allocation is handled by the appenders.</p>
+<p>In short: Use AppenderDt if you want an in-memory log for interactive use,
+and AppenderBuffer if you actually want to buffer events</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a>, <a href='simple_logging.html'>simple_logging</a>, <a href='https://www.rdocumentation.org/packages/data.table/topics/data.table'>data.table::data.table</a></p>
 <p>Other Appenders: <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
   <code><a href='AppenderConsole.html'>AppenderConsole</a></code>, <code><a href='AppenderDbi.html'>AppenderDbi</a></code>,
   <code><a href='AppenderFile.html'>AppenderFile</a></code>, <code><a href='AppenderJson.html'>AppenderJson</a></code>,
+  <code><a href='AppenderMemory.html'>AppenderMemory</a></code>,
+  <code><a href='AppenderPushbullet.html'>AppenderPushbullet</a></code>,
   <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>, <code><a href='AppenderTable.html'>AppenderTable</a></code>,
   <code><a href='Appender.html'>Appender</a></code></p></div>
     
@@ -258,20 +276,20 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 
 <span class='co'># Displaying the log</span>
 <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span></div><div class='output co'>#&gt;   .id level           timestamp caller  msg .custom
-#&gt; 1   1   500 2019-01-05 07:26:43   eval test    NULL
-#&gt; 2   2   200 2019-01-05 07:26:43   eval test    NULL</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='fu'>show</span>()</div><div class='output co'>#&gt; <span style='color: #808080;'>DEBUG</span><span> [07:26:43.531] test 
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [07:26:43.559] test </div><div class='input'><span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [07:26:43.531] test 
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [07:26:43.559] test </div><div class='input'>
+#&gt; 1   1   500 2019-01-06 12:03:02   eval test    NULL
+#&gt; 2   2   200 2019-01-06 12:03:02   eval test    NULL</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='fu'>show</span>()</div><div class='output co'>#&gt; <span style='color: #808080;'>DEBUG</span><span> [12:03:02.535] test 
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [12:03:02.589] test </div><div class='input'><span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [12:03:02.535] test 
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [12:03:02.589] test </div><div class='input'>
 <span class='co'># If you pass a Logger to show_log(), it looks for the first AppenderDt</span>
 <span class='co'># that it can find.</span>
-<span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [07:26:43.531] test 
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [07:26:43.559] test </div><div class='input'>
+<span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [12:03:02.535] test 
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [12:03:02.589] test </div><div class='input'>
 <span class='co'># Custom fields are stored in the list column .custom by default</span>
 <span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"the iris data frame"</span>, <span class='kw'>caps</span> <span class='kw'>=</span> <span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])
 <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span></div><div class='output co'>#&gt;   .id level           timestamp caller                 msg       .custom
-#&gt; 1   1   500 2019-01-05 07:26:43   eval                test          NULL
-#&gt; 2   2   200 2019-01-05 07:26:43   eval                test          NULL
-#&gt; 3   3   400 2019-01-05 07:26:43   eval the iris data frame A, B, C, D, E</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span>$<span class='no'>.custom</span><span class='kw'>[[</span><span class='fl'>3</span>]]$<span class='no'>caps</span></div><div class='output co'>#&gt; [1] "A" "B" "C" "D" "E"</div><div class='input'>
+#&gt; 1   1   500 2019-01-06 12:03:02   eval                test          NULL
+#&gt; 2   2   200 2019-01-06 12:03:02   eval                test          NULL
+#&gt; 3   3   400 2019-01-06 12:03:02   eval the iris data frame A, B, C, D, E</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span>$<span class='no'>.custom</span><span class='kw'>[[</span><span class='fl'>3</span>]]$<span class='no'>caps</span></div><div class='output co'>#&gt; [1] "A" "B" "C" "D" "E"</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -287,6 +305,8 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
       <li><a href="#fields">Fields</a></li>
 
       <li><a href="#methods">Methods</a></li>
+
+      <li><a href="#comparison-appenderbuffer-and-appenderdt">Comparison AppenderBuffer and AppenderDt</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

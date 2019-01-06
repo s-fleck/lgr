@@ -32,8 +32,9 @@
 
 <meta property="og:title" content="Abstract Class for Appenders — Appender" />
 
-<meta property="og:description" content="Abstract classes are exported for developers that want to extend them, they
-are not useful to casual users. Appenders are assigned to Loggers and
+<meta property="og:description" content="Abstract classes are exported for package developers that want to extend
+them, they cannot be instantiated directly.
+Appenders are assigned to Loggers and
 manage the output of the LogEvents to a destination, such as the console or
 a text file. An Appender must have a single Layout that tells it how to
 format the LogEvent. For details please refer to the documentations of the
@@ -68,7 +69,7 @@ specific Appenders." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9001</span>
       </span>
     </div>
 
@@ -93,9 +94,6 @@ specific Appenders." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
-    </li>
     <li>
       <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
@@ -129,8 +127,9 @@ specific Appenders." />
 
     <div class="ref-description">
     
-    <p>Abstract classes are exported for developers that want to extend them, they
-are not useful to casual users. Appenders are assigned to <a href='Logger.html'>Loggers</a> and
+    <p><strong>Abstract classes</strong> are exported for package developers that want to extend
+them, they cannot be instantiated directly.</p>
+<p>Appenders are assigned to <a href='Logger.html'>Loggers</a> and
 manage the output of the <a href='LogEvent.html'>LogEvents</a> to a destination, such as the console or
 a text file. An Appender must have a single <a href='Layout.html'>Layout</a> that tells it how to
 format the LogEvent. For details please refer to the documentations of the
@@ -175,10 +174,15 @@ human-readable form (mainly for print output)</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>filters</code>, <code>set_filters(filters)</code></dt><dd><p>a <code>list</code> of predicates (functions
-that return either <code>TRUE</code> or <code>FALSE</code>). If all of these functions evaluate
-to <code>TRUE</code> the LogEvent is passed on. Since
-LogEvents have reference semantics, filters can also be abused to modify
-LogEvents before they are passed on. Look at the source code of
+that return either <code>TRUE</code> or <code>FALSE</code>). These functions must have exactly
+two arguments: <code>event</code> and <code>obj</code>. When the <code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter()</a></code> method of the
+Filterable is invoked on a LogEvent, that event will get passed to <code>event</code>,
+the Filterable will get passed to <code>obj</code>. This means that you can,
+f.e. use <code>obj$threshold</code> to access the threshold of the Appender/Logger
+that is using the filter.
+If all of these functions evaluate to <code>TRUE</code> the LogEvent is passed on.
+Since LogEvents have reference semantics, filters can also be abused to
+modify them before they are passed on. Look at the source code of
 <code><a href='with_log_level.html'>with_log_level()</a></code> or <code><a href='with_log_level.html'>with_log_value()</a></code> for examples.</p></dd>
 </dl>
     
@@ -186,7 +190,9 @@ LogEvents before they are passed on. Look at the source code of
 
     
     <dl class='dl-horizontal'>
-<dt><code><a href='https://www.rdocumentation.org/packages/base/topics/append'>append(event)</a></code></dt><dd><p>Write the <a href='LogEvent.html'>LogEvent</a> <code>event</code> to a destination</p></dd>
+<dt><code><a href='https://www.rdocumentation.org/packages/base/topics/append'>append(event)</a></code></dt><dd><p>Tell the Appender to process a <a href='LogEvent.html'>LogEvent</a> <code>event</code>.
+This method is usually not called by the user, but invoked by a
+<a href='Logger.html'>Logger</a></p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter(event)</a></code></dt><dd><p>Determine whether the LogEvent <code>x</code> should be passed
@@ -196,11 +202,14 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Appenders: <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
+    <div class='dont-index'><p>Other abstract classes: <code><a href='AppenderMemory.html'>AppenderMemory</a></code>,
+  <code><a href='AppenderTable.html'>AppenderTable</a></code>, <code><a href='Filterable.html'>Filterable</a></code></p>
+<p>Other Appenders: <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
   <code><a href='AppenderConsole.html'>AppenderConsole</a></code>, <code><a href='AppenderDbi.html'>AppenderDbi</a></code>,
   <code><a href='AppenderDt.html'>AppenderDt</a></code>, <code><a href='AppenderFile.html'>AppenderFile</a></code>,
-  <code><a href='AppenderJson.html'>AppenderJson</a></code>, <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>,
-  <code><a href='AppenderTable.html'>AppenderTable</a></code></p></div>
+  <code><a href='AppenderJson.html'>AppenderJson</a></code>, <code><a href='AppenderMemory.html'>AppenderMemory</a></code>,
+  <code><a href='AppenderPushbullet.html'>AppenderPushbullet</a></code>,
+  <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>, <code><a href='AppenderTable.html'>AppenderTable</a></code></p></div>
     
 
   </div>

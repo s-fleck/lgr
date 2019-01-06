@@ -20,7 +20,7 @@ x$set_buffer_size(x)
 x$set_flush_on_exit(x)
 x$set_flush_on_rotate(x)
 x$set_should_flush(x)
-x$set_flush_level(level)
+x$set_flush_threshold(level)
 x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
@@ -33,6 +33,8 @@ x$data
 x$dt
 x$flush_on_exit
 x$flush_on_rotate
+x$flush_threshold
+x$should_flush
 x$destination
 x$layout
 x$threshold
@@ -52,14 +54,15 @@ you close \R)}
 \item{\code{flush_on_rotate, set_flush_on_rotate}}{\code{TRUE} or \code{FALSE}: Whether
 the buffer should be flushed when the Buffer is full (f.e when you close
 \R). Setting this to off can have slighly negative perfomance impacts.}
-\item{\code{flush_level}, \code{set_flush_level()}}{\code{integer} or \code{character}
+\item{\code{flush_threshold}, \code{set_flush_threshold()}}{\code{integer} or \code{character}
 \link[=log_level]{log level}. Minimum event level that will trigger flushing of
 the buffer. This behaviour is implemented through \code{should_flush()},
 and you can modify that function for different behaviour.
 }
 \item{\code{should_flush(event, obj)}, \code{set_should_flush(x)}}{
-A function with exactly two arguments: \code{event} and \code{obj}. The LogEvent
-will be passed to \code{event}, the Appender will get passed to \code{obj}.
+A function with exactly two arguments: \code{event} and \code{obj}. When \code{append()}
+is triggered for this Appender, the LogEvent will be passed to \code{event},
+the Appender itself will get passed to \code{obj}.
 This means that you can f.e. use \code{obj$threshold} to access the threshold
 of the Appender. If the function returns \code{TRUE}, flushing of the buffer
 is triggered. Defaults to flushing if a \code{FATAL} event is registered }
