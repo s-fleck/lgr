@@ -1,16 +1,12 @@
 # AppenderPushbullet ----------------------------------------------------
 
-email <- ""
-
 test_that("AppenderPushbullet: ERROR log level triggers push", {
-  if (requireNamespace("RPushbullet")){
-    tryCatch(
-      RPushbullet::pbGetUser(),
-      error = function(e) skip(e)
-    )
-  } else {
-    skip("Package RPushbullet not available")
-  }
+  skip_if_not_installed("RPushbullet")
+
+  tryCatch(
+    RPushbullet::pbGetUser(),
+    error = function(e) skip(as.character(e))
+  )
 
   l <- Logger$new(
     "dummy",
@@ -38,17 +34,22 @@ test_that("AppenderPushbullet: ERROR log level triggers push", {
 
 test_that("AppenderSendmail: ERROR log level triggers push", {
 
-  if (requireNamespace("sendmailR"))
+  skip_if_not_installed("sendmailR")
+  smtp  <- getOption("stat.smtp_server")
+  email <- whoami::email_address()
 
-    l <- Logger$new(
-      "dummy",
-      threshold = NA_integer_,
-      appenders = AppenderSendmail$new(
-        to = email,
-        control = list(smtpServer = "localhost", verboseShow = TRUE),
-        buffer_size = 3),
-      parent = NULL
-    )
+  if (is.null(smtp)) skip("Please set the 'stat.smtp_server' option")
+  if (is.null(email)) skip("Cannot determine email addresse")
+
+  l <- Logger$new(
+    "dummy",
+    threshold = NA_integer_,
+    appenders = AppenderSendmail$new(
+      to = email,
+      control = list(smtpServer = smtp, verboseShow = TRUE),
+      buffer_size = 3),
+    parent = NULL
+  )
 
   l$info("1")
   l$info("2")
@@ -64,7 +65,7 @@ test_that("AppenderSendmail: ERROR log level triggers push", {
 # AppenderGmail --------------------------------------------------------
 
 test_that("AppenderGmail: ERROR log level triggers push", {
-  if (requireNamespace("gmailr"))
+  skip_if_not_installed("gmailr")
 
     l <- Logger$new(
       "dummy",

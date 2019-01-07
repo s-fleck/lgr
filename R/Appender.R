@@ -1764,9 +1764,6 @@ AppenderSendmail <- R6::R6Class(
       self$set_should_flush(function(event, obj)
         is.na(obj[["flush_threshold"]]) || all(event[["level"]] <= obj[["flush_threshold"]])
       )
-
-      private$.flush_on_exit   <- FALSE
-      private$.flush_on_rotate <- FALSE
     },
 
     flush = function(
