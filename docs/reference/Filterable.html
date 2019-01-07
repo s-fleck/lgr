@@ -32,7 +32,9 @@
 
 <meta property="og:title" content="Abstract Class for Filterables — Filterable" />
 
-<meta property="og:description" content="Superclass for classes that have a filter() method such as Appenders and
+<meta property="og:description" content="Abstract classes are exported for package developers that want to extend
+them, they cannot be instantiated directly.
+Superclass for classes that have a filter() method such as Appenders and
 Loggers. This class is only exported for package developers that want to
 extend it." />
 <meta name="twitter:card" content="summary" />
@@ -65,7 +67,7 @@ extend it." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9001</span>
       </span>
     </div>
 
@@ -90,9 +92,6 @@ extend it." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
-    </li>
     <li>
       <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
@@ -126,8 +125,10 @@ extend it." />
 
     <div class="ref-description">
     
-    <p>Superclass for classes that have a <code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter()</a></code> method such as Appenders and
-Loggers. This class is only exported for package developers that want to
+    <p><strong>Abstract classes</strong> are exported for package developers that want to extend
+them, they cannot be instantiated directly.</p>
+<p>Superclass for classes that have a <code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter()</a></code> method such as <a href='Appender.html'>Appenders</a> and
+<a href='Logger.html'>Loggers</a>. This class is only exported for package developers that want to
 extend it.</p>
     
     </div>
@@ -143,10 +144,15 @@ extend it.</p>
     
     <dl class='dl-horizontal'>
 <dt><code>filters</code>, <code>set_filters(filters)</code></dt><dd><p>a <code>list</code> of predicates (functions
-that return either <code>TRUE</code> or <code>FALSE</code>). If all of these functions evaluate
-to <code>TRUE</code> the LogEvent is passed on. Since
-LogEvents have reference semantics, filters can also be abused to modify
-LogEvents before they are passed on. Look at the source code of
+that return either <code>TRUE</code> or <code>FALSE</code>). These functions must have exactly
+two arguments: <code>event</code> and <code>obj</code>. When the <code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter()</a></code> method of the
+Filterable is invoked on a LogEvent, that event will get passed to <code>event</code>,
+the Filterable will get passed to <code>obj</code>. This means that you can,
+f.e. use <code>obj$threshold</code> to access the threshold of the Appender/Logger
+that is using the filter.
+If all of these functions evaluate to <code>TRUE</code> the LogEvent is passed on.
+Since LogEvents have reference semantics, filters can also be abused to
+modify them before they are passed on. Look at the source code of
 <code><a href='with_log_level.html'>with_log_level()</a></code> or <code><a href='with_log_level.html'>with_log_value()</a></code> for examples.</p></dd>
 </dl>
     
@@ -159,6 +165,11 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 <code>filters</code></p></dd>
 </dl>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other abstract classes: <code><a href='AppenderDigest.html'>AppenderDigest</a></code>,
+  <code><a href='AppenderMemory.html'>AppenderMemory</a></code>, <code><a href='AppenderTable.html'>AppenderTable</a></code></p></div>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -170,6 +181,8 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
       <li><a href="#fields">Fields</a></li>
 
       <li><a href="#methods">Methods</a></li>
+
+      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>

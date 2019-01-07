@@ -1,8 +1,9 @@
 r6_usage <- function(
   x,
-  name = "x"
+  name = "x",
+  ignore = NULL
 ){
-  els <- collect_usage(x)
+  els <- collect_usage(x, ignore = ignore)
 
   c(
     "@section Usage:",
@@ -18,10 +19,11 @@ r6_usage <- function(
 
 collect_usage <- function(
   x,
-  name = "x"
+  name = "x",
+  ignore = NULL
 ){
   public_methods <- vapply(
-    names(x$public_methods),
+    setdiff(names(x$public_methods), ignore),
     function(nm) make_function_usage(nm, formals(x$public_methods[[nm]])),
     character(1)
   )
@@ -36,7 +38,10 @@ collect_usage <- function(
 
 
   fields <- c(names(x$public_fields), names(x$active))
+
+
   if (!is.null(fields)) fields <- sort(fields)
+  fields <- setdiff(fields, ignore)
 
   els <- list(
     ctor = ctor,
@@ -48,7 +53,7 @@ collect_usage <- function(
   els <- els[!vapply(els, is_empty, FALSE)]
 
   if ("get_inherit" %in% names(x)){
-    els <- c(els, collect_usage(x$get_inherit()))
+    els <- c(els, collect_usage(x$get_inherit(), ignore = ignore))
     list(
       ctors   = els$ctor,  # the first one
       fields  = unique(unlist(els[names(els) == "fields"])),

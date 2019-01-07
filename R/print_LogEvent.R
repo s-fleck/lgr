@@ -17,6 +17,8 @@
 #'     `timestamp_fmt`)}
 #'   \item{`%l`}{the log level, lowercase `character` representation}
 #'   \item{`%L`}{the log level, uppercase `character` representation}
+#'   \item{`%k`}{the log level, first letter of lowercase `character` representation}
+#'   \item{`%K`}{the log level, first letter of uppercase `character` representation}
 #'   \item{`%n`}{the log level, `integer` representation}
 #'   \item{`%u`}{the `user` of the Logger. This is guessed via [`get_user()`]
 #'     during the initalisation of the Logger.}
@@ -24,7 +26,12 @@
 #'       multiple threads.}
 #'   \item{`%c`}{the calling function}
 #'   \item{`%m`}{the log message}
-#'   \item{`%f`}{all custom fields of `x` in a JSON like format}
+#'   \item{`%f`}{all custom fields of `x` in a pseudo-JSON like format that is
+#'     optimized for human readability and console output}
+#'   \item{`%j`}{all custom fields of `x` in proper JSON. This requires that you
+#'     have **jsonlite** installed and does not support colors as opposed to
+#'     `%f`
+#'   }
 #' }
 #'
 #' @return `x` for `print()` and a `character` scalar for `format()`
@@ -44,7 +51,14 @@
 #'   level = 300, msg = "a gps track", logger = lgr,
 #'   waypoints = 10, location = "Austria"
 #' )
+#'
+#' # default output with %f
 #' print(y)
+#'
+#' # proper JSON output with %j
+#' if (requireNamespace("jsonlite")){
+#' print(y, fmt = "%L [%t] %m  %j")
+#' }
 #'
 print.LogEvent <- function(
   x,
@@ -108,7 +122,9 @@ format.LogEvent <- function(
   # tokenize
   tokens <- tokenize_format(
     fmt,
-    valid_tokens = c("%t", "%u", "%p", "%c", "%m", "%l", "%L", "%n", "%f")
+    valid_tokens = paste0(
+      "%",
+      c("t", "u", "p", "c", "m", "l", "L", "n", "f", "j", "k", "K"))
   )
 
   # format
@@ -121,12 +137,15 @@ format.LogEvent <- function(
       "%n" = colorize_levels(x$level, colors),
       "%l" = colorize_levels(lvls, colors),
       "%L" = colorize_levels(toupper(lvls), colors),
+      "%k" = colorize_levels(substr(lvls, 1, 1), colors),
+      "%K" = colorize_levels(substr(toupper(lvls), 1, 1), colors),
       "%t" = format(x$timestamp, format = timestamp_fmt),
       "%m" = x$msg,
       "%c" = x$caller %||% "(unknown function)",
       "%u" = x$logger_user,
       "%p" = Sys.getpid(),
       "%f" = format_custom_fields(get_custom_fields(x), color = length(colors)),
+      "%j" = jsonlite::toJSON(get_custom_fields(x), auto_unbox = TRUE),
       tokens[[i]]
     )
   }
@@ -169,19 +188,11 @@ format_custom_fields <- function(
     dots     <- style_subtle("..")
   }
 
-  res <- lapply(x, function(.x) {
-    if (is.atomic(.x)){
-      if (is.numeric(.x)) {
-        .x <- format(.x, justify = "none", drop0trailing = TRUE, trim = TRUE)
-      }
-
-      r <- ptrunc_col(.x, collapse = ", ", width = max_len, dots = dots)
-      if (length(.x) > 1) r <- paste0(brackets[[1]], r, brackets[[2]])
-      r
-    } else {
-      class_fmt(.x)
-    }
-  })
+  res <- lapply(
+    x,
+    preview_object,
+    width = max_len, brackets = brackets, dots = dots, quotes = c("", "")
+  )
 
   paste0(
     braces[[1]],
@@ -195,6 +206,29 @@ format_custom_fields <- function(
 }
 
 
+
+preview_object <- function(
+  x,
+  width = 32,
+  brackets = c("(", ")"),
+  quotes   = c("`", "`"),
+  dots = ".."
+){
+  if (!is.atomic(x))
+    return(class_fmt(x))
+
+  if (is.numeric(x))
+    x <- format(x, justify = "none", drop0trailing = TRUE, trim = TRUE)
+
+  res <- ptrunc_col(x, collapse = ", ", width = width, dots = dots)
+
+  if (length(x) > 1)
+    res <- paste0(brackets[[1]], res, brackets[[2]])
+  else
+    res <- paste0(quotes[[1]], res, quotes[[2]])
+
+  res
+}
 
 
 #' @export

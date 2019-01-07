@@ -3,14 +3,17 @@
 \name{Appender}
 \alias{Appender}
 \alias{Appenders}
-\title{Abstract Class for Appenders}
+\title{Appenders}
 \description{
-Abstract classes are exported for developers that want to extend them, they
-are not useful to casual users. Appenders are assigned to \link{Loggers} and
+Appenders are assigned to \link{Loggers} and
 manage the output of the \link{LogEvents} to a destination, such as the console or
 a text file. An Appender must have a single \link{Layout} that tells it how to
 format the LogEvent. For details please refer to the documentations of the
 specific Appenders.
+
+\strong{Appender is not designed for direct usage}, but it is the basis on which all
+other Appenders are built. Please see the \strong{see also} section towards the
+end of this document a list of available Appenders.
 }
 \section{Usage}{
 \preformatted{
@@ -55,10 +58,15 @@ human-readable form (mainly for print output)}
 
 \describe{
 \item{\code{filters}, \code{set_filters(filters)}}{a \code{list} of predicates (functions
-that return either \code{TRUE} or \code{FALSE}). If all of these functions evaluate
-to \code{TRUE} the LogEvent is passed on. Since
-LogEvents have reference semantics, filters can also be abused to modify
-LogEvents before they are passed on. Look at the source code of
+that return either \code{TRUE} or \code{FALSE}). These functions must have exactly
+two arguments: \code{event} and \code{obj}. When the \code{filter()} method of the
+Filterable is invoked on a LogEvent, that event will get passed to \code{event},
+the Filterable will get passed to \code{obj}. This means that you can,
+f.e. use \code{obj$threshold} to access the threshold of the Appender/Logger
+that is using the filter.
+If all of these functions evaluate to \code{TRUE} the LogEvent is passed on.
+Since LogEvents have reference semantics, filters can also be abused to
+modify them before they are passed on. Look at the source code of
 \code{\link[=with_log_level]{with_log_level()}} or \code{\link[=with_log_value]{with_log_value()}} for examples.
 }
 }
@@ -67,7 +75,10 @@ LogEvents before they are passed on. Look at the source code of
 \section{Methods}{
 
 \describe{
-\item{\code{append(event)}}{Write the \link{LogEvent} \code{event} to a destination}
+\item{\code{append(event)}}{Tell the Appender to process a \link{LogEvent} \code{event}.
+This method is usually not called by the user, but invoked by a
+\link{Logger}
+}
 }
 
 
@@ -81,8 +92,11 @@ on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 \seealso{
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderDt}}, \code{\link{AppenderFile}},
-  \code{\link{AppenderJson}}, \code{\link{AppenderRjdbc}},
+  \code{\link{AppenderFile}}, \code{\link{AppenderGmail}},
+  \code{\link{AppenderJson}},
+  \code{\link{AppenderPushbullet}},
+  \code{\link{AppenderRjdbc}},
+  \code{\link{AppenderSendmail}},
   \code{\link{AppenderTable}}
 }
 \concept{Appenders}

@@ -66,7 +66,7 @@ LayoutJson and a few extra methods for convenience." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9001</span>
       </span>
     </div>
 
@@ -91,9 +91,6 @@ LayoutJson and a few extra methods for convenience." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
-    </li>
     <li>
       <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
@@ -169,10 +166,15 @@ human-readable form (mainly for print output)</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>filters</code>, <code>set_filters(filters)</code></dt><dd><p>a <code>list</code> of predicates (functions
-that return either <code>TRUE</code> or <code>FALSE</code>). If all of these functions evaluate
-to <code>TRUE</code> the LogEvent is passed on. Since
-LogEvents have reference semantics, filters can also be abused to modify
-LogEvents before they are passed on. Look at the source code of
+that return either <code>TRUE</code> or <code>FALSE</code>). These functions must have exactly
+two arguments: <code>event</code> and <code>obj</code>. When the <code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter()</a></code> method of the
+Filterable is invoked on a LogEvent, that event will get passed to <code>event</code>,
+the Filterable will get passed to <code>obj</code>. This means that you can,
+f.e. use <code>obj$threshold</code> to access the threshold of the Appender/Logger
+that is using the filter.
+If all of these functions evaluate to <code>TRUE</code> the LogEvent is passed on.
+Since LogEvents have reference semantics, filters can also be abused to
+modify them before they are passed on. Look at the source code of
 <code><a href='with_log_level.html'>with_log_level()</a></code> or <code><a href='with_log_level.html'>with_log_value()</a></code> for examples.</p></dd>
 </dl>
     
@@ -188,7 +190,9 @@ form of <code>appender$set_&lt;fieldname&gt;(value)</code></p>
 
     
     <dl class='dl-horizontal'>
-<dt><code><a href='https://www.rdocumentation.org/packages/base/topics/append'>append(event)</a></code></dt><dd><p>Write the <a href='LogEvent.html'>LogEvent</a> <code>event</code> to a destination</p></dd>
+<dt><code><a href='https://www.rdocumentation.org/packages/base/topics/append'>append(event)</a></code></dt><dd><p>Tell the Appender to process a <a href='LogEvent.html'>LogEvent</a> <code>event</code>.
+This method is usually not called by the user, but invoked by a
+<a href='Logger.html'>Logger</a></p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter(event)</a></code></dt><dd><p>Determine whether the LogEvent <code>x</code> should be passed
@@ -201,9 +205,11 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
     <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a>, <a href='LayoutJson.html'>LayoutJson</a></p>
 <p>Other Appenders: <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
   <code><a href='AppenderConsole.html'>AppenderConsole</a></code>, <code><a href='AppenderDbi.html'>AppenderDbi</a></code>,
-  <code><a href='AppenderDt.html'>AppenderDt</a></code>, <code><a href='AppenderJson.html'>AppenderJson</a></code>,
-  <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>, <code><a href='AppenderTable.html'>AppenderTable</a></code>,
-  <code><a href='Appender.html'>Appender</a></code></p></div>
+  <code><a href='AppenderGmail.html'>AppenderGmail</a></code>, <code><a href='AppenderJson.html'>AppenderJson</a></code>,
+  <code><a href='AppenderPushbullet.html'>AppenderPushbullet</a></code>,
+  <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>,
+  <code><a href='AppenderSendmail.html'>AppenderSendmail</a></code>,
+  <code><a href='AppenderTable.html'>AppenderTable</a></code>, <code><a href='Appender.html'>Appender</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -220,8 +226,8 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
   <span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>json</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()), <span class='st'>"json"</span>
 )
 
-<span class='no'>logger</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; INFO  [16:16:47.757] A test message </div><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>default</span>)</div><div class='output co'>#&gt; [1] "INFO  [2019-01-03 16:16:47.757] A test message"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>fancy</span>)</div><div class='output co'>#&gt; [1] "[2019-01-03 16:16:47.757] eval(): INFO  A test message from user stefan.fleck@statistik.gv.at"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>json</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2019-01-03 16:16:47\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div></pre>
+<span class='no'>logger</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; INFO  [17:57:54.458] A test message </div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>default</span>)</div><div class='output co'>#&gt; [1] "INFO  [2019-01-06 17:57:54.458] A test message"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>fancy</span>)</div><div class='output co'>#&gt; [1] "[2019-01-06 17:57:54.458] eval(): INFO  A test message from user stefan.b.fleck@gmail.com"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>json</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2019-01-06 17:57:54\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

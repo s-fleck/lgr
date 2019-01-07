@@ -31,7 +31,12 @@ lgr is a logging framework for R inspired by
 It follows a traditional object oriented design implemented through
 [R6 classes](https://github.com/r-lib/R6). This enables lgr to have a larger
 set of features than other logging packages for R, and makes it easy to extend 
-for people that have experience with R6 classes. 
+for people that have experience with R6 classes. This also makes Logger 
+configuration a bit more verbose than for other packages, but I hope
+also more flexible and transparent. 
+
+If you are not sure if lgr is the right package for you, take a look 
+[examples](#examples) to see what lgr can do for you.
 
 
 ## Quickstart
@@ -297,8 +302,11 @@ to its Appenders.
 > LogEvent must have so that that Logger/Appender processes it.
 
 If you require more complex logic to decide whether a LogEvent should be
-created/processed you can also assign **filters** to Loggers/Appenders. They
-will be applied after the threshold is checked. 
+created/processed you can also assign **filters** to Loggers/Appenders. 
+Filters are special functions that have exactly two arguments: 
+  `event` (the LogEvent to be filtered) and
+  `obj` (the Logger/Appender that calls `filter()`). 
+They will be applied after the threshold is checked. 
 
 examples:
 ```{r}
@@ -378,8 +386,8 @@ hierarchies.
 
 ## Logging to the console 
 
-lgr comes with simple formatting syntax. The configuration possibilites are 
-limited, but should be sufficient for most users.
+lgr comes with simple but powerfull formatting syntax for LogEvents. Please
+refere to `?format.LogEvent` for the full list of available placeholders.
 
 ```{r}
 lg <- Logger$new(
@@ -396,7 +404,7 @@ lg$info("A more involved custom format")
 If this is not enough for you, you can use `LayoutGlue` based on the awesome
 [glue](https://github.com/tidyverse/glue) package. The syntax is a bit more
 verbose, and `AppenderGlue` is a bit less performant than `AppenderFormat`, but
-the possibilities are endless.
+the possibilities are endless. 
 
 ```{r}
 # install.packages("glue")
@@ -406,7 +414,8 @@ lg$appenders$cons$set_layout(LayoutGlue$new(
 ))
 lg$info("with glue")
 ```
-
+All fields of the [LogEvent] object are exposed through LayoutGlue, so please 
+refer to `?LogEvent` for a list of all available Fields.
 
 
 ## Logging to JSON files
@@ -418,37 +427,54 @@ JSON is the **recommended text-based logging format when logging to files**
   ^[Technically, the logger does not produce standard JSON files but 
   [JSON lines](http://jsonlines.org/)], 
 as it is human- as well as machine readable. You should only log to a different 
-format if you have very good reasons for it. 
+format if you have very good reasons for it. The easiest way to log to
+JSON files is with AppenderJson^[AppenderJson is just an AppenderFile with 
+LayotJson as default Layout and a few extra features]
 
 
 ```{r}
 # install.packages("jsonlite")
 tf <- tempfile()
 
-# AppenderJson is just an AppenderFile with LayotJson as default instead 
-# and a few extra features
 lg <- Logger$new(
   "test logger",
-  appenders = AppenderJson$new(file = tf), 
+  appenders = list(json = AppenderJson$new(file = tf)), 
   propagate = FALSE
 )
 
-lg$info("JSON naturally supports custom log fields", field = "custom")
-lg$info("You can serialize most R data types to JSON", numbers = 1:5)
-lg$info("If you ever want to analyse your log files", use = "JSON")
+lg$info("JSON naturally ", field = "custom")
+lg$info("supports custom", numbers = 1:3)
+lg$info("log fields", use = "JSON")
 
 ```
 
-JSON is easy to parse and analyse with R
-```{r}
+JSON is easy to parse and analyse with R. lgr provides the function
+`read_json_lines()` that can be used to read json log files, but you can also
+use AppenderJson's `$data` binding for an even more convenient method to
+read the logfile.
+
+```{r eval = FALSE}
+lg$appenders$json$data
+# same as 
 read_json_lines(tf)
 ```
-
-It is also human readable, though maybe this vignette does not 
-transport that fact very well because of the lack of horizontal space
-```{r}
-cat(readLines(tf), sep = "\n\n")
+```{r echo = FALSE}
+lg$appenders$json$data
 ```
+
+JSON is also human readable, though this vignette does not transport that fact 
+very well because of the lack of horizontal space.
+```{r eval = FALSE}
+lg$appenders$json$show()
+# same as
+cat(readLines(tf), sep = "\n")
+```
+```{r echo = FALSE}
+lg$appenders$json$show()
+```
+
+
+
 
 ```{r, echo = FALSE}
 unlink(tf)
@@ -469,7 +495,7 @@ lg <- Logger$new("mypackage", appenders = AppenderFile$new(tf))
 ```
 
 The `print()` method for Loggers gives a nice overview of the newly created
-logger:
+Logger:
 
 ```{r}
 print(lg)
@@ -478,7 +504,7 @@ print(lg)
 This tells us that `lg` logs all events of at least level `info`. It does 
 have a single (unnamed) Appender that logs to a temporary file, and dispatches 
 all LogEvents it creates to the Appenders of the root Logger (ignoring the 
-threshold and filters of the root Logger, but not of the Appenders).
+threshold and filters of the root Logger, but not of its Appenders).
 
 We can use `lg$fatal()`, `lg$info()`, etc.. to log messages with this Logger:
 ```{r}
@@ -504,10 +530,105 @@ lg$info("Nothing to see here")
 unlink(tf)
 ```
 
+
+## Buffered Logging
+
+The main purpose of AppenderBuffer is to retain LogEvents in memory and write
+them to destinations at a later point in time, e.g. when the Buffer is full and
+needs to be flushed. For example, if you log to a 
+remote database you can postpone this costly operation until after your analysis
+is finished.
+
+By setting a [filter](#thresholds) as a custom `$should_flush()` method for an 
+AppenderBuffer, you can define more complex conditions to trigger flushing. 
+For example, the will output the last 5 LogEvents that happened before an 
+`error` occured.
+
+```{r}
+lg <- Logger$new(
+  "buffer example",
+  threshold = NA,
+  propagate = FALSE,  # to suppress console output
+  appenders = AppenderBuffer$new(
+    threshold = NA,
+    buffer_size = 5, # can hold 5 events, the 6th will trigger flushing
+    flush_on_exit = FALSE,
+    flush_on_rotate = FALSE,
+    should_flush = function(event, obj) event$level <= 200,
+    appenders = AppenderConsole$new(threshold = NA)
+  )
+)
+
+for (nm in month.name[1:8]) lg$debug("%s", nm)
+lg$error("But the days grow short when you reach September")
+```
+
+
+## Inject Values with with_log_value
+
+`with_log_value()` abuses lgr's powerfull filter mechanic to insert arbitrary
+values into all logging calls within a block of code. This is useful for 
+assigning a grouping identifier to a series of log calls.
+
+```{r}
+clean   <- function() lgr$info("cleaning data")
+process <- function() lgr$info("processing data")
+output  <- function() lgr$info("outputing data")
+
+analyze <- function(id){
+  with_log_value(list(dataset_id = id), {
+    clean()
+    process()
+    output()
+  })
+}
+
+analyze("datset1")
+```
+
+## Temporarily Disable Logging
+
+Temporary disabling logging for portions of code is straight forward and easy 
+with lgr
+
+```{r}
+without_logging({
+  lgr$warn("Oh Yeah?")
+  lgr$fatal("Oh No")
+})
+```
+
+
+
+## Adding a Custom Logger to a Package
+
+If you are a package author, it is good practice to define a separate logger
+for your package. This gives users the ability to easily enable/disable 
+logging on a per-package basis. Loggers must be initialized in the packages
+.onLoad hook. You can do this by adding the following code to any `.R` file 
+inside the `R/` directory of your package:
+
+```{r}
+# mypackage/R/mypackage-package.R
+.onLoad <- function(...){
+  assign(
+    "lg",  # the recommended name for a logger object
+    lgr::Logger$new(name = "mypackage"),  # should be the same as the package name
+    envir = parent.env(environment())
+  )
+}
+
+```
+
+You can also just use `lgr::use_logger()` to generate the appropriate code for 
+your package automatically.
+
+After you set this up you can use `lg$fatal()`, `lg$info()`, etc... 
+inside your package. You do not have to define any appenders, since all log 
+events will get redirected to the root Logger (see [Inheritance](#hierarchy)). 
+
 # References
 
 [Python Logging](https://docs.python.org/3/library/logging.html)
 
 [Eric Stenbock: The True Story of A Vampire](http://gutenberg.net.au/ebooks06/0606601h.html)
-
-

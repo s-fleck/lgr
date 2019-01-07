@@ -1,3 +1,4 @@
+^man-roxygen$
 ^\.covrignore$
 ^codecov\.yml$
 ^.*\.Rproj$
@@ -10,3 +11,4 @@
 ^README\.Rmd$
 ^_pkgdown\.yml$
 ^docs$
+^\.httr-oauth$

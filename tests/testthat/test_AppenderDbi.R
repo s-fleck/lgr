@@ -126,8 +126,8 @@ for (nm in names(dbs)){
 
 
   test_that("querying / displaying logs works", {
-    expect_output(app$show(5), paste(rep("TRACE.*", 5), collapse = "") )
-    expect_output(expect_identical(nrow(app$show(1)), 1L), "TRACE")
+    expect_output(app$show(n = 5), paste(rep("TRACE.*", 5), collapse = "") )
+    expect_output(expect_identical(nrow(app$show(n = 1)), 1L), "TRACE")
     expect_output(expect_identical(show_log(target = app), app$show()))
     expect_identical(
       capture.output(show_log(target = app)),
@@ -348,7 +348,7 @@ test_that("displaying logs works for Loggers", {
 
   expect_output(lg$appenders$db$show(), "FATAL.*TRACE")
   expect_output(
-    expect_identical(nrow(lg$appenders$db$show(1)), 1L),
+    expect_identical(nrow(lg$appenders$db$show(n = 1)), 1L),
     "TRACE"
   )
 

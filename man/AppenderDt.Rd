@@ -24,13 +24,14 @@ It is recommended to use this feature only \code{TRACE} level.
 
 \section{Usage}{
 \preformatted{
-x <- x$new(threshold = NA_integer_, layout = lgr::lgr$appenders$console$layout,
+x <- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "\%L [\%t] \%m
+  \%f", timestamp_fmt = "\%H:\%M:\%OS3", colors = getOption("lgr.colors", list())),
   prototype = data.table::data.table(.id = NA_integer_, level = NA_integer_,
-  timestamp = Sys.time(), caller = NA_character_, msg = NA_character_, value =
-  list(list())), buffer_size = 1e+05)
+  timestamp = Sys.time(), caller = NA_character_, msg = NA_character_, .custom
+  = list(list())), buffer_size = 1e+05)
 
 x$append(event)
-x$show(n = 20, threshold = NA_integer_)
+x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
@@ -55,20 +56,22 @@ a \code{buffer_size} and a \code{prototype}. These determine the structure of th
 modified anymore after the instantion of the appender.
 
 The \link{Layout} for this Appender is used only to format console output of
-its \code{$show()} method. By default, it is set to (and kept in sync with) the
-Layout of the console appender of the root logger
-(\code{lgr::lgr$appenders$console$layout}).
+its \code{$show()} method.
 
 \describe{
 \item{buffer_size}{\code{integer} scalar. Number of rows of the in-memory
 \code{data.table}}
 \item{prototype}{A prototype \code{data.table}. The prototype must be a
 \code{data.table} with the same columns and column types as the data
-you want to log. The actual content of the \code{data.table} is irrelevant.
-Supplying a custom prototype is only necessary if you use custom
-fields in \link{LogEvents}. For convenience, the default prototype already
-contains a list column called \code{value} that can hold arbitrary \R values
-(see examples)
+you want to log. The actual content of the columns is irrelevant.
+There are a few columns that have special meaning, based on their name:
+\itemize{
+\item{\code{.id}: \code{integer} (mandatory). Must always be the first column
+and is used internally by the Appender}
+\item{\code{.custom}: \code{list} (optional). If present all custom values of the
+event (that are not already part of the prototype) are stored in
+this list column.}
+}
 }
 }
 }
@@ -84,8 +87,7 @@ with a maximum of \code{buffer_size} rows}
 
 
 \describe{
-\item{\code{data}}{Get the log recorded by this \code{Appender} as a
-\code{data.frame}}
+\item{\code{data}}{Get the log recorded by this \code{Appender} as a \code{data.frame}}
 }
 
 
@@ -103,10 +105,15 @@ human-readable form (mainly for print output)}
 
 \describe{
 \item{\code{filters}, \code{set_filters(filters)}}{a \code{list} of predicates (functions
-that return either \code{TRUE} or \code{FALSE}). If all of these functions evaluate
-to \code{TRUE} the LogEvent is passed on. Since
-LogEvents have reference semantics, filters can also be abused to modify
-LogEvents before they are passed on. Look at the source code of
+that return either \code{TRUE} or \code{FALSE}). These functions must have exactly
+two arguments: \code{event} and \code{obj}. When the \code{filter()} method of the
+Filterable is invoked on a LogEvent, that event will get passed to \code{event},
+the Filterable will get passed to \code{obj}. This means that you can,
+f.e. use \code{obj$threshold} to access the threshold of the Appender/Logger
+that is using the filter.
+If all of these functions evaluate to \code{TRUE} the LogEvent is passed on.
+Since LogEvents have reference semantics, filters can also be abused to
+modify them before they are passed on. Look at the source code of
 \code{\link[=with_log_level]{with_log_level()}} or \code{\link[=with_log_value]{with_log_value()}} for examples.
 }
 }
@@ -122,7 +129,10 @@ via this Appenders \link{Layout}}
 
 
 \describe{
-\item{\code{append(event)}}{Write the \link{LogEvent} \code{event} to a destination}
+\item{\code{append(event)}}{Tell the Appender to process a \link{LogEvent} \code{event}.
+This method is usually not called by the user, but invoked by a
+\link{Logger}
+}
 }
 
 
@@ -131,6 +141,22 @@ via this Appenders \link{Layout}}
 on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 \code{filters}}
 }
+}
+
+\section{Comparison AppenderBuffer and AppenderDt}{
+
+
+Both \link{AppenderBuffer} and \link{AppenderDt} do in memory buffering of events.
+AppenderBuffer retains a copies of the events it processes and has the
+abillity to pass the buffered events on to other Appenders. AppenderDt
+converts the events to rows in a \code{data.table} and is a bit harder to
+configure. Used inside loops (several hundred iterations),
+AppenderDt has much less overhead than AppenderBuffer. For single logging
+calls and small loops, AppenderBuffer is more performant. This is related to
+how memory pre-allocation is handled by the appenders.
+
+In short: Use AppenderDt if you want an in-memory log for interactive use,
+and AppenderBuffer if you actually want to buffer events
 }
 
 \examples{
@@ -152,20 +178,12 @@ show_log(target = lg$appenders$memory)
 # that it can find.
 show_log(target = lg)
 
-# Data tables can store arbitrary R values in list columns. The default
-# AppenderDt comes with a single list column called "value" that you can use
-lg$info("the iris data frame", value = iris)
+# Custom fields are stored in the list column .custom by default
+lg$info("the iris data frame", caps = LETTERS[1:5])
 lg$appenders$memory$data
-head(lg$appenders$memory$data$value[[3]])
+lg$appenders$memory$data$.custom[[3]]$caps
 
 }
 \seealso{
 \link{LayoutFormat}, \link{simple_logging}, \link[data.table:data.table]{data.table::data.table}
-
-Other Appenders: \code{\link{AppenderBuffer}},
-  \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderFile}}, \code{\link{AppenderJson}},
-  \code{\link{AppenderRjdbc}}, \code{\link{AppenderTable}},
-  \code{\link{Appender}}
 }
-\concept{Appenders}

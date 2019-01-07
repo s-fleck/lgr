@@ -45,6 +45,8 @@ Print or Format Logging Data
 \code{timestamp_fmt})}
 \item{\code{\%l}}{the log level, lowercase \code{character} representation}
 \item{\code{\%L}}{the log level, uppercase \code{character} representation}
+\item{\code{\%k}}{the log level, first letter of lowercase \code{character} representation}
+\item{\code{\%K}}{the log level, first letter of uppercase \code{character} representation}
 \item{\code{\%n}}{the log level, \code{integer} representation}
 \item{\code{\%u}}{the \code{user} of the Logger. This is guessed via \code{\link[=get_user]{get_user()}}
 during the initalisation of the Logger.}
@@ -52,7 +54,12 @@ during the initalisation of the Logger.}
 multiple threads.}
 \item{\code{\%c}}{the calling function}
 \item{\code{\%m}}{the log message}
-\item{\code{\%f}}{all custom fields of \code{x} in a JSON like format}
+\item{\code{\%f}}{all custom fields of \code{x} in a pseudo-JSON like format that is
+optimized for human readability and console output}
+\item{\code{\%j}}{all custom fields of \code{x} in proper JSON. This requires that you
+have \strong{jsonlite} installed and does not support colors as opposed to
+\code{\%f}
+}
 }
 }
 
@@ -70,6 +77,13 @@ y <- LogEvent$new(
   level = 300, msg = "a gps track", logger = lgr,
   waypoints = 10, location = "Austria"
 )
+
+# default output with \%f
 print(y)
+
+# proper JSON output with \%j
+if (requireNamespace("jsonlite")){
+print(y, fmt = "\%L [\%t] \%m  \%j")
+}
 
 }

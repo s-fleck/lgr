@@ -38,7 +38,7 @@ add_appender(appender, name = NULL, target = lgr::lgr)
 
 remove_appender(pos, target = lgr::lgr)
 
-show_log(n = 20, threshold = NA, target = lgr::lgr)
+show_log(threshold = NA_integer_, n = 20L, target = lgr::lgr)
 }
 \arguments{
 \item{msg, ...}{passed on to \code{\link[base:sprintf]{base::sprintf()}}}

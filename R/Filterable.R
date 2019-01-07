@@ -1,17 +1,25 @@
 #' Abstract Class for Filterables
 #'
-#' Superclass for classes that have a `filter()` method such as Appenders and
-#' Loggers. This class is only exported for package developers that want to
+#' @template abstract_class
+#'
+#' @description
+#' Superclass for classes that have a `filter()` method such as [Appenders] and
+#' [Loggers]. This class is only exported for package developers that want to
 #' extend it.
 #' @name Filterable
 #' @section Fields:
 #'
 #' \describe{
 #'   \item{`filters`, `set_filters(filters)`}{a `list` of predicates (functions
-#'     that return either `TRUE` or `FALSE`). If all of these functions evaluate
-#'     to `TRUE` the LogEvent is passed on. Since
-#'     LogEvents have reference semantics, filters can also be abused to modify
-#'     LogEvents before they are passed on. Look at the source code of
+#'     that return either `TRUE` or `FALSE`). These functions must have exactly
+#'     two arguments: `event` and `obj`. When the `filter()` method of the
+#'     Filterable is invoked on a LogEvent, that event will get passed to `event`,
+#'     the Filterable will get passed to `obj`. This means that you can,
+#'     f.e. use `obj$threshold` to access the threshold of the Appender/Logger
+#'     that is using the filter.
+#'     If all of these functions evaluate to `TRUE` the LogEvent is passed on.
+#'     Since LogEvents have reference semantics, filters can also be abused to
+#'     modify them before they are passed on. Look at the source code of
 #'     [with_log_level()] or [with_log_value()] for examples.
 #'   }
 #' }

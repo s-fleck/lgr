@@ -1,11 +1,15 @@
-#' Abstract Class for Appenders
+#' Appenders
 #'
-#' Abstract classes are exported for developers that want to extend them, they
-#' are not useful to casual users. Appenders are assigned to [Loggers] and
+#' @description
+#' Appenders are assigned to [Loggers] and
 #' manage the output of the [LogEvents] to a destination, such as the console or
 #' a text file. An Appender must have a single [Layout] that tells it how to
 #' format the LogEvent. For details please refer to the documentations of the
 #' specific Appenders.
+#'
+#' **Appender is not designed for direct usage**, but it is the basis on which all
+#' other Appenders are built. Please see the **see also** section towards the
+#' end of this document a list of available Appenders.
 #'
 #' @eval r6_usage(Appender)
 #'
@@ -32,7 +36,10 @@
 #'
 #' @section Methods:
 #'  \describe{
-#'     \item{`append(event)`}{Write the [LogEvent] `event` to a destination}
+#'     \item{`append(event)`}{Tell the Appender to process a [LogEvent] `event`.
+#'       This method is usually not called by the user, but invoked by a
+#'       [Logger]
+#'     }
 #'  }
 #'
 #' @name Appender
@@ -330,7 +337,13 @@ AppenderJson <- R6::R6Class(
       self$set_layout(layout)
     },
 
-    show = function(n = 20, threshold = NA){
+    show = function(
+      threshold = NA_integer_,
+      n = 20L
+    ){
+      assert(is_scalar_integerish(n))
+      threshold <- standardize_threshold(threshold)
+
       if (!is.na(threshold)){
         sel <- self$data$level <= threshold
       } else {
@@ -359,9 +372,12 @@ AppenderJson <- R6::R6Class(
 
 #' Abstract Class for Logging to Tabular Structures
 #'
-#' Abstract classes are exported for developers that want to extend them, they
-#' are not useful to casual users. [AppenderDbi], [AppenderRjdbc] and
-#' [AppenderDt] are derived from AppenderTabel.
+#' @template abstract_class
+#'
+#' @description
+#' AppenderTable is extended by Appenders that write to a data source that
+#' can be interpreted as tables, (usually a `data.frame`). Examples are
+#' [AppenderDbi], [AppenderRjdbc] and [AppenderDt].
 #'
 #' @inheritSection Appender Fields
 #' @inheritSection Appender Methods
@@ -369,8 +385,7 @@ AppenderJson <- R6::R6Class(
 #' @section Fields:
 #'
 #' \describe{
-#'   \item{`data`}{Get the log recorded by this `Appender` as a
-#'     `data.frame`}
+#'   \item{`data`}{Get the log recorded by this `Appender` as a `data.frame`}
 #' }
 #'
 #' @section Methods:
@@ -397,7 +412,7 @@ AppenderTable <- R6::R6Class(
   cloneable = FALSE,
 
   public = list(
-    show = function(n = 20, threshold = NA_integer_) NULL
+    show = function(threshold = NA_integer_, n = 20L) NULL
   ),
   active = list(
     destination = function() "",
@@ -442,20 +457,22 @@ AppenderTable <- R6::R6Class(
 #' modified anymore after the instantion of the appender.
 #'
 #' The [Layout] for this Appender is used only to format console output of
-#' its `$show()` method. By default, it is set to (and kept in sync with) the
-#' Layout of the console appender of the root logger
-#' (`lgr::lgr$appenders$console$layout`).
+#' its `$show()` method.
 #'
 #' \describe{
 #'   \item{buffer_size}{`integer` scalar. Number of rows of the in-memory
 #'   `data.table`}
 #'   \item{prototype}{A prototype `data.table`. The prototype must be a
 #'     `data.table` with the same columns and column types as the data
-#'     you want to log. The actual content of the `data.table` is irrelevant.
-#'     Supplying a custom prototype is only necessary if you use custom
-#'     fields in [LogEvents]. For convenience, the default prototype already
-#'     contains a list column called `value` that can hold arbitrary \R values
-#'     (see examples)
+#'     you want to log. The actual content of the columns is irrelevant.
+#'     There are a few columns that have special meaning, based on their name:
+#'     \itemize{
+#'       \item{`.id`: `integer` (mandatory). Must always be the first column
+#'         and is used internally by the Appender}
+#'       \item{`.custom`: `list` (optional). If present all custom values of the
+#'         event (that are not already part of the prototype) are stored in
+#'         this list column.}
+#'     }
 #'   }
 #' }
 #'
@@ -473,10 +490,22 @@ AppenderTable <- R6::R6Class(
 #'   via this Appenders [Layout]}
 #'  }
 #'
+#' @section Comparison AppenderBuffer and AppenderDt:
+#'
+#' Both [AppenderBuffer] and [AppenderDt] do in memory buffering of events.
+#' AppenderBuffer retains a copies of the events it processes and has the
+#' abillity to pass the buffered events on to other Appenders. AppenderDt
+#' converts the events to rows in a `data.table` and is a bit harder to
+#' configure. Used inside loops (several hundred iterations),
+#' AppenderDt has much less overhead than AppenderBuffer. For single logging
+#' calls and small loops, AppenderBuffer is more performant. This is related to
+#' how memory pre-allocation is handled by the appenders.
+#'
+#' In short: Use AppenderDt if you want an in-memory log for interactive use,
+#' and AppenderBuffer if you actually want to buffer events
 #'
 #' @export
 #' @seealso [LayoutFormat], [simple_logging], [data.table::data.table]
-#' @family Appenders
 #' @aliases lgr_data
 #' @name AppenderDt
 #'
@@ -499,11 +528,10 @@ AppenderTable <- R6::R6Class(
 #' # that it can find.
 #' show_log(target = lg)
 #'
-#' # Data tables can store arbitrary R values in list columns. The default
-#' # AppenderDt comes with a single list column called "value" that you can use
-#' lg$info("the iris data frame", value = iris)
+#' # Custom fields are stored in the list column .custom by default
+#' lg$info("the iris data frame", caps = LETTERS[1:5])
 #' lg$appenders$memory$data
-#' head(lg$appenders$memory$data$value[[3]])
+#' lg$appenders$memory$data$.custom[[3]]$caps
 #'
 NULL
 
@@ -518,14 +546,18 @@ AppenderDt <- R6::R6Class(
   public = list(
     initialize = function(
       threshold = NA_integer_,
-      layout = lgr::lgr$appenders$console$layout,
+      layout = LayoutFormat$new(
+        fmt = "%L [%t] %m %f",
+        timestamp_fmt = "%H:%M:%OS3",
+        colors = getOption("lgr.colors", list())
+      ),
       prototype = data.table::data.table(
         .id  = NA_integer_,
         level = NA_integer_,
         timestamp = Sys.time(),
         caller = NA_character_,
         msg = NA_character_,
-        value = list(list())
+        .custom = list(list())
       ),
       buffer_size = 1e5
     ){
@@ -534,6 +566,14 @@ AppenderDt <- R6::R6Class(
         data.table::is.data.table(prototype) && is.integer(prototype$.id),
         "'prototype' must be a data.table with an integer column '.id'"
       )
+
+      if (".custom" %in% names(prototype) && !is.list(prototype$.custom)){
+        warning(
+          "`prototype` has the special column `.custom` but it is ",
+          class_fmt(prototype$.custom), " instead of a list-column. ",
+          "Coercing to list-column."
+        )
+      }
 
       private$current_row <- 0L
       private$id <- 0L
@@ -572,15 +612,24 @@ AppenderDt <- R6::R6Class(
       # AppenderDt is designed for minimum overhead, so it does not use a
       # Layout for transforming the log event into a tabular structure but
       # rather the process is hardcoded
+        dt <- get(".data", private)
+        datanames <- names(dt)
+        valnames  <- setdiff(datanames, ".id")
 
       # Select and prepare event values to be inserted into data
         vals <- event[["values"]]
-        valnames <- setdiff(names(get(".data", private)), ".id")
+
+        # handle .custom
+        if (".custom" %in% datanames){
+          vals[[".custom"]] <- vals[!names(vals) %in% valnames]
+        }
+
         vals <- vals[valnames]
-        names(vals) <-  valnames
+        names(vals) <- valnames
+
 
         # handle list-columns
-        vals[vapply(vals, is.null, FALSE)] <- NA
+        vals[vapply(vals, is.null, FALSE)] <- list(NULL)
         list_cols <- get("list_cols", private)
         vals[list_cols] <- lapply(vals[list_cols], list)
 
@@ -590,19 +639,19 @@ AppenderDt <- R6::R6Class(
         assert(all(lengths %in% c(1, lenmax)))
 
         # take special care if vectorized insert is bigger than buffer size
-        if (lenmax > nrow(private$.data)){
-          vals <- lapply(vals, trim_last_event, nrow(private$.data))
-          private[["id"]] <- private[["id"]] + lenmax - nrow(private$.data)
-          lenmax <- nrow(private$.data)
+        if (lenmax > nrow(dt)){
+          vals <- lapply(vals, trim_last_event, nrow(dt))
+          private[["id"]] <- get("id", envir = private) + lenmax - nrow(private$.data)
+          lenmax <- nrow(dt)
         }
         i   <- seq_len(lenmax)
 
       # generate new ids
-        ids <- i + private[["id"]]
+        ids <- i + get("id", private)
 
       # check if rotation is necessary
-        if (get("current_row", private) + lenmax <= nrow(get(".data", private))){
-          i   <- i + private[["current_row"]]
+        if (get("current_row", private) + lenmax <= nrow(dt)){
+          i   <- i + get("current_row", envir = private)
           private[["current_row"]] <- get("current_row", envir = private) + lenmax
         } else {
           # rotate buffer
@@ -611,23 +660,25 @@ AppenderDt <- R6::R6Class(
 
       # Perform the insert
         data.table::set(
-          get(".data", private),
+          dt,
           i,
           j = c(".id", names(vals)),
           value = c(list(ids), vals)
         )
-
 
       private[["id"]] <- get("id", envir = private) + lenmax
     },
 
 
     show = function(
-      n = 20,
-      threshold = NA_integer_
+      threshold = NA_integer_,
+      n = 20L
     ){
+      assert(is_scalar_integerish(n))
+      threshold <- standardize_threshold(threshold)
+
       if (is.na(threshold)) threshold <- Inf
-      dd <- self$data
+      dd <- self$dt
 
       if (identical(nrow(dd),  0L)){
         cat("[empty log]")
@@ -785,7 +836,13 @@ AppenderDbi <- R6::R6Class(
       invisible(self)
     },
 
-    show = function(n = 20, threshold = NA_integer_){
+    show = function(
+      threshold = NA_integer_,
+      n = 20
+    ){
+      assert(is_scalar_integerish(n))
+      threshold <- standardize_threshold(threshold)
+
       dd <- data.table::copy(self$data)
       data.table::setattr(
         dd,
@@ -949,6 +1006,196 @@ AppenderRjdbc <- R6::R6Class(
 
 # nocov end
 
+# AppenderMemory  --------------------------------------------------
+
+#' Abstract Class for Logging to Memory Buffers
+#'
+#' @template abstract_class
+#'
+#' @description
+#' AppenderMemory is extended by Appenders that retain an in-memory event
+#' buffer, such as [AppenderBuffer] and [AppenderPushbullet].
+#'
+#' @eval r6_usage(AppenderMemory)
+#'
+#' @inheritSection AppenderDt Methods
+#' @inheritSection AppenderDt Fields
+#'
+#' @section Fields:
+#'
+#' \describe{
+#'   \item{`buffer_size, set_buffer_size(x)`}{`integer` scalar. Number of [LogEvents] to buffer}
+#'
+#'  \item{`flush_threshold`, `set_flush_threshold()`}{`integer` or `character`
+#'     [log level][log_level]. Minimum event level that will trigger flushing of
+#'     the buffer. This behaviour is implemented through `should_flush()`,
+#'     and you can modify that function for different behaviour.
+#'   }
+#'   \item{`should_flush(event, obj)`, `set_should_flush(x)`}{
+#'     A function with exactly two arguments: `event` and `obj`. When `append()`
+#'     is triggered for this Appender, the LogEvent will be passed to `event`,
+#'     the Appender itself will get passed to `obj`.
+#'     This means that you can f.e. use `obj$threshold` to access the threshold
+#'     of the Appender. If the function returns `TRUE`, flushing of the buffer
+#'     is triggered. Defaults to flushing if a `FATAL` event is registered }
+#' }
+#'
+#' @section Methods:
+#'
+#' \describe{
+#'   \item{`flush()`}{Manually trigger flushing of the buffer}
+#' }
+#'
+#' @export
+#' @seealso [LayoutFormat]
+#' @name AppenderMemory
+NULL
+
+
+
+
+#' @export
+AppenderMemory <- R6::R6Class(
+  "AppenderMemory",
+  inherit = Appender,
+  cloneable = FALSE,
+  public = list(
+    append = function(
+      event
+    ){
+      i <- get("insert_pos", envir = private) + 1L
+      assign("insert_pos", i, envir = private, inherits = TRUE)
+      private[["last_event"]] <- private[["last_event"]] + 1L
+      private[["event_order"]][[i]] <- private[["last_event"]]
+      private[[".buffered_events"]][[i]] <- event
+
+      bs <- get(".buffer_size", envir = private)
+
+      sf <- get(".should_flush", envir = private)(event, self)
+      if (!is_scalar_bool(sf)){
+        warning(
+          "`should_flush()` did not return `TRUE` or `FALSE` but ",
+          preview_object(sf), ". ",
+          "Please set a proper filter function with `$set_should_flush()`"
+        )
+        sf <- FALSE
+      }
+
+      if (sf){
+        self[["flush"]]()
+      } else if (i > bs){
+        # rotate
+        assign("insert_pos", 0L, envir = private)
+      }
+
+      NULL
+    },
+
+    flush = function(){},
+
+
+    set_buffer_size = function(x){
+      assert(is_scalar_integerish(x))
+      private$.buffer_size <- x
+      invisible(self)
+    },
+
+    set_should_flush = function(x){
+      if (is.null(x))
+        x <- function(event, obj) FALSE
+
+      assert(
+        is_filter(x),
+        "'should_flush' must be a function with the arguments 'event' and 'obj'"
+      )
+
+      private$.should_flush <- x
+      invisible(self)
+    },
+
+    set_flush_threshold = function(level){
+      level <- standardize_threshold(level)
+      private$.flush_threshold <- level
+      invisible(self)
+    },
+
+    show = function(threshold = NA_integer_, n = 20L){
+      assert(is_scalar_integerish(n))
+      threshold <- standardize_threshold(threshold)
+
+      if (is.na(threshold)) threshold <- Inf
+      dd <- self$dt
+
+      if (identical(nrow(dd),  0L)){
+        cat("[empty log]")
+        return(invisible(NULL))
+      }
+
+      res <- tail(dd[dd$level <= threshold, ], n)
+      dd <- as.environment(res)
+      assign("logger", self$logger, dd)
+      cat(self$layout$format_event(dd), sep = "\n")
+      invisible(res)
+    }
+  ),
+
+
+
+  # +- active ---------------------------------------------------------------
+  active = list(
+    should_flush = function(){
+      get(".should_flush", private)
+    },
+
+    buffer_size = function() {
+      get(".buffer_size", private)
+    },
+
+    flush_threshold = function(){
+      get(".flush_threshold", private)
+    },
+
+    buffered_events = function() {
+      ord <- get("event_order", envir = private)
+      ord <- ord - min(ord) + 1L
+      ord <- order(ord)
+      res <- get(".buffered_events", envir = private)[ord]
+      res[!vapply(res, is.null, FALSE)]
+    },
+
+    data = function(){
+      as.data.frame(self$dt)
+    },
+
+    dt = function(){
+      assert_namespace("data.table")
+      dd <- lapply(
+        get("buffered_events", self),
+        function(.x){
+          vals <- .x$values
+          list_cols <- !vapply(vals, is.atomic, TRUE)
+          vals[list_cols] <- lapply(vals[list_cols], list)
+          data.table::as.data.table(vals)
+        }
+      )
+
+      data.table::rbindlist(dd, fill = TRUE, use.names = TRUE)
+    }
+  ),
+
+  # +- private  ---------------------------------------------------------
+  private = list(
+    insert_pos = NULL,
+    last_event = NULL,
+    event_order = NULL,
+    .flush_threshold = NULL,
+    .should_flush = NULL,
+    .buffer_size = NULL,
+    .buffered_events = NULL
+  )
+)
+
+
 
 
 # AppenderBuffer --------------------------------------------------
@@ -960,32 +1207,34 @@ AppenderRjdbc <- R6::R6Class(
 #'
 #' @eval r6_usage(AppenderBuffer)
 #'
-#' @inheritSection Appender Creating a New Appender
-#' @inheritSection Appender Fields
-#' @inheritSection Appender Methods
+#' @section Creating a Buffer Appender:
+#'
+#' The [Layout] for this Appender is used only to format console output of
+#' its `$show()` method.
+#'
+#' @inheritSection AppenderMemory Methods
+#' @inheritSection AppenderMemory Fields
 #'
 #' @section Fields:
 #'
 #' \describe{
-#'   \item{`flush()`}{Manually trigger flushing}
-#'   \item{`add_appender(appender)`}{Add and Appender to this Appender.
-#'     see [Logger]}
-#'   \item{`remove_appender(pos)`}{Remove and Appender from this Appender.
-#'     see [Logger]}
 #'   \item{`appenders`, `set_appenders()`}{Like for a [Logger]. Buffered events will be passed on
 #'     to these Appenders once a flush is triggered}
-#'   \item{`buffer_size, set_buffer_size(x)`}{`integer` scalar. Number of [LogEvents] to buffer}
 #'   \item{`flush_on_exit, set_flush_on_exit(x)`}{`TRUE` or `FALSE`: Whether the
 #'     buffer should be flushed when the Appender is garbage collected (f.e when
 #'     you close \R)}
 #'   \item{`flush_on_rotate, set_flush_on_rotate`}{`TRUE` or `FALSE`: Whether
 #'     the buffer should be flushed when the Buffer is full (f.e when you close
 #'     \R). Setting this to off can have slighly negative perfomance impacts.}
-#'   \item{`should_flush(event)`, `set_should_flush(x)`}{ A `function` with a
-#'     single argument `event` (a [LogEvent]) that must only return either `TRUE`
-#'     or `FALSE`. If the function returns `TRUE`, flushing of the buffer is
-#'     triggered. Defaults to flushing if a `FATAL` event is registered }
 #' }
+#'
+#' @section Methods:
+#'
+#' \describe{
+#'   \item{`flush()`}{Manually trigger flushing}
+#' }
+#'
+#' @inheritSection AppenderDt Comparison AppenderBuffer and AppenderDt
 #'
 #' @export
 #' @seealso [LayoutFormat]
@@ -999,15 +1248,17 @@ NULL
 #' @export
 AppenderBuffer <- R6::R6Class(
   "AppenderBuffer",
-  inherit = Appender,
+  inherit = AppenderMemory,
   cloneable = FALSE,
   public = list(
     initialize = function(
       threshold = NA_integer_,
       appenders = NULL,
-      should_flush = function(event) isTRUE(event[["level"]] <= 100),
+      flush_threshold = "fatal",
       flush_on_exit = TRUE,
       flush_on_rotate = TRUE,
+      should_flush = function(event, obj)
+        is.na(obj[["flush_threshold"]]) || all(event[["level"]] <= obj[["flush_threshold"]]),
       layout = LayoutFormat$new(
         fmt = "%L [%t] %m",
         timestamp_fmt = "%H:%M:%S",
@@ -1021,12 +1272,18 @@ AppenderBuffer <- R6::R6Class(
         is_scalar_bool(flush_on_rotate)
       )
 
+      private$insert_pos <- 0L
+      private$last_event    <- 0L
+      private$event_order   <- seq_len(buffer_size)
+
       self$set_threshold(threshold)
       self$set_should_flush(should_flush)
       self$set_appenders(appenders)
       self$set_buffer_size(buffer_size)
+      self$set_flush_threshold(flush_threshold)
       self$set_flush_on_exit(flush_on_exit)
       self$set_flush_on_rotate(flush_on_rotate)
+      self$set_layout(layout)
 
       # no speed advantage in pre allocating lists in R!
       private$.buffered_events <- list()
@@ -1034,38 +1291,62 @@ AppenderBuffer <- R6::R6Class(
       invisible(self)
     },
 
-
     append = function(
-      x
+      event
     ){
-      len <- length(private$.buffered_events)
-      private$.buffered_events[[len + 1L]] <- x$clone()
-      if (private$.should_flush(x)){
-        self$flush()
-        return(invisible())
-      } else {
-        if (len >= self$buffer_size){
-          if (self$flush_on_rotate){
-            self$flush()
-          } else {
-            len <- length(private$.buffered_events)
-            private$.buffered_events <-
-              private$.buffered_events[seq.int(len + 1L - self$buffer_size, len)]
-          }
+      i <- get("insert_pos", envir = private) + 1L
+      assign("insert_pos", i, envir = private, inherits = TRUE)
+      private[["last_event"]] <- private[["last_event"]] + 1L
+      private[["event_order"]][[i]] <- private[["last_event"]]
+      private[[".buffered_events"]][[i]] <- event
+
+      bs <- get(".buffer_size", envir = private)
+
+      sf <- get(".should_flush", envir = private)(event, self)
+      if (!is_scalar_bool(sf)){
+        warning(
+          "`should_flush()` did not return `TRUE` or `FALSE` but ",
+          preview_object(sf), ". ",
+          "Please set a proper filter function with `$set_should_flush()`"
+        )
+        sf <- FALSE
+      }
+
+      if (sf){
+        self[["flush"]]()
+      } else if (i > bs){
+        if (get(".flush_on_rotate", envir = private) ){
+          self[["flush"]]()
+        } else {
+          assign("insert_pos", 0L, envir = private)
         }
       }
+
       NULL
     },
 
-    flush = function(
-      x = private$.buffered_events
-    ){
-      for (event in private$.buffered_events){
+    flush = function(){
+      for (event in get("buffered_events", envir = self)){
         for (app in self$appenders) {
           if (app$filter(event))  app$append(event)
         }
       }
+
+      assign("insert_pos", 0L, envir = private)
       private$.buffered_events <- list()
+      invisible(self)
+    },
+
+    set_flush_on_exit = function(x){
+      assert(is_scalar_bool(x))
+      private$.flush_on_exit <- x
+      invisible(self)
+    },
+
+    set_flush_on_rotate = function(x){
+      assert(is_scalar_bool(x))
+      private$.flush_on_rotate <- x
+      invisible(self)
     },
 
     set_appenders = function(x){
@@ -1133,30 +1414,6 @@ AppenderBuffer <- R6::R6Class(
 
     finalize = function(){
       if (self$flush_on_exit) self$flush()
-    },
-
-    set_buffer_size = function(x){
-      assert(is_scalar_integerish(x))
-      private$.buffer_size <- x
-      invisible(self)
-    },
-
-    set_flush_on_exit = function(x){
-      assert(is_scalar_bool(x))
-      private$.flush_on_exit <- x
-      invisible(self)
-    },
-
-    set_flush_on_rotate = function(x){
-      assert(is_scalar_bool(x))
-      private$.flush_on_rotate <- x
-      invisible(self)
-    },
-
-    set_should_flush = function(x){
-      assert(is.function(x))
-      private$.should_flush <- x
-      invisible(self)
     }
   ),
 
@@ -1164,13 +1421,13 @@ AppenderBuffer <- R6::R6Class(
 
   # +- active ---------------------------------------------------------------
   active = list(
-    flush_on_exit = function() private$.flush_on_exit,
+    flush_on_exit = function() {
+      get(".flush_on_exit", private)
+    },
 
-    flush_on_rotate = function() private$.flush_on_rotate,
-
-    buffer_size = function() private$.buffer_size,
-
-    buffered_events = function() private$.buffered_events,
+    flush_on_rotate = function() {
+      get(".flush_on_rotate", private)
+    },
 
     appenders = function(value){
       if (missing(value)) return(c(private$.appenders))
@@ -1188,12 +1445,6 @@ AppenderBuffer <- R6::R6Class(
         "'appenders' must either be a single Appender, a list thereof, or NULL for no appenders."
       )
 
-      value <- lapply(value, function(app){
-        res <- app$clone()
-        # logger gets assigned to sub-appenders inside the `logger` active binding
-        res
-      })
-
       private$.appenders <- value
       invisible()
     },
@@ -1201,16 +1452,569 @@ AppenderBuffer <- R6::R6Class(
     destination = function() paste(length(self$appenders), "child Appenders")
   ),
 
+  # +- private  ---------------------------------------------------------
   private = list(
-    .appenders = list(),
     .flush_on_exit = NULL,
     .flush_on_rotate = NULL,
-    .should_flush = NULL,
-    .buffer_size = NULL,
-    .buffered_events = NULL
+    event_order = NULL,
+    .appenders = list()
   )
 )
 
+
+# AppenderDigest --------------------------------------------------------
+
+#' Abstract Class for Digests
+#'
+#' @template abstract_class
+#'
+#' @description
+#' Abstract class for Appenders that transmit digests of several log events
+#' at once, for example [AppenderPushbullet], [AppenderGmail] and
+#' [AppenderSendmail].
+#'
+#' @inheritSection AppenderMemory Methods
+#' @inheritSection AppenderMemory Fields
+#'
+#' @section Fields:
+#'
+#' \describe{
+#'   \item{`subject_layout`, `set_layout(subject_layout)`}{Like `layout`, but
+#'     used to format the subject/title of the digest. While `layout` is applied
+#'     to each LogEvent of the digest, `subject_layout` is only applied to
+#'     the last one.
+#'   }
+#' }
+#'
+#' @section Methods:
+#'
+#' @export
+#' @seealso [LayoutFormat], [LayoutGlue]
+#' @name AppenderDigest
+NULL
+
+AppenderDigest <-  R6::R6Class(
+    "AppenderDigest",
+    inherit = AppenderMemory,
+    cloneable = FALSE,
+
+    # +- public --------------------------------------------------------------
+    public = list(
+
+      set_subject_layout = function(layout){
+        assert(inherits(layout, "Layout"))
+        private$.subject_layout <- layout
+        invisible(self)
+      }
+    ),
+
+    active = list(
+      subject_layout = function() get(".subject_layout", private)
+    ),
+
+    private = list(
+      .subject_layout = NULL
+    )
+  )
+
+
+
+
+
+# AppenderPushbullet --------------------------------------------------------
+
+
+#' Send Push-Notifications via RPushbullet
+#'
+#' Send push notifications via [pushbullet](https://www.pushbullet.com/). This
+#' Appender keeps an in-memory buffer like [AppenderBuffer]. If the buffer is
+#' flushed, usually because an event of specified magnitutde is encountered, all
+#' buffered events are concatenated to a single message that is sent to
+#' [RPushbullet::pbPost()]. The default behaviour is to push the last 7 log
+#' events in case a `fatal` event is encountered.
+#'
+#' @eval r6_usage(
+#'   AppenderPushbullet,
+#'   ignore = c(
+#'     "set_flush_on_exit",
+#'     "set_flush_on_rotate",
+#'     "flush_on_exit",
+#'     "flush_on_rotate")
+#' )
+#'
+#'
+#' @inheritSection AppenderMemory Methods
+#' @inheritSection AppenderMemory Fields
+#'
+#' @section Fields:
+#'
+#' \describe{
+#'   \item{`apikey`, `recipients`, `email`, `channel`, `devices`}{
+#'     See [RPushbullet::pbPost()]
+#'   }
+#' }
+#'
+#' @section Methods:
+#'
+#' @export
+#' @family Appenders
+#' @seealso [LayoutFormat], [LayoutGlue]
+#' @name AppenderPushbullet
+NULL
+
+
+
+
+#' @export
+AppenderPushbullet <- R6::R6Class(
+  "AppenderPushbullet",
+  inherit = AppenderDigest,
+  cloneable = FALSE,
+
+  # +- public --------------------------------------------------------------
+  public = list(
+    initialize = function(
+      threshold = NA_integer_,
+      flush_threshold = "fatal",
+      layout = LayoutFormat$new(fmt = "%K  %t> %m %f", timestamp_fmt = "%H:%M:%S"),
+      subject_layout = LayoutFormat$new(fmt = "[LGR] %L: %m"),
+      buffer_size = 6,
+      recipients = NULL,
+      email = NULL,
+      channel = NULL,
+      devices = NULL,
+      apikey = NULL
+    ){
+      private$insert_pos  <- 0L
+      private$last_event  <- 0L
+      private$event_order <- seq_len(buffer_size)
+
+      self$set_layout(layout)
+      self$set_threshold(threshold)
+      self$set_flush_threshold(flush_threshold)
+      self$set_apikey(apikey)
+      self$set_buffer_size(buffer_size)
+      self$set_subject_layout(subject_layout)
+      self$set_should_flush(function(event, obj)
+        is.na(obj[["flush_threshold"]]) || all(event[["level"]] <= obj[["flush_threshold"]])
+      )
+
+      self$set_recipients(recipients)
+      self$set_email(email)
+      self$set_channel(channel)
+      self$set_devices(devices)
+    },
+
+    flush = function(
+    ){
+      assign("insert_pos", 0L, envir = private)
+
+      body <- paste(
+        lapply(self$buffered_events, self$layout$format_event),
+        collapse = "\n"
+      )
+      le    <- self$buffered_events[[length(self$buffered_events)]]
+      title <- self$subject_layout$format_event(le)
+
+      cl <- list(
+        type = "note",
+        title = title,
+        body  = body
+      )
+
+      if (!is.null(self$apikey)){
+        cl$apikey <- self$apikey
+        cl$recipients <- self$recipients
+        cl$email <- self$email
+        cl$channel <- self$channel
+        cl$devices <- self$devices
+      }
+
+      do.call(RPushbullet::pbPost, compact(cl))
+      private$.buffered_events <- list()
+
+      invisible(self)
+    },
+
+    set_apikey = function(x){
+      assert(is.null(x) || is_scalar_character(x))
+      private$.apikey <- x
+      invisible(self)
+    },
+
+    set_recipients = function(x){
+      private$.recipients <- x
+      invisible(self)
+    },
+
+    set_email = function(x){
+      private$.email <- x
+      invisible(self)
+    },
+
+    set_channel = function(x){
+      private$.channel <- x
+      invisible(self)
+    },
+
+    set_devices = function(x){
+      private$.devices <- x
+      invisible(self)
+    }
+  ),
+
+
+  # +- active ---------------------------------------------------------------
+  active = list(
+    apikey = function() private$.apikey
+  ),
+
+
+  private = list(
+    .apikey = NULL,
+    .recipients = NULL,
+    .email = NULL,
+    .channel = NULL,
+    .devices = NULL
+  )
+)
+
+
+
+# AppenderSendmail --------------------------------------------------------
+
+#' Send Log Emails via SendmailR
+#'
+#' Send mails via [sendmailR::sendmail()]. This
+#' Appender keeps an in-memory buffer like [AppenderBuffer]. If the buffer is
+#' flushed, usually because an event of specified magnitutde is encountered, all
+#' buffered events are concatenated to a single message. The default behaviour
+#' is to push the last 30 log events in case a `fatal` event is encountered.
+#'
+#' @eval r6_usage(
+#'   AppenderSendmail,
+#'   ignore = c(
+#'     "set_flush_on_exit",
+#'     "set_flush_on_rotate",
+#'     "flush_on_exit",
+#'     "flush_on_rotate")
+#' )
+#'
+#'
+#' @inheritSection AppenderDigest Methods
+#' @inheritSection AppenderDigest Fields
+#'
+#' @section Fields:
+#'
+#' \describe{
+#'   \item{`to`, `control`, `from`, `cc`, `bcc`, `headers`}{
+#'     Please see the documentation of [sendmailR::sendmail()] for details.
+#'   }
+#' }
+#'
+#' @section Methods:
+#'
+#'
+#' @export
+#' @seealso [LayoutFormat], [LayoutGlue]
+#' @family Appenders
+#' @name AppenderSendmail
+NULL
+
+
+#' @export
+AppenderSendmail <- R6::R6Class(
+  "AppenderSendmail",
+  inherit = AppenderDigest,
+  cloneable = FALSE,
+
+  # +- public --------------------------------------------------------------
+  public = list(
+    initialize = function(
+      to,
+      control,
+      threshold = NA_integer_,
+      flush_threshold = "fatal",
+      layout = LayoutFormat$new(fmt = "%K  %t> %m %f", timestamp_fmt = "%H:%M:%S"),
+      subject_layout = LayoutFormat$new(fmt = "[LGR] %L: %m"),
+      buffer_size = 29,
+      from = get_user(),
+      cc = NULL,
+      bcc = NULL,
+      headers = NULL
+    ){
+      assert_namespace("sendmailR")
+
+      private$insert_pos <- 0L
+      private$last_event    <- 0L
+      private$event_order   <- seq_len(buffer_size)
+
+      self$set_to(to)
+      self$set_control(control)
+      self$set_from(from)
+      self$set_cc(cc)
+      self$set_bcc(bcc)
+      self$set_headers(headers)
+      self$set_subject_layout(subject_layout)
+
+      self$set_layout(layout)
+      self$set_threshold(threshold)
+      self$set_flush_threshold(flush_threshold)
+      self$set_buffer_size(buffer_size)
+      self$set_should_flush(function(event, obj)
+        is.na(obj[["flush_threshold"]]) || all(event[["level"]] <= obj[["flush_threshold"]])
+      )
+
+      private$.flush_on_exit   <- FALSE
+      private$.flush_on_rotate <- FALSE
+    },
+
+    flush = function(
+    ){
+      assign("insert_pos", 0L, envir = private)
+
+      body <- paste(
+        lapply(self$buffered_events, self$layout$format_event),
+        collapse = "\n"
+      )
+      le    <- self$buffered_events[[length(self$buffered_events)]]
+      title <- self$subject_layout$format_event(le)
+
+      args <- list(
+        from = self$from,
+        to   = self$to,
+        subject = title,
+        msg = body,
+        cc = self$cc,
+        bcc = self$bcc,
+        headers = self$headers,
+        control = self$control
+      )
+
+      # sendmailR expects missing() instead of NULL for default values
+      args <- compact(args)
+
+      do.call(sendmailR::sendmail, args)
+      private$.buffered_events <- list()
+
+      invisible(self)
+    },
+
+    set_to = function(x){
+      private$.to <- x
+    },
+
+    set_control = function(x){
+      private$.control <- x
+    },
+
+    set_from = function(x){
+      private$.from <- x
+    },
+
+    set_cc = function(x){
+      private$.cc <- x
+    },
+
+    set_bcc = function(x){
+      private$.bcc <- x
+    },
+
+    set_headers = function(x){
+      private$.headers <- x
+    }
+  ),
+
+
+  # +- active ---------------------------------------------------------------
+  active = list(
+    to = function() get(".to", envir = private),
+    control = function() get(".control", envir = private),
+    from = function() get(".from", envir = private),
+    cc = function() get(".cc", envir = private),
+    bcc = function() get(".bcc", envir = private),
+    headers = function() get(".headers", envir = private)
+  ),
+
+  private = list(
+    .to = NULL,
+    .control = NULL,
+    .from = NULL,
+    .cc = NULL,
+    .bcc = NULL,
+    .headers = NULL
+  )
+)
+
+
+
+# AppenderGmail --------------------------------------------------------
+
+
+#' Send Log Emails via gmailr
+#'
+#' Send mails via [gmailr::send_message()]. This
+#' Appender keeps an in-memory buffer like [AppenderBuffer]. If the buffer is
+#' flushed, usually because an event of specified magnitutde is encountered, all
+#' buffered events are concatenated to a single message. The default behaviour
+#' is to push the last 30 log events in case a `fatal` event is encountered.
+#'
+#' @eval r6_usage(
+#'   AppenderGmail,
+#'   ignore = c(
+#'     "set_flush_on_exit",
+#'     "set_flush_on_rotate",
+#'     "flush_on_exit",
+#'     "flush_on_rotate")
+#' )
+#'
+#' @inheritSection AppenderDigest Methods
+#' @inheritSection AppenderDigest Fields
+#'
+#' @section Fields:
+#'
+#' \describe{
+#'   \item{`to`, `from`, `cc`, `bcc`}{
+#'     Please see the documentation of [gmailr::send_message()] for details.
+#'   }
+#'   \item{`html`, `set_html()`}{`TRUE` or `FALSE`. Send a html email message?
+#'     This does currently only formats the log contents as monospace verbatim
+#'     text.
+#'   }
+#' }
+#'
+#'
+#' @section Methods:
+#'
+#' @export
+#' @seealso [LayoutFormat], [LayoutGlue]
+#' @family Appenders
+#' @name AppenderGmail
+NULL
+
+
+#' @export
+AppenderGmail <- R6::R6Class(
+  "AppenderGmail",
+  inherit = AppenderDigest,
+  cloneable = FALSE,
+
+  # +- public --------------------------------------------------------------
+  public = list(
+    initialize = function(
+      to,
+      threshold = NA_integer_,
+      flush_threshold = "fatal",
+      layout = LayoutFormat$new(fmt = "%L [%t] %m %f", timestamp_fmt = "%H:%M:%S"),
+      subject_layout = LayoutFormat$new(fmt = "[LGR] %L: %m"),
+      buffer_size = 30,
+      from = get_user(),
+      cc = NULL,
+      bcc = NULL,
+      html = FALSE
+    ){
+      assert_namespace("gmailr")
+
+      private$insert_pos <- 0L
+      private$last_event    <- 0L
+      private$event_order   <- seq_len(buffer_size)
+
+      self$set_to(to)
+      self$set_from(from)
+      self$set_cc(cc)
+      self$set_bcc(bcc)
+      self$set_html(html)
+      self$set_subject_layout(subject_layout)
+
+      self$set_layout(layout)
+      self$set_threshold(threshold)
+      self$set_flush_threshold(flush_threshold)
+      self$set_buffer_size(buffer_size)
+      self$set_should_flush(function(event, obj)
+        is.na(obj[["flush_threshold"]]) || all(event[["level"]] <= obj[["flush_threshold"]])
+      )
+
+      private$.flush_on_exit   <- FALSE
+      private$.flush_on_rotate <- FALSE
+    },
+
+    flush = function(
+    ){
+      assign("insert_pos", 0L, envir = private)
+
+      body <- paste(
+        lapply(self$buffered_events, self$layout$format_event),
+        collapse = "\n"
+      )
+      le    <- self$buffered_events[[length(self$buffered_events)]]
+      title <- self$subject_layout$format_event(le)
+
+      mail <- gmailr::mime()
+      mail <- gmailr::to(mail, self$to)
+      mail <- gmailr::from(mail, self$from)
+      mail <- gmailr::cc(mail, self$cc)
+      mail <- gmailr::bcc(mail, self$bcc)
+      mail <- gmailr::subject(mail, title)
+
+      if (self$html){
+        mail <- gmailr::html_body(mail, paste0("<pre>\n", body, "</pre>\n"))
+      } else {
+        mail <- gmailr::text_body(mail, body)
+      }
+
+      gmailr::send_message(mail)
+      private$.buffered_events <- list()
+
+      invisible(self)
+    },
+
+    set_to = function(x){
+      private$.to <- x
+      invisible(self)
+    },
+
+    set_from = function(x){
+      private$.from <- x
+      invisible(self)
+    },
+
+    set_cc = function(x){
+      private$.cc <- x
+      invisible(self)
+    },
+
+    set_bcc = function(x){
+      private$.bcc <- x
+      invisible(self)
+    },
+
+    set_html = function(x){
+      assert(is_scalar_bool(x))
+      private$.html <- x
+      invisible(self)
+    }
+  ),
+
+
+  # +- active ---------------------------------------------------------------
+  active = list(
+    to = function() get(".to", envir = private),
+    control = function() get(".control", envir = private),
+    from = function() get(".from", envir = private),
+    cc = function() get(".cc", envir = private),
+    bcc = function() get(".bcc", envir = private),
+    html = function() get(".html", envir = private)
+  ),
+
+  private = list(
+    .to = NULL,
+    .control = NULL,
+    .from = NULL,
+    .cc = NULL,
+    .bcc = NULL,
+    .html = NULL
+  )
+)
 
 
 

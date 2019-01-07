@@ -5,9 +5,8 @@
 \title{Format Log Events as Text}
 \description{
 Format a \link{LogEvent} as human readable text using \code{\link[=format.LogEvent]{format.LogEvent()}}, which
-provides a quick and easy way to customize log messages. If you need even
-more control and flexibility for formatting log messages, consider using
-\link{LayoutGlue} instead.
+provides a quick and easy way to customize log messages. If you need
+more control and flexibility, consider using \link{LayoutGlue} instead.
 }
 \section{Usage}{
 \preformatted{
@@ -59,6 +58,8 @@ This is the same list of format tokens as for \code{\link[=format.LogEvent]{form
 \code{timestamp_fmt})}
 \item{\code{\%l}}{the log level, lowercase \code{character} representation}
 \item{\code{\%L}}{the log level, uppercase \code{character} representation}
+\item{\code{\%k}}{the log level, first letter of lowercase \code{character} representation}
+\item{\code{\%K}}{the log level, first letter of uppercase \code{character} representation}
 \item{\code{\%n}}{the log level, \code{integer} representation}
 \item{\code{\%u}}{the \code{user} of the Logger. This is guessed via \code{\link[=get_user]{get_user()}}
 during the initalisation of the Logger.}
@@ -66,7 +67,12 @@ during the initalisation of the Logger.}
 multiple threads.}
 \item{\code{\%c}}{the calling function}
 \item{\code{\%m}}{the log message}
-\item{\code{\%f}}{all custom fields of \code{x} in a JSON like format}
+\item{\code{\%f}}{all custom fields of \code{x} in a pseudo-JSON like format that is
+optimized for human readability and console output}
+\item{\code{\%j}}{all custom fields of \code{x} in proper JSON. This requires that you
+have \strong{jsonlite} installed and does not support colors as opposed to
+\code{\%f}
+}
 }
 }
 

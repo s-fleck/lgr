@@ -192,8 +192,8 @@ remove_appender <- function(
 #' @rdname simple_logging
 #' @export
 show_log = function(
-  n = 20,
-  threshold = NA,
+  threshold = NA_integer_,
+  n = 20L,
   target = lgr::lgr
 ){
   assert(

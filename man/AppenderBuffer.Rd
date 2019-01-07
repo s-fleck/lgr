@@ -10,32 +10,38 @@ Appenders once certain conditions are met.
 \section{Usage}{
 \preformatted{
 x <- x$new(threshold = NA_integer_, appenders = NULL,
-  should_flush = function(event) isTRUE(event[["level"]] <= 100),
-  flush_on_exit = TRUE, flush_on_rotate = TRUE, layout = LayoutFormat$new(fmt =
-  "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S", colors = getOption("lgr.colors")),
-  buffer_size = 1000)
+  flush_threshold = "fatal", flush_on_exit = TRUE, flush_on_rotate = TRUE,
+  should_flush = function(event, obj) is.na(obj[["flush_threshold"]]) ||
+  all(event[["level"]] <= obj[["flush_threshold"]]),
+  layout = LayoutFormat$new(fmt = "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S",
+  colors = getOption("lgr.colors")), buffer_size = 1000)
 
-x$append(x)
-x$flush(x = private$.buffered_events)
+x$append(event)
+x$flush()
+x$set_flush_on_exit(x)
+x$set_flush_on_rotate(x)
 x$set_appenders(x)
 x$add_appender(appender, name = NULL)
 x$remove_appender(pos)
 x$set_buffer_size(x)
-x$set_flush_on_exit(x)
-x$set_flush_on_rotate(x)
 x$set_should_flush(x)
-x$append(event)
+x$set_flush_threshold(level)
+x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
 x$set_filters(filters)
 
 x$appenders
-x$buffer_size
-x$buffered_events
 x$destination
 x$flush_on_exit
 x$flush_on_rotate
+x$buffer_size
+x$buffered_events
+x$data
+x$dt
+x$flush_threshold
+x$should_flush
 x$layout
 x$threshold
 x$filters
@@ -43,28 +49,57 @@ x$filters
 }
 }
 
+\section{Creating a Buffer Appender}{
+
+
+The \link{Layout} for this Appender is used only to format console output of
+its \code{$show()} method.
+}
+
 \section{Fields}{
 
 
 \describe{
-\item{\code{flush()}}{Manually trigger flushing}
-\item{\code{add_appender(appender)}}{Add and Appender to this Appender.
-see \link{Logger}}
-\item{\code{remove_appender(pos)}}{Remove and Appender from this Appender.
-see \link{Logger}}
 \item{\code{appenders}, \code{set_appenders()}}{Like for a \link{Logger}. Buffered events will be passed on
 to these Appenders once a flush is triggered}
-\item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar. Number of \link{LogEvents} to buffer}
 \item{\code{flush_on_exit, set_flush_on_exit(x)}}{\code{TRUE} or \code{FALSE}: Whether the
 buffer should be flushed when the Appender is garbage collected (f.e when
 you close \R)}
 \item{\code{flush_on_rotate, set_flush_on_rotate}}{\code{TRUE} or \code{FALSE}: Whether
 the buffer should be flushed when the Buffer is full (f.e when you close
 \R). Setting this to off can have slighly negative perfomance impacts.}
-\item{\code{should_flush(event)}, \code{set_should_flush(x)}}{ A \code{function} with a
-single argument \code{event} (a \link{LogEvent}) that must only return either \code{TRUE}
-or \code{FALSE}. If the function returns \code{TRUE}, flushing of the buffer is
-triggered. Defaults to flushing if a \code{FATAL} event is registered }
+}
+
+
+
+\describe{
+\item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar. Number of \link{LogEvents} to buffer}
+
+\item{\code{flush_threshold}, \code{set_flush_threshold()}}{\code{integer} or \code{character}
+\link[=log_level]{log level}. Minimum event level that will trigger flushing of
+the buffer. This behaviour is implemented through \code{should_flush()},
+and you can modify that function for different behaviour.
+}
+\item{\code{should_flush(event, obj)}, \code{set_should_flush(x)}}{
+A function with exactly two arguments: \code{event} and \code{obj}. When \code{append()}
+is triggered for this Appender, the LogEvent will be passed to \code{event},
+the Appender itself will get passed to \code{obj}.
+This means that you can f.e. use \code{obj$threshold} to access the threshold
+of the Appender. If the function returns \code{TRUE}, flushing of the buffer
+is triggered. Defaults to flushing if a \code{FATAL} event is registered }
+}
+
+
+
+\describe{
+\item{\code{dt}}{Get the log recorded by this \code{Appender} as a \code{data.table}
+with a maximum of \code{buffer_size} rows}
+}
+
+
+
+\describe{
+\item{\code{data}}{Get the log recorded by this \code{Appender} as a \code{data.frame}}
 }
 
 
@@ -82,28 +117,46 @@ human-readable form (mainly for print output)}
 
 \describe{
 \item{\code{filters}, \code{set_filters(filters)}}{a \code{list} of predicates (functions
-that return either \code{TRUE} or \code{FALSE}). If all of these functions evaluate
-to \code{TRUE} the LogEvent is passed on. Since
-LogEvents have reference semantics, filters can also be abused to modify
-LogEvents before they are passed on. Look at the source code of
+that return either \code{TRUE} or \code{FALSE}). These functions must have exactly
+two arguments: \code{event} and \code{obj}. When the \code{filter()} method of the
+Filterable is invoked on a LogEvent, that event will get passed to \code{event},
+the Filterable will get passed to \code{obj}. This means that you can,
+f.e. use \code{obj$threshold} to access the threshold of the Appender/Logger
+that is using the filter.
+If all of these functions evaluate to \code{TRUE} the LogEvent is passed on.
+Since LogEvents have reference semantics, filters can also be abused to
+modify them before they are passed on. Look at the source code of
 \code{\link[=with_log_level]{with_log_level()}} or \code{\link[=with_log_value]{with_log_value()}} for examples.
 }
 }
 }
 
-\section{Creating a New Appender}{
-
-
-New Appenders are instantiated with \code{<AppenderSubclass>$new()}. For the
-arguments to \code{new()} please refer to the section \emph{Fields}. You can also
-modify those fields after the Appender has been created with setters in the
-form of \code{appender$set_<fieldname>(value)}
-}
-
 \section{Methods}{
 
+
 \describe{
-\item{\code{append(event)}}{Write the \link{LogEvent} \code{event} to a destination}
+\item{\code{flush()}}{Manually trigger flushing}
+}
+
+
+
+\describe{
+\item{\code{flush()}}{Manually trigger flushing of the buffer}
+}
+
+
+\describe{
+\item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a log level
+bellow \code{threshold}. The log entries will be formated for console output
+via this Appenders \link{Layout}}
+}
+
+
+\describe{
+\item{\code{append(event)}}{Tell the Appender to process a \link{LogEvent} \code{event}.
+This method is usually not called by the user, but invoked by a
+\link{Logger}
+}
 }
 
 
@@ -114,13 +167,31 @@ on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 }
 }
 
+\section{Comparison AppenderBuffer and AppenderDt}{
+
+
+Both \link{AppenderBuffer} and \link{AppenderDt} do in memory buffering of events.
+AppenderBuffer retains a copies of the events it processes and has the
+abillity to pass the buffered events on to other Appenders. AppenderDt
+converts the events to rows in a \code{data.table} and is a bit harder to
+configure. Used inside loops (several hundred iterations),
+AppenderDt has much less overhead than AppenderBuffer. For single logging
+calls and small loops, AppenderBuffer is more performant. This is related to
+how memory pre-allocation is handled by the appenders.
+
+In short: Use AppenderDt if you want an in-memory log for interactive use,
+and AppenderBuffer if you actually want to buffer events
+}
+
 \seealso{
 \link{LayoutFormat}
 
 Other Appenders: \code{\link{AppenderConsole}},
-  \code{\link{AppenderDbi}}, \code{\link{AppenderDt}},
-  \code{\link{AppenderFile}}, \code{\link{AppenderJson}},
-  \code{\link{AppenderRjdbc}}, \code{\link{AppenderTable}},
-  \code{\link{Appender}}
+  \code{\link{AppenderDbi}}, \code{\link{AppenderFile}},
+  \code{\link{AppenderGmail}}, \code{\link{AppenderJson}},
+  \code{\link{AppenderPushbullet}},
+  \code{\link{AppenderRjdbc}},
+  \code{\link{AppenderSendmail}},
+  \code{\link{AppenderTable}}, \code{\link{Appender}}
 }
 \concept{Appenders}

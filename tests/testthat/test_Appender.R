@@ -76,7 +76,7 @@ test_that("AppenderJson works as expected", {
   app <- AppenderJson$new(file = tf)
 
   for (i in 1:10) app$append(x)
-  r <- capture_output(app$show(3))
+  r <- capture_output(app$show(n = 3))
   expect_true(grepl( "(level.*)[3]", r))
   expect_false(grepl("(level.*)[4]", r))
 
@@ -156,7 +156,7 @@ test_that("AppenderDt: works with list columns", {
     logger = lgr
   )
   app$append(e)
-  expect_true(is.na(app$data$list[[1]]))
+  expect_true(is.null(app$data$list[[1]]))
 
   e <- LogEvent$new(
     level = 100,
@@ -194,8 +194,43 @@ test_that("AppenderDt: works with list columns", {
 
   expect_identical(
     sapply(app$data$list, class),
-    c("logical", "environment", "data.frame", "data.frame", "logical")
+    c("NULL", "environment", "data.frame", "data.frame", "NULL")
   )
+})
+
+
+
+
+test_that("AppenderDt: .custom works", {
+  app <- AppenderDt$new()
+
+  e <- LogEvent$new(
+    level = 100,
+    timestamp = Sys.Date(),
+    msg = "blubb",
+    caller = "blubb()",
+    logger = lgr
+  )
+
+  app$append(e)
+  expect_true(is_empty(app$data$.custom[[1]]))
+  expect_true(is.list(app$data$.custom[[1]]))
+
+  e$envir <- environment()
+  e$schwupp = "foo"
+  app$append(e)
+  expect_identical(app$data$.custom[[2]]$schwupp, "foo")
+  expect_true(is.environment(app$data$.custom[[2]]$envir))
+
+  # warn if .custom is not a list column
+  expect_warning(
+    app <- AppenderDt$new(prototype = data.table::data.table(
+      .id = NA_integer_,
+      .custom = NA_integer_
+    ))
+  )
+
+
 })
 
 
@@ -237,9 +272,8 @@ test_that("AppenderDt: memory cycling works", {
 
 
 test_that("AppenderBuffer: FATAL log level triggers flush", {
-
   l$info(LETTERS[1:3])
-  expect_identical(length(l$appenders$buffer$buffered_events), 1L)
+  expect_length(l$appenders$buffer$buffered_events, 1)
   l$info(LETTERS[4:7])
   expect_identical(length(l$appenders$buffer$buffered_events), 2L)
 
@@ -257,6 +291,7 @@ test_that("AppenderBuffer: FATAL log level triggers flush", {
   expect_identical(l$appenders$buffer$buffered_events, list())
   expect_match(paste(readLines(tf), collapse = "#"), ".*A#.*B#.*C#.*a#.*b#.*c#.*x")
 })
+
 
 
 test_that("AppenderBuffer: memory is flushed on buffer cycling", {
@@ -285,9 +320,9 @@ test_that("AppenderBuffer: flush on memory cycling can be suppressed", {
   eres <- readLines(tf)
   l$appenders$buffer$set_flush_on_rotate(FALSE)
   for (i in 1:15) l$info(i)
-  expect_identical(length(l$appenders$buffer$buffered_events), 10L)
-  msgs <- sapply(l$appenders$buffer$buffered_events, `[[`, "msg")
-  expect_identical(msgs, as.character(6:15))
+
+  # theres a 10% tolerance for flushing if no flush on rotate is set
+  expect_true(length(l$appenders$buffer$buffered_events) >= 10L)
   # Nothing should have been flushed to the log file
   expect_identical(readLines(tf), eres)
 })
@@ -361,4 +396,77 @@ test_that("AppenderBuffer: add/remove appenders", {
   expect_length(sapp$appenders, 2)
   expect_identical(sapp$appenders[[1]], app1)
   expect_identical(sapp$appenders[[2]], app2)
+})
+
+
+
+test_that("AppenderBuffer: view log", {
+  l <- Logger$new(
+    "buffer test",
+    appenders = AppenderBuffer$new(should_flush = NULL),
+    propagate = FALSE
+  )
+
+  l$fatal("foo")
+  l$warn("foo", bar = "foo")
+  l$info(1:3)
+  l$error("and a list column", df = head(iris), env = environment())
+
+  expect_identical(nrow(l$appenders[[1]]$data), 6L)
+  expect_identical(nrow(l$appenders[[1]]$dt), 6L)
+  expect_length(capture.output(l$appenders[[1]]$show(n = 5, threshold = "warn")), 3L)
+})
+
+
+
+test_that("AppenderBuffer: cycling is implemented correctly", {
+  l <- Logger$new(
+    "buffer test",
+    appenders = AppenderBuffer$new(buffer_size = 3L, flush_on_rotate = FALSE),
+    propagate = FALSE
+  )
+
+  l$info("test1")
+  l$info("test2")
+  l$info("test3")
+  l$info("test4")
+  l$info("test5")
+
+  expect_identical(
+    sapply(l$appenders[[1]]$buffered_events, `[[`, "msg"),
+    paste0("test", 2:5)
+  )
+})
+
+
+
+test_that("AppenderBuffer: Custom should_flush can be defined", {
+  l <- Logger$new(
+    "buffer test",
+    appenders = AppenderBuffer$new(),
+    propagate = FALSE
+  )
+
+  # FALSE
+  l$appenders[[1]]$set_should_flush(function(event, obj) FALSE)
+  l$fatal("test")
+  expect_length(l$appenders[[1]]$buffered_events, 1L)
+
+  # TRUE
+  l$appenders[[1]]$set_should_flush(
+    function(event, obj) inherits(event, "LogEvent") && inherits(obj, "AppenderBuffer")
+  )
+  l$fatal("test")
+  expect_length(l$appenders[[1]]$buffered_events, 0L)
+
+  # Undefined
+  l$appenders[[1]]$set_should_flush(function(event, obj) NA)
+  expect_warning(l$fatal("test"))
+  expect_length(l$appenders[[1]]$buffered_events, 1L)
+  l$appenders[[1]]$set_should_flush(function(event, obj) iris)
+  expect_warning(l$fatal("test"))
+  expect_length(l$appenders[[1]]$buffered_events, 2L)
+
+  # illegal filter
+  expect_error(l$appenders[[1]]$set_should_flush(mean))
 })
