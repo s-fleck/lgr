@@ -75,7 +75,8 @@ on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 \link{LayoutTable}
 
 Other abstract classes: \code{\link{AppenderDigest}},
-  \code{\link{AppenderMemory}}, \code{\link{Filterable}}
+  \code{\link{AppenderMail}}, \code{\link{AppenderMemory}},
+  \code{\link{Filterable}}
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},

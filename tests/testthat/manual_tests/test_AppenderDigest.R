@@ -47,7 +47,8 @@ test_that("AppenderSendmail: ERROR log level triggers push", {
     appenders = AppenderSendmail$new(
       to = email,
       control = list(smtpServer = smtp, verboseShow = TRUE),
-      buffer_size = 3),
+      buffer_size = 3,
+      html = TRUE),
     parent = NULL
   )
 

@@ -287,6 +287,12 @@ is_scalar_character <- function(x){
 
 
 
+is_vector <- function(x){
+  is.atomic(x) || is.list(x)
+}
+
+
+
 
 is_bool <- function(x){
   is.logical(x) && !anyNA(x)

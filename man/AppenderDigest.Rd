@@ -118,7 +118,8 @@ on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 \seealso{
 \link{LayoutFormat}, \link{LayoutGlue}
 
-Other abstract classes: \code{\link{AppenderMemory}},
+Other abstract classes: \code{\link{AppenderMail}},
+  \code{\link{AppenderMemory}},
   \code{\link{AppenderTable}}, \code{\link{Filterable}}
 }
 \concept{abstract classes}

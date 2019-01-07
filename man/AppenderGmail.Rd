@@ -36,7 +36,6 @@ x$set_filters(filters)
 
 x$bcc
 x$cc
-x$control
 x$from
 x$html
 x$to
@@ -58,9 +57,10 @@ x$filters
 \section{Fields}{
 
 
+
 \describe{
 \item{\code{to}, \code{from}, \code{cc}, \code{bcc}}{
-Please see the documentation of \code{\link[gmailr:send_message]{gmailr::send_message()}} for details.
+\code{character} vectors.
 }
 \item{\code{html}, \code{set_html()}}{\code{TRUE} or \code{FALSE}. Send a html email message?
 This does currently only formats the log contents as monospace verbatim

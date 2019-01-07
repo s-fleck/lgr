@@ -1681,6 +1681,85 @@ AppenderPushbullet <- R6::R6Class(
 
 
 
+# AppenderMail ------------------------------------------------------------
+
+#' Abstract Class for Email Appenders
+#'
+#' @template abstract_class
+#'
+#' @inheritSection AppenderDigest Fields
+#' @inheritSection AppenderDigest Methods
+#'
+#'@section Fields:
+#' \describe{
+#'   \item{`to`, `from`, `cc`, `bcc`}{
+#'     `character` vectors.
+#'   }
+#'   \item{`html`, `set_html()`}{`TRUE` or `FALSE`. Send a html email message?
+#'     This does currently only formats the log contents as monospace verbatim
+#'     text.
+#'   }
+#' }
+#'
+#' @name AppenderMail
+#' @keywords internal
+#'
+AppenderMail <- R6::R6Class(
+  "AppenderGmail",
+  inherit = AppenderDigest,
+  cloneable = FALSE,
+
+  # +- public --------------------------------------------------------------
+  public = list(
+    set_to = function(x){
+      private$.to <- x
+      invisible(self)
+    },
+
+    set_from = function(x){
+      private$.from <- x
+      invisible(self)
+    },
+
+    set_cc = function(x){
+      private$.cc <- x
+      invisible(self)
+    },
+
+    set_bcc = function(x){
+      private$.bcc <- x
+      invisible(self)
+    },
+
+    set_html = function(x){
+      assert(is_scalar_bool(x))
+      private$.html <- x
+      invisible(self)
+    }
+  ),
+
+
+  # +- active ---------------------------------------------------------------
+  active = list(
+    to = function() get(".to", envir = private),
+    from = function() get(".from", envir = private),
+    cc = function() get(".cc", envir = private),
+    bcc = function() get(".bcc", envir = private),
+    html = function() get(".html", envir = private)
+  ),
+
+  private = list(
+    .to = NULL,
+    .from = NULL,
+    .cc = NULL,
+    .bcc = NULL,
+    .html = NULL
+  )
+)
+
+
+
+
 # AppenderSendmail --------------------------------------------------------
 
 #' Send Log Emails via SendmailR
@@ -1706,16 +1785,15 @@ AppenderPushbullet <- R6::R6Class(
 #' )
 #'
 #'
-#' @inheritSection AppenderDigest Methods
-#' @inheritSection AppenderDigest Fields
+#' @inheritSection AppenderMail Methods
+#' @inheritSection AppenderMail Fields
 #'
 #' @section Fields:
 #'
 #' \describe{
-#'   \item{`to`, `control`, `from`, `cc`, `bcc`, `headers`}{
-#'     Please see the documentation of [sendmailR::sendmail()] for details.
-#'   }
+#'   \item{`headers`, `control`}{see [sendmailR::sendmail()]}
 #' }
+#'
 #'
 #' @section Methods:
 #'
@@ -1730,7 +1808,7 @@ NULL
 #' @export
 AppenderSendmail <- R6::R6Class(
   "AppenderSendmail",
-  inherit = AppenderDigest,
+  inherit = AppenderMail,
   cloneable = FALSE,
 
   # +- public --------------------------------------------------------------
@@ -1746,9 +1824,11 @@ AppenderSendmail <- R6::R6Class(
       from = get_user(),
       cc = NULL,
       bcc = NULL,
-      headers = list("Content-Type" = "text/plain")
+      html = FALSE,
+      headers = list()
     ){
       assert_namespace("sendmailR")
+      assert(is_bool(html))
 
       private$insert_pos <- 0L
       private$last_event    <- 0L
@@ -1761,6 +1841,7 @@ AppenderSendmail <- R6::R6Class(
       self$set_bcc(bcc)
       self$set_headers(headers)
       self$set_subject_layout(subject_layout)
+      self$set_html(html)
 
       self$set_layout(layout)
       self$set_threshold(threshold)
@@ -1782,6 +1863,12 @@ AppenderSendmail <- R6::R6Class(
       le    <- self$buffered_events[[length(self$buffered_events)]]
       title <- self$subject_layout$format_event(le)
 
+      if (self$html) {
+        body <- paste0("<pre>\n", body, "</pre>\n")
+        body <- sendmailR::mime_part(body)
+        body[["headers"]][["Content-Type"]] <- "text/html"
+      }
+
       args <- list(
         from = self$from,
         to   = self$to,
@@ -1802,24 +1889,8 @@ AppenderSendmail <- R6::R6Class(
       invisible(self)
     },
 
-    set_to = function(x){
-      private$.to <- x
-    },
-
     set_control = function(x){
       private$.control <- x
-    },
-
-    set_from = function(x){
-      private$.from <- x
-    },
-
-    set_cc = function(x){
-      private$.cc <- x
-    },
-
-    set_bcc = function(x){
-      private$.bcc <- x
     },
 
     set_headers = function(x){
@@ -1830,20 +1901,12 @@ AppenderSendmail <- R6::R6Class(
 
   # +- active ---------------------------------------------------------------
   active = list(
-    to = function() get(".to", envir = private),
     control = function() get(".control", envir = private),
-    from = function() get(".from", envir = private),
-    cc = function() get(".cc", envir = private),
-    bcc = function() get(".bcc", envir = private),
     headers = function() get(".headers", envir = private)
   ),
 
   private = list(
-    .to = NULL,
     .control = NULL,
-    .from = NULL,
-    .cc = NULL,
-    .bcc = NULL,
     .headers = NULL
   )
 )
@@ -1870,21 +1933,10 @@ AppenderSendmail <- R6::R6Class(
 #'     "flush_on_rotate")
 #' )
 #'
-#' @inheritSection AppenderDigest Methods
-#' @inheritSection AppenderDigest Fields
+#' @inheritSection AppenderMail Methods
+#' @inheritSection AppenderMail Fields
 #'
 #' @section Fields:
-#'
-#' \describe{
-#'   \item{`to`, `from`, `cc`, `bcc`}{
-#'     Please see the documentation of [gmailr::send_message()] for details.
-#'   }
-#'   \item{`html`, `set_html()`}{`TRUE` or `FALSE`. Send a html email message?
-#'     This does currently only formats the log contents as monospace verbatim
-#'     text.
-#'   }
-#' }
-#'
 #'
 #' @section Methods:
 #'
@@ -1898,7 +1950,7 @@ NULL
 #' @export
 AppenderGmail <- R6::R6Class(
   "AppenderGmail",
-  inherit = AppenderDigest,
+  inherit = AppenderMail,
   cloneable = FALSE,
 
   # +- public --------------------------------------------------------------
@@ -1968,49 +2020,14 @@ AppenderGmail <- R6::R6Class(
       private$.buffered_events <- list()
 
       invisible(self)
-    },
-
-    set_to = function(x){
-      private$.to <- x
-      invisible(self)
-    },
-
-    set_from = function(x){
-      private$.from <- x
-      invisible(self)
-    },
-
-    set_cc = function(x){
-      private$.cc <- x
-      invisible(self)
-    },
-
-    set_bcc = function(x){
-      private$.bcc <- x
-      invisible(self)
-    },
-
-    set_html = function(x){
-      assert(is_scalar_bool(x))
-      private$.html <- x
-      invisible(self)
     }
   ),
 
 
   # +- active ---------------------------------------------------------------
-  active = list(
-    to = function() get(".to", envir = private),
-    control = function() get(".control", envir = private),
-    from = function() get(".from", envir = private),
-    cc = function() get(".cc", envir = private),
-    bcc = function() get(".bcc", envir = private),
-    html = function() get(".html", envir = private)
-  ),
 
   private = list(
     .to = NULL,
-    .control = NULL,
     .from = NULL,
     .cc = NULL,
     .bcc = NULL,

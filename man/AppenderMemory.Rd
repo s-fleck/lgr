@@ -135,6 +135,7 @@ on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 \link{LayoutFormat}
 
 Other abstract classes: \code{\link{AppenderDigest}},
-  \code{\link{AppenderTable}}, \code{\link{Filterable}}
+  \code{\link{AppenderMail}}, \code{\link{AppenderTable}},
+  \code{\link{Filterable}}
 }
 \concept{abstract classes}
