@@ -10,17 +10,17 @@
 #' @section Fields:
 #'
 #' \describe{
-#'   \item{`filters`, `set_filters(filters)`}{a `list` of predicates (functions
-#'     that return either `TRUE` or `FALSE`). These functions must have exactly
-#'     two arguments: `event` and `obj`. When the `filter()` method of the
-#'     Filterable is invoked on a LogEvent, that event will get passed to `event`,
-#'     the Filterable will get passed to `obj`. This means that you can,
-#'     f.e. use `obj$threshold` to access the threshold of the Appender/Logger
-#'     that is using the filter.
-#'     If all of these functions evaluate to `TRUE` the LogEvent is passed on.
-#'     Since LogEvents have reference semantics, filters can also be abused to
-#'     modify them before they are passed on. Look at the source code of
-#'     [with_log_level()] or [with_log_value()] for examples.
+#'   \item{`filters`, `set_filters(filters)`}{a `list` that may contain
+#'     functions or any \R object with a `filter()` method. These functions must
+#'     have exactly two arguments: `event` and `obj`. When the `filter()` method
+#'     of the Filterable is invoked on a LogEvent, that event will get passed to
+#'     `event`, the Filterable will get passed to `obj`. This means that you
+#'     can, f.e. use `obj$threshold` to access the threshold of the
+#'     Appender/Logger that is using the filter. If all of these functions
+#'     evaluate to `TRUE` the LogEvent is passed on. Since LogEvents have
+#'     reference semantics, filters can also be abused to modify them before
+#'     they are passed on. Look at the source code of [with_log_level()] or
+#'     [with_log_value()] for examples.
 #'   }
 #' }
 #'
@@ -51,7 +51,13 @@ Filterable <- R6::R6Class(
   public = list(
     filter = function(event){
       for (f in get(".filters", private)) {
-        r <- f(event, self)
+
+        if (is.function(f)){
+          r <- f(event, self)
+        } else if (inherits(f, "Filter")){
+          r <- f[["filter"]](event, self)
+        }
+
         if (identical(r, TRUE)){
           # do nothing
         } else if (identical(r, FALSE)){
@@ -118,13 +124,4 @@ assert_filter <- function(x){
       must be a function with the arguments `event` and `obj`",
       call. = FALSE
     )
-}
-
-
-
-
-is_filter <- function(
-  x
-){
-  is.function(x) && identical(names(formals(x)), c("event", "obj"))
 }

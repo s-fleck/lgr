@@ -1,5 +1,3 @@
-
-
 #' Suspend All Logging
 #'
 #' Completely disable logging for all loggers. This is for example useful for
@@ -83,12 +81,15 @@ with_log_level <- function(
     TRUE
   }
 
-  filters_orig <- logger$filters
-  on.exit(logger$set_filters(c(filters_orig)))
-  logger$set_filters(c(set_level, filters_orig))
+  # to make it unlikely something goes wrong if people do funky stuff with
+  # filters inside with_log_level calls
+  tn <- paste0("...WITH_LOG_LEVEL_TEMP_FILTER", runif(1))
+  logger$add_filter(set_level, name = tn)
+  on.exit(logger$remove_filter(tn))
 
   force(code)
 }
+
 
 
 
@@ -125,9 +126,9 @@ with_log_value <- function(
     TRUE
   }
 
-  filters_orig <- logger$filters
-  on.exit(logger$set_filters(c(filters_orig)))
-  logger$set_filters(c(set_level, filters_orig))
+  tn <- paste0("...WITH_LOG_VALUE_TEMP_FILTER", runif(1))
+  logger$add_filter(set_level, name = tn)
+  on.exit(logger$remove_filter(tn))
 
   force(code)
 }

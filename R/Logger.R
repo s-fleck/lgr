@@ -182,7 +182,7 @@ Logger <- R6::R6Class(
       name = "(unnamed logger)",
       appenders = list(),
       threshold = 400L,
-      filters = NULL,
+      filters = list(),
       user = get_user(),
       parent = lgr::lgr,
       exception_handler = default_exception_handler,
@@ -579,7 +579,6 @@ Logger <- R6::R6Class(
 
     # +- fields ---------------------------------------------------------------
     .propagate = NULL,
-    .filters = NULL,
     .exception_handler = NULL,
     .name = NULL,
     .parent = NULL,
