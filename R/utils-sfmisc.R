@@ -1,14 +1,19 @@
-# sfmisc utils 0.0.1.9019
+# sfmisc utils 0.0.1.9024
 
 
 
 
 # utils -------------------------------------------------------------------
 
+# nocov start
+# commonly used utility functions included from the package sfmisc
+
+
 #' Paste and Truncate
 #'
 #' @param x a vector
 #' @param width (maximum) width of result
+#' @param dots `character` scalar. String to use for ellipses
 #' @inheritParams paste
 #'
 #' @return a `character` scalar
@@ -37,6 +42,7 @@ ptrunc <- function(
 
 
 
+
 fmt_class <- function(x){
   paste0("<", paste(x, collapse = "/"), ">")
 }
@@ -50,7 +56,6 @@ fmt_class <- function(x){
 class_fmt <- function(x, ignore = NULL){
   fmt_class(setdiff(class(x), ignore))
 }
-
 
 
 
@@ -129,16 +134,27 @@ assert_namespace <- function(...){
   res <- vapply(c(...), requireNamespace, logical(1), quietly = TRUE)
   if (all(res)){
     return(invisible(TRUE))
+
   } else {
-    stop(sprintf(
-      paste(
-        "This function requires the packages %s. You can install them with",
-        "`install.packages(%s)`."
-      ),
-      paste(names(res)[!res], collapse = ", "),
-      deparse(names(res))
-    ))
+    pkgs <- c(...)
+    if (identical(length(pkgs), 1L)){
+      msg <- sprintf(paste(
+        "This function requires the package '%s'. You can install it with",
+        '`install.packages("%s")`.'), pkgs, pkgs
+      )
+    } else {
+      msg <- sprintf(
+        paste(
+          "This function requires the packages %s. You can install them with",
+          "`install.packages(%s)`."
+        ),
+        paste(names(res)[!res], collapse = ", "),
+        deparse(names(res))
+      )
+    }
   }
+
+  stop(msg)
 }
 
 
@@ -216,8 +232,15 @@ is_scalar <- function(x){
 
 
 
-is_scalar_character <- function(x){
-  is.character(x) && is_scalar(x)
+is_scalar_list <- function(x){
+  is_list(x) && is_scalar(x)
+}
+
+
+
+
+is_scalar_atomic <- function(x){
+  is.atomic(x) && is_scalar(x)
 }
 
 
@@ -229,9 +252,40 @@ is_scalar_logical <- function(x){
 
 
 
-is_scalar_atomic <- function(x){
-  is.atomic(x) && is_scalar(x)
+
+is_scalar_integer <- function(x){
+  is.integer(x) && is_scalar(x)
 }
+
+
+
+
+is_scalar_factor <- function(x){
+  is.factor(x) && is_scalar(x)
+}
+
+
+
+
+is_scalar_list <- function(x){
+  is.list(x) && is_scalar(x)
+}
+
+
+
+
+is_scalar_numeric <- function(x){
+  is.numeric(x) && is_scalar(x)
+}
+
+
+
+
+is_scalar_character <- function(x){
+  is.character(x) && is_scalar(x)
+}
+
+
 
 
 is_bool <- function(x){
@@ -327,6 +381,26 @@ is_blank <- function(x){
 
 
 # all_are -----------------------------------------------------------------
+
+#' Convert vector if identical elements to scalar
+#'
+#' Returns `unique(x)` if all elements of `x` are identical, throws an error if
+#' not.
+#'
+#' @inheritParams all_are_identical
+#'
+#' @return A scalar of the same type as `x`
+#' @noRd
+as_scalar <- function(x){
+  res <- unique(x)
+  if (is_scalar(res)){
+    return(res)
+  } else {
+    stop("Not all elements of x are identical")
+  }
+}
+
+
 
 
 #' Test if all elements of a vector are identical
@@ -440,3 +514,39 @@ pad_right <- function(
     vapply(diff, function(i) paste(rep.int(pad, i), collapse = ""), character(1))
   paste0(x, padding)
 }
+
+
+
+
+`%||%` <- function(x, y){
+  if (is.null(x))
+    y
+  else (x)
+}
+
+
+
+preview_object <- function(
+  x,
+  width = 32,
+  brackets = c("(", ")"),
+  quotes   = c("`", "`"),
+  dots = ".."
+){
+  if (!is.atomic(x))
+    return(class_fmt(x))
+
+  if (is.numeric(x))
+    x <- format(x, justify = "none", drop0trailing = TRUE, trim = TRUE)
+
+  res <- ptrunc(x, collapse = ", ", width = width, dots = dots)
+
+  if (length(x) > 1)
+    res <- paste0(brackets[[1]], res, brackets[[2]])
+  else
+    res <- paste0(quotes[[1]], res, quotes[[2]])
+
+  res
+}
+
+# nocov end
