@@ -41,6 +41,11 @@ modify them before they are passed on. Look at the source code of
 \item{\code{filter(event)}}{Determine whether the LogEvent \code{x} should be passed
 on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 \code{filters}}
+\item{\code{add_filter(filter, name = NULL)}, \code{remove_filter(pos)}}{
+Add or remove a filter. When adding a filter an optional \code{name} can
+be specified. \code{remove_filter()} can remove by position or name (if one
+was specified)
+}
 }
 }
 

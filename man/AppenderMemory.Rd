@@ -23,6 +23,8 @@ x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
+x$add_filter(filter, name = NULL)
+x$remove_filter(pos)
 x$set_filters(filters)
 
 x$buffer_size
@@ -128,6 +130,11 @@ This method is usually not called by the user, but invoked by a
 \item{\code{filter(event)}}{Determine whether the LogEvent \code{x} should be passed
 on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 \code{filters}}
+\item{\code{add_filter(filter, name = NULL)}, \code{remove_filter(pos)}}{
+Add or remove a filter. When adding a filter an optional \code{name} can
+be specified. \code{remove_filter()} can remove by position or name (if one
+was specified)
+}
 }
 }
 

@@ -100,7 +100,6 @@ Appender <- R6::R6Class(
   ),
 
   private = list(
-    .filters = NULL,
     .threshold = NA,
     .layout = NULL
   )
@@ -1218,8 +1217,8 @@ AppenderMemory <- R6::R6Class(
 #' @section Fields:
 #'
 #' \describe{
-#'   \item{`appenders`, `set_appenders()`}{Like for a [Logger]. Buffered events will be passed on
-#'     to these Appenders once a flush is triggered}
+#'   \item{`appenders`, `set_appenders()`}{Like for a [Logger]. Buffered events
+#'     will be passed on to these Appenders once a flush is triggered}
 #'   \item{`flush_on_exit, set_flush_on_exit(x)`}{`TRUE` or `FALSE`: Whether the
 #'     buffer should be flushed when the Appender is garbage collected (f.e when
 #'     you close \R)}
@@ -1232,6 +1231,15 @@ AppenderMemory <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{`flush()`}{Manually trigger flushing}
+#'
+#'   \item{`add_appender(appender, name = NULL)`, `remove_appender(pos)`}{
+#'     Add or remove an [Appender]. Supplying a `name` is optional but
+#'     recommended. After adding an Appender with
+#'     `appender$add_appender(AppenderConsole$new(), name = "console")` you can
+#'      refer to it via `appender$appenders$console`. `remove_appender()` can
+#'      remove an Appender by position or name.
+#'    }
+#'
 #' }
 #'
 #' @inheritSection AppenderDt Comparison AppenderBuffer and AppenderDt

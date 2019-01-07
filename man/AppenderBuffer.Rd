@@ -30,6 +30,8 @@ x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
+x$add_filter(filter, name = NULL)
+x$remove_filter(pos)
 x$set_filters(filters)
 
 x$appenders
@@ -60,8 +62,8 @@ its \code{$show()} method.
 
 
 \describe{
-\item{\code{appenders}, \code{set_appenders()}}{Like for a \link{Logger}. Buffered events will be passed on
-to these Appenders once a flush is triggered}
+\item{\code{appenders}, \code{set_appenders()}}{Like for a \link{Logger}. Buffered events
+will be passed on to these Appenders once a flush is triggered}
 \item{\code{flush_on_exit, set_flush_on_exit(x)}}{\code{TRUE} or \code{FALSE}: Whether the
 buffer should be flushed when the Appender is garbage collected (f.e when
 you close \R)}
@@ -136,6 +138,15 @@ modify them before they are passed on. Look at the source code of
 
 \describe{
 \item{\code{flush()}}{Manually trigger flushing}
+
+\item{\code{add_appender(appender, name = NULL)}, \code{remove_appender(pos)}}{
+Add or remove an \link{Appender}. Supplying a \code{name} is optional but
+recommended. After adding an Appender with
+\code{appender$add_appender(AppenderConsole$new(), name = "console")} you can
+refer to it via \code{appender$appenders$console}. \code{remove_appender()} can
+remove an Appender by position or name.
+}
+
 }
 
 
@@ -164,6 +175,11 @@ This method is usually not called by the user, but invoked by a
 \item{\code{filter(event)}}{Determine whether the LogEvent \code{x} should be passed
 on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 \code{filters}}
+\item{\code{add_filter(filter, name = NULL)}, \code{remove_filter(pos)}}{
+Add or remove a filter. When adding a filter an optional \code{name} can
+be specified. \code{remove_filter()} can remove by position or name (if one
+was specified)
+}
 }
 }
 

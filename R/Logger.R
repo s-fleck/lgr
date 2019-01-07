@@ -114,15 +114,13 @@
 #'     filters.
 #'   }
 #'
-#'   \item{`add_appender(appender, name = NULL)`}{Adds a new Appender to the
-#'   Logger. `appender` must be an [Appender] object. `name` is optional and
-#'   will be used as name in the list of appenders, i.e if you do
-#'   `logger$add_appender(AppenderConsole$new(), name = "console")` you can
-#'    refer to it via `logger$appenders$console`.}
-#'
-#'   \item{`remove_appender(pos)`}{Removes and Appender from a Logger. `pos`
-#'   can be an `integer` or `character` vector referring either to the positions
-#'   or names of the Appenders to be removed.}
+#'   \item{`add_appender(appender, name = NULL)`, `remove_appender(pos)`}{
+#'     Add or remove an [Appender]. Supplying a `name` is optional but
+#'     recommended. After adding an Appender with
+#'     `logger$add_appender(AppenderConsole$new(), name = "console")` you can
+#'      refer to it via `logger$appenders$console`. `remove_appender()` can
+#'      remove an Appender by position or name.
+#'    }
 #' }
 #'
 #' @name Logger

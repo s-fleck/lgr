@@ -37,6 +37,8 @@ x$set_threshold(level)
 x$set_appenders(x)
 x$set_user(x)
 x$filter(event)
+x$add_filter(filter, name = NULL)
+x$remove_filter(pos)
 x$set_filters(filters)
 
 x$ancestry
@@ -178,15 +180,13 @@ to the relevant \link{Appenders} and checked against their thresholds and
 filters.
 }
 
-\item{\code{add_appender(appender, name = NULL)}}{Adds a new Appender to the
-Logger. \code{appender} must be an \link{Appender} object. \code{name} is optional and
-will be used as name in the list of appenders, i.e if you do
+\item{\code{add_appender(appender, name = NULL)}, \code{remove_appender(pos)}}{
+Add or remove an \link{Appender}. Supplying a \code{name} is optional but
+recommended. After adding an Appender with
 \code{logger$add_appender(AppenderConsole$new(), name = "console")} you can
-refer to it via \code{logger$appenders$console}.}
-
-\item{\code{remove_appender(pos)}}{Removes and Appender from a Logger. \code{pos}
-can be an \code{integer} or \code{character} vector referring either to the positions
-or names of the Appenders to be removed.}
+refer to it via \code{logger$appenders$console}. \code{remove_appender()} can
+remove an Appender by position or name.
+}
 }
 
 
@@ -194,6 +194,11 @@ or names of the Appenders to be removed.}
 \item{\code{filter(event)}}{Determine whether the LogEvent \code{x} should be passed
 on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 \code{filters}}
+\item{\code{add_filter(filter, name = NULL)}, \code{remove_filter(pos)}}{
+Add or remove a filter. When adding a filter an optional \code{name} can
+be specified. \code{remove_filter()} can remove by position or name (if one
+was specified)
+}
 }
 }
 

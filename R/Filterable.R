@@ -29,6 +29,11 @@
 #'   \item{`filter(event)`}{Determine whether the LogEvent `x` should be passed
 #'     on to Appenders (`TRUE`) or not (`FALSE`). See also the active binding
 #'     `filters`}
+#'    \item{`add_filter(filter, name = NULL)`, `remove_filter(pos)`}{
+#'      Add or remove a filter. When adding a filter an optional `name` can
+#'      be specified. `remove_filter()` can remove by position or name (if one
+#'      was specified)
+#'    }
 #' }
 #'
 #' @keywords internal
@@ -45,21 +50,45 @@ Filterable <- R6::R6Class(
 
   public = list(
     filter = function(event){
-      for (f in private$.filters) {
-        if (!identical(f(event, self), TRUE)) return(FALSE)
+      for (f in get(".filters", private)) {
+        r <- f(event, self)
+        if (identical(r, TRUE)){
+          # do nothing
+        } else if (identical(r, FALSE)){
+          return(FALSE)
+        } else {
+          warning(
+            "`$filter()` of ", class_fmt(self, c("R6", "Filterable")),
+            " object did not return `TRUE` or `FALSE` but ", preview_object(r),
+            ". Please check its `$filters`", call. = FALSE
+          )
+        }
       }
       TRUE
     },
 
+    add_filter = function(filter, name = NULL){
+      assert_filter(filter)
+      assert(is.null(name) || is_scalar_character(name))
+      pos <- name %||% (length(private$.filters) + 1L)
+      private[[".filters"]][[pos]] <- filter
+      invisible(self)
+    },
+
+    remove_filter = function(pos){
+      private[[".filters"]][[pos]] <- NULL
+      invisible(self)
+    },
+
     set_filters = function(filters){
       if (is.null(filters)){
-        private$.filters <- NULL
+        private[[".filters"]] <- NULL
       } else {
         assert(
           is.list(filters) && all(vapply(filters, is_filter, logical(1))),
           "'filters' must be a list of functions with the arguments 'event' and 'obj'"
         )
-        private$.filters <- filters
+        private[[".filters"]] <- filters
       }
 
       invisible(self)
@@ -68,14 +97,28 @@ Filterable <- R6::R6Class(
 
   active = list(
     filters = function(){
-      private$.filters
+      get(".filters", private)
     }
   ),
 
   private = list(
-    .filters = NULL
+    .filters = list()
   )
 )
+
+
+
+
+assert_filter <- function(x){
+  if (is_filter(x))
+    TRUE
+  else
+    stop(
+      "`", deparse(substitute(x)), "`", "
+      must be a function with the arguments `event` and `obj`",
+      call. = FALSE
+    )
+}
 
 
 
