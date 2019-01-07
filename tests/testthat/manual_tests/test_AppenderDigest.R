@@ -38,7 +38,7 @@ test_that("AppenderSendmail: ERROR log level triggers push", {
   smtp  <- getOption("stat.smtp_server")
   email <- whoami::email_address()
 
-  if (is.null(smtp)) skip("Please set the 'stat.smtp_server' option")
+  if (is.null(smtp))  skip("Please set the 'stat.smtp_server' option")
   if (is.null(email)) skip("Cannot determine email addresse")
 
   l <- Logger$new(
@@ -67,15 +67,15 @@ test_that("AppenderSendmail: ERROR log level triggers push", {
 test_that("AppenderGmail: ERROR log level triggers push", {
   skip_if_not_installed("gmailr")
 
-    l <- Logger$new(
-      "dummy",
-      threshold = NA_integer_,
-      appenders = AppenderGmail$new(
-        to = email,
-        html = TRUE,
-        buffer_size = 3),
-      parent = NULL
-    )
+  l <- Logger$new(
+    "dummy",
+    threshold = NA_integer_,
+    appenders = AppenderGmail$new(
+      to = email,
+      html = TRUE,
+      buffer_size = 3),
+    parent = NULL
+  )
 
   l$info("1")
   l$info("2")

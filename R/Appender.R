@@ -1685,11 +1685,16 @@ AppenderPushbullet <- R6::R6Class(
 
 #' Send Log Emails via SendmailR
 #'
-#' Send mails via [sendmailR::sendmail()]. This
+#' Send mails via [sendmailR::sendmail()], which requires that you have access
+#' to an SMTP server that does not require authentication. This
 #' Appender keeps an in-memory buffer like [AppenderBuffer]. If the buffer is
 #' flushed, usually because an event of specified magnitutde is encountered, all
 #' buffered events are concatenated to a single message. The default behaviour
 #' is to push the last 30 log events in case a `fatal` event is encountered.
+#'
+#' @note The default Layout's `fmt` indents each log entry with 3 blanks. This
+#'   is a workaround so that Microsoft Outlook does not mess up the line breaks.
+#'
 #'
 #' @eval r6_usage(
 #'   AppenderSendmail,
@@ -1735,13 +1740,13 @@ AppenderSendmail <- R6::R6Class(
       control,
       threshold = NA_integer_,
       flush_threshold = "fatal",
-      layout = LayoutFormat$new(fmt = "%K  %t> %m %f", timestamp_fmt = "%H:%M:%S"),
+      layout = LayoutFormat$new(fmt = "   %L [%t] %m %f", timestamp_fmt = "%H:%M:%S"),
       subject_layout = LayoutFormat$new(fmt = "[LGR] %L: %m"),
       buffer_size = 29,
       from = get_user(),
       cc = NULL,
       bcc = NULL,
-      headers = NULL
+      headers = list("Content-Type" = "text/plain")
     ){
       assert_namespace("sendmailR")
 
@@ -1772,7 +1777,7 @@ AppenderSendmail <- R6::R6Class(
 
       body <- paste(
         lapply(self$buffered_events, self$layout$format_event),
-        collapse = "\n"
+        collapse = "\r\n"
       )
       le    <- self$buffered_events[[length(self$buffered_events)]]
       title <- self$subject_layout$format_event(le)

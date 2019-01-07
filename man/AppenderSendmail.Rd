@@ -10,12 +10,17 @@ flushed, usually because an event of specified magnitutde is encountered, all
 buffered events are concatenated to a single message. The default behaviour
 is to push the last 30 log events in case a \code{fatal} event is encountered.
 }
+\note{
+The default Layout's \code{fmt} indents each log entry with 3 blanks. This
+is a workaround so that outlook does not mess up the line breaks.
+}
 \section{Usage}{
 \preformatted{
 x <- x$new(to, control, threshold = NA_integer_, flush_threshold = "fatal",
-  layout = LayoutFormat$new(fmt = "\%K \%t> \%m \%f", timestamp_fmt = "\%H:\%M:\%S"),
-  subject_layout = LayoutFormat$new(fmt = "[LGR] \%L: \%m"), buffer_size = 29,
-  from = get_user(), cc = NULL, bcc = NULL, headers = NULL)
+  layout = LayoutFormat$new(fmt = " \%L [\%t] \%m \%f", timestamp_fmt =
+  "\%H:\%M:\%S"), subject_layout = LayoutFormat$new(fmt = "[LGR] \%L: \%m"),
+  buffer_size = 29, from = get_user(), cc = NULL, bcc = NULL,
+  headers = list(`Content-Type` = "text/plain"))
 
 x$flush()
 x$set_to(x)
