@@ -261,13 +261,15 @@ Logger <- R6::R6Class(
           )
         } else {
           dots <- list(...)
+
           if (is.null(names(dots))){
+            msg  <- sprintf(msg, ...)
             vals <- list(
               logger = self,
               level = level,
               timestamp = timestamp,
               caller = caller,
-              msg = sprintf(msg, ...)
+              msg = msg
             )
           } else {
             not_named <- vapply(names(dots), is_blank, TRUE, USE.NAMES = FALSE)
@@ -305,6 +307,8 @@ Logger <- R6::R6Class(
             }
           }
         }
+
+        invisible(msg)
       },
         error = get("handle_exception", envir = self)
       )
@@ -315,7 +319,7 @@ Logger <- R6::R6Class(
       get("log", envir = self)(
         msg = msg,
         caller = get_caller(-8L),
-        level = 100,
+        level = 100L,
         timestamp = Sys.time(),
         ...
       )
@@ -325,7 +329,7 @@ Logger <- R6::R6Class(
       get("log", envir = self)(
         msg = msg,
         caller = get_caller(-8L),
-        level = 200,
+        level = 200L,
         timestamp = Sys.time(),
         ...
       )
@@ -335,7 +339,7 @@ Logger <- R6::R6Class(
       get("log", envir = self)(
         msg = msg,
         caller = get_caller(-8L),
-        level = 300,
+        level = 300L,
         timestamp = Sys.time(),
         ...
       )
@@ -345,7 +349,7 @@ Logger <- R6::R6Class(
       get("log", envir = self)(
         msg = msg,
         caller = get_caller(-8L),
-        level = 400,
+        level = 400L,
         timestamp = Sys.time(),
         ...
       )
@@ -355,7 +359,7 @@ Logger <- R6::R6Class(
       get("log", envir = self)(
         msg = msg,
         caller = get_caller(-8L),
-        level = 500,
+        level = 500L,
         timestamp = Sys.time(),
         ...
       )
@@ -365,7 +369,7 @@ Logger <- R6::R6Class(
       get("log", envir = self)(
         msg = msg,
         caller = get_caller(-8L),
-        level = 600,
+        level = 600L,
         timestamp = Sys.time(),
         ...
       )
