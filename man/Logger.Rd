@@ -59,10 +59,14 @@ x$filters
 \section{Creating Loggers}{
 
 
-If you want logging for a Project (f.e a Package you are developing) that is
-separate from the global logging, you can create a new logger with
-\code{Logger$new()}. If you just want to add different outputs (for example
-logfiles) to the root Logger, look into \link{Appenders}.
+If you are a package developer you should define a new Logger for each
+package, but you do not need to configure it. Usually only the root logger
+needs to be configured (new Appenders added/removed, Layouts modified,
+etc...). \strong{The logger name should be the same as the name of the package for
+which the logger is specified}
+
+If you just want to log to an additional output (like a log file), you want
+a new \link{Appender}, not a new Logger.
 }
 
 \section{Fields}{
