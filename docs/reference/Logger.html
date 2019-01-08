@@ -69,7 +69,7 @@ logging as outlined in vignette(&quot;lgr&quot;, package = &quot;lgr&quot;)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9002</span>
       </span>
     </div>
 
@@ -142,7 +142,7 @@ logging as outlined in <code><a href='../articles/lgr.html'>vignette("lgr", pack
 
     <pre>
 x &lt;- x$new(name = "(unnamed logger)", appenders = list(), threshold = 400L,
-  filters = NULL, user = get_user(), parent = lgr::lgr,
+  filters = list(), user = get_user(), parent = lgr::lgr,
   exception_handler = default_exception_handler, propagate = TRUE)
     x$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
 x$fatal(msg, ...)
@@ -162,6 +162,8 @@ x$set_threshold(level)
 x$set_appenders(x)
 x$set_user(x)
 x$filter(event)
+x$add_filter(filter, name = NULL)
+x$remove_filter(pos)
 x$set_filters(filters)
     x$ancestry
 x$appenders
@@ -179,10 +181,12 @@ x$filters
     <h2 class="hasAnchor" id="creating-loggers"><a class="anchor" href="#creating-loggers"></a>Creating Loggers</h2>
 
     
-    <p>If you want logging for a Project (f.e a Package you are developing) that is
-separate from the global logging, you can create a new logger with
-<code>Logger$new()</code>. If you just want to add different outputs (for example
-logfiles) to the root Logger, look into <a href='Appender.html'>Appenders</a>.</p>
+    <p>If you are a package developer you should define a new Logger for each
+package, but you do not need to configure it. Usually only the root logger
+needs to be configured (new Appenders added/removed, Layouts modified,
+etc...).</p>
+<p>If you just want to log to an additional output (like a log file), you want
+a new <a href='Appender.html'>Appender</a>, not a new Logger.</p>
     
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
@@ -218,13 +222,10 @@ durring loging. Defaults to demoting errors to <a href='https://www.rdocumentati
 be passed on to the appenders of the ancestral Loggers?</p></dd>
 </dl>
     <dl class='dl-horizontal'>
-<dt><code>filters</code>, <code>set_filters(filters)</code></dt><dd><p>a <code>list</code> of predicates (functions
-that return either <code>TRUE</code> or <code>FALSE</code>). These functions must have exactly
-two arguments: <code>event</code> and <code>obj</code>. When the <code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter()</a></code> method of the
-Filterable is invoked on a LogEvent, that event will get passed to <code>event</code>,
-the Filterable will get passed to <code>obj</code>. This means that you can,
-f.e. use <code>obj$threshold</code> to access the threshold of the Appender/Logger
-that is using the filter.
+<dt><code>filters</code>, <code>set_filters(filters)</code></dt><dd><p>a <code>list</code> that may contain
+<code>functions</code> or any <span style="R">R</span> object with a <code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter()</a></code> method. These functions
+must have exactly one argument: <code>event</code> which will get passed the
+LogEvent when the Filterable's <code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter()</a></code> method is invoked.
 If all of these functions evaluate to <code>TRUE</code> the LogEvent is passed on.
 Since LogEvents have reference semantics, filters can also be abused to
 modify them before they are passed on. Look at the source code of
@@ -274,27 +275,27 @@ characters.#'
 If the new LogEvent passes this Loggers filters, it will be dispatched
 to the relevant <a href='Appender.html'>Appenders</a> and checked against their thresholds and
 filters.</p></dd>
-    <dt><code><a href='simple_logging.html'>add_appender(appender, name = NULL)</a></code></dt><dd><p>Adds a new Appender to the
-Logger. <code>appender</code> must be an <a href='Appender.html'>Appender</a> object. <code>name</code> is optional and
-will be used as name in the list of appenders, i.e if you do
+    <dt><code><a href='simple_logging.html'>add_appender(appender, name = NULL)</a></code>, <code><a href='simple_logging.html'>remove_appender(pos)</a></code></dt><dd><p>Add or remove an <a href='Appender.html'>Appender</a>. Supplying a <code>name</code> is optional but
+recommended. After adding an Appender with
 <code>logger$add_appender(AppenderConsole$new(), name = "console")</code> you can
-refer to it via <code>logger$appenders$console</code>.</p></dd>
-    <dt><code><a href='simple_logging.html'>remove_appender(pos)</a></code></dt><dd><p>Removes and Appender from a Logger. <code>pos</code>
-can be an <code>integer</code> or <code>character</code> vector referring either to the positions
-or names of the Appenders to be removed.</p></dd>
+refer to it via <code>logger$appenders$console</code>. <code><a href='simple_logging.html'>remove_appender()</a></code> can
+remove an Appender by position or name.</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter(event)</a></code></dt><dd><p>Determine whether the LogEvent <code>x</code> should be passed
 on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the active binding
 <code>filters</code></p></dd>
+<dt><code>add_filter(filter, name = NULL)</code>, <code>remove_filter(pos)</code></dt><dd><p>Add or remove a filter. When adding a filter an optional <code>name</code> can
+be specified. <code>remove_filter()</code> can remove by position or name (if one
+was specified)</p></dd>
 </dl>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is %s"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>() )</div><div class='output co'>#&gt; INFO  [17:58:00.190] Today is 2019-01-06 </div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is %s"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>() )</div><div class='output co'>#&gt; INFO  [16:12:51.314] Today is 2019-01-08 </div><div class='input'>
 <span class='co'># lgr includes a pre-configured root logger</span>
-<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"This is a serious error"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [17:58:00.193] This is a serious error </div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"This is a serious error"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [16:12:51.316] This is a serious error </div><div class='input'>
 <span class='co'># if you want to take advantage of hierarchical logging, you can create new loggers.</span>
 <span class='co'># the following creates a new logger that logs to a temporary file.</span>
 <span class='no'>tf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>()
@@ -306,12 +307,12 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 <span class='co'># The new logger passes the log message on to the appenders of its parent</span>
 <span class='co'># logger, which is by default the root logger. This is why the following</span>
 <span class='co'># writes not only the file 'tf', but also to the console.</span>
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blubb"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [17:58:00.215] blubb </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2019-01-06 17:58:00.215] blubb"</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blubb"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [16:12:51.331] blubb </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2019-01-08 16:12:51.331] blubb"</div><div class='input'>
 <span class='co'># This relationship is also depicted in the loggers print method</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>lg</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [info] mylogger -&gt; root
 #&gt; 
 #&gt; appenders:
-#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/Rtmpa2EKjK/file112e6ea2e34
+#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/Rtmp84tUXR/file52cc49ac5ede
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [info] -&gt; console
@@ -319,11 +320,11 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 <span class='co'># use formatting strings and custom fields</span>
 <span class='no'>tf2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>()
 <span class='no'>lg</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>tf2</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()))
-<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"Not all %s support custom fields"</span>, <span class='st'>"appenders"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"test"</span>)</div><div class='output co'>#&gt; INFO  [17:58:00.290] Not all appenders support custom fields </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>type</span><span style='color: #808080;'>: </span><span>test</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2019-01-06 17:58:00.215] blubb"                                  
-#&gt; [2] "INFO  [2019-01-06 17:58:00.290] Not all appenders support custom fields"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf2</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2019-01-06 17:58:00\",\"caller\":\"eval\",\"msg\":\"Not all appenders support custom fields\",\"type\":\"test\"}"</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"Not all %s support custom fields"</span>, <span class='st'>"appenders"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"test"</span>)</div><div class='output co'>#&gt; INFO  [16:12:51.385] Not all appenders support custom fields </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>type</span><span style='color: #808080;'>: </span><span>test</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2019-01-08 16:12:51.331] blubb"                                  
+#&gt; [2] "INFO  [2019-01-08 16:12:51.385] Not all appenders support custom fields"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf2</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2019-01-08 16:12:51\",\"caller\":\"eval\",\"msg\":\"Not all appenders support custom fields\",\"type\":\"test\"}"</div><div class='input'>
 <span class='co'># This works because if no unnamed `...` are present, msg is not passed</span>
 <span class='co'># through sprintf()</span>
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"100%"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [17:58:00.299] 100% </div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"100%"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [16:12:51.394] 100% </div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

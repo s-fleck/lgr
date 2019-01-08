@@ -34,6 +34,11 @@ reference:
   - LogEvent
   - as.data.frame.LogEvent
   - print.LogEvent
+- title: Filters
+  desc: Filter events passed to Appenders or Loggers
+  contents:
+  - EventFilter
+  - is_filter
 - title: Utilities
   contents:
   - suspend_logging

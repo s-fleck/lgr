@@ -125,6 +125,12 @@ read_json_lines(tf)
 read_json_lines(tf)$poultry[[2]]  # works because poultry is a list column
 ```
 
+```{r echo = FALSE}
+lgr$remove_appender("json")
+unlink(tf)
+```
+
+
 ### What Else
 
 If the examples above have piqued your interest, the rest of this vignette

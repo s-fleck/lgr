@@ -66,7 +66,7 @@ but also more complex and slightly less performant." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9002</span>
       </span>
     </div>
 
@@ -176,7 +176,7 @@ useful for layout glue: <code><a href='colorize_levels.html'>colorize_levels()</
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"testlogger"</span>, <span class='kw'>appenders</span> <span class='kw'>=</span> <span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(), <span class='kw'>propagate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>set_layout</span>(<span class='no'>LayoutGlue</span>$<span class='fu'>new</span>())
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"test"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [2019-01-06 17:57:58] msg</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"test"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [2019-01-08 16:12:49] msg</div><div class='input'>
 
 <span class='co'># All fields of the LogEvent are available, even custom ones</span>
 <span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>layout</span>$<span class='fu'>set_fmt</span>(

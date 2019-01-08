@@ -67,7 +67,7 @@ AppenderDbi, AppenderRjdbc and AppenderDt." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9002</span>
       </span>
     </div>
 
@@ -149,13 +149,10 @@ formatting the <code>LogEvents</code> passed to this Appender</p></dd>
 human-readable form (mainly for print output)</p></dd>
 </dl>
     <dl class='dl-horizontal'>
-<dt><code>filters</code>, <code>set_filters(filters)</code></dt><dd><p>a <code>list</code> of predicates (functions
-that return either <code>TRUE</code> or <code>FALSE</code>). These functions must have exactly
-two arguments: <code>event</code> and <code>obj</code>. When the <code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter()</a></code> method of the
-Filterable is invoked on a LogEvent, that event will get passed to <code>event</code>,
-the Filterable will get passed to <code>obj</code>. This means that you can,
-f.e. use <code>obj$threshold</code> to access the threshold of the Appender/Logger
-that is using the filter.
+<dt><code>filters</code>, <code>set_filters(filters)</code></dt><dd><p>a <code>list</code> that may contain
+<code>functions</code> or any <span style="R">R</span> object with a <code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter()</a></code> method. These functions
+must have exactly one argument: <code>event</code> which will get passed the
+LogEvent when the Filterable's <code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter()</a></code> method is invoked.
 If all of these functions evaluate to <code>TRUE</code> the LogEvent is passed on.
 Since LogEvents have reference semantics, filters can also be abused to
 modify them before they are passed on. Look at the source code of
@@ -178,13 +175,17 @@ This method is usually not called by the user, but invoked by a
 <dt><code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter(event)</a></code></dt><dd><p>Determine whether the LogEvent <code>x</code> should be passed
 on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the active binding
 <code>filters</code></p></dd>
+<dt><code>add_filter(filter, name = NULL)</code>, <code>remove_filter(pos)</code></dt><dd><p>Add or remove a filter. When adding a filter an optional <code>name</code> can
+be specified. <code>remove_filter()</code> can remove by position or name (if one
+was specified)</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='LayoutTable.html'>LayoutTable</a></p>
 <p>Other abstract classes: <code><a href='AppenderDigest.html'>AppenderDigest</a></code>,
-  <code><a href='AppenderMemory.html'>AppenderMemory</a></code>, <code><a href='Filterable.html'>Filterable</a></code></p>
+  <code><a href='AppenderMail.html'>AppenderMail</a></code>, <code><a href='AppenderMemory.html'>AppenderMemory</a></code>,
+  <code><a href='Filterable.html'>Filterable</a></code></p>
 <p>Other Appenders: <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
   <code><a href='AppenderConsole.html'>AppenderConsole</a></code>, <code><a href='AppenderDbi.html'>AppenderDbi</a></code>,
   <code><a href='AppenderFile.html'>AppenderFile</a></code>, <code><a href='AppenderGmail.html'>AppenderGmail</a></code>,
