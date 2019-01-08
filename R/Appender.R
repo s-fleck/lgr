@@ -1030,12 +1030,9 @@ AppenderRjdbc <- R6::R6Class(
 #'     the buffer. This behaviour is implemented through `should_flush()`,
 #'     and you can modify that function for different behaviour.
 #'   }
-#'   \item{`should_flush(event, obj)`, `set_should_flush(x)`}{
-#'     A function with exactly two arguments: `event` and `obj`. When `append()`
-#'     is triggered for this Appender, the LogEvent will be passed to `event`,
-#'     the Appender itself will get passed to `obj`.
-#'     This means that you can f.e. use `obj$threshold` to access the threshold
-#'     of the Appender. If the function returns `TRUE`, flushing of the buffer
+#'   \item{`should_flush(event)`, `set_should_flush(x)`}{
+#'     A function with exactly one arguments: `event`.
+#'     If the function returns `TRUE`, flushing of the buffer
 #'     is triggered. Defaults to flushing if a `FATAL` event is registered }
 #' }
 #'
@@ -1100,13 +1097,9 @@ AppenderMemory <- R6::R6Class(
     },
 
     set_should_flush = function(x){
-      if (is.null(x))
-        x <- function(event, obj) FALSE
+      if (is.null(x)) x <- function(event) FALSE
 
-      assert(
-        is_filter(x),
-        "'should_flush' must be a function with the arguments 'event' and 'obj'"
-      )
+      assert_filter(x)
 
       private$.should_flush <- x
       invisible(self)
@@ -1265,8 +1258,9 @@ AppenderBuffer <- R6::R6Class(
       flush_threshold = "fatal",
       flush_on_exit = TRUE,
       flush_on_rotate = TRUE,
-      should_flush = function(event, obj)
-        is.na(obj[["flush_threshold"]]) || all(event[["level"]] <= obj[["flush_threshold"]]),
+      should_flush = function(event){
+        is.na(.obj()[["flush_threshold"]]) || all(event[["level"]] <= .obj()[["flush_threshold"]])
+      },
       layout = LayoutFormat$new(
         fmt = "%L [%t] %m",
         timestamp_fmt = "%H:%M:%S",
@@ -1310,7 +1304,7 @@ AppenderBuffer <- R6::R6Class(
 
       bs <- get(".buffer_size", envir = private)
 
-      sf <- get(".should_flush", envir = private)(event, self)
+      sf <- get(".should_flush", envir = private)(event)
       if (!is_scalar_bool(sf)){
         warning(
           "`should_flush()` did not return `TRUE` or `FALSE` but ",
@@ -1603,9 +1597,10 @@ AppenderPushbullet <- R6::R6Class(
       self$set_apikey(apikey)
       self$set_buffer_size(buffer_size)
       self$set_subject_layout(subject_layout)
-      self$set_should_flush(function(event, obj)
-        is.na(obj[["flush_threshold"]]) || all(event[["level"]] <= obj[["flush_threshold"]])
-      )
+      self$set_should_flush(function(event){
+        obj <- get_calling_filterable()
+        is.na(.obj()[["flush_threshold"]]) || all(event[["level"]] <= .obj()[["flush_threshold"]])
+      })
 
       self$set_recipients(recipients)
       self$set_email(email)
@@ -1855,9 +1850,9 @@ AppenderSendmail <- R6::R6Class(
       self$set_threshold(threshold)
       self$set_flush_threshold(flush_threshold)
       self$set_buffer_size(buffer_size)
-      self$set_should_flush(function(event, obj)
-        is.na(obj[["flush_threshold"]]) || all(event[["level"]] <= obj[["flush_threshold"]])
-      )
+      self$set_should_flush(function(event){
+        is.na(.obj()[["flush_threshold"]]) || all(event[["level"]] <= .obj()[["flush_threshold"]])
+      })
     },
 
     flush = function(
@@ -1992,9 +1987,9 @@ AppenderGmail <- R6::R6Class(
       self$set_threshold(threshold)
       self$set_flush_threshold(flush_threshold)
       self$set_buffer_size(buffer_size)
-      self$set_should_flush(function(event, obj)
-        is.na(obj[["flush_threshold"]]) || all(event[["level"]] <= obj[["flush_threshold"]])
-      )
+      self$set_should_flush(function(event){
+        is.na(.obj()[["flush_threshold"]]) || all(event[["level"]] <= .obj()[["flush_threshold"]])
+      })
 
       private$.flush_on_exit   <- FALSE
       private$.flush_on_rotate <- FALSE

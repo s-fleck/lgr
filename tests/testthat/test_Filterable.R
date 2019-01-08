@@ -2,7 +2,7 @@ context("Filterable")
 
 
 test_that("checking filters works", {
-  fil <- function(event, obj) { blubb }
+  fil <- function(event) { blubb }
   expect_true(is_filter(fil))
   expect_false(is_filter(mean))
   expect_false(is_filter("blubb"))
@@ -19,7 +19,7 @@ test_that("checking filters works", {
 test_that("Filterable works as expected", {
   app <- Appender$new()
 
-  fil <- function(event, obj) { FALSE }
+  fil <- function(event) { FALSE }
 
   expect_error(app$add_filter(mean))
 
@@ -37,7 +37,7 @@ test_that("Filterable works as expected", {
   expect_length(app$filters, 0)
 
 
-  fil <- function(event, obj) { NA }
+  fil <- function(event) { NA }
   app$add_filter(fil, "foo")
   app$add_filter(fil, "foo")
   expect_warning(expect_true(app$filter()))

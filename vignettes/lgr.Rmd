@@ -303,14 +303,15 @@ to its Appenders.
 
 If you require more complex logic to decide whether a LogEvent should be
 created/processed you can also assign **filters** to Loggers/Appenders. 
-Filters are special functions that have exactly two arguments: 
-  `event` (the LogEvent to be filtered) and
-  `obj` (the Logger/Appender that calls `filter()`). 
-They will be applied after the threshold is checked. 
+Filters are just functions that have exactly one argument, 
+`event` (the LogEvent to be filtered), and return `TRUE` or `FALSE`. They 
+will be applied after the threshold is checked. Alternatively there is also a 
+formal R6 class for Filters (?EventFilter) that you can use, but this is usually 
+not necessary.
 
 examples:
 ```{r}
-f1 <- function(event, obj) { grepl("bird", event$msg) }
+f1 <- function(event) { grepl("bird", event$msg) }
 lgr$set_filters(list(f1))
 
 lgr$info("is it a plane?")
@@ -554,7 +555,7 @@ lg <- Logger$new(
     buffer_size = 5, # can hold 5 events, the 6th will trigger flushing
     flush_on_exit = FALSE,
     flush_on_rotate = FALSE,
-    should_flush = function(event, obj) event$level <= 200,
+    should_flush = function(event) event$level <= 200,
     appenders = AppenderConsole$new(threshold = NA)
   )
 )
@@ -564,32 +565,64 @@ lg$error("But the days grow short when you reach September")
 ```
 
 
-## Inject Values with with_log_value
+## Inject Values Into LogEvents
 
-`with_log_value()` abuses lgr's powerfull filter mechanic to insert arbitrary
-values into all logging calls within a block of code. This is useful for 
-assigning a grouping identifier to a series of log calls.
+By abusing Filters, lgr can modify LogEvents as they are processed. One example
+for when this is useful is assigning a grouping identifier to a series of log 
+calls.
 
 ```{r}
+# setup an example function
 clean   <- function() lgr$info("cleaning data")
 process <- function() lgr$info("processing data")
 output  <- function() lgr$info("outputing data")
 
-analyze <- function(id){
-  with_log_value(list(dataset_id = id), {
-    clean()
-    process()
-    output()
-  })
+analyze <- function(){
+  clean()
+  process()
+  output()
 }
-
-analyze("datset1")
 ```
+
+`with_log_value()` provides a convenient wrapper to inject values into log 
+calls.
+```{r eval = FALSE}
+with_log_value(
+  list(dataset_id = "dataset1"), 
+  analyze()
+)
+```
+
+An alternative way to achieve the same is to use one of the preconfigured 
+Filters that come with lgr. This approach is more more comfortable for 
+use within functions.
+```{r eval = FALSE}
+analyze <- function(id = "dataset1"){
+  lgr$add_filter(FilterInject$new(dataset_id = id), name = "inject")
+  on.exit(lgr$remove_filter("inject"))
+  
+  clean()
+  process()
+  output()
+}
+analyze()
+```
+The result is the same in both cases:
+```{r, echo = FALSE}
+with_log_value(
+  list(dataset_id = "dataset1"), 
+  analyze()
+)
+```
+
+You can use `with_log_level()` and `FilterForceLevel` in a similar fashion to
+modify the log level of events conveniently.
+
 
 ## Temporarily Disable Logging
 
 Temporary disabling logging for portions of code is straight forward and easy 
-with lgr
+with lgr: 
 
 ```{r}
 without_logging({

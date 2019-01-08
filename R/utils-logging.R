@@ -75,7 +75,7 @@ with_log_level <- function(
   caller <- get_caller(-2L)
   force(caller)
 
-  set_level <- function(event, obj){
+  set_level <- function(event){
     event[["level"]]  <- level
     event[["caller"]] <- caller
     TRUE
@@ -83,7 +83,7 @@ with_log_level <- function(
 
   # to make it unlikely something goes wrong if people do funky stuff with
   # filters inside with_log_level calls
-  tn <- paste0("...WITH_LOG_LEVEL_TEMP_FILTER", runif(1))
+  tn <- paste0("...WITH_LOG_LEVEL_TEMP_FILTER", sample.int(1e9, size = 1))
   logger$add_filter(set_level, name = tn)
   on.exit(logger$remove_filter(tn))
 
@@ -119,14 +119,14 @@ with_log_value <- function(
     values[["caller"]] <- get_caller(-2L)
   }
 
-  set_level <- function(event, obj){
+  set_level <- function(event){
     for (i in seq_along(values)){
       event[[names(values)[[i]] ]] <- values[[i]]
     }
     TRUE
   }
 
-  tn <- paste0("...WITH_LOG_VALUE_TEMP_FILTER", runif(1))
+  tn <- paste0("...WITH_LOG_VALUE_TEMP_FILTER", sample.int(1e9, size = 1))
   logger$add_filter(set_level, name = tn)
   on.exit(logger$remove_filter(tn))
 

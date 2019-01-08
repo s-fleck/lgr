@@ -103,7 +103,7 @@ test_that("AppenderConsole works as expected", {
 test_that("Appender: filters work", {
   app1 <- AppenderConsole$new()
   expect_true(app1$filter(x))
-  app1$set_filters(list(function(event, obj) FALSE))
+  app1$set_filters(list(function(event) FALSE))
   expect_false(app1$filter(x))
 })
 
@@ -448,22 +448,24 @@ test_that("AppenderBuffer: Custom should_flush can be defined", {
   )
 
   # FALSE
-  l$appenders[[1]]$set_should_flush(function(event, obj) FALSE)
+  l$appenders[[1]]$set_should_flush(function(event) FALSE)
   l$fatal("test")
   expect_length(l$appenders[[1]]$buffered_events, 1L)
 
   # TRUE
   l$appenders[[1]]$set_should_flush(
-    function(event, obj) inherits(event, "LogEvent") && inherits(obj, "AppenderBuffer")
+    function(event) {
+      inherits(event, "LogEvent") && inherits(.obj(), "AppenderBuffer")
+    }
   )
   l$fatal("test")
   expect_length(l$appenders[[1]]$buffered_events, 0L)
 
   # Undefined
-  l$appenders[[1]]$set_should_flush(function(event, obj) NA)
+  l$appenders[[1]]$set_should_flush(function(event) NA)
   expect_warning(l$fatal("test"))
   expect_length(l$appenders[[1]]$buffered_events, 1L)
-  l$appenders[[1]]$set_should_flush(function(event, obj) iris)
+  l$appenders[[1]]$set_should_flush(function(event) iris)
   expect_warning(l$fatal("test"))
   expect_length(l$appenders[[1]]$buffered_events, 2L)
 

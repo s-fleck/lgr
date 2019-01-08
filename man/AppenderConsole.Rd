@@ -53,13 +53,10 @@ human-readable form (mainly for print output)}
 
 
 \describe{
-\item{\code{filters}, \code{set_filters(filters)}}{a \code{list} of predicates (functions
-that return either \code{TRUE} or \code{FALSE}). These functions must have exactly
-two arguments: \code{event} and \code{obj}. When the \code{filter()} method of the
-Filterable is invoked on a LogEvent, that event will get passed to \code{event},
-the Filterable will get passed to \code{obj}. This means that you can,
-f.e. use \code{obj$threshold} to access the threshold of the Appender/Logger
-that is using the filter.
+\item{\code{filters}, \code{set_filters(filters)}}{a \code{list} that may contain
+\code{functions} or any \R object with a \code{filter()} method. These functions
+must have exactly one argument: \code{event} which will get passed the
+LogEvent when the Filterable's \code{filter()} method is invoked.
 If all of these functions evaluate to \code{TRUE} the LogEvent is passed on.
 Since LogEvents have reference semantics, filters can also be abused to
 modify them before they are passed on. Look at the source code of

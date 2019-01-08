@@ -11,16 +11,13 @@
 #'
 #' \describe{
 #'   \item{`filters`, `set_filters(filters)`}{a `list` that may contain
-#'     functions or any \R object with a `filter()` method. These functions must
-#'     have exactly two arguments: `event` and `obj`. When the `filter()` method
-#'     of the Filterable is invoked on a LogEvent, that event will get passed to
-#'     `event`, the Filterable will get passed to `obj`. This means that you
-#'     can, f.e. use `obj$threshold` to access the threshold of the
-#'     Appender/Logger that is using the filter. If all of these functions
-#'     evaluate to `TRUE` the LogEvent is passed on. Since LogEvents have
-#'     reference semantics, filters can also be abused to modify them before
-#'     they are passed on. Look at the source code of [with_log_level()] or
-#'     [with_log_value()] for examples.
+#'     `functions` or any \R object with a `filter()` method. These functions
+#'     must have exactly one argument: `event` which will get passed the
+#'     LogEvent when the Filterable's `filter()` method is invoked.
+#'     If all of these functions evaluate to `TRUE` the LogEvent is passed on.
+#'     Since LogEvents have reference semantics, filters can also be abused to
+#'     modify them before they are passed on. Look at the source code of
+#'     [with_log_level()] or [with_log_value()] for examples.
 #'   }
 #' }
 #'
@@ -35,6 +32,7 @@
 #'      was specified)
 #'    }
 #' }
+#'
 #'
 #' @keywords internal
 NULL
@@ -53,9 +51,9 @@ Filterable <- R6::R6Class(
       for (f in get(".filters", private)) {
 
         if (is.function(f)){
-          r <- f(event, self)
-        } else if (inherits(f, "Filter")){
-          r <- f[["filter"]](event, self)
+          r <- f(event)
+        } else if (is_filter(f)){
+          r <- f[["filter"]](event)
         }
 
         if (identical(r, TRUE)){
@@ -82,17 +80,20 @@ Filterable <- R6::R6Class(
     },
 
     remove_filter = function(pos){
-      private[[".filters"]][[pos]] <- NULL
+      if (is.numeric(pos)) sort(pos, decreasing = TRUE)
+      for (p in pos){
+        private[[".filters"]][[p]] <- NULL
+      }
       invisible(self)
     },
 
     set_filters = function(filters){
       if (is.null(filters)){
-        private[[".filters"]] <- NULL
+        private[[".filters"]] <- list()
       } else {
         assert(
           is.list(filters) && all(vapply(filters, is_filter, logical(1))),
-          "'filters' must be a list of functions with the arguments 'event' and 'obj'"
+          "'filters' must be a list of functions with the single argument 'event'"
         )
         private[[".filters"]] <- filters
       }
@@ -121,7 +122,7 @@ assert_filter <- function(x){
   else
     stop(
       "`", deparse(substitute(x)), "`", "
-      must be a function with the arguments `event` and `obj`",
+      must be a function with the argument `event`",
       call. = FALSE
     )
 }

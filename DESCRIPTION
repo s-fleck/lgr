@@ -42,6 +42,7 @@ Collate:
     'utils-sfmisc.R'
     'utils.R'
     'Appender.R'
+    'Filter.R'
     'log_levels.R'
     'print_LogEvent.R'
     'Layout.R'
