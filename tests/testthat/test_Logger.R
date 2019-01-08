@@ -45,6 +45,17 @@ test_that("basic logging", {
 
 
 
+test_that("logger returns formatted message", {
+  l <- Logger$new("test_logger", propagate = FALSE)
+
+  expect_identical(l$fatal("test"), "test")
+  expect_identical(l$fatal("te%s", "st"), "test")
+  expect_identical(l$fatal("te%s", "st", blah = "blubb"), "test")
+})
+
+
+
+
 test_that("string formatting is used when appropriate", {
   lg <- Logger$new(
     "test",

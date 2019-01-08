@@ -28,7 +28,7 @@ test_that(".obj() works as expected", {
 
   expect_output(l$fatal("test"), "Logger/Filterable/R6")
   l$remove_filter(1)
-  l$add_filter(Filter$new(f))
+  l$add_filter(EventFilter$new(f))
   expect_output(l$fatal("test"), "Logger/Filterable/R6")
 })
 

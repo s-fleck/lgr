@@ -12,10 +12,13 @@
 #'
 #' @section Creating Loggers:
 #'
-#' If you want logging for a Project (f.e a Package you are developing) that is
-#' separate from the global logging, you can create a new logger with
-#' `Logger$new()`. If you just want to add different outputs (for example
-#' logfiles) to the root Logger, look into [Appenders].
+#' If you are a package developer you should define a new Logger for each
+#' package, but you do not need to configure it. Usually only the root logger
+#' needs to be configured (new Appenders added/removed, Layouts modified,
+#' etc...).
+#'
+#' If you just want to log to an additional output (like a log file), you want
+#' a new [Appender], not a new Logger.
 #'
 #' @inheritSection Filterable Fields
 #' @section Fields:
@@ -261,13 +264,15 @@ Logger <- R6::R6Class(
           )
         } else {
           dots <- list(...)
+
           if (is.null(names(dots))){
+            msg  <- sprintf(msg, ...)
             vals <- list(
               logger = self,
               level = level,
               timestamp = timestamp,
               caller = caller,
-              msg = sprintf(msg, ...)
+              msg = msg
             )
           } else {
             not_named <- vapply(names(dots), is_blank, TRUE, USE.NAMES = FALSE)
@@ -305,6 +310,8 @@ Logger <- R6::R6Class(
             }
           }
         }
+
+        invisible(msg)
       },
         error = get("handle_exception", envir = self)
       )
@@ -315,7 +322,7 @@ Logger <- R6::R6Class(
       get("log", envir = self)(
         msg = msg,
         caller = get_caller(-8L),
-        level = 100,
+        level = 100L,
         timestamp = Sys.time(),
         ...
       )
@@ -325,7 +332,7 @@ Logger <- R6::R6Class(
       get("log", envir = self)(
         msg = msg,
         caller = get_caller(-8L),
-        level = 200,
+        level = 200L,
         timestamp = Sys.time(),
         ...
       )
@@ -335,7 +342,7 @@ Logger <- R6::R6Class(
       get("log", envir = self)(
         msg = msg,
         caller = get_caller(-8L),
-        level = 300,
+        level = 300L,
         timestamp = Sys.time(),
         ...
       )
@@ -345,7 +352,7 @@ Logger <- R6::R6Class(
       get("log", envir = self)(
         msg = msg,
         caller = get_caller(-8L),
-        level = 400,
+        level = 400L,
         timestamp = Sys.time(),
         ...
       )
@@ -355,7 +362,7 @@ Logger <- R6::R6Class(
       get("log", envir = self)(
         msg = msg,
         caller = get_caller(-8L),
-        level = 500,
+        level = 500L,
         timestamp = Sys.time(),
         ...
       )
@@ -365,7 +372,7 @@ Logger <- R6::R6Class(
       get("log", envir = self)(
         msg = msg,
         caller = get_caller(-8L),
-        level = 600,
+        level = 600L,
         timestamp = Sys.time(),
         ...
       )
