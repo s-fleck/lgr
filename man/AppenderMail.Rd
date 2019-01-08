@@ -44,12 +44,9 @@ the last one.
 the buffer. This behaviour is implemented through \code{should_flush()},
 and you can modify that function for different behaviour.
 }
-\item{\code{should_flush(event, obj)}, \code{set_should_flush(x)}}{
-A function with exactly two arguments: \code{event} and \code{obj}. When \code{append()}
-is triggered for this Appender, the LogEvent will be passed to \code{event},
-the Appender itself will get passed to \code{obj}.
-This means that you can f.e. use \code{obj$threshold} to access the threshold
-of the Appender. If the function returns \code{TRUE}, flushing of the buffer
+\item{\code{should_flush(event)}, \code{set_should_flush(x)}}{
+A function with exactly one arguments: \code{event}.
+If the function returns \code{TRUE}, flushing of the buffer
 is triggered. Defaults to flushing if a \code{FATAL} event is registered }
 }
 
@@ -80,13 +77,10 @@ human-readable form (mainly for print output)}
 
 
 \describe{
-\item{\code{filters}, \code{set_filters(filters)}}{a \code{list} of predicates (functions
-that return either \code{TRUE} or \code{FALSE}). These functions must have exactly
-two arguments: \code{event} and \code{obj}. When the \code{filter()} method of the
-Filterable is invoked on a LogEvent, that event will get passed to \code{event},
-the Filterable will get passed to \code{obj}. This means that you can,
-f.e. use \code{obj$threshold} to access the threshold of the Appender/Logger
-that is using the filter.
+\item{\code{filters}, \code{set_filters(filters)}}{a \code{list} that may contain
+\code{functions} or any \R object with a \code{filter()} method. These functions
+must have exactly one argument: \code{event} which will get passed the
+LogEvent when the Filterable's \code{filter()} method is invoked.
 If all of these functions evaluate to \code{TRUE} the LogEvent is passed on.
 Since LogEvents have reference semantics, filters can also be abused to
 modify them before they are passed on. Look at the source code of
