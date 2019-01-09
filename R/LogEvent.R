@@ -116,6 +116,8 @@ LogEvent <- R6::R6Class(
       if (!missing(...)){
         dots <- list(...)
         assert(identical(length(names(dots)), length(dots)))
+        # the rev() ensures that the values get added int eh same order as
+        # the user entered them
         for (nm in rev(names(dots))){
           assign(nm, dots[[nm]], self)
         }
