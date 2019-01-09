@@ -20,7 +20,15 @@
 #'
 #'   \item{`msg`}{`character`. A message}
 #'
-#'   \item{`logger`}{a `Logger`. A reference to the Logger that created the
+#'   \item{`logger`}{`character` scalar. Name of the Logger that created the
+#'     event (`.logger$name`)
+#'   }
+#'
+#'   \item{`user`}{`character` scalar. User as set for the Logger
+#'     that created this event (`.logger$user`)
+#'   }
+#'
+#'   \item{`.logger`}{a `Logger`. A reference to the Logger that created the
 #'     event
 #'   }
 #'
@@ -65,13 +73,16 @@
 #' l$last_event$values  # values stored in the event
 #'
 #' # Also contains the Logger that created it
-#' l$last_event$logger$name
-#' l$last_event$logger$user
+#' l$last_event$.logger$name
+#' l$last_event$.logger$user
+#' # The two values above can also be accessed via shortcuts
+#' l$last_event$logger # name
+#' l$last_event$user   # user
 #'
 #' # This is really a reference to the complete Logger, so the following is
 #' # possible (though nonsensical)
-#' l$last_event$logger$last_event$msg
-#' identical(l, l$last_event$logger)
+#' l$last_event$.logger$last_event$msg
+#' identical(l, l$last_event$.logger)
 #'
 NULL
 
@@ -95,7 +106,7 @@ LogEvent <- R6::R6Class(
 
       # assign has less overhead than [[ and event creation needs to be as fast
       # as possible
-      assign("logger", logger, self)
+      assign(".logger", logger, self)
       assign("level", level, self)
       assign("timestamp", timestamp, self)
       assign("caller", caller, self)
@@ -110,11 +121,11 @@ LogEvent <- R6::R6Class(
         }
       }
     },
-    logger = NULL,
     level = NULL,
     timestamp = NULL,
     caller = NULL,
-    msg = NULL
+    msg = NULL,
+    .logger = NULL
   ),
 
   active = list(
@@ -123,7 +134,7 @@ LogEvent <- R6::R6Class(
       custom_vals <- setdiff(
         names(get(".__enclos_env__", self)[["self"]]),
         c(".__enclos_env__", "level_name", "initialize", "clone", "values",
-          "logger", "logger_name", "logger_user")
+          ".logger", "logger", "user")
       )
       valnames <- union(fixed_vals, custom_vals) # to enforce order of fixed_vals
       mget(valnames, envir = self)
@@ -133,12 +144,12 @@ LogEvent <- R6::R6Class(
       label_levels(get("level", envir = self))
     },
 
-    logger_name = function(){
-      get("name", envir = get("logger", envir = self))
+    logger = function(){
+      get("name", envir = get(".logger", envir = self))
     },
 
-    logger_user = function(){
-      get("user", envir = get("logger", envir = self))
+    user = function(){
+      get("user", envir = get(".logger", envir = self))
     }
   )
 )

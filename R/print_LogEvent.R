@@ -124,7 +124,7 @@ format.LogEvent <- function(
     fmt,
     valid_tokens = paste0(
       "%",
-      c("t", "u", "p", "c", "m", "l", "L", "n", "f", "j", "k", "K"))
+      c("t", "u", "p", "c", "m", "l", "L", "n", "f", "j", "k", "K", "g"))
   )
 
   # format
@@ -139,10 +139,11 @@ format.LogEvent <- function(
       "%L" = colorize_levels(toupper(lvls), colors),
       "%k" = colorize_levels(substr(lvls, 1, 1), colors),
       "%K" = colorize_levels(substr(toupper(lvls), 1, 1), colors),
-      "%t" = format(x$timestamp, format = timestamp_fmt),
-      "%m" = x$msg,
-      "%c" = x$caller %||% "(unknown function)",
-      "%u" = x$logger_user,
+      "%t" = format(get("timestamp", envir = x), format = timestamp_fmt),
+      "%m" = get("msg", envir = x),
+      "%c" = get("caller", envir = x),
+      "%u" = get("user", envir = x),
+      "%g" = get("logger", envir = x),
       "%p" = Sys.getpid(),
       "%f" = format_custom_fields(get_custom_fields(x), color = length(colors)),
       "%j" = jsonlite::toJSON(get_custom_fields(x), auto_unbox = TRUE),
@@ -214,7 +215,7 @@ format.lgr_data <- function(x, ...) {
   if (identical(nrow(x), 0L))
     return("[empty log]")
   else {
-    format.LogEvent(x, ...)
+    format.LogEvent(as.environment(x), ...)
   }
 }
 

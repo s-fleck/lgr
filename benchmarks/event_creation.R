@@ -67,7 +67,7 @@ AdvancedEvent <- R6::R6Class(
       custom_vals <- setdiff(
         names(get(".__enclos_env__", self)[["self"]]),
         c(".__enclos_env__", "level_name", "initialize", "clone", "values",
-          "logger", "logger_name", "logger_user", paste0("json", 0:9))
+          ".logger", "logger", "logger_user", paste0("json", 0:9))
       )
       valnames <- union(fixed_vals, custom_vals) # to enforce order of fixed_vals
       mget(valnames, envir = self)
@@ -77,7 +77,7 @@ AdvancedEvent <- R6::R6Class(
       label_levels(get("level", envir = self))
     },
 
-    logger_name = function(){
+    logger = function(){
       get("name", envir = get("logger", envir = self))
     },
 

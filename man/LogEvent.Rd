@@ -15,14 +15,14 @@ x <- x$new(logger, level = 400, timestamp = Sys.time(), caller = NA, msg 
 
 x$clone(deep = FALSE)
 
+x$.logger
 x$caller
 x$level
 x$level_name
 x$logger
-x$logger_name
-x$logger_user
 x$msg
 x$timestamp
+x$user
 x$values
 
 }
@@ -44,7 +44,15 @@ LogEvent was created}
 
 \item{\code{msg}}{\code{character}. A message}
 
-\item{\code{logger}}{a \code{Logger}. A reference to the Logger that created the
+\item{\code{logger}}{\code{character} scalar. Name of the Logger that created the
+event (\code{.logger$name})
+}
+
+\item{\code{user}}{\code{character} scalar. User as set for the Logger
+that created this event (\code{.logger$user})
+}
+
+\item{\code{.logger}}{a \code{Logger}. A reference to the Logger that created the
 event
 }
 
@@ -88,13 +96,16 @@ l$last_event  # formated by default
 l$last_event$values  # values stored in the event
 
 # Also contains the Logger that created it
-l$last_event$logger$name
-l$last_event$logger$user
+l$last_event$.logger$name
+l$last_event$.logger$user
+# The two values above can also be accessed via shortcuts
+l$last_event$logger # name
+l$last_event$user   # user
 
 # This is really a reference to the complete Logger, so the following is
 # possible (though nonsensical)
-l$last_event$logger$last_event$msg
-identical(l, l$last_event$logger)
+l$last_event$.logger$last_event$msg
+identical(l, l$last_event$.logger)
 
 }
 \seealso{

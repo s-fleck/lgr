@@ -68,7 +68,7 @@ dbs <- list(
 
 options("datatable.showProgress" = dt_sp)
 
-nm <- "DB2 via RJDBC"  # for manual testing, can be deleted
+nm <- "SQLite via RSQLite"  # for manual testing, can be deleted
 
 
 # +- tests -------------------------------------------------------------------
@@ -107,7 +107,7 @@ for (nm in names(dbs)){
       as.data.frame(e, stringsAsFactors = FALSE),
       as.data.frame(e, stringsAsFactors = FALSE)
     )
-    expect_equal(tres[, -2], eres[, -2])
+    expect_equal(tres[, -c(2, 3)], eres[, -2])
     # small tolerance is allowed for timestamps
     tdiff <- as.numeric(tres[, 2]) - as.numeric(eres[, 2])
     expect_true(all(tdiff < 1), info = tdiff)
@@ -153,6 +153,7 @@ for (nm in names(dbs)){
         col_types = c(
           level = "smallint",
           timestamp = "timestamp",
+          logger= "varchar(512)",
           msg = "varchar(1024)",
           caller = "varchar(1024)",
           foo = "varchar(256)"
@@ -160,7 +161,7 @@ for (nm in names(dbs)){
       )
     } else {
       lo <- LayoutSqlite$new(
-        event_values = c("level", "timestamp", "msg", "caller", "foo")
+        event_values = c("level", "timestamp", "logger", "msg", "caller", "foo")
       )
     }
 

@@ -24,14 +24,6 @@ test_that("format works as expected", {
 
 
 test_that("format.LogEvent works as expected", {
-  # common case
-  x <- LogEvent$new(
-    logger = lgr::lgr,
-    msg = "lorem skjdghsad akjsgh asdgjh asdgjshadk gklsd.",
-    waypoints = 100,
-    user = "max@company.com"
-  )
-
   x <- LogEvent$new(
     logger = lgr::lgr,
     msg = "lorem skjdghsad akjsgh asdgjh asdgjshadk gklsd.",

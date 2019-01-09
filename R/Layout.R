@@ -565,7 +565,7 @@ LayoutSqlite <- R6::R6Class(
       ct <- get(".col_types", private)
       if (length(ct)){
         if (!setequal(names(vals), names(ct))){
-          browser()
+          stop("TODO:")  #TODO
         }
         assert(setequal(names(vals), names(ct)))
         vals <- vals[names(private$.col_types)]
@@ -618,6 +618,7 @@ select_dbi_layout <- function(
       col_types = c(
         level = "integer",
         timestamp = "character",
+        logger = "character",
         caller = "character",
         msg = "character"
       )),
@@ -625,10 +626,11 @@ select_dbi_layout <- function(
       col_types = c(
         level = "smallint",
         timestamp = "timestamp",
+        logger = "varchar(512)",
         caller = "varchar(1024)",
         msg = "varchar(2048)"
       )),
-    LayoutDbi$new(event_values = c("level", "timestamp",  "caller", "msg"))
+    LayoutDbi$new(event_values = c("level", "timestamp", "logger", "caller", "msg"))
   )
 
   db_names <- try(DBI::dbListFields(conn, table), silent = TRUE)
