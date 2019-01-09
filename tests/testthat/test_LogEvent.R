@@ -19,6 +19,19 @@ test_that("custom LogEvents", {
 
 
 
+test_that("field order in LogEvents stays as specified", {
+  l  <- Logger$new("l", propagate = FALSE)
+
+  l$fatal("test", c = "1", a = "2", b = "3")
+
+  # Order depends on the internal implementation of environments I guess...
+  # let's see if this will break one day.
+  expect_identical(names(l$last_event)[1:3], c("c", "a", "b"))
+})
+
+
+
+
 test_that("as.data.table and as.data.frame work with list columns", {
   l  <- Logger$new("l", propagate = FALSE)
   l$fatal("test", df = iris)

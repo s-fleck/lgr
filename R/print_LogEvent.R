@@ -170,7 +170,7 @@ format_custom_fields <- function(
 ){
   if (!length(x)) return("")
 
-  max_len <- max(60 / length(x) - sum(nchar(names(x))), 16)
+  max_len <- max(256 / length(x) - sum(nchar(names(x))), 16)
 
   braces   <- c("{", "}")
   brackets <- c("[", "]")
