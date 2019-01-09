@@ -126,8 +126,19 @@
 #'    }
 #' }
 #'
+#'
+#' @section LoggerGlue:
+#'
+#' LoggerGlue works exactly like logger, just that `$fatal()`, `$warn()`.. etc
+#' work slightly different. Their only argument is now ellipses (`...`) which
+#' will be interpreted by [glue::glue()]. Named arguments are still added to
+#' the LogEvent as custom field but they are also available to glue (see
+#' example). Named arguments that have the same names as
+#' arguments to `glue::glue` (like `.sep`, `.envir`, `.open`, etc....) are
+#' not converted to custom fields.
+#'
 #' @name Logger
-#' @aliases Loggers
+#' @aliases Loggers LoggerGlue
 #' @include Filterable.R
 #' @include log_levels.R
 #' @examples
@@ -165,6 +176,11 @@
 #' # This works because if no unnamed `...` are present, msg is not passed
 #' # through sprintf()
 #' lg$fatal("100%")
+#'
+#' # LoggerGlue
+#'
+#' lg <- LoggerGlue$new("glue")
+#' lg$fatal("blah ", "fizz is set to: {fizz}", foo = "bar", fizz = "buzz")
 #'
 NULL
 
@@ -634,3 +650,149 @@ default_exception_handler <- function(e){
     "An error occured during logging: ", e, call. = FALSE
   )
 }
+
+
+
+# LoggerGlue --------------------------------------------------------------
+
+
+
+#' @export
+LoggerGlue <- R6::R6Class(
+  "LoggerGlue",
+  inherit = Logger,
+  cloneable = FALSE,
+
+  public = list(
+
+
+    fatal = function(...){
+      get("log", envir = self)(
+        ...,
+        caller = get_caller(-8L),
+        level = 100L,
+        timestamp = Sys.time()
+      )
+    },
+
+    error = function(...){
+      get("log", envir = self)(
+        ...,
+        caller = get_caller(-8L),
+        level = 200L,
+        timestamp = Sys.time()
+      )
+    },
+
+    warn = function(...){
+      get("log", envir = self)(
+        ...,
+        caller = get_caller(-8L),
+        level = 300L,
+        timestamp = Sys.time()
+      )
+    },
+
+    info = function(...){
+      get("log", envir = self)(
+        ...,
+        caller = get_caller(-8L),
+        level = 400L,
+        timestamp = Sys.time()
+      )
+    },
+
+    debug = function(...){
+      get("log", envir = self)(
+        ...,
+        caller = get_caller(-8L),
+        level = 500L,
+        timestamp = Sys.time()
+      )
+    },
+
+    trace = function(...){
+      get("log", envir = self)(
+        ...,
+        caller = get_caller(-8L),
+        level = 600L,
+        timestamp = Sys.time()
+      )
+    },
+
+    log = function(
+      level,
+      ...,
+      timestamp = Sys.time(),
+      caller = get_caller(-7)
+    ){
+      tryCatch({
+        # preconditions
+        level <- standardize_log_levels(level)
+        assert(
+          identical(length(unique(level)), 1L),
+          "Can only utilize vectorized logging if log level is the same for all entries"
+        )
+
+        # Check if LogEvent should be created
+        if (
+          identical(level[[1]] > get(".threshold", envir = private), TRUE) ||
+          identical(getOption("lgr.logging_suspended"), TRUE)
+        ){
+          return(invisible(msg))
+        }
+
+        # init
+        msg <- glue::glue(...)
+        force(caller)
+
+        if (missing(...)){
+          vals <- list(
+            logger = self,
+            level = level,
+            timestamp = timestamp,
+            caller = caller,
+            msg = msg
+          )
+        } else {
+          dots <- list(...)
+          custom_fields <- setdiff(names(dots), c(names(formals(glue::glue)), ""))
+
+          vals <- c(
+            list(
+              logger = self,
+              level = level,
+              timestamp = timestamp,
+              caller = caller,
+              msg = msg
+            ),
+            dots[custom_fields]
+          )
+        }
+
+        # This code looks really weird, but it really is just replacing all
+        # instances of [[ with get() for minimal overhead. We want event
+        # dispatch to be as quick as possible.
+        event <- do.call(get("new", envir = LogEvent), vals)
+        assign(".last_event", event, private)
+
+        if (get("filter", envir = self)(event)){
+          for (app in unlist(mget(c("appenders", "inherited_appenders"), self), recursive = FALSE)){
+            app_thresh <- get("threshold", envir = app)
+            if (
+              (is.na(app_thresh) || get("level", envir = event) <= app_thresh) &&
+              get("filter", envir = app)(event)
+            ){
+              get("append", envir = app)(event)
+            }
+          }
+        }
+
+        invisible(msg)
+      },
+      error = get("handle_exception", envir = self)
+      )
+    }
+  )
+)
+

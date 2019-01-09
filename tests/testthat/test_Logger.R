@@ -240,3 +240,28 @@ test_that("ancestry query works", {
 
   expect_match(format(l4$ancestry), "(->.*){2}.*|")
 })
+
+
+
+
+# LoggerGlue --------------------------------------------------------------
+
+test_that("ancestry query works", {
+  l <- LoggerGlue$new("glue")
+
+  expect_match(l$fatal("test", "test"), glue::glue("test", "test"))
+
+  expect_output(
+    l$fatal("blah", "blubb", foo = "bar"),
+    "blahblubb.*bar\\}"
+  )
+  expect_output(
+    l$fatal("blah", "blubb {fizz}", foo = "bar", fizz = "buzz"),
+    "buzz.*\\{foo.*bar.*fizz.*buzz\\}$"
+  )
+
+  expect_false(
+    grepl("open", capture.output(l$fatal("blubb", .open = "{")))
+  )
+})
+
