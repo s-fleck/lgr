@@ -130,7 +130,7 @@ events in case a fatal event is encountered." />
 Appender keeps an in-memory buffer like <a href='AppenderBuffer.html'>AppenderBuffer</a>. If the buffer is
 flushed, usually because an event of specified magnitutde is encountered, all
 buffered events are concatenated to a single message that is sent to
-<code>RPushbullet::pbPost()</code>. The default behaviour is to push the last 7 log
+<code><a href='https://www.rdocumentation.org/packages/RPushbullet/topics/pbPost'>RPushbullet::pbPost()</a></code>. The default behaviour is to push the last 7 log
 events in case a <code>fatal</code> event is encountered.</p>
     
     </div>
@@ -180,7 +180,7 @@ x$filters
 
     
     <dl class='dl-horizontal'>
-<dt><code>apikey</code>, <code>recipients</code>, <code>email</code>, <code>channel</code>, <code>devices</code></dt><dd><p>See <code>RPushbullet::pbPost()</code></p></dd>
+<dt><code>apikey</code>, <code>recipients</code>, <code>email</code>, <code>channel</code>, <code>devices</code></dt><dd><p>See <code><a href='https://www.rdocumentation.org/packages/RPushbullet/topics/pbPost'>RPushbullet::pbPost()</a></code></p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>buffer_size, set_buffer_size(x)</code></dt><dd><p><code>integer</code> scalar. Number of <a href='LogEvent.html'>LogEvents</a> to buffer</p></dd>

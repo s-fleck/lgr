@@ -125,25 +125,31 @@
 #'
 #' @section LoggerGlue:
 #'
-#' LoggerGlue works exactly like logger, just that `$fatal()`, `$warn()`.. etc
-#' work slightly different. Their only argument is now ellipses (`...`) which
-#' will be interpreted by [glue::glue()]. Named arguments are still added to
-#' the LogEvent as custom field, except for named arguments that start with
-#' a `"."`.
+#' `LoggerGlue` uses [glue::glue()] instead of [base::sprintf()] to construct
+#' log messages. **glue** is a very well designed package for
+#' string interpolation. It makes composing log messages
+#' more flexible and comfortable at the price of an aditional dependency and
+#' slightly less performance than `sprintf()`.
+#'
+#' `glue()` lets you define temporary named variables inside the call.
+#' As with the normal Logger, these named arguments get turned into custom
+#' fields; however, you can suppress this behaviour by making named argument
+#' start with a `"."`. Please refer to `vignette("lgr", package = "lgr")` for
+#' examples.
+#'
 #'
 #' @name Logger
 #' @aliases Loggers LoggerGlue
 #' @include Filterable.R
 #' @include log_levels.R
+#' @seealso [glue](https://glue.tidyverse.org/)
 #' @examples
-#'
+#' # lgr::lgr is the root logger that is always available
 #' lgr$info("Today is %s", Sys.Date() )
-#'
-#' # lgr includes a pre-configured root logger
 #' lgr$fatal("This is a serious error")
 #'
-#' # if you want to take advantage of hierarchical logging, you can create new loggers.
-#' # the following creates a new logger that logs to a temporary file.
+#' # You can create new loggers with Logger$new(). The following creates a
+#' # logger that logs to a temporary file.
 #' tf <- tempfile()
 #' lg <- Logger$new(
 #'   "mylogger",
@@ -156,7 +162,7 @@
 #' lg$fatal("blubb")
 #' readLines(tf)
 #'
-#' # This relationship is also depicted in the loggers print method
+#' # This logger's print() method depicts this relationship
 #' print(lg)
 #' print(lg$ancestry)
 #'
@@ -167,15 +173,13 @@
 #' readLines(tf)
 #' readLines(tf2)
 #'
-#' # This works because if no unnamed `...` are present, msg is not passed
-#' # through sprintf()
+#' # The following works because if no unnamed `...` are present, msg is not
+#' # passed through sprintf() (otherwise you would have to escape the "%")
 #' lg$fatal("100%")
 #'
 #' # LoggerGlue
-#'
 #' lg <- LoggerGlue$new("glue")
 #' lg$fatal("blah ", "fizz is set to: {fizz}", foo = "bar", fizz = "buzz")
-#'
 NULL
 
 

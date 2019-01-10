@@ -288,20 +288,27 @@ was specified)</p></dd>
     <h2 class="hasAnchor" id="loggerglue"><a class="anchor" href="#loggerglue"></a>LoggerGlue</h2>
 
     
-    <p>LoggerGlue works exactly like logger, just that <code>$fatal()</code>, <code>$warn()</code>.. etc
-work slightly different. Their only argument is now ellipses (<code>...</code>) which
-will be interpreted by <code><a href='https://www.rdocumentation.org/packages/glue/topics/glue'>glue::glue()</a></code>. Named arguments are still added to
-the LogEvent as custom field, except for named arguments that start with
-a <code>"."</code>.</p>
+    <p><code>LoggerGlue</code> uses <code><a href='https://www.rdocumentation.org/packages/glue/topics/glue'>glue::glue()</a></code> instead of <code><a href='https://www.rdocumentation.org/packages/base/topics/sprintf'>base::sprintf()</a></code> to construct
+log messages. <strong>glue</strong> is a very well designed package for
+string interpolation. It makes composing log messages
+more flexible and comfortable at the price of an aditional dependency and
+slightly less performance than <code><a href='https://www.rdocumentation.org/packages/base/topics/sprintf'>sprintf()</a></code>.</p>
+<p><code>glue()</code> lets you define temporary named variables inside the call.
+As with the normal Logger, these named arguments get turned into custom
+fields; however, you can suppress this behaviour by making named argument
+start with a <code>"."</code>. Please refer to <code><a href='../articles/lgr.html'>vignette("lgr", package = "lgr")</a></code> for
+examples.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='https://glue.tidyverse.org/'>glue</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is %s"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>() )</div><div class='output co'>#&gt; INFO  [09:13:51.192] Today is 2019-01-10 </div><div class='input'>
-<span class='co'># lgr includes a pre-configured root logger</span>
-<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"This is a serious error"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:13:51.195] This is a serious error </div><div class='input'>
-<span class='co'># if you want to take advantage of hierarchical logging, you can create new loggers.</span>
-<span class='co'># the following creates a new logger that logs to a temporary file.</span>
+    <pre class="examples"><div class='input'><span class='co'># lgr::lgr is the root logger that is always available</span>
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is %s"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>() )</div><div class='output co'>#&gt; INFO  [18:08:33.489] Today is 2019-01-10 </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"This is a serious error"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [18:08:33.493] This is a serious error </div><div class='input'>
+<span class='co'># You can create new loggers with Logger$new(). The following creates a</span>
+<span class='co'># logger that logs to a temporary file.</span>
 <span class='no'>tf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>()
 <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(
   <span class='st'>"mylogger"</span>,
@@ -311,12 +318,12 @@ a <code>"."</code>.</p>
 <span class='co'># The new logger passes the log message on to the appenders of its parent</span>
 <span class='co'># logger, which is by default the root logger. This is why the following</span>
 <span class='co'># writes not only the file 'tf', but also to the console.</span>
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blubb"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:13:51.230] blubb </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2019-01-10 09:13:51.230] blubb"</div><div class='input'>
-<span class='co'># This relationship is also depicted in the loggers print method</span>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blubb"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [18:08:33.500] blubb </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2019-01-10 18:08:33.500] blubb"</div><div class='input'>
+<span class='co'># This logger's print() method depicts this relationship</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>lg</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [info] mylogger -&gt; root
 #&gt; 
 #&gt; appenders:
-#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/Rtmp8VamVG/file6c077a6a79c
+#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/RtmpQtc1Xi/file1f61f98c48b
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [info] -&gt; console
@@ -324,16 +331,14 @@ a <code>"."</code>.</p>
 <span class='co'># use formatting strings and custom fields</span>
 <span class='no'>tf2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>()
 <span class='no'>lg</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>tf2</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()))
-<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"Not all %s support custom fields"</span>, <span class='st'>"appenders"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"test"</span>)</div><div class='output co'>#&gt; INFO  [09:13:51.320] Not all appenders support custom fields </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>type</span><span style='color: #808080;'>: </span><span>test</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2019-01-10 09:13:51.230] blubb"                                  
-#&gt; [2] "INFO  [2019-01-10 09:13:51.320] Not all appenders support custom fields"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf2</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2019-01-10 09:13:51\",\"logger\":\"mylogger\",\"caller\":\"eval\",\"msg\":\"Not all appenders support custom fields\",\"type\":\"test\"}"</div><div class='input'>
-<span class='co'># This works because if no unnamed `...` are present, msg is not passed</span>
-<span class='co'># through sprintf()</span>
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"100%"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:13:51.328] 100% </div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"Not all %s support custom fields"</span>, <span class='st'>"appenders"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"test"</span>)</div><div class='output co'>#&gt; INFO  [18:08:33.556] Not all appenders support custom fields </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>type</span><span style='color: #808080;'>: </span><span>test</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2019-01-10 18:08:33.500] blubb"                                  
+#&gt; [2] "INFO  [2019-01-10 18:08:33.556] Not all appenders support custom fields"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf2</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2019-01-10 18:08:33\",\"logger\":\"mylogger\",\"caller\":\"eval\",\"msg\":\"Not all appenders support custom fields\",\"type\":\"test\"}"</div><div class='input'>
+<span class='co'># The following works because if no unnamed `...` are present, msg is not</span>
+<span class='co'># passed through sprintf() (otherwise you would have to escape the "%")</span>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"100%"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [18:08:33.571] 100% </div><div class='input'>
 <span class='co'># LoggerGlue</span>
-
 <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='no'>LoggerGlue</span>$<span class='fu'>new</span>(<span class='st'>"glue"</span>)
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blah "</span>, <span class='st'>"fizz is set to: {fizz}"</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>, <span class='kw'>fizz</span> <span class='kw'>=</span> <span class='st'>"buzz"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:13:51.335] blah fizz is set to: buzz </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>foo</span><span style='color: #808080;'>: </span><span>bar</span><span style='color: #808080;'>, </span><span style='color: #D75FAF;'>fizz</span><span style='color: #808080;'>: </span><span>buzz</span><span style='color: #808080;'>}</span><span></div><div class='input'>
-</div></span></pre>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blah "</span>, <span class='st'>"fizz is set to: {fizz}"</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>, <span class='kw'>fizz</span> <span class='kw'>=</span> <span class='st'>"buzz"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [18:08:33.589] blah fizz is set to: buzz </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>foo</span><span style='color: #808080;'>: </span><span>bar</span><span style='color: #808080;'>, </span><span style='color: #D75FAF;'>fizz</span><span style='color: #808080;'>: </span><span>buzz</span><span style='color: #808080;'>}</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -350,6 +355,8 @@ a <code>"."</code>.</p>
       <li><a href="#methods">Methods</a></li>
 
       <li><a href="#loggerglue">LoggerGlue</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

@@ -389,6 +389,40 @@ hierarchies.
 ![](log_flow.svg)
 
 
+## Logging with LoggerGlue
+
+[glue](https://glue.tidyverse.org/) is very nicely designed package for string
+interpolation. It makes composing log messages more flexible and comfortable
+at the price of an aditional dependency and slightly less performance than 
+`sprintf()` (which is used by normal Loggers).
+To take advantage of glue, simply create a new LoggerGlue like this:
+
+```{r}
+# install.packages("glue")
+
+l <- LoggerGlue$new("glue_logger")
+
+l$info(
+  "glue automatically ", 
+  "pastes together unnamed arguments ",
+  "and evaluates arbitray expressions inside braces {Sys.Date()}"
+)
+
+```
+
+Glue lets you define temporary variables inside the `glue()` call.
+As with the normal Logger, named arguments get turned into custom fields. 
+```{r}
+l$info("For more info on glue see {website}", website = "https://glue.tidyverse.org/")
+```
+
+You can suppress this behaviour by making named argument start with a `"."`.
+```{r}
+l$info("Glue is available from {.cran}", .cran = "https://CRAN.R-project.org/package=glue")
+```
+
+
+
 # Examples {#examples}
 
 ## Logging to the console 
