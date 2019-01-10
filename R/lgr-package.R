@@ -17,9 +17,8 @@
 #'  \item{`lgr.suspend_logging`}{`TRUE` or `FALSE`. Suspend all logging for
 #'    all loggers.  Instead of modifying this option manually use
 #'    [suspend_logging()] and [unsuspend_logging()]}
-#'  \item{`lgr.user`}{a `character` scalar. The default username for new
-#'    Loggers. Users can also be set per Logger, though this rarely makes
-#'    sense.
+#'  \item{`lgr.user`}{a `character` scalar. The default username for
+#'     `lgr::get_user()`.
 #'   }
 #' }
 #'

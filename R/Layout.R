@@ -87,7 +87,7 @@ Layout <- R6::R6Class(
 #' @examples
 #' # setup a dummy LogEvent
 #' event <- LogEvent$new(
-#'   logger = Logger$new("dummy logger", user = "testuser"),
+#'   logger = Logger$new("dummy logger"),
 #'   level = 200,
 #'   timestamp = Sys.time(),
 #'   caller = NA_character_,
@@ -401,7 +401,7 @@ LayoutTable <- R6::R6Class(
 #' @examples
 #' # setup a dummy LogEvent
 #' event <- LogEvent$new(
-#'   logger = Logger$new("dummy logger", user = "testuser"),
+#'   logger = Logger$new("dummy logger"),
 #'   level = 200,
 #'   timestamp = Sys.time(),
 #'   caller = NA_character_,
@@ -427,7 +427,7 @@ LayoutTable <- R6::R6Class(
 #' )
 #'
 #' event <- LogEvent$new(
-#'   logger = Logger$new("dummy logger", user = "testuser"),
+#'   logger = Logger$new("dummy logger"),
 #'   level = 200,
 #'   timestamp = Sys.time(),
 #'   caller = NA_character_,
@@ -683,7 +683,7 @@ select_dbi_layout <- function(
 #' # setup a dummy LogEvent
 #'
 #' event <- LogEvent$new(
-#'   logger = Logger$new("dummy logger", user = "testuser"),
+#'   logger = Logger$new("dummy logger"),
 #'   level = 200,
 #'   timestamp = Sys.time(),
 #'   caller = NA_character_,

@@ -107,7 +107,7 @@ for (nm in names(dbs)){
       as.data.frame(e, stringsAsFactors = FALSE),
       as.data.frame(e, stringsAsFactors = FALSE)
     )
-    expect_equal(tres[, -c(2, 3)], eres[, -2])
+    expect_equal(tres[, -2], eres[, -2])
     # small tolerance is allowed for timestamps
     tdiff <- as.numeric(tres[, 2]) - as.numeric(eres[, 2])
     expect_true(all(tdiff < 1), info = tdiff)

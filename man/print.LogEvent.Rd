@@ -48,8 +48,6 @@ Print or Format Logging Data
 \item{\code{\%k}}{the log level, first letter of lowercase \code{character} representation}
 \item{\code{\%K}}{the log level, first letter of uppercase \code{character} representation}
 \item{\code{\%n}}{the log level, \code{integer} representation}
-\item{\code{\%u}}{the \code{user} of the Logger. This is guessed via \code{\link[=get_user]{get_user()}}
-during the initalisation of the Logger.}
 \item{\code{\%p}}{the PID (process ID). Useful when logging code that uses
 multiple threads.}
 \item{\code{\%c}}{the calling function}

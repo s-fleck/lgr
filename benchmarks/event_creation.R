@@ -79,10 +79,6 @@ AdvancedEvent <- R6::R6Class(
 
     logger = function(){
       get("name", envir = get("logger", envir = self))
-    },
-
-    logger_user = function(){
-      get("user", envir = get("logger", envir = self))
     }
   )
 )

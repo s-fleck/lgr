@@ -66,8 +66,8 @@ label_levels = function(
 
   res <- names(log_levels)[match(levels, log_levels)]
   res[is.na(levels)] <- "all"
-  res[levels == 0] <- "off"
-  names(res) <- levels
+  res[levels == 0]   <- "off"
+  names(res)         <- levels
 
   if (anyNA(res))
     warning("Some 'levels' were not valid numeric log levels, coercing to NA")

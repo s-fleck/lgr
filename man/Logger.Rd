@@ -17,7 +17,7 @@ logging as outlined in \code{vignette("lgr", package = "lgr")}.
 \section{Usage}{
 \preformatted{
 x <- x$new(name = "(unnamed logger)", appenders = list(), threshold = 400L,
-  filters = list(), user = get_user(), parent = lgr::lgr,
+  filters = list(), parent = lgr::lgr,
   exception_handler = default_exception_handler, propagate = TRUE)
 
 x$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
@@ -36,7 +36,6 @@ x$set_propagate(x)
 x$set_parent(logger)
 x$set_threshold(level)
 x$set_appenders(x)
-x$set_user(x)
 x$filter(event)
 x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
@@ -51,7 +50,6 @@ x$name
 x$parent
 x$propagate
 x$threshold
-x$user
 x$filters
 
 }
@@ -93,10 +91,6 @@ inheritance structures).}
 
 \item{\code{threshold}, \code{set_threshold(level)}}{\code{character} or \code{integer} scalar.
 The minimum \link[=log_levels]{log level} that triggers this Logger}
-
-\item{\code{user}, \code{set_user(x)}}{\code{character} scalar. The current user name or
-email adress. This information is saved so that it can be used by the
-Appenders}
 
 \item{\code{parent}, \code{set_parent(logger)}}{a \code{Logger}. Usually the root logger.
 Can also be \code{NULL}, but all Loggers must be descentents of the root logger

@@ -62,7 +62,7 @@ to include in the output object.
 # setup a dummy LogEvent
 
 event <- LogEvent$new(
-  logger = Logger$new("dummy logger", user = "testuser"),
+  logger = Logger$new("dummy logger"),
   level = 200,
   timestamp = Sys.time(),
   caller = NA_character_,

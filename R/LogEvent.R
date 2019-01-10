@@ -72,12 +72,10 @@
 #' l$last_event  # formated by default
 #' l$last_event$values  # values stored in the event
 #'
-#' # Also contains the Logger that created it
+#' # Also contains the Logger that created it as .logger
+#' l$last_event$logger
+#' # equivalent to
 #' l$last_event$.logger$name
-#' l$last_event$.logger$user
-#' # The two values above can also be accessed via shortcuts
-#' l$last_event$logger # name
-#' l$last_event$user   # user
 #'
 #' # This is really a reference to the complete Logger, so the following is
 #' # possible (though nonsensical)
@@ -132,11 +130,11 @@ LogEvent <- R6::R6Class(
 
   active = list(
     values = function(){
-      fixed_vals   <- c("level", "timestamp", "caller", "msg")
+      fixed_vals   <- c("level", "timestamp", "logger", "caller", "msg")
       custom_vals <- setdiff(
         names(get(".__enclos_env__", self)[["self"]]),
         c(".__enclos_env__", "level_name", "initialize", "clone", "values",
-          ".logger", "logger", "user")
+          ".logger")
       )
       valnames <- union(fixed_vals, custom_vals) # to enforce order of fixed_vals
       mget(valnames, envir = self)
@@ -148,10 +146,6 @@ LogEvent <- R6::R6Class(
 
     logger = function(){
       get("name", envir = get(".logger", envir = self))
-    },
-
-    user = function(){
-      get("user", envir = get(".logger", envir = self))
     }
   )
 )
@@ -236,4 +230,4 @@ as_tibble.LogEvent <- function(
 
 # global variables --------------------------------------------------------
 
-DEFAULT_FIELDS <- c("level", "timestamp", "caller", "msg")
+DEFAULT_FIELDS <- c("level", "timestamp", "logger", "caller", "msg")

@@ -14,9 +14,6 @@ test_that("active bindings", {
 
   walk(ml$appenders, function(.x) expect_true(inherits(.x, "Appender")))
 
-  expect_silent(ml$set_user("blubb"))
-  expect_identical(ml$user, "blubb")
-  expect_error(ml$set_user(5), "'user'")
 })
 
 

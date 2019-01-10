@@ -212,7 +212,7 @@ AppenderConsole <- R6::R6Class(
 #'
 #' logger$add_appender(AppenderFile$new(default), "default")
 #' logger$add_appender(
-#'   AppenderFile$new(fancy, layout = LayoutFormat$new("[%t] %c(): %L %m from user %u")), "fancy"
+#'   AppenderFile$new(fancy, layout = LayoutFormat$new("[%t] %c(): %L %m")), "fancy"
 #' )
 #' logger$add_appender(
 #'   AppenderFile$new(json, layout = LayoutJson$new()), "json"
@@ -554,6 +554,7 @@ AppenderDt <- R6::R6Class(
         .id  = NA_integer_,
         level = NA_integer_,
         timestamp = Sys.time(),
+        logger = NA_character_,
         caller = NA_character_,
         msg = NA_character_,
         .custom = list(list())

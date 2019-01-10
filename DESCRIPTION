@@ -1,7 +1,7 @@
 Type: Package
 Package: lgr
 Title: A Fully Featured Logging Framework
-Version: 0.0.7.9004
+Version: 0.0.7.9005
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",

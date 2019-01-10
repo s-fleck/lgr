@@ -45,10 +45,6 @@
 #'   \item{`threshold`, `set_threshold(level)`}{`character` or `integer` scalar.
 #'   The minimum [log level][log_levels] that triggers this Logger}
 #'
-#'   \item{`user`, `set_user(x)`}{`character` scalar. The current user name or
-#'   email adress. This information is saved so that it can be used by the
-#'   Appenders}
-#'
 #'   \item{`parent`, `set_parent(logger)`}{a `Logger`. Usually the root logger.
 #'   Can also be `NULL`, but all Loggers must be descentents of the root logger
 #'   for lgr to work as intended.}
@@ -200,7 +196,6 @@ Logger <- R6::R6Class(
       appenders = list(),
       threshold = 400L,
       filters = list(),
-      user = get_user(),
       parent = lgr::lgr,
       exception_handler = default_exception_handler,
       propagate = TRUE
@@ -215,7 +210,6 @@ Logger <- R6::R6Class(
       }
 
       self$set_appenders(appenders)
-      self$set_user(user)
       self$set_exception_handler(exception_handler)
       self$set_parent(parent)
       self$set_name(name)
@@ -492,12 +486,6 @@ Logger <- R6::R6Class(
         self$add_appender(x[[i]], name = names(x)[[i]])
 
       invisible(self)
-    },
-
-    set_user = function(x){
-      assert(is_scalar_character(x), "'user' must be a scalar character")
-      private$.user <- x
-      invisible(self)
     }
   ),
 
@@ -533,9 +521,7 @@ Logger <- R6::R6Class(
 
     exception_handler = function() {private$.exception_handler},
 
-    appenders = function() {private$.appenders},
-
-    user = function() {private$.user}
+    appenders = function() {private$.appenders}
 
   ),
 
@@ -604,7 +590,6 @@ Logger <- R6::R6Class(
     .name = NULL,
     .parent = NULL,
     .appenders = NULL,
-    .user = NA_character_,
     .threshold = NA_integer_,
     .last_event = NULL,
 

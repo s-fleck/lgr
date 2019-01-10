@@ -104,7 +104,7 @@ json <- tempfile()
 
 logger$add_appender(AppenderFile$new(default), "default")
 logger$add_appender(
-  AppenderFile$new(fancy, layout = LayoutFormat$new("[\%t] \%c(): \%L \%m from user \%u")), "fancy"
+  AppenderFile$new(fancy, layout = LayoutFormat$new("[\%t] \%c(): \%L \%m")), "fancy"
 )
 logger$add_appender(
   AppenderFile$new(json, layout = LayoutJson$new()), "json"

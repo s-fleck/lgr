@@ -20,8 +20,6 @@
 #'   \item{`%k`}{the log level, first letter of lowercase `character` representation}
 #'   \item{`%K`}{the log level, first letter of uppercase `character` representation}
 #'   \item{`%n`}{the log level, `integer` representation}
-#'   \item{`%u`}{the `user` of the Logger. This is guessed via [`get_user()`]
-#'     during the initalisation of the Logger.}
 #'   \item{`%p`}{the PID (process ID). Useful when logging code that uses
 #'       multiple threads.}
 #'   \item{`%c`}{the calling function}
@@ -124,7 +122,7 @@ format.LogEvent <- function(
     fmt,
     valid_tokens = paste0(
       "%",
-      c("t", "u", "p", "c", "m", "l", "L", "n", "f", "j", "k", "K", "g"))
+      c("t", "p", "c", "m", "l", "L", "n", "f", "j", "k", "K", "g"))
   )
 
   # format
@@ -142,7 +140,6 @@ format.LogEvent <- function(
       "%t" = format(get("timestamp", envir = x), format = timestamp_fmt),
       "%m" = get("msg", envir = x),
       "%c" = get("caller", envir = x),
-      "%u" = get("user", envir = x),
       "%g" = get("logger", envir = x),
       "%p" = Sys.getpid(),
       "%f" = format_custom_fields(get_custom_fields(x), color = length(colors)),

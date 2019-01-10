@@ -65,7 +65,7 @@ more control and flexibility, consider using LayoutGlue instead." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9005</span>
       </span>
     </div>
 
@@ -176,8 +176,6 @@ and the documentation of <code><a href='print.LogEvent.html'>format.LogEvent()</
 <dt><code>%k</code></dt><dd><p>the log level, first letter of lowercase <code>character</code> representation</p></dd>
 <dt><code>%K</code></dt><dd><p>the log level, first letter of uppercase <code>character</code> representation</p></dd>
 <dt><code>%n</code></dt><dd><p>the log level, <code>integer</code> representation</p></dd>
-<dt><code>%u</code></dt><dd><p>the <code>user</code> of the Logger. This is guessed via <code><a href='system_infos.html'>get_user()</a></code>
-during the initalisation of the Logger.</p></dd>
 <dt><code>%p</code></dt><dd><p>the PID (process ID). Useful when logging code that uses
 multiple threads.</p></dd>
 <dt><code>%c</code></dt><dd><p>the calling function</p></dd>
@@ -206,14 +204,14 @@ have <strong>jsonlite</strong> installed and does not support colors as opposed 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># setup a dummy LogEvent</span>
 <span class='no'>event</span> <span class='kw'>&lt;-</span> <span class='no'>LogEvent</span>$<span class='fu'>new</span>(
-  <span class='kw'>logger</span> <span class='kw'>=</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"dummy logger"</span>, <span class='kw'>user</span> <span class='kw'>=</span> <span class='st'>"testuser"</span>),
+  <span class='kw'>logger</span> <span class='kw'>=</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"dummy logger"</span>),
   <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>200</span>,
   <span class='kw'>timestamp</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>(),
   <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>,
   <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"a test message"</span>
 )
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>()
-<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; [1] "ERROR [2019-01-10 08:23:20.931] a test message"</div><div class='input'>
+<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; [1] "ERROR [2019-01-10 09:13:48.293] a test message"</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

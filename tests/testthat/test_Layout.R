@@ -2,7 +2,7 @@ context("Layout")
 
 
 tevent <- LogEvent$new(
-  logger = Logger$new("dummy", user = "testuser"),
+  logger = Logger$new("dummy"),
   level = 200L,
   timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
   caller = NA_character_,
@@ -59,8 +59,8 @@ test_that("LayoutDbi works as expected", {
   col_types <-  c(
     timestamp = "timestamp",
     level = "smallint",
+    logger = "varchar(512)",
     msg = "varchar(1024)",
-    fuser = "varchar(256)",
     foo = "varchar(255)"
   )
 
@@ -78,16 +78,14 @@ test_that("LayoutDbi works as expected", {
 
   x <- tevent$clone()
   x$foo <- "bar"
-  x$fuser <- "blubb"
 
-  eres <- c(x$values, fuser = x$.logger$user)
+  eres <- x$values
   tres <- lo$format_event(x)
 
   tres[sapply(tres, is.null)] <- NA_character_
   expect_setequal(names(eres), c(names(tres), "caller"))
   expect_identical(tres[["level"]], eres[["level"]])
   expect_identical(tres[["msg"]], eres[["msg"]])
-  expect_identical(tres[["fuser"]], eres[["fuser"]])
   expect_true(is.null(tres[["caller"]]))
   expect_equal(as.POSIXct(tres[["timestamp"]]), eres[["timestamp"]], tolerance = 1)
   expect_equal(tres[["foo"]], "bar")
@@ -100,7 +98,6 @@ test_that("LayoutDbi works with custom fields", {
   lo <- LayoutDbi$new(
     col_types =  c(
       timestamp = "timestamp",
-      user = "varchar(256)",
       logger = "varchar(256)",
       level = "smallint",
       msg = "varchar(2048)",
@@ -146,7 +143,6 @@ test_that("LayoutJson works as expected", {
   expect_setequal(c(names(eres), "foo"), names(tres))
   expect_identical(tres[["level"]], eres[["level"]])
   expect_identical(tres[["msg"]], eres[["msg"]])
-  expect_identical(tres[["user"]], eres[["user"]])
   expect_identical(tres[["caller"]], eres[["caller"]])
   expect_equal(as.POSIXct(tres[["timestamp"]]), eres[["timestamp"]], tolerance = 1)
   expect_equal(tres[["foo"]], "bar")

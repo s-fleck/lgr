@@ -61,8 +61,6 @@ This is the same list of format tokens as for \code{\link[=format.LogEvent]{form
 \item{\code{\%k}}{the log level, first letter of lowercase \code{character} representation}
 \item{\code{\%K}}{the log level, first letter of uppercase \code{character} representation}
 \item{\code{\%n}}{the log level, \code{integer} representation}
-\item{\code{\%u}}{the \code{user} of the Logger. This is guessed via \code{\link[=get_user]{get_user()}}
-during the initalisation of the Logger.}
 \item{\code{\%p}}{the PID (process ID). Useful when logging code that uses
 multiple threads.}
 \item{\code{\%c}}{the calling function}
@@ -87,7 +85,7 @@ have \strong{jsonlite} installed and does not support colors as opposed to
 \examples{
 # setup a dummy LogEvent
 event <- LogEvent$new(
-  logger = Logger$new("dummy logger", user = "testuser"),
+  logger = Logger$new("dummy logger"),
   level = 200,
   timestamp = Sys.time(),
   caller = NA_character_,

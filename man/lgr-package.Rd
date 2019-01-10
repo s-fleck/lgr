@@ -24,9 +24,8 @@ modifying this option manually use \code{\link[=add_log_levels]{add_log_levels()
 \item{\code{lgr.suspend_logging}}{\code{TRUE} or \code{FALSE}. Suspend all logging for
 all loggers.  Instead of modifying this option manually use
 \code{\link[=suspend_logging]{suspend_logging()}} and \code{\link[=unsuspend_logging]{unsuspend_logging()}}}
-\item{\code{lgr.user}}{a \code{character} scalar. The default username for new
-Loggers. Users can also be set per Logger, though this rarely makes
-sense.
+\item{\code{lgr.user}}{a \code{character} scalar. The default username for
+\code{lgr::get_user()}.
 }
 }
 }

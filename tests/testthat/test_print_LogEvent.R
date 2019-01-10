@@ -4,7 +4,7 @@ context("print_LogEvent")
 
 
 test_that("format works as expected", {
-  l <- Logger$new("test", user = "foobert")
+  l <- Logger$new("test")
 
   x <- LogEvent$new(
     level = 100,
@@ -15,8 +15,8 @@ test_that("format works as expected", {
   )
 
   expect_match(
-    format.lgr_data(x, fmt = "[%l -  %L -  %n]  %t -  %u -  %p -  %c:  %m"),
-    "fatal.*FATAL.*foobert.*blubb\\(\\).*message$"
+    format.lgr_data(x, fmt = "[%l -  %L -  %n]  %t -  %p -  %c:  %m"),
+    "fatal.*FATAL.*blubb\\(\\).*message$"
   )
 })
 
