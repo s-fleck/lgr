@@ -3,6 +3,7 @@
 \name{Logger}
 \alias{Logger}
 \alias{Loggers}
+\alias{LoggerGlue}
 \title{Loggers}
 \description{
 A Logger produces a \link{LogEvent} that contains the log message along with
@@ -202,6 +203,16 @@ was specified)
 }
 }
 
+\section{LoggerGlue}{
+
+
+LoggerGlue works exactly like logger, just that \code{$fatal()}, \code{$warn()}.. etc
+work slightly different. Their only argument is now ellipses (\code{...}) which
+will be interpreted by \code{\link[glue:glue]{glue::glue()}}. Named arguments are still added to
+the LogEvent as custom field, except for named arguments that start with
+a \code{"."}.
+}
+
 \examples{
 
 lgr$info("Today is \%s", Sys.Date() )
@@ -237,5 +248,10 @@ readLines(tf2)
 # This works because if no unnamed `...` are present, msg is not passed
 # through sprintf()
 lg$fatal("100\%")
+
+# LoggerGlue
+
+lg <- LoggerGlue$new("glue")
+lg$fatal("blah ", "fizz is set to: {fizz}", foo = "bar", fizz = "buzz")
 
 }

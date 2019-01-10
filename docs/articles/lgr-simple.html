@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9004</span>
       </span>
     </div>
 
@@ -96,17 +96,17 @@
 <a href="#simplified-logging-syntax" class="anchor"></a>Simplified Logging Syntax</h3>
 <p>If you care about terse syntax you can use the following <code>UPPERCASE</code><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> commands to log:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/simple_logging.html">FATAL</a></span>(<span class="st">"This is an important message about %s going wrong"</span>, <span class="st">"something"</span>)
-<span class="co">#&gt; FATAL [16:12:58.636] This is an important message about something going wrong</span>
+<span class="co">#&gt; FATAL [08:23:31.059] This is an important message about something going wrong</span>
 <span class="kw"><a href="../reference/simple_logging.html">ERROR</a></span>(<span class="st">"A less severe error"</span>)
-<span class="co">#&gt; ERROR [16:12:58.708] A less severe error</span>
+<span class="co">#&gt; ERROR [08:23:31.130] A less severe error</span>
 <span class="kw"><a href="../reference/simple_logging.html">WARN</a></span>(<span class="st">"something likely went wrong"</span>)
-<span class="co">#&gt; WARN  [16:12:58.747] something likely went wrong</span>
+<span class="co">#&gt; WARN  [08:23:31.217] something likely went wrong</span>
 <span class="kw"><a href="../reference/simple_logging.html">INFO</a></span>(<span class="st">"Everything is ok"</span>)
-<span class="co">#&gt; INFO  [16:12:58.749] Everything is ok</span>
+<span class="co">#&gt; INFO  [08:23:31.219] Everything is ok</span>
 <span class="kw"><a href="../reference/simple_logging.html">DEBUG</a></span>(<span class="st">"Debug messages are hidden by default"</span>)
 <span class="kw"><a href="../reference/simple_logging.html">console_threshold</a></span>(<span class="st">"debug"</span>)  <span class="co"># you must use lower case names here</span>
 <span class="kw"><a href="../reference/simple_logging.html">DEBUG</a></span>(<span class="st">"unless we lower the threshold"</span>)
-<span class="co">#&gt; DEBUG [16:12:58.753] unless we lower the threshold</span>
+<span class="co">#&gt; DEBUG [08:23:31.223] unless we lower the threshold</span>
 <span class="kw"><a href="../reference/simple_logging.html">TRACE</a></span>(<span class="st">"Trace is even lower than debug"</span>)</code></pre></div>
 <p>If you have the package <strong>data.table</strong> installed, lgr does not only log to the console, but also to an in memory <code>data.table</code>. You can use <code><a href="../reference/simple_logging.html">show_log()</a></code> to quickly display this in memory log<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/simple_logging.html">show_log</a></span>(<span class="dv">3</span>)  <span class="co"># show the last 3 log entries</span>

@@ -132,10 +132,8 @@
 #' LoggerGlue works exactly like logger, just that `$fatal()`, `$warn()`.. etc
 #' work slightly different. Their only argument is now ellipses (`...`) which
 #' will be interpreted by [glue::glue()]. Named arguments are still added to
-#' the LogEvent as custom field but they are also available to glue (see
-#' example). Named arguments that have the same names as
-#' arguments to `glue::glue` (like `.sep`, `.envir`, `.open`, etc....) are
-#' not converted to custom fields.
+#' the LogEvent as custom field, except for named arguments that start with
+#' a `"."`.
 #'
 #' @name Logger
 #' @aliases Loggers LoggerGlue
@@ -756,7 +754,7 @@ LoggerGlue <- R6::R6Class(
           )
         } else {
           dots <- list(...)
-          custom_fields <- setdiff(names(dots), c(names(formals(glue::glue)), ""))
+          custom_fields <- !(grepl("^\\.", names(dots)) | is_blank(names(dots)))
 
           vals <- c(
             list(
