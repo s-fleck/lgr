@@ -1,28 +1,5 @@
 context("print_LogEvent")
 
-
-
-
-test_that("format works as expected", {
-  l <- Logger$new("test")
-
-  x <- LogEvent$new(
-    level = 100,
-    caller = "blubb()",
-    timestamp = Sys.time(),
-    msg = "this is a test message",
-    logger = l
-  )
-
-  expect_match(
-    format.lgr_data(x, fmt = "[%l -  %L -  %n]  %t -  %p -  %c:  %m"),
-    "fatal.*FATAL.*blubb\\(\\).*message$"
-  )
-})
-
-
-
-
 test_that("format.LogEvent works as expected", {
   x <- LogEvent$new(
     logger = lgr::lgr,

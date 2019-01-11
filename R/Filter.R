@@ -133,7 +133,9 @@ is_filter <- function(
     identical(names(formals(x)), c("event"))
   } else {
     # the extra is.function is to prevent infinite recursions
-    "filter" %in% names(x) && is.function(x[["filter"]]) && is_filter(x[["filter"]])
+    "filter" %in% names(x) &&
+    is.function(x[["filter"]]) &&
+    identical(names(formals(x[["filter"]])), c("event"))
   }
 }
 
