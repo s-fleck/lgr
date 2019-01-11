@@ -206,25 +206,6 @@ format_custom_fields <- function(
 
 
 
-
-#' @export
-format.lgr_data <- function(x, ...) {
-  if (identical(nrow(x), 0L))
-    return("[empty log]")
-  else {
-    format.LogEvent(as.environment(x), ...)
-  }
-}
-
-
-
-
-#' @export
-print.lgr_data <- print.LogEvent
-
-
-
-
 tokenize_format <- function(
   x,
   valid_tokens = NULL
@@ -250,4 +231,22 @@ tokenize_format <- function(
   }
 
   res
+}
+
+
+
+# convert a data.frame as returned for example by AppenderDt$dt to a list of
+# LogEvent like environments. Useful for printing.
+as_LogEvent_list.data.frame <- function(x){
+  lapply(
+    seq_len(nrow(x)),
+    function(i){
+      r <- as.environment(c(
+        as.list(x[i, !names(x) %in% c(".id", ".custom")]),
+        x[i, ][[".custom"]][[1]]
+      ))
+      r[["values"]] <- rev(as.list(r))
+      r
+    }
+  )
 }

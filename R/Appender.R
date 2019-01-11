@@ -686,12 +686,33 @@ AppenderDt <- R6::R6Class(
       }
 
       res <- tail(dd[dd$level <= threshold, ], n)
-      dd <- as.environment(res)
-      assign("logger", self[[".logger"]], dd)
-      cat(self$layout$format_event(dd), sep = "\n")
-      invisible(res)
-    }
 
+      # construct a hackish pseudo-log event out of the data.table. This is
+      # guranteed to work with LayoutFormat, other layouts might run into
+      # issues
+      walk(
+        as_LogEvent_list.data.frame(res),
+        function(.x){
+          cat(self$layout$format_event(.x), "\n", sep = "")
+        }
+      )
+
+      invisible(res)
+    },
+
+    set_layout = function(layout){
+      assert(inherits(layout, "Layout"))
+      if (!inherits(layout, "LayoutFormat")){
+        warning(
+          "AppenderDt currently only fully supports LayoutFormat. Accessing",
+          "event$values or event$.logger from other Layouts is not possible.",
+          "if you run into issues, don't hesitate to file a bug report",
+          "or feature request on github."
+        )
+      }
+      private$.layout <- layout
+      invisible(self)
+    }
   ),
 
 
@@ -840,27 +861,26 @@ AppenderDbi <- R6::R6Class(
       threshold = NA_integer_,
       n = 20
     ){
-      assert(is_scalar_integerish(n))
+      assert(is_n0(n))
+
       threshold <- standardize_threshold(threshold)
-
-      dd <- data.table::copy(self$data)
-      data.table::setattr(
-        dd,
-        "class",
-        c("lgr_data", "data.table", "data.frame")
-      )
-
       if (is.na(threshold)) threshold <- Inf
 
-      if (is.character(threshold))
-        threshold <- unlabel_levels(threshold)
+      dd <- tail(self$data[self$data$level <= threshold, ], n)
+      colors <- getOption("lgr.colors")
 
       if (identical(nrow(dd),  0L)){
         cat("[empty log]")
-        return(invisible(NULL))
+      } else {
+        walk(
+          as_LogEvent_list.data.frame(dd),
+          function(.x){
+            cat(format.LogEvent(.x, colors = colors), "\n", sep = "")
+          }
+        )
       }
 
-      print(tail(dd[dd$level <= threshold, ], n))
+      invisible(dd)
     },
 
     append = function(event){

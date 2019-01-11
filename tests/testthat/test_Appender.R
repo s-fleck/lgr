@@ -255,6 +255,23 @@ test_that("AppenderDt: memory cycling works", {
 
 
 
+test_that("AppenderDt: default format for show_log looks like format.LogEvent", {
+
+  xo <- capture.output(lgr::lgr$fatal("blubb"))
+  xp <- capture.output(lgr$appenders$memory$show(n = 1))
+  expect_identical(xo, xp)
+
+  xo <- capture.output(
+    lgr::lgr$fatal("blubb", foo = "bar", fizz = "buzz", iris = iris)
+  )
+  xp <- capture.output(lgr$appenders$memory$show(n = 1))
+  expect_identical(xo, xp)
+
+  expect_length(capture.output(lgr$appenders$memory$show(n = 2)), 2)
+})
+
+
+
 # AppenderBuffer ----------------------------------------------------
 # Tests must be executed in sequence
 # setup

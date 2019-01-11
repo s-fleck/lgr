@@ -32,8 +32,8 @@ x <- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "\%L [\%
 
 x$append(event)
 x$show(threshold = NA_integer_, n = 20L)
-x$set_threshold(level)
 x$set_layout(layout)
+x$set_threshold(level)
 x$filter(event)
 x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
