@@ -23,17 +23,17 @@ Features
 Usage
 -----
 
-To log an *event* with with lgr we call `lgr$<logging function>()`. Unnamed arguments to the logging function are interpreted by `sprintf()`.
+To log an *event* with with lgr we call `lgr$<logging function>()`. Unnamed arguments to the logging function are interpreted by `sprintf()`. For a way to create loggers that [glue](https://glue.tidyverse.org/) instead please refer to the vignette.
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [16:08:51.839] A critical error
+#> FATAL [18:07:56.748] A critical error
 lgr$error("A less severe error")
-#> ERROR [16:08:51.868] A less severe error
+#> ERROR [18:07:56.833] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [16:08:51.897] A potentially bad situation
+#> WARN  [18:07:56.875] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [16:08:51.899] iris has 150 rows
+#> INFO  [18:07:56.877] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
@@ -46,21 +46,19 @@ A Logger can have several Appenders. For example, we can add a JSON appender to 
 tf <- tempfile()
 lgr$add_appender(AppenderJson$new(tf))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [16:08:51.927] cars has 50 rows
-
+#> INFO  [18:07:57.018] cars has 50 rows
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2019-01-03 16:08:51","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-01-10 18:07:57","logger":"root","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 JSON naturally supports custom fields. Named arguments passed to `info()`, `warn()`, etc... are intepreted as custom fields.
 
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [16:08:51.937] loading cars {cols: 2, rows: 50}
-
+#> INFO  [18:07:57.040] loading cars {rows: 50, cols: 2}
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2019-01-03 16:08:51","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2019-01-03 16:08:51","caller":"eval","msg":"loading cars","cols":2,"rows":50}
+#> {"level":400,"timestamp":"2019-01-10 18:07:57","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-01-10 18:07:57","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
 ```
 
 For more examples please see the package [vignette](https://s-fleck.github.io/lgr/articles/lgr.html) and [documentation](https://s-fleck.github.io/lgr/)

@@ -195,13 +195,13 @@ created this event, equivalent to <code>event$logger_user</code>)</p></dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>l</span> <span class='kw'>&lt;-</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"dummy logger"</span>, <span class='kw'>appenders</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-<span class='no'>l</span>$<span class='fu'>error</span>(<span class='st'>"foo bar"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;'>ERROR</span><span> [09:13:50.739] foo bar </div><div class='input'>
+<span class='no'>l</span>$<span class='fu'>error</span>(<span class='st'>"foo bar"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;'>ERROR</span><span> [18:08:33.305] foo bar </div><div class='input'>
 <span class='co'># The last LogEvent produced by a Logger is stored in the last_event field</span>
-<span class='no'>l</span>$<span class='no'>last_event</span>  <span class='co'># formated by default</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [2019-01-10 09:13:50] foo bar  </div><div class='input'><span class='no'>l</span>$<span class='no'>last_event</span>$<span class='no'>values</span>  <span class='co'># values stored in the event</span></div><div class='output co'>#&gt; $level
+<span class='no'>l</span>$<span class='no'>last_event</span>  <span class='co'># formated by default</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [2019-01-10 18:08:33] foo bar  </div><div class='input'><span class='no'>l</span>$<span class='no'>last_event</span>$<span class='no'>values</span>  <span class='co'># values stored in the event</span></div><div class='output co'>#&gt; $level
 #&gt; [1] 200
 #&gt; 
 #&gt; $timestamp
-#&gt; [1] "2019-01-10 09:13:50 CET"
+#&gt; [1] "2019-01-10 18:08:33 CET"
 #&gt; 
 #&gt; $logger
 #&gt; [1] "dummy logger"
