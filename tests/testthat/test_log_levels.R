@@ -28,6 +28,16 @@ test_that("labelling/unlabelling log levels is symetirc", {
   expect_warning(label_levels(700))
   expect_warning(unlabel_levels(NA_character_))
   expect_warning(unlabel_levels("foo"))
+
+  num <- c(93L, 200L)
+  expect_warning(chr <- label_levels(num))
+  expect_warning(
+    expect_identical(unname(unlabel_levels(chr)), num)
+  )
+
+
+
+
 })
 
 

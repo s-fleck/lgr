@@ -297,7 +297,4 @@ dyn_register_s3_method <- function(
   )
 }
 
-
-
-
 # nocov end
