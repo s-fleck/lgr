@@ -31,12 +31,20 @@ the arguments to this function please refer to the Fields section.
 \section{Fields}{
 
 \describe{
-\item{\code{toJSON_args}}{a list of values passed on to \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}}
+\item{\code{toJSON_args}, \code{set_toJSON_args()}}{a list of values passed on to
+\code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}
+}
 }
 }
 
 \section{Methods}{
 
+
+
+
+\describe{
+\item{\code{format_event(event)}}{format a \link{LogEvent}}
+}
 }
 
 \examples{

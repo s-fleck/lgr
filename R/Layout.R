@@ -465,14 +465,15 @@ LayoutRjdbc <- LayoutSqlite
 #' @eval r6_usage(LayoutJson)
 #'
 #' @inheritSection Layout Creating a New Layout
-#' @inheritSection LayoutTable Fields
-#' @inheritSection LayoutTable Methods
+#' @inheritSection Layout Methods
 #'
 #' @section Creating a New Layout:
 #'
 #' @section Fields:
 #' \describe{
-#'   \item{`toJSON_args`}{a list of values passed on to [jsonlite::toJSON()]}
+#'   \item{`toJSON_args`, `set_toJSON_args()`}{a list of values passed on to
+#'     [jsonlite::toJSON()]
+#'    }
 #' }
 #'
 #' @section Methods:

@@ -1262,7 +1262,7 @@ NULL
 #' @export
 AppenderDbi <- R6::R6Class(
   "AppenderDbi",
-  inherit = AppenderBuffer,
+  inherit = AppenderMemory,
   cloneable = FALSE,
   public = list(
     initialize = function(
@@ -1504,25 +1504,6 @@ AppenderRjdbc <- R6::R6Class(
         message("Creating '", table, "' with manual column types")
         RJDBC::dbSendUpdate(conn, layout$sql_create_table(table))
       }
-    },
-
-    append = function(event){
-      dd <- private$.layout$format_event(event)
-
-      for (i in seq_len(nrow(dd))){
-        data <- as.list(dd[i, ])
-
-        q <-  sprintf(
-          "INSERT INTO %s (%s) VALUES (%s)",
-          private$.table,
-          paste(self$layout$col_names, collapse = ", "),
-          paste(rep("?", length(data)), collapse = ", ")
-        )
-
-        RJDBC::dbSendUpdate(get(".conn", private), q, list=data)
-      }
-
-      NULL
     }
   ),
 

@@ -24,9 +24,6 @@ x$set_col_types(x)
 x$show(threshold = NA_integer_, n = 20)
 x$flush()
 x$append(event)
-x$set_appenders(x)
-x$add_appender(appender, name = NULL)
-x$remove_appender(pos)
 x$set_buffer_size(x)
 x$set_should_flush(x)
 x$set_flush_on_exit(x)
@@ -46,9 +43,6 @@ x$conn
 x$data
 x$destination
 x$table
-x$appenders
-x$flush_on_exit
-x$flush_on_rotate
 x$buffer_df
 x$buffer_dt
 x$buffer_events
