@@ -28,10 +28,12 @@ performant and extensible.
 Users that have not worked with R6 classes before, will find the syntax for
 configuring Loggers a bit strange, but I did my best to compose a 
 hopefully helpful [vignette](https://s-fleck.github.io/lgr/articles/lgr.html). 
-Users that come from python or Java, will feel at home as lgr borrows heavily 
-from [Apache Log4j](https://logging.apache.org/log4j/2.x/) and
-[Python logging](https://docs.python.org/3/library/logging.html).
-
+User that have experience with 
+  [shiny](https://github.com/rstudio/shiny), 
+  [plumber](https://github.com/trestletech/plumber),
+  [python logging](https://docs.python.org/3/library/logging.html) or 
+  [Apache Log4j](https://logging.apache.org/log4j/2.x/) before will fill feel
+at home.
 
 
 
@@ -40,19 +42,22 @@ from [Apache Log4j](https://logging.apache.org/log4j/2.x/) and
 * *Hierarchical loggers* like in log4j and python logging. This is useful if you
   want to be able to configure logging on a per-package basis.
 * An *arbitrary number of appenders* for each logger. A single logger can write
-  values to the console, a logfile, a database, etc... .
+  to the console, a logfile, a database, etc... .
 * Allow for *custom fields* in log events. As opposed to many other logging 
   packages for R a log event is not just a message with a timestamp, but
   can contain arbitrary data fields. This is very helpful if you want to produce
   logs that are machine readable and easy to analyze.
 * *Vectorized* logging (so `lgr$fatal(capture.output(iris))` works)
-* Lightning fast in-memory log based in `data.table` included for 
+* Lightning fast *in-memory log* based in `data.table` included for 
   interactive use.
-* Support for advanced appenders such as database appenders, cached appenders,
-  etc... .
-* Optional *color* support via [crayon](https://github.com/r-lib/crayon)
-
-
+* Comes with a *wide range of appenders*, for example for:
+    * Appending to Databases (buffered or directly)
+    * Sending notifications via email or pushbullet
+    * writing JSON with arbitrary data fields
+    * In memory buffers
+    * colored console output
+* Optional support to use [glue](https://glue.tidyverse.org/) instead of 
+  `sprintf()` for composing log messages.
 
 
 ## Usage

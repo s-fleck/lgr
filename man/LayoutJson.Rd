@@ -48,7 +48,6 @@ the arguments to this function please refer to the Fields section.
 }
 
 \examples{
-
 # setup a dummy LogEvent
 
 event <- LogEvent$new(

@@ -7,18 +7,23 @@ lgr
 
 lgr is a logging package for R built on the back of [R6](https://github.com/r-lib/R6) classes. It is designed to be flexible, performant and extensible.
 
-Users that have not worked with R6 classes before, will find the syntax for configuring Loggers a bit strange, but I did my best to compose a hopefully helpful [vignette](https://s-fleck.github.io/lgr/articles/lgr.html). Users that come from python or Java, will feel at home as lgr borrows heavily from [Apache Log4j](https://logging.apache.org/log4j/2.x/) and [Python logging](https://docs.python.org/3/library/logging.html).
+Users that have not worked with R6 classes before, will find the syntax for configuring Loggers a bit strange, but I did my best to compose a hopefully helpful [vignette](https://s-fleck.github.io/lgr/articles/lgr.html). User that have experience with [shiny](https://github.com/rstudio/shiny), [plumber](https://github.com/trestletech/plumber), [python logging](https://docs.python.org/3/library/logging.html) or [Apache Log4j](https://logging.apache.org/log4j/2.x/) before will fill feel at home.
 
 Features
 --------
 
 -   *Hierarchical loggers* like in log4j and python logging. This is useful if you want to be able to configure logging on a per-package basis.
--   An *arbitrary number of appenders* for each logger. A single logger can write values to the console, a logfile, a database, etc... .
+-   An *arbitrary number of appenders* for each logger. A single logger can write to the console, a logfile, a database, etc... .
 -   Allow for *custom fields* in log events. As opposed to many other logging packages for R a log event is not just a message with a timestamp, but can contain arbitrary data fields. This is very helpful if you want to produce logs that are machine readable and easy to analyze.
 -   *Vectorized* logging (so `lgr$fatal(capture.output(iris))` works)
--   Lightning fast in-memory log based in `data.table` included for interactive use.
--   Support for advanced appenders such as database appenders, cached appenders, etc... .
--   Optional *color* support via [crayon](https://github.com/r-lib/crayon)
+-   Lightning fast *in-memory log* based in `data.table` included for interactive use.
+-   Comes with a *wide range of appenders*, for example for:
+    -   Appending to Databases (buffered or directly)
+    -   Sending notifications via email or pushbullet
+    -   writing JSON with arbitrary data fields
+    -   In memory buffers
+    -   colored console output
+-   Optional support to use [glue](https://glue.tidyverse.org/) instead of `sprintf()` for composing log messages.
 
 Usage
 -----
@@ -27,13 +32,13 @@ To log an *event* with with lgr we call `lgr$<logging function>()`. Unnamed argu
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [18:07:56.748] A critical error
+#> FATAL [11:30:34.513] A critical error
 lgr$error("A less severe error")
-#> ERROR [18:07:56.833] A less severe error
+#> ERROR [11:30:34.597] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [18:07:56.875] A potentially bad situation
+#> WARN  [11:30:34.635] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [18:07:56.877] iris has 150 rows
+#> INFO  [11:30:34.638] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
@@ -46,19 +51,19 @@ A Logger can have several Appenders. For example, we can add a JSON appender to 
 tf <- tempfile()
 lgr$add_appender(AppenderJson$new(tf))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [18:07:57.018] cars has 50 rows
+#> INFO  [11:30:34.768] cars has 50 rows
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2019-01-10 18:07:57","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-01-13 11:30:34","logger":"root","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 JSON naturally supports custom fields. Named arguments passed to `info()`, `warn()`, etc... are intepreted as custom fields.
 
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [18:07:57.040] loading cars {rows: 50, cols: 2}
+#> INFO  [11:30:34.789] loading cars {rows: 50, cols: 2}
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2019-01-10 18:07:57","logger":"root","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2019-01-10 18:07:57","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
+#> {"level":400,"timestamp":"2019-01-13 11:30:34","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-01-13 11:30:34","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
 ```
 
 For more examples please see the package [vignette](https://s-fleck.github.io/lgr/articles/lgr.html) and [documentation](https://s-fleck.github.io/lgr/)

@@ -64,7 +64,7 @@ Appenders once certain conditions are met." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9007</span>
       </span>
     </div>
 
@@ -137,15 +137,15 @@ x &lt;- x$new(threshold = NA_integer_, appenders = NULL,
   all(event[["level"]] &lt;= .obj()[["flush_threshold"]]) },
   layout = LayoutFormat$new(fmt = "%L [%t] %m", timestamp_fmt = "%H:%M:%S",
   colors = getOption("lgr.colors")), buffer_size = 1000)
-    x$append(event)
-x$flush()
-x$set_flush_on_exit(x)
-x$set_flush_on_rotate(x)
+    x$flush()
 x$set_appenders(x)
 x$add_appender(appender, name = NULL)
 x$remove_appender(pos)
+x$append(event)
 x$set_buffer_size(x)
 x$set_should_flush(x)
+x$set_flush_on_exit(x)
+x$set_flush_on_rotate(x)
 x$set_flush_threshold(level)
 x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
@@ -156,12 +156,12 @@ x$remove_filter(pos)
 x$set_filters(filters)
     x$appenders
 x$destination
+x$buffer_df
+x$buffer_dt
+x$buffer_events
+x$buffer_size
 x$flush_on_exit
 x$flush_on_rotate
-x$buffer_size
-x$buffered_events
-x$data
-x$dt
 x$flush_threshold
 x$should_flush
 x$layout
@@ -189,14 +189,18 @@ the buffer should be flushed when the Buffer is full (f.e when you close
 <span style="R">R</span>). Setting this to off can have slighly negative perfomance impacts.</p></dd>
 </dl>
     <dl class='dl-horizontal'>
-<dt><code>buffer_size, set_buffer_size(x)</code></dt><dd><p><code>integer</code> scalar. Number of <a href='LogEvent.html'>LogEvents</a> to buffer</p></dd>
+<dt><code>buffer_size, set_buffer_size(x)</code></dt><dd><p><code>integer</code> scalar <code>&gt;= 0</code> Number of
+<a href='LogEvent.html'>LogEvents</a> to buffer.</p></dd>
+    <dt><code>buffer_events</code>, <code>buffer_df</code>, <code>buffer_dt</code></dt><dd><p>The contents of the buffer as a <code>list</code> of <a href='LogEvent.html'>LogEvents</a>, a
+<code>data.frame</code> or a <code>data.table</code>.</p></dd>
     <dt><code>flush_threshold</code>, <code>set_flush_threshold()</code></dt><dd><p><code>integer</code> or <code>character</code>
 <a href='get_log_levels.html'>log level</a>. Minimum event level that will trigger flushing of
 the buffer. This behaviour is implemented through <code>should_flush()</code>,
 and you can modify that function for different behaviour.</p></dd>
 <dt><code>should_flush(event)</code>, <code>set_should_flush(x)</code></dt><dd><p>A function with exactly one arguments: <code>event</code>.
 If the function returns <code>TRUE</code>, flushing of the buffer
-is triggered. Defaults to flushing if a <code>FATAL</code> event is registered</p></dd>
+is triggered. Defaults to flushing if an event of level <code>error</code>
+or higher is registered.</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>dt</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a <code>data.table</code>

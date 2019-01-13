@@ -42,8 +42,8 @@ the last one.
 }
 
 \item{\code{buffer_events}, \code{buffer_df}, \code{buffer_dt}}{
-The contents of the buffer as a \code{list} of \code{LogEvents}, a \code{data.frame}
-or a \code{data.table}.
+The contents of the buffer as a \code{list} of \link[=LogEvent]{LogEvents}, a
+\code{data.frame} or a \code{data.table}.
 }
 
 \item{\code{flush_threshold}, \code{set_flush_threshold()}}{\code{integer} or \code{character}
@@ -54,7 +54,8 @@ and you can modify that function for different behaviour.
 \item{\code{should_flush(event)}, \code{set_should_flush(x)}}{
 A function with exactly one arguments: \code{event}.
 If the function returns \code{TRUE}, flushing of the buffer
-is triggered. Defaults to flushing if a \code{FATAL} event is registered }
+is triggered. Defaults to flushing if an event of level \code{error}
+or higher is registered.}
 }
 
 

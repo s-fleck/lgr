@@ -32,11 +32,11 @@
 
 <meta property="og:title" content="Format Log Events for Output to Databases — LayoutDbi" />
 
-<meta property="og:description" content="DBI Layouts convert LogEvents to a data.frames that can
-be appended to an existing database table. Via the col_types parameter
-they can also store information that AppenderDbi can use to create new
+<meta property="og:description" content="LayoutDbi can contain col_types that AppenderDbi can use to create new
 database tables; however, it is safer and more flexible to set up the log
-table up manually with an SQL CREATE TABLE statement instead." />
+table up manually with an SQL CREATE TABLE statement instead. LayoutDbi
+also contain a format_data() method that is applied to data.frames
+before they are insterted into the database by AppenderDbi." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -67,7 +67,7 @@ table up manually with an SQL CREATE TABLE statement instead." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9007</span>
       </span>
     </div>
 
@@ -125,11 +125,11 @@ table up manually with an SQL CREATE TABLE statement instead." />
 
     <div class="ref-description">
     
-    <p>DBI Layouts convert <a href='LogEvent.html'>LogEvents</a> to a <code>data.frames</code> that can
-be appended to an existing database table. Via the <code>col_types</code> parameter
-they can also store information that <a href='AppenderDbi.html'>AppenderDbi</a> can use to create new
+    <p>LayoutDbi can contain <code>col_types</code> that <a href='AppenderDbi.html'>AppenderDbi</a> can use to create new
 database tables; however, it is safer and more flexible to set up the log
-table up manually with an <code>SQL CREATE TABLE</code> statement instead.</p>
+table up manually with an <code>SQL CREATE TABLE</code> statement instead. LayoutDbi
+also contain a <code>format_data()</code> method that is applied to data.frames
+before they are insterted into the database by AppenderDbi.</p>
     
     </div>
 
@@ -137,17 +137,14 @@ table up manually with an <code>SQL CREATE TABLE</code> statement instead.</p>
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre>
-x &lt;- x$new(event_values = NULL, col_types = NULL)
-    x$format_event(event)
+x &lt;- x$new(col_types = NULL)
+    x$format_data(x)
 x$set_col_types(x)
 x$sql_create_table(table)
 x$clone(deep = FALSE)
-x$set_event_values(x)
-x$set_val_names(x)
+x$format_event(event)
     x$col_names
 x$col_types
-x$event_values
-x$val_names
     </pre>
     
     <h2 class="hasAnchor" id="creating-a-new-layout"><a class="anchor" href="#creating-a-new-layout"></a>Creating a New Layout</h2>
@@ -161,13 +158,9 @@ the arguments to this function please refer to the Fields section.</p>
     
     <dl class='dl-horizontal'>
 <dt><code>col_types</code></dt><dd><p>A named <code>character</code> vector of column types supported by
-the target database. If this is used instead of <code>event_values</code>, and
-the target logging <code>table</code> does not yet exist, the column type
-information is used by <a href='AppenderDbi.html'>AppenderDbi</a> or similar Appenders to create a
-new database table, either on instantion of the Appender or on writing
-of the first LogEvent. If the target database table already exists,
-the column type information is not used. You can only supply one of
-<code>event_values</code> and <code>col_types</code>.</p></dd>
+the target database. If not <code>NULL</code> this is used by <a href='AppenderDbi.html'>AppenderDbi</a> or similar
+Appenders to create a new database table on instantion of the Appender. If
+the target database table already exists, <code>col_types</code> is not used.</p></dd>
 <dt><code>col_names</code></dt><dd><p>Convenience method to get the names of the <code>col_types</code>
 vector</p></dd>
 </dl>
@@ -197,7 +190,7 @@ Layout for a DBI connection.</p>
     <div class='dont-index'><p><code><a href='select_dbi_layout.html'>select_dbi_layout()</a></code>, <a href='https://www.rdocumentation.org/packages/DBI/topics/DBI-package'>DBI::DBI</a>,</p>
 <p>Other Layouts: <code><a href='LayoutFormat.html'>LayoutFormat</a></code>,
   <code><a href='LayoutGlue.html'>LayoutGlue</a></code>, <code><a href='LayoutJson.html'>LayoutJson</a></code>,
-  <code><a href='LayoutTable.html'>LayoutTable</a></code>, <code><a href='Layout.html'>Layout</a></code></p></div>
+  <code><a href='Layout.html'>Layout</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -212,16 +205,10 @@ Layout for a DBI connection.</p>
 
 <span class='co'># defaults</span>
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutDbi</span>$<span class='fu'>new</span>()
-<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt;   level           timestamp       logger caller            msg
-#&gt; 1   200 2019-01-10 18:08:30 dummy logger   &lt;NA&gt; a test message</div><div class='input'>
+<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; [1] "$level [1] 200  $timestamp [1] \"2019-01-13 11:31:26 CET\"  $logger [1] \"dummy logger\"  $caller [1] NA  $msg [1] \"a test message\" "</div><div class='input'>
 <span class='co'># SQLite does not support timestamps so LayoutSqlite converts them to text</span>
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutSqlite</span>$<span class='fu'>new</span>()
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>))</div><div class='output co'>#&gt; 'data.frame':	1 obs. of  5 variables:
-#&gt;  $ level    : num 200
-#&gt;  $ timestamp: chr "2019-01-10 18:08:30"
-#&gt;  $ logger   : chr "dummy logger"
-#&gt;  $ caller   : chr NA
-#&gt;  $ msg      : chr "a test message"</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>))</div><div class='output co'>#&gt;  chr "$level [1] 200  $timestamp [1] \"2019-01-13 11:31:26 CET\"  $logger [1] \"dummy logger\"  $caller [1] NA  $msg "| __truncated__</div><div class='input'>
 <span class='co'># advanced example that supports a custom_field:</span>
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutDbi</span>$<span class='fu'>new</span>(
   <span class='kw'>col_types</span> <span class='kw'>=</span>  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(
@@ -241,8 +228,7 @@ Layout for a DBI connection.</p>
   <span class='kw'>custom_field</span> <span class='kw'>=</span> <span class='st'>"blubb"</span>
 )
 
-<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt;             timestamp level            msg custom_field
-#&gt; 1 2019-01-10 18:08:30   200 a test message        blubb</div><div class='input'>
+<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; [1] "$level [1] 200  $timestamp [1] \"2019-01-13 11:31:26 CET\"  $logger [1] \"dummy logger\"  $caller [1] NA  $msg [1] \"a test message\"  $custom_field [1] \"blubb\" "</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

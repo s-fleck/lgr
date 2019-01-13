@@ -56,7 +56,6 @@ reference:
   contents:
   - Appender
   - Layout
-  - LayoutTable
   - Filterable
   - AppenderTable
   - AppenderMemory

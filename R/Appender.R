@@ -768,8 +768,8 @@ AppenderDt <- R6::R6Class(
 #'   }
 #'
 #'   \item{`buffer_events`, `buffer_df`, `buffer_dt`}{
-#'     The contents of the buffer as a `list` of `LogEvents`, a `data.frame`
-#'     or a `data.table`.
+#'     The contents of the buffer as a `list` of [LogEvents][LogEvent], a
+#'     `data.frame` or a `data.table`.
 #'   }
 #'
 #'  \item{`flush_threshold`, `set_flush_threshold()`}{`integer` or `character`
@@ -780,7 +780,8 @@ AppenderDt <- R6::R6Class(
 #'   \item{`should_flush(event)`, `set_should_flush(x)`}{
 #'     A function with exactly one arguments: `event`.
 #'     If the function returns `TRUE`, flushing of the buffer
-#'     is triggered. Defaults to flushing if a `FATAL` event is registered }
+#'     is triggered. Defaults to flushing if an event of level `error`
+#'     or higher is registered.}
 #' }
 #'
 #' @section Methods:
@@ -1633,9 +1634,9 @@ AppenderPushbullet <- R6::R6Class(
       devices = NULL,
       apikey = NULL
     ){
-      private$insert_pos  <- 0L
-      private$last_event  <- 0L
-      private$event_order <- seq_len(buffer_size)
+      private$initialize_buffer(buffer_size)
+      self$set_flush_on_rotate(FALSE)
+      self$set_flush_on_exit(FALSE)
 
       self$set_layout(layout)
       self$set_threshold(threshold)
@@ -1644,7 +1645,6 @@ AppenderPushbullet <- R6::R6Class(
       self$set_buffer_size(buffer_size)
       self$set_subject_layout(subject_layout)
       self$set_should_flush(function(event){
-        obj <- get_calling_filterable()
         is.na(.obj()[["flush_threshold"]]) || all(event[["level"]] <= .obj()[["flush_threshold"]])
       })
 
@@ -1877,11 +1877,11 @@ AppenderSendmail <- R6::R6Class(
       headers = list()
     ){
       assert_namespace("sendmailR")
-      assert(is_bool(html))
+      assert(is_scalar_bool(html))
 
-      private$insert_pos <- 0L
-      private$last_event    <- 0L
-      private$event_order   <- seq_len(buffer_size)
+      private$initialize_buffer(buffer_size)
+      self$set_flush_on_rotate(FALSE)
+      self$set_flush_on_exit(FALSE)
 
       self$set_to(to)
       self$set_control(control)
@@ -1895,7 +1895,6 @@ AppenderSendmail <- R6::R6Class(
       self$set_layout(layout)
       self$set_threshold(threshold)
       self$set_flush_threshold(flush_threshold)
-      self$set_buffer_size(buffer_size)
       self$set_should_flush(function(event){
         is.na(.obj()[["flush_threshold"]]) || all(event[["level"]] <= .obj()[["flush_threshold"]])
       })
@@ -2018,9 +2017,9 @@ AppenderGmail <- R6::R6Class(
     ){
       assert_namespace("gmailr")
 
-      private$insert_pos <- 0L
-      private$last_event    <- 0L
-      private$event_order   <- seq_len(buffer_size)
+      private$initialize_buffer(buffer_size)
+      self$set_flush_on_rotate(FALSE)
+      self$set_flush_on_exit(FALSE)
 
       self$set_to(to)
       self$set_from(from)
