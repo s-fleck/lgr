@@ -639,7 +639,7 @@ AppenderDt <- R6::R6Class(
 
         # take special care if vectorized insert is bigger than buffer size
         if (lenmax > nrow(dt)){
-          vals <- lapply(vals, trim_last_event, nrow(dt))
+          vals <- lapply(vals, trim_to_buffer_size, nrow(dt))
           private[["id"]] <- get("id", envir = private) + lenmax - nrow(private$.data)
           lenmax <- nrow(dt)
         }
@@ -2087,10 +2087,10 @@ AppenderGmail <- R6::R6Class(
 
 # utils -------------------------------------------------------------------
 
-#TODO: function needs renaming and doc
-trim_last_event <- function(x, max_len){
-  if (length(x) == 1L)
+# trim multi-valued events from vectorized inserts to the buffer size
+trim_to_buffer_size <- function(x, buffer_size){
+  if (length(x) <= buffer_size)
     x
   else
-    x[seq.int(length(x) - max_len + 1L, length(x))]
+    x[seq.int(length(x) - buffer_size + 1L, length(x))]
 }
