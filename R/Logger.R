@@ -615,34 +615,7 @@ Logger <- R6::R6Class(
 
 
 
-# utils -------------------------------------------------------------------
-
-#' Demote an Exception to a Warning
-#'
-#' Throws a timestamped warning instead of stopping the program. This is
-#' the default exception handler used by [Loggers].
-#'
-#' @param e a `character` scalar, usually a `try-error` as thrown by
-#' [base::tryCatch()]
-#'
-#' @return The warning as `character` vector
-#' @export
-#'
-#' @examples
-#' tryCatch(stop("an error has occured"), error = default_exception_handler)
-#'
-default_exception_handler <- function(e){
-  warning(
-    "[", format(Sys.time(), format = "%Y-%m-%d %H:%M:%OS3"), "] ",
-    "An error occured during logging: ", e, call. = FALSE
-  )
-}
-
-
-
 # LoggerGlue --------------------------------------------------------------
-
-
 
 #' @export
 LoggerGlue <- R6::R6Class(

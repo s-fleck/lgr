@@ -11,10 +11,9 @@ Appenders once certain conditions are met.
 \preformatted{
 x <- x$new(threshold = NA_integer_, appenders = NULL,
   flush_threshold = "fatal", flush_on_exit = TRUE, flush_on_rotate = TRUE,
-  should_flush = function(event) { is.na(.obj()[["flush_threshold"]]) ||
-  all(event[["level"]] <= .obj()[["flush_threshold"]]) },
-  layout = LayoutFormat$new(fmt = "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S",
-  colors = getOption("lgr.colors")), buffer_size = 1000)
+  should_flush = default_should_flush, layout = LayoutFormat$new(fmt = "\%L [\%t]
+  \%m", timestamp_fmt = "\%H:\%M:\%S", colors = getOption("lgr.colors")),
+  buffer_size = 1000)
 
 x$flush()
 x$set_appenders(x)

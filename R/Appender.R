@@ -1033,19 +1033,17 @@ AppenderBuffer <- R6::R6Class(
   public = list(
     initialize = function(
       threshold = NA_integer_,
-      appenders = NULL,
-      flush_threshold = "fatal",
-      flush_on_exit = TRUE,
-      flush_on_rotate = TRUE,
-      should_flush = function(event){
-        is.na(.obj()[["flush_threshold"]]) || all(event[["level"]] <= .obj()[["flush_threshold"]])
-      },
       layout = LayoutFormat$new(
         fmt = "%L [%t] %m",
         timestamp_fmt = "%H:%M:%S",
         colors = getOption("lgr.colors")
       ),
-      buffer_size = 1e3
+      appenders = NULL,
+      buffer_size = 1e3,
+      flush_threshold = "fatal",
+      flush_on_exit = TRUE,
+      flush_on_rotate = TRUE,
+      should_flush = default_should_flush
     ){
       self$set_threshold(threshold)
 
@@ -1268,9 +1266,7 @@ AppenderDbi <- R6::R6Class(
       flush_threshold = "error",
       flush_on_exit = TRUE,
       flush_on_rotate = TRUE,
-      should_flush = function(event){
-        is.na(.obj()[["flush_threshold"]]) || all(event[["level"]] <= .obj()[["flush_threshold"]])
-      }
+      should_flush = default_should_flush
     ){
       assert_namespace("DBI", "data.table")
 
@@ -1895,9 +1891,7 @@ AppenderSendmail <- R6::R6Class(
       self$set_layout(layout)
       self$set_threshold(threshold)
       self$set_flush_threshold(flush_threshold)
-      self$set_should_flush(function(event){
-        is.na(.obj()[["flush_threshold"]]) || all(event[["level"]] <= .obj()[["flush_threshold"]])
-      })
+      self$set_should_flush(default_should_flush)
     },
 
     flush = function(
@@ -2032,9 +2026,7 @@ AppenderGmail <- R6::R6Class(
       self$set_threshold(threshold)
       self$set_flush_threshold(flush_threshold)
       self$set_buffer_size(buffer_size)
-      self$set_should_flush(function(event){
-        is.na(.obj()[["flush_threshold"]]) || all(event[["level"]] <= .obj()[["flush_threshold"]])
-      })
+      self$set_should_flush(default_should_flush)
 
       private$.flush_on_exit   <- FALSE
       private$.flush_on_rotate <- FALSE

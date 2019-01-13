@@ -48,6 +48,7 @@ Collate:
     'Layout.R'
     'LogEvent.R'
     'Logger.R'
+    'default_functions.R'
     'lgr-package.R'
     'print_Logger.R'
     'read_json_log.R'
