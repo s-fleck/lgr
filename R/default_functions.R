@@ -23,6 +23,7 @@ default_exception_handler <- function(e){
 
 
 
+
 #' Default Should Flush Function
 #'
 #' This is the default "shuld flush" trigger function for Appenders that

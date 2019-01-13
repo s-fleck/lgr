@@ -169,7 +169,7 @@ arguments in \code{...} will be combined with \code{msg} via \code{base::sprintf
 Named arguments in \code{...} will be passed on to \code{LogEvent$new()} as custom
 fields. If no unnamed arguments are present, \code{msg} will \emph{not} be passed
 to \code{sprintf()}, so in that case you do not have to escape \code{"\%"}
-characters.#'
+characters.
 If the new LogEvent passes this Loggers filters, it will be dispatched
 to the relevant \link{Appenders} and checked against their thresholds and
 filters.

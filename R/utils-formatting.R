@@ -26,6 +26,13 @@ NULL
 
 # internal ----------------------------------------------------------------
 
+fmt_function_signature <- function(x){
+  paste0("function(", paste(names(formals(x)), collapse = ", "), ")")
+}
+
+
+
+
 fmt_threshold <- function(
   x,
   type = "both",
@@ -59,29 +66,4 @@ fmt_threshold <- function(
   }
 
   vapply(x, impl, character(1))
-}
-
-
-
-
-
-
-
-# Given a string, indent every line by some number of spaces.
-# The exception is to not add spaces after a trailing \n.
-indent <- function(str, indent = 0) {
-  gsub("(^|\\n)(?!$)",
-       paste0("\\1", paste(rep(" ", indent), collapse = "")),
-       str,
-       perl = TRUE
-  )
-}
-
-
-
-
-# Trim a string to n characters; if it's longer than n, add " ..." to the end
-trim <- function(str, n = 60) {
-  if (nchar(str) > n) paste(substr(str, 1, n-4), "...")
-  else str
 }

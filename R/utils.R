@@ -85,23 +85,6 @@ get_user <- function(fallback = "unknown user"){
 
 # internal --------------------------------------------------------------
 
-fmt_function_signature <- function(x){
-  paste0("function(", paste(names(formals(x)), collapse = ", "), ")")
-}
-
-
-
-
-`%||%` <- function (x, y){
-  if (is.null(x))
-    y
-  else
-    x
-}
-
-
-
-
 #' Paste and Truncate
 #'
 #' color aware version of ptrunc from sfmisc
@@ -171,93 +154,6 @@ generate_sql_create_table <- function(
   )
 
   sprintf("CREATE TABLE %s (%s)", tname, cols)
-}
-
-
-
-
-# standardize log levels --------------------------------------------------
-
-#' Standardize User-Input Log Levels to Their Integer Representation
-#'
-#' @param x a `character` or `integer` scalar, or vector for
-#'   standardize_log_levels
-#' @param log_levels A named character vector of valid log levels
-#'
-#' @return An unnamed `integer` vector
-#'
-#' @noRd
-standardize_threshold <- function(
-  x,
-  log_levels = c(getOption("lgr.log_levels"), c("all" = NA_integer_, "off" = 0L))
-){
-  assert(is_scalar(x), "A threshold must be a scalar (a vector of length 1)" )
-
-  if (is.na(x)){
-    return(NA_integer_)
-  }
-
-  if (is_integerish(x) && x >= 0){
-    return(as.integer(x))
-  }
-
-  if (is.character(x) && (x %in% names(log_levels)) ){
-    return(unname(log_levels[match(x, names(log_levels))]))
-  }
-
-  stop(error_msg_log_levels(deparse(substitute(x)), log_levels))
-}
-
-
-
-
-standardize_log_level <- function(
-  x,
-  log_levels = getOption("lgr.log_levels")
-){
-  assert(is_scalar(x), "'", deparse(substitute(x)), "' must be a scalar log level")
-
-  if (is_integerish(x) && x > 0){
-    return(as.integer(x))
-  }
-
-  if (is.character(x) && (x %in% names(log_levels)) ){
-    return(unname(log_levels[match(x, names(log_levels))]))
-  }
-
-  stop(error_msg_log_levels(deparse(substitute(x)), log_levels))
-}
-
-
-
-
-standardize_log_levels <- function(
-  x,
-  log_levels = getOption("lgr.log_levels")
-){
-
-  if (is_integerish(x) && all(x > 0)){
-    return(as.integer(x))
-  }
-
-  if (is.character(x) && all(x %in% names(log_levels)) ){
-    return(unname(log_levels[match(x, names(log_levels))]))
-  }
-
-  stop(error_msg_log_levels(deparse(substitute(x)), log_levels))
-}
-
-
-
-
-error_msg_log_levels <- function(varname, log_levels){
-  ll_text <-
-    paste(sprintf("%s (%s)", names(log_levels), log_levels), collapse = ", ")
-
-  paste0(
-    "'", varname, "' must either the numeric or character representation",
-    "of one of the following log levels: ", ll_text
-  )
 }
 
 

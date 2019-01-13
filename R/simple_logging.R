@@ -98,9 +98,6 @@ log_exception <- function(
 
 # managment ---------------------------------------------------------------
 
-
-
-
 #' @description
 #'   lgr provides convenience functions to manage the root Logger. These
 #'   are intended for interactive use, and for people who just need basic
@@ -232,8 +229,8 @@ show_log = function(
 
 # simple setup ------------------------------------------------------------
 
-default_appenders <- function()
-{
+default_appenders <- function(
+){
   log_files  <- getOption("lgr.log_file", NULL)
   thresholds <- names(log_files)
 
@@ -254,7 +251,6 @@ default_appenders <- function()
         NULL
       }
     )
-
   })
 }
 

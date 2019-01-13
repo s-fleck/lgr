@@ -1,3 +1,20 @@
+as_log_levels <- function(x){
+  assert(is_integerish(x) && identical(length(names(x)), length(x)))
+  assert(
+    x > 0 && !is.na(x),
+    "The log levels `0` (off) and `NA` (all) are reserved"
+  )
+  x <- setNames(as.integer(x), names(x))
+  structure(sort(x), class = c("log_levels", "integer"))
+}
+
+
+
+
+DEFAULT_LOG_LEVELS <- c("fatal", "error", "warn", "info", "debug", "trace")
+
+# manage options ----------------------------------------------------------
+
 #' Manage Log Levels
 #'
 #' Display, add and remove character labels for log levels.
@@ -66,7 +83,7 @@ remove_log_levels <- function(
 ){
   assert(is.character(level_names))
   assert(
-    !any(c("fatal", "error", "warn", "info", "debug", "trace") %in% level_names),
+    !any(DEFAULT_LOG_LEVELS %in% level_names),
     "Cannot remove default log levels"
   )
   current_lvls <- getOption("lgr.log_levels")
@@ -80,18 +97,8 @@ remove_log_levels <- function(
 
 
 
-as_log_levels <- function(x){
-  assert(is_integerish(x) && identical(length(names(x)), length(x)))
-  assert(
-    x > 0 && !is.na(x),
-    "The log levels `0` (off) and `NA` (all) are reserved"
-  )
-  x <- setNames(as.integer(x), names(x))
-  structure(sort(x), class = c("log_levels", "integer"))
-}
 
-
-
+# format ------------------------------------------------------------------
 
 format_log_levels <- function(
   x
@@ -138,6 +145,92 @@ colorize_levels <- function(
 
 
 
+# standardize ------------------------------------------------------------
+
+#' Standardize User-Input Log Levels to Their Integer Representation
+#'
+#' @param x a `character` or `integer` scalar, or vector for
+#'   standardize_log_levels
+#' @param log_levels A named character vector of valid log levels
+#'
+#' @return An unnamed `integer` vector
+#'
+#' @noRd
+standardize_threshold <- function(
+  x,
+  log_levels = c(getOption("lgr.log_levels"), c("all" = NA_integer_, "off" = 0L))
+){
+  assert(is_scalar(x), "A threshold must be a scalar (a vector of length 1)" )
+
+  if (is.na(x)){
+    return(NA_integer_)
+  }
+
+  if (is_integerish(x) && x >= 0){
+    return(as.integer(x))
+  }
+
+  if (is.character(x) && (x %in% names(log_levels)) ){
+    return(unname(log_levels[match(x, names(log_levels))]))
+  }
+
+  stop(error_msg_log_levels(deparse(substitute(x)), log_levels))
+}
+
+
+
+
+standardize_log_level <- function(
+  x,
+  log_levels = getOption("lgr.log_levels")
+){
+  assert(is_scalar(x), "'", deparse(substitute(x)), "' must be a scalar log level")
+
+  if (is_integerish(x) && x > 0){
+    return(as.integer(x))
+  }
+
+  if (is.character(x) && (x %in% names(log_levels)) ){
+    return(unname(log_levels[match(x, names(log_levels))]))
+  }
+
+  stop(error_msg_log_levels(deparse(substitute(x)), log_levels))
+}
+
+
+
+
+standardize_log_levels <- function(
+  x,
+  log_levels = getOption("lgr.log_levels")
+){
+
+  if (is_integerish(x) && all(x > 0)){
+    return(as.integer(x))
+  }
+
+  if (is.character(x) && all(x %in% names(log_levels)) ){
+    return(unname(log_levels[match(x, names(log_levels))]))
+  }
+
+  stop(error_msg_log_levels(deparse(substitute(x)), log_levels))
+}
+
+
+
+
+error_msg_log_levels <- function(varname, log_levels){
+  ll_text <-
+    paste(sprintf("%s (%s)", names(log_levels), log_levels), collapse = ", ")
+
+  paste0(
+    "'", varname, "' must either the numeric or character representation",
+    "of one of the following log levels: ", ll_text
+  )
+}
+
+
+
 
 #' Label/Unlabel Log Levels
 #'
@@ -160,7 +253,7 @@ colorize_levels <- function(
 #' print(x)
 #' unlabel_levels(x)
 #'
-label_levels = function(
+label_levels <- function(
   levels,
   log_levels = getOption("lgr.log_levels")
 ){
@@ -181,9 +274,11 @@ label_levels = function(
 
 
 
+# label/unlabel -----------------------------------------------------------
+
 #' @rdname label_levels
 #' @export
-unlabel_levels = function(
+unlabel_levels <- function(
   labels,
   log_levels = getOption("lgr.log_levels")
 ){
@@ -205,4 +300,3 @@ unlabel_levels = function(
   names(res) <- labels
   res
 }
-

@@ -13,6 +13,8 @@ test_that("simple_logging works as expected", {
 })
 
 
+
+
 test_that("labelling/unlabelling log levels is symetirc", {
   tdat <- sample(c(seq(0, 600, by = 100), NA))
 
@@ -34,10 +36,6 @@ test_that("labelling/unlabelling log levels is symetirc", {
   expect_warning(
     expect_identical(unname(unlabel_levels(chr)), num)
   )
-
-
-
-
 })
 
 
@@ -59,7 +57,6 @@ test_that("colorize log levels works", {
   walk(tr1, function(.x) expect_true(crayon::has_style(.x), info = .x))
   tr2 <- colorize_levels(label_levels(tdat), colors = colors)
   walk(tr2, function(.x) expect_true(crayon::has_style(.x), info = .x))
-
 
   expect_true(is.null(colorize_levels(NULL)))
   expect_identical(colorize_levels(integer()), integer())

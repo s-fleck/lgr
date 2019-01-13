@@ -12,10 +12,18 @@ Appenders and Loggers. You normaly do not need to construct a formal
 \code{EventFilter} object, you can just use any \code{function} that has the single
 argument \code{event} or any object that has a \code{filter} method.
 }
-\details{
-lgr comes with a few preset filters that do not actually filter LogEvents
-but modify them. That is useful if you want to modify all logging cals for
-a certain scope (usually a \code{function})
+\note{
+The base class for Filters is called \code{EventFilter} so that it doesn't
+conflict with \code{\link[base:Filter]{base::Filter()}}. The recommended convention for Filter
+subclasses is to call them \code{FilterSomething} and leave out the
+\code{Event} prefix.
+}
+\section{Modifying LogEvents with Filters}{
+
+
+Since LogEvents are R6 objects with reference semantics, Filters can also
+be abused to modify log events before passing them on. lgr comes with a few
+preset filters that use this property:
 
 \describe{
 
@@ -29,12 +37,7 @@ processed by the Appender/Logger that this filter is attached to to
 \code{level}. See also \code{\link[=with_log_value]{with_log_value()}}}
 }
 }
-\note{
-The base class for Filters is called \code{EventFilter} so that it doesn't
-conflict with \code{\link[base:Filter]{base::Filter()}}. The recommended convention for Filter
-subclasses is to call them \code{FilterSomething} and leave out the
-\code{Event} prefix.
-}
+
 \section{Accessing Appenders and Loggers from Filters}{
 
 

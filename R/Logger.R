@@ -107,7 +107,7 @@
 #'     Named arguments in `...` will be passed on to `LogEvent$new()` as custom
 #'     fields. If no unnamed arguments are present, `msg` will *not* be passed
 #'     to `sprintf()`, so in that case you do not have to escape `"%"`
-#'     characters.#'
+#'     characters.
 #'     If the new LogEvent passes this Loggers filters, it will be dispatched
 #'     to the relevant [Appenders] and checked against their thresholds and
 #'     filters.
@@ -136,7 +136,6 @@
 #' fields; however, you can suppress this behaviour by making named argument
 #' start with a `"."`. Please refer to `vignette("lgr", package = "lgr")` for
 #' examples.
-#'
 #'
 #' @name Logger
 #' @aliases Loggers LoggerGlue

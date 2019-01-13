@@ -1,25 +1,27 @@
-#'  Event Filters
+#' Event Filters
 #'
-#'  Filters can be used for the `$set_filter()` and `$add_filter()` methods of
-#'  Appenders and Loggers. You normaly do not need to construct a formal
-#'  `EventFilter` object, you can just use any `function` that has the single
-#'  argument `event` or any object that has a `filter` method.
+#' Filters can be used for the `$set_filter()` and `$add_filter()` methods of
+#' Appenders and Loggers. You normaly do not need to construct a formal
+#' `EventFilter` object, you can just use any `function` that has the single
+#' argument `event` or any object that has a `filter` method.
 #'
-#'  lgr comes with a few preset filters that do not actually filter LogEvents
-#'  but modify them. That is useful if you want to modify all logging cals for
-#'  a certain scope (usually a `function`)
+#' @section Modifying LogEvents with Filters:
 #'
-#'  \describe{
+#' Since LogEvents are R6 objects with reference semantics, Filters can also
+#' be abused to modify log events before passing them on. lgr comes with a few
+#' preset filters that use this property:
 #'
-#'  \item{`FilterInject$new(..., .list)`}{`...` and `.list` can take any number
-#'    of named R6 objects that will be injected as custom fields into all
-#'    LogEvents processed by the  Appender/Logger that this filter is attached
-#'    to. See also [with_log_value()]}
+#' \describe{
 #'
-#'  \item{`FilterForceLevel$new(level)`}{Sets the level of all LogEvents
-#'    processed by the Appender/Logger that this filter is attached to to
-#'    `level`. See also [with_log_value()]}
-#'  }
+#' \item{`FilterInject$new(..., .list)`}{`...` and `.list` can take any number
+#'   of named R6 objects that will be injected as custom fields into all
+#'   LogEvents processed by the  Appender/Logger that this filter is attached
+#'   to. See also [with_log_value()]}
+#'
+#' \item{`FilterForceLevel$new(level)`}{Sets the level of all LogEvents
+#'   processed by the Appender/Logger that this filter is attached to to
+#'   `level`. See also [with_log_value()]}
+#' }
 #'
 #' @note
 #' The base class for Filters is called `EventFilter` so that it doesn't
