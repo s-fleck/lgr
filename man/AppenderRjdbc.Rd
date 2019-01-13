@@ -18,7 +18,17 @@ x <- x$new(conn, table, threshold = NA_integer_,
 x$append(event)
 x$set_close_on_exit(x)
 x$set_conn(conn)
+x$set_col_types(x)
 x$show(threshold = NA_integer_, n = 20)
+x$flush()
+x$set_appenders(x)
+x$add_appender(appender, name = NULL)
+x$remove_appender(pos)
+x$set_buffer_size(x)
+x$set_should_flush(x)
+x$set_flush_on_exit(x)
+x$set_flush_on_rotate(x)
+x$set_flush_threshold(level)
 x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
@@ -28,11 +38,20 @@ x$remove_filter(pos)
 x$set_filters(filters)
 
 x$close_on_exit
+x$col_types
 x$conn
 x$data
 x$destination
 x$table
-x$dt
+x$appenders
+x$flush_on_exit
+x$flush_on_rotate
+x$buffer_df
+x$buffer_dt
+x$buffer_events
+x$buffer_size
+x$flush_threshold
+x$should_flush
 x$layout
 x$threshold
 x$filters
@@ -49,6 +68,29 @@ x$filters
 Database connection when the Logger is removed?}
 \item{\code{conn}, \code{set_conn(conn)}}{a \link[DBI:dbConnect]{DBI connection}}
 \item{\code{table}}{Name of the target database table}
+}
+
+
+
+\describe{
+\item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar. Number of \link{LogEvents} to buffer}
+
+\item{\code{flush_threshold}, \code{set_flush_threshold()}}{\code{integer} or \code{character}
+\link[=log_level]{log level}. Minimum event level that will trigger flushing of
+the buffer. This behaviour is implemented through \code{should_flush()},
+and you can modify that function for different behaviour.
+}
+\item{\code{should_flush(event)}, \code{set_should_flush(x)}}{
+A function with exactly one arguments: \code{event}.
+If the function returns \code{TRUE}, flushing of the buffer
+is triggered. Defaults to flushing if a \code{FATAL} event is registered }
+}
+
+
+
+\describe{
+\item{\code{dt}}{Get the log recorded by this \code{Appender} as a \code{data.table}
+with a maximum of \code{buffer_size} rows}
 }
 
 
@@ -89,8 +131,14 @@ modify them before they are passed on. Look at the source code of
 
 
 \describe{
-\item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a
-log level bellow \code{threshold}.}
+\item{\code{flush()}}{Manually trigger flushing of the buffer}
+}
+
+
+\describe{
+\item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a log level
+bellow \code{threshold}. The log entries will be formated for console output
+via this Appenders \link{Layout}}
 }
 
 

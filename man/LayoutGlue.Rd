@@ -67,6 +67,6 @@ useful for layout glue: \code{\link[=colorize_levels]{colorize_levels()}}, \code
 
 Other Layouts: \code{\link{LayoutDbi}},
   \code{\link{LayoutFormat}}, \code{\link{LayoutJson}},
-  \code{\link{LayoutTable}}, \code{\link{Layout}}
+  \code{\link{Layout}}
 }
 \concept{Layouts}

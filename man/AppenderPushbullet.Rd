@@ -40,10 +40,10 @@ x$set_filters(filters)
 
 x$apikey
 x$subject_layout
+x$buffer_df
+x$buffer_dt
+x$buffer_events
 x$buffer_size
-x$buffered_events
-x$data
-x$dt
 x$flush_threshold
 x$should_flush
 x$destination

@@ -8,17 +8,13 @@ Format a LogEvent as JSON
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(event_values = NULL, toJSON_args = list(auto_unbox = TRUE))
+x <- x$new(toJSON_args = list(auto_unbox = TRUE))
 
 x$format_event(event)
 x$set_toJSON_args(x)
 x$clone(deep = FALSE)
-x$set_event_values(x)
-x$set_val_names(x)
 
 x$toJSON_args
-x$event_values
-x$val_names
 
 }
 }
@@ -37,24 +33,10 @@ the arguments to this function please refer to the Fields section.
 \describe{
 \item{\code{toJSON_args}}{a list of values passed on to \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}}
 }
-
-
-
-\describe{
-\item{\code{event_values}}{Names of the fields of the \link{LogEvent}
-to include in the output object.
-}
-}
 }
 
 \section{Methods}{
 
-
-
-
-\describe{
-\item{\code{format_event(event)}}{format a \link{LogEvent}}
-}
 }
 
 \examples{
@@ -74,19 +56,12 @@ event <- LogEvent$new(
 lo <- LayoutJson$new()
 lo$format_event(event)
 
-
-# Values from the LogEvent can be suppressed
-lo <- LayoutJson$new(
-  event_values = c("level", "timestamp", "msg")
-)
-lo$format_event(event)
-
 }
 \seealso{
 \code{\link[=read_json_lines]{read_json_lines()}}, \url{http://jsonlines.org/}
 
 Other Layouts: \code{\link{LayoutDbi}},
   \code{\link{LayoutFormat}}, \code{\link{LayoutGlue}},
-  \code{\link{LayoutTable}}, \code{\link{Layout}}
+  \code{\link{Layout}}
 }
 \concept{Layouts}

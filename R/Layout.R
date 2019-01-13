@@ -278,68 +278,6 @@ LayoutGlue <- R6::R6Class(
 
 
 
-# LayoutTable -------------------------------------------------------------
-
-#' Abstract Class for Formatting Data as Tabular Structures
-#'
-#' Abstract classes are exported for developers that want to extend them, they
-#' are not useful to casual users. [LayoutDbi] and [LayoutJson] are derived
-#' from LayoutTabel.
-#'
-#' @inheritSection Layout Methods
-#'
-#' @section Fields:
-#'
-#' \describe{
-#'   \item{`event_values`}{Names of the fields of the [LogEvent]
-#'     to include in the output object.
-#'   }
-#' }
-#'
-#'
-#' @family Layouts
-#'
-#' @name LayoutTable
-NULL
-
-
-
-
-#' @export
-LayoutTable <- R6::R6Class(
-  "LayoutTable",
-  inherit = Layout,
-  public = list(
-    format_event = function(event) { as.data.frame(event) },
-
-    set_event_values = function(x){
-      assert(is.character(x) || is.null(x))
-      private$.event_values <- x
-      invisible(self)
-    },
-
-    set_val_names = function(x){
-      assert(is.null(x) || is.character(x))
-      private$.val_names <- x
-      invisible(self)
-    }
-
-  ),
-
-  active = list(
-    event_values  = function() get(".event_values", private),
-    val_names   = function() get(".val_names", private)
-  ),
-
-  private = list(
-    .event_values  = NULL,
-    .val_names   = NULL
-  )
-)
-
-
-
-
 # LayoutDbi ---------------------------------------------------------------
 
 
@@ -363,13 +301,9 @@ LayoutTable <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{`col_types`}{A named `character` vector of column types supported by
-#'     the target database. If this is used instead of `event_values`, and
-#'     the target logging `table` does not yet exist, the column type
-#'     information is used by [AppenderDbi] or similar Appenders to create a
-#'     new database table, either on instantion of the Appender or on writing
-#'     of the first LogEvent. If the target database table already exists,
-#'     the column type information is not used. You can only supply one of
-#'     `event_values` and `col_types`.
+#'   the target database. If not `NULL` this is used by [AppenderDbi] or similar
+#'   Appenders to create a new database table on instantion of the Appender. If
+#'   the target database table already exists, `col_types` is not used.
 #'   }
 #'   \item{`col_names`}{Convenience method to get the names of the `col_types`
 #'     vector}
@@ -445,57 +379,16 @@ NULL
 #' @export
 LayoutDbi <- R6::R6Class(
   "LayoutDbi",
-  inherit = LayoutTable,
+  inherit = Layout,
   public = list(
     initialize = function(
-      event_values  = NULL,
       col_types = NULL
     ){
-      assert(
-        is.null(event_values) + is.null(col_types) >= 1,
-        "You can either supply `event_values` or `col_types`, not both. ",
-        "If you dont supply anything, `event_values` will default to: ",
-        paste(DEFAULT_FIELDS, collapse = ", ")
-      )
-
-
-      if (is.null(event_values))  event_values <- names(col_types)
-      if (is.null(event_values))  event_values <- DEFAULT_FIELDS
-
-
-      if (!is.null(col_types)){
-        if (is.null(event_values)){
-
-        }
-        assert_colnames_match_valnames(names(col_types), event_values)
-
-      }
-
-      self$set_event_values(event_values)
       self$set_col_types(col_types)
     },
 
-    format_event = function(event){
-      ev <- get(".event_values", private)
-
-      if (length(ev)){
-        vals <- mget(ev, event, ifnotfound = NA)
-      } else {
-        if (is.null(ev)){
-          vals <- get("values", event)
-        } else {
-          vals <- c()
-        }
-      }
-
-      ct <- get(".col_types", private)
-      if (length(ct)){
-        assert(setequal(names(vals), names(ct)))
-        vals <- vals[names(private$.col_types)]
-      }
-
-      vals <- c(vals, list(stringsAsFactors = FALSE))
-      do.call(data.frame, args = vals)
+    format_data = function(x){
+      x
     },
 
     set_col_types = function(x){
@@ -512,7 +405,6 @@ LayoutDbi <- R6::R6Class(
         !is.null(private$.col_types),
         "To create new database tables the Layout must contain `col_types`"
       )
-
       generate_sql_create_table(
         tname = table,
         col_types = private$.col_types,
@@ -523,14 +415,7 @@ LayoutDbi <- R6::R6Class(
 
   active = list(
     col_types = function() private$.col_types,
-    col_names = function() {
-      ct <- get(".col_types", envir = private)
-      if (length(ct))
-          names(ct)
-      else
-        get(".event_values", private)
-
-    }
+    col_names = function() names(get(".col_types", envir = private))
   ),
 
   private = list(
@@ -548,36 +433,12 @@ LayoutSqlite <- R6::R6Class(
   "LayoutSqlite",
   inherit = LayoutDbi,
   public = list(
-    format_event = function(event) {
-      ev <- get(".event_values", private)
-
-      if (length(ev)){
-        vals <- mget(ev, event, ifnotfound = NA)
-      } else {
-        if (is.null(ev)){
-          vals <- get("values", event)
-        } else {
-          vals <- c()
-        }
+    format_data = function(x){
+      for (nm in names(x)){
+        if (inherits(x[[nm]], "POSIXt"))
+          data.table::set(x, i = NULL, j = nm, value = format(x[[nm]]))
       }
-
-
-      ct <- get(".col_types", private)
-      if (length(ct)){
-        if (!setequal(names(vals), names(ct))){
-          stop("TODO:")  #TODO
-        }
-        assert(setequal(names(vals), names(ct)))
-        vals <- vals[names(private$.col_types)]
-      }
-
-      vals[] <- lapply(
-        vals,
-        function(.x) if (inherits(.x, "POSIXt")) format(.x) else .x
-      )
-
-      vals <- c(vals, list(stringsAsFactors = FALSE))
-      do.call(data.frame, args = vals)
+      x
     }
   )
 )
@@ -591,63 +452,6 @@ LayoutSqlite <- R6::R6Class(
 #' @export
 LayoutRjdbc <- LayoutSqlite
 
-
-
-
-# +- LayoutDBI utils ------------------------------------------------------
-
-#' Select Appropriate Database Table Layout
-#'
-#' Selects an appropriate Layout for a database table based on
-#' a DBI connection and - if it already exists in the database -
-#' the table itself.
-#'
-#' @param conn  a [DBI connection][DBI::dbConnect()]
-#' @param table a `character` scalar. The name of the table to log to.
-#'
-#' @export
-select_dbi_layout <- function(
-  conn,
-  table
-){
-  cls <- c(class(conn))
-
-  res <- switch(
-    cls,
-    "SQLiteConnection" = LayoutSqlite$new(
-      col_types = c(
-        level = "integer",
-        timestamp = "character",
-        logger = "character",
-        caller = "character",
-        msg = "character"
-      )),
-    "JDBCConnection" = LayoutRjdbc$new(
-      col_types = c(
-        level = "smallint",
-        timestamp = "timestamp",
-        logger = "varchar(512)",
-        caller = "varchar(1024)",
-        msg = "varchar(2048)"
-      )),
-    LayoutDbi$new(event_values = c("level", "timestamp", "logger", "caller", "msg"))
-  )
-
-  db_names <- try(DBI::dbListFields(conn, table), silent = TRUE)
-
-  if (inherits(db_names, "try-error"))
-    db_names <- try(DBI::dbListFields(conn, toupper(table)), silent = TRUE)
-
-  if (inherits(db_names, "try-error"))
-    db_names <- try(DBI::dbListFields(conn, tolower(table)), silent = TRUE)
-
-  if (!inherits(db_names, "try-error")){
-    res$set_col_types(NULL)
-    res$set_event_values(tolower(db_names))
-  }
-
-  res
-}
 
 
 
@@ -695,13 +499,6 @@ select_dbi_layout <- function(
 #' lo <- LayoutJson$new()
 #' lo$format_event(event)
 #'
-#'
-#' # Values from the LogEvent can be suppressed
-#' lo <- LayoutJson$new(
-#'   event_values = c("level", "timestamp", "msg")
-#' )
-#' lo$format_event(event)
-#'
 NULL
 
 
@@ -710,33 +507,20 @@ NULL
 #' @export
 LayoutJson <- R6::R6Class(
   "LayoutJson",
-  inherit = LayoutTable,
+  inherit = Layout,
   public = list(
     initialize = function(
-      event_values  = NULL,
       toJSON_args = list(auto_unbox = TRUE)
     ){
       # init
-      event_values  <- name_vals(event_values)
-      self$set_event_values(event_values)
       self$set_toJSON_args(toJSON_args)
     },
 
     format_event = function(event) {
-      ev <- get(".event_values", private)
-
-      if (length(ev)){
-        vals <- mget(ev, event, ifnotfound = NA)
-        names(vals) <- names(ev)
-      } else {
-        if (is.null(ev)){
-          vals <- get("values", event)
-        } else {
-          vals <- c()
-        }
-      }
-
-      do.call(jsonlite::toJSON, args = c(list(vals), get(".toJSON_args", private)))
+      do.call(
+        jsonlite::toJSON,
+        args = c(list(x = event$values), get(".toJSON_args", private))
+      )
     },
 
     set_toJSON_args = function(x){
@@ -802,11 +586,64 @@ assert_colnames_match_valnames <- function(
 
 
 
-name_vals <- function(x){
-  if (is.null(names(x)))
-    names(x) <- x
-  else
-    names(x)[names(x) == ""] <- x[names(x) == ""]
+#' Select Appropriate Database Table Layout
+#'
+#' Selects an appropriate Layout for a database table based on
+#' a DBI connection and - if it already exists in the database -
+#' the table itself.
+#'
+#' @param conn  a [DBI connection][DBI::dbConnect()]
+#' @param table a `character` scalar. The name of the table to log to.
+#'
+#' @export
+select_dbi_layout <- function(
+  conn,
+  table
+){
+  cls <- c(class(conn))
 
-  x
+  res <- switch(
+    cls,
+    "SQLiteConnection" = LayoutSqlite$new(
+      col_types = c(
+        level = "integer",
+        timestamp = "TEXT",
+        logger = "TEXT",
+        caller = "TEXT",
+        msg = "TEXT"
+      )),
+    "JDBCConnection" = LayoutRjdbc$new(
+      col_types = c(
+        level = "smallint",
+        timestamp = "timestamp",
+        logger = "varchar(256)",
+        caller = "varchar(256)",
+        msg = "varchar(2048)"
+      )),
+    LayoutDbi$new()
+  )
+
+  ct <- get_col_types(conn, table)
+
+  if (!is.null(ct))  res$set_col_types(ct)
+
+  res
 }
+
+
+
+get_col_types <- function(conn, table){
+  if (DBI::dbExistsTable(conn, table)){
+    tryCatch({
+      dd <- DBI::dbSendQuery(conn, paste("SELECT * FROM", table))
+      res <- DBI::dbColumnInfo(dd)
+      DBI::dbClearResult(dd)
+      setNames(res$type, tolower(res$name))
+    },
+    error = function(e) NULL
+    )
+  } else {
+    NULL
+  }
+}
+

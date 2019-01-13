@@ -29,7 +29,7 @@ the arguments to this function please refer to the Fields section.
 \seealso{
 Other Layouts: \code{\link{LayoutDbi}},
   \code{\link{LayoutFormat}}, \code{\link{LayoutGlue}},
-  \code{\link{LayoutJson}}, \code{\link{LayoutTable}}
+  \code{\link{LayoutJson}}
 }
 \concept{Layouts}
 \keyword{internal}

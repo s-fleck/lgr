@@ -290,13 +290,13 @@ test_that("AppenderDt: default format for show_log looks like format.LogEvent", 
 
 test_that("AppenderBuffer: FATAL log level triggers flush", {
   l$info(LETTERS[1:3])
-  expect_length(l$appenders$buffer$buffered_events, 1)
+  expect_length(l$appenders$buffer$buffer_events, 1)
   l$info(LETTERS[4:7])
-  expect_identical(length(l$appenders$buffer$buffered_events), 2L)
+  expect_identical(length(l$appenders$buffer$buffer_events), 2L)
 
   # FATAL triggers flush with default filters
   l$fatal(letters[1:3])
-  expect_identical(l$appenders$buffer$buffered_events, list())
+  expect_identical(l$appenders$buffer$buffer_events, list())
   expect_match(
     paste(readLines(tf), collapse = "#"),
     "INFO.*A#INFO.*B#INFO.*C#INFO.*D#INFO.*E#INFO.*F#INFO.*G#FATAL.*a#FATAL.*b#FATAL.*c"
@@ -305,7 +305,7 @@ test_that("AppenderBuffer: FATAL log level triggers flush", {
   # Does the next flush flush the correct event?
   l$fatal("x")
   expect_identical(length(readLines(tf)), 11L)
-  expect_identical(l$appenders$buffer$buffered_events, list())
+  expect_identical(l$appenders$buffer$buffer_events, list())
   expect_match(paste(readLines(tf), collapse = "#"), ".*A#.*B#.*C#.*a#.*b#.*c#.*x")
 })
 
@@ -313,10 +313,10 @@ test_that("AppenderBuffer: FATAL log level triggers flush", {
 
 test_that("AppenderBuffer: memory is flushed on buffer cycling", {
   replicate(10, l$info("z"))
-  expect_identical(length(l$appenders$buffer$buffered_events), 10L)
+  expect_identical(length(l$appenders$buffer$buffer_events), 10L)
   l$info(c("y", "y", "y"))
   expect_identical(length(readLines(tf)), 24L)
-  expect_identical(l$appenders$buffer$buffered_events, list())
+  expect_identical(l$appenders$buffer$buffer_events, list())
   expect_match(
     paste(readLines(tf), collapse = "#"),
     ".*A#.*B#.*C#.*a#.*b#.*c#.*x(.*z.*){10}(.*y.*){3}"
@@ -339,7 +339,7 @@ test_that("AppenderBuffer: flush on memory cycling can be suppressed", {
   for (i in 1:15) l$info(i)
 
   # theres a 10% tolerance for flushing if no flush on rotate is set
-  expect_true(length(l$appenders$buffer$buffered_events) >= 10L)
+  expect_true(length(l$appenders$buffer$buffer_events) >= 10L)
   # Nothing should have been flushed to the log file
   expect_identical(readLines(tf), eres)
 })
@@ -350,7 +350,7 @@ test_that("AppenderBuffer: flush on object destruction works", {
   # of this section
   l$appenders$buffer$flush()  # ensure empty appender
   l$info(c("destruction", "destruction"))
-  expect_identical(length(l$appenders$buffer$buffered_events), 1L)
+  expect_identical(length(l$appenders$buffer$buffer_events), 1L)
   rm(l, inherits = TRUE)
   gc()
   expect_match(
@@ -429,8 +429,8 @@ test_that("AppenderBuffer: view log", {
   l$info(1:3)
   l$error("and a list column", df = head(iris), env = environment())
 
-  expect_identical(nrow(l$appenders[[1]]$data), 6L)
-  expect_identical(nrow(l$appenders[[1]]$dt), 6L)
+  expect_identical(nrow(l$appenders[[1]]$buffer_df), 6L)
+  expect_identical(nrow(l$appenders[[1]]$buffer_dt), 6L)
   expect_length(capture.output(l$appenders[[1]]$show(n = 5, threshold = "warn")), 3L)
 })
 
@@ -450,7 +450,7 @@ test_that("AppenderBuffer: cycling is implemented correctly", {
   l$info("test5")
 
   expect_identical(
-    sapply(l$appenders[[1]]$buffered_events, `[[`, "msg"),
+    sapply(l$appenders[[1]]$buffer_events, `[[`, "msg"),
     paste0("test", 2:5)
   )
 })
@@ -467,7 +467,7 @@ test_that("AppenderBuffer: Custom should_flush can be defined", {
   # FALSE
   l$appenders[[1]]$set_should_flush(function(event) FALSE)
   l$fatal("test")
-  expect_length(l$appenders[[1]]$buffered_events, 1L)
+  expect_length(l$appenders[[1]]$buffer_events, 1L)
 
   # TRUE
   l$appenders[[1]]$set_should_flush(
@@ -476,15 +476,15 @@ test_that("AppenderBuffer: Custom should_flush can be defined", {
     }
   )
   l$fatal("test")
-  expect_length(l$appenders[[1]]$buffered_events, 0L)
+  expect_length(l$appenders[[1]]$buffer_events, 0L)
 
   # Undefined
   l$appenders[[1]]$set_should_flush(function(event) NA)
   expect_warning(l$fatal("test"))
-  expect_length(l$appenders[[1]]$buffered_events, 1L)
+  expect_length(l$appenders[[1]]$buffer_events, 1L)
   l$appenders[[1]]$set_should_flush(function(event) iris)
   expect_warning(l$fatal("test"))
-  expect_length(l$appenders[[1]]$buffered_events, 2L)
+  expect_length(l$appenders[[1]]$buffer_events, 2L)
 
   # illegal filter
   expect_error(l$appenders[[1]]$set_should_flush(mean))

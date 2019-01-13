@@ -14,19 +14,16 @@ table up manually with an \code{SQL CREATE TABLE} statement instead.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(event_values = NULL, col_types = NULL)
+x <- x$new(col_types = NULL)
 
-x$format_event(event)
+x$format_data(x)
 x$set_col_types(x)
 x$sql_create_table(table)
 x$clone(deep = FALSE)
-x$set_event_values(x)
-x$set_val_names(x)
+x$format_event(event)
 
 x$col_names
 x$col_types
-x$event_values
-x$val_names
 
 }
 }
@@ -45,13 +42,9 @@ the arguments to this function please refer to the Fields section.
 
 \describe{
 \item{\code{col_types}}{A named \code{character} vector of column types supported by
-the target database. If this is used instead of \code{event_values}, and
-the target logging \code{table} does not yet exist, the column type
-information is used by \link{AppenderDbi} or similar Appenders to create a
-new database table, either on instantion of the Appender or on writing
-of the first LogEvent. If the target database table already exists,
-the column type information is not used. You can only supply one of
-\code{event_values} and \code{col_types}.
+the target database. If not \code{NULL} this is used by \link{AppenderDbi} or similar
+Appenders to create a new database table on instantion of the Appender. If
+the target database table already exists, \code{col_types} is not used.
 }
 \item{\code{col_names}}{Convenience method to get the names of the \code{col_types}
 vector}
@@ -129,7 +122,7 @@ lo$format_event(event)
 
 Other Layouts: \code{\link{LayoutFormat}},
   \code{\link{LayoutGlue}}, \code{\link{LayoutJson}},
-  \code{\link{LayoutTable}}, \code{\link{Layout}}
+  \code{\link{Layout}}
 }
 \concept{Layouts}
 \concept{database layouts}

@@ -18,13 +18,13 @@ x <- x$new(threshold = NA_integer_, appenders = NULL,
 
 x$append(event)
 x$flush()
-x$set_flush_on_exit(x)
-x$set_flush_on_rotate(x)
 x$set_appenders(x)
 x$add_appender(appender, name = NULL)
 x$remove_appender(pos)
 x$set_buffer_size(x)
 x$set_should_flush(x)
+x$set_flush_on_exit(x)
+x$set_flush_on_rotate(x)
 x$set_flush_threshold(level)
 x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
@@ -38,10 +38,10 @@ x$appenders
 x$destination
 x$flush_on_exit
 x$flush_on_rotate
+x$buffer_df
+x$buffer_dt
+x$buffer_events
 x$buffer_size
-x$buffered_events
-x$data
-x$dt
 x$flush_threshold
 x$should_flush
 x$layout

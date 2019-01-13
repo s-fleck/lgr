@@ -39,6 +39,7 @@ dbs <- list(
   "PostgreSQL via RPostgreSQL" = list(
     conn = try(silent = TRUE, DBI::dbConnect(
       RPostgreSQL::PostgreSQL(),
+      user = "postgres",
       host = "localhost",
       dbname = "travis_ci_test"
     )),
@@ -69,6 +70,7 @@ dbs <- list(
 options("datatable.showProgress" = dt_sp)
 
 nm <- "SQLite via RSQLite"  # for manual testing, can be deleted
+nm <- "PostgreSQL via RPostgres" # for manual testing, can be deleted
 
 
 # +- tests -------------------------------------------------------------------
@@ -86,14 +88,16 @@ for (nm in names(dbs)){
 
   # setup test environment
   tname <- "logging_test"
-  expect_message(
+
+  suppressMessages(
     app <- ctor$new(
       conn = conn,
       table = tname,
-      close_on_exit = FALSE  # we are closing manually and dont want warnings
-    ),
-    "Creating"
+      close_on_exit = FALSE,  # we are closing manually and dont want warnings
+      buffer_size = 0L
+    )
   )
+
   e <- LogEvent$new(
     lgr, level = 600L, msg = "ohno", caller = "nope()", timestamp = Sys.time()
   )
@@ -102,6 +106,7 @@ for (nm in names(dbs)){
   test_that("round trip event inserts", {
     expect_silent(app$append(e))
     expect_silent(app$append(e))
+
     tres <- app$data
     eres <- rbind(
       as.data.frame(e, stringsAsFactors = FALSE),
@@ -161,7 +166,14 @@ for (nm in names(dbs)){
       )
     } else {
       lo <- LayoutSqlite$new(
-        event_values = c("level", "timestamp", "logger", "msg", "caller", "foo")
+        col_types = c(
+          level = "INTEGER",
+          timestamp = "TEXT",
+          logger= "TEXT",
+          msg = "TEXT",
+          caller = "TEXT",
+          foo = "TEXT"
+        )
       )
     }
 
@@ -177,41 +189,10 @@ for (nm in names(dbs)){
     "Creating"
     )
 
-
     lg$fatal("test", foo = "bar")
     expect_false(is.na(lg$appenders$db$data$foo[[1]]))
     lg$fatal("test")
     expect_true(is.na(lg$appenders$db$data$foo[[2]]))
-    lg$remove_appender("db")
-  })
-
-
-  test_that("Logging to only selected columns works", {
-    lg <- Logger$new(
-      "test_dbi",
-      threshold = "trace",
-      propagate = FALSE,
-      exception_handler = function (...) stop(...)
-    )
-
-    expect_silent(
-      lg$add_appender(
-        ctor$new(
-          conn = conn,
-          table = "logging_test_create",
-          layout = LayoutSqlite$new(  # will work for SQLite and other DBs
-            event_values = c("level", "timestamp", "msg")
-          ),
-          close_on_exit = FALSE
-        ), "db"
-      )
-    )
-
-    lg$appenders$db$layout$format_event(lg$last_event)
-    lg$appenders$db$append(lg$last_event)
-    lg$fatal("test2")
-    expect_false(is.na(lg$appenders$db$data$caller[[2]]))
-    expect_true(is.na(lg$appenders$db$data$caller[[3]]))
     lg$remove_appender("db")
   })
 
@@ -232,16 +213,7 @@ for (nm in names(dbs)){
       ))
     )
 
-    lo <- select_dbi_layout(conn, "logging_test_create")
-    expect_true("foo" %in% lo$event_values)
-
-    expect_true("foo" %in% lg$appenders$db$layout$event_values)
-
     lg$fatal("test2", foo = "baz", blubb = "blah")
-    lg$appenders$db$layout$format_event(lg$last_event)
-    lg$appenders$db$append(lg$last_event)
-
-    debug(lg$appenders$db$layout$format_event)
     expect_identical(tail(lg$appenders$db$data, 1)$foo, "baz")
 
     try(DBI::dbRemoveTable(conn, "logging_test_create"), silent = TRUE)
@@ -338,10 +310,15 @@ test_that("displaying logs works for Loggers", {
     lg <- Logger$new(
       "test_dbi",
       threshold = "trace",
-      appenders = list(db = AppenderDbi$new(conn = conn, table = tname, close_on_exit = FALSE)),
+      appenders = list(db = AppenderDbi$new(
+        conn = conn,
+        table = tname,
+        close_on_exit = FALSE,
+        buffer_size = 0
+      )),
       propagate = FALSE
     ),
-    "with manual column types"
+    "manual"
   )
 
   lg$fatal("blubb")

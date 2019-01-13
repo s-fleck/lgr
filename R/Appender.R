@@ -745,286 +745,6 @@ AppenderDt <- R6::R6Class(
 
 
 
-# AppenderDbi -------------------------------------------------------------
-
-
-#' Log to Databases via DBI
-#'
-#' Log to a database table with any **DBI** compatabile backend. Please be
-#' aware that AppenderDbi does *not* support case sensitive / quoted column
-#' names, and you advised to only use all-lowercase names for
-#' custom fields (see `...` argument of [LogEvent]).
-#'
-#' @eval r6_usage(AppenderDbi)
-#'
-#' @inheritSection Appender Creating a New Appender
-#' @inheritSection AppenderTable Fields
-#' @inheritSection AppenderTable Methods
-#'
-#' @section Creating a New Appender:
-#'
-#' An AppenderDbi is linked to a database table via its `table` argument. If
-#' the table does not exist it is created either when the Appender is first
-#' instantiated or (more likely) when the first LogEvent would be written to
-#' that table. Rather than to rely on this feature, it is recommended that you
-#' create the target log table first manually using an `SQL CREATE TABLE`
-#' statement as this is safer and more flexible. See also [LayoutDbi].
-#'
-#' @section Fields:
-#' \describe{
-#'   \item{`close_on_exit`, `set_close_on_exit()`}{`TRUE` or `FALSE`. Close the
-#'   Database connection when the Logger is removed?}
-#'   \item{`conn`, `set_conn(conn)`}{a [DBI connection][DBI::dbConnect]}
-#'   \item{`table`}{Name of the target database table}
-#' }
-#'
-#' @section Choosing the Right DBI Layout:
-#'
-#' Layouts for relational database tables are tricky as they have very strict
-#' column types and further restrictions. On top of that implementation details
-#' vary between database backends.
-#'
-#' To make setting up `AppenderDbi` as painless as possible, the helper
-#' function [select_dbi_layout()] tries to automatically determine sensible
-#' [LayoutDbi] settings based on `conn` and - if it exists in the database
-#' already - `table`. If `table` does not
-#' exist in the database and you start logging, a new table will be created
-#' with the `col_types` from `layout`.
-#'
-#' @export
-#' @family Appenders
-#' @name AppenderDbi
-NULL
-
-
-
-
-#' @export
-AppenderDbi <- R6::R6Class(
-  "AppenderDbi",
-  inherit = AppenderTable,
-  cloneable = FALSE,
-  public = list(
-    initialize = function(
-      conn,
-      table,
-      threshold = NA_integer_,
-      layout = select_dbi_layout(conn, table),
-      close_on_exit = TRUE
-    ){
-      assert_namespace("DBI")
-      self$set_threshold(threshold)
-      self$set_layout(layout)
-      self$set_close_on_exit(close_on_exit)
-
-      private$.conn  <- conn
-      private$.table <- table
-
-      if (DBI::dbExistsTable(self$conn, table)){
-        # do nothing
-      } else if (is.null(self$layout$col_types)) {
-        msg <- paste0("Creating '", table, "' on first log. ")
-        if (!setequal(layout$event_values, DEFAULT_FIELDS)){
-          message(
-            msg,
-            "The Layout contains custom fields, but no `col_types`. ",
-            "The column types will be determined automaticaly",
-            "when the first event is beeing logged to the database table."
-          )
-        } else {
-          message(msg)
-        }
-      } else {
-        message("Creating '", table, "' with manual column types")
-        DBI::dbExecute(conn, layout$sql_create_table(table))
-      }
-    },
-
-    finalize = function() {
-      if (isTRUE(self$close_on_exit))
-        DBI::dbDisconnect(private$.conn)
-    },
-
-    set_close_on_exit = function(x){
-      assert(is_scalar_bool(x))
-      private$.close_on_exit <- x
-      invisible(self)
-    },
-
-    set_conn = function(conn){
-      assert(inherits(conn, "DBIConnection"))
-      private$.conn <- conn
-      invisible(self)
-    },
-
-    show = function(
-      threshold = NA_integer_,
-      n = 20
-    ){
-      assert(is_n0(n))
-
-      threshold <- standardize_threshold(threshold)
-      if (is.na(threshold)) threshold <- Inf
-
-      dd <- tail(self$data[self$data$level <= threshold, ], n)
-      colors <- getOption("lgr.colors")
-
-      if (identical(nrow(dd),  0L)){
-        cat("[empty log]")
-      } else {
-        walk(
-          as_LogEvent_list.data.frame(dd),
-          function(.x){
-            cat(format.LogEvent(.x, colors = colors), "\n", sep = "")
-          }
-        )
-      }
-
-      invisible(dd)
-    },
-
-    append = function(event){
-      dd <- private$.layout$format_event(event)
-      DBI::dbWriteTable(
-        private$.conn,
-        private$.table,
-        row.names = FALSE,
-        dd,
-        append = TRUE
-      )
-      NULL
-    }
-  ),
-
-
-  # +- active ---------------------------------------------------------------
-  active = list(
-    destination = function() private$.table,
-    conn = function(){
-      private$.conn
-    },
-
-    close_on_exit = function(){
-      private$.close_on_exit
-    },
-
-    data = function(){
-      dd <- DBI::dbGetQuery(private$.conn, sprintf("SELECT * FROM %s", private$.table))
-      names(dd) <- tolower(names(dd))
-      dd[["timestamp"]] <- as.POSIXct(dd[["timestamp"]])
-      dd[["level"]] <- as.integer(dd[["level"]])
-      dd
-    },
-
-    table = function() private$.table
-  ),
-
-  private = list(
-    .conn = NULL,
-    .table = NULL,
-    .close_on_exit = NULL
-  )
-)
-
-
-
-
-# AppenderRjdbc -------------------------------------------------------------
-
-#' Log to Databases via RJDBC
-#'
-#' Log to a database table with the **RJDBC** package. **RJDBC** is only
-#' somewhat  **DBI** compliant and does not work with [AppenderDbi]. I
-#' personally do not recommend using **RJDBC** if it can be avoided. As
-#' opposed to `AppenderDbi` you always need to specify the column types if you
-#' are logging to a non-existant table.
-#'
-#' @inheritSection AppenderDbi Creating a New Appender
-#' @inheritSection AppenderDbi Choosing the Right DBI Layout
-#' @inheritSection AppenderDbi Fields
-#' @inheritSection AppenderDbi Methods
-#'
-#' @eval r6_usage(AppenderRjdbc)
-#'
-#'
-#' @section Fields:
-#' @section Methods:
-#'
-#' @export
-#' @seealso [LayoutFormat], [simple_logging], [data.table::data.table]
-#' @family Appenders
-#' @name AppenderRjdbc
-NULL
-
-
-
-
-# exclude from coverage because relies on external ressources
-# nocov start
-#' @export
-AppenderRjdbc <- R6::R6Class(
-  "AppenderRjdbc",
-  inherit = AppenderDbi,
-  cloneable = FALSE,
-  public = list(
-    initialize = function(
-      conn,
-      table,
-      threshold = NA_integer_,
-      layout = select_dbi_layout(conn, table),
-      close_on_exit = TRUE
-    ){
-      assert_namespace("RJDBC")
-      self$set_threshold(threshold)
-      self$set_layout(layout)
-      self$set_close_on_exit(close_on_exit)
-      private$.conn  <- conn
-      private$.table <- table
-
-      table_exists <- tryCatch(
-        is.data.frame(
-          DBI::dbGetQuery(
-            self$conn,
-            sprintf("select 1 from %s where 1 = 2", table)
-          )),
-        error = function(e) FALSE
-      )
-
-      if (table_exists){
-        # do nothing
-      } else {
-        message("Creating '", table, "' with manual column types")
-        RJDBC::dbSendUpdate(conn, layout$sql_create_table(table))
-      }
-    },
-
-    append = function(event){
-      dd <- private$.layout$format_event(event)
-
-      for (i in seq_len(nrow(dd))){
-        data <- as.list(dd[i, ])
-
-        q <-  sprintf(
-          "INSERT INTO %s (%s) VALUES (%s)",
-          private$.table,
-          paste(self$layout$col_names, collapse = ", "),
-          paste(rep("?", length(data)), collapse = ", ")
-        )
-
-        RJDBC::dbSendUpdate(get(".conn", private), q, list=data)
-      }
-
-      NULL
-    }
-  ),
-
-  private = list(
-    .conn = NULL,
-    .table = NULL
-  )
-)
-
-# nocov end
 
 # AppenderMemory  --------------------------------------------------
 
@@ -1084,7 +804,7 @@ AppenderMemory <- R6::R6Class(
       assign("insert_pos", i, envir = private, inherits = TRUE)
       private[["last_event"]] <- private[["last_event"]] + 1L
       private[["event_order"]][[i]] <- private[["last_event"]]
-      private[[".buffered_events"]][[i]] <- event
+      private[[".buffer_events"]][[i]] <- event
 
       bs <- get(".buffer_size", envir = private)
 
@@ -1119,10 +839,20 @@ AppenderMemory <- R6::R6Class(
 
     set_should_flush = function(x){
       if (is.null(x)) x <- function(event) FALSE
-
       assert_filter(x)
-
       private$.should_flush <- x
+      invisible(self)
+    },
+
+    set_flush_on_exit = function(x){
+      assert(is_scalar_bool(x))
+      private$.flush_on_exit <- x
+      invisible(self)
+    },
+
+    set_flush_on_rotate = function(x){
+      assert(is_scalar_bool(x))
+      private$.flush_on_rotate <- x
       invisible(self)
     },
 
@@ -1137,18 +867,18 @@ AppenderMemory <- R6::R6Class(
       threshold <- standardize_threshold(threshold)
 
       if (is.na(threshold)) threshold <- Inf
-      dd <- self$dt
+      dd <- get("buffer_dt", envir = self)
 
       if (identical(nrow(dd),  0L)){
         cat("[empty log]")
         return(invisible(NULL))
       }
 
-      res <- tail(dd[dd$level <= threshold, ], n)
-      dd <- as.environment(res)
+      dd <- tail(dd[dd$level <= threshold, ], n)
+      dd <- as.environment(dd)
       assign("logger", self[[".logger"]], dd)
       cat(self$layout$format_event(dd), sep = "\n")
-      invisible(res)
+      invisible(dd)
     }
   ),
 
@@ -1168,22 +898,22 @@ AppenderMemory <- R6::R6Class(
       get(".flush_threshold", private)
     },
 
-    buffered_events = function() {
+    buffer_events = function() {
       ord <- get("event_order", envir = private)
       ord <- ord - min(ord) + 1L
       ord <- order(ord)
-      res <- get(".buffered_events", envir = private)[ord]
+      res <- get(".buffer_events", envir = private)[ord]
       res[!vapply(res, is.null, FALSE)]
     },
 
-    data = function(){
-      as.data.frame(self$dt)
+    buffer_df = function() {
+      as.data.frame(self[["buffer_dt"]])
     },
 
-    dt = function(){
+    buffer_dt = function(){
       assert_namespace("data.table")
       dd <- lapply(
-        get("buffered_events", self),
+        get("buffer_events", self),
         function(.x){
           vals <- .x$values
           list_cols <- !vapply(vals, is.atomic, TRUE)
@@ -1198,13 +928,25 @@ AppenderMemory <- R6::R6Class(
 
   # +- private  ---------------------------------------------------------
   private = list(
+    initialize_buffer = function(buffer_size){
+      assert(is_n0(buffer_size))
+      private[["insert_pos"]]  <- 0L
+      private[["last_event"]]  <- 0L
+      private[["event_order"]] <- seq_len(buffer_size)
+      private[[".buffer_size"]] <- buffer_size
+      private[[".buffer_events"]] <- list()
+    },
+
     insert_pos = NULL,
     last_event = NULL,
     event_order = NULL,
+
     .flush_threshold = NULL,
     .should_flush = NULL,
+    .flush_on_exit = NULL,
+    .flush_on_rotate = NULL,
     .buffer_size = NULL,
-    .buffered_events = NULL
+    .buffer_events = NULL
   )
 )
 
@@ -1289,27 +1031,17 @@ AppenderBuffer <- R6::R6Class(
       ),
       buffer_size = 1e3
     ){
-      stopifnot(
-        is_scalar_integerish(buffer_size),
-        is_scalar_bool(flush_on_exit),
-        is_scalar_bool(flush_on_rotate)
-      )
-
-      private$insert_pos <- 0L
-      private$last_event    <- 0L
-      private$event_order   <- seq_len(buffer_size)
-
       self$set_threshold(threshold)
+
+      private$initialize_buffer(buffer_size)
+
       self$set_should_flush(should_flush)
-      self$set_appenders(appenders)
-      self$set_buffer_size(buffer_size)
       self$set_flush_threshold(flush_threshold)
       self$set_flush_on_exit(flush_on_exit)
       self$set_flush_on_rotate(flush_on_rotate)
-      self$set_layout(layout)
 
-      # no speed advantage in pre allocating lists in R!
-      private$.buffered_events <- list()
+      self$set_appenders(appenders)
+      self$set_layout(layout)
 
       invisible(self)
     },
@@ -1321,7 +1053,7 @@ AppenderBuffer <- R6::R6Class(
       assign("insert_pos", i, envir = private, inherits = TRUE)
       private[["last_event"]] <- private[["last_event"]] + 1L
       private[["event_order"]][[i]] <- private[["last_event"]]
-      private[[".buffered_events"]][[i]] <- event
+      private[[".buffer_events"]][[i]] <- event
 
       bs <- get(".buffer_size", envir = private)
 
@@ -1349,28 +1081,18 @@ AppenderBuffer <- R6::R6Class(
     },
 
     flush = function(){
-      for (event in get("buffered_events", envir = self)){
+      for (event in get("buffer_events", envir = self)){
         for (app in self$appenders) {
           if (app$filter(event))  app$append(event)
         }
       }
 
       assign("insert_pos", 0L, envir = private)
-      private$.buffered_events <- list()
+      private$.buffer_events <- list()
       invisible(self)
     },
 
-    set_flush_on_exit = function(x){
-      assert(is_scalar_bool(x))
-      private$.flush_on_exit <- x
-      invisible(self)
-    },
 
-    set_flush_on_rotate = function(x){
-      assert(is_scalar_bool(x))
-      private$.flush_on_rotate <- x
-      invisible(self)
-    },
 
     set_appenders = function(x){
       if (is.null(x)){
@@ -1477,12 +1199,334 @@ AppenderBuffer <- R6::R6Class(
 
   # +- private  ---------------------------------------------------------
   private = list(
-    .flush_on_exit = NULL,
-    .flush_on_rotate = NULL,
-    event_order = NULL,
     .appenders = list()
   )
 )
+
+
+
+
+# AppenderDbi -------------------------------------------------------------
+
+
+#' Log to Databases via DBI
+#'
+#' Log to a database table with any **DBI** compatabile backend. Please be
+#' aware that AppenderDbi does *not* support case sensitive / quoted column
+#' names, and you advised to only use all-lowercase names for
+#' custom fields (see `...` argument of [LogEvent]).
+#'
+#' @eval r6_usage(AppenderDbi)
+#'
+#' @inheritSection Appender Creating a New Appender
+#' @inheritSection AppenderMemory Fields
+#' @inheritSection AppenderMemory Methods
+#'
+#' @section Creating a New Appender:
+#'
+#' An AppenderDbi is linked to a database table via its `table` argument. If
+#' the table does not exist it is created either when the Appender is first
+#' instantiated or (more likely) when the first LogEvent would be written to
+#' that table. Rather than to rely on this feature, it is recommended that you
+#' create the target log table first manually using an `SQL CREATE TABLE`
+#' statement as this is safer and more flexible. See also [LayoutDbi].
+#'
+#' @section Fields:
+#' \describe{
+#'   \item{`close_on_exit`, `set_close_on_exit()`}{`TRUE` or `FALSE`. Close the
+#'   Database connection when the Logger is removed?}
+#'   \item{`conn`, `set_conn(conn)`}{a [DBI connection][DBI::dbConnect]}
+#'   \item{`table`}{Name of the target database table}
+#' }
+#'
+#' @section Choosing the Right DBI Layout:
+#'
+#' Layouts for relational database tables are tricky as they have very strict
+#' column types and further restrictions. On top of that implementation details
+#' vary between database backends.
+#'
+#' To make setting up `AppenderDbi` as painless as possible, the helper
+#' function [select_dbi_layout()] tries to automatically determine sensible
+#' [LayoutDbi] settings based on `conn` and - if it exists in the database
+#' already - `table`. If `table` does not
+#' exist in the database and you start logging, a new table will be created
+#' with the `col_types` from `layout`.
+#'
+#' @export
+#' @family Appenders
+#' @name AppenderDbi
+NULL
+
+
+
+
+#' @export
+AppenderDbi <- R6::R6Class(
+  "AppenderDbi",
+  inherit = AppenderBuffer,
+  cloneable = FALSE,
+  public = list(
+    initialize = function(
+      conn,
+      table,
+      threshold = NA_integer_,
+      layout = select_dbi_layout(conn, table),
+      close_on_exit = TRUE,
+      buffer_size = 100,
+      flush_threshold = "fatal",
+      flush_on_exit = TRUE,
+      flush_on_rotate = TRUE,
+      should_flush = function(event){
+        is.na(.obj()[["flush_threshold"]]) || all(event[["level"]] <= .obj()[["flush_threshold"]])
+      }
+    ){
+      assert_namespace("DBI", "data.table")
+
+      # appender
+      self$set_threshold(threshold)
+      self$set_layout(layout)
+
+      # buffer
+      private$initialize_buffer(buffer_size)
+
+      # flush conditions
+      self$set_should_flush(should_flush)
+      self$set_flush_threshold(flush_threshold)
+      self$set_flush_on_exit(flush_on_exit)
+      self$set_flush_on_rotate(flush_on_rotate)
+
+      # database
+      private[[".conn"]]  <- conn
+      private[[".table"]] <- table
+      self$set_close_on_exit(close_on_exit)
+
+      if (DBI::dbExistsTable(self$conn, table)){
+        # do nothing
+      } else if (is.null(self$layout$col_types)) {
+        message(paste0("Creating '", table, "' on first log. "))
+
+      } else {
+        message("Creating '", table, "' with manually specified column types")
+        DBI::dbExecute(conn, layout$sql_create_table(table))
+      }
+    },
+
+    finalize = function() {
+      if (self$flush_on_exit)
+        self$flush()
+
+      if (self$close_on_exit)
+        DBI::dbDisconnect(private$.conn)
+    },
+
+    set_close_on_exit = function(x){
+      assert(is_scalar_bool(x))
+      private$.close_on_exit <- x
+      invisible(self)
+    },
+
+    set_conn = function(conn){
+      assert(inherits(conn, "DBIConnection"))
+      private$.conn <- conn
+      invisible(self)
+    },
+
+    set_col_types = function(x){
+      if (!is.null(x)){
+        assert(is.character(x))
+        assert(identical(length(names(x)), length(x)))
+      }
+      private$.col_types <- x
+      invisible(self)
+    },
+
+    show = function(
+      threshold = NA_integer_,
+      n = 20
+    ){
+      assert(is_n0(n))
+      threshold <- standardize_threshold(threshold)
+      if (is.na(threshold)) threshold <- Inf
+
+      dd <- tail(self$data[self$data$level <= threshold, ], n)
+      colors <- getOption("lgr.colors")
+
+      if (identical(nrow(dd),  0L)){
+        cat("[empty log]")
+      } else {
+        walk(
+          as_LogEvent_list.data.frame(dd),
+          function(.x){
+            cat(format.LogEvent(.x, colors = colors), "\n", sep = "")
+          }
+        )
+      }
+
+      invisible(dd)
+    },
+
+    flush = function(){
+      dd <- get(".layout", envir = private)[["format_data"]](self$buffer_dt)
+      ct <- self$col_types
+
+      if (!is.null(ct))
+        dd <- dd[, intersect(names(ct), names(dd))]
+
+      DBI::dbWriteTable(
+        conn  = get(".conn", envir = private),
+        name  = get(".table", envir = private),
+        value = dd,
+        row.names = FALSE,
+        append = TRUE
+      )
+
+      assign("insert_pos", 0L, envir = private)
+      private$.buffer_events <- list()
+      invisible(self)
+    }
+  ),
+
+
+  # +- active ---------------------------------------------------------------
+  active = list(
+    destination = function() private$.table,
+    conn = function(){
+      private$.conn
+    },
+
+    close_on_exit = function(){
+      private$.close_on_exit
+    },
+
+    col_types = function(){
+      if (is.null(get(".col_types", envir = private))){
+        ct <- get_col_types(private[[".conn"]], private[[".table"]])
+        self$set_col_types(ct)
+        return(ct)
+      } else {
+        get(".col_types", envir = private)
+      }
+    },
+
+    data = function(){
+      dd <- DBI::dbGetQuery(private$.conn, sprintf("SELECT * FROM %s", private$.table))
+      names(dd) <- tolower(names(dd))
+      dd[["timestamp"]] <- as.POSIXct(dd[["timestamp"]])
+      dd[["level"]] <- as.integer(dd[["level"]])
+      dd
+    },
+
+    table = function() private$.table
+  ),
+
+  private = list(
+    .col_types = NULL,
+    .conn = NULL,
+    .table = NULL,
+    .close_on_exit = NULL
+  )
+)
+
+
+
+
+# AppenderRjdbc -------------------------------------------------------------
+
+#' Log to Databases via RJDBC
+#'
+#' Log to a database table with the **RJDBC** package. **RJDBC** is only
+#' somewhat  **DBI** compliant and does not work with [AppenderDbi]. I
+#' personally do not recommend using **RJDBC** if it can be avoided. As
+#' opposed to `AppenderDbi` you always need to specify the column types if you
+#' are logging to a non-existant table.
+#'
+#' @inheritSection AppenderDbi Creating a New Appender
+#' @inheritSection AppenderDbi Choosing the Right DBI Layout
+#' @inheritSection AppenderDbi Fields
+#' @inheritSection AppenderDbi Methods
+#'
+#' @eval r6_usage(AppenderRjdbc)
+#'
+#'
+#' @section Fields:
+#' @section Methods:
+#'
+#' @export
+#' @seealso [LayoutFormat], [simple_logging], [data.table::data.table]
+#' @family Appenders
+#' @name AppenderRjdbc
+NULL
+
+
+
+
+# exclude from coverage because relies on external ressources
+# nocov start
+#' @export
+AppenderRjdbc <- R6::R6Class(
+  "AppenderRjdbc",
+  inherit = AppenderDbi,
+  cloneable = FALSE,
+  public = list(
+    initialize = function(
+      conn,
+      table,
+      threshold = NA_integer_,
+      layout = select_dbi_layout(conn, table),
+      close_on_exit = TRUE
+    ){
+      assert_namespace("RJDBC")
+      self$set_threshold(threshold)
+      self$set_layout(layout)
+      self$set_close_on_exit(close_on_exit)
+      private$.conn  <- conn
+      private$.table <- table
+
+      table_exists <- tryCatch(
+        is.data.frame(
+          DBI::dbGetQuery(
+            self$conn,
+            sprintf("select 1 from %s where 1 = 2", table)
+          )),
+        error = function(e) FALSE
+      )
+
+      if (table_exists){
+        # do nothing
+      } else {
+        message("Creating '", table, "' with manual column types")
+        RJDBC::dbSendUpdate(conn, layout$sql_create_table(table))
+      }
+    },
+
+    append = function(event){
+      dd <- private$.layout$format_event(event)
+
+      for (i in seq_len(nrow(dd))){
+        data <- as.list(dd[i, ])
+
+        q <-  sprintf(
+          "INSERT INTO %s (%s) VALUES (%s)",
+          private$.table,
+          paste(self$layout$col_names, collapse = ", "),
+          paste(rep("?", length(data)), collapse = ", ")
+        )
+
+        RJDBC::dbSendUpdate(get(".conn", private), q, list=data)
+      }
+
+      NULL
+    }
+  ),
+
+  private = list(
+    .conn = NULL,
+    .table = NULL
+  )
+)
+
+# nocov end
+
 
 
 # AppenderDigest --------------------------------------------------------
@@ -1634,10 +1678,10 @@ AppenderPushbullet <- R6::R6Class(
       assign("insert_pos", 0L, envir = private)
 
       body <- paste(
-        lapply(self$buffered_events, self$layout$format_event),
+        lapply(self$buffer_events, self$layout$format_event),
         collapse = "\n"
       )
-      le    <- self$buffered_events[[length(self$buffered_events)]]
+      le    <- self$buffer_events[[length(self$buffer_events)]]
       title <- self$subject_layout$format_event(le)
 
       cl <- list(
@@ -1655,7 +1699,7 @@ AppenderPushbullet <- R6::R6Class(
       }
 
       do.call(RPushbullet::pbPost, compact(cl))
-      private$.buffered_events <- list()
+      private$.buffer_events <- list()
 
       invisible(self)
     },
@@ -1881,10 +1925,10 @@ AppenderSendmail <- R6::R6Class(
       assign("insert_pos", 0L, envir = private)
 
       body <- paste(
-        lapply(self$buffered_events, self$layout$format_event),
+        lapply(self$buffer_events, self$layout$format_event),
         collapse = "\r\n"
       )
-      le    <- self$buffered_events[[length(self$buffered_events)]]
+      le    <- self$buffer_events[[length(self$buffer_events)]]
       title <- self$subject_layout$format_event(le)
 
       if (self$html) {
@@ -1908,7 +1952,7 @@ AppenderSendmail <- R6::R6Class(
       args <- compact(args)
 
       do.call(sendmailR::sendmail, args)
-      private$.buffered_events <- list()
+      private$.buffer_events <- list()
 
       invisible(self)
     },
@@ -2021,10 +2065,10 @@ AppenderGmail <- R6::R6Class(
       assign("insert_pos", 0L, envir = private)
 
       body <- paste(
-        lapply(self$buffered_events, self$layout$format_event),
+        lapply(self$buffer_events, self$layout$format_event),
         collapse = "\n"
       )
-      le    <- self$buffered_events[[length(self$buffered_events)]]
+      le    <- self$buffer_events[[length(self$buffer_events)]]
       title <- self$subject_layout$format_event(le)
 
       mail <- gmailr::mime()
@@ -2041,7 +2085,7 @@ AppenderGmail <- R6::R6Class(
       }
 
       gmailr::send_message(mail)
-      private$.buffered_events <- list()
+      private$.buffer_events <- list()
 
       invisible(self)
     }

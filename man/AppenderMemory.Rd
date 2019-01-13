@@ -18,6 +18,8 @@ x$append(event)
 x$flush()
 x$set_buffer_size(x)
 x$set_should_flush(x)
+x$set_flush_on_exit(x)
+x$set_flush_on_rotate(x)
 x$set_flush_threshold(level)
 x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
@@ -27,10 +29,10 @@ x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
 x$set_filters(filters)
 
+x$buffer_df
+x$buffer_dt
+x$buffer_events
 x$buffer_size
-x$buffered_events
-x$data
-x$dt
 x$flush_threshold
 x$should_flush
 x$destination

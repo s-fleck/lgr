@@ -98,6 +98,6 @@ lo$format_event(event)
 \seealso{
 Other Layouts: \code{\link{LayoutDbi}},
   \code{\link{LayoutGlue}}, \code{\link{LayoutJson}},
-  \code{\link{LayoutTable}}, \code{\link{Layout}}
+  \code{\link{Layout}}
 }
 \concept{Layouts}
