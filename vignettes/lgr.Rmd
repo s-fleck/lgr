@@ -522,6 +522,8 @@ unlink(tf)
 ```
 
 
+
+
 ## Logger Hierarchies  {#examples-hierarchy}
 
 The most common usecases for creating a new Logger rather than just using the
@@ -602,6 +604,35 @@ lg <- Logger$new(
 
 for (nm in month.name[1:8]) lg$debug("%s", nm)
 lg$error("But the days grow short when you reach September")
+```
+
+
+## Logging to Databases
+
+Logging to databases is simple, though a few aspects can be tricky to
+configure based on the backend used. For performance reasons database inserts
+are buffered by default. This works exactly identical as described above for
+AppenderBuffer. If you want to write each LogEvent directly to the database,
+just set the buffer size to `0`.
+
+```{r}
+# install.packages("RSQLite")
+lg <- Logger$new(
+  "db_logger",
+  appenders = list(db = AppenderDbi$new(
+    conn = DBI::dbConnect(RSQLite::SQLite()),
+    table = "log",
+    buffer_size = 2L
+  )), 
+  propagate = FALSE
+)
+
+lg$info("Logging to databases uses a buffer")
+lg$info("As the buffer size is 2, no insert took place till now")
+lg$appenders$db$show()
+
+lg$info("Now as the buffer is rotated, all events are output to the db")
+lg$appenders$db$show()
 ```
 
 

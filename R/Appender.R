@@ -1187,7 +1187,7 @@ AppenderBuffer <- R6::R6Class(
 #' Log to a database table with any **DBI** compatabile backend. Please be
 #' aware that AppenderDbi does *not* support case sensitive / quoted column
 #' names, and you advised to only use all-lowercase names for
-#' custom fields (see `...` argument of [LogEvent]).#'
+#' custom fields (see `...` argument of [LogEvent]).
 #' When appending to a database table all LogEvent values for which a column
 #' exists in the target table will be appended, all others are ignored.
 #'
