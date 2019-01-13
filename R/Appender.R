@@ -394,7 +394,6 @@ AppenderJson <- R6::R6Class(
 #'   log level bellow `threshold`.}
 #' }
 #'
-#' @seealso [LayoutTable]
 #' @family Appenders
 #' @name AppenderTable
 NULL
@@ -413,9 +412,9 @@ AppenderTable <- R6::R6Class(
   public = list(
     show = function(threshold = NA_integer_, n = 20L) NULL
   ),
+
   active = list(
-    destination = function() "",
-    data = function() NULL,
+    data = function() as.data.frame(self$dt),
     dt   = function() NULL
   )
 )
@@ -1315,8 +1314,9 @@ AppenderDbi <- R6::R6Class(
       if (self$flush_on_exit)
         self$flush()
 
-      if (self$close_on_exit)
-        DBI::dbDisconnect(private$.conn)
+      if (self$close_on_exit){
+        try(DBI::dbDisconnect(private$.conn), silent = TRUE)
+      }
     },
 
     set_close_on_exit = function(x){
@@ -1366,19 +1366,24 @@ AppenderDbi <- R6::R6Class(
     },
 
     flush = function(){
-      dd <- get(".layout", envir = private)[["format_data"]](self$buffer_dt)
-      ct <- self$col_types
 
-      if (!is.null(ct))
-        dd <- dd[, intersect(names(ct), names(dd))]
+      buffer <- get("buffer_dt", envir = self)
 
-      DBI::dbWriteTable(
-        conn  = get(".conn", envir = private),
-        name  = get(".table", envir = private),
-        value = dd,
-        row.names = FALSE,
-        append = TRUE
-      )
+      if (length(buffer)){
+        dd <- get(".layout", envir = private)[["format_data"]](buffer)
+        ct <- self$col_types
+
+        if (!is.null(ct))
+          dd <- dd[, intersect(names(ct), names(dd))]
+
+        DBI::dbWriteTable(
+          conn  = get(".conn", envir = private),
+          name  = get(".table", envir = private),
+          value = dd,
+          row.names = FALSE,
+          append = TRUE
+        )
+      }
 
       assign("insert_pos", 0L, envir = private)
       private$.buffer_events <- list()
@@ -1409,8 +1414,10 @@ AppenderDbi <- R6::R6Class(
     },
 
     data = function(){
-      dd <- DBI::dbGetQuery(private$.conn, sprintf("SELECT * FROM %s", private$.table))
-      names(dd) <- tolower(names(dd))
+      if (!DBI::dbExistsTable(private[[".conn"]], private[[".table"]]))
+        return(NULL)
+
+      dd <- DBI::dbReadTable(private[[".conn"]], private[[".table"]])
       dd[["timestamp"]] <- as.POSIXct(dd[["timestamp"]])
       dd[["level"]] <- as.integer(dd[["level"]])
       dd

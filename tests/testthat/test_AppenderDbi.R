@@ -379,3 +379,53 @@ test_that("Automatic closing of connections works", {
 
 
 
+
+
+# Postgres Extra Tests ----------------------------------------------------
+
+
+context("AppenderDbi / RPostgreSQL: Extra Tests")
+
+test_that("AppenderDbi / RPostgreSQL: buffered insert works", {
+  if (!requireNamespace("RPostgreSQL", quietly = TRUE))
+    skip("Test requires RPostgreSQL")
+
+  conn = try(silent = TRUE, DBI::dbConnect(
+    RPostgreSQL::PostgreSQL(),
+    user = "postgres",
+    host = "localhost",
+    dbname = "travis_ci_test"
+  ))
+
+  if (inherits(conn, "try-error"))
+    skip("Cannot connect to Postgres database")
+
+  # setup test environment
+  tdb <- tempfile()
+  tname <- "LOGGING_TEST"
+  app <- AppenderDbi$new(conn = conn, table = tname)
+
+  e <- LogEvent$new(lgr, level = 600, msg = "ohno", caller = "nope()", timestamp = Sys.time())
+
+  # do a few inserts
+  for (i in 1:10){
+    app$layout$set_col_types(sample(app$layout$col_types))
+    expect_silent(app$append(e))
+  }
+
+  expect_length(app$buffer_events, 10)
+  expect_length(app$data, 0L)
+  app$flush()
+  expect_length(app$buffer_dt, 0)
+  expect_identical(nrow(app$data), 10L)
+
+  # cleanup
+  DBI::dbRemoveTable(conn, "LOGGING_TEST")
+  DBI::dbDisconnect(conn)
+  rm(app)
+  gc()
+  unlink(tdb)
+})
+
+
+

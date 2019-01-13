@@ -74,8 +74,6 @@ was specified)
 }
 
 \seealso{
-\link{LayoutTable}
-
 Other abstract classes: \code{\link{AppenderDigest}},
   \code{\link{AppenderMail}}, \code{\link{AppenderMemory}},
   \code{\link{Filterable}}
