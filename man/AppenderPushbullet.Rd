@@ -66,7 +66,14 @@ See \code{\link[RPushbullet:pbPost]{RPushbullet::pbPost()}}
 
 
 \describe{
-\item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar. Number of \link{LogEvents} to buffer}
+\item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar \code{>= 0} Number of
+\link{LogEvents} to buffer.
+}
+
+\item{\code{buffer_events}, \code{buffer_df}, \code{buffer_dt}}{
+The contents of the buffer as a \code{list} of \code{LogEvents}, a \code{data.frame}
+or a \code{data.table}.
+}
 
 \item{\code{flush_threshold}, \code{set_flush_threshold()}}{\code{integer} or \code{character}
 \link[=log_level]{log level}. Minimum event level that will trigger flushing of

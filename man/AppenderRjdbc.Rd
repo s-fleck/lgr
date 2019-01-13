@@ -15,12 +15,11 @@ are logging to a non-existant table.
 x <- x$new(conn, table, threshold = NA_integer_,
   layout = select_dbi_layout(conn, table), close_on_exit = TRUE)
 
-x$append(event)
 x$set_close_on_exit(x)
 x$set_conn(conn)
-x$set_col_types(x)
 x$show(threshold = NA_integer_, n = 20)
 x$flush()
+x$append(event)
 x$set_buffer_size(x)
 x$set_should_flush(x)
 x$set_flush_on_exit(x)
@@ -44,6 +43,8 @@ x$buffer_df
 x$buffer_dt
 x$buffer_events
 x$buffer_size
+x$flush_on_exit
+x$flush_on_rotate
 x$flush_threshold
 x$should_flush
 x$layout
@@ -57,6 +58,10 @@ x$filters
 
 
 
+
+Note: \code{$data} and \code{show()} query the data from the remote database and might
+be slow for very large logs.
+
 \describe{
 \item{\code{close_on_exit}, \code{set_close_on_exit()}}{\code{TRUE} or \code{FALSE}. Close the
 Database connection when the Logger is removed?}
@@ -67,7 +72,14 @@ Database connection when the Logger is removed?}
 
 
 \describe{
-\item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar. Number of \link{LogEvents} to buffer}
+\item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar \code{>= 0} Number of
+\link{LogEvents} to buffer.
+}
+
+\item{\code{buffer_events}, \code{buffer_df}, \code{buffer_dt}}{
+The contents of the buffer as a \code{list} of \code{LogEvents}, a \code{data.frame}
+or a \code{data.table}.
+}
 
 \item{\code{flush_threshold}, \code{set_flush_threshold()}}{\code{integer} or \code{character}
 \link[=log_level]{log level}. Minimum event level that will trigger flushing of

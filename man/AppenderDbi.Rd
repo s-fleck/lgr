@@ -7,20 +7,34 @@
 Log to a database table with any \strong{DBI} compatabile backend. Please be
 aware that AppenderDbi does \emph{not} support case sensitive / quoted column
 names, and you advised to only use all-lowercase names for
-custom fields (see \code{...} argument of \link{LogEvent}).
+custom fields (see \code{...} argument of \link{LogEvent}).#'
+When appending to a database table all LogEvent values for which a column
+exists in the target table will be appended, all others are ignored.
 }
+\section{Buffered Logging}{
+
+
+AppenderDBI does not write directly to the database but to an in memory
+buffer. With the default settings, this buffer is written to the database
+whenever the buffer is full (\code{buffer_size}, default is 10 LogEvents),
+whenever a LogEvent with a level of \code{fatal} or \code{error} is encountered
+(\code{flush_threshold}) or when the Appender is garbage collected
+(\code{flush_on_exit}), i.e. when you close the \R session or shortly after you
+remove the Appender object via \code{rm()} or the likes. If you want to avoid
+this behaviour, just set \code{buffer_size} to \code{0}.
+}
+
 \section{Usage}{
 \preformatted{
 x <- x$new(conn, table, threshold = NA_integer_,
   layout = select_dbi_layout(conn, table), close_on_exit = TRUE,
-  buffer_size = 100, flush_threshold = "fatal", flush_on_exit = TRUE,
+  buffer_size = 10, flush_threshold = "error", flush_on_exit = TRUE,
   flush_on_rotate = TRUE, should_flush = function(event) {
   is.na(.obj()[["flush_threshold"]]) || all(event[["level"]] <=
   .obj()[["flush_threshold"]]) })
 
 x$set_close_on_exit(x)
 x$set_conn(conn)
-x$set_col_types(x)
 x$show(threshold = NA_integer_, n = 20)
 x$flush()
 x$append(event)
@@ -47,6 +61,8 @@ x$buffer_df
 x$buffer_dt
 x$buffer_events
 x$buffer_size
+x$flush_on_exit
+x$flush_on_rotate
 x$flush_threshold
 x$should_flush
 x$layout
@@ -76,6 +92,10 @@ form of \code{appender$set_<fieldname>(value)}
 
 \section{Fields}{
 
+
+Note: \code{$data} and \code{show()} query the data from the remote database and might
+be slow for very large logs.
+
 \describe{
 \item{\code{close_on_exit}, \code{set_close_on_exit()}}{\code{TRUE} or \code{FALSE}. Close the
 Database connection when the Logger is removed?}
@@ -86,7 +106,14 @@ Database connection when the Logger is removed?}
 
 
 \describe{
-\item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar. Number of \link{LogEvents} to buffer}
+\item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar \code{>= 0} Number of
+\link{LogEvents} to buffer.
+}
+
+\item{\code{buffer_events}, \code{buffer_df}, \code{buffer_dt}}{
+The contents of the buffer as a \code{list} of \code{LogEvents}, a \code{data.frame}
+or a \code{data.table}.
+}
 
 \item{\code{flush_threshold}, \code{set_flush_threshold()}}{\code{integer} or \code{character}
 \link[=log_level]{log level}. Minimum event level that will trigger flushing of

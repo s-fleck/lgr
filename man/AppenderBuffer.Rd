@@ -16,11 +16,11 @@ x <- x$new(threshold = NA_integer_, appenders = NULL,
   layout = LayoutFormat$new(fmt = "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S",
   colors = getOption("lgr.colors")), buffer_size = 1000)
 
-x$append(event)
 x$flush()
 x$set_appenders(x)
 x$add_appender(appender, name = NULL)
 x$remove_appender(pos)
+x$append(event)
 x$set_buffer_size(x)
 x$set_should_flush(x)
 x$set_flush_on_exit(x)
@@ -36,12 +36,12 @@ x$set_filters(filters)
 
 x$appenders
 x$destination
-x$flush_on_exit
-x$flush_on_rotate
 x$buffer_df
 x$buffer_dt
 x$buffer_events
 x$buffer_size
+x$flush_on_exit
+x$flush_on_rotate
 x$flush_threshold
 x$should_flush
 x$layout
@@ -75,7 +75,14 @@ the buffer should be flushed when the Buffer is full (f.e when you close
 
 
 \describe{
-\item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar. Number of \link{LogEvents} to buffer}
+\item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar \code{>= 0} Number of
+\link{LogEvents} to buffer.
+}
+
+\item{\code{buffer_events}, \code{buffer_df}, \code{buffer_dt}}{
+The contents of the buffer as a \code{list} of \code{LogEvents}, a \code{data.frame}
+or a \code{data.table}.
+}
 
 \item{\code{flush_threshold}, \code{set_flush_threshold()}}{\code{integer} or \code{character}
 \link[=log_level]{log level}. Minimum event level that will trigger flushing of

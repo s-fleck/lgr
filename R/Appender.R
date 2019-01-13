@@ -763,7 +763,14 @@ AppenderDt <- R6::R6Class(
 #' @section Fields:
 #'
 #' \describe{
-#'   \item{`buffer_size, set_buffer_size(x)`}{`integer` scalar. Number of [LogEvents] to buffer}
+#'   \item{`buffer_size, set_buffer_size(x)`}{`integer` scalar `>= 0` Number of
+#'     [LogEvents] to buffer.
+#'   }
+#'
+#'   \item{`buffer_events`, `buffer_df`, `buffer_dt`}{
+#'     The contents of the buffer as a `list` of `LogEvents`, a `data.frame`
+#'     or a `data.table`.
+#'   }
 #'
 #'  \item{`flush_threshold`, `set_flush_threshold()`}{`integer` or `character`
 #'     [log level][log_level]. Minimum event level that will trigger flushing of
@@ -796,9 +803,7 @@ AppenderMemory <- R6::R6Class(
   inherit = Appender,
   cloneable = FALSE,
   public = list(
-    append = function(
-      event
-    ){
+    append = function(event){
       i <- get("insert_pos", envir = private) + 1L
       assign("insert_pos", i, envir = private, inherits = TRUE)
       private[["last_event"]] <- private[["last_event"]] + 1L
@@ -807,7 +812,7 @@ AppenderMemory <- R6::R6Class(
 
       bs <- get(".buffer_size", envir = private)
 
-      sf <- get(".should_flush", envir = private)(event, self)
+      sf <- get(".should_flush", envir = private)(event)
       if (!is_scalar_bool(sf)){
         warning(
           "`should_flush()` did not return `TRUE` or `FALSE` but ",
@@ -820,11 +825,14 @@ AppenderMemory <- R6::R6Class(
       if (sf){
         self[["flush"]]()
       } else if (i > bs){
-        # rotate
-        assign("insert_pos", 0L, envir = private)
+        if (get(".flush_on_rotate", envir = private) ){
+          self[["flush"]]()
+        } else {
+          assign("insert_pos", 0L, envir = private)
+        }
       }
 
-      NULL
+    NULL
     },
 
     flush = function(){},
@@ -885,6 +893,14 @@ AppenderMemory <- R6::R6Class(
 
   # +- active ---------------------------------------------------------------
   active = list(
+    flush_on_exit = function() {
+      get(".flush_on_exit", private)
+    },
+
+    flush_on_rotate = function() {
+      get(".flush_on_rotate", private)
+    },
+
     should_flush = function(){
       get(".should_flush", private)
     },
@@ -1045,40 +1061,6 @@ AppenderBuffer <- R6::R6Class(
       invisible(self)
     },
 
-    append = function(
-      event
-    ){
-      i <- get("insert_pos", envir = private) + 1L
-      assign("insert_pos", i, envir = private, inherits = TRUE)
-      private[["last_event"]] <- private[["last_event"]] + 1L
-      private[["event_order"]][[i]] <- private[["last_event"]]
-      private[[".buffer_events"]][[i]] <- event
-
-      bs <- get(".buffer_size", envir = private)
-
-      sf <- get(".should_flush", envir = private)(event)
-      if (!is_scalar_bool(sf)){
-        warning(
-          "`should_flush()` did not return `TRUE` or `FALSE` but ",
-          preview_object(sf), ". ",
-          "Please set a proper filter function with `$set_should_flush()`"
-        )
-        sf <- FALSE
-      }
-
-      if (sf){
-        self[["flush"]]()
-      } else if (i > bs){
-        if (get(".flush_on_rotate", envir = private) ){
-          self[["flush"]]()
-        } else {
-          assign("insert_pos", 0L, envir = private)
-        }
-      }
-
-      NULL
-    },
-
     flush = function(){
       for (event in get("buffer_events", envir = self)){
         for (app in self$appenders) {
@@ -1165,14 +1147,6 @@ AppenderBuffer <- R6::R6Class(
 
   # +- active ---------------------------------------------------------------
   active = list(
-    flush_on_exit = function() {
-      get(".flush_on_exit", private)
-    },
-
-    flush_on_rotate = function() {
-      get(".flush_on_rotate", private)
-    },
-
     appenders = function(value){
       if (missing(value)) return(c(private$.appenders))
 
@@ -1213,7 +1187,20 @@ AppenderBuffer <- R6::R6Class(
 #' Log to a database table with any **DBI** compatabile backend. Please be
 #' aware that AppenderDbi does *not* support case sensitive / quoted column
 #' names, and you advised to only use all-lowercase names for
-#' custom fields (see `...` argument of [LogEvent]).
+#' custom fields (see `...` argument of [LogEvent]).#'
+#' When appending to a database table all LogEvent values for which a column
+#' exists in the target table will be appended, all others are ignored.
+#'
+#' @section Buffered Logging:
+#'
+#' AppenderDBI does not write directly to the database but to an in memory
+#' buffer. With the default settings, this buffer is written to the database
+#' whenever the buffer is full (`buffer_size`, default is 10 LogEvents),
+#' whenever a LogEvent with a level of `fatal` or `error` is encountered
+#' (`flush_threshold`) or when the Appender is garbage collected
+#' (`flush_on_exit`), i.e. when you close the \R session or shortly after you
+#' remove the Appender object via `rm()` or the likes. If you want to avoid
+#' this behaviour, just set `buffer_size` to `0`.
 #'
 #' @eval r6_usage(AppenderDbi)
 #'
@@ -1230,7 +1217,12 @@ AppenderBuffer <- R6::R6Class(
 #' create the target log table first manually using an `SQL CREATE TABLE`
 #' statement as this is safer and more flexible. See also [LayoutDbi].
 #'
+#'
 #' @section Fields:
+#'
+#' Note: `$data` and `show()` query the data from the remote database and might
+#'   be slow for very large logs.
+#'
 #' \describe{
 #'   \item{`close_on_exit`, `set_close_on_exit()`}{`TRUE` or `FALSE`. Close the
 #'   Database connection when the Logger is removed?}
@@ -1271,8 +1263,8 @@ AppenderDbi <- R6::R6Class(
       threshold = NA_integer_,
       layout = select_dbi_layout(conn, table),
       close_on_exit = TRUE,
-      buffer_size = 100,
-      flush_threshold = "fatal",
+      buffer_size = 10,
+      flush_threshold = "error",
       flush_on_exit = TRUE,
       flush_on_rotate = TRUE,
       should_flush = function(event){
@@ -1328,15 +1320,6 @@ AppenderDbi <- R6::R6Class(
     set_conn = function(conn){
       assert(inherits(conn, "DBIConnection"))
       private$.conn <- conn
-      invisible(self)
-    },
-
-    set_col_types = function(x){
-      if (!is.null(x)){
-        assert(is.character(x))
-        assert(identical(length(names(x)), length(x)))
-      }
-      private$.col_types <- x
       invisible(self)
     },
 
@@ -1406,7 +1389,7 @@ AppenderDbi <- R6::R6Class(
     col_types = function(){
       if (is.null(get(".col_types", envir = private))){
         ct <- get_col_types(private[[".conn"]], private[[".table"]])
-        self$set_col_types(ct)
+        private$set_col_types(ct)
         return(ct)
       } else {
         get(".col_types", envir = private)
@@ -1426,7 +1409,17 @@ AppenderDbi <- R6::R6Class(
     table = function() private$.table
   ),
 
+  # +- private -------------------------------------------------------------
   private = list(
+    set_col_types = function(x){
+      if (!is.null(x)){
+        assert(is.character(x))
+        assert(identical(length(names(x)), length(x)))
+      }
+      private$.col_types <- x
+      invisible(self)
+    },
+
     .col_types = NULL,
     .conn = NULL,
     .table = NULL,
