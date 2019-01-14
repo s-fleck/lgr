@@ -48,7 +48,7 @@ dbs <- list(
 
   "PostgreSQL via RPostgres" = list(
     conn = try(silent = TRUE, DBI::dbConnect(
-      RPostgreSQL::PostgreSQL(),
+      RPostgres::Postgres(),
       user = "postgres",
       host = "localhost",
       dbname = "travis_ci_test"
@@ -70,7 +70,7 @@ dbs <- list(
 options("datatable.showProgress" = dt_sp)
 
 nm <- "SQLite via RSQLite"  # for manual testing, can be deleted
-nm <- "DB2 via RJDBC"# for manual testing, can be deleted
+nm <- "PostgreSQL via RPostgreSQL" # for manual testing, can be deleted
 
 
 # +- tests -------------------------------------------------------------------
@@ -116,7 +116,7 @@ for (nm in names(dbs)){
     # small tolerance is allowed for timestamps
     tdiff <- as.numeric(tres[, 2]) - as.numeric(eres[, 2])
     expect_true(all(tdiff < 1), info = tdiff)
-    expect_true(all(tres$timestamp == format(e$timestamp)))
+    expect_true(all(format(tres$timestamp) == format(e$timestamp, usetz = FALSE)))
   })
 
 
@@ -247,7 +247,8 @@ for (nm in names(dbs)){
     expect_identical(nrow(lg$appenders$db$data), 11L)
 
     # cleanup
-    DBI::dbRemoveTable(conn, "LOGGING_TEST_BUFFER")
+    try(DBI::dbRemoveTable(conn, "LOGGING_TEST_BUFFER"))
+    try(DBI::dbRemoveTable(conn, tolower("LOGGING_TEST_BUFFER")))
   })
 
 

@@ -1291,10 +1291,10 @@ AppenderDbi <- R6::R6Class(
       if (DBI::dbExistsTable(self$conn, table)){
         # do nothing
       } else if (is.null(self$layout$col_types)) {
-        message(paste0("Creating '", table, "' on first log. "))
+        message(paste0("Creating '", capture.output(print(table)), "' on first log. "))
 
       } else {
-        message("Creating '", table, "' with manually specified column types")
+        message("Creating '", capture.output(print(table)), "' with manually specified column types")
         DBI::dbExecute(conn, layout$sql_create_table(table))
       }
     },
@@ -1394,10 +1394,20 @@ AppenderDbi <- R6::R6Class(
     },
 
     data = function(){
-      if (!DBI::dbExistsTable(private[[".conn"]], private[[".table"]]))
+
+      dd <- try(DBI::dbReadTable(private[[".conn"]], private[[".table"]]), silent = TRUE)
+
+      if (inherits(dd, "try-error"))
+        dd <- try(DBI::dbReadTable(private[[".conn"]], toupper(private[[".table"]])), silent = TRUE)
+
+      if (inherits(dd, "try-error"))
+        dd <- try(DBI::dbReadTable(private[[".conn"]], tolower(private[[".table"]])), silent = TRUE)
+
+      if (inherits(dd, "try-error"))
         return(NULL)
 
-      dd <- DBI::dbReadTable(private[[".conn"]], private[[".table"]])
+      names(dd) <- tolower(names(dd))
+
       dd[["timestamp"]] <- as.POSIXct(dd[["timestamp"]])
       dd[["level"]] <- as.integer(dd[["level"]])
       dd
