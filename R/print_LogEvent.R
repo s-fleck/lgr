@@ -237,14 +237,17 @@ tokenize_format <- function(
 
 # convert a data.frame as returned for example by AppenderDt$dt to a list of
 # LogEvent like environments. Useful for printing.
-as_LogEvent_list.data.frame <- function(x){
+as_LogEvent_list.data.frame <- function(x, na.rm = TRUE){
   lapply(
     seq_len(nrow(x)),
     function(i){
-      r <- as.environment(c(
-        as.list(x[i, !names(x) %in% c(".id", ".custom")]),
-        x[i, ][[".custom"]][[1]]
-      ))
+      dd <- as.list(x[i, !names(x) %in% c(".id", ".custom")])
+
+      if (na.rm){
+        for (j in rev(seq_along(dd))) if (is.na(dd[[j]])) dd[[j]] <- NULL
+      }
+
+      r <- as.environment(c(dd, x[i, ][[".custom"]][[1]]))
       r[["values"]] <- rev(as.list(r))
       r
     }

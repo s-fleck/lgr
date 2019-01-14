@@ -1335,7 +1335,7 @@ AppenderDbi <- R6::R6Class(
         cat("[empty log]")
       } else {
         walk(
-          as_LogEvent_list.data.frame(dd),
+          as_LogEvent_list.data.frame(dd, na.rm = TRUE),
           function(.x){
             cat(format.LogEvent(.x, colors = colors), "\n", sep = "")
           }
@@ -1507,7 +1507,6 @@ AppenderRjdbc <- R6::R6Class(
     },
 
 
-
     flush = function(){
       buffer <- get("buffer_dt", envir = self)
 
@@ -1539,21 +1538,13 @@ AppenderRjdbc <- R6::R6Class(
     }
   ),
 
+
   active = list(
     data = function(){
-      table_exists <- try(DBI::dbGetQuery(conn, paste("SELECT 1 FROM", self$table)), silent = TRUE)
-      table_exists <- !inherits(table_exists, "try-error")
+      dd <- try(DBI::dbGetQuery(self$conn, paste("SELECT * FROM", self$table)))
 
-      if (!table_exists){
+      if (inherits(dd, "try-error"))
         return(NULL)
-      }
-
-      dd <- tryCatch(
-        DBI::dbReadTable(private[[".conn"]], toupper(private[[".table"]])),
-        error = function(e){
-          DBI::dbReadTable(private[[".conn"]], toupper(private[[".table"]]))
-        }
-      )
 
       names(dd) <- tolower(names(dd))
 
