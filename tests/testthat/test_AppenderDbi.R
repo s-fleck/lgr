@@ -70,7 +70,7 @@ dbs <- list(
 options("datatable.showProgress" = dt_sp)
 
 nm <- "SQLite via RSQLite"  # for manual testing, can be deleted
-nm <- "PostgreSQL via RPostgreSQL" # for manual testing, can be deleted
+nm <- "PostgreSQL via RPostgres" # for manual testing, can be deleted
 
 
 # +- tests -------------------------------------------------------------------
@@ -240,15 +240,18 @@ for (nm in names(dbs)){
     replicate(10, lg$info("buffered_insert", foo = "baz", blubb = "blah"))
 
     expect_length(lg$appenders$db$buffer_events, 10)
-    expect_identical(nrow(lg$appenders$db$data), 0L)
+    expect_true(
+      is.null(lg$appenders$db$data) ||
+      identical(nrow(lg$appenders$db$data), 0L)
+    )
 
     lg$info("test")
     expect_length(lg$appenders$db$buffer_events, 0)
     expect_identical(nrow(lg$appenders$db$data), 11L)
 
     # cleanup
-    try(DBI::dbRemoveTable(conn, "LOGGING_TEST_BUFFER"))
-    try(DBI::dbRemoveTable(conn, tolower("LOGGING_TEST_BUFFER")))
+    try(DBI::dbRemoveTable(conn, "LOGGING_TEST_BUFFER"), silent = TRUE)
+    try(DBI::dbRemoveTable(conn, tolower("LOGGING_TEST_BUFFER")), silent = TRUE)
   })
 
 

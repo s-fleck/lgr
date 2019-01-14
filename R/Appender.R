@@ -1395,19 +1395,19 @@ AppenderDbi <- R6::R6Class(
 
     data = function(){
 
-      dd <- try(DBI::dbReadTable(private[[".conn"]], private[[".table"]]), silent = TRUE)
+      tbl <- private[[".table"]]
 
-      if (inherits(dd, "try-error"))
-        dd <- try(DBI::dbReadTable(private[[".conn"]], toupper(private[[".table"]])), silent = TRUE)
-
-      if (inherits(dd, "try-error"))
-        dd <- try(DBI::dbReadTable(private[[".conn"]], tolower(private[[".table"]])), silent = TRUE)
-
-      if (inherits(dd, "try-error"))
+      if (DBI::dbExistsTable(private[[".conn"]], tbl)){
+        dd <- DBI::dbReadTable(private[[".conn"]], private[[".table"]])
+      } else if (DBI::dbExistsTable(private[[".conn"]], toupper(tbl))){
+        dd <- DBI::dbReadTable(private[[".conn"]], toupper(tbl))
+      } else if (DBI::dbExistsTable(private[[".conn"]], tolower(tbl))){
+        dd <- DBI::dbReadTable(private[[".conn"]], tolower(tbl))
+      } else {
         return(NULL)
+      }
 
       names(dd) <- tolower(names(dd))
-
       dd[["timestamp"]] <- as.POSIXct(dd[["timestamp"]])
       dd[["level"]] <- as.integer(dd[["level"]])
       dd
