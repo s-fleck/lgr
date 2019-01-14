@@ -70,7 +70,7 @@ dbs <- list(
 options("datatable.showProgress" = dt_sp)
 
 nm <- "SQLite via RSQLite"  # for manual testing, can be deleted
-nm <- "PostgreSQL via RPostgres" # for manual testing, can be deleted
+nm <- "DB2 via RJDBC"# for manual testing, can be deleted
 
 
 # +- tests -------------------------------------------------------------------
@@ -217,6 +217,37 @@ for (nm in names(dbs)){
     expect_identical(tail(lg$appenders$db$data, 1)$foo, "baz")
 
     try(DBI::dbRemoveTable(conn, "logging_test_create"), silent = TRUE)
+  })
+
+
+  test_that("Buffered inserts work", {
+    lg <- Logger$new(
+      "test_dbi",
+      threshold = "trace",
+      propagate = FALSE,
+      exception_handler = function (...) stop(...)
+    )
+
+    lg$set_appenders(list(db =
+      ctor$new(
+        conn = conn,
+        table = "logging_test_buffer",
+        close_on_exit = FALSE,
+        buffer_size = 10
+      ))
+    )
+
+    replicate(10, lg$info("buffered_insert", foo = "baz", blubb = "blah"))
+
+    expect_length(lg$appenders$db$buffer_events, 10)
+    expect_identical(nrow(lg$appenders$db$data), 0L)
+
+    lg$info("test")
+    expect_length(lg$appenders$db$buffer_events, 0)
+    expect_identical(nrow(lg$appenders$db$data), 11L)
+
+    # cleanup
+    DBI::dbRemoveTable(conn, "LOGGING_TEST_BUFFER")
   })
 
 
@@ -376,56 +407,3 @@ test_that("Automatic closing of connections works", {
   gc()
   expect_silent(DBI::dbDisconnect(conn))
 })
-
-
-
-
-
-# Postgres Extra Tests ----------------------------------------------------
-
-
-context("AppenderDbi / RPostgreSQL: Extra Tests")
-
-test_that("AppenderDbi / RPostgreSQL: buffered insert works", {
-  if (!requireNamespace("RPostgreSQL", quietly = TRUE))
-    skip("Test requires RPostgreSQL")
-
-  conn = try(silent = TRUE, DBI::dbConnect(
-    RPostgreSQL::PostgreSQL(),
-    user = "postgres",
-    host = "localhost",
-    dbname = "travis_ci_test"
-  ))
-
-  if (inherits(conn, "try-error"))
-    skip("Cannot connect to Postgres database")
-
-  # setup test environment
-  tdb <- tempfile()
-  tname <- "LOGGING_TEST"
-  app <- AppenderDbi$new(conn = conn, table = tname)
-
-  e <- LogEvent$new(lgr, level = 600, msg = "ohno", caller = "nope()", timestamp = Sys.time())
-
-  # do a few inserts
-  for (i in 1:10){
-    app$layout$set_col_types(sample(app$layout$col_types))
-    expect_silent(app$append(e))
-  }
-
-  expect_length(app$buffer_events, 10)
-  expect_length(app$data, 0L)
-  app$flush()
-  expect_length(app$buffer_dt, 0)
-  expect_identical(nrow(app$data), 10L)
-
-  # cleanup
-  DBI::dbRemoveTable(conn, "LOGGING_TEST")
-  DBI::dbDisconnect(conn)
-  rm(app)
-  gc()
-  unlink(tdb)
-})
-
-
-

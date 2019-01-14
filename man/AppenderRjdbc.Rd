@@ -5,20 +5,22 @@
 \title{Log to Databases via RJDBC}
 \description{
 Log to a database table with the \strong{RJDBC} package. \strong{RJDBC} is only
-somewhat  \strong{DBI} compliant and does not work with \link{AppenderDbi}. I
-personally do not recommend using \strong{RJDBC} if it can be avoided. As
-opposed to \code{AppenderDbi} you always need to specify the column types if you
-are logging to a non-existant table.
+somewhat  \strong{DBI} compliant and does not work with \link{AppenderDbi}.
+\strong{I do not recommend using RJDBC if it can be avoided.}. AppenderRJDBC
+is only tested for DB2 databases, and it is likely it will not work properly
+for other databases. Please file a bug report if you encounter any issues.
 }
 \section{Usage}{
 \preformatted{
 x <- x$new(conn, table, threshold = NA_integer_,
-  layout = select_dbi_layout(conn, table), close_on_exit = TRUE)
+  layout = select_dbi_layout(conn, table), close_on_exit = TRUE,
+  buffer_size = 10, flush_threshold = "error", flush_on_exit = TRUE,
+  flush_on_rotate = TRUE, should_flush = default_should_flush)
 
+x$flush()
 x$set_close_on_exit(x)
 x$set_conn(conn)
 x$show(threshold = NA_integer_, n = 20)
-x$flush()
 x$append(event)
 x$set_buffer_size(x)
 x$set_should_flush(x)
@@ -33,10 +35,10 @@ x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
 x$set_filters(filters)
 
-x$close_on_exit
 x$col_types
-x$conn
 x$data
+x$close_on_exit
+x$conn
 x$destination
 x$table
 x$buffer_df

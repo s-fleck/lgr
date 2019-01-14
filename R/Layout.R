@@ -633,17 +633,18 @@ select_dbi_layout <- function(
 
 
 get_col_types <- function(conn, table){
-  if (DBI::dbExistsTable(conn, table)){
-    tryCatch({
-      dd <- DBI::dbSendQuery(conn, paste("SELECT * FROM", table))
-      res <- DBI::dbColumnInfo(dd)
-      DBI::dbClearResult(dd)
-      setNames(res$type, tolower(res$name))
-    },
+  res <- tryCatch({
+    dd <- DBI::dbSendQuery(conn, paste("SELECT * FROM", table))
+    res <- DBI::dbColumnInfo(dd)
+    DBI::dbClearResult(dd)
+    if ("type" %in% names(res))
+      setNames(as.character(res$type), tolower(res$name))
+    else if ("field.type" %in% names(res))
+      setNames(as.character(res$field.type), tolower(res$field.name))
+  },
     error = function(e) NULL
-    )
-  } else {
-    NULL
-  }
+  )
+
+  res
 }
 

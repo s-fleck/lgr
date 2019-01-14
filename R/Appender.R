@@ -1432,10 +1432,10 @@ AppenderDbi <- R6::R6Class(
 #' Log to Databases via RJDBC
 #'
 #' Log to a database table with the **RJDBC** package. **RJDBC** is only
-#' somewhat  **DBI** compliant and does not work with [AppenderDbi]. I
-#' personally do not recommend using **RJDBC** if it can be avoided. As
-#' opposed to `AppenderDbi` you always need to specify the column types if you
-#' are logging to a non-existant table.
+#' somewhat  **DBI** compliant and does not work with [AppenderDbi].
+#' **I do not recommend using RJDBC if it can be avoided.**. AppenderRJDBC
+#' is only tested for DB2 databases, and it is likely it will not work properly
+#' for other databases. Please file a bug report if you encounter any issues.
 #'
 #' @inheritSection AppenderDbi Creating a New Appender
 #' @inheritSection AppenderDbi Choosing the Right DBI Layout
@@ -1470,32 +1470,114 @@ AppenderRjdbc <- R6::R6Class(
       table,
       threshold = NA_integer_,
       layout = select_dbi_layout(conn, table),
-      close_on_exit = TRUE
+      close_on_exit = TRUE,
+      buffer_size = 10,
+      flush_threshold = "error",
+      flush_on_exit = TRUE,
+      flush_on_rotate = TRUE,
+      should_flush = default_should_flush
     ){
-      assert_namespace("RJDBC")
+      assert_namespace("DBI", "RJDBC", "data.table")
+
+      # appender
       self$set_threshold(threshold)
       self$set_layout(layout)
+
+      # buffer
+      private$initialize_buffer(buffer_size)
+
+      # flush conditions
+      self$set_should_flush(should_flush)
+      self$set_flush_threshold(flush_threshold)
+      self$set_flush_on_exit(flush_on_exit)
+      self$set_flush_on_rotate(flush_on_rotate)
+
+      # database
+      private[[".conn"]]  <- conn
+      private[[".table"]] <- table
       self$set_close_on_exit(close_on_exit)
-      private$.conn  <- conn
-      private$.table <- table
 
-      table_exists <- tryCatch(
-        is.data.frame(
-          DBI::dbGetQuery(
-            self$conn,
-            sprintf("select 1 from %s where 1 = 2", table)
-          )),
-        error = function(e) FALSE
-      )
+      table_exists <- try(DBI::dbGetQuery(conn, paste("SELECT 1 FROM", table)), silent = TRUE)
+      table_exists <- !inherits(table_exists, "try-error")
 
-      if (table_exists){
-        # do nothing
-      } else {
-        message("Creating '", table, "' with manual column types")
-        RJDBC::dbSendUpdate(conn, layout$sql_create_table(table))
+      if (!table_exists) {
+        message("Creating '", table, "' with manually specified column types")
+        RJDBC::dbSendUpdate(conn, layout$sql_create_table(toupper(table)))
+      }
+    },
+
+
+
+    flush = function(){
+      buffer <- get("buffer_dt", envir = self)
+
+      if (length(buffer)){
+        dd <- get(".layout", envir = private)[["format_data"]](buffer)
+        names(dd) <- toupper(names(dd))
+        ct <- self$col_types
+
+        if (!is.null(ct)){
+          names(ct) <- toupper(names(ct))
+          dd <- dd[, intersect(toupper(names(ct)), toupper(names(dd)))]
+        }
+
+        for (i in seq_len(nrow(dd))){
+          data <- as.list(dd[i, ])
+          q <-  sprintf(
+            "INSERT INTO %s (%s) VALUES (%s)",
+            private$.table,
+            paste(names(data), collapse = ", "),
+            paste(rep("?", length(data)), collapse = ", ")
+          )
+          RJDBC::dbSendUpdate(get(".conn", private), q, list=data)
+        }
+
+        assign("insert_pos", 0L, envir = private)
+        private$.buffer_events <- list()
+        invisible(self)
       }
     }
   ),
+
+  active = list(
+    data = function(){
+      table_exists <- try(DBI::dbGetQuery(conn, paste("SELECT 1 FROM", self$table)), silent = TRUE)
+      table_exists <- !inherits(table_exists, "try-error")
+
+      if (!table_exists){
+        return(NULL)
+      }
+
+      dd <- tryCatch(
+        DBI::dbReadTable(private[[".conn"]], toupper(private[[".table"]])),
+        error = function(e){
+          DBI::dbReadTable(private[[".conn"]], toupper(private[[".table"]]))
+        }
+      )
+
+      names(dd) <- tolower(names(dd))
+
+      dd[["timestamp"]] <- as.POSIXct(dd[["timestamp"]])
+      dd[["level"]] <- as.integer(dd[["level"]])
+      dd
+    },
+
+    col_types = function(){
+      if (is.null(get(".col_types", envir = private))){
+        ct <-
+          get_col_types(private[[".conn"]], toupper(private[[".table"]]))
+
+        if (is.null(ct))
+          ct <- get_col_types(private[[".conn"]], private[[".table"]])
+
+        private$set_col_types(ct)
+        return(ct)
+      } else {
+        get(".col_types", envir = private)
+      }
+    }
+  ),
+
 
   private = list(
     .conn = NULL,
