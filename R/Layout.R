@@ -387,9 +387,9 @@ LayoutDbi <- R6::R6Class(
       self$set_col_types(col_types)
     },
 
-    format_data = function(x){
-      x
-    },
+    format_table_name = tolower,
+    format_colnames   = tolower,
+    format_data       = identity,
 
     set_col_types = function(x){
       if (!is.null(x)){
@@ -433,6 +433,8 @@ LayoutSqlite <- R6::R6Class(
   "LayoutSqlite",
   inherit = LayoutDbi,
   public = list(
+    format_table_name = tolower,
+    format_colnames   = tolower,
     format_data = function(x){
       for (nm in names(x)){
         if (inherits(x[[nm]], "POSIXt"))
@@ -444,6 +446,53 @@ LayoutSqlite <- R6::R6Class(
 )
 
 
+
+
+# LayoutPostgres ----------------------------------------------------------
+
+#' @export
+LayoutPostgres <- R6::R6Class(
+  "LayoutPostgres",
+  inherit = LayoutDbi,
+  public = list(
+    format_table_name = tolower,
+    format_colnames   = tolower,
+    format_data       = identity
+  )
+)
+
+
+# LayoutMySQL ----------------------------------------------------------
+
+#' @export
+LayoutMySql <- R6::R6Class(
+  "LayoutMySql",
+  inherit = LayoutDbi,
+  public = list(
+    format_table_name = tolower,
+    format_colnames   = tolower,
+    format_data       = identity
+  )
+)
+
+
+
+
+# LayoutDb2 ----------------------------------------------------------
+
+#' @export
+LayoutDb2 <- R6::R6Class(
+  "LayoutDb2",
+  inherit = LayoutDbi,
+  public = list(
+    format_table_name = toupper,
+    format_colnames   = toupper,
+    format_data = function(x){
+      names(x) <- toupper(names(x))
+      x
+    }
+  )
+)
 
 
 # +- LayoutRjdbc ----------------------------------------------------------
@@ -604,6 +653,12 @@ select_dbi_layout <- function(
 
   res <- switch(
     cls,
+    "PostgreSQLConnection" = LayoutPostgres$new(),
+
+    "MariaDBConnection" = LayoutMySql$new(),
+
+    "MySQLConnection" = LayoutMySql$new(),
+
     "SQLiteConnection" = LayoutSqlite$new(
       col_types = c(
         level = "integer",
@@ -634,7 +689,7 @@ select_dbi_layout <- function(
 
 get_col_types <- function(conn, table){
   res <- tryCatch({
-    dd <- DBI::dbSendQuery(conn, paste("SELECT * FROM", table))
+    dd  <- DBI::dbSendQuery(conn, paste("SELECT * FROM", table))
     res <- DBI::dbColumnInfo(dd)
     DBI::dbClearResult(dd)
     if ("type" %in% names(res))

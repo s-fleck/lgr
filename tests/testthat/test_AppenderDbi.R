@@ -250,8 +250,7 @@ for (nm in names(dbs)){
     expect_identical(nrow(lg$appenders$db$data), 11L)
 
     # cleanup
-    try(DBI::dbRemoveTable(conn, "LOGGING_TEST_BUFFER"), silent = TRUE)
-    try(DBI::dbRemoveTable(conn, tolower("LOGGING_TEST_BUFFER")), silent = TRUE)
+    DBI::dbRemoveTable(conn, lg$appenders$db$layout$format_table_name("LOGGING_TEST_BUFFER"))
   })
 
 

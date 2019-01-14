@@ -1346,19 +1346,21 @@ AppenderDbi <- R6::R6Class(
     },
 
     flush = function(){
+      lo <- get(".layout", envir = private)
 
+      table  <- get("table", envir = self)
       buffer <- get("buffer_dt", envir = self)
 
       if (length(buffer)){
-        dd <- get(".layout", envir = private)[["format_data"]](buffer)
-        ct <- self$col_types
+        dd <- lo[["format_data"]](buffer)
+        cn <- names(get("col_types", envir = self))
 
-        if (!is.null(ct))
-          dd <- dd[, intersect(names(ct), names(dd))]
+        if (!is.null(cn))
+          dd <- dd[, intersect(cn, names(dd))]
 
         DBI::dbWriteTable(
           conn  = get(".conn", envir = private),
-          name  = get(".table", envir = private),
+          name  = table,
           value = dd,
           row.names = FALSE,
           append = TRUE
@@ -1385,7 +1387,9 @@ AppenderDbi <- R6::R6Class(
 
     col_types = function(){
       if (is.null(get(".col_types", envir = private))){
-        ct <- get_col_types(private[[".conn"]], private[[".table"]])
+        ct <- get_col_types(private[[".conn"]], self[["table"]])
+        if (is.null(ct)) return (NULL)
+        names(ct) <- get("layout", envir = self)[["format_colnames"]](names(ct))
         private$set_col_types(ct)
         return(ct)
       } else {
@@ -1393,16 +1397,15 @@ AppenderDbi <- R6::R6Class(
       }
     },
 
-    data = function(){
+    table = function(){
+      self[["layout"]][["format_table_name"]](get(".table", envir = private))
+    },
 
-      tbl <- private[[".table"]]
+    data = function(){
+      tbl <- get("table", envir = self)
 
       if (DBI::dbExistsTable(private[[".conn"]], tbl)){
-        dd <- DBI::dbReadTable(private[[".conn"]], private[[".table"]])
-      } else if (DBI::dbExistsTable(private[[".conn"]], toupper(tbl))){
-        dd <- DBI::dbReadTable(private[[".conn"]], toupper(tbl))
-      } else if (DBI::dbExistsTable(private[[".conn"]], tolower(tbl))){
-        dd <- DBI::dbReadTable(private[[".conn"]], tolower(tbl))
+        dd <- DBI::dbReadTable(private[[".conn"]], tbl)
       } else {
         return(NULL)
       }
@@ -1411,9 +1414,7 @@ AppenderDbi <- R6::R6Class(
       dd[["timestamp"]] <- as.POSIXct(dd[["timestamp"]])
       dd[["level"]] <- as.integer(dd[["level"]])
       dd
-    },
-
-    table = function() private$.table
+    }
   ),
 
   # +- private -------------------------------------------------------------
@@ -1566,10 +1567,10 @@ AppenderRjdbc <- R6::R6Class(
     col_types = function(){
       if (is.null(get(".col_types", envir = private))){
         ct <-
-          get_col_types(private[[".conn"]], toupper(private[[".table"]]))
+          get_col_types(private[[".conn"]], toupper(self[["table"]]))
 
         if (is.null(ct))
-          ct <- get_col_types(private[[".conn"]], private[[".table"]])
+          ct <- get_col_types(private[[".conn"]], self[["table"]])
 
         private$set_col_types(ct)
         return(ct)
