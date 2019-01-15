@@ -1,7 +1,7 @@
 as_log_levels <- function(x){
   assert(is_integerish(x) && identical(length(names(x)), length(x)))
   assert(
-    x > 0 && !is.na(x),
+    !is.na(x) && x > 0 ,
     "The log levels `0` (off) and `NA` (all) are reserved"
   )
   x <- setNames(as.integer(x), names(x))

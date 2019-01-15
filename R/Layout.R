@@ -381,8 +381,8 @@ LayoutDbi <- R6::R6Class(
       self$set_pad_levels(pad_levels)
     },
 
-    format_table_name = tolower,
-    format_colnames   = tolower,
+    format_table_name = identity,
+    format_colnames   = identity,
     format_data       = identity,
 
     set_col_types = function(x){
@@ -463,8 +463,8 @@ LayoutMySql <- R6::R6Class(
   "LayoutMySql",
   inherit = LayoutDbi,
   public = list(
-    format_table_name = tolower,
-    format_colnames   = tolower,
+    format_table_name = identity,
+    format_colnames   = identity,
     format_data       = identity
   )
 )
