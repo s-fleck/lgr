@@ -451,7 +451,7 @@ the possibilities are endless.
 # install.packages("glue")
 library(glue)
 lg$appenders$cons$set_layout(LayoutGlue$new(
-  fmt = "{logger$name} {level_name} {caller}: {toupper(msg)}"
+  fmt = "{.logger$name} {level_name} {caller}: {toupper(msg)}"
 ))
 lg$info("with glue")
 ```
