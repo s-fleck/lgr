@@ -30,7 +30,13 @@ Suggests:
     tibble,
     tools,
     utils,
-    whoami
+    whoami,
+    RMariaDB, 
+    RMySQL,
+    RPostgreSQL,
+    RPostgres,
+    RPushbullet,
+    RJDBC
 VignetteBuilder: 
     knitr
 Encoding: UTF-8

@@ -110,8 +110,9 @@ package
 
 ## Development Status
 
-lgr is stable, but I want to conduct a some field-tests to iron out the last
-few bugs before I announce it. A CRAN release is planned for February 2019.
+The api of lgr is stable and safe for use. The internal implementation of
+the database logging features still needs some refinement, and if you are
+using lgr with a database, I would be greatful for any kind of feedback.
 
 
 
@@ -124,9 +125,12 @@ on which lgr is built and the **only Package lgr will ever depend on**.
 ### Optional Dependencies
 
 These optional dependencies that are not necessary to use lgr, but
-that are required for some extra appenders. Care was taken to choose 
-packages that are slim, stable, have minimal dependencies, and are well 
-mentained:
+that are required for some extra appenders. To leverage the power of the most
+central features of **lgr** it is recommended (but not necessary) that you
+at least install the packages **data.table**, **jsonlite**, 
+and possibly **crayon**. Care was taken to choose packages that are slim, 
+stable, have minimal dependencies, and are well 
+mentained. :
 
   * [crayon](https://github.com/r-lib/crayon) for colored console output.
   * [data.table](https://github.com/Rdatatable/) for fast in-memroy logging
@@ -140,10 +144,15 @@ mentained:
     - [RMariaDB](https://cran.r-project.org/web/packages/RMySQL/index.html) for MariaDB and MySQL,
     - [RPostgreSQL](https://cran.r-project.org/web/packages/RPostgreSQL/index.html),
     - [RJDBC](https://github.com/s-u/RJDBC) for DB2. 
+  * [gmailr](https://cran.r-project.org/package=gmailr) or
+    [sendmailr](https://cran.r-project.org/package=sendmailR) for email 
+    notifications.
+  * [Rpushbullet](https://github.com/eddelbuettel/rpushbullet) for push
+    notifications.
     
     In theory all DBI compliant database packages should work. If you
     are using lgr with a database backend, please report your (positive and
-    negative) experiences to me.
+    negative) experiences, as database support is still somewhat experimental.
   * [whoami](https://github.com/r-lib/whoami/blob/master/DESCRIPTION) for 
     guessing the user name from various sources. You can also set the user name 
     manually if you want to use it for logging.

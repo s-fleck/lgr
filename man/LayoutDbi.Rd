@@ -16,6 +16,8 @@ before they are insterted into the database by AppenderDbi.
 \preformatted{
 x <- x$new(col_types = NULL)
 
+x$format_table_name(x)
+x$format_colnames(x)
 x$format_data(x)
 x$set_col_types(x)
 x$sql_create_table(table)
