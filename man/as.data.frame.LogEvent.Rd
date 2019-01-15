@@ -19,7 +19,7 @@ as_tibble.LogEvent(x, ...)
 \item{row.names}{\code{NULL} or a character vector giving the row
     names for the data frame.  Missing values are not allowed.}
 
-\item{optional}{currenctly ignored}
+\item{optional}{currently ignored}
 
 \item{stringsAsFactors}{logical: should the character vector be converted
     to a factor?}

@@ -7,7 +7,7 @@
 read_json_lines(file)
 }
 \arguments{
-\item{file}{\code{character} scalar. path to a json logfile (one JSON object per line)}
+\item{file}{\code{character} scalar. path to a JSON logfile (one JSON object per line)}
 }
 \value{
 a \code{data.frame}

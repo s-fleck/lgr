@@ -6,7 +6,7 @@
 \description{
 Send mails via \code{\link[gmailr:send_message]{gmailr::send_message()}}. This
 Appender keeps an in-memory buffer like \link{AppenderBuffer}. If the buffer is
-flushed, usually because an event of specified magnitutde is encountered, all
+flushed, usually because an event of specified magnitude is encountered, all
 buffered events are concatenated to a single message. The default behaviour
 is to push the last 30 log events in case a \code{fatal} event is encountered.
 }
@@ -157,7 +157,7 @@ modify them before they are passed on. Look at the source code of
 
 \describe{
 \item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a log level
-bellow \code{threshold}. The log entries will be formated for console output
+bellow \code{threshold}. The log entries will be formatted for console output
 via this Appenders \link{Layout}}
 }
 

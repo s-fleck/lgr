@@ -23,7 +23,7 @@ library(lgr)
 
 If you care about terse syntax you can use the following `UPPERCASE`^[
 If you are wondering why I decided on `ALL-CAPS` for the logging functions: It
-distinquishes log calls well from normal code, and also all the good names are 
+distinguishes log calls well from normal code, and also all the good names are 
 already taken by base R functions (`log()`, `trace()`, `debug()`). Many R 
 packages deal with this issue by using prefixes (like `log_debug()`), but I do 
 not like that idea. In any case that is pretty to close to what you get when 

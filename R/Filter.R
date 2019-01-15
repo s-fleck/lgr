@@ -1,7 +1,7 @@
 #' Event Filters
 #'
 #' Filters can be used for the `$set_filter()` and `$add_filter()` methods of
-#' Appenders and Loggers. You normaly do not need to construct a formal
+#' Appenders and Loggers. You normally do not need to construct a formal
 #' `EventFilter` object, you can just use any `function` that has the single
 #' argument `event` or any object that has a `filter` method.
 #'

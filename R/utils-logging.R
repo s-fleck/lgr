@@ -94,7 +94,7 @@ with_log_level <- function(
 
 
 #' `with_log_value()` injects arbitrary values into all [LogEvents] (overriding
-#' existing ones). This is especially powerfull in combination with Appenders
+#' existing ones). This is especially powerful in combination with Appenders
 #' that support arbitrary log fields, like [AppenderJson].
 #'
 #' @param values a named `list` of values to be injected into the logging calls

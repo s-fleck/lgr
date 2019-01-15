@@ -23,7 +23,7 @@ test_that("AppenderPushbullet: ERROR log level triggers push", {
   l$info("2")
   l$trace("3")
   l$debug("4")
-  l$debug("something something 5ish has occured")
+  l$debug("something something 5ish has occurred")
 
   l$fatal("Oh well, here we go", foo = "bar")
 })
@@ -56,7 +56,7 @@ test_that("AppenderSendmail: ERROR log level triggers push", {
   l$info("2")
   l$trace("3")
   l$debug("4")
-  l$debug("something something 5ish has occured")
+  l$debug("something something 5ish has occurred")
 
   l$fatal("sendmailR works", foo = "bar")
 })
@@ -82,7 +82,7 @@ test_that("AppenderGmail: ERROR log level triggers push", {
   l$info("2")
   l$trace("3")
   l$debug("4")
-  l$debug("something something 5ish has occured")
+  l$debug("something something 5ish has occurred")
 
   l$fatal("gmailr works", foo = "bar")
 })

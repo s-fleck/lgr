@@ -15,7 +15,7 @@ unlabel_levels(labels, log_levels = getOption("lgr.log_levels"))
 \item{log_levels}{a named \code{integer} vector, should usually not be set
 manually.}
 
-\item{labels}{a \code{character} vectpr of log level labels. Please note that
+\item{labels}{a \code{character} vector of log level labels. Please note that
 log levels are lowercase by default, even if many appenders print them
 in uppercase.}
 }

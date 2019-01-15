@@ -64,7 +64,7 @@ Appenders once certain conditions are met." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.9</span>
       </span>
     </div>
 
@@ -131,12 +131,11 @@ Appenders once certain conditions are met.</p>
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre>
-x &lt;- x$new(threshold = NA_integer_, appenders = NULL,
-  flush_threshold = "fatal", flush_on_exit = TRUE, flush_on_rotate = TRUE,
-  should_flush = function(event) { is.na(.obj()[["flush_threshold"]]) ||
-  all(event[["level"]] &lt;= .obj()[["flush_threshold"]]) },
-  layout = LayoutFormat$new(fmt = "%L [%t] %m", timestamp_fmt = "%H:%M:%S",
-  colors = getOption("lgr.colors")), buffer_size = 1000)
+x &lt;- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "%L [%t]
+  %m", timestamp_fmt = "%H:%M:%S", colors = getOption("lgr.colors")),
+  appenders = NULL, buffer_size = 1000, flush_threshold = "fatal",
+  flush_on_exit = TRUE, flush_on_rotate = TRUE,
+  should_flush = default_should_flush)
     x$flush()
 x$set_appenders(x)
 x$add_appender(appender, name = NULL)
@@ -186,7 +185,7 @@ buffer should be flushed when the Appender is garbage collected (f.e when
 you close <span style="R">R</span>)</p></dd>
 <dt><code>flush_on_rotate, set_flush_on_rotate</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>: Whether
 the buffer should be flushed when the Buffer is full (f.e when you close
-<span style="R">R</span>). Setting this to off can have slighly negative perfomance impacts.</p></dd>
+<span style="R">R</span>). Setting this to off can have slightly negative performance impacts.</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>buffer_size, set_buffer_size(x)</code></dt><dd><p><code>integer</code> scalar <code>&gt;= 0</code> Number of
@@ -244,7 +243,7 @@ remove an Appender by position or name.</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>show(n, threshold)</code></dt><dd><p>Show the last <code>n</code> log entries with a log level
-bellow <code>threshold</code>. The log entries will be formated for console output
+bellow <code>threshold</code>. The log entries will be formatted for console output
 via this Appenders <a href='Layout.html'>Layout</a></p></dd>
 </dl>
     <dl class='dl-horizontal'>
@@ -266,7 +265,7 @@ was specified)</p></dd>
     
     <p>Both AppenderBuffer and <a href='AppenderDt.html'>AppenderDt</a> do in memory buffering of events.
 AppenderBuffer retains a copies of the events it processes and has the
-abillity to pass the buffered events on to other Appenders. AppenderDt
+ability to pass the buffered events on to other Appenders. AppenderDt
 converts the events to rows in a <code>data.table</code> and is a bit harder to
 configure. Used inside loops (several hundred iterations),
 AppenderDt has much less overhead than AppenderBuffer. For single logging

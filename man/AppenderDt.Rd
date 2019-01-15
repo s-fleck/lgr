@@ -55,7 +55,7 @@ x$filters
 In addition to the usual fields, \code{AppenderDt$new()} requires that you supply
 a \code{buffer_size} and a \code{prototype}. These determine the structure of the
 \code{data.table} used to store the log this appender creates and cannot be
-modified anymore after the instantion of the appender.
+modified anymore after the instantiation of the appender.
 
 The \link{Layout} for this Appender is used only to format console output of
 its \code{$show()} method.
@@ -122,7 +122,7 @@ modify them before they are passed on. Look at the source code of
 
 \describe{
 \item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a log level
-bellow \code{threshold}. The log entries will be formated for console output
+bellow \code{threshold}. The log entries will be formatted for console output
 via this Appenders \link{Layout}}
 }
 
@@ -152,7 +152,7 @@ was specified)
 
 Both \link{AppenderBuffer} and \link{AppenderDt} do in memory buffering of events.
 AppenderBuffer retains a copies of the events it processes and has the
-abillity to pass the buffered events on to other Appenders. AppenderDt
+ability to pass the buffered events on to other Appenders. AppenderDt
 converts the events to rows in a \code{data.table} and is a bit harder to
 configure. Used inside loops (several hundred iterations),
 AppenderDt has much less overhead than AppenderBuffer. For single logging

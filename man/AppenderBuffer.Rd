@@ -68,7 +68,7 @@ buffer should be flushed when the Appender is garbage collected (f.e when
 you close \R)}
 \item{\code{flush_on_rotate, set_flush_on_rotate}}{\code{TRUE} or \code{FALSE}: Whether
 the buffer should be flushed when the Buffer is full (f.e when you close
-\R). Setting this to off can have slighly negative perfomance impacts.}
+\R). Setting this to off can have slightly negative performance impacts.}
 }
 
 
@@ -159,7 +159,7 @@ remove an Appender by position or name.
 
 \describe{
 \item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a log level
-bellow \code{threshold}. The log entries will be formated for console output
+bellow \code{threshold}. The log entries will be formatted for console output
 via this Appenders \link{Layout}}
 }
 
@@ -189,7 +189,7 @@ was specified)
 
 Both \link{AppenderBuffer} and \link{AppenderDt} do in memory buffering of events.
 AppenderBuffer retains a copies of the events it processes and has the
-abillity to pass the buffered events on to other Appenders. AppenderDt
+ability to pass the buffered events on to other Appenders. AppenderDt
 converts the events to rows in a \code{data.table} and is a bit harder to
 configure. Used inside loops (several hundred iterations),
 AppenderDt has much less overhead than AppenderBuffer. For single logging

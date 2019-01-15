@@ -17,7 +17,7 @@ a \code{character} scalar containing \R code.
 }
 \description{
 This gives you a minimal logger with no appenders that you can use inside
-your package under the name \code{lg} (exmaple lg$fatal("test")). \code{use_logger()}
+your package under the name \code{lg} (e.g. lg$fatal("test")). \code{use_logger()}
 does not modify any files but only prints code for you to copy and paste.
 }
 \examples{

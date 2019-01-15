@@ -16,7 +16,7 @@ comfortable to use \code{colorize_levels()} inside formatting functions.}
 log levels (likely from \link[crayon:crayon]{crayon::crayon}).}
 }
 \value{
-a \code{character} vector wit color ansi codes
+a \code{character} vector wit color ANSI codes
 }
 \description{
 Colorize Levels

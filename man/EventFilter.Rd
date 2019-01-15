@@ -8,7 +8,7 @@
 \title{Event Filters}
 \description{
 Filters can be used for the \code{$set_filter()} and \code{$add_filter()} methods of
-Appenders and Loggers. You normaly do not need to construct a formal
+Appenders and Loggers. You normally do not need to construct a formal
 \code{EventFilter} object, you can just use any \code{function} that has the single
 argument \code{event} or any object that has a \code{filter} method.
 }

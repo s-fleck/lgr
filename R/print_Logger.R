@@ -129,7 +129,7 @@ srs_appender <- function(x){
 #' You can also print just the `ancestry` of a Logger which can be accessed with
 #' with `logger$ancestry()`. This returns a named `character` vector whose
 #' names correspond to the names of the Loggers `logger` inherits from. The
-#' `TRUE`/`FALSE` status of its elements corrsepond to the `propagate` values of
+#' `TRUE`/`FALSE` status of its elements correspond to the `propagate` values of
 #' these Loggers.
 #'
 #' @rdname print.Logger

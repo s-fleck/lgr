@@ -32,7 +32,7 @@
 
 <meta property="og:title" content="Log to Databases via DBI — AppenderDbi" />
 
-<meta property="og:description" content="Log to a database table with any DBI compatabile backend. Please be
+<meta property="og:description" content="Log to a database table with any DBI compatible backend. Please be
 aware that AppenderDbi does not support case sensitive / quoted column
 names, and you advised to only use all-lowercase names for
 custom fields (see ... argument of LogEvent).
@@ -68,7 +68,7 @@ exists in the target table will be appended, all others are ignored." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.9</span>
       </span>
     </div>
 
@@ -126,7 +126,7 @@ exists in the target table will be appended, all others are ignored." />
 
     <div class="ref-description">
     
-    <p>Log to a database table with any <strong>DBI</strong> compatabile backend. Please be
+    <p>Log to a database table with any <strong>DBI</strong> compatible backend. Please be
 aware that AppenderDbi does <em>not</em> support case sensitive / quoted column
 names, and you advised to only use all-lowercase names for
 custom fields (see <code>...</code> argument of <a href='LogEvent.html'>LogEvent</a>).
@@ -139,7 +139,7 @@ exists in the target table will be appended, all others are ignored.</p>
     <h2 class="hasAnchor" id="buffered-logging"><a class="anchor" href="#buffered-logging"></a>Buffered Logging</h2>
 
     
-    <p>AppenderDBI does not write directly to the database but to an in memory
+    <p>AppenderDbi does not write directly to the database but to an in memory
 buffer. With the default settings, this buffer is written to the database
 whenever the buffer is full (<code>buffer_size</code>, default is 10 LogEvents),
 whenever a LogEvent with a level of <code>fatal</code> or <code>error</code> is encountered
@@ -154,9 +154,7 @@ this behaviour, just set <code>buffer_size</code> to <code>0</code>.</p>
 x &lt;- x$new(conn, table, threshold = NA_integer_,
   layout = select_dbi_layout(conn, table), close_on_exit = TRUE,
   buffer_size = 10, flush_threshold = "error", flush_on_exit = TRUE,
-  flush_on_rotate = TRUE, should_flush = function(event) {
-  is.na(.obj()[["flush_threshold"]]) || all(event[["level"]] &lt;=
-  .obj()[["flush_threshold"]]) })
+  flush_on_rotate = TRUE, should_flush = default_should_flush)
     x$set_close_on_exit(x)
 x$set_conn(conn)
 x$show(threshold = NA_integer_, n = 20)
@@ -279,7 +277,7 @@ with the <code>col_types</code> from <code>layout</code>.</p>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>show(n, threshold)</code></dt><dd><p>Show the last <code>n</code> log entries with a log level
-bellow <code>threshold</code>. The log entries will be formated for console output
+bellow <code>threshold</code>. The log entries will be formatted for console output
 via this Appenders <a href='Layout.html'>Layout</a></p></dd>
 </dl>
     <dl class='dl-horizontal'>

@@ -35,7 +35,7 @@ DEFAULT_LOG_LEVELS <- c("fatal", "error", "warn", "info", "debug", "trace")
 #'  `100` \tab fatal \tab Critical error that leads to program abort. Should always indicate a `stop()` or similar \cr
 #'  `200` \tab error \tab A severe error that does not trigger program abort\cr
 #'  `300` \tab warn  \tab A potentially harmful situation, like `warning()`\cr
-#'  `400` \tab info  \tab An informatinal message on the progress of the application\cr
+#'  `400` \tab info  \tab An informational message on the progress of the application\cr
 #'  `500` \tab debug \tab Finer grained informational messages that are mostly useful for debugging\cr
 #'  `600` \tab trace \tab An even finer grained message than debug\cr
 #'   `NA` \tab all   \tab A log level of NA/all tells a Logger or Appender to process all log events
@@ -116,7 +116,7 @@ format_log_levels <- function(
 #'   comfortable to use `colorize_levels()` inside formatting functions.
 #' @inheritParams format.LogEvent
 #'
-#' @return a `character` vector wit color ansi codes
+#' @return a `character` vector wit color ANSI codes
 #' @family formatting utils
 #' @export
 #'
@@ -235,7 +235,7 @@ error_msg_log_levels <- function(varname, log_levels){
 #' Label/Unlabel Log Levels
 #'
 #' @param levels an `integer` vector of log levels
-#' @param labels a `character` vectpr of log level labels. Please note that
+#' @param labels a `character` vector of log level labels. Please note that
 #'   log levels are lowercase by default, even if many appenders print them
 #'   in uppercase.
 #' @param log_levels a named `integer` vector, should usually not be set

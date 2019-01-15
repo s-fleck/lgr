@@ -35,7 +35,7 @@ the Logger.
 You can also print just the \code{ancestry} of a Logger which can be accessed with
 with \code{logger$ancestry()}. This returns a named \code{character} vector whose
 names correspond to the names of the Loggers \code{logger} inherits from. The
-\code{TRUE}/\code{FALSE} status of its elements corrsepond to the \code{propagate} values of
+\code{TRUE}/\code{FALSE} status of its elements correspond to the \code{propagate} values of
 these Loggers.
 }
 \examples{

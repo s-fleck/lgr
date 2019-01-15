@@ -113,7 +113,7 @@ modify them before they are passed on. Look at the source code of
 
 \describe{
 \item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a log level
-bellow \code{threshold}. The log entries will be formated as in the source
+bellow \code{threshold}. The log entries will be formatted as in the source
 JSON file}
 }
 

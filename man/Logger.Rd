@@ -9,7 +9,7 @@
 A Logger produces a \link{LogEvent} that contains the log message along with
 metadata (timestamp, calling function) and dispatches it to one or several
 \link{Appenders} which are responsible for the output (console, file, ...) of the
-event. \strong{lgr} alread comes with a single pre-configured Logger called the
+event. \strong{lgr} comes with a single pre-configured Logger called the
 \code{root Logger} that can be accessed via \code{lgr$<...>}. Instantiation of new
 Loggers is only necessary if you want to take advantage of hierarchical
 logging as outlined in \code{vignette("lgr", package = "lgr")}.
@@ -76,7 +76,7 @@ creation with setter functions of the form \code{logger$set_<fieldname>(value)}
 
 \describe{
 \item{\code{name}, \code{set_name(x)}}{\code{character} scalar. A name for the Logger that should be
-unique amongst Loggers. This logger name is used in the Loggers print
+unique among Loggers. This logger name is used in the Loggers print
 method and can be used by Appenders to indicate which logger the
 log message came from. If you define a Logger for an R Package (the most
 common case for defining new Loggers), the logger name should be the
@@ -93,12 +93,12 @@ inheritance structures).}
 The minimum \link[=log_levels]{log level} that triggers this Logger}
 
 \item{\code{parent}, \code{set_parent(logger)}}{a \code{Logger}. Usually the root logger.
-Can also be \code{NULL}, but all Loggers must be descentents of the root logger
+Can also be \code{NULL}, but all Loggers must be descendants of the root logger
 for lgr to work as intended.}
 
 \item{\code{exception_handler}, \code{set_exception_handler()}}{a \code{function} that
 takes a single argument \code{e}. The function used to handle errors that occur
-durring loging. Defaults to demoting errors to \link{warnings}.}
+during logging. Defaults to demoting errors to \link{warnings}.}
 
 \item{\code{propagate}, \code{set_propagate()}}{\code{TRUE} or \code{FALSE}. Should LogEvents
 be passed on to the appenders of the ancestral Loggers?}
@@ -142,7 +142,7 @@ appenders from ancestral Loggers of the current Logger}
 
 \describe{
 \item{\code{fatal(msg, ...)}}{Logs a message with level \code{fatal} on this logger.
-If there are \emph{unnamed} arguments in \code{...}, they will be pased to
+If there are \emph{unnamed} arguments in \code{...}, they will be passed to
 \code{base::sprintf()} along with message. Named arguments will be passed
 as custom fields to \link{LogEvent}. If there are named arguments the names
 must be unique}
@@ -203,7 +203,7 @@ was specified)
 \code{LoggerGlue} uses \code{\link[glue:glue]{glue::glue()}} instead of \code{\link[base:sprintf]{base::sprintf()}} to construct
 log messages. \strong{glue} is a very well designed package for
 string interpolation. It makes composing log messages
-more flexible and comfortable at the price of an aditional dependency and
+more flexible and comfortable at the price of an additional dependency and
 slightly less performance than \code{sprintf()}.
 
 \code{glue()} lets you define temporary named variables inside the call.

@@ -18,6 +18,6 @@ Throws a timestamped warning instead of stopping the program. This is
 the default exception handler used by \link{Loggers}.
 }
 \examples{
-tryCatch(stop("an error has occured"), error = default_exception_handler)
+tryCatch(stop("an error has occurred"), error = default_exception_handler)
 
 }

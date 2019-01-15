@@ -1,7 +1,7 @@
 #' Events - The Atomic Unit of Logging
 #'
 #' A `LogEvent` is a single unit of data that should be logged. `LogEvents` are
-#' usualy created by a [Logger], and then processed by [Appenders].
+#' usually created by a [Logger], and then processed by [Appenders].
 #'
 #' @eval r6_usage(LogEvent)
 #'
@@ -52,7 +52,7 @@
 #'
 #' \describe{
 #'   \item{`level_name`}{`character`: the [log_level] / priority of the
-#'     LogEvent labelled accoring to `getOption("lgr.log_levels")`}
+#'     LogEvent labelled according to `getOption("lgr.log_levels")`}
 #'   \item{`values`}{`list`: All values stored in the LogEvent (including
 #'     all *custom fields*, but not including `event$logger`)}
 #'   \item{`logger_name`}{`character` scalar: The name of the Logger that
@@ -69,7 +69,7 @@
 #' l$error("foo bar")
 #'
 #' # The last LogEvent produced by a Logger is stored in the last_event field
-#' l$last_event  # formated by default
+#' l$last_event  # formatted by default
 #' l$last_event$values  # values stored in the event
 #'
 #' # Also contains the Logger that created it as .logger
@@ -160,7 +160,7 @@ LogEvent <- R6::R6Class(
 #'
 #' @inheritParams base::as.data.frame
 #' @param ... passed on to `data.frame()`
-#' @param optional currenctly ignored
+#' @param optional currently ignored
 #' @param strict If `TRUE` as.data.frame will fail if `x` contains values that
 #'   cannot be included in a data.frame. Ff `FALSE` (the default) they will
 #'   be coerced

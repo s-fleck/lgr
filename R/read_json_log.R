@@ -1,6 +1,6 @@
 #' Read a JSON logfile
 #'
-#' @param file `character` scalar. path to a json logfile (one JSON object per line)
+#' @param file `character` scalar. path to a JSON logfile (one JSON object per line)
 #'
 #' @return a `data.frame`
 #' @seealso [LayoutJson]

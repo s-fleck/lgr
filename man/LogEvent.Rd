@@ -6,7 +6,7 @@
 \title{Events - The Atomic Unit of Logging}
 \description{
 A \code{LogEvent} is a single unit of data that should be logged. \code{LogEvents} are
-usualy created by a \link{Logger}, and then processed by \link{Appenders}.
+usually created by a \link{Logger}, and then processed by \link{Appenders}.
 }
 \section{Usage}{
 \preformatted{
@@ -76,7 +76,7 @@ commonly used values.
 
 \describe{
 \item{\code{level_name}}{\code{character}: the \link{log_level} / priority of the
-LogEvent labelled accoring to \code{getOption("lgr.log_levels")}}
+LogEvent labelled according to \code{getOption("lgr.log_levels")}}
 \item{\code{values}}{\code{list}: All values stored in the LogEvent (including
 all \emph{custom fields}, but not including \code{event$logger})}
 \item{\code{logger_name}}{\code{character} scalar: The name of the Logger that
@@ -91,7 +91,7 @@ l <- Logger$new("dummy logger", appenders = NULL)
 l$error("foo bar")
 
 # The last LogEvent produced by a Logger is stored in the last_event field
-l$last_event  # formated by default
+l$last_event  # formatted by default
 l$last_event$values  # values stored in the event
 
 # Also contains the Logger that created it as .logger

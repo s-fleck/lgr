@@ -38,7 +38,7 @@ Level \tab Name  \tab Description \cr
 \code{100} \tab fatal \tab Critical error that leads to program abort. Should always indicate a \code{stop()} or similar \cr
 \code{200} \tab error \tab A severe error that does not trigger program abort\cr
 \code{300} \tab warn  \tab A potentially harmful situation, like \code{warning()}\cr
-\code{400} \tab info  \tab An informatinal message on the progress of the application\cr
+\code{400} \tab info  \tab An informational message on the progress of the application\cr
 \code{500} \tab debug \tab Finer grained informational messages that are mostly useful for debugging\cr
 \code{600} \tab trace \tab An even finer grained message than debug\cr
 \code{NA} \tab all   \tab A log level of NA/all tells a Logger or Appender to process all log events

@@ -33,10 +33,10 @@
 <meta property="og:title" content="Log to Databases via RJDBC — AppenderRjdbc" />
 
 <meta property="og:description" content="Log to a database table with the RJDBC package. RJDBC is only
-somewhat  DBI compliant and does not work with AppenderDbi. I
-personally do not recommend using RJDBC if it can be avoided. As
-opposed to AppenderDbi you always need to specify the column types if you
-are logging to a non-existant table." />
+somewhat  DBI compliant and does not work with AppenderDbi.
+I do not recommend using RJDBC if it can be avoided.. AppenderRjdbc
+is only tested for DB2 databases, and it is likely it will not work properly
+for other databases. Please file a bug report if you encounter any issues." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -67,7 +67,7 @@ are logging to a non-existant table." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.9</span>
       </span>
     </div>
 
@@ -126,10 +126,10 @@ are logging to a non-existant table." />
     <div class="ref-description">
     
     <p>Log to a database table with the <strong>RJDBC</strong> package. <strong>RJDBC</strong> is only
-somewhat  <strong>DBI</strong> compliant and does not work with <a href='AppenderDbi.html'>AppenderDbi</a>. I
-personally do not recommend using <strong>RJDBC</strong> if it can be avoided. As
-opposed to <code>AppenderDbi</code> you always need to specify the column types if you
-are logging to a non-existant table.</p>
+somewhat  <strong>DBI</strong> compliant and does not work with <a href='AppenderDbi.html'>AppenderDbi</a>.
+<strong>I do not recommend using RJDBC if it can be avoided.</strong>. AppenderRjdbc
+is only tested for DB2 databases, and it is likely it will not work properly
+for other databases. Please file a bug report if you encounter any issues.</p>
     
     </div>
 
@@ -138,11 +138,13 @@ are logging to a non-existant table.</p>
 
     <pre>
 x &lt;- x$new(conn, table, threshold = NA_integer_,
-  layout = select_dbi_layout(conn, table), close_on_exit = TRUE)
-    x$set_close_on_exit(x)
+  layout = select_dbi_layout(conn, table), close_on_exit = TRUE,
+  buffer_size = 10, flush_threshold = "error", flush_on_exit = TRUE,
+  flush_on_rotate = TRUE, should_flush = default_should_flush)
+    x$flush()
+x$set_close_on_exit(x)
 x$set_conn(conn)
 x$show(threshold = NA_integer_, n = 20)
-x$flush()
 x$append(event)
 x$set_buffer_size(x)
 x$set_should_flush(x)
@@ -156,10 +158,10 @@ x$filter(event)
 x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
 x$set_filters(filters)
-    x$close_on_exit
+    x$data
+x$close_on_exit
 x$col_types
 x$conn
-x$data
 x$destination
 x$table
 x$buffer_df
@@ -234,7 +236,7 @@ modify them before they are passed on. Look at the source code of
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>show(n, threshold)</code></dt><dd><p>Show the last <code>n</code> log entries with a log level
-bellow <code>threshold</code>. The log entries will be formated for console output
+bellow <code>threshold</code>. The log entries will be formatted for console output
 via this Appenders <a href='Layout.html'>Layout</a></p></dd>
 </dl>
     <dl class='dl-horizontal'>

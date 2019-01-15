@@ -3,7 +3,7 @@
 #' A Logger produces a [LogEvent] that contains the log message along with
 #' metadata (timestamp, calling function) and dispatches it to one or several
 #' [Appenders] which are responsible for the output (console, file, ...) of the
-#' event. **lgr** alread comes with a single pre-configured Logger called the
+#' event. **lgr** comes with a single pre-configured Logger called the
 #' `root Logger` that can be accessed via `lgr$<...>`. Instantiation of new
 #' Loggers is only necessary if you want to take advantage of hierarchical
 #' logging as outlined in `vignette("lgr", package = "lgr")`.
@@ -29,7 +29,7 @@
 #'
 #' \describe{
 #'   \item{`name`, `set_name(x)`}{`character` scalar. A name for the Logger that should be
-#'     unique amongst Loggers. This logger name is used in the Loggers print
+#'     unique among Loggers. This logger name is used in the Loggers print
 #'     method and can be used by Appenders to indicate which logger the
 #'     log message came from. If you define a Logger for an R Package (the most
 #'     common case for defining new Loggers), the logger name should be the
@@ -46,12 +46,12 @@
 #'   The minimum [log level][log_levels] that triggers this Logger}
 #'
 #'   \item{`parent`, `set_parent(logger)`}{a `Logger`. Usually the root logger.
-#'   Can also be `NULL`, but all Loggers must be descentents of the root logger
+#'   Can also be `NULL`, but all Loggers must be descendants of the root logger
 #'   for lgr to work as intended.}
 #'
 #'   \item{`exception_handler`, `set_exception_handler()`}{a `function` that
 #'   takes a single argument `e`. The function used to handle errors that occur
-#'   durring loging. Defaults to demoting errors to [warnings].}
+#'   during logging. Defaults to demoting errors to [warnings].}
 #'
 #'   \item{`propagate`, `set_propagate()`}{`TRUE` or `FALSE`. Should LogEvents
 #'   be passed on to the appenders of the ancestral Loggers?}
@@ -80,7 +80,7 @@
 #'
 #' \describe{
 #'   \item{`fatal(msg, ...)`}{Logs a message with level `fatal` on this logger.
-#'     If there are *unnamed* arguments in `...`, they will be pased to
+#'     If there are *unnamed* arguments in `...`, they will be passed to
 #'     `base::sprintf()` along with message. Named arguments will be passed
 #'     as custom fields to [LogEvent]. If there are named arguments the names
 #'     must be unique}
@@ -128,7 +128,7 @@
 #' `LoggerGlue` uses [glue::glue()] instead of [base::sprintf()] to construct
 #' log messages. **glue** is a very well designed package for
 #' string interpolation. It makes composing log messages
-#' more flexible and comfortable at the price of an aditional dependency and
+#' more flexible and comfortable at the price of an additional dependency and
 #' slightly less performance than `sprintf()`.
 #'
 #' `glue()` lets you define temporary named variables inside the call.

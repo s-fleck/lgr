@@ -93,7 +93,7 @@ plot(res)
 ```
 
 For simple log messages **logging* and *logger** are in the clear lead 
-perfomance wise
+performance wise
 
 
 # Log a simple log message (with colors)
@@ -159,6 +159,6 @@ logging functions that are under the loggers threshold.
 
 ### Conclusion
 
-While there are subtle differences in the perfomance of the available logging
+While there are subtle differences in the performance of the available logging
 packages, all perform pretty well. Nothing can compare with a simple `cat()`,
 but that was to be expected.

@@ -89,7 +89,7 @@ cat(readLines(tf))
 ```
 
 JSON naturally supports custom fields. Named arguments passed to `info()`, 
-`warn()`, etc... are intepreted as custom fields.
+`warn()`, etc... are interpreted as custom fields.
 
 ```{r}
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
@@ -112,7 +112,7 @@ package
 
 The api of lgr is stable and safe for use. The internal implementation of
 the database logging features still needs some refinement, and if you are
-using lgr with a database, I would be greatful for any kind of feedback.
+using lgr with a database, I would be grateful for any kind of feedback.
 
 
 
@@ -130,13 +130,13 @@ central features of **lgr** it is recommended (but not necessary) that you
 at least install the packages **data.table**, **jsonlite**, 
 and possibly **crayon**. Care was taken to choose packages that are slim, 
 stable, have minimal dependencies, and are well 
-mentained. :
+maintained :
 
   * [crayon](https://github.com/r-lib/crayon) for colored console output.
-  * [data.table](https://github.com/Rdatatable/) for fast in-memroy logging
+  * [data.table](https://github.com/Rdatatable/) for fast in-memory logging
     with `AppenderDt`. 
   * [jsonlite](https://github.com/jeroen/jsonlite) for JSON logging via 
-    `LayoutJson`. JSON is a populat plaintext based file format that is easy to 
+    `LayoutJson`. JSON is a popular plaintext based file format that is easy to 
     read for humans and machines alike.
   * [DBI](https://github.com/r-dbi/DBI) for logging to databases. Logging with
     lgr has been tested with the following backends: 
@@ -145,9 +145,9 @@ mentained. :
     - [RPostgreSQL](https://cran.r-project.org/web/packages/RPostgreSQL/index.html),
     - [RJDBC](https://github.com/s-u/RJDBC) for DB2. 
   * [gmailr](https://cran.r-project.org/package=gmailr) or
-    [sendmailr](https://cran.r-project.org/package=sendmailR) for email 
+    [sendmailR](https://cran.r-project.org/package=sendmailR) for email 
     notifications.
-  * [Rpushbullet](https://github.com/eddelbuettel/rpushbullet) for push
+  * [RPushbullet](https://github.com/eddelbuettel/rpushbullet) for push
     notifications.
     
     In theory all DBI compliant database packages should work. If you
@@ -174,7 +174,7 @@ request on the issue tracker.
 
 
 
-## Acknowledgements
+## Acknowledgement
 
 * [Inkscape](https://inkscape.org/) for the hex sticker
 * [draw.io](https://draw.io/) for the flow chart in the vignette

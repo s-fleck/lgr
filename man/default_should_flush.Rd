@@ -13,8 +13,8 @@ default_should_flush(event)
 \code{TRUE} or \code{FALSE}
 }
 \description{
-This is the default "shuld flush" trigger function for Appenders that
+This is the default "should flush" trigger function for Appenders that
 support such a mechanism, such as \link{AppenderBuffer} and \link{AppenderDbi}. It
-returnes \code{TRUE} if the event's \code{level} meets or exceedes the Appender's
+returns \code{TRUE} if the event's \code{level} meets or exceeds the Appender's
 \code{flush_threshold}.
 }

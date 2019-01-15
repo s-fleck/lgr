@@ -4,7 +4,7 @@
 \alias{AppenderDbi}
 \title{Log to Databases via DBI}
 \description{
-Log to a database table with any \strong{DBI} compatabile backend. Please be
+Log to a database table with any \strong{DBI} compatible backend. Please be
 aware that AppenderDbi does \emph{not} support case sensitive / quoted column
 names, and you advised to only use all-lowercase names for
 custom fields (see \code{...} argument of \link{LogEvent}).
@@ -14,7 +14,7 @@ exists in the target table will be appended, all others are ignored.
 \section{Buffered Logging}{
 
 
-AppenderDBI does not write directly to the database but to an in memory
+AppenderDbi does not write directly to the database but to an in memory
 buffer. With the default settings, this buffer is written to the database
 whenever the buffer is full (\code{buffer_size}, default is 10 LogEvents),
 whenever a LogEvent with a level of \code{fatal} or \code{error} is encountered
@@ -189,7 +189,7 @@ with the \code{col_types} from \code{layout}.
 
 \describe{
 \item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a log level
-bellow \code{threshold}. The log entries will be formated for console output
+bellow \code{threshold}. The log entries will be formatted for console output
 via this Appenders \link{Layout}}
 }
 

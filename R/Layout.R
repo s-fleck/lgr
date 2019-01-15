@@ -3,7 +3,7 @@
 #' Abstract classes are exported for developers that want to extend them, they
 #' are not useful to casual users.  Layouts get a [LogEvent] passed down from an
 #' [Appender], and format them for output. How this formatting works exactly
-#' varries widely. For example for file or console output the log event is
+#' varies widely. For example for file or console output the log event is
 #' usually formatted into a single character line.
 #'
 #' @section Creating a New Layout:
@@ -287,13 +287,13 @@ LayoutGlue <- R6::R6Class(
 #' database tables; however, it is safer and more flexible to set up the log
 #' table up manually with an `SQL CREATE TABLE` statement instead.
 #'
-#' The LayoutDbi paramters `fmt`, `timestamp_fmt`, `colors` and `pad_levels`
+#' The LayoutDbi parameters `fmt`, `timestamp_fmt`, `colors` and `pad_levels`
 #' are only applied for for console output via the `$show()` method and do not
 #' influence database inserts in any way. The inserts are pre-processed by
 #' the methods `$format_data()`, `$format_colnames` and `$format_tablenames`.
 #'
 #' It does not format
-#' logEvents directly, but their `data.table` representations (see
+#' LogEvents directly, but their `data.table` representations (see
 #' [as.data.table.LogEvent]), as well as column- and table names.
 #'
 #'
@@ -309,7 +309,7 @@ LayoutGlue <- R6::R6Class(
 #' \describe{
 #'   \item{`col_types`}{A named `character` vector of column types supported by
 #'   the target database. If not `NULL` this is used by [AppenderDbi] or similar
-#'   Appenders to create a new database table on instantion of the Appender. If
+#'   Appenders to create a new database table on instantiation of the Appender. If
 #'   the target database table already exists, `col_types` is not used.
 #'   }
 #'   \item{`col_names`}{Convenience method to get the names of the `col_types`
@@ -345,7 +345,7 @@ LayoutGlue <- R6::R6Class(
 #'   * `LayoutDb2`: for DB2 databases
 #'
 #' The utility function [select_dbi_layout()] tries returns the appropriate
-#' Layout for a DBI connection, but this does not work for odbc and jdbc
+#' Layout for a DBI connection, but this does not work for odbc and JDBC
 #' connections where you have to specify the layout manually.
 #'
 #'

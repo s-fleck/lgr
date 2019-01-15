@@ -12,12 +12,12 @@
 #' @export
 #'
 #' @examples
-#' tryCatch(stop("an error has occured"), error = default_exception_handler)
+#' tryCatch(stop("an error has occurred"), error = default_exception_handler)
 #'
 default_exception_handler <- function(e){
   warning(
     "[", format(Sys.time(), format = "%Y-%m-%d %H:%M:%OS3"), "] ",
-    "An error occured during logging: ", e, call. = FALSE
+    "An error occurred during logging: ", e, call. = FALSE
   )
 }
 
@@ -26,9 +26,9 @@ default_exception_handler <- function(e){
 
 #' Default Should Flush Function
 #'
-#' This is the default "shuld flush" trigger function for Appenders that
+#' This is the default "should flush" trigger function for Appenders that
 #' support such a mechanism, such as [AppenderBuffer] and [AppenderDbi]. It
-#' returnes `TRUE` if the event's `level` meets or exceedes the Appender's
+#' returns `TRUE` if the event's `level` meets or exceeds the Appender's
 #' `flush_threshold`.
 #'
 #' @param event a [LogEvent]

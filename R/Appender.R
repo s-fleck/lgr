@@ -297,7 +297,7 @@ AppenderFile <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{`show(n, threshold)`}{Show the last `n` log entries with a log level
-#'   bellow `threshold`. The log entries will be formated as in the source
+#'   bellow `threshold`. The log entries will be formatted as in the source
 #'   JSON file}
 #' }
 #'
@@ -452,7 +452,7 @@ AppenderTable <- R6::R6Class(
 #' In addition to the usual fields, `AppenderDt$new()` requires that you supply
 #' a `buffer_size` and a `prototype`. These determine the structure of the
 #' `data.table` used to store the log this appender creates and cannot be
-#' modified anymore after the instantion of the appender.
+#' modified anymore after the instantiation of the appender.
 #'
 #' The [Layout] for this Appender is used only to format console output of
 #' its `$show()` method.
@@ -484,7 +484,7 @@ AppenderTable <- R6::R6Class(
 #' @section Methods:
 #' \describe{
 #'   \item{`show(n, threshold)`}{Show the last `n` log entries with a log level
-#'   bellow `threshold`. The log entries will be formated for console output
+#'   bellow `threshold`. The log entries will be formatted for console output
 #'   via this Appenders [Layout]}
 #'  }
 #'
@@ -492,7 +492,7 @@ AppenderTable <- R6::R6Class(
 #'
 #' Both [AppenderBuffer] and [AppenderDt] do in memory buffering of events.
 #' AppenderBuffer retains a copies of the events it processes and has the
-#' abillity to pass the buffered events on to other Appenders. AppenderDt
+#' ability to pass the buffered events on to other Appenders. AppenderDt
 #' converts the events to rows in a `data.table` and is a bit harder to
 #' configure. Used inside loops (several hundred iterations),
 #' AppenderDt has much less overhead than AppenderBuffer. For single logging
@@ -996,7 +996,7 @@ AppenderMemory <- R6::R6Class(
 #'     you close \R)}
 #'   \item{`flush_on_rotate, set_flush_on_rotate`}{`TRUE` or `FALSE`: Whether
 #'     the buffer should be flushed when the Buffer is full (f.e when you close
-#'     \R). Setting this to off can have slighly negative perfomance impacts.}
+#'     \R). Setting this to off can have slightly negative performance impacts.}
 #' }
 #'
 #' @section Methods:
@@ -1183,7 +1183,7 @@ AppenderBuffer <- R6::R6Class(
 
 #' Log to Databases via DBI
 #'
-#' Log to a database table with any **DBI** compatabile backend. Please be
+#' Log to a database table with any **DBI** compatible backend. Please be
 #' aware that AppenderDbi does *not* support case sensitive / quoted column
 #' names, and you advised to only use all-lowercase names for
 #' custom fields (see `...` argument of [LogEvent]).
@@ -1192,7 +1192,7 @@ AppenderBuffer <- R6::R6Class(
 #'
 #' @section Buffered Logging:
 #'
-#' AppenderDBI does not write directly to the database but to an in memory
+#' AppenderDbi does not write directly to the database but to an in memory
 #' buffer. With the default settings, this buffer is written to the database
 #' whenever the buffer is full (`buffer_size`, default is 10 LogEvents),
 #' whenever a LogEvent with a level of `fatal` or `error` is encountered
@@ -1445,7 +1445,7 @@ AppenderDbi <- R6::R6Class(
 #'
 #' Log to a database table with the **RJDBC** package. **RJDBC** is only
 #' somewhat  **DBI** compliant and does not work with [AppenderDbi].
-#' **I do not recommend using RJDBC if it can be avoided.**. AppenderRJDBC
+#' **I do not recommend using RJDBC if it can be avoided.**. AppenderRjdbc
 #' is only tested for DB2 databases, and it is likely it will not work properly
 #' for other databases. Please file a bug report if you encounter any issues.
 #'
@@ -1643,7 +1643,7 @@ AppenderDigest <-  R6::R6Class(
 #'
 #' Send push notifications via [pushbullet](https://www.pushbullet.com/). This
 #' Appender keeps an in-memory buffer like [AppenderBuffer]. If the buffer is
-#' flushed, usually because an event of specified magnitutde is encountered, all
+#' flushed, usually because an event of specified magnitude is encountered, all
 #' buffered events are concatenated to a single message that is sent to
 #' [RPushbullet::pbPost()]. The default behaviour is to push the last 7 log
 #' events in case a `fatal` event is encountered.
@@ -1877,12 +1877,12 @@ AppenderMail <- R6::R6Class(
 
 # AppenderSendmail --------------------------------------------------------
 
-#' Send Log Emails via SendmailR
+#' Send Log Emails via sendmailR
 #'
 #' Send mails via [sendmailR::sendmail()], which requires that you have access
 #' to an SMTP server that does not require authentication. This
 #' Appender keeps an in-memory buffer like [AppenderBuffer]. If the buffer is
-#' flushed, usually because an event of specified magnitutde is encountered, all
+#' flushed, usually because an event of specified magnitude is encountered, all
 #' buffered events are concatenated to a single message. The default behaviour
 #' is to push the last 30 log events in case a `fatal` event is encountered.
 #'
@@ -2032,7 +2032,7 @@ AppenderSendmail <- R6::R6Class(
 #'
 #' Send mails via [gmailr::send_message()]. This
 #' Appender keeps an in-memory buffer like [AppenderBuffer]. If the buffer is
-#' flushed, usually because an event of specified magnitutde is encountered, all
+#' flushed, usually because an event of specified magnitude is encountered, all
 #' buffered events are concatenated to a single message. The default behaviour
 #' is to push the last 30 log events in case a `fatal` event is encountered.
 #'

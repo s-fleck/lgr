@@ -14,13 +14,13 @@ database tables; however, it is safer and more flexible to set up the log
 table up manually with an \code{SQL CREATE TABLE} statement instead.
 }
 \details{
-The LayoutDbi paramters \code{fmt}, \code{timestamp_fmt}, \code{colors} and \code{pad_levels}
+The LayoutDbi parameters \code{fmt}, \code{timestamp_fmt}, \code{colors} and \code{pad_levels}
 are only applied for for console output via the \code{$show()} method and do not
 influence database inserts in any way. The inserts are pre-processed by
 the methods \code{$format_data()}, \code{$format_colnames} and \code{$format_tablenames}.
 
 It does not format
-logEvents directly, but their \code{data.table} representations (see
+LogEvents directly, but their \code{data.table} representations (see
 \link{as.data.table.LogEvent}), as well as column- and table names.
 }
 \section{Usage}{
@@ -65,7 +65,7 @@ the arguments to this function please refer to the Fields section.
 \describe{
 \item{\code{col_types}}{A named \code{character} vector of column types supported by
 the target database. If not \code{NULL} this is used by \link{AppenderDbi} or similar
-Appenders to create a new database table on instantion of the Appender. If
+Appenders to create a new database table on instantiation of the Appender. If
 the target database table already exists, \code{col_types} is not used.
 }
 \item{\code{col_names}}{Convenience method to get the names of the \code{col_types}
@@ -112,7 +112,7 @@ but this list is expected to grow as lgr matures:
 }
 
 The utility function \code{\link[=select_dbi_layout]{select_dbi_layout()}} tries returns the appropriate
-Layout for a DBI connection, but this does not work for odbc and jdbc
+Layout for a DBI connection, but this does not work for odbc and JDBC
 connections where you have to specify the layout manually.
 }
 

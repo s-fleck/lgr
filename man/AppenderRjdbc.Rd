@@ -6,7 +6,7 @@
 \description{
 Log to a database table with the \strong{RJDBC} package. \strong{RJDBC} is only
 somewhat  \strong{DBI} compliant and does not work with \link{AppenderDbi}.
-\strong{I do not recommend using RJDBC if it can be avoided.}. AppenderRJDBC
+\strong{I do not recommend using RJDBC if it can be avoided.}. AppenderRjdbc
 is only tested for DB2 databases, and it is likely it will not work properly
 for other databases. Please file a bug report if you encounter any issues.
 }
@@ -146,7 +146,7 @@ modify them before they are passed on. Look at the source code of
 
 \describe{
 \item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a log level
-bellow \code{threshold}. The log entries will be formated for console output
+bellow \code{threshold}. The log entries will be formatted for console output
 via this Appenders \link{Layout}}
 }
 

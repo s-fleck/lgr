@@ -43,7 +43,7 @@ If you are not sure if lgr is the right package for you, take a look
 
 lgr comes with a so-called **root logger** that is ready to go after you install 
 it. If you are a package developer you can (and should) set up a new Logger for
-your package, but more on that later. For many usecases the root Logger will 
+your package, but more on that later. For many use cases the root Logger will 
 suffice.
 
 ### Logging to the Console
@@ -99,7 +99,7 @@ lgr$remove_appender("file")
 lgr$add_appender(AppenderJson$new(tf), name = "json")
 lgr$info("We lived in Styria")
 ```
-json is still somewhat human readable
+JSON is still somewhat human readable
 ```{r}
 cat(readLines(tf))
 ```
@@ -114,7 +114,7 @@ read_json_lines(tf)
 Unlike many others Loggers for R, lgr treats a log *event* as a unit of data,
 not just a message with a timestamp. A log event can contain arbitrary data,
 though not all Appenders can handle that well. The JSON appender we added
-above is particularily good at handling most R objects.
+above is particularly good at handling most R objects.
 
 ```{r}
 # The default console appender displays custom fields as pseudo-json after the message
@@ -153,12 +153,12 @@ of the logging process.
   hierarchical logging)
 * An **Appender** writes the log message to destination (the console, a file, 
   a database, etc...).
-* A **Layout** is used by an Appender to format LogRecords. For example,
+* A **Layout** is used by an Appender to format LogEvents. For example,
   `AppenderFile` uses `LayoutFormat` by default to write human readable log
   events to a text file, but can also use `LayoutJson` produce machine 
   readable JSON lines logfiles.
 * **LogEvents** are produced by the Logger and dispatched to Appenders. They 
-  contain all the information that is beeing logged (think of
+  contain all the information that is being logged (think of
   it as a row in table). LogEvents usually contain the log level, a timestamp,
   a message, the name of the calling function, and a 
   [reference](https://adv-r.hadley.nz/r6.html#r6-semantics]) to the Logger
@@ -182,7 +182,7 @@ one kind of LogEvent, there are several subclasses of Appenders and Layouts.
 
 An introduction to R6 classes is beyond the scope of this document, but you
 can find the official documentation [here](https://r6.r-lib.org/) and there is
-also this [talk on youtube](https://www.youtube.com/watch?v=3GEFd8rZQgY). In
+also this [talk on Youtube](https://www.youtube.com/watch?v=3GEFd8rZQgY). In
 short R6 classes store data (fields) together with functions (methods) and
 have to be instantiated with `<classname>$new()`. So if you want to create
 a new `AppenderFile`, you do this by calling 
@@ -194,8 +194,8 @@ a new `AppenderFile`, you do this by calling
 
 lgr supports the standard log4j Log Levels outlined bellow. The Log Level of
 an event represents its severity. The named log levels are really just 
-nicknames vor integer values, and you can use the `character` or `integer` 
-representations interchangably. You can also use arbitrary integer values 
+nicknames for integer values, and you can use the `character` or `integer` 
+representations interchangeably. You can also use arbitrary integer values 
 (greater than `0`), but you are encouraged to stick to the ones bellow. 
 
 ```{r, echo = FALSE}
@@ -207,7 +207,7 @@ ll <- data.frame(
     "Critical error that leads to program abort. Should always indicate a `stop()` or similar",
     "A severe error that does not trigger program abort",
     "A potentially harmful situation, like `warning()`",
-    "An informatinal message on the progress of the application",
+    "An informational message on the progress of the application",
     "Finer grained informational messages that are mostly useful for debugging",
     "An even finer grained message than debug",
     "A log level of NA/all tells a Logger or Appender to process all log events"
@@ -257,7 +257,7 @@ lgr$info("The sky was the color of %s, tuned to a dead chanel", "television")
 
 LogEvents are objects that store all information collected by the Logger. They
 are passed on to Appenders that output them, but Appenders usually don't 
-utilise all the information present in a log event. The last event produced
+utilize all the information present in a log event. The last event produced
 by a Logger is stored in its `last_event` field.
 
 ```{r}
@@ -268,7 +268,7 @@ lgr$last_event$values  # all values stored in the event as a list
 
 LogEvents can contain not only these standard values, but an arbitrary number
 of extra values. These extra values are passed as named arguments to the logging
-function (as opposed as to paramters to `sprintf()`, which are passed as 
+function (as opposed as to parameters to `sprintf()`, which are passed as 
 unnamed arguments). It is up to the Appender whether to process them further or 
 not. 
 
@@ -362,7 +362,7 @@ unlink(tf)
 
 Logger hierarchies are a powerful concept to organize logging for different
 parts of a larger system. This is mainly relevant for package developers. It
-is good practice to have a sepparate Logger for each package. Since it is not
+is good practice to have a separate Logger for each package. Since it is not
 common in R to build complex systems of hierarchically organised packages,
 hierarchies will usually be pretty flat (i.e. most Loggers will only inherit
 from the root logger). 
@@ -393,7 +393,7 @@ hierarchies.
 
 [glue](https://glue.tidyverse.org/) is very nicely designed package for string
 interpolation. It makes composing log messages more flexible and comfortable
-at the price of an aditional dependency and slightly less performance than 
+at the price of an additional dependency and slightly less performance than 
 `sprintf()` (which is used by normal Loggers).
 To take advantage of glue, simply create a new LoggerGlue like this:
 
@@ -427,8 +427,8 @@ l$info("Glue is available from {.cran}", .cran = "https://CRAN.R-project.org/pac
 
 ## Logging to the console 
 
-lgr comes with simple but powerfull formatting syntax for LogEvents. Please
-refere to `?format.LogEvent` for the full list of available placeholders.
+lgr comes with simple but powerful formatting syntax for LogEvents. Please
+refer to `?format.LogEvent` for the full list of available placeholders.
 
 ```{r}
 lg <- Logger$new(
@@ -463,7 +463,7 @@ refer to `?LogEvent` for a list of all available Fields.
 
 JavaScript Object Notation (JSON) is an open-standard file format that uses 
 human-readable text to transmit data objects consisting of attribute–value 
-pairs and array data types ([wikipedia](https://en.wikipedia.org/wiki/JSON)).
+pairs and array data types ([Wikipedia](https://en.wikipedia.org/wiki/JSON)).
 JSON is the **recommended text-based logging format when logging to files**
   ^[Technically, the logger does not produce standard JSON files but 
   [JSON lines](http://jsonlines.org/)], 
@@ -490,7 +490,7 @@ lg$info("log fields", use = "JSON")
 ```
 
 JSON is easy to parse and analyse with R. lgr provides the function
-`read_json_lines()` that can be used to read json log files, but you can also
+`read_json_lines()` that can be used to read JSON log files, but you can also
 use AppenderJson's `$data` binding for an even more convenient method to
 read the logfile.
 
@@ -526,7 +526,7 @@ unlink(tf)
 
 ## Logger Hierarchies  {#examples-hierarchy}
 
-The most common usecases for creating a new Logger rather than just using the
+The most common use cases for creating a new Logger rather than just using the
 root Logger is if you create a Package that should contain logging. This
 way you can have separate Appenders (e.g logfiles) and thresholds for each
 package. 
@@ -585,7 +585,7 @@ is finished.
 By setting a [filter](#thresholds) as a custom `$should_flush()` method for an 
 AppenderBuffer, you can define more complex conditions to trigger flushing. 
 For example, the will output the last 5 LogEvents that happened before an 
-`error` occured.
+`error` occurred.
 
 ```{r}
 lg <- Logger$new(

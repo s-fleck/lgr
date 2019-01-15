@@ -33,7 +33,7 @@
 <meta property="og:title" content="Event Filters — EventFilter" />
 
 <meta property="og:description" content="Filters can be used for the $set_filter() and $add_filter() methods of
-Appenders and Loggers. You normaly do not need to construct a formal
+Appenders and Loggers. You normally do not need to construct a formal
 EventFilter object, you can just use any function that has the single
 argument event or any object that has a filter method." />
 <meta name="twitter:card" content="summary" />
@@ -66,7 +66,7 @@ argument event or any object that has a filter method." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.9</span>
       </span>
     </div>
 
@@ -125,18 +125,26 @@ argument event or any object that has a filter method." />
     <div class="ref-description">
     
     <p>Filters can be used for the <code>$set_filter()</code> and <code>$add_filter()</code> methods of
-Appenders and Loggers. You normaly do not need to construct a formal
+Appenders and Loggers. You normally do not need to construct a formal
 <code>EventFilter</code> object, you can just use any <code>function</code> that has the single
 argument <code>event</code> or any object that has a <code>filter</code> method.</p>
     
     </div>
 
         
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>lgr comes with a few preset filters that do not actually filter LogEvents
-but modify them. That is useful if you want to modify all logging cals for
-a certain scope (usually a <code>function</code>)</p>
+    <p>The base class for Filters is called <code>EventFilter</code> so that it doesn't
+conflict with <code><a href='https://www.rdocumentation.org/packages/base/topics/funprog'>base::Filter()</a></code>. The recommended convention for Filter
+subclasses is to call them <code>FilterSomething</code> and leave out the
+<code>Event</code> prefix.</p>
+    
+    <h2 class="hasAnchor" id="modifying-logevents-with-filters"><a class="anchor" href="#modifying-logevents-with-filters"></a>Modifying LogEvents with Filters</h2>
+
+    
+    <p>Since LogEvents are R6 objects with reference semantics, Filters can also
+be abused to modify log events before passing them on. lgr comes with a few
+preset filters that use this property:</p>
 <dl class='dl-horizontal'>
     <dt><code>FilterInject$new(..., .list)</code></dt><dd><p><code>...</code> and <code>.list</code> can take any number
 of named R6 objects that will be injected as custom fields into all
@@ -146,13 +154,6 @@ to. See also <code><a href='with_log_level.html'>with_log_value()</a></code></p>
 processed by the Appender/Logger that this filter is attached to to
 <code>level</code>. See also <code><a href='with_log_level.html'>with_log_value()</a></code></p></dd>
 </dl>
-    
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>The base class for Filters is called <code>EventFilter</code> so that it doesn't
-conflict with <code><a href='https://www.rdocumentation.org/packages/base/topics/funprog'>base::Filter()</a></code>. The recommended convention for Filter
-subclasses is to call them <code>FilterSomething</code> and leave out the
-<code>Event</code> prefix.</p>
     
     <h2 class="hasAnchor" id="accessing-appenders-and-loggers-from-filters"><a class="anchor" href="#accessing-appenders-and-loggers-from-filters"></a>Accessing Appenders and Loggers from Filters</h2>
 
@@ -170,8 +171,8 @@ Logger/Appender from within a filter</p>
   <span class='no'>lgr</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/debug'>debug</a></span>(<span class='st'>"a debug message"</span>)
   <span class='no'>lgr</span>$<span class='fu'>error</span>(<span class='st'>"an error"</span>)
 }
-<span class='fu'>analyse</span>()</div><div class='output co'>#&gt; INFO  [11:31:26.495] a debug message <span style='color: #808080;'>{</span><span style='color: #D75FAF;'>type</span><span style='color: #808080;'>: </span><span>analysis</span><span style='color: #808080;'>}</span><span>
-#&gt; INFO  [11:31:26.498] an error </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>type</span><span style='color: #808080;'>: </span><span>analysis</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='no'>lgr</span>$<span class='fu'>error</span>(<span class='st'>"an error"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [11:31:26.506] an error </div><div class='input'>
+<span class='fu'>analyse</span>()</div><div class='output co'>#&gt; INFO  [18:42:48.949] a debug message <span style='color: #808080;'>{</span><span style='color: #D75FAF;'>type</span><span style='color: #808080;'>: </span><span>analysis</span><span style='color: #808080;'>}</span><span>
+#&gt; INFO  [18:42:48.952] an error </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>type</span><span style='color: #808080;'>: </span><span>analysis</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='no'>lgr</span>$<span class='fu'>error</span>(<span class='st'>"an error"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [18:42:48.960] an error </div><div class='input'>
 
 <span class='co'># using .obj()</span>
 <span class='no'>l</span> <span class='kw'>&lt;-</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"foo"</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='st'>"debug"</span>)
@@ -183,15 +184,15 @@ Logger/Appender from within a filter</p>
 <span class='no'>l</span>$<span class='fu'>add_filter</span>(<span class='no'>f</span>)
 <span class='no'>l</span>$<span class='fu'>fatal</span>(<span class='st'>"test"</span>)</div><div class='output co'>#&gt; via event$.logger: 500 
 #&gt; via .obj():       500 
-#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [11:31:26.514] test </div></span></pre>
+#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [18:42:48.966] test </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
-      <li><a href="#details">Details</a></li>
-
       <li><a href="#note">Note</a></li>
+
+      <li><a href="#modifying-logevents-with-filters">Modifying LogEvents with Filters</a></li>
 
       <li><a href="#accessing-appenders-and-loggers-from-filters">Accessing Appenders and Loggers from Filters</a></li>
       
