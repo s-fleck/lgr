@@ -499,7 +499,7 @@ LayoutDb2 <- R6::R6Class(
 
 
 #' @export
-LayoutRjdbc <- LayoutSqlite
+LayoutRjdbc <- LayoutDb2
 
 
 
@@ -667,6 +667,7 @@ select_dbi_layout <- function(
         caller = "TEXT",
         msg = "TEXT"
       )),
+
     "JDBCConnection" = LayoutRjdbc$new(
       col_types = c(
         level = "smallint",

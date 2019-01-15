@@ -1519,17 +1519,17 @@ AppenderRjdbc <- R6::R6Class(
 
 
     flush = function(){
+      lo <- get(".layout", envir = private)
+
+      table  <- get("table", envir = self)
       buffer <- get("buffer_dt", envir = self)
 
       if (length(buffer)){
-        dd <- get(".layout", envir = private)[["format_data"]](buffer)
-        names(dd) <- toupper(names(dd))
-        ct <- self$col_types
+        dd <- lo[["format_data"]](buffer)
+        cn <- names(get("col_types", envir = self))
 
-        if (!is.null(ct)){
-          names(ct) <- toupper(names(ct))
-          dd <- dd[, intersect(toupper(names(ct)), toupper(names(dd)))]
-        }
+        if (!is.null(cn))
+          dd <- dd[, intersect(cn, names(dd))]
 
         for (i in seq_len(nrow(dd))){
           data <- as.list(dd[i, ])
@@ -1562,21 +1562,6 @@ AppenderRjdbc <- R6::R6Class(
       dd[["timestamp"]] <- as.POSIXct(dd[["timestamp"]])
       dd[["level"]] <- as.integer(dd[["level"]])
       dd
-    },
-
-    col_types = function(){
-      if (is.null(get(".col_types", envir = private))){
-        ct <-
-          get_col_types(private[[".conn"]], toupper(self[["table"]]))
-
-        if (is.null(ct))
-          ct <- get_col_types(private[[".conn"]], self[["table"]])
-
-        private$set_col_types(ct)
-        return(ct)
-      } else {
-        get(".col_types", envir = private)
-      }
     }
   ),
 
