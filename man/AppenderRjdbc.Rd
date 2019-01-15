@@ -35,9 +35,9 @@ x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
 x$set_filters(filters)
 
-x$col_types
 x$data
 x$close_on_exit
+x$col_types
 x$conn
 x$destination
 x$table

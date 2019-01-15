@@ -1330,6 +1330,7 @@ AppenderDbi <- R6::R6Class(
 
       dd <- tail(self$data[self$data$level <= threshold, ], n)
       colors <- getOption("lgr.colors")
+      lo <- get(".layout", envir = private)
 
       if (identical(nrow(dd),  0L)){
         cat("[empty log]")
@@ -1337,7 +1338,7 @@ AppenderDbi <- R6::R6Class(
         walk(
           as_LogEvent_list.data.frame(dd, na.rm = TRUE),
           function(.x){
-            cat(format.LogEvent(.x, colors = colors), "\n", sep = "")
+            cat(lo$format_event(.x), "\n", sep = "")
           }
         )
       }
