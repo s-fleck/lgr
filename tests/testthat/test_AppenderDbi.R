@@ -103,7 +103,7 @@ for (nm in names(dbs)){
   )
 
 
-  test_that("round trip event inserts", {
+  test_that(paste0(nm, ": round trip event inserts"), {
     expect_silent(app$append(e))
     expect_silent(app$append(e))
 
@@ -120,7 +120,7 @@ for (nm in names(dbs)){
   })
 
 
-  test_that("col order does not impact inserts", {
+  test_that(paste0(nm, ": col order does not impact inserts"), {
     for (i in 1:20){
       app$layout$set_col_types(sample(app$layout$col_types))
       expect_silent(app$append(e))
@@ -130,7 +130,7 @@ for (nm in names(dbs)){
   })
 
 
-  test_that("querying / displaying logs works", {
+  test_that(paste0(nm, ": querying / displaying logs works"), {
     expect_output(app$show(n = 5), paste(rep("TRACE.*", 5), collapse = "") )
     expect_output(expect_identical(nrow(app$show(n = 1)), 1L), "TRACE")
     expect_output(expect_identical(show_log(target = app), app$show()))
@@ -142,7 +142,7 @@ for (nm in names(dbs)){
 
 
   # custom fields
-  test_that("Creating tables with custom fields works", {
+  test_that(paste0(nm, ": Creating tables with custom fields works"), {
     try(DBI::dbRemoveTable(conn, "logging_test_create"), silent = TRUE)
 
     lg <- Logger$new(
@@ -197,7 +197,7 @@ for (nm in names(dbs)){
   })
 
 
-  test_that("Log to all fields that are already present in table by default", {
+  test_that(paste0(nm, ": Log to all fields that are already present in table by default"), {
     lg <- Logger$new(
       "test_dbi",
       threshold = "trace",
@@ -220,7 +220,7 @@ for (nm in names(dbs)){
   })
 
 
-  test_that("Buffered inserts work", {
+  test_that(paste0(nm, ": Buffered inserts work"), {
     lg <- Logger$new(
       "test_dbi",
       threshold = "trace",
@@ -254,7 +254,7 @@ for (nm in names(dbs)){
   })
 
 
-  test_that("SQL is sanitzed", {
+  test_that(paste0(nm, ": SQL is sanitzed"), {
     msg <- ";*/;   \"' /* blubb;"
     e <- LogEvent$new(
       lgr, level = 600L, msg = msg, caller = "nope()", timestamp = Sys.time()
@@ -265,7 +265,7 @@ for (nm in names(dbs)){
   })
 
 
-  test_that("cleanup behaves as expected", {
+  test_that(paste0(nm, ": cleanup behaves as expected"), {
     expect_true(
       DBI::dbExistsTable(conn, tname) ||
       DBI::dbExistsTable(conn, toupper(tname))
