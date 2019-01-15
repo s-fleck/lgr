@@ -1,3 +1,4 @@
+^cran-comments\.md$
 ^man-roxygen$
 ^\.covrignore$
 ^codecov\.yml$
