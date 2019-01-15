@@ -285,13 +285,20 @@ LayoutGlue <- R6::R6Class(
 #'
 #' LayoutDbi can contain `col_types` that [AppenderDbi] can use to create new
 #' database tables; however, it is safer and more flexible to set up the log
-#' table up manually with an `SQL CREATE TABLE` statement instead. LayoutDbi
-#' also contain a `format_data()` method that is applied to data.frames
-#' before they are insterted into the database by AppenderDbi.
+#' table up manually with an `SQL CREATE TABLE` statement instead.
+#'
+#' The LayoutDbi paramters `fmt`, `timestamp_fmt`, `colors` and `pad_levels`
+#' are only applied for for console output via the `$show()` method and do not
+#' influence database inserts in any way. The inserts are pre-processed by
+#' the methods `$format_data()`, `$format_colnames` and `$format_tablenames`.
+#'
+#' It does not format
+#' logEvents directly, but their `data.table` representations (see
+#' [as.data.table.LogEvent]), as well as column- and table names.
 #'
 #'
 #' @eval r6_usage(LayoutDbi)
-#' @inheritSection Layout Methods
+#' @inheritSection LayoutFormat Methods
 #' @inheritSection Layout Creating a New Layout
 #'
 #' @section Creating a New Layout:
@@ -311,65 +318,44 @@ LayoutGlue <- R6::R6Class(
 #'
 #' @section Methods:
 #'
+#' \describe{
+#'   \item{`format_table_name(x)`}{Format table names before inserting into
+#'     the database. For example some databases prefer all lowercase names,
+#'     some uppercase. SQL updates should be case-agnostic, but sadly in
+#'     practice not all DBI backends behave consistently in this regard}
+#'   \item{`format_colnames`}{Format column names before inserting into the
+#'     database. See `$format_table_name` for more info}
+#'   \item{`format_data`}{Format the input `data.table` before inserting into
+#'     the database. Usually this function does nothing, but for example for
+#'     SQLite it has to apply formatting to the timestamp.
+#'   }
+#'   \item{`col_names`}{Convenience method to get the names of the `col_types`
+#'     vector}
+#' }
+#'
 #' @section Database Specific Layouts:
 #'
 #' Different databases have different data types and features. Currently the
-#' following `LayoutDBI` subclasses exist that deal with specific databases,
+#' following `LayoutDbi` subclasses exist that deal with specific databases,
 #' but this list is expected to grow as lgr matures:
 #'
-#'   * `LayoutSQLite`: Needs its own Layout because SQLite does not support
-#'     `timestamps`
-#'   * `LayoutDBI`: For all other datbases
+#'   * `LayoutSqlite`: For SQLite databases
+#'   * `LayoutPostgres`: for Postgres databases
+#'   * `LayoutMySql`: for MySQL databases
+#'   * `LayoutDb2`: for DB2 databases
 #'
-#' The utility function [select_dbi_layout()] returns the appropriate
-#' Layout for a DBI connection.
+#' The utility function [select_dbi_layout()] tries returns the appropriate
+#' Layout for a DBI connection, but this does not work for odbc and jdbc
+#' connections where you have to specify the layout manually.
 #'
 #'
 #' @name LayoutDbi
-#' @aliases LayoutSqlite LayoutRjdbc
+#' @aliases LayoutSqlite LayoutRjdbc LayoutDb2 LayoutMySql LayoutPostgres
 #' @family Layouts
 #' @family database layouts
 #' @include Filterable.R
 #' @include log_levels.R
 #' @seealso [select_dbi_layout()], [DBI::DBI],
-#' @examples
-#' # setup a dummy LogEvent
-#' event <- LogEvent$new(
-#'   logger = Logger$new("dummy logger"),
-#'   level = 200,
-#'   timestamp = Sys.time(),
-#'   caller = NA_character_,
-#'   msg = "a test message"
-#' )
-#'
-#' # defaults
-#' lo <- LayoutDbi$new()
-#' lo$format_event(event)
-#'
-#' # SQLite does not support timestamps so LayoutSqlite converts them to text
-#' lo <- LayoutSqlite$new()
-#' str(lo$format_event(event))
-#'
-#' # advanced example that supports a custom_field:
-#' lo <- LayoutDbi$new(
-#'   col_types =  c(
-#'     timestamp = "timestamp",
-#'     level = "smallint",
-#'     msg = "varchar(2048)",
-#'     custom_field = "integer"
-#'   )
-#' )
-#'
-#' event <- LogEvent$new(
-#'   logger = Logger$new("dummy logger"),
-#'   level = 200,
-#'   timestamp = Sys.time(),
-#'   caller = NA_character_,
-#'   msg = "a test message",
-#'   custom_field = "blubb"
-#' )
-#'
-#' lo$format_event(event)
 #'
 NULL
 
@@ -379,12 +365,20 @@ NULL
 #' @export
 LayoutDbi <- R6::R6Class(
   "LayoutDbi",
-  inherit = Layout,
+  inherit = LayoutFormat,
   public = list(
     initialize = function(
-      col_types = NULL
+      col_types = NULL,
+      fmt = "%L [%t] %m  %f",
+      timestamp_fmt = "%Y-%m-%d %H:%M:%S",
+      colors = getOption("lgr.colors", list()),
+      pad_levels = "right"
     ){
       self$set_col_types(col_types)
+      self$set_fmt(fmt)
+      self$set_timestamp_fmt(timestamp_fmt)
+      self$set_colors(colors)
+      self$set_pad_levels(pad_levels)
     },
 
     format_table_name = tolower,
@@ -462,7 +456,7 @@ LayoutPostgres <- R6::R6Class(
 )
 
 
-# LayoutMySQL ----------------------------------------------------------
+# LayoutMySql ----------------------------------------------------------
 
 #' @export
 LayoutMySql <- R6::R6Class(
@@ -499,7 +493,7 @@ LayoutDb2 <- R6::R6Class(
 
 
 #' @export
-LayoutRjdbc <- LayoutSqlite
+LayoutRjdbc <- LayoutDb2
 
 
 
@@ -667,6 +661,7 @@ select_dbi_layout <- function(
         caller = "TEXT",
         msg = "TEXT"
       )),
+
     "JDBCConnection" = LayoutRjdbc$new(
       col_types = c(
         level = "smallint",

@@ -4,17 +4,29 @@
 \alias{LayoutDbi}
 \alias{LayoutSqlite}
 \alias{LayoutRjdbc}
+\alias{LayoutDb2}
+\alias{LayoutMySql}
+\alias{LayoutPostgres}
 \title{Format Log Events for Output to Databases}
 \description{
 LayoutDbi can contain \code{col_types} that \link{AppenderDbi} can use to create new
 database tables; however, it is safer and more flexible to set up the log
-table up manually with an \code{SQL CREATE TABLE} statement instead. LayoutDbi
-also contain a \code{format_data()} method that is applied to data.frames
-before they are insterted into the database by AppenderDbi.
+table up manually with an \code{SQL CREATE TABLE} statement instead.
+}
+\details{
+The LayoutDbi paramters \code{fmt}, \code{timestamp_fmt}, \code{colors} and \code{pad_levels}
+are only applied for for console output via the \code{$show()} method and do not
+influence database inserts in any way. The inserts are pre-processed by
+the methods \code{$format_data()}, \code{$format_colnames} and \code{$format_tablenames}.
+
+It does not format
+logEvents directly, but their \code{data.table} representations (see
+\link{as.data.table.LogEvent}), as well as column- and table names.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(col_types = NULL)
+x <- x$new(col_types = NULL, fmt = "\%L [\%t] \%m \%f", timestamp_fmt = "\%Y-\%m-\%d
+  \%H:\%M:\%S", colors = getOption("lgr.colors", list()), pad_levels = "right")
 
 x$format_table_name(x)
 x$format_colnames(x)
@@ -23,9 +35,17 @@ x$set_col_types(x)
 x$sql_create_table(table)
 x$clone(deep = FALSE)
 x$format_event(event)
+x$set_fmt(x)
+x$set_timestamp_fmt(x)
+x$set_colors(x)
+x$set_pad_levels(x)
 
 x$col_names
 x$col_types
+x$colors
+x$fmt
+x$pad_levels
+x$timestamp_fmt
 
 }
 }
@@ -56,6 +76,21 @@ vector}
 \section{Methods}{
 
 
+\describe{
+\item{\code{format_table_name(x)}}{Format table names before inserting into
+the database. For example some databases prefer all lowercase names,
+some uppercase. SQL updates should be case-agnostic, but sadly in
+practice not all DBI backends behave consistently in this regard}
+\item{\code{format_colnames}}{Format column names before inserting into the
+database. See \code{$format_table_name} for more info}
+\item{\code{format_data}}{Format the input \code{data.table} before inserting into
+the database. Usually this function does nothing, but for example for
+SQLite it has to apply formatting to the timestamp.
+}
+\item{\code{col_names}}{Convenience method to get the names of the \code{col_types}
+vector}
+}
+
 
 
 \describe{
@@ -67,58 +102,20 @@ vector}
 
 
 Different databases have different data types and features. Currently the
-following \code{LayoutDBI} subclasses exist that deal with specific databases,
+following \code{LayoutDbi} subclasses exist that deal with specific databases,
 but this list is expected to grow as lgr matures:
 \itemize{
-\item \code{LayoutSQLite}: Needs its own Layout because SQLite does not support
-\code{timestamps}
-\item \code{LayoutDBI}: For all other datbases
+\item \code{LayoutSqlite}: For SQLite databases
+\item \code{LayoutPostgres}: for Postgres databases
+\item \code{LayoutMySql}: for MySQL databases
+\item \code{LayoutDb2}: for DB2 databases
 }
 
-The utility function \code{\link[=select_dbi_layout]{select_dbi_layout()}} returns the appropriate
-Layout for a DBI connection.
+The utility function \code{\link[=select_dbi_layout]{select_dbi_layout()}} tries returns the appropriate
+Layout for a DBI connection, but this does not work for odbc and jdbc
+connections where you have to specify the layout manually.
 }
 
-\examples{
-# setup a dummy LogEvent
-event <- LogEvent$new(
-  logger = Logger$new("dummy logger"),
-  level = 200,
-  timestamp = Sys.time(),
-  caller = NA_character_,
-  msg = "a test message"
-)
-
-# defaults
-lo <- LayoutDbi$new()
-lo$format_event(event)
-
-# SQLite does not support timestamps so LayoutSqlite converts them to text
-lo <- LayoutSqlite$new()
-str(lo$format_event(event))
-
-# advanced example that supports a custom_field:
-lo <- LayoutDbi$new(
-  col_types =  c(
-    timestamp = "timestamp",
-    level = "smallint",
-    msg = "varchar(2048)",
-    custom_field = "integer"
-  )
-)
-
-event <- LogEvent$new(
-  logger = Logger$new("dummy logger"),
-  level = 200,
-  timestamp = Sys.time(),
-  caller = NA_character_,
-  msg = "a test message",
-  custom_field = "blubb"
-)
-
-lo$format_event(event)
-
-}
 \seealso{
 \code{\link[=select_dbi_layout]{select_dbi_layout()}}, \link[DBI:DBI]{DBI::DBI},
 
