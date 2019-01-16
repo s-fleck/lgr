@@ -5,10 +5,14 @@ test_that("simple_logging works as expected", {
   ml <- Logger$new("dummy")
 
   expect_error(ml$set_threshold("blubb"))
-  add_log_levels(c(blubb = 250))
+  add_log_levels(c(blubb = 250, schwupp = 341))
   expect_silent(ml$set_threshold("blubb"))
   expect_identical(ml$threshold, 250L)
-  remove_log_levels("blubb")  # cleanup
+  expect_setequal(
+    names(get_log_levels()),
+    c("fatal", "error", "warn", "info", "debug", "trace", "blubb", "schwupp")
+  )
+  remove_log_levels(c("blubb", "schwupp"))  # cleanup
   expect_error(ml$set_threshold("blubb"))
 })
 

@@ -134,7 +134,7 @@ generate_sql_create_table <- function(
 
 
   # process input
-  empty_cols <- is.na(col_names) && is.na(col_types)
+  empty_cols <- is.na(col_names) & is.na(col_types)
   col_names  <- col_names[!empty_cols]
   col_types  <- col_types[!empty_cols]
 

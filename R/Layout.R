@@ -653,6 +653,8 @@ select_dbi_layout <- function(
     cls,
     "PostgreSQLConnection" = LayoutPostgres$new(),
 
+    "PqConnection" = LayoutPostgres$new(),
+
     "MariaDBConnection" = LayoutMySql$new(),
 
     "MySQLConnection" = LayoutMySql$new(),
