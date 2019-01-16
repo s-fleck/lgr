@@ -48,7 +48,7 @@ test_that("AppenderSendmail: ERROR log level triggers push", {
       to = email,
       control = list(smtpServer = smtp, verboseShow = TRUE),
       buffer_size = 3,
-      html = TRUE),
+      html = FALSE),
     parent = NULL
   )
 
@@ -56,9 +56,9 @@ test_that("AppenderSendmail: ERROR log level triggers push", {
   l$info("2")
   l$trace("3")
   l$debug("4")
-  l$debug("something something 5ish has occurred")
+  l$debug("something something 5ish has occurred ÄÖÜ")
 
-  l$fatal("sendmailR works", foo = "bar")
+  l$fatal("sendmailR wörks", foo = "bar")
 })
 
 

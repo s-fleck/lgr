@@ -1941,7 +1941,7 @@ AppenderSendmail <- R6::R6Class(
       cc = NULL,
       bcc = NULL,
       html = FALSE,
-      headers = list()
+      headers = NULL
     ){
       assert_namespace("sendmailR")
       assert(is_scalar_bool(html))
@@ -1969,18 +1969,29 @@ AppenderSendmail <- R6::R6Class(
     ){
       assign("insert_pos", 0L, envir = private)
 
+      # body
       body <- paste(
         lapply(self$buffer_events, self$layout$format_event),
         collapse = "\r\n"
       )
-      le    <- self$buffer_events[[length(self$buffer_events)]]
-      title <- self$subject_layout$format_event(le)
-
       if (self$html) {
         body <- paste0("<pre>\n", body, "</pre>\n")
         body <- sendmailR::mime_part(body)
-        body[["headers"]][["Content-Type"]] <- "text/html"
+        body[["headers"]][["Content-Type"]] <- "text/html; charset=UTF-8;"
+      } else {
+        body <- sendmailR::mime_part(body)
+        body[["headers"]][["Content-Type"]] <- "text/plain; charset=UTF-8;"
       }
+
+
+      # title
+      le    <- self$buffer_events[[length(self$buffer_events)]]
+      title <- self$subject_layout$format_event(le)
+      title <- try(
+        iconv(title, from = "UTF-8", to = "ASCII//TRANSLIT"),
+        silent = TRUE
+      )
+
 
       args <- list(
         from = self$from,
