@@ -463,9 +463,12 @@ LayoutMySql <- R6::R6Class(
   "LayoutMySql",
   inherit = LayoutDbi,
   public = list(
-    format_table_name = identity,
-    format_colnames   = identity,
-    format_data       = identity
+    format_table_name = tolower,
+    format_colnames   = tolower,
+    format_data       = function(x){
+      data.table::setnames(x, tolower(names(x)))
+      x
+    }
   )
 )
 
