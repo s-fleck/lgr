@@ -1,8 +1,9 @@
 as_log_levels <- function(x){
   assert(is_integerish(x) && identical(length(names(x)), length(x)))
   assert(
-    !is.na(x) && x > 0 ,
-    "The log levels `0` (off) and `NA` (all) are reserved"
+    !anyNA(x) & all (x > 0),
+    "Log levels must be positive integers. The log levels `0` (off) and `NA` ",
+    "(all) are reserved."
   )
   x <- setNames(as.integer(x), names(x))
   structure(sort(x), class = c("log_levels", "integer"))

@@ -141,8 +141,8 @@ maintained :
   * [DBI](https://github.com/r-dbi/DBI) for logging to databases. Logging with
     lgr has been tested with the following backends: 
     - [RSQLite](https://github.com/r-dbi/RSQLite), 
-    - [RMariaDB](https://cran.r-project.org/web/packages/RMySQL/index.html) for MariaDB and MySQL,
-    - [RPostgreSQL](https://cran.r-project.org/web/packages/RPostgreSQL/index.html),
+    - [RMariaDB](https://cran.r-project.org/package=RMySQL) for MariaDB and MySQL,
+    - [RPostgreSQL](https://cran.r-project.org/package=RPostgreSQL),
     - [RJDBC](https://github.com/s-u/RJDBC) for DB2. 
   * [gmailr](https://cran.r-project.org/package=gmailr) or
     [sendmailR](https://cran.r-project.org/package=sendmailR) for email 
