@@ -247,7 +247,9 @@ AppenderFile <- R6::R6Class(
     append = function(event){
       cat(
         private$.layout$format_event(event),
-        sep = "\n", file = private$.file, append = TRUE
+        sep = "\n",
+        file = get(".file", envir = private),
+        append = TRUE
       )
     },
 
@@ -262,7 +264,6 @@ AppenderFile <- R6::R6Class(
   # +- active ---------------------------------------------------------------
   active = list(
     file = function() private$.file,
-
     destination = function() self$file
   ),
 
