@@ -21,12 +21,12 @@ x <- x$new(name = "(unnamed logger)", appenders = list(), threshold = 400L
   exception_handler = default_exception_handler, propagate = TRUE)
 
 x$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
-x$fatal(msg, ...)
-x$error(msg, ...)
-x$warn(msg, ...)
-x$info(msg, ...)
-x$debug(msg, ...)
-x$trace(msg, ...)
+x$fatal(msg, ..., caller = get_caller(-8L))
+x$error(msg, ..., caller = get_caller(-8L))
+x$warn(msg, ..., caller = get_caller(-8L))
+x$info(msg, ..., caller = get_caller(-8L))
+x$debug(msg, ..., caller = get_caller(-8L))
+x$trace(msg, ..., caller = get_caller(-8L))
 x$add_appender(appender, name = NULL)
 x$remove_appender(pos)
 x$handle_exception(...)
@@ -44,6 +44,7 @@ x$set_filters(filters)
 x$ancestry
 x$appenders
 x$exception_handler
+x$full_name
 x$inherited_appenders
 x$last_event
 x$name
@@ -133,6 +134,11 @@ are the names of the appenders.}
 \item{\code{inherited_appenders}}{A \code{list} of all inherited
 appenders from ancestral Loggers of the current Logger}
 
+\item{\code{full_name}}{\code{character} scalar. The full or \emph{qualified} name of
+the logger: The name of the logger and all loggers it inherits from
+(except for the root logger)
+}
+
 \item{\code{last_event}}{The last LogEvent produced by the current Logger}
 }
 }
@@ -141,25 +147,26 @@ appenders from ancestral Loggers of the current Logger}
 
 
 \describe{
-\item{\code{fatal(msg, ...)}}{Logs a message with level \code{fatal} on this logger.
-If there are \emph{unnamed} arguments in \code{...}, they will be passed to
-\code{base::sprintf()} along with message. Named arguments will be passed
-as custom fields to \link{LogEvent}. If there are named arguments the names
-must be unique}
+\item{\code{fatal(msg, ..., caller = get_caller(-8L))}}{Logs a message with
+level \code{fatal} on this logger. If there are \emph{unnamed} arguments in \code{...},
+they will be passed to \code{base::sprintf()} along with message. Named
+arguments will be passed as custom fields to \link{LogEvent}. If there are named
+arguments the names must be unique. \code{caller} refers to the name of the
+calling function and if specified manually must be a \code{character} scalar.}
 
-\item{\code{error(msg, ...)}}{Logs a message with level \code{error} on this logger.
+\item{\code{error(msg, ..., caller = get_caller(-8L))}}{Logs a message with level \code{error} on this logger.
 The arguments are interpreted as for \code{fatal()}.}
 
-\item{\code{warn(msg, ...)}}{Logs a message with level \code{warn} on this logger.
+\item{\code{warn(msg, ..., caller = get_caller(-8L))}}{Logs a message with level \code{warn} on this logger.
 The arguments are interpreted as for \code{fatal()}.}
 
-\item{\code{info(msg, ...)}}{Logs a message with level \code{info} on this logger.
+\item{\code{info(msg, ..., caller = get_caller(-8L))}}{Logs a message with level \code{info} on this logger.
 The arguments are interpreted as for \code{fatal()}.}
 
-\item{\code{debug(msg, ...)}}{Logs a message with level \code{debug} on this logger.
+\item{\code{debug(msg, ..., caller = get_caller(-8L))}}{Logs a message with level \code{debug} on this logger.
 The arguments are interpreted as for \code{fatal()}.}
 
-\item{\code{trace(msg, ...)}}{Logs a message with level \code{trace} on this logger.
+\item{\code{trace(msg, ..., caller = get_caller(-8L))}}{Logs a message with level \code{trace} on this logger.
 The arguments are interpreted as for \code{fatal()}.}
 
 \item{\code{log(level, msg, ..., timestamp, caller)}}{
@@ -221,10 +228,7 @@ lgr$fatal("This is a serious error")
 # You can create new loggers with Logger$new(). The following creates a
 # logger that logs to a temporary file.
 tf <- tempfile()
-lg <- Logger$new(
-  "mylogger",
-  appenders = AppenderFile$new(tf)
-)
+lg <- Logger$new("mylogger", appenders = AppenderFile$new(tf))
 
 # The new logger passes the log message on to the appenders of its parent
 # logger, which is by default the root logger. This is why the following
@@ -233,15 +237,17 @@ lg$fatal("blubb")
 readLines(tf)
 
 # This logger's print() method depicts this relationship
-print(lg)
-print(lg$ancestry)
+lg2 <- Logger$new("child", parent = lg)
+print(lg2)
+print(lg2$ancestry)
+print(lg2$full_name)
 
 # use formatting strings and custom fields
 tf2 <- tempfile()
 lg$add_appender(AppenderFile$new(tf2, layout = LayoutJson$new()))
 lg$info("Not all \%s support custom fields", "appenders", type = "test")
-readLines(tf)
-readLines(tf2)
+cat(readLines(tf), sep = "\\n")
+cat(readLines(tf2), sep = "\\n")
 
 # The following works because if no unnamed `...` are present, msg is not
 # passed through sprintf() (otherwise you would have to escape the "\%")
