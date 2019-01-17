@@ -79,25 +79,26 @@
 #'
 #'
 #' \describe{
-#'   \item{`fatal(msg, ...)`}{Logs a message with level `fatal` on this logger.
-#'     If there are *unnamed* arguments in `...`, they will be passed to
-#'     `base::sprintf()` along with message. Named arguments will be passed
-#'     as custom fields to [LogEvent]. If there are named arguments the names
-#'     must be unique}
+#'   \item{`fatal(msg, ..., caller = get_caller(-8L))`}{Logs a message with
+#'   level `fatal` on this logger. If there are *unnamed* arguments in `...`,
+#'   they will be passed to `base::sprintf()` along with message. Named
+#'   arguments will be passed as custom fields to [LogEvent]. If there are named
+#'   arguments the names must be unique. `caller` refers to the name of the
+#'   calling function and if specified manually must be a `character` scalar.}
 #'
-#'   \item{`error(msg, ...)`}{Logs a message with level `error` on this logger.
+#'   \item{`error(msg, ..., caller = get_caller(-8L))`}{Logs a message with level `error` on this logger.
 #'     The arguments are interpreted as for `fatal()`.}
 #'
-#'   \item{`warn(msg, ...)`}{Logs a message with level `warn` on this logger.
+#'   \item{`warn(msg, ..., caller = get_caller(-8L))`}{Logs a message with level `warn` on this logger.
 #'     The arguments are interpreted as for `fatal()`.}
 #'
-#'   \item{`info(msg, ...)`}{Logs a message with level `info` on this logger.
+#'   \item{`info(msg, ..., caller = get_caller(-8L))`}{Logs a message with level `info` on this logger.
 #'     The arguments are interpreted as for `fatal()`.}
 #'
-#'   \item{`debug(msg, ...)`}{Logs a message with level `debug` on this logger.
+#'   \item{`debug(msg, ..., caller = get_caller(-8L))`}{Logs a message with level `debug` on this logger.
 #'     The arguments are interpreted as for `fatal()`.}
 #'
-#'   \item{`trace(msg, ...)`}{Logs a message with level `trace` on this logger.
+#'   \item{`trace(msg, ..., caller = get_caller(-8L))`}{Logs a message with level `trace` on this logger.
 #'   The arguments are interpreted as for `fatal()`.}
 #'
 #'   \item{`log(level, msg, ..., timestamp, caller)`}{
@@ -329,60 +330,60 @@ Logger <- R6::R6Class(
     },
 
 
-    fatal = function(msg, ...){
+    fatal = function(msg, ..., caller = get_caller(-8L)){
       get("log", envir = self)(
         msg = msg,
-        caller = get_caller(-8L),
+        caller = caller,
         level = 100L,
         timestamp = Sys.time(),
         ...
       )
     },
 
-    error = function(msg, ...){
+    error = function(msg, ..., caller = get_caller(-8L)){
       get("log", envir = self)(
         msg = msg,
-        caller = get_caller(-8L),
+        caller = caller,
         level = 200L,
         timestamp = Sys.time(),
         ...
       )
     },
 
-    warn = function(msg, ...){
+    warn = function(msg, ..., caller = get_caller(-8L)){
       get("log", envir = self)(
         msg = msg,
-        caller = get_caller(-8L),
+        caller = caller,
         level = 300L,
         timestamp = Sys.time(),
         ...
       )
     },
 
-    info = function(msg, ...){
+    info = function(msg, ..., caller = get_caller(-8L)){
       get("log", envir = self)(
         msg = msg,
-        caller = get_caller(-8L),
+        caller = caller,
         level = 400L,
         timestamp = Sys.time(),
         ...
       )
     },
 
-    debug = function(msg, ...){
+    debug = function(msg, ..., caller = get_caller(-8L)){
       get("log", envir = self)(
         msg = msg,
-        caller = get_caller(-8L),
+        caller = caller,
         level = 500L,
         timestamp = Sys.time(),
         ...
       )
     },
 
-    trace = function(msg, ...){
+    trace = function(msg, ..., caller = get_caller(-8L)){
       get("log", envir = self)(
         msg = msg,
-        caller = get_caller(-8L),
+        caller = caller,
         level = 600L,
         timestamp = Sys.time(),
         ...
@@ -507,6 +508,10 @@ Logger <- R6::R6Class(
       )
     },
 
+    full_name = function(){
+      paste(rev(setdiff(names(self$ancestry), "root")), collapse = ".")
+    },
+
     parent = function() private$.parent,
 
     threshold = function() private$.threshold,
@@ -624,56 +629,55 @@ LoggerGlue <- R6::R6Class(
 
   public = list(
 
-
-    fatal = function(...){
+    fatal = function(..., caller = get_caller(-8L)){
       get("log", envir = self)(
         ...,
-        caller = get_caller(-8L),
+        caller = caller,
         level = 100L,
         timestamp = Sys.time()
       )
     },
 
-    error = function(...){
+    error = function(..., caller = get_caller(-8L)){
       get("log", envir = self)(
         ...,
-        caller = get_caller(-8L),
+        caller = caller,
         level = 200L,
         timestamp = Sys.time()
       )
     },
 
-    warn = function(...){
+    warn = function(..., caller = get_caller(-8L)){
       get("log", envir = self)(
         ...,
-        caller = get_caller(-8L),
+        caller = caller,
         level = 300L,
         timestamp = Sys.time()
       )
     },
 
-    info = function(...){
+    info = function(..., caller = get_caller(-8L)){
       get("log", envir = self)(
         ...,
-        caller = get_caller(-8L),
+        caller = caller,
         level = 400L,
         timestamp = Sys.time()
       )
     },
 
-    debug = function(...){
+    debug = function(..., caller = get_caller(-8L)){
       get("log", envir = self)(
         ...,
-        caller = get_caller(-8L),
+        caller = caller,
         level = 500L,
         timestamp = Sys.time()
       )
     },
 
-    trace = function(...){
+    trace = function(..., caller = get_caller(-8L)){
       get("log", envir = self)(
         ...,
-        caller = get_caller(-8L),
+        caller = caller,
         level = 600L,
         timestamp = Sys.time()
       )

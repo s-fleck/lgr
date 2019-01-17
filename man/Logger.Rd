@@ -21,12 +21,12 @@ x <- x$new(name = "(unnamed logger)", appenders = list(), threshold = 400L
   exception_handler = default_exception_handler, propagate = TRUE)
 
 x$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
-x$fatal(msg, ...)
-x$error(msg, ...)
-x$warn(msg, ...)
-x$info(msg, ...)
-x$debug(msg, ...)
-x$trace(msg, ...)
+x$fatal(msg, ..., caller = get_caller(-8L))
+x$error(msg, ..., caller = get_caller(-8L))
+x$warn(msg, ..., caller = get_caller(-8L))
+x$info(msg, ..., caller = get_caller(-8L))
+x$debug(msg, ..., caller = get_caller(-8L))
+x$trace(msg, ..., caller = get_caller(-8L))
 x$add_appender(appender, name = NULL)
 x$remove_appender(pos)
 x$handle_exception(...)
@@ -141,25 +141,26 @@ appenders from ancestral Loggers of the current Logger}
 
 
 \describe{
-\item{\code{fatal(msg, ...)}}{Logs a message with level \code{fatal} on this logger.
-If there are \emph{unnamed} arguments in \code{...}, they will be passed to
-\code{base::sprintf()} along with message. Named arguments will be passed
-as custom fields to \link{LogEvent}. If there are named arguments the names
-must be unique}
+\item{\code{fatal(msg, ..., caller = get_caller(-8L))}}{Logs a message with
+level \code{fatal} on this logger. If there are \emph{unnamed} arguments in \code{...},
+they will be passed to \code{base::sprintf()} along with message. Named
+arguments will be passed as custom fields to \link{LogEvent}. If there are named
+arguments the names must be unique. \code{caller} refers to the name of the
+calling function and if specified manually must be a \code{character} scalar.}
 
-\item{\code{error(msg, ...)}}{Logs a message with level \code{error} on this logger.
+\item{\code{error(msg, ..., caller = get_caller(-8L))}}{Logs a message with level \code{error} on this logger.
 The arguments are interpreted as for \code{fatal()}.}
 
-\item{\code{warn(msg, ...)}}{Logs a message with level \code{warn} on this logger.
+\item{\code{warn(msg, ..., caller = get_caller(-8L))}}{Logs a message with level \code{warn} on this logger.
 The arguments are interpreted as for \code{fatal()}.}
 
-\item{\code{info(msg, ...)}}{Logs a message with level \code{info} on this logger.
+\item{\code{info(msg, ..., caller = get_caller(-8L))}}{Logs a message with level \code{info} on this logger.
 The arguments are interpreted as for \code{fatal()}.}
 
-\item{\code{debug(msg, ...)}}{Logs a message with level \code{debug} on this logger.
+\item{\code{debug(msg, ..., caller = get_caller(-8L))}}{Logs a message with level \code{debug} on this logger.
 The arguments are interpreted as for \code{fatal()}.}
 
-\item{\code{trace(msg, ...)}}{Logs a message with level \code{trace} on this logger.
+\item{\code{trace(msg, ..., caller = get_caller(-8L))}}{Logs a message with level \code{trace} on this logger.
 The arguments are interpreted as for \code{fatal()}.}
 
 \item{\code{log(level, msg, ..., timestamp, caller)}}{

@@ -21,7 +21,7 @@
 #'   \item{`msg`}{`character`. A message}
 #'
 #'   \item{`logger`}{`character` scalar. Name of the Logger that created the
-#'     event (`.logger$name`)
+#'     event (`.logger$full_name`)
 #'   }
 #'
 #'   \item{`user`}{`character` scalar. User as set for the Logger
@@ -145,7 +145,7 @@ LogEvent <- R6::R6Class(
     },
 
     logger = function(){
-      get("name", envir = get(".logger", envir = self))
+      get("full_name", envir = get(".logger", envir = self))
     }
   )
 )
