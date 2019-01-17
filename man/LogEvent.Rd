@@ -44,7 +44,7 @@ LogEvent was created}
 \item{\code{msg}}{\code{character}. A message}
 
 \item{\code{logger}}{\code{character} scalar. Name of the Logger that created the
-event (\code{.logger$name})
+event (\code{.logger$full_name})
 }
 
 \item{\code{user}}{\code{character} scalar. User as set for the Logger

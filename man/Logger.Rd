@@ -44,6 +44,7 @@ x$set_filters(filters)
 x$ancestry
 x$appenders
 x$exception_handler
+x$full_name
 x$inherited_appenders
 x$last_event
 x$name
@@ -132,6 +133,11 @@ are the names of the appenders.}
 
 \item{\code{inherited_appenders}}{A \code{list} of all inherited
 appenders from ancestral Loggers of the current Logger}
+
+\item{\code{full_name}}{\code{character} scalar. The full or \emph{qualified} name of
+the logger: The name of the logger and all loggers it inherits from
+(except for the root logger)
+}
 
 \item{\code{last_event}}{The last LogEvent produced by the current Logger}
 }
@@ -236,13 +242,14 @@ readLines(tf)
 # This logger's print() method depicts this relationship
 print(lg)
 print(lg$ancestry)
+print(lg$full_name)
 
 # use formatting strings and custom fields
 tf2 <- tempfile()
 lg$add_appender(AppenderFile$new(tf2, layout = LayoutJson$new()))
 lg$info("Not all \%s support custom fields", "appenders", type = "test")
-readLines(tf)
-readLines(tf2)
+cat(readLines(tf), sep = "\\n")
+cat(readLines(tf2), sep = "\\n")
 
 # The following works because if no unnamed `...` are present, msg is not
 # passed through sprintf() (otherwise you would have to escape the "\%")

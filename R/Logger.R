@@ -71,6 +71,11 @@
 #'   \item{`inherited_appenders`}{A `list` of all inherited
 #'   appenders from ancestral Loggers of the current Logger}
 #'
+#'   \item{`full_name`}{`character` scalar. The full or *qualified* name of
+#'     the logger: The name of the logger and all loggers it inherits from
+#'     (except for the root logger)
+#'    }
+#'
 #'   \item{`last_event`}{The last LogEvent produced by the current Logger}
 #' }
 #'
@@ -151,10 +156,7 @@
 #' # You can create new loggers with Logger$new(). The following creates a
 #' # logger that logs to a temporary file.
 #' tf <- tempfile()
-#' lg <- Logger$new(
-#'   "mylogger",
-#'   appenders = AppenderFile$new(tf)
-#' )
+#' lg <- Logger$new("mylogger", appenders = AppenderFile$new(tf))
 #'
 #' # The new logger passes the log message on to the appenders of its parent
 #' # logger, which is by default the root logger. This is why the following
@@ -163,15 +165,17 @@
 #' readLines(tf)
 #'
 #' # This logger's print() method depicts this relationship
-#' print(lg)
-#' print(lg$ancestry)
+#' lg2 <- Logger$new("child", parent = lg)
+#' print(lg2)
+#' print(lg2$ancestry)
+#' print(lg2$full_name)
 #'
 #' # use formatting strings and custom fields
 #' tf2 <- tempfile()
 #' lg$add_appender(AppenderFile$new(tf2, layout = LayoutJson$new()))
 #' lg$info("Not all %s support custom fields", "appenders", type = "test")
-#' readLines(tf)
-#' readLines(tf2)
+#' cat(readLines(tf), sep = "\n")
+#' cat(readLines(tf2), sep = "\n")
 #'
 #' # The following works because if no unnamed `...` are present, msg is not
 #' # passed through sprintf() (otherwise you would have to escape the "%")
