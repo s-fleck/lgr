@@ -134,13 +134,13 @@ generate_sql_create_table <- function(
 
 
   # process input
-  empty_cols <- is.na(col_names) && is.na(col_types)
+  empty_cols <- is.na(col_names) & is.na(col_types)
   col_names  <- col_names[!empty_cols]
   col_types  <- col_types[!empty_cols]
 
   if (any(is.na(col_types))){
     warning(sprintf(
-      "Skipping %s columns with col_type 'NA'", sum(is.na(col_types))
+      "Skipping %s columns with col_type `NA`", sum(is.na(col_types))
     ))
     col_names <- col_names[!is.na(col_types)]
     col_types <- col_types[!is.na(col_types)]
