@@ -1,5 +1,7 @@
 as_log_levels <- function(x){
   assert(is_integerish(x) && identical(length(names(x)), length(x)))
+  assert(all_are_distinct(x))
+  assert(all_are_distinct(names(x)))
   assert(
     !anyNA(x) & all (x > 0),
     "Log levels must be positive integers. The log levels `0` (off) and `NA` ",
@@ -62,18 +64,47 @@ get_log_levels <- function(){
 add_log_levels <- function(
   levels
 ){
-  current_lvls <- getOption("lgr.log_levels")
+  levels_cur <- getOption("lgr.log_levels")
   assert(
-    !is.null(current_lvls),
+    !is.null(levels_cur),
     "lgr.log_levels option is not set. something is very wrong with lgr, please file a bug report"
   )
-  levels <- setNames(as.integer(levels), names(levels))
-  res <- as_log_levels(c(current_lvls, levels))
+  assert(
+    is_integerish(levels),
+    "`levels` must be a named integer vector"
+  )
+  assert(length(names(levels)) && all_are_distinct(names(levels)))
+
+  levels_new <- setNames(as.integer(levels), names(levels))
+  levels_upd <- levels_new[levels_new %in% levels_cur]
+
+  if (length(levels_upd)){
+    message(
+      "Replacing existing log levels '",
+      fmt_log_levels(levels_new[levels_new %in% levels_cur]),
+      "' with '",
+      fmt_log_levels(levels_upd), "'"
+    )
+  }
+
+  res <- as_log_levels(named_union(levels_cur, levels_new))
+
   options(lgr.log_levels = res)
   invisible(get_log_levels())
 }
 
 
+
+#' union for named vectors. names of `y` override names of `x`
+named_union <- function(x, y){
+  assert(identical(length(names(x)), length(x)))
+  assert(identical(length(names(y)), length(y)))
+
+  r <- union(x, y)
+  names(r)[r %in% x] <- names(x[x %in% r])
+  names(r)[r %in% y] <- names(y[y %in% r])
+  r
+}
 
 
 #' @param level_names a `character` vector of the names of the levels to remove
@@ -101,7 +132,7 @@ remove_log_levels <- function(
 
 # format ------------------------------------------------------------------
 
-format_log_levels <- function(
+fmt_log_levels <- function(
   x
 ){
   paste0(names(sort(x)), " (", sort(x), ")", collapse = ", ")

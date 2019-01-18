@@ -5,13 +5,22 @@ test_that("simple_logging works as expected", {
   ml <- Logger$new("dummy")
 
   expect_error(ml$set_threshold("blubb"))
-  add_log_levels(c(blubb = 250, schwupp = 341))
+  expect_silent(add_log_levels(c(blubb = 250, schwupp = 341)))
   expect_silent(ml$set_threshold("blubb"))
   expect_identical(ml$threshold, 250L)
   expect_setequal(
     names(get_log_levels()),
     c("fatal", "error", "warn", "info", "debug", "trace", "blubb", "schwupp")
   )
+
+  expect_error(
+    add_log_levels(c("blubb", "schwupp"))
+  )
+
+  expect_message(add_log_levels(c(blubb = 250, schwupp = 341)))
+  expect_true(all_are_distinct(get_log_levels()))
+  expect_true(all_are_distinct(names(get_log_levels())))
+
   remove_log_levels(c("blubb", "schwupp"))  # cleanup
   expect_error(ml$set_threshold("blubb"))
 })
@@ -66,4 +75,19 @@ test_that("colorize log levels works", {
   expect_identical(colorize_levels(integer()), integer())
   expect_identical(colorize_levels(character()), character())
   expect_identical(colorize_levels(tdat, NULL), tdat)
+})
+
+
+
+
+test_that("named_union", {
+  x <- c("blah" = "blubb", "fizz" = "buzz")
+  y <- c("foo" = "bar", "blah2" = "blubb")
+
+  r <- named_union(x, y)
+
+  expect_identical(
+    r,
+    setNames(c("blubb", "buzz", "bar"), c("foo", "fizz", "blah2"))
+  )
 })
