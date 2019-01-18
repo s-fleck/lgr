@@ -116,7 +116,7 @@ appender_summary <- function(x){
 # single-row-summary
 srs_appender <- function(x){
   data.frame(
-    class = class_fmt(x, ignore = c("R6", "Filterable", "Appender")),
+    class = fmt_class(class(x)[[1]]),
     threshold = x$threshold,
     destination = x$destination
   )
