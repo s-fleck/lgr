@@ -157,10 +157,12 @@ AppenderConsole <- R6::R6Class(
         fmt = "%L [%t] %m %f",
         timestamp_fmt = "%H:%M:%OS3",
         colors = getOption("lgr.colors", list())
-      )
+      ),
+      filters = NULL
     ){
       self$set_threshold(threshold)
       self$set_layout(layout)
+      self$set_filters(filters)
     },
 
     append = function(event){
@@ -237,11 +239,13 @@ AppenderFile <- R6::R6Class(
     initialize = function(
       file,
       threshold = NA_integer_,
-      layout = LayoutFormat$new()
+      layout = LayoutFormat$new(),
+      filters = NULL
     ){
       self$set_file(file)
       self$set_threshold(threshold)
       self$set_layout(layout)
+      self$set_filters(filters)
     },
 
     append = function(event){
@@ -330,11 +334,13 @@ AppenderJson <- R6::R6Class(
     initialize = function(
       file,
       threshold = NA_integer_,
-      layout = LayoutJson$new()
+      layout = LayoutJson$new(),
+      filters = NULL
     ){
       self$set_file(file)
       self$set_threshold(threshold)
       self$set_layout(layout)
+      self$set_filters(filters)
     },
 
     show = function(
@@ -559,7 +565,8 @@ AppenderDt <- R6::R6Class(
         msg = NA_character_,
         .custom = list(list())
       ),
-      buffer_size = 1e5
+      buffer_size = 1e5,
+      filters = NULL
     ){
       assert(is_scalar_integerish(buffer_size))
       assert(
@@ -579,6 +586,7 @@ AppenderDt <- R6::R6Class(
       private$id <- 0L
       self$set_threshold(threshold)
       self$set_layout(layout)
+      self$set_filters(filters)
 
       # initialize empty dt
       prototype <- data.table::copy(prototype)
@@ -1044,7 +1052,8 @@ AppenderBuffer <- R6::R6Class(
       flush_threshold = "fatal",
       flush_on_exit = TRUE,
       flush_on_rotate = TRUE,
-      should_flush = default_should_flush
+      should_flush = default_should_flush,
+      filters = NULL
     ){
       self$set_threshold(threshold)
 
@@ -1054,6 +1063,7 @@ AppenderBuffer <- R6::R6Class(
       self$set_flush_threshold(flush_threshold)
       self$set_flush_on_exit(flush_on_exit)
       self$set_flush_on_rotate(flush_on_rotate)
+      self$set_filters(filters)
 
       self$set_appenders(appenders)
       self$set_layout(layout)
@@ -1267,13 +1277,15 @@ AppenderDbi <- R6::R6Class(
       flush_threshold = "error",
       flush_on_exit = TRUE,
       flush_on_rotate = TRUE,
-      should_flush = default_should_flush
+      should_flush = default_should_flush,
+      filters = NULL
     ){
       assert_namespace("DBI", "data.table")
 
       # appender
       self$set_threshold(threshold)
       self$set_layout(layout)
+      self$set_filters(filters)
 
       # buffer
       private$initialize_buffer(buffer_size)
@@ -1488,13 +1500,15 @@ AppenderRjdbc <- R6::R6Class(
       flush_threshold = "error",
       flush_on_exit = TRUE,
       flush_on_rotate = TRUE,
-      should_flush = default_should_flush
+      should_flush = default_should_flush,
+      filters = NULL
     ){
       assert_namespace("DBI", "RJDBC", "data.table")
 
       # appender
       self$set_threshold(threshold)
       self$set_layout(layout)
+      self$set_filters(filters)
 
       # buffer
       private$initialize_buffer(buffer_size)
@@ -1699,11 +1713,13 @@ AppenderPushbullet <- R6::R6Class(
       email = NULL,
       channel = NULL,
       devices = NULL,
-      apikey = NULL
+      apikey = NULL,
+      filters = NULL
     ){
       private$initialize_buffer(buffer_size)
       self$set_flush_on_rotate(FALSE)
       self$set_flush_on_exit(FALSE)
+      self$set_filters(filters)
 
       self$set_layout(layout)
       self$set_threshold(threshold)
@@ -1726,7 +1742,7 @@ AppenderPushbullet <- R6::R6Class(
       assign("insert_pos", 0L, envir = private)
 
       body <- paste(
-        lapply(self$buffer_events, self$layout$format_event),
+        unlist(lapply(self$buffer_events, self$layout$format_event)),
         collapse = "\n"
       )
       le    <- self$buffer_events[[length(self$buffer_events)]]
@@ -1941,7 +1957,8 @@ AppenderSendmail <- R6::R6Class(
       cc = NULL,
       bcc = NULL,
       html = FALSE,
-      headers = NULL
+      headers = NULL,
+      filters = NULL
     ){
       assert_namespace("sendmailR")
       assert(is_scalar_bool(html))
@@ -1949,6 +1966,7 @@ AppenderSendmail <- R6::R6Class(
       private$initialize_buffer(buffer_size)
       self$set_flush_on_rotate(FALSE)
       self$set_flush_on_exit(FALSE)
+      self$set_filters(filters)
 
       self$set_to(to)
       self$set_control(control)
@@ -1971,7 +1989,7 @@ AppenderSendmail <- R6::R6Class(
 
       # body
       body <- paste(
-        lapply(self$buffer_events, self$layout$format_event),
+        unlist(lapply(self$buffer_events, self$layout$format_event)),
         collapse = "\r\n"
       )
       if (self$html) {
@@ -2089,13 +2107,15 @@ AppenderGmail <- R6::R6Class(
       from = get_user(),
       cc = NULL,
       bcc = NULL,
-      html = FALSE
+      html = FALSE,
+      filters = NULL
     ){
       assert_namespace("gmailr")
 
       private$initialize_buffer(buffer_size)
       self$set_flush_on_rotate(FALSE)
       self$set_flush_on_exit(FALSE)
+      self$set_filters(filters)
 
       self$set_to(to)
       self$set_from(from)
@@ -2119,7 +2139,7 @@ AppenderGmail <- R6::R6Class(
       assign("insert_pos", 0L, envir = private)
 
       body <- paste(
-        lapply(self$buffer_events, self$layout$format_event),
+        unlist(lapply(self$buffer_events, self$layout$format_event)),
         collapse = "\n"
       )
       le    <- self$buffer_events[[length(self$buffer_events)]]
