@@ -28,7 +28,7 @@ x <- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "\%L [\%
   \%f", timestamp_fmt = "\%H:\%M:\%OS3", colors = getOption("lgr.colors", list())),
   prototype = data.table::data.table(.id = NA_integer_, level = NA_integer_,
   timestamp = Sys.time(), logger = NA_character_, caller = NA_character_, msg =
-  NA_character_, .custom = list(list())), buffer_size = 1e+05)
+  NA_character_, .custom = list(list())), buffer_size = 1e+05, filters = NULL)
 
 x$append(event)
 x$show(threshold = NA_integer_, n = 20L)

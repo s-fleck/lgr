@@ -21,7 +21,7 @@ x <- x$new(to, control, threshold = NA_integer_, flush_threshold = "fatal",
   layout = LayoutFormat$new(fmt = " \%L [\%t] \%m \%f", timestamp_fmt =
   "\%H:\%M:\%S"), subject_layout = LayoutFormat$new(fmt = "[LGR] \%L: \%m"),
   buffer_size = 29, from = get_user(), cc = NULL, bcc = NULL, html = FALSE,
-  headers = NULL)
+  headers = NULL, filters = NULL)
 
 x$flush()
 x$set_control(x)

@@ -28,7 +28,7 @@ DEBUG(msg, ...)
 
 TRACE(msg, ...)
 
-log_exception(...)
+log_exception(code, logfun = lgr$fatal, caller = get_caller(-3))
 
 threshold(level, target = lgr::lgr)
 
@@ -42,6 +42,11 @@ show_log(threshold = NA_integer_, n = 20L, target = lgr::lgr)
 }
 \arguments{
 \item{msg, ...}{passed on to \code{\link[base:sprintf]{base::sprintf()}}}
+
+\item{logfun}{a \code{function} for processing the log request, usually
+\code{lgr$info()}, \code{lgr$debug()}, etc... .}
+
+\item{caller}{a \code{character} scalar. The name of the calling function}
 
 \item{level, threshold}{an \code{integer} or \code{character} scalar, see
 \code{getOption("lgr.log_levels")} for possible values. For \code{threshold} \code{0}

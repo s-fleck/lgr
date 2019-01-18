@@ -17,7 +17,7 @@ x <- x$new(threshold = NA_integer_, flush_threshold = "fatal",
   layout = LayoutFormat$new(fmt = "\%K \%t> \%m \%f", timestamp_fmt = "\%H:\%M:\%S"),
   subject_layout = LayoutFormat$new(fmt = "[LGR] \%L: \%m"), buffer_size = 6,
   recipients = NULL, email = NULL, channel = NULL, devices = NULL,
-  apikey = NULL)
+  apikey = NULL, filters = NULL)
 
 x$flush()
 x$set_apikey(x)

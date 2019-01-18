@@ -126,6 +126,9 @@
 #'      refer to it via `logger$appenders$console`. `remove_appender()` can
 #'      remove an Appender by position or name.
 #'    }
+#'
+#'    \item{`spawn(...)`}{Spawn a child Logger. `lg <- lgr$spawn("mylogger")` is
+#'      equivalent to `lg <- Logger$new("mylogger", parent = lgr)`}
 #' }
 #'
 #'
@@ -494,6 +497,11 @@ Logger <- R6::R6Class(
         self$add_appender(x[[i]], name = names(x)[[i]])
 
       invisible(self)
+    },
+
+
+    spawn = function(...){
+      Logger$new(..., parent = self)
     }
   ),
 
