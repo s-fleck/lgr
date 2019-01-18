@@ -16,6 +16,7 @@ NULL
 
 
 
+
 # logging -----------------------------------------------------------------
 
 #' @param msg,... passed on to [base::sprintf()]
@@ -79,6 +80,7 @@ TRACE <- function(msg, ...){
 
 
 
+
 #' @param logfun a `function` for processing the log request, usually
 #'   `lgr$info()`, `lgr$debug()`, etc... .
 #' @param caller a `character` scalar. The name of the calling function
@@ -91,11 +93,11 @@ log_exception <- function(
   caller = get_caller(-3)
 ){
   force(caller)
-  force(logger)
+  force(logfun)
   tryCatch(
     force(code),
     error = function(e){
-      logger(unlist(strsplit(e$message, split = "\n", fixed = TRUE)), caller = caller)
+      logfun(unlist(strsplit(e$message, split = "\n", fixed = TRUE)), caller = caller)
       stop(e)
     }
   )
@@ -143,6 +145,7 @@ threshold <- function(
 
 
 
+
 #' @rdname simple_logging
 #' @export
 console_threshold <- function(
@@ -157,6 +160,8 @@ console_threshold <- function(
 
   invisible(target$threshold)
 }
+
+
 
 
 #' @rdname simple_logging
@@ -176,6 +181,7 @@ add_appender <- function(
 ){
   target$add_appender(appender, name = name)
 }
+
 
 
 

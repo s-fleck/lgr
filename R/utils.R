@@ -154,7 +154,7 @@ generate_sql_create_table <- function(
   col_types  <- toupper(col_types)
 
   # process input
-  if (any(is.na(col_types))){
+  if (anyNA(col_types)){
     message(sprintf(
       "Skipping %s columns where `col_type` equals `NA`", sum(is.na(col_types))
     ))

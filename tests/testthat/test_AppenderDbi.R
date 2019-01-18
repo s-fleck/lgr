@@ -70,7 +70,8 @@ dbs <- list(
 options("datatable.showProgress" = dt_sp)
 
 nm <- "SQLite via RSQLite"  # for manual testing, can be deleted
-nm <- "PostgreSQL via RPostgres" # for manual testing, can be deleted
+nm <- "PostgreSQL via RPostgreSQL" # for manual testing, can be deleted
+
 
 
 # +- tests -------------------------------------------------------------------
@@ -250,7 +251,9 @@ for (nm in names(dbs)){
     expect_identical(nrow(lg$appenders$db$data), 11L)
 
     # cleanup
-    DBI::dbRemoveTable(conn, lg$appenders$db$layout$format_table_name("LOGGING_TEST_BUFFER"))
+    expect_true(
+      DBI::dbRemoveTable(conn, lg$appenders$db$layout$format_table_name("LOGGING_TEST_BUFFER"))
+    )
   })
 
 
