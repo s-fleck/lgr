@@ -229,7 +229,7 @@ test_that("thresholds work", {
 
 
 
-test_that("ancestry query works", {
+test_that("ancestry querry works", {
   l1 <- Logger$new("l1", appenders = AppenderBuffer$new())
   l2 <- Logger$new("l2", propagate = FALSE, parent = l1, appenders = AppenderConsole$new())
   l3 <- Logger$new("l3", parent = l2, appenders = AppenderFile$new(tempfile()))
@@ -243,7 +243,7 @@ test_that("ancestry query works", {
 
 # LoggerGlue --------------------------------------------------------------
 
-test_that("ancestry query works", {
+test_that("LoggerGlue creates custom fields", {
   l <- LoggerGlue$new("glue")
 
   expect_output(l$fatal("test", "test"), glue::glue("test", "test"))
@@ -264,3 +264,14 @@ test_that("ancestry query works", {
   expect_false(".foo" %in% names(l$last_event))
 })
 
+
+
+
+test_that("LoggerGlue uses the correct evaluation environment", {
+  l <- LoggerGlue$new("glue", parent = NULL)
+
+  expect_match(l$fatal("{iris[['Species']][[1]]}"), "setosa")
+  expect_match(l$log(100, "{iris[['Species']][[1]]}"), "setosa")
+  expect_match(l$fatal(100, "{x}", x = iris[['Species']][[1]]), "setosa")
+  expect_match(l$log(100, "{x}", x = iris[['Species']][[1]]), "setosa")
+})
