@@ -399,7 +399,7 @@ LayoutDbi <- R6::R6Class(
         !is.null(private$.col_types),
         "To create new database tables the Layout must contain `col_types`"
       )
-      generate_sql_create_table(
+      sql_create_table(
         tname = table,
         col_types = private$.col_types,
         col_names = names(private$.col_types)

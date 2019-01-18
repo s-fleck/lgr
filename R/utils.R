@@ -125,13 +125,13 @@ ptrunc_col <- function(
 #' @noRd
 #'
 #' @examples
-#' generate_sql_create_table(
+#' sql_create_table(
 #'   "example.table",
 #'   c("numbers", "animals"),
 #'   c("integer", "varchar(8)"),
 #'   c("NOT NULL", "")
 #' )
-generate_sql_create_table <- function(
+sql_create_table <- function(
   tname,
   col_names,
   col_types,

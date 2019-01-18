@@ -70,7 +70,7 @@ dbs <- list(
 options("datatable.showProgress" = dt_sp)
 
 nm <- "SQLite via RSQLite"  # for manual testing, can be deleted
-nm <- "PostgreSQL via RPostgreSQL" # for manual testing, can be deleted
+nm <- "DB2 via RJDBC" # for manual testing, can be deleted
 
 
 
@@ -252,7 +252,12 @@ for (nm in names(dbs)){
 
     # cleanup
     expect_true(
-      DBI::dbRemoveTable(conn, lg$appenders$db$layout$format_table_name("LOGGING_TEST_BUFFER"))
+      x <- tryCatch({
+        r <- DBI::dbRemoveTable(conn, lg$appenders$db$layout$format_table_name("LOGGING_TEST_BUFFER"))
+        if (!length(r)) TRUE else r # for RJDBC
+      },
+        error = function(e) FALSE # for RJDBC
+      )
     )
   })
 

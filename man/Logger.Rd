@@ -36,6 +36,7 @@ x$set_propagate(x)
 x$set_parent(logger)
 x$set_threshold(level)
 x$set_appenders(x)
+x$spawn(...)
 x$filter(event)
 x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
@@ -189,6 +190,9 @@ recommended. After adding an Appender with
 refer to it via \code{logger$appenders$console}. \code{remove_appender()} can
 remove an Appender by position or name.
 }
+
+\item{\code{spawn(...)}}{Spawn a child Logger. \code{lg <- lgr$spawn("mylogger")} is
+equivalent to \code{lg <- Logger$new("mylogger", parent = lgr)}}
 }
 
 
