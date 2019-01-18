@@ -79,15 +79,23 @@ TRACE <- function(msg, ...){
 
 
 
+#' @param logfun a `function` for processing the log request, usually
+#'   `lgr$info()`, `lgr$debug()`, etc... .
+#' @param caller a `character` scalar. The name of the calling function
+#'
 #' @export
 #' @rdname simple_logging
 log_exception <- function(
-  ...
+  code,
+  logfun = lgr$fatal,
+  caller = get_caller(-3)
 ){
+  force(caller)
+  force(logger)
   tryCatch(
-    ...,
+    force(code),
     error = function(e){
-      FATAL(unlist(strsplit(e$message, split = "\n", fixed = TRUE)))
+      logger(unlist(strsplit(e$message, split = "\n", fixed = TRUE)), caller = caller)
       stop(e)
     }
   )
