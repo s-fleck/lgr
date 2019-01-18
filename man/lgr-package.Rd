@@ -34,7 +34,7 @@ all loggers.  Instead of modifying this option manually use
 Useful links:
 \itemize{
   \item \url{https://github.com/s-fleck/lgr}
-  \item Report bugs at \url{https://github.com/s-fleck/lgr}
+  \item Report bugs at \url{https://github.com/s-fleck/lgr/issues}
 }
 
 }
