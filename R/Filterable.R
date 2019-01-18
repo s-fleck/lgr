@@ -88,6 +88,11 @@ Filterable <- R6::R6Class(
     },
 
     set_filters = function(filters){
+
+      if (is.function(filters)){
+        filters <- list(filters)
+      }
+
       if (is.null(filters)){
         private[[".filters"]] <- list()
       } else {
