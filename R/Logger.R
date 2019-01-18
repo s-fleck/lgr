@@ -633,57 +633,66 @@ LoggerGlue <- R6::R6Class(
 
   public = list(
 
-    fatal = function(..., caller = get_caller(-8L)){
+    fatal = function(..., caller = get_caller(-8L), .envir = parent.frame()){
+      force(.envir)
       get("log", envir = self)(
         ...,
         caller = caller,
         level = 100L,
-        timestamp = Sys.time()
+        timestamp = Sys.time(),
+        .envir = .envir
       )
     },
 
-    error = function(..., caller = get_caller(-8L)){
+    error = function(..., caller = get_caller(-8L), .envir = parent.frame()){
       get("log", envir = self)(
         ...,
         caller = caller,
         level = 200L,
-        timestamp = Sys.time()
+        timestamp = Sys.time(),
+        .envir = .envir
       )
     },
 
-    warn = function(..., caller = get_caller(-8L)){
+    warn = function(..., caller = get_caller(-8L), .envir = parent.frame()){
       get("log", envir = self)(
         ...,
         caller = caller,
         level = 300L,
-        timestamp = Sys.time()
+        timestamp = Sys.time(),
+        .envir = .envir
       )
     },
 
-    info = function(..., caller = get_caller(-8L)){
+    info = function(..., caller = get_caller(-8L), .envir = parent.frame()){
       get("log", envir = self)(
         ...,
         caller = caller,
         level = 400L,
-        timestamp = Sys.time()
+        timestamp = Sys.time(),
+        .envir = .envir
       )
     },
 
-    debug = function(..., caller = get_caller(-8L)){
+    debug = function(..., caller = get_caller(-8L), .envir = parent.frame()){
+      force(.envir)
       get("log", envir = self)(
         ...,
         caller = caller,
         level = 500L,
-        timestamp = Sys.time()
+        timestamp = Sys.time(),
+        .envir = .envir
       )
     },
 
-    trace = function(..., caller = get_caller(-8L)){
+    trace = function(..., caller = get_caller(-8L), .envir = parent.frame()){
+      force(.envir)
       get("log", envir = self)(
         ...,
         caller = caller,
         level = 600L,
-        timestamp = Sys.time()
+        timestamp = Sys.time(),
+        .envir = .envir
       )
     },
 
@@ -691,8 +700,10 @@ LoggerGlue <- R6::R6Class(
       level,
       ...,
       timestamp = Sys.time(),
-      caller = get_caller(-7)
+      caller = get_caller(-7),
+      .envir = parent.frame()
     ){
+      force(.envir)
       tryCatch({
         # preconditions
         level <- standardize_log_levels(level)
@@ -710,7 +721,8 @@ LoggerGlue <- R6::R6Class(
         }
 
         # init
-        msg <- glue::glue(...)
+        # the do.call is so that `...` gets evaluated in the correct environment
+        msg <- glue::glue( ..., .envir = .envir)
         force(caller)
 
         if (missing(...)){
