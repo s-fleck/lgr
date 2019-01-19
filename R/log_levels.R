@@ -264,6 +264,8 @@ error_msg_log_levels <- function(varname, log_levels){
 
 
 
+# label/unlabel -----------------------------------------------------------
+
 #' Label/Unlabel Log Levels
 #'
 #' @param levels an `integer` vector of log levels
@@ -305,8 +307,6 @@ label_levels <- function(
 
 
 
-
-# label/unlabel -----------------------------------------------------------
 
 #' @rdname label_levels
 #' @export
