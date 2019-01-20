@@ -1,5 +1,7 @@
 # AppenderPushbullet ----------------------------------------------------
 
+email <- whoami::email_address()
+
 test_that("AppenderPushbullet: ERROR log level triggers push", {
   skip_if_not_installed("RPushbullet")
 
@@ -25,7 +27,7 @@ test_that("AppenderPushbullet: ERROR log level triggers push", {
   l$debug("4")
   l$debug("something something 5ish has occurred")
 
-  l$fatal("Oh well, here we go", foo = "bar")
+  l$fatal("pushbullet wörks ÄÖÜßÄ", foo = "bar")
 })
 
 
@@ -36,7 +38,7 @@ test_that("AppenderSendmail: ERROR log level triggers push", {
 
   skip_if_not_installed("sendmailR")
   smtp  <- getOption("stat.smtp_server")
-  email <- whoami::email_address()
+
 
   if (is.null(smtp))  skip("Please set the 'stat.smtp_server' option")
   if (is.null(email)) skip("Cannot determine email addresse")
@@ -82,7 +84,7 @@ test_that("AppenderGmail: ERROR log level triggers push", {
   l$info("2")
   l$trace("3")
   l$debug("4")
-  l$debug("something something 5ish has occurred")
+  l$debug("ÄÖÜßÄ")
 
-  l$fatal("gmailr works", foo = "bar")
+  l$fatal("gmailr wörks ÄÖÜßÄ", foo = "bar")
 })

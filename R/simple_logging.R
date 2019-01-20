@@ -81,6 +81,7 @@ TRACE <- function(msg, ...){
 
 
 
+#' @inheritParams with_log_value
 #' @param logfun a `function` for processing the log request, usually
 #'   `lgr$info()`, `lgr$debug()`, etc... .
 #' @param caller a `character` scalar. The name of the calling function

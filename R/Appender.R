@@ -135,7 +135,7 @@ Appender <- R6::R6Class(
 #'
 #' logger$add_appender(AppenderConsole$new())
 #' logger$add_appender(AppenderConsole$new(
-#'   layout = LayoutFormat$new("[%t] %c(): [%n] %m from user %u", colors = getOption("lgr.colors"))))
+#'   layout = LayoutFormat$new("[%t] %c(): [%n] %m", colors = getOption("lgr.colors"))))
 #'
 #' # Will output the message twice because we attached two console appenders
 #' logger$warn("A test message")
@@ -2144,6 +2144,10 @@ AppenderGmail <- R6::R6Class(
       )
       le    <- self$buffer_events[[length(self$buffer_events)]]
       title <- self$subject_layout$format_event(le)
+      title <- try(
+        iconv(title, from = "UTF-8", to = "ASCII//TRANSLIT"),
+        silent = TRUE
+      )
 
       mail <- gmailr::mime()
       mail <- gmailr::to(mail, self$to)

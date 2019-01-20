@@ -253,6 +253,8 @@ Logger <- R6::R6Class(
       timestamp = Sys.time(),
       caller = get_caller(-7)
     ){
+      if (identical(get(".threshold", envir = private), 0L)) return(NULL)
+
       tryCatch({
         # preconditions
         level <- standardize_log_levels(level)
@@ -338,6 +340,8 @@ Logger <- R6::R6Class(
 
 
     fatal = function(msg, ..., caller = get_caller(-8L)){
+      if (isTRUE(get(".threshold", envir = private) < 100L)) return(NULL)
+
       get("log", envir = self)(
         msg = msg,
         caller = caller,
@@ -348,6 +352,8 @@ Logger <- R6::R6Class(
     },
 
     error = function(msg, ..., caller = get_caller(-8L)){
+      if (isTRUE(get(".threshold", envir = private) < 200L)) return(NULL)
+
       get("log", envir = self)(
         msg = msg,
         caller = caller,
@@ -358,6 +364,8 @@ Logger <- R6::R6Class(
     },
 
     warn = function(msg, ..., caller = get_caller(-8L)){
+      if (isTRUE(get(".threshold", envir = private) < 300L)) return(NULL)
+
       get("log", envir = self)(
         msg = msg,
         caller = caller,
@@ -368,6 +376,8 @@ Logger <- R6::R6Class(
     },
 
     info = function(msg, ..., caller = get_caller(-8L)){
+      if (isTRUE(get(".threshold", envir = private) < 400L)) return(NULL)
+
       get("log", envir = self)(
         msg = msg,
         caller = caller,
@@ -378,6 +388,8 @@ Logger <- R6::R6Class(
     },
 
     debug = function(msg, ..., caller = get_caller(-8L)){
+      if (isTRUE(get(".threshold", envir = private) < 500L)) return(NULL)
+
       get("log", envir = self)(
         msg = msg,
         caller = caller,
@@ -388,6 +400,8 @@ Logger <- R6::R6Class(
     },
 
     trace = function(msg, ..., caller = get_caller(-8L)){
+      if (isTRUE(get(".threshold", envir = private) < 600L)) return(NULL)
+
       get("log", envir = self)(
         msg = msg,
         caller = caller,
@@ -469,10 +483,6 @@ Logger <- R6::R6Class(
 
     set_threshold = function(level){
       level <- standardize_threshold(level)
-
-      private$unsuspend()
-      private$suspend(level, inclusive = FALSE)
-
       private$.threshold <- as.integer(level)
       invisible(self)
     },
@@ -549,61 +559,6 @@ Logger <- R6::R6Class(
   # private -----------------------------------------------------------------
   private = list(
 
-    # +- methods --------------------------------------------------------------
-    suspend = function(
-      threshold = 0,
-      inclusive = TRUE
-    ){
-      assert(is_scalar_bool(inclusive))
-      threshold <- standardize_threshold(threshold)
-
-      if (is.na(threshold))
-        threshold <- Inf
-
-      if (inclusive){
-        ll <- private$.log_levels[private$.log_levels >= threshold]
-      } else {
-        ll <- private$.log_levels[private$.log_levels > threshold]
-      }
-
-      for (i in seq_along(ll)){
-        nm  <- names(ll)[[i]]
-        lvl <- ll[[i]]
-        private$suspended_loggers[[nm]] <- self[[nm]]
-        unlockBinding(nm, env = self)
-        self[[nm]] <- function(...) NULL
-        lockBinding(nm, env = self)
-      }
-      invisible(self)
-    },
-
-
-    unsuspend = function(
-      threshold = 0,
-      inclusive = TRUE
-    ){
-      assert(is_scalar_bool(inclusive))
-      threshold <- standardize_threshold(threshold)
-      if (is.na(threshold))
-        threshold <- Inf
-
-      if (inclusive){
-        ll <- private$.log_levels[private$.log_levels >= threshold]
-      } else {
-        ll <- private$.log_levels[private$.log_levels > threshold]
-      }
-
-      for (i in seq_along(private$suspended_loggers)){
-        nm  <- names(private$suspended_loggers)[[i]]
-        unlockBinding(nm, env = self)
-        self[[nm]] <- private$suspended_loggers[[nm]]
-        lockBinding(nm, env = self)
-      }
-      private$suspended_loggers <- list()
-      invisible(self)
-    },
-
-
     # +- fields ---------------------------------------------------------------
     .propagate = NULL,
     .exception_handler = NULL,
@@ -611,20 +566,7 @@ Logger <- R6::R6Class(
     .parent = NULL,
     .appenders = NULL,
     .threshold = NA_integer_,
-    .last_event = NULL,
-
-    # intentionaly hardcoded and not using the global options. this is used to
-    # track which logging functions are available for the logger. used by
-    # suspend/unsuspend
-    .log_levels = as_log_levels(c(
-      "fatal" = 100L,
-      "error" = 200L,
-      "warn"  = 300L,
-      "info"  = 400L,
-      "debug" = 500L,
-      "trace" = 600L
-    )),
-    suspended_loggers = list()
+    .last_event = NULL
   )
 )
 
@@ -642,6 +584,8 @@ LoggerGlue <- R6::R6Class(
   public = list(
 
     fatal = function(..., caller = get_caller(-8L), .envir = parent.frame()){
+      if (isTRUE(get(".threshold", envir = private) < 100L)) return(NULL)
+
       force(.envir)
       get("log", envir = self)(
         ...,
@@ -653,6 +597,8 @@ LoggerGlue <- R6::R6Class(
     },
 
     error = function(..., caller = get_caller(-8L), .envir = parent.frame()){
+      if (isTRUE(get(".threshold", envir = private) < 200L)) return(NULL)
+
       get("log", envir = self)(
         ...,
         caller = caller,
@@ -663,6 +609,8 @@ LoggerGlue <- R6::R6Class(
     },
 
     warn = function(..., caller = get_caller(-8L), .envir = parent.frame()){
+      if (isTRUE(get(".threshold", envir = private) < 300L)) return(NULL)
+
       get("log", envir = self)(
         ...,
         caller = caller,
@@ -673,6 +621,8 @@ LoggerGlue <- R6::R6Class(
     },
 
     info = function(..., caller = get_caller(-8L), .envir = parent.frame()){
+      if (isTRUE(get(".threshold", envir = private) < 400L)) return(NULL)
+
       get("log", envir = self)(
         ...,
         caller = caller,
@@ -683,6 +633,8 @@ LoggerGlue <- R6::R6Class(
     },
 
     debug = function(..., caller = get_caller(-8L), .envir = parent.frame()){
+      if (isTRUE(get(".threshold", envir = private) < 500L)) return(NULL)
+
       force(.envir)
       get("log", envir = self)(
         ...,
@@ -694,6 +646,8 @@ LoggerGlue <- R6::R6Class(
     },
 
     trace = function(..., caller = get_caller(-8L), .envir = parent.frame()){
+      if (isTRUE(get(".threshold", envir = private) < 600L)) return(NULL)
+
       force(.envir)
       get("log", envir = self)(
         ...,
@@ -711,6 +665,8 @@ LoggerGlue <- R6::R6Class(
       caller = get_caller(-7),
       .envir = parent.frame()
     ){
+      if (identical(get(".threshold", envir = private), 0L)) return(NULL)
+
       force(.envir)
       tryCatch({
         # preconditions

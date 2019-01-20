@@ -96,7 +96,7 @@ logger  <- Logger$new("testlogger", propagate = FALSE)
 
 logger$add_appender(AppenderConsole$new())
 logger$add_appender(AppenderConsole$new(
-  layout = LayoutFormat$new("[\%t] \%c(): [\%n] \%m from user \%u", colors = getOption("lgr.colors"))))
+  layout = LayoutFormat$new("[\%t] \%c(): [\%n] \%m", colors = getOption("lgr.colors"))))
 
 # Will output the message twice because we attached two console appenders
 logger$warn("A test message")

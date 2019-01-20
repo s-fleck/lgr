@@ -16,6 +16,9 @@ as_log_levels <- function(x){
 
 DEFAULT_LOG_LEVELS <- c("fatal", "error", "warn", "info", "debug", "trace")
 
+
+
+
 # manage options ----------------------------------------------------------
 
 #' Manage Log Levels
@@ -95,7 +98,9 @@ add_log_levels <- function(
 
 
 
+
 #' union for named vectors. names of `y` override names of `x`
+#' @noRd
 named_union <- function(x, y){
   assert(identical(length(names(x)), length(x)))
   assert(identical(length(names(y)), length(y)))
@@ -105,6 +110,8 @@ named_union <- function(x, y){
   names(r)[r %in% y] <- names(y[y %in% r])
   r
 }
+
+
 
 
 #' @param level_names a `character` vector of the names of the levels to remove
@@ -129,7 +136,6 @@ remove_log_levels <- function(
 
 
 
-
 # format ------------------------------------------------------------------
 
 fmt_log_levels <- function(
@@ -137,6 +143,7 @@ fmt_log_levels <- function(
 ){
   paste0(names(sort(x)), " (", sort(x), ")", collapse = ", ")
 }
+
 
 
 
@@ -174,6 +181,7 @@ colorize_levels <- function(
 
   x
 }
+
 
 
 

@@ -99,10 +99,6 @@ test_that("suspending loggers works", {
   ml <- Logger$new("test_logger")
 
   expect_output(ml$info("blubb"), "blubb")
-  ml$.__enclos_env__$private$suspend("info", inclusive = TRUE)
-  expect_silent(ml$info("blubb"))
-  ml$.__enclos_env__$private$unsuspend("info", inclusive = TRUE)
-  expect_output(ml$info("blubb"), "blubb")
 
   expect_output(ml$fatal("blubb"), "FATAL")
   x <- capture.output(ml$fatal("blubb"))

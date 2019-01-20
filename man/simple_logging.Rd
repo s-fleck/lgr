@@ -43,6 +43,8 @@ show_log(threshold = NA_integer_, n = 20L, target = lgr::lgr)
 \arguments{
 \item{msg, ...}{passed on to \code{\link[base:sprintf]{base::sprintf()}}}
 
+\item{code}{Any \R code}
+
 \item{logfun}{a \code{function} for processing the log request, usually
 \code{lgr$info()}, \code{lgr$debug()}, etc... .}
 
