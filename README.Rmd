@@ -124,38 +124,46 @@ on which lgr is built and the **only Package lgr will ever depend on**.
 
 ### Optional Dependencies
 
-These optional dependencies that are not necessary to use lgr, but
-that are required for some extra appenders. To leverage the power of the most
-central features of **lgr** it is recommended (but not necessary) that you
-at least install the packages **data.table**, **jsonlite**, 
-and possibly **crayon**. Care was taken to choose packages that are slim, 
-stable, have minimal dependencies, and are well 
-maintained :
+lgr comes with a long list of optional dependencies. These are not necessary to 
+use lgr, but that are required for some extra functions. Most of these 
+dependencies are tied to specific Appenders, though **crayon** and 
+**data.table** are also relevant to interactive use of lgr.
 
-  * [crayon](https://github.com/r-lib/crayon) for colored console output.
-  * [data.table](https://github.com/Rdatatable/) for fast in-memory logging
-    with `AppenderDt`. 
-  * [jsonlite](https://github.com/jeroen/jsonlite) for JSON logging via 
+Care was taken to choose packages that are slim, stable, have minimal 
+dependencies, and are well maintained :
+
+  - [crayon](https://github.com/r-lib/crayon) for colored console output.
+  - [glue](https://glue.tidyverse.org/) for a more flexible formatting syntax
+    via LoggerGlue and LayoutGlue.
+  - [data.table](https://github.com/Rdatatable/) for fast in-memory 
+    logging with `AppenderDt`, and also by all database / DBI Appenders. 
+  - [jsonlite](https://github.com/jeroen/jsonlite) for JSON logging via 
     `LayoutJson`. JSON is a popular plaintext based file format that is easy to 
     read for humans and machines alike.
-  * [DBI](https://github.com/r-dbi/DBI) for logging to databases. Logging with
+  - [DBI](https://github.com/r-dbi/DBI) for logging to databases. Logging with
     lgr has been tested with the following backends: 
     - [RSQLite](https://github.com/r-dbi/RSQLite), 
     - [RMySQL](https://cran.r-project.org/package=RMySQL) for MariaDB and MySQL (RMariaDB is currently broken, see [this issue](https://github.com/r-dbi/RMariaDB/issues/119)),
-    - [RPostgreSQL](https://cran.r-project.org/package=RPostgreSQL),
+    - [RPostgres](https://cran.r-project.org/package=RPostgres),
     - [RJDBC](https://github.com/s-u/RJDBC) for DB2. 
     
     In theory all DBI compliant database packages should work. If you
     are using lgr with a database backend, please report your (positive and
     negative) experiences, as database support is still somewhat experimental.
-  * [gmailr](https://cran.r-project.org/package=gmailr) or
+  - [gmailr](https://cran.r-project.org/package=gmailr) or
     [sendmailR](https://cran.r-project.org/package=sendmailR) for email 
     notifications.
-  * [RPushbullet](https://github.com/eddelbuettel/rpushbullet) for push
+  - [RPushbullet](https://github.com/eddelbuettel/rpushbullet) for push
     notifications.
-  * [whoami](https://github.com/r-lib/whoami/blob/master/DESCRIPTION) for 
+  - [whoami](https://github.com/r-lib/whoami/blob/master/DESCRIPTION) for 
     guessing the user name from various sources. You can also set the user name 
     manually if you want to use it for logging.
+  - [desc](https://CRAN.R-project.org/package=desc) for the package development
+    convenince function `use_logger()`
+    
+  Other optional dependencies (future, future.apply) do not provide any extra
+  functionallity but had to be included for some of the automated unit tests
+  run by lgr.
     
 
 ## Installation

@@ -32,13 +32,13 @@ To log an *event* with with lgr we call `lgr$<logging function>()`. Unnamed argu
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [16:48:10.728] A critical error
+#> FATAL [10:20:50.871] A critical error
 lgr$error("A less severe error")
-#> ERROR [16:48:10.775] A less severe error
+#> ERROR [10:20:51.017] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [16:48:10.818] A potentially bad situation
+#> WARN  [10:20:51.095] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [16:48:10.820] iris has 150 rows
+#> INFO  [10:20:51.100] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
@@ -51,19 +51,19 @@ A Logger can have several Appenders. For example, we can add a JSON appender to 
 tf <- tempfile()
 lgr$add_appender(AppenderJson$new(tf))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [16:48:10.964] cars has 50 rows
+#> INFO  [10:20:51.406] cars has 50 rows
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2019-01-17 16:48:10","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-01-20 10:20:51","logger":"","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 JSON naturally supports custom fields. Named arguments passed to `info()`, `warn()`, etc... are interpreted as custom fields.
 
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [16:48:10.986] loading cars {rows: 50, cols: 2}
+#> INFO  [10:20:51.447] loading cars {rows: 50, cols: 2}
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2019-01-17 16:48:10","logger":"root","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2019-01-17 16:48:10","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
+#> {"level":400,"timestamp":"2019-01-20 10:20:51","logger":"","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-01-20 10:20:51","logger":"","caller":"eval","msg":"loading cars","rows":50,"cols":2}
 ```
 
 For more examples please see the package [vignette](https://s-fleck.github.io/lgr/articles/lgr.html) and [documentation](https://s-fleck.github.io/lgr/)
@@ -80,21 +80,27 @@ Dependencies
 
 ### Optional Dependencies
 
-These optional dependencies that are not necessary to use lgr, but that are required for some extra appenders. To leverage the power of the most central features of **lgr** it is recommended (but not necessary) that you at least install the packages **data.table**, **jsonlite**, and possibly **crayon**. Care was taken to choose packages that are slim, stable, have minimal dependencies, and are well maintained :
+lgr comes with a long list of optional dependencies. These are not necessary to use lgr, but that are required for some extra functions. Most of these dependencies are tied to specific Appenders, though **crayon** and **data.table** are also relevant to interactive use of lgr.
+
+Care was taken to choose packages that are slim, stable, have minimal dependencies, and are well maintained :
 
 -   [crayon](https://github.com/r-lib/crayon) for colored console output.
--   [data.table](https://github.com/Rdatatable/) for fast in-memory logging with `AppenderDt`.
+-   [glue](https://glue.tidyverse.org/) for a more flexible formatting syntax via LoggerGlue and LayoutGlue.
+-   [data.table](https://github.com/Rdatatable/) for fast in-memory logging with `AppenderDt`, and also by all database / DBI Appenders.
 -   [jsonlite](https://github.com/jeroen/jsonlite) for JSON logging via `LayoutJson`. JSON is a popular plaintext based file format that is easy to read for humans and machines alike.
 -   [DBI](https://github.com/r-dbi/DBI) for logging to databases. Logging with lgr has been tested with the following backends:
     -   [RSQLite](https://github.com/r-dbi/RSQLite),
     -   [RMySQL](https://cran.r-project.org/package=RMySQL) for MariaDB and MySQL (RMariaDB is currently broken, see [this issue](https://github.com/r-dbi/RMariaDB/issues/119)),
-    -   [RPostgreSQL](https://cran.r-project.org/package=RPostgreSQL),
+    -   [RPostgres](https://cran.r-project.org/package=RPostgres),
     -   [RJDBC](https://github.com/s-u/RJDBC) for DB2.
 
     In theory all DBI compliant database packages should work. If you are using lgr with a database backend, please report your (positive and negative) experiences, as database support is still somewhat experimental.
 -   [gmailr](https://cran.r-project.org/package=gmailr) or [sendmailR](https://cran.r-project.org/package=sendmailR) for email notifications.
 -   [RPushbullet](https://github.com/eddelbuettel/rpushbullet) for push notifications.
 -   [whoami](https://github.com/r-lib/whoami/blob/master/DESCRIPTION) for guessing the user name from various sources. You can also set the user name manually if you want to use it for logging.
+-   [desc](https://CRAN.R-project.org/package=desc) for the package development convenince function `use_logger()`
+
+Other optional dependencies (future, future.apply) do not provide any extra functionallity but had to be included for some of the automated unit tests run by lgr.
 
 Installation
 ------------

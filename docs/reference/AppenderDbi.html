@@ -68,7 +68,7 @@ exists in the target table will be appended, all others are ignored." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -154,7 +154,7 @@ this behaviour, just set <code>buffer_size</code> to <code>0</code>.</p>
 x &lt;- x$new(conn, table, threshold = NA_integer_,
   layout = select_dbi_layout(conn, table), close_on_exit = TRUE,
   buffer_size = 10, flush_threshold = "error", flush_on_exit = TRUE,
-  flush_on_rotate = TRUE, should_flush = default_should_flush)
+  flush_on_rotate = TRUE, should_flush = default_should_flush, filters = NULL)
     x$set_close_on_exit(x)
 x$set_conn(conn)
 x$show(threshold = NA_integer_, n = 20)

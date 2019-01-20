@@ -68,7 +68,7 @@ is to push the last 30 log events in case a fatal event is encountered." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -148,7 +148,7 @@ x &lt;- x$new(to, control, threshold = NA_integer_, flush_threshold = "fatal
   layout = LayoutFormat$new(fmt = " %L [%t] %m %f", timestamp_fmt =
   "%H:%M:%S"), subject_layout = LayoutFormat$new(fmt = "[LGR] %L: %m"),
   buffer_size = 29, from = get_user(), cc = NULL, bcc = NULL, html = FALSE,
-  headers = list())
+  headers = NULL, filters = NULL)
     x$flush()
 x$set_control(x)
 x$set_headers(x)

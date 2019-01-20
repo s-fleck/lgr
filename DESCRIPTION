@@ -1,7 +1,7 @@
 Type: Package
 Package: lgr
 Title: A Fully Featured Logging Framework
-Version: 0.0.9.9001
+Version: 0.1.0
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -9,12 +9,12 @@ Authors@R:
            email = "stefan.b.fleck@gmail.com",
            comment = c(ORCID = "0000-0003-3344-9851"))
 Maintainer: Stefan Fleck <stefan.b.fleck@gmail.com>
-Description:  A flexible, feature-rich yet light-weight
-    logging framework based on 'R6' classes. It supports hierarchical
-    loggers, custom log levels, arbitrary data fields in log events,
-    logging to plaintext, 'JSON', memory buffers, and databases, as well
-    as email and push notifications. For a full list of features with
-    examples please refer to the package vignette.
+Description: A flexible, feature-rich yet light-weight logging
+    framework based on 'R6' classes. It supports hierarchical loggers,
+    custom log levels, arbitrary data fields in log events, logging to
+    plaintext, 'JSON', memory buffers, and databases, as well as email and
+    push notifications. For a full list of features with examples please
+    refer to the package vignette.
 License: MIT + file LICENSE
 URL: https://github.com/s-fleck/lgr
 BugReports: https://github.com/s-fleck/lgr/issues
@@ -26,13 +26,17 @@ Suggests:
     data.table,
     DBI,
     desc,
+    future,
+    future.apply,
     glue,
     gmailr,
     jsonlite,
     knitr,
+    RMariaDB,
     rmarkdown,
     RMySQL,
     RPostgres,
+    RPostgreSQL,
     RPushbullet,
     RSQLite (>= 2.0),
     sendmailR,
