@@ -425,6 +425,10 @@ AppenderTable <- R6::R6Class(
     dt   = function() NULL
   )
 )
+
+
+
+
 # nocov end
 
 
@@ -749,7 +753,6 @@ AppenderDt <- R6::R6Class(
     list_cols = NULL
   )
 )
-
 
 
 
@@ -1304,10 +1307,10 @@ AppenderDbi <- R6::R6Class(
       if (DBI::dbExistsTable(self$conn, table)){
         # do nothing
       } else if (is.null(self$layout$col_types)) {
-        message(paste0("Creating '", capture.output(print(table)), "' on first log. "))
+        message(paste0("Creating '", fmt_tname(table), "' on first log. "))
 
       } else {
-        message("Creating '", capture.output(print(table)), "' with manually specified column types")
+        message("Creating '", fmt_tname(table), "' with manually specified column types")
         DBI::dbExecute(conn, layout$sql_create_table(table))
       }
     },
@@ -1528,7 +1531,7 @@ AppenderRjdbc <- R6::R6Class(
       table_exists <- !inherits(table_exists, "try-error")
 
       if (!table_exists) {
-        message("Creating '", table, "' with manually specified column types")
+        message("Creating '", fmt_tname(table), "' with manually specified column types")
         RJDBC::dbSendUpdate(conn, layout$sql_create_table(toupper(table)))
       }
     },
@@ -1588,6 +1591,9 @@ AppenderRjdbc <- R6::R6Class(
   )
 )
 
+
+
+
 # nocov end
 
 
@@ -1623,6 +1629,9 @@ AppenderRjdbc <- R6::R6Class(
 #' @name AppenderDigest
 NULL
 
+
+
+
 AppenderDigest <-  R6::R6Class(
     "AppenderDigest",
     inherit = AppenderMemory,
@@ -1646,7 +1655,6 @@ AppenderDigest <-  R6::R6Class(
       .subject_layout = NULL
     )
   )
-
 
 
 
@@ -1813,6 +1821,7 @@ AppenderPushbullet <- R6::R6Class(
 
 
 
+
 # AppenderMail ------------------------------------------------------------
 
 #' Abstract Class for Email Appenders
@@ -1937,6 +1946,8 @@ AppenderMail <- R6::R6Class(
 NULL
 
 
+
+
 #' @export
 AppenderSendmail <- R6::R6Class(
   "AppenderSendmail",
@@ -2055,6 +2066,7 @@ AppenderSendmail <- R6::R6Class(
 
 
 
+
 # AppenderGmail --------------------------------------------------------
 
 
@@ -2087,6 +2099,8 @@ AppenderSendmail <- R6::R6Class(
 #' @family Appenders
 #' @name AppenderGmail
 NULL
+
+
 
 
 #' @export
@@ -2183,6 +2197,7 @@ AppenderGmail <- R6::R6Class(
 
 
 
+
 # utils -------------------------------------------------------------------
 
 # trim multi-valued events from vectorized inserts to the buffer size
@@ -2191,4 +2206,15 @@ trim_to_buffer_size <- function(x, buffer_size){
     x
   else
     x[seq.int(length(x) - buffer_size + 1L, length(x))]
+}
+
+
+
+
+fmt_tname <- function(x){
+  if (inherits(x, "Id")){
+    paste0("<Id: ", trimws(gsub("<Id>", "", utils::capture.output(print(x)))), ">")
+  } else {
+    x
+  }
 }

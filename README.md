@@ -5,9 +5,9 @@ lgr
 
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing) [![Travis build status](https://travis-ci.org/s-fleck/lgr.svg?branch=master)](https://travis-ci.org/s-fleck/lgr) [![Codecov test coverage](https://codecov.io/gh/s-fleck/lgr/branch/master/graph/badge.svg)](https://codecov.io/gh/s-fleck/lgr?branch=master)
 
-lgr is a logging package for R built on the back of [R6](https://github.com/r-lib/R6) classes. It is designed to be flexible, performant and extensible.
+lgr is a logging package for R built on the back of [R6](https://github.com/r-lib/R6) classes. It is designed to be flexible, performant and extensible. The package [vignette](https://s-fleck.github.io/lgr/articles/lgr.html) contains a comprehensive description of the features of lgr (some of them unique among R logging packages) along with many code examples.
 
-Users that have not worked with R6 classes before, will find the syntax for configuring Loggers a bit strange, but I did my best to compose a hopefully helpful [vignette](https://s-fleck.github.io/lgr/articles/lgr.html). User that have experience with [shiny](https://github.com/rstudio/shiny), [plumber](https://github.com/trestletech/plumber), [python logging](https://docs.python.org/3/library/logging.html) or [Apache Log4j](https://logging.apache.org/log4j/2.x/) before will fill feel at home.
+Users that have not worked with R6 classes before, will find configuring Loggers a bit strange and verbose, but care was taken to keep the syntax for common logging tasks and interactive usage simple and concise. User that have experience with [shiny](https://github.com/rstudio/shiny), [plumber](https://github.com/trestletech/plumber), [python logging](https://docs.python.org/3/library/logging.html) or [Apache Log4j](https://logging.apache.org/log4j/2.x/) will feel at home. User that are proficient with R6 classes will also find it easy to extend and customise lgr, for example with their own appenders Loggers or Appenders.
 
 Features
 --------
@@ -32,13 +32,13 @@ To log an *event* with with lgr we call `lgr$<logging function>()`. Unnamed argu
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [10:20:50.871] A critical error
+#> FATAL [22:25:01.342] A critical error
 lgr$error("A less severe error")
-#> ERROR [10:20:51.017] A less severe error
+#> ERROR [22:25:01.465] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [10:20:51.095] A potentially bad situation
+#> WARN  [22:25:01.538] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [10:20:51.100] iris has 150 rows
+#> INFO  [22:25:01.543] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
@@ -51,19 +51,19 @@ A Logger can have several Appenders. For example, we can add a JSON appender to 
 tf <- tempfile()
 lgr$add_appender(AppenderJson$new(tf))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [10:20:51.406] cars has 50 rows
+#> INFO  [22:25:01.826] cars has 50 rows
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2019-01-20 10:20:51","logger":"","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-01-21 22:25:01","logger":"","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 JSON naturally supports custom fields. Named arguments passed to `info()`, `warn()`, etc... are interpreted as custom fields.
 
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [10:20:51.447] loading cars {rows: 50, cols: 2}
+#> INFO  [22:25:01.868] loading cars {rows: 50, cols: 2}
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2019-01-20 10:20:51","logger":"","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2019-01-20 10:20:51","logger":"","caller":"eval","msg":"loading cars","rows":50,"cols":2}
+#> {"level":400,"timestamp":"2019-01-21 22:25:01","logger":"","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-01-21 22:25:01","logger":"","caller":"eval","msg":"loading cars","rows":50,"cols":2}
 ```
 
 For more examples please see the package [vignette](https://s-fleck.github.io/lgr/articles/lgr.html) and [documentation](https://s-fleck.github.io/lgr/)
@@ -71,7 +71,9 @@ For more examples please see the package [vignette](https://s-fleck.github.io/lg
 Development Status
 ------------------
 
-The api of lgr is stable and safe for use. The internal implementation of the database logging features still needs some refinement, and if you are using lgr with a database, I would be grateful for any kind of feedback.
+The api of lgr is stable and safe for use. The internal implementation of the database logging features still needs some refinement, and if you are using lgr with a database, I would be grateful for any kind of feedback.[1]
+
+lgr is currently very actively developed, and feature requests are encouraged.
 
 Dependencies
 ------------
@@ -119,3 +121,5 @@ Acknowledgement
 
 -   [Inkscape](https://inkscape.org/) for the hex sticker
 -   [draw.io](https://draw.io/) for the flow chart in the vignette
+
+[1] The only database logging I can currently test extensively is DB2 via RJDBC. I do not recommend this setup if you have other options.
