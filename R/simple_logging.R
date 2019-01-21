@@ -199,44 +199,105 @@ remove_appender <- function(
 
 
 
+#' @description
+#' `show_log()` displays the last `n` log entries of `target` if `target` is
+#' an Appender with a `show()` method or a Logger with at least one such
+#' Appender attached. `target` defaults to the root logger, which has an
+#' [AppenderDt] attached by default if the package **data.table** is installed.
+#' With the default logging settings this includes also `TRACE` and `DEBUG`
+#' messages, even if they were not printed to the console before.
+#'
+#' `show_data()` and `show_dt()` work similar to `show_log()`, except that
+#' they return the log as `data.frame` or `data.table` respecitively.
+#'
 #' @param n `integer` scalar. Show only the last `n` log entries that match
 #'   `threshold`
+#'
+#' @return `show_log()` prints to the console and returns whatever the target
+#'   Appender's `$show()` method returns, usually a `data.frame` or `data.table`
+#'   (invisibly).
+#'
+#'   `show_data()` always returns a `data.frame` and `show_dt()` always returns
+#'   a `data.table`.
 #' @rdname simple_logging
 #' @export
-show_log = function(
+show_log <- function(
   threshold = NA_integer_,
   n = 20L,
   target = lgr::lgr
 ){
-  assert(
-    is_scalar_integerish(n),
-    "'n' must be an integer scalar, not a ", class_fmt(n)
-  )
-  threshold <- standardize_threshold(threshold)
+  dd <- find_target(target, "show")
+  dd$show(n = n, threshold = threshold)
+}
 
-  if (inherits(target, "Appender")){
-    if ("show" %in% names(target)){
-      return(target$show(n = n, threshold = threshold))
+
+
+
+#' @rdname simple_logging
+#' @export
+show_dt <- function(
+  target = lgr::lgr
+){
+  dd <- try(find_target(target, "dt"), silent = TRUE)
+
+  if (inherits(dd, "try-error")){
+    dd <- find_target(target, "data")
+    data.table::as.data.table(dd$data)
+  } else {
+    dd$dt
+  }
+}
+
+
+
+
+#' @rdname simple_logging
+#' @export
+show_data <- function(
+  target = lgr::lgr
+){
+  dd <- find_target(target, "dt")
+  as.data.frame(dd$data)
+}
+
+
+
+
+#' Return the first Appender that has a method or field called `name`
+#'
+#' @param x a [Logger] or [Appender]
+#' @param name
+#'
+#' @return an Appender
+#' @noRd
+find_target <- function(
+  x,
+  name
+){
+  assert(is_scalar_character(name))
+
+  if (inherits(x, "Appender")){
+    if (name %in% names(x)){
+      return(x)
     } else {
       stop(
-        "This ", class_fmt(target, c("R6", "Filterable", "Appender")),
-        " does not have a `show()` method"
+        "This ", class_fmt(x, c("R6", "Filterable", "Appender")),
+        " has no method or field called `", name, "`"
       )
     }
 
-  } else if (inherits(target, "Logger")){
-    sel <- vapply(target$appenders, function(app) "show" %in% names(app), logical(1))
-    if (!any(sel)){
-      stop(sprintf(
-        "This %s has no Appender with a `show()` method (see ?AppenderTabular)",
-        class_fmt(target, c("R6", "Filterable", "Appender"))
-      ))
-      return(invisible())
+  } else if (inherits(x, "Logger")){
+    for (app in x$appenders){
+      res <- try(find_target(app, name), silent = TRUE)
+      if (inherits(res, "Appender")) return(res)
     }
-    return(target$appenders[sel][[1]]$show(n = n, threshold = threshold))
+    stop(
+      "This ", class_fmt(x, c("R6", "Filterable")),
+      " has no Appender with a field or method called `", name, "`"
+    )
+  } else {
+    stop("`x` is not a Logger or Appender")
   }
-
-  stop(sprintf("'%s' is not a valid `target` for show_log()", class_fmt(target)))
 }
 
 
