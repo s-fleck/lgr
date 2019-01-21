@@ -1297,7 +1297,7 @@ AppenderDbi <- R6::R6Class(
       self$set_flush_on_rotate(flush_on_rotate)
 
       # database
-      private[[".conn"]]  <- conn
+      self$set_conn(conn)
       private[[".table"]] <- table
       self$set_close_on_exit(close_on_exit)
 

@@ -14,6 +14,8 @@
 \alias{add_appender}
 \alias{remove_appender}
 \alias{show_log}
+\alias{show_dt}
+\alias{show_data}
 \title{Simple Logging}
 \usage{
 FATAL(msg, ...)
@@ -39,6 +41,10 @@ add_appender(appender, name = NULL, target = lgr::lgr)
 remove_appender(pos, target = lgr::lgr)
 
 show_log(threshold = NA_integer_, n = 20L, target = lgr::lgr)
+
+show_dt(target = lgr::lgr)
+
+show_data(target = lgr::lgr)
 }
 \arguments{
 \item{msg, ...}{passed on to \code{\link[base:sprintf]{base::sprintf()}}}
@@ -73,6 +79,13 @@ as a \code{character} vector.
 as \code{integer} (invisibly)
 
 \code{add_appender()} and \code{remove_appender()} return \code{target}.
+
+\code{show_log()} prints to the console and returns whatever the target
+Appender's \code{$show()} method returns, usually a \code{data.frame} or \code{data.table}
+(invisibly).
+
+\code{show_data()} always returns a \code{data.frame} and \code{show_dt()} always returns
+a \code{data.table}.
 }
 \description{
 These functions provide a simple interface to the root logger. If you do not
@@ -93,6 +106,16 @@ console output for a given \R session.
 
 \code{add_appender()} and \code{remove_appender()} add Appenders to Loggers and
 other Appenders.
+
+\code{show_log()} displays the last \code{n} log entries of \code{target} if \code{target} is
+an Appender with a \code{show()} method or a Logger with at least one such
+Appender attached. \code{target} defaults to the root logger, which has an
+\link{AppenderDt} attached by default if the package \strong{data.table} is installed.
+With the default logging settings this includes also \code{TRACE} and \code{DEBUG}
+messages, even if they were not printed to the console before.
+
+\code{show_data()} and \code{show_dt()} work similar to \code{show_log()}, except that
+they return the log as \code{data.frame} or \code{data.table} respecitively.
 }
 \examples{
 FATAL("This is an important message about \%s going wrong", "something")

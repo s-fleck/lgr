@@ -37,11 +37,11 @@ test_that("show_log()", {
   expect_output(
     expect_identical(show_log(), show_log(target = lgr$appenders$memory))
   )
-  expect_error(show_log(target = lgr$appenders$console), "does not have")
+  expect_error(show_log(target = lgr$appenders$console), "no method")
 
   lg <- Logger$new("test", propagate = FALSE)
   expect_error(show_log(target = lg), "has no Appender")
-  expect_error(show_log(target = iris), "not a valid")
+  expect_error(show_log(target = iris), "not a Logger or Appender")
 })
 
 
