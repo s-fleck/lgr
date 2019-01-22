@@ -89,7 +89,7 @@ Filterable <- R6::R6Class(
 
     set_filters = function(filters){
 
-      if (is.function(filters)){
+      if (is_filter(filters)){
         filters <- list(filters)
       }
 
