@@ -32,13 +32,13 @@ To log an *event* with with lgr we call `lgr$<logging function>()`. Unnamed argu
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [22:25:01.342] A critical error
+#> FATAL [08:19:43.436] A critical error
 lgr$error("A less severe error")
-#> ERROR [22:25:01.465] A less severe error
+#> ERROR [08:19:43.518] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [22:25:01.538] A potentially bad situation
+#> WARN  [08:19:43.556] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [22:25:01.543] iris has 150 rows
+#> INFO  [08:19:43.559] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
@@ -51,22 +51,47 @@ A Logger can have several Appenders. For example, we can add a JSON appender to 
 tf <- tempfile()
 lgr$add_appender(AppenderJson$new(tf))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [22:25:01.826] cars has 50 rows
+#> INFO  [08:19:43.702] cars has 50 rows
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2019-01-21 22:25:01","logger":"","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-01-26 08:19:43","logger":"","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 JSON naturally supports custom fields. Named arguments passed to `info()`, `warn()`, etc... are interpreted as custom fields.
 
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [22:25:01.868] loading cars {rows: 50, cols: 2}
+#> INFO  [08:19:43.725] loading cars {rows: 50, cols: 2}
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2019-01-21 22:25:01","logger":"","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2019-01-21 22:25:01","logger":"","caller":"eval","msg":"loading cars","rows":50,"cols":2}
+#> {"level":400,"timestamp":"2019-01-26 08:19:43","logger":"","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-01-26 08:19:43","logger":"","caller":"eval","msg":"loading cars","rows":50,"cols":2}
 ```
 
 For more examples please see the package [vignette](https://s-fleck.github.io/lgr/articles/lgr.html) and [documentation](https://s-fleck.github.io/lgr/)
+
+See lgr in Action
+-----------------
+
+lgr is used to govern console output in my shiny based csv editor [shed](https://github.com/s-fleck/shed)
+
+``` r
+# install.packages("remotes")
+
+remotes::install_github("s-fleck/shed")
+library(shed)
+library(lgr)
+
+# the root loggers threshold is NA (= log everything), but the console appender
+# only displays `info` level messages by default. Let's set it to NA/"all" so
+# that we get more exciting output when running shed
+console_threshold(NA)
+
+# you also have to set the threshold of the logger of shed which is "info" by
+# default
+shed:::lg$set_threshold(NA)
+
+# edit away and watch the rstudio console!
+shed(iris)  
+```
 
 Development Status
 ------------------

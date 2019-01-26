@@ -111,6 +111,31 @@ package
 [documentation](https://s-fleck.github.io/lgr/)
 
 
+## See lgr in Action
+
+lgr is used to govern console output in my shiny based csv editor 
+[shed](https://github.com/s-fleck/shed)
+
+```{r eval = FALSE}
+# install.packages("remotes")
+
+remotes::install_github("s-fleck/shed")
+library(shed)
+library(lgr)
+
+# the root loggers threshold is NA (= log everything), but the console appender
+# only displays `info` level messages by default. Let's set it to NA/"all" so
+# that we get more exciting output when running shed
+console_threshold(NA)
+
+# you also have to set the threshold of the logger of shed which is "info" by
+# default
+shed:::lg$set_threshold(NA)
+
+# edit away and watch the rstudio console!
+shed(iris)  
+
+```
 
 
 ## Development Status
