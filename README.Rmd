@@ -17,6 +17,7 @@ library(lgr)
 ```
 # lgr
 
+[![CRAN status](https://www.r-pkg.org/badges/version/lgr)](https://cran.r-project.org/package=lgr)
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Travis build status](https://travis-ci.org/s-fleck/lgr.svg?branch=master)](https://travis-ci.org/s-fleck/lgr)
 [![Codecov test coverage](https://codecov.io/gh/s-fleck/lgr/branch/master/graph/badge.svg)](https://codecov.io/gh/s-fleck/lgr?branch=master)
@@ -111,6 +112,31 @@ package
 [documentation](https://s-fleck.github.io/lgr/)
 
 
+## See lgr in Action
+
+lgr is used to govern console output in my shiny based csv editor 
+[shed](https://github.com/s-fleck/shed)
+
+```{r eval = FALSE}
+# install.packages("remotes")
+
+remotes::install_github("s-fleck/shed")
+library(shed)
+library(lgr)
+
+# the root loggers threshold is NA (= log everything), but the console appender
+# only displays `info` level messages by default. Let's set it to NA/"all" so
+# that we get more exciting output when running shed
+console_threshold(NA)
+
+# you also have to set the threshold of the logger of shed which is "info" by
+# default
+shed:::lg$set_threshold(NA)
+
+# edit away and watch the rstudio console!
+shed(iris)  
+
+```
 
 
 ## Development Status
@@ -176,8 +202,17 @@ dependencies, and are well maintained :
 
 ## Installation
 
-``` r
-devtools::install.github("s-fleck/lgr")
+You can install lgr from CRAN
+
+```{r eval = FALSE}
+install.packages("lgr")
+```
+
+Or you can install the current development version directly from github
+
+```{r eval = FALSE}
+#install.packages("remotes")
+remotes::install_github("s-fleck/lgr")
 ```
 
 ## Outlook

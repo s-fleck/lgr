@@ -3,7 +3,7 @@
 lgr
 ===
 
-[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing) [![Travis build status](https://travis-ci.org/s-fleck/lgr.svg?branch=master)](https://travis-ci.org/s-fleck/lgr) [![Codecov test coverage](https://codecov.io/gh/s-fleck/lgr/branch/master/graph/badge.svg)](https://codecov.io/gh/s-fleck/lgr?branch=master)
+[![CRAN status](https://www.r-pkg.org/badges/version/lgr)](https://cran.r-project.org/package=lgr) [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing) [![Travis build status](https://travis-ci.org/s-fleck/lgr.svg?branch=master)](https://travis-ci.org/s-fleck/lgr) [![Codecov test coverage](https://codecov.io/gh/s-fleck/lgr/branch/master/graph/badge.svg)](https://codecov.io/gh/s-fleck/lgr?branch=master)
 
 lgr is a logging package for R built on the back of [R6](https://github.com/r-lib/R6) classes. It is designed to be flexible, performant and extensible. The package [vignette](https://s-fleck.github.io/lgr/articles/lgr.html) contains a comprehensive description of the features of lgr (some of them unique among R logging packages) along with many code examples.
 
@@ -32,13 +32,13 @@ To log an *event* with with lgr we call `lgr$<logging function>()`. Unnamed argu
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [22:25:01.342] A critical error
+#> FATAL [21:55:34.172] A critical error
 lgr$error("A less severe error")
-#> ERROR [22:25:01.465] A less severe error
+#> ERROR [21:55:34.254] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [22:25:01.538] A potentially bad situation
+#> WARN  [21:55:34.293] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [22:25:01.543] iris has 150 rows
+#> INFO  [21:55:34.295] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
@@ -51,22 +51,47 @@ A Logger can have several Appenders. For example, we can add a JSON appender to 
 tf <- tempfile()
 lgr$add_appender(AppenderJson$new(tf))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [22:25:01.826] cars has 50 rows
+#> INFO  [21:55:34.430] cars has 50 rows
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2019-01-21 22:25:01","logger":"","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-01-30 21:55:34","logger":"","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 JSON naturally supports custom fields. Named arguments passed to `info()`, `warn()`, etc... are interpreted as custom fields.
 
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [22:25:01.868] loading cars {rows: 50, cols: 2}
+#> INFO  [21:55:34.455] loading cars {rows: 50, cols: 2}
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2019-01-21 22:25:01","logger":"","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2019-01-21 22:25:01","logger":"","caller":"eval","msg":"loading cars","rows":50,"cols":2}
+#> {"level":400,"timestamp":"2019-01-30 21:55:34","logger":"","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-01-30 21:55:34","logger":"","caller":"eval","msg":"loading cars","rows":50,"cols":2}
 ```
 
 For more examples please see the package [vignette](https://s-fleck.github.io/lgr/articles/lgr.html) and [documentation](https://s-fleck.github.io/lgr/)
+
+See lgr in Action
+-----------------
+
+lgr is used to govern console output in my shiny based csv editor [shed](https://github.com/s-fleck/shed)
+
+``` r
+# install.packages("remotes")
+
+remotes::install_github("s-fleck/shed")
+library(shed)
+library(lgr)
+
+# the root loggers threshold is NA (= log everything), but the console appender
+# only displays `info` level messages by default. Let's set it to NA/"all" so
+# that we get more exciting output when running shed
+console_threshold(NA)
+
+# you also have to set the threshold of the logger of shed which is "info" by
+# default
+shed:::lg$set_threshold(NA)
+
+# edit away and watch the rstudio console!
+shed(iris)  
+```
 
 Development Status
 ------------------
@@ -107,8 +132,17 @@ Other optional dependencies (future, future.apply) do not provide any extra func
 Installation
 ------------
 
+You can install lgr from CRAN
+
 ``` r
-devtools::install.github("s-fleck/lgr")
+install.packages("lgr")
+```
+
+Or you can install the current development version directly from github
+
+``` r
+#install.packages("remotes")
+remotes::install_github("s-fleck/lgr")
 ```
 
 Outlook
