@@ -17,6 +17,16 @@ test_that("log suppression", {
 
 
 
+test_that("without_logging does not conflict with suspend/unsuspend logging", {
+  suspend_logging()
+  without_logging("blah")
+  expect_identical(getOption("lgr.logging_suspended"), TRUE)
+  unsuspend_logging()
+})
+
+
+
+
 test_that("with_log_level works", {
   lg <- Logger$new("test")
 

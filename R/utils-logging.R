@@ -35,8 +35,9 @@ unsuspend_logging <- function(){
 #' })
 #'
 without_logging <- function(code){
+  old <- getOption("lgr.logging_suspended")
+  on.exit(options(lgr.logging_suspended = old))
   suspend_logging()
-  on.exit(unsuspend_logging())
   force(code)
 }
 
