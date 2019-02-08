@@ -39,8 +39,6 @@ test_that("with_log_level works", {
     with_log_level("trace", lg$info("blubb"), logger = lg)
   }
   expect_silent(foo())
-
-  expect_identical(lg$last_event$caller, "foo")
 })
 
 
@@ -62,5 +60,4 @@ test_that("with_log_level works", {
   }
   expect_output(foo())
 
-  expect_identical(lg$last_event$caller, "foo")
 })

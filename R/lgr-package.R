@@ -111,7 +111,7 @@ NULL
 
   assign(
     "lgr",
-    get_logger("lgr", parent = NULL, appenders = appenders, threshold = NA),
+    get_logger("root", parent = NULL, appenders = appenders, threshold = NA),
     envir = parent.env(environment())
   )
 }
