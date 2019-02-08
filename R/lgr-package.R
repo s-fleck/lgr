@@ -111,12 +111,7 @@ NULL
 
   assign(
     "lgr",
-    Logger$new(
-      name = "root", # usally a logger should have the same name as the package it belongs to
-      appenders = appenders,
-      threshold = NA,
-      parent = NULL  # _never_ set the parent to null yourself, root should be the only root logger
-    ),
+    get_logger("lgr", parent = NULL, appenders = appenders, threshold = NA),
     envir = parent.env(environment())
   )
 }
