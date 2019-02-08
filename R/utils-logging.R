@@ -72,13 +72,8 @@ with_log_level <- function(
   level <- standardize_log_level(level)
   force(level)
 
-  # fix the caller
-  caller <- get_caller(-2L)
-  force(caller)
-
   set_level <- function(event){
     event[["level"]]  <- level
-    event[["caller"]] <- caller
     TRUE
   }
 
@@ -114,11 +109,6 @@ with_log_value <- function(
   logger = lgr::lgr
 ){
   assert(is_equal_length(names(values), values))
-
-  # fix the caller
-  if (!"caller" %in% names(values)){
-    values[["caller"]] <- get_caller(-2L)
-  }
 
   set_level <- function(event){
     for (i in seq_along(values)){

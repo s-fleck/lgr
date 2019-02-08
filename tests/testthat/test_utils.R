@@ -7,18 +7,21 @@ test_that("utils works as expected", {
   foo <- function() get_caller(-1L)
   expect_identical(foo(), "foo")
 
-  lgr <- Logger$new(
+  lg <- Logger$new(
     "test logger",
     appenders = AppenderConsole$new(layout = LayoutFormat$new(fmt = "%c")),
     parent = NULL
   )
 
 
-  foobar <- function() lgr$error("test")
-  expect_identical(foo(), "foo")
+  foobar <- function() lg$error("test")
+  expect_output(foobar(), "foobar")
 
-  blahblubb <- function() lgr$log(200, "test")
-  expect_identical(capture.output(blahblubb()), "blahblubb")
+  fizzbuzz <- function() foobar()
+  expect_output(fizzbuzz(), "foobar")
+
+  blahblubb <- function() lg$log(200, "test")
+  expect_output(blahblubb(), "blahblubb")
 
   expect_match(get_caller(-99), "shell")
 })

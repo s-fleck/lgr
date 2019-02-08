@@ -10,6 +10,11 @@ for (strategy in c(
   "multiprocess",
   "cluster"
 )){
+
+  if (strategy == "multisession"){
+    skip("Don't test multisession just now")
+  }
+
   context(sprintf("future plan = '%s'", strategy))
   test_that(paste0(strategy, ": Logging works"), {
     skip_if_not_installed("future")
