@@ -207,7 +207,7 @@ Logger <- R6::R6Class(
       appenders = list(),
       threshold = 400L,
       filters = list(),
-      parent = lgr::lgr,
+      parent = get_logger("lgr"),
       exception_handler = default_exception_handler,
       propagate = TRUE
     ){

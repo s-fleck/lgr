@@ -17,7 +17,7 @@ logging as outlined in \code{vignette("lgr", package = "lgr")}.
 \section{Usage}{
 \preformatted{
 x <- x$new(name = "(unnamed logger)", appenders = list(), threshold = 400L,
-  filters = list(), parent = lgr::lgr,
+  filters = list(), parent = get_logger("lgr"),
   exception_handler = default_exception_handler, propagate = TRUE)
 
 x$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
