@@ -1,7 +1,7 @@
 Type: Package
 Package: lgr
 Title: A Fully Featured Logging Framework
-Version: 0.1.0.9001
+Version: 0.1.0.9002
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -32,14 +32,9 @@ Suggests:
     gmailr,
     jsonlite,
     knitr,
-    RMariaDB,
     rmarkdown,
-    RMySQL,
-    RPostgres,
-    RPostgreSQL,
-    RPushbullet,
-    RSQLite (>= 2.0),
     sendmailR,
+    RSQLite,
     testthat,
     tibble,
     tools,
