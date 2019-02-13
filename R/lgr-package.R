@@ -1,6 +1,6 @@
 #' A Fully Featured Logging Framework for R
 #'
-#' For details please refer to `vignette("lgr", package = "lgr")`
+#' For details please refer to `vignette("lgr", package = "lgr")`.
 #'
 #' @section Options:
 #'

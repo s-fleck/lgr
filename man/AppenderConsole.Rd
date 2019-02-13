@@ -10,9 +10,9 @@ A simple Appender that outputs to the console. If you have the package
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "\%L [\%t] \%m
-  \%f", timestamp_fmt = "\%H:\%M:\%OS3", colors = getOption("lgr.colors", list())),
-  filters = NULL)
+x <- AppenderConsole$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt
+  = "\%L [\%t] \%m \%f", timestamp_fmt = "\%H:\%M:\%OS3", colors =
+  getOption("lgr.colors", list())), filters = NULL)
 
 x$append(event)
 x$set_threshold(level)

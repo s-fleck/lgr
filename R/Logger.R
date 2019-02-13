@@ -8,7 +8,15 @@
 #' Loggers is only necessary if you want to take advantage of hierarchical
 #' logging as outlined in `vignette("lgr", package = "lgr")`.
 #'
-#' @eval r6_usage(Logger)
+#'
+#' @section Usage:
+#'
+#' ```
+#' # Cannonical way to initialize a new Logger (see "Creating Loggers")
+#' lg <- get_logger("logger")
+#' ```
+#'
+#' @eval r6_usage(Logger, name = "lg", header = "# R6 constructor (not recommended for productive use)")
 #'
 #' @section Creating Loggers:
 #'
@@ -16,6 +24,15 @@
 #' package, but you do not need to configure it. Usually only the root logger
 #' needs to be configured (new Appenders added/removed, Layouts modified,
 #' etc...).
+#'
+#' Loggers should never be instantiated directly with `Logger$new()` but rather
+#' via `get_logger("name")`. If `"name"` does not exist, a new
+#' Logger with that name will be created, otherwise the function returns a
+#' Reference to the existing Logger.
+#'
+#' The `name` is potentially a `/` separated hierarchical value like
+#' `foo/bar/baz`. Loggers further down the hierarchy are children of the loggers
+#' above.
 #'
 #' If you just want to log to an additional output (like a log file), you want
 #' a new [Appender], not a new Logger.

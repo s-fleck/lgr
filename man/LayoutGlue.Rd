@@ -11,7 +11,7 @@ but also more complex and slightly less performant.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)}
+x <- LayoutGlue$new(fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)}
   [{timestamp}] msg")
 
 x$format_event(event)

@@ -15,43 +15,47 @@ Loggers is only necessary if you want to take advantage of hierarchical
 logging as outlined in \code{vignette("lgr", package = "lgr")}.
 }
 \section{Usage}{
-\preformatted{
-x <- x$new(name = "(unnamed logger)", appenders = list(), threshold = 400L,
-  filters = list(), parent = get_logger("root"), exception_handler =
+\preformatted{# Cannonical way to initialize a new Logger (see "Creating Loggers")
+lg <- get_logger("logger")
+}
+
+\preformatted{# R6 constructor (not recommended for productive use)
+lg <- Logger$new(name = "(unnamed logger)", appenders = list(), threshold =
+  400L, filters = list(), parent = get_logger("root"), exception_handler =
   default_exception_handler, propagate = TRUE)
 
-x$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
-x$fatal(msg, ..., caller = get_caller(-8L))
-x$error(msg, ..., caller = get_caller(-8L))
-x$warn(msg, ..., caller = get_caller(-8L))
-x$info(msg, ..., caller = get_caller(-8L))
-x$debug(msg, ..., caller = get_caller(-8L))
-x$trace(msg, ..., caller = get_caller(-8L))
-x$add_appender(appender, name = NULL)
-x$remove_appender(pos)
-x$handle_exception(...)
-x$set_name(x)
-x$set_exception_handler(fun)
-x$set_propagate(x)
-x$set_parent(logger)
-x$set_threshold(level)
-x$set_appenders(x)
-x$spawn(...)
-x$filter(event)
-x$add_filter(filter, name = NULL)
-x$remove_filter(pos)
-x$set_filters(filters)
+lg$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
+lg$fatal(msg, ..., caller = get_caller(-8L))
+lg$error(msg, ..., caller = get_caller(-8L))
+lg$warn(msg, ..., caller = get_caller(-8L))
+lg$info(msg, ..., caller = get_caller(-8L))
+lg$debug(msg, ..., caller = get_caller(-8L))
+lg$trace(msg, ..., caller = get_caller(-8L))
+lg$add_appender(appender, name = NULL)
+lg$remove_appender(pos)
+lg$handle_exception(...)
+lg$set_name(x)
+lg$set_exception_handler(fun)
+lg$set_propagate(x)
+lg$set_parent(logger)
+lg$set_threshold(level)
+lg$set_appenders(x)
+lg$spawn(...)
+lg$filter(event)
+lg$add_filter(filter, name = NULL)
+lg$remove_filter(pos)
+lg$set_filters(filters)
 
-x$ancestry
-x$appenders
-x$exception_handler
-x$inherited_appenders
-x$last_event
-x$name
-x$parent
-x$propagate
-x$threshold
-x$filters
+lg$ancestry
+lg$appenders
+lg$exception_handler
+lg$inherited_appenders
+lg$last_event
+lg$name
+lg$parent
+lg$propagate
+lg$threshold
+lg$filters
 
 }
 }
@@ -63,6 +67,15 @@ If you are a package developer you should define a new Logger for each
 package, but you do not need to configure it. Usually only the root logger
 needs to be configured (new Appenders added/removed, Layouts modified,
 etc...).
+
+Loggers should never be instantiated directly with \code{Logger$new()} but rather
+via \code{get_logger("name")}. If \code{"name"} does not exist, a new
+Logger with that name will be created, otherwise the function returns a
+Reference to the existing Logger.
+
+The \code{name} is potentially a \code{/} separated hierarchical value like
+\code{foo/bar/baz}. Loggers further down the hierarchy are children of the loggers
+above.
 
 If you just want to log to an additional output (like a log file), you want
 a new \link{Appender}, not a new Logger.
@@ -129,7 +142,9 @@ Loggers also have the following additional read-only bindings:
 \describe{
 \item{\code{ancestry}}{A named \code{logical} vector of containing
 the propagate value of each Logger upper the inheritance tree. The names
-are the names of the appenders.}
+are the names of the appenders. \code{ancestry} is an S3 class with a custom
+\code{format()}/\code{print()} method, so if you want to use the plain logical
+vector use \code{unclass(lg$ancestry)}}
 
 \item{\code{inherited_appenders}}{A \code{list} of all inherited
 appenders from ancestral Loggers of the current Logger}

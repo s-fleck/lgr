@@ -9,10 +9,11 @@ Appenders once certain conditions are met.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "\%L [\%t]
-  \%m", timestamp_fmt = "\%H:\%M:\%S", colors = getOption("lgr.colors")), appenders
-  = NULL, buffer_size = 1000, flush_threshold = "fatal", flush_on_exit = TRUE,
-  flush_on_rotate = TRUE, should_flush = default_should_flush, filters = NULL)
+x <- AppenderBuffer$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt
+  = "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S", colors =
+  getOption("lgr.colors")), appenders = NULL, buffer_size = 1000,
+  flush_threshold = "fatal", flush_on_exit = TRUE, flush_on_rotate = TRUE,
+  should_flush = default_should_flush, filters = NULL)
 
 x$flush()
 x$set_appenders(x)

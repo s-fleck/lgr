@@ -25,8 +25,9 @@ LogEvents directly, but their \code{data.table} representations (see
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(col_types = NULL, fmt = "\%L [\%t] \%m \%f", timestamp_fmt = "\%Y-\%m-\%d
-  \%H:\%M:\%S", colors = getOption("lgr.colors", list()), pad_levels = "right")
+x <- LayoutDbi$new(col_types = NULL, fmt = "\%L [\%t] \%m \%f", timestamp_fmt =
+  "\%Y-\%m-\%d \%H:\%M:\%S", colors = getOption("lgr.colors", list()), pad_levels =
+  "right")
 
 x$format_table_name(x)
 x$format_colnames(x)

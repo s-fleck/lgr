@@ -8,7 +8,7 @@ Format a LogEvent as JSON
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(toJSON_args = list(auto_unbox = TRUE))
+x <- LayoutJson$new(toJSON_args = list(auto_unbox = TRUE))
 
 x$format_event(event)
 x$set_toJSON_args(x)

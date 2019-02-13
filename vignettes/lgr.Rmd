@@ -39,6 +39,8 @@ If you are not sure if lgr is the right package for you, take a look
 [examples](#examples) to see what lgr can do for you.
 
 
+
+
 ## Quickstart
 
 lgr comes with a so-called **root logger** that is ready to go after you install 

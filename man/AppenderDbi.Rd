@@ -26,7 +26,7 @@ this behaviour, just set \code{buffer_size} to \code{0}.
 
 \section{Usage}{
 \preformatted{
-x <- x$new(conn, table, threshold = NA_integer_, layout =
+x <- AppenderDbi$new(conn, table, threshold = NA_integer_, layout =
   select_dbi_layout(conn, table), close_on_exit = TRUE, buffer_size = 10,
   flush_threshold = "error", flush_on_exit = TRUE, flush_on_rotate = TRUE,
   should_flush = default_should_flush, filters = NULL)

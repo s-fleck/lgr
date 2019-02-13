@@ -12,7 +12,7 @@ for other databases. Please file a bug report if you encounter any issues.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(conn, table, threshold = NA_integer_, layout =
+x <- AppenderRjdbc$new(conn, table, threshold = NA_integer_, layout =
   select_dbi_layout(conn, table), close_on_exit = TRUE, buffer_size = 10,
   flush_threshold = "error", flush_on_exit = TRUE, flush_on_rotate = TRUE,
   should_flush = default_should_flush, filters = NULL)

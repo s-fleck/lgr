@@ -1,13 +1,16 @@
 r6_usage <- function(
   x,
   name = "x",
-  ignore = NULL
+  ignore = NULL,
+  header = ""
 ){
-  els <- collect_usage(x, ignore = ignore)
+  classname <- deparse(substitute(x))
+
+  els <- collect_usage(x, name = classname, ignore = ignore)
 
   c(
     "@section Usage:",
-    "```", "",
+    "```", header,
     strwrap(paste0(name, " <- ", els$ctor), width = 80, exdent = 2), "",
     paste0(name, "$",  els$methods), "",
     paste0(name, "$", els$fields), "",
@@ -19,7 +22,7 @@ r6_usage <- function(
 
 collect_usage <- function(
   x,
-  name = "x",
+  name = deparse(substitute(x)),
   ignore = NULL
 ){
   public_methods <- vapply(
@@ -31,7 +34,7 @@ collect_usage <- function(
 
   if ("initialize" %in% names(public_methods)){
     ctor <- public_methods[["initialize"]]
-    ctor <- gsub("^initialize", paste0(deparse(substitute(x)), "$new"), ctor)
+    ctor <- gsub("^initialize", paste0(name, "$new"), ctor)
   } else {
     ctor <- NULL
   }

@@ -10,8 +10,8 @@ comfortably access the underlying file.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(file, threshold = NA_integer_, layout = LayoutFormat$new(), filters
-  = NULL)
+x <- AppenderFile$new(file, threshold = NA_integer_, layout =
+  LayoutFormat$new(), filters = NULL)
 
 x$append(event)
 x$set_file(file)

@@ -17,7 +17,7 @@ end of this document a list of available Appenders.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(layout = Layout$new(), threshold = NA_integer_)
+x <- Appender$new(layout = Layout$new(), threshold = NA_integer_)
 
 x$append(event)
 x$set_threshold(level)

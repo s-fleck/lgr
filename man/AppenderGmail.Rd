@@ -12,8 +12,8 @@ is to push the last 30 log events in case a \code{fatal} event is encountered.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(to, threshold = NA_integer_, flush_threshold = "fatal", layout =
-  LayoutFormat$new(fmt = "\%L [\%t] \%m \%f", timestamp_fmt = "\%H:\%M:\%S"),
+x <- AppenderGmail$new(to, threshold = NA_integer_, flush_threshold = "fatal",
+  layout = LayoutFormat$new(fmt = "\%L [\%t] \%m \%f", timestamp_fmt = "\%H:\%M:\%S"),
   subject_layout = LayoutFormat$new(fmt = "[LGR] \%L: \%m"), buffer_size = 30,
   from = get_user(), cc = NULL, bcc = NULL, html = FALSE, filters = NULL)
 

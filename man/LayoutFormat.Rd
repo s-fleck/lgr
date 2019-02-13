@@ -10,8 +10,8 @@ more control and flexibility, consider using \link{LayoutGlue} instead.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(fmt = "\%L [\%t] \%m", timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3", colors =
-  NULL, pad_levels = "right")
+x <- LayoutFormat$new(fmt = "\%L [\%t] \%m", timestamp_fmt = "\%Y-\%m-\%d
+  \%H:\%M:\%OS3", colors = NULL, pad_levels = "right")
 
 x$format_event(event)
 x$set_fmt(x)
