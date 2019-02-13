@@ -115,5 +115,4 @@ NULL
   )
 
   assign("lgr", get_logger("root"), envir = parent.env(environment()))
-
 }

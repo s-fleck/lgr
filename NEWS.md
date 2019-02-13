@@ -3,6 +3,7 @@
 * removed `full_name` active binding for loggers. Loggers now only have 
   qualified names and `name` is now identical to what `full_name` was before.
   For consistency the format method of `ancestry` has also been revised.
+* New Loggers now inherit the log level of their parent unless one is set
 
 # lgr 0.1.1
 

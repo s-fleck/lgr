@@ -41,8 +41,15 @@ format.Logger = function(
   assert(is_scalar_bool(color))
   if (!color) style_subtle <- identity
 
+  thr <- fmt_threshold(x$threshold, type = "character")
+
+  if (is.null(x[[".__enclos_env__"]][["private"]][[".threshold"]])){
+    thr <- style_subtle(thr)
+  }
+
+
   header <- paste(
-    paste0("<", class(x)[[1]], "> [", fmt_threshold(x$threshold, type = "character"), "]"),
+    paste0("<", class(x)[[1]], "> [", thr, "]"),
     format(x$ancestry, color = color)
   )
 
