@@ -10,15 +10,15 @@ more control and flexibility, consider using \link{LayoutGlue} instead.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(fmt = "\%L [\%t] \%m", timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3",
-  colors = NULL, pad_levels = "right")
+x <- x$new(fmt = "\%L [\%t] \%m", timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3", colors =
+  NULL, pad_levels = "right")
 
 x$format_event(event)
 x$set_fmt(x)
 x$set_timestamp_fmt(x)
 x$set_colors(x)
 x$set_pad_levels(x)
-x$clone(deep = FALSE)
+x$clone(deep = FALSE)
 
 x$colors
 x$fmt

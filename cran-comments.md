@@ -10,7 +10,5 @@
 
 0 errors | 0 warnings | 0 notes
 
-* This is a new release
-* This is a resubmission that addresses the NOTEs of my previous submission.
-  I found a way around the lock/unlockBinding mechanic I wanted to implemented
-  originally so please disregard my earlier email. Thank you for your patience.
+* This is a resubmission that removes non-breaking-space characters from the
+  .rd files for R6 classes, which caused problems with the pdf manual.

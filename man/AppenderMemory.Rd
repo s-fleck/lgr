@@ -12,7 +12,7 @@ buffer, such as \link{AppenderBuffer} and \link{AppenderPushbullet}.
 }
 \section{Usage}{
 \preformatted{
-x <- x$get_inherit()$new(layout = Layout$new(), threshold = NA_integer_)
+x <- x$get_inherit()$new(layout = Layout$new(), threshold = NA_integer_)
 
 x$append(event)
 x$flush()
@@ -21,11 +21,11 @@ x$set_should_flush(x)
 x$set_flush_on_exit(x)
 x$set_flush_on_rotate(x)
 x$set_flush_threshold(level)
-x$show(threshold = NA_integer_, n = 20L)
+x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
-x$add_filter(filter, name = NULL)
+x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
 x$set_filters(filters)
 

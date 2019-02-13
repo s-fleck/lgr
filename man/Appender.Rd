@@ -17,13 +17,13 @@ end of this document a list of available Appenders.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(layout = Layout$new(), threshold = NA_integer_)
+x <- x$new(layout = Layout$new(), threshold = NA_integer_)
 
 x$append(event)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
-x$add_filter(filter, name = NULL)
+x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
 x$set_filters(filters)
 

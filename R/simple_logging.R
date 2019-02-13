@@ -208,7 +208,7 @@ remove_appender <- function(
 #' messages, even if they were not printed to the console before.
 #'
 #' `show_data()` and `show_dt()` work similar to `show_log()`, except that
-#' they return the log as `data.frame` or `data.table` respecitively.
+#' they return the log as `data.frame` or `data.table` respectively.
 #'
 #' @param n `integer` scalar. Show only the last `n` log entries that match
 #'   `threshold`

@@ -65,7 +65,7 @@ comfortably access the underlying file." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9000</span>
       </span>
     </div>
 
@@ -94,6 +94,9 @@ comfortably access the underlying file." />
       <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -133,14 +136,14 @@ comfortably access the underlying file.</p>
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre>
-x &lt;- x$new(file, threshold = NA_integer_, layout = LayoutFormat$new(),
-  filters = NULL)
+x &lt;- x$new(file, threshold = NA_integer_, layout = LayoutFormat$new(), filters
+  = NULL)
     x$append(event)
 x$set_file(file)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
-x$add_filter(filter, name = NULL)
+x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
 x$set_filters(filters)
     x$destination
@@ -246,10 +249,10 @@ was specified)</p></dd>
 <span class='no'>l</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)
 <span class='no'>l</span>$<span class='fu'>info</span>(<span class='st'>"A test message %s strings"</span>, <span class='st'>"with format strings"</span>, <span class='kw'>and</span> <span class='kw'>=</span> <span class='st'>"custom_fields"</span>)
 
-<span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2019-01-20 10:59:02","logger":"testlogger","caller":"eval","msg":"A test message"}
-#&gt; {"level":400,"timestamp":"2019-01-20 10:59:02","logger":"testlogger","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp     logger caller
-#&gt; 1   400 2019-01-20 10:59:02 testlogger   eval
-#&gt; 2   400 2019-01-20 10:59:02 testlogger   eval
+<span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2019-02-13 12:47:56","logger":"testlogger","caller":"eval","msg":"A test message"}
+#&gt; {"level":400,"timestamp":"2019-02-13 12:47:56","logger":"testlogger","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp     logger caller
+#&gt; 1   400 2019-02-13 12:47:56 testlogger   eval
+#&gt; 2   400 2019-02-13 12:47:56 testlogger   eval
 #&gt;                                          msg           and
 #&gt; 1                             A test message          &lt;NA&gt;
 #&gt; 2 A test message with format strings strings custom_fields</div><div class='input'>

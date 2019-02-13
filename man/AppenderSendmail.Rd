@@ -17,11 +17,11 @@ is a workaround so that Microsoft Outlook does not mess up the line breaks.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(to, control, threshold = NA_integer_, flush_threshold = "fatal",
-  layout = LayoutFormat$new(fmt = " \%L [\%t] \%m \%f", timestamp_fmt =
-  "\%H:\%M:\%S"), subject_layout = LayoutFormat$new(fmt = "[LGR] \%L: \%m"),
-  buffer_size = 29, from = get_user(), cc = NULL, bcc = NULL, html = FALSE,
-  headers = NULL, filters = NULL)
+x <- x$new(to, control, threshold = NA_integer_, flush_threshold = "fatal",
+  layout = LayoutFormat$new(fmt = " \%L [\%t] \%m \%f", timestamp_fmt =
+  "\%H:\%M:\%S"), subject_layout = LayoutFormat$new(fmt = "[LGR] \%L: \%m"),
+  buffer_size = 29, from = get_user(), cc = NULL, bcc = NULL, html = FALSE,
+  headers = NULL, filters = NULL)
 
 x$flush()
 x$set_control(x)
@@ -36,11 +36,11 @@ x$append(event)
 x$set_buffer_size(x)
 x$set_should_flush(x)
 x$set_flush_threshold(level)
-x$show(threshold = NA_integer_, n = 20L)
+x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
-x$add_filter(filter, name = NULL)
+x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
 x$set_filters(filters)
 

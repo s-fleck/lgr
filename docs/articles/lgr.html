@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9000</span>
       </span>
     </div>
 
@@ -60,6 +60,9 @@
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -83,7 +86,7 @@
       <h1>Yet Another Log4j Inspired Logging Framework</h1>
                         <h4 class="author">Stefan Fleck</h4>
             
-            <h4 class="date">2019-01-20</h4>
+            <h4 class="date">2019-02-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/s-fleck/lgr/blob/master/vignettes/lgr.Rmd"><code>vignettes/lgr.Rmd</code></a></small>
       <div class="hidden name"><code>lgr.Rmd</code></div>
@@ -106,10 +109,10 @@
 <a href="#logging-to-the-console" class="anchor"></a>Logging to the Console</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># the root logger is called "lgr"</span>
 lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"Vampire stories are generally located in Styria."</span>)
-<span class="co">#&gt; INFO  [10:59:25.630] Vampire stories are generally located in Styria.</span></code></pre></div>
+<span class="co">#&gt; INFO  [12:48:08.941] Vampire stories are generally located in Styria.</span></code></pre></div>
 <p>You can use formatting strings that are passed on to <code><a href="https://www.rdocumentation.org/packages/base/topics/sprintf">sprintf()</a></code> in lgr.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lgr<span class="op">$</span><span class="kw">error</span>(<span class="st">"Vampires generally arrive in carriages drawn by %i black horses."</span>, <span class="dv">2</span>)
-<span class="co">#&gt; ERROR [10:59:26.029] Vampires generally arrive in carriages drawn by 2 black horses.</span></code></pre></div>
+<span class="co">#&gt; ERROR [12:48:09.112] Vampires generally arrive in carriages drawn by 2 black horses.</span></code></pre></div>
 </div>
 <div id="logging-to-plain-files" class="section level3">
 <h3 class="hasAnchor">
@@ -118,17 +121,17 @@ lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"Vampi
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tf &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempfile</a></span>(<span class="dt">fileext =</span> <span class="st">".info"</span>)
 lgr<span class="op">$</span><span class="kw"><a href="../reference/simple_logging.html">add_appender</a></span>(AppenderFile<span class="op">$</span><span class="kw">new</span>(tf), <span class="dt">name =</span> <span class="st">"file"</span>)
 lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"You must think I am joking"</span>)
-<span class="co">#&gt; INFO  [10:59:26.110] You must think I am joking</span>
+<span class="co">#&gt; INFO  [12:48:09.153] You must think I am joking</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(tf)
-<span class="co">#&gt; [1] "INFO  [2019-01-20 10:59:26.110] You must think I am joking"</span></code></pre></div>
+<span class="co">#&gt; [1] "INFO  [2019-02-13 12:48:09.153] You must think I am joking"</span></code></pre></div>
 <p>The various Appenders available in lgr are R6 classes. To instantiate an object of that class (i.e. create a new appender) you have to use the <code>$new()</code> function as in the example above. Whenever you see something in lgr that <code>IsNamedLikeThis</code>, you can be sure that it is such an R6 class.</p>
 <p>If you look at the output, you see that the timestamp format of the file appender is slightly different to the timestamp format of the console Appender. Formatting is handled by <strong>Layouts</strong>, and each Appender has exactly one:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lgr<span class="op">$</span>appenders<span class="op">$</span>file<span class="op">$</span><span class="kw">set_layout</span>(LayoutFormat<span class="op">$</span><span class="kw">new</span>(<span class="dt">timestamp_fmt =</span> <span class="st">"%B %d %T"</span>))
 lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"No, I am quite serious"</span>)
-<span class="co">#&gt; INFO  [10:59:26.127] No, I am quite serious</span>
+<span class="co">#&gt; INFO  [12:48:09.162] No, I am quite serious</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(tf)
-<span class="co">#&gt; [1] "INFO  [2019-01-20 10:59:26.110] You must think I am joking"</span>
-<span class="co">#&gt; [2] "INFO  [Jänner 20 10:59:26] No, I am quite serious"</span></code></pre></div>
+<span class="co">#&gt; [1] "INFO  [2019-02-13 12:48:09.153] You must think I am joking"</span>
+<span class="co">#&gt; [2] "INFO  [February 13 12:48:09] No, I am quite serious"</span></code></pre></div>
 </div>
 <div id="logging-to-json-files" class="section level3">
 <h3 class="hasAnchor">
@@ -141,14 +144,14 @@ lgr<span class="op">$</span><span class="kw"><a href="../reference/simple_loggin
 <span class="co"># setup a JSON appender</span>
 lgr<span class="op">$</span><span class="kw"><a href="../reference/simple_logging.html">add_appender</a></span>(AppenderJson<span class="op">$</span><span class="kw">new</span>(tf), <span class="dt">name =</span> <span class="st">"json"</span>)
 lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"We lived in Styria"</span>)
-<span class="co">#&gt; INFO  [10:59:26.172] We lived in Styria</span></code></pre></div>
+<span class="co">#&gt; INFO  [12:48:09.181] We lived in Styria</span></code></pre></div>
 <p>JSON is still somewhat human readable</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(tf))
-<span class="co">#&gt; {"level":400,"timestamp":"2019-01-20 10:59:26","logger":"","caller":"eval","msg":"We lived in Styria"}</span></code></pre></div>
+<span class="co">#&gt; {"level":400,"timestamp":"2019-02-13 12:48:09","logger":"","caller":"eval","msg":"We lived in Styria"}</span></code></pre></div>
 <p>and easy for machines to parse</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/read_json_lines.html">read_json_lines</a></span>(tf)
 <span class="co">#&gt;   level           timestamp logger caller                msg</span>
-<span class="co">#&gt; 1   400 2019-01-20 10:59:26          eval We lived in Styria</span></code></pre></div>
+<span class="co">#&gt; 1   400 2019-02-13 12:48:09          eval We lived in Styria</span></code></pre></div>
 </div>
 <div id="custom-fields" class="section level3">
 <h3 class="hasAnchor">
@@ -156,13 +159,13 @@ lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"We li
 <p>Unlike many others Loggers for R, lgr treats a log <em>event</em> as a unit of data, not just a message with a timestamp. A log event can contain arbitrary data, though not all Appenders can handle that well. The JSON appender we added above is particularly good at handling most R objects.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The default console appender displays custom fields as pseudo-json after the message</span>
 lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"Styria has"</span>, <span class="dt">poultry =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"capons"</span>, <span class="st">"turkeys"</span>))
-<span class="co">#&gt; INFO  [10:59:26.241] Styria has {poultry: [capons, turkeys]}</span>
+<span class="co">#&gt; INFO  [12:48:09.213] Styria has {poultry: [capons, turkeys]}</span>
 
 <span class="co"># JSON can store most R objects quite naturally </span>
 <span class="kw"><a href="../reference/read_json_lines.html">read_json_lines</a></span>(tf)
 <span class="co">#&gt;   level           timestamp logger caller                msg</span>
-<span class="co">#&gt; 1   400 2019-01-20 10:59:26          eval We lived in Styria</span>
-<span class="co">#&gt; 2   400 2019-01-20 10:59:26          eval         Styria has</span>
+<span class="co">#&gt; 1   400 2019-02-13 12:48:09          eval We lived in Styria</span>
+<span class="co">#&gt; 2   400 2019-02-13 12:48:09          eval         Styria has</span>
 <span class="co">#&gt;           poultry</span>
 <span class="co">#&gt; 1            NULL</span>
 <span class="co">#&gt; 2 capons, turkeys</span>
@@ -264,11 +267,11 @@ lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"Styri
 <a href="#logging-syntax" class="anchor"></a>Logging Syntax</h3>
 <p>lgr Loggers are R6 objects with <em>methods</em> (functions) for logging. You can refer to the <em>root</em> logger with <code>lgr</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lgr<span class="op">$</span><span class="kw">fatal</span>(<span class="st">"This is an important message about %s going wrong"</span>, <span class="st">"-&gt;something&lt;-"</span>)
-<span class="co">#&gt; FATAL [10:59:26.358] This is an important message about -&gt;something&lt;- going wrong</span>
+<span class="co">#&gt; FATAL [12:48:09.266] This is an important message about -&gt;something&lt;- going wrong</span>
 lgr<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/trace">trace</a></span>(<span class="st">"Trace messages are still hidden"</span>)
 lgr<span class="op">$</span>appenders<span class="op">$</span>console<span class="op">$</span><span class="kw">set_threshold</span>(<span class="st">"trace"</span>)
 lgr<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/trace">trace</a></span>(<span class="st">"Unless we lower the threshold"</span>)
-<span class="co">#&gt; TRACE [10:59:26.368] Unless we lower the threshold</span>
+<span class="co">#&gt; TRACE [12:48:09.270] Unless we lower the threshold</span>
 lgr<span class="op">$</span>appenders<span class="op">$</span>memory<span class="op">$</span><span class="kw">show</span>(<span class="dv">3</span>)</code></pre></div>
 </div>
 <div id="formatting-strings" class="section level3">
@@ -276,7 +279,7 @@ lgr<span class="op">$</span>appenders<span class="op">$</span>memory<span class=
 <a href="#formatting-strings" class="anchor"></a>Formatting Strings</h3>
 <p>You can use <code><a href="https://www.rdocumentation.org/packages/base/topics/sprintf">sprintf()</a></code> style formatting strings directly in log messages.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"The sky was the color of %s, tuned to a dead chanel"</span>, <span class="st">"television"</span>)
-<span class="co">#&gt; INFO  [10:59:26.385] The sky was the color of television, tuned to a dead chanel</span></code></pre></div>
+<span class="co">#&gt; INFO  [12:48:09.280] The sky was the color of television, tuned to a dead chanel</span></code></pre></div>
 </div>
 </div>
 <div id="log-events-the-atomic-unit-of-logging" class="section level2">
@@ -284,15 +287,15 @@ lgr<span class="op">$</span>appenders<span class="op">$</span>memory<span class=
 <a href="#log-events-the-atomic-unit-of-logging" class="anchor"></a>Log Events: The Atomic Unit of Logging</h2>
 <p>LogEvents are objects that store all information collected by the Logger. They are passed on to Appenders that output them, but Appenders usually don’t utilize all the information present in a log event. The last event produced by a Logger is stored in its <code>last_event</code> field.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"Vampire stories are generally located in Styria"</span>)
-<span class="co">#&gt; INFO  [10:59:26.396] Vampire stories are generally located in Styria</span>
+<span class="co">#&gt; INFO  [12:48:09.285] Vampire stories are generally located in Styria</span>
 lgr<span class="op">$</span>last_event  <span class="co"># a summary output of the event</span>
-<span class="co">#&gt; INFO  [2019-01-20 10:59:26] Vampire stories are generally located in Styria</span>
+<span class="co">#&gt; INFO  [2019-02-13 12:48:09] Vampire stories are generally located in Styria</span>
 lgr<span class="op">$</span>last_event<span class="op">$</span>values  <span class="co"># all values stored in the event as a list</span>
 <span class="co">#&gt; $level</span>
 <span class="co">#&gt; [1] 400</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $timestamp</span>
-<span class="co">#&gt; [1] "2019-01-20 10:59:26 CET"</span>
+<span class="co">#&gt; [1] "2019-02-13 12:48:09 CET"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $logger</span>
 <span class="co">#&gt; [1] ""</span>
@@ -306,16 +309,16 @@ lgr<span class="op">$</span>last_event<span class="op">$</span>values  <span cla
 <p>You should consider making use of custom fields liberally and using output formats that support them (such as JSON), rather than producing elaborately formatted but hard to parse log messages. If you ever want to analyse your log data, you will thank me for this tip.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># bad</span>
 lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"Processing track '%s' with %s waypoints"</span>, <span class="st">"track.gpx"</span>, <span class="dv">32</span>)
-<span class="co">#&gt; INFO  [10:59:26.415] Processing track 'track.gpx' with 32 waypoints</span>
+<span class="co">#&gt; INFO  [12:48:09.297] Processing track 'track.gpx' with 32 waypoints</span>
 
 <span class="co"># Good</span>
 tf &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempfile</a></span>()
 lgr<span class="op">$</span><span class="kw"><a href="../reference/simple_logging.html">add_appender</a></span>(AppenderJson<span class="op">$</span><span class="kw">new</span>(tf), <span class="st">"json"</span>)
 lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"Processing track"</span>, <span class="dt">file =</span> <span class="st">"track.gpx"</span>, <span class="dt">waypoints =</span> <span class="dv">32</span>)
-<span class="co">#&gt; INFO  [10:59:26.423] Processing track {file: track.gpx, waypoints: 32}</span>
+<span class="co">#&gt; INFO  [12:48:09.301] Processing track {file: track.gpx, waypoints: 32}</span>
 lgr<span class="op">$</span>appenders<span class="op">$</span>json<span class="op">$</span>data
 <span class="co">#&gt;   level           timestamp logger caller              msg      file</span>
-<span class="co">#&gt; 1   400 2019-01-20 10:59:26          eval Processing track track.gpx</span>
+<span class="co">#&gt; 1   400 2019-02-13 12:48:09          eval Processing track track.gpx</span>
 <span class="co">#&gt;   waypoints</span>
 <span class="co">#&gt; 1        32</span></code></pre></div>
 </div>
@@ -333,7 +336,7 @@ lgr<span class="op">$</span><span class="kw">set_filters</span>(<span class="kw"
 
 lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"is it a plane?"</span>)
 lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"no! is it a bird?"</span>)
-<span class="co">#&gt; INFO  [10:59:26.459] no! is it a bird?</span>
+<span class="co">#&gt; INFO  [12:48:09.322] no! is it a bird?</span>
 
 <span class="co"># since this is not a very useful filter, we better remove it again</span>
 lgr<span class="op">$</span><span class="kw">set_filters</span>(<span class="ot">NULL</span>)</code></pre></div>
@@ -354,12 +357,12 @@ lgr<span class="op">$</span><span class="kw">set_threshold</span>(<span class="o
 lgr<span class="op">$</span>appenders<span class="op">$</span>console<span class="op">$</span><span class="kw">set_threshold</span>(<span class="st">"info"</span>)
 lgr<span class="op">$</span>appenders<span class="op">$</span>file<span class="op">$</span><span class="kw">set_threshold</span>(<span class="ot">NA</span>)
 lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"Another informational message"</span>)
-<span class="co">#&gt; INFO  [10:59:26.550] Another informational message</span>
+<span class="co">#&gt; INFO  [12:48:09.343] Another informational message</span>
 lgr<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/debug">debug</a></span>(<span class="st">"A debug message not shown by the console appender"</span>)
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(tf)
-<span class="co">#&gt; [1] "INFO  [2019-01-20 10:59:26.550] Another informational message"                    </span>
-<span class="co">#&gt; [2] "DEBUG [2019-01-20 10:59:26.556] A debug message not shown by the console appender"</span>
+<span class="co">#&gt; [1] "INFO  [2019-02-13 12:48:09.343] Another informational message"                    </span>
+<span class="co">#&gt; [2] "DEBUG [2019-02-13 12:48:09.346] A debug message not shown by the console appender"</span>
 
 <span class="co"># Remove the appender again</span>
 lgr<span class="op">$</span><span class="kw"><a href="../reference/simple_logging.html">remove_appender</a></span>(<span class="st">"file"</span>)</code></pre></div>
@@ -392,13 +395,13 @@ l<span class="op">$</span><span class="kw">info</span>(
   <span class="st">"pastes together unnamed arguments "</span>,
   <span class="st">"and evaluates arbitray expressions inside braces {Sys.Date()}"</span>
 )
-<span class="co">#&gt; INFO  [10:59:26.661] glue automatically pastes together unnamed arguments and evaluates arbitray expressions inside braces 2019-01-20</span></code></pre></div>
+<span class="co">#&gt; INFO  [12:48:09.391] glue automatically pastes together unnamed arguments and evaluates arbitray expressions inside braces 2019-02-13</span></code></pre></div>
 <p>Glue lets you define temporary variables inside the <code><a href="https://www.rdocumentation.org/packages/glue/topics/glue">glue()</a></code> call. As with the normal Logger, named arguments get turned into custom fields.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l<span class="op">$</span><span class="kw">info</span>(<span class="st">"For more info on glue see {website}"</span>, <span class="dt">website =</span> <span class="st">"https://glue.tidyverse.org/"</span>)
-<span class="co">#&gt; INFO  [10:59:26.719] For more info on glue see https://glue.tidyverse.org/ {website: https://glue.tidyverse.org/}</span></code></pre></div>
+<span class="co">#&gt; INFO  [12:48:09.418] For more info on glue see https://glue.tidyverse.org/ {website: https://glue.tidyverse.org/}</span></code></pre></div>
 <p>You can suppress this behaviour by making named argument start with a <code>"."</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l<span class="op">$</span><span class="kw">info</span>(<span class="st">"Glue is available from {.cran}"</span>, <span class="dt">.cran =</span> <span class="st">"https://CRAN.R-project.org/package=glue"</span>)
-<span class="co">#&gt; INFO  [10:59:26.733] Glue is available from https://CRAN.R-project.org/package=glue</span></code></pre></div>
+<span class="co">#&gt; INFO  [12:48:09.423] Glue is available from https://CRAN.R-project.org/package=glue</span></code></pre></div>
 </div>
 </div>
 <div id="examples" class="section level1">
@@ -415,10 +418,10 @@ l<span class="op">$</span><span class="kw">info</span>(
 )
 
 lg<span class="op">$</span><span class="kw">info</span>(<span class="st">"the default format"</span>)
-<span class="co">#&gt; INFO  [10:59:26.762] the default format</span>
+<span class="co">#&gt; INFO  [12:48:09.432] the default format</span>
 lg<span class="op">$</span>appenders<span class="op">$</span>cons<span class="op">$</span>layout<span class="op">$</span><span class="kw">set_fmt</span>(<span class="st">"%L (%n) [%t] %c(): !! %m !!"</span>)
 lg<span class="op">$</span><span class="kw">info</span>(<span class="st">"A more involved custom format"</span>)
-<span class="co">#&gt; INFO  (400) [10:59:26.768] eval(): !! A more involved custom format !!</span></code></pre></div>
+<span class="co">#&gt; INFO  (400) [12:48:09.434] eval(): !! A more involved custom format !!</span></code></pre></div>
 <p>If this is not enough for you, you can use <code>LayoutGlue</code> based on the awesome <a href="https://github.com/tidyverse/glue">glue</a> package. The syntax is a bit more verbose, and <code>AppenderGlue</code> is a bit less performant than <code>AppenderFormat</code>, but the possibilities are endless.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("glue")</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(glue)
@@ -450,9 +453,9 @@ lg<span class="op">$</span><span class="kw">info</span>(<span class="st">"log fi
 <span class="co"># same as </span>
 <span class="kw"><a href="../reference/read_json_lines.html">read_json_lines</a></span>(tf)</code></pre></div>
 <pre><code>#&gt;   level           timestamp      logger caller             msg  field
-#&gt; 1   400 2019-01-20 10:59:26 test logger   eval JSON naturally  custom
-#&gt; 2   400 2019-01-20 10:59:26 test logger   eval supports custom   &lt;NA&gt;
-#&gt; 3   400 2019-01-20 10:59:26 test logger   eval      log fields   &lt;NA&gt;
+#&gt; 1   400 2019-02-13 12:48:09 test logger   eval JSON naturally  custom
+#&gt; 2   400 2019-02-13 12:48:09 test logger   eval supports custom   &lt;NA&gt;
+#&gt; 3   400 2019-02-13 12:48:09 test logger   eval      log fields   &lt;NA&gt;
 #&gt;   numbers  use
 #&gt; 1    NULL &lt;NA&gt;
 #&gt; 2 1, 2, 3 &lt;NA&gt;
@@ -461,9 +464,9 @@ lg<span class="op">$</span><span class="kw">info</span>(<span class="st">"log fi
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lg<span class="op">$</span>appenders<span class="op">$</span>json<span class="op">$</span><span class="kw">show</span>()
 <span class="co"># same as</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(tf), <span class="dt">sep =</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</code></pre></div>
-<pre><code>#&gt; {"level":400,"timestamp":"2019-01-20 10:59:26","logger":"test logger","caller":"eval","msg":"JSON naturally ","field":"custom"}
-#&gt; {"level":400,"timestamp":"2019-01-20 10:59:26","logger":"test logger","caller":"eval","msg":"supports custom","numbers":[1,2,3]}
-#&gt; {"level":400,"timestamp":"2019-01-20 10:59:26","logger":"test logger","caller":"eval","msg":"log fields","use":"JSON"}</code></pre>
+<pre><code>#&gt; {"level":400,"timestamp":"2019-02-13 12:48:09","logger":"test logger","caller":"eval","msg":"JSON naturally ","field":"custom"}
+#&gt; {"level":400,"timestamp":"2019-02-13 12:48:09","logger":"test logger","caller":"eval","msg":"supports custom","numbers":[1,2,3]}
+#&gt; {"level":400,"timestamp":"2019-02-13 12:48:09","logger":"test logger","caller":"eval","msg":"log fields","use":"JSON"}</code></pre>
 </div>
 <div id="examples-hierarchy" class="section level2">
 <h2 class="hasAnchor">
@@ -477,7 +480,7 @@ lg &lt;-<span class="st"> </span>Logger<span class="op">$</span><span class="kw"
 <span class="co">#&gt; &lt;Logger&gt; [info] mypackage -&gt; root</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; appenders:</span>
-<span class="co">#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/RtmpCJ3aM6/file543f13082661</span>
+<span class="co">#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/Rtmpi9DL5e/file26ee21d90c63</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; inherited appenders:</span>
 <span class="co">#&gt;   console: &lt;AppenderConsole&gt; [info] -&gt; console</span>
@@ -485,7 +488,7 @@ lg &lt;-<span class="st"> </span>Logger<span class="op">$</span><span class="kw"
 <p>This tells us that <code>lg</code> logs all events of at least level <code>info</code>. It does have a single (unnamed) Appender that logs to a temporary file, and dispatches all LogEvents it creates to the Appenders of the root Logger (ignoring the threshold and filters of the root Logger, but not of its Appenders).</p>
 <p>We can use <code>lg$fatal()</code>, <code>lg$info()</code>, etc.. to log messages with this Logger:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lg<span class="op">$</span><span class="kw">info</span>(<span class="st">"A test message for lg"</span>)
-<span class="co">#&gt; INFO  [10:59:27.106] A test message for lg</span></code></pre></div>
+<span class="co">#&gt; INFO  [12:48:09.504] A test message for lg</span></code></pre></div>
 <p>If we do not want <code>lg</code> to dispatch to the root Logger, we can set <code>propagate</code> to <code>FALSE</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lg<span class="op">$</span><span class="kw">set_propagate</span>(<span class="ot">FALSE</span>)</code></pre></div>
 <p>When we take a look at the Logger again, we now see that it does not inherit any Appenders anymore</p>
@@ -493,7 +496,7 @@ lg &lt;-<span class="st"> </span>Logger<span class="op">$</span><span class="kw"
 <span class="co">#&gt; &lt;Logger&gt; [info] mypackage | root</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; appenders:</span>
-<span class="co">#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/RtmpCJ3aM6/file543f13082661</span></code></pre></div>
+<span class="co">#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/Rtmpi9DL5e/file26ee21d90c63</span></code></pre></div>
 <p>Consequently, <code>lg</code> no longer outputs log messages to he console</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lg<span class="op">$</span><span class="kw">info</span>(<span class="st">"Nothing to see here"</span>)</code></pre></div>
 </div>
@@ -518,12 +521,12 @@ lg &lt;-<span class="st"> </span>Logger<span class="op">$</span><span class="kw"
 
 <span class="cf">for</span> (nm <span class="cf">in</span> month.name[<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>]) lg<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/debug">debug</a></span>(<span class="st">"%s"</span>, nm)
 lg<span class="op">$</span><span class="kw">error</span>(<span class="st">"But the days grow short when you reach September"</span>)
-<span class="co">#&gt; DEBUG [10:59:27.206] April </span>
-<span class="co">#&gt; DEBUG [10:59:27.206] May </span>
-<span class="co">#&gt; DEBUG [10:59:27.207] June </span>
-<span class="co">#&gt; DEBUG [10:59:27.207] July </span>
-<span class="co">#&gt; DEBUG [10:59:27.207] August </span>
-<span class="co">#&gt; ERROR [10:59:27.209] But the days grow short when you reach September</span></code></pre></div>
+<span class="co">#&gt; DEBUG [12:48:09.688] April </span>
+<span class="co">#&gt; DEBUG [12:48:09.688] May </span>
+<span class="co">#&gt; DEBUG [12:48:09.689] June </span>
+<span class="co">#&gt; DEBUG [12:48:09.689] July </span>
+<span class="co">#&gt; DEBUG [12:48:09.689] August </span>
+<span class="co">#&gt; ERROR [12:48:09.690] But the days grow short when you reach September</span></code></pre></div>
 </div>
 <div id="logging-to-databases" class="section level2">
 <h2 class="hasAnchor">
@@ -539,7 +542,7 @@ lg &lt;-<span class="st"> </span>Logger<span class="op">$</span><span class="kw"
   )), 
   <span class="dt">propagate =</span> <span class="ot">FALSE</span>
 )
-<span class="co">#&gt; Creating '[1] "log"' with manually specified column types</span>
+<span class="co">#&gt; Creating 'log' with manually specified column types</span>
 
 lg<span class="op">$</span><span class="kw">info</span>(<span class="st">"Logging to databases uses a buffer"</span>)
 lg<span class="op">$</span><span class="kw">info</span>(<span class="st">"As the buffer size is 2, no insert took place till now"</span>)
@@ -548,9 +551,9 @@ lg<span class="op">$</span>appenders<span class="op">$</span>db<span class="op">
 
 lg<span class="op">$</span><span class="kw">info</span>(<span class="st">"Now as the buffer is rotated, all events are output to the db"</span>)
 lg<span class="op">$</span>appenders<span class="op">$</span>db<span class="op">$</span><span class="kw">show</span>()
-<span class="co">#&gt; INFO  [2019-01-20 10:59:27] Logging to databases uses a buffer  </span>
-<span class="co">#&gt; INFO  [2019-01-20 10:59:27] As the buffer size is 2, no insert took place till now  </span>
-<span class="co">#&gt; INFO  [2019-01-20 10:59:27] Now as the buffer is rotated, all events are output to the db</span></code></pre></div>
+<span class="co">#&gt; INFO  [2019-02-13 12:48:09] Logging to databases uses a buffer  </span>
+<span class="co">#&gt; INFO  [2019-02-13 12:48:09] As the buffer size is 2, no insert took place till now  </span>
+<span class="co">#&gt; INFO  [2019-02-13 12:48:09] Now as the buffer is rotated, all events are output to the db</span></code></pre></div>
 </div>
 <div id="inject-values-into-logevents" class="section level2">
 <h2 class="hasAnchor">
@@ -582,9 +585,9 @@ analyze &lt;-<span class="st"> </span><span class="cf">function</span>(){
 }
 <span class="kw">analyze</span>()</code></pre></div>
 <p>The result is the same in both cases:</p>
-<pre><code>#&gt; INFO  [10:59:27.857] cleaning data {dataset_id: dataset1}
-#&gt; INFO  [10:59:27.858] processing data {dataset_id: dataset1}
-#&gt; INFO  [10:59:27.860] outputing data {dataset_id: dataset1}</code></pre>
+<pre><code>#&gt; INFO  [12:48:09.963] cleaning data {dataset_id: dataset1}
+#&gt; INFO  [12:48:09.964] processing data {dataset_id: dataset1}
+#&gt; INFO  [12:48:09.965] outputing data {dataset_id: dataset1}</code></pre>
 <p>You can use <code><a href="../reference/with_log_level.html">with_log_level()</a></code> and <code>FilterForceLevel</code> in a similar fashion to modify the log level of events conveniently.</p>
 </div>
 <div id="temporarily-disable-logging" class="section level2">

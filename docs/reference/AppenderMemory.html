@@ -66,7 +66,7 @@ buffer, such as AppenderBuffer and AppenderPushbullet." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9000</span>
       </span>
     </div>
 
@@ -95,6 +95,9 @@ buffer, such as AppenderBuffer and AppenderPushbullet." />
       <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -135,7 +138,7 @@ buffer, such as <a href='AppenderBuffer.html'>AppenderBuffer</a> and <a href='Ap
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre>
-x &lt;- x$get_inherit()$new(layout = Layout$new(), threshold = NA_integer_)
+x &lt;- x$get_inherit()$new(layout = Layout$new(), threshold = NA_integer_)
     x$append(event)
 x$flush()
 x$set_buffer_size(x)
@@ -143,11 +146,11 @@ x$set_should_flush(x)
 x$set_flush_on_exit(x)
 x$set_flush_on_rotate(x)
 x$set_flush_threshold(level)
-x$show(threshold = NA_integer_, n = 20L)
+x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
-x$add_filter(filter, name = NULL)
+x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
 x$set_filters(filters)
     x$buffer_df

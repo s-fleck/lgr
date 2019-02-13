@@ -115,7 +115,7 @@ With the default logging settings this includes also \code{TRACE} and \code{DEBU
 messages, even if they were not printed to the console before.
 
 \code{show_data()} and \code{show_dt()} work similar to \code{show_log()}, except that
-they return the log as \code{data.frame} or \code{data.table} respecitively.
+they return the log as \code{data.frame} or \code{data.table} respectively.
 }
 \examples{
 FATAL("This is an important message about \%s going wrong", "something")

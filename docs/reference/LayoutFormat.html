@@ -65,7 +65,7 @@ more control and flexibility, consider using LayoutGlue instead." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9000</span>
       </span>
     </div>
 
@@ -94,6 +94,9 @@ more control and flexibility, consider using LayoutGlue instead." />
       <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -133,14 +136,14 @@ more control and flexibility, consider using <a href='LayoutGlue.html'>LayoutGlu
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre>
-x &lt;- x$new(fmt = "%L [%t] %m", timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
-  colors = NULL, pad_levels = "right")
+x &lt;- x$new(fmt = "%L [%t] %m", timestamp_fmt = "%Y-%m-%d %H:%M:%OS3", colors =
+  NULL, pad_levels = "right")
     x$format_event(event)
 x$set_fmt(x)
 x$set_timestamp_fmt(x)
 x$set_colors(x)
 x$set_pad_levels(x)
-x$clone(deep = FALSE)
+x$clone(deep = FALSE)
     x$colors
 x$fmt
 x$pad_levels
@@ -211,7 +214,7 @@ have <strong>jsonlite</strong> installed and does not support colors as opposed 
   <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"a test message"</span>
 )
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>()
-<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; [1] "ERROR [2019-01-20 10:59:05.931] a test message"</div><div class='input'>
+<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; [1] "ERROR [2019-02-13 12:47:57.910] a test message"</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

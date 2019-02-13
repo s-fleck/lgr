@@ -68,7 +68,7 @@ events in case a fatal event is encountered." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9000</span>
       </span>
     </div>
 
@@ -97,6 +97,9 @@ events in case a fatal event is encountered." />
       <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -139,11 +142,11 @@ events in case a <code>fatal</code> event is encountered.</p>
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre>
-x &lt;- x$new(threshold = NA_integer_, flush_threshold = "fatal",
-  layout = LayoutFormat$new(fmt = "%K %t&gt; %m %f", timestamp_fmt = "%H:%M:%S"),
-  subject_layout = LayoutFormat$new(fmt = "[LGR] %L: %m"), buffer_size = 6,
-  recipients = NULL, email = NULL, channel = NULL, devices = NULL,
-  apikey = NULL, filters = NULL)
+x &lt;- x$new(threshold = NA_integer_, flush_threshold = "fatal", layout =
+  LayoutFormat$new(fmt = "%K %t&gt; %m %f", timestamp_fmt = "%H:%M:%S"),
+  subject_layout = LayoutFormat$new(fmt = "[LGR] %L: %m"), buffer_size = 6,
+  recipients = NULL, email = NULL, channel = NULL, devices = NULL, apikey =
+  NULL, filters = NULL)
     x$flush()
 x$set_apikey(x)
 x$set_recipients(x)
@@ -155,11 +158,11 @@ x$append(event)
 x$set_buffer_size(x)
 x$set_should_flush(x)
 x$set_flush_threshold(level)
-x$show(threshold = NA_integer_, n = 20L)
+x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
-x$add_filter(filter, name = NULL)
+x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
 x$set_filters(filters)
     x$apikey
