@@ -16,18 +16,18 @@ logging as outlined in \code{vignette("lgr", package = "lgr")}.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(name = "(unnamed logger)", appenders = list(), threshold = 400L,
-  filters = list(), parent = lgr::lgr,
-  exception_handler = default_exception_handler, propagate = TRUE)
+x <- x$new(name = "(unnamed logger)", appenders = list(), threshold = 400L,
+  filters = list(), parent = lgr::lgr, exception_handler =
+  default_exception_handler, propagate = TRUE)
 
-x$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
-x$fatal(msg, ..., caller = get_caller(-8L))
-x$error(msg, ..., caller = get_caller(-8L))
-x$warn(msg, ..., caller = get_caller(-8L))
-x$info(msg, ..., caller = get_caller(-8L))
-x$debug(msg, ..., caller = get_caller(-8L))
-x$trace(msg, ..., caller = get_caller(-8L))
-x$add_appender(appender, name = NULL)
+x$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
+x$fatal(msg, ..., caller = get_caller(-8L))
+x$error(msg, ..., caller = get_caller(-8L))
+x$warn(msg, ..., caller = get_caller(-8L))
+x$info(msg, ..., caller = get_caller(-8L))
+x$debug(msg, ..., caller = get_caller(-8L))
+x$trace(msg, ..., caller = get_caller(-8L))
+x$add_appender(appender, name = NULL)
 x$remove_appender(pos)
 x$handle_exception(...)
 x$set_name(x)
@@ -38,7 +38,7 @@ x$set_threshold(level)
 x$set_appenders(x)
 x$spawn(...)
 x$filter(event)
-x$add_filter(filter, name = NULL)
+x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
 x$set_filters(filters)
 

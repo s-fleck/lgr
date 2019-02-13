@@ -12,10 +12,10 @@ is to push the last 30 log events in case a \code{fatal} event is encountered.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(to, threshold = NA_integer_, flush_threshold = "fatal",
-  layout = LayoutFormat$new(fmt = "\%L [\%t] \%m \%f", timestamp_fmt = "\%H:\%M:\%S"),
-  subject_layout = LayoutFormat$new(fmt = "[LGR] \%L: \%m"), buffer_size = 30,
-  from = get_user(), cc = NULL, bcc = NULL, html = FALSE, filters = NULL)
+x <- x$new(to, threshold = NA_integer_, flush_threshold = "fatal", layout =
+  LayoutFormat$new(fmt = "\%L [\%t] \%m \%f", timestamp_fmt = "\%H:\%M:\%S"),
+  subject_layout = LayoutFormat$new(fmt = "[LGR] \%L: \%m"), buffer_size = 30,
+  from = get_user(), cc = NULL, bcc = NULL, html = FALSE, filters = NULL)
 
 x$flush()
 x$set_to(x)
@@ -28,11 +28,11 @@ x$append(event)
 x$set_buffer_size(x)
 x$set_should_flush(x)
 x$set_flush_threshold(level)
-x$show(threshold = NA_integer_, n = 20L)
+x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
-x$add_filter(filter, name = NULL)
+x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
 x$set_filters(filters)
 

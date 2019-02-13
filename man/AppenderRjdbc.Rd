@@ -12,26 +12,26 @@ for other databases. Please file a bug report if you encounter any issues.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(conn, table, threshold = NA_integer_,
-  layout = select_dbi_layout(conn, table), close_on_exit = TRUE,
-  buffer_size = 10, flush_threshold = "error", flush_on_exit = TRUE,
-  flush_on_rotate = TRUE, should_flush = default_should_flush, filters = NULL)
+x <- x$new(conn, table, threshold = NA_integer_, layout =
+  select_dbi_layout(conn, table), close_on_exit = TRUE, buffer_size = 10,
+  flush_threshold = "error", flush_on_exit = TRUE, flush_on_rotate = TRUE,
+  should_flush = default_should_flush, filters = NULL)
 
 x$flush()
 x$set_close_on_exit(x)
 x$set_conn(conn)
-x$show(threshold = NA_integer_, n = 20)
+x$show(threshold = NA_integer_, n = 20)
 x$append(event)
 x$set_buffer_size(x)
 x$set_should_flush(x)
 x$set_flush_on_exit(x)
 x$set_flush_on_rotate(x)
 x$set_flush_threshold(level)
-x$show(threshold = NA_integer_, n = 20L)
+x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
-x$add_filter(filter, name = NULL)
+x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
 x$set_filters(filters)
 

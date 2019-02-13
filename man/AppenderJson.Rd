@@ -10,15 +10,15 @@ comfortably access the underlying file.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(file, threshold = NA_integer_, layout = LayoutFormat$new(),
-  filters = NULL)
+x <- x$new(file, threshold = NA_integer_, layout = LayoutFormat$new(), filters
+  = NULL)
 
 x$append(event)
 x$set_file(file)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
-x$add_filter(filter, name = NULL)
+x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
 x$set_filters(filters)
 

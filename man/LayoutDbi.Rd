@@ -25,15 +25,15 @@ LogEvents directly, but their \code{data.table} representations (see
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(col_types = NULL, fmt = "\%L [\%t] \%m \%f", timestamp_fmt = "\%Y-\%m-\%d
-  \%H:\%M:\%S", colors = getOption("lgr.colors", list()), pad_levels = "right")
+x <- x$new(col_types = NULL, fmt = "\%L [\%t] \%m \%f", timestamp_fmt = "\%Y-\%m-\%d
+  \%H:\%M:\%S", colors = getOption("lgr.colors", list()), pad_levels = "right")
 
 x$format_table_name(x)
 x$format_colnames(x)
 x$format_data(x)
 x$set_col_types(x)
 x$sql_create_table(table)
-x$clone(deep = FALSE)
+x$clone(deep = FALSE)
 x$format_event(event)
 x$set_fmt(x)
 x$set_timestamp_fmt(x)

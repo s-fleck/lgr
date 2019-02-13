@@ -85,6 +85,6 @@ fmt_formals <- function(fmls){
   }
 
   res <- vapply(fmls, arg_to_text, character(1))
-  sep <- ifelse(res == "", "", "\u{A0}=\u{A0}")
+  sep <- ifelse(res == "", "", " = ")
   paste0(names(res), sep, res, collapse = ", ")
 }

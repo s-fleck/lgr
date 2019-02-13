@@ -11,13 +11,13 @@ but also more complex and slightly less performant.
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)}
+x <- x$new(fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)}
   [{timestamp}] msg")
 
 x$format_event(event)
 x$set_fmt(x)
 x$set_colors(x)
-x$clone(deep = FALSE)
+x$clone(deep = FALSE)
 
 x$fmt
 

@@ -8,11 +8,11 @@ Format a LogEvent as JSON
 }
 \section{Usage}{
 \preformatted{
-x <- x$new(toJSON_args = list(auto_unbox = TRUE))
+x <- x$new(toJSON_args = list(auto_unbox = TRUE))
 
 x$format_event(event)
 x$set_toJSON_args(x)
-x$clone(deep = FALSE)
+x$clone(deep = FALSE)
 
 x$toJSON_args
 
