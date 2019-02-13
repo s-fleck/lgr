@@ -65,7 +65,7 @@ table up manually with an SQL CREATE TABLE statement instead." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -94,6 +94,9 @@ table up manually with an SQL CREATE TABLE statement instead." />
       <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -143,14 +146,14 @@ LogEvents directly, but their <code>data.table</code> representations (see
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre>
-x &lt;- x$new(col_types = NULL, fmt = "%L [%t] %m %f", timestamp_fmt = "%Y-%m-%d
-  %H:%M:%S", colors = getOption("lgr.colors", list()), pad_levels = "right")
+x &lt;- x$new(col_types = NULL, fmt = "%L [%t] %m %f", timestamp_fmt = "%Y-%m-%d
+  %H:%M:%S", colors = getOption("lgr.colors", list()), pad_levels = "right")
     x$format_table_name(x)
 x$format_colnames(x)
 x$format_data(x)
 x$set_col_types(x)
 x$sql_create_table(table)
-x$clone(deep = FALSE)
+x$clone(deep = FALSE)
 x$format_event(event)
 x$set_fmt(x)
 x$set_timestamp_fmt(x)

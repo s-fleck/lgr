@@ -64,7 +64,7 @@ Appenders once certain conditions are met." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -93,6 +93,9 @@ Appenders once certain conditions are met." />
       <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -131,14 +134,13 @@ Appenders once certain conditions are met.</p>
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre>
-x &lt;- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "%L [%t]
-  %m", timestamp_fmt = "%H:%M:%S", colors = getOption("lgr.colors")),
-  appenders = NULL, buffer_size = 1000, flush_threshold = "fatal",
-  flush_on_exit = TRUE, flush_on_rotate = TRUE,
-  should_flush = default_should_flush, filters = NULL)
+x &lt;- x$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt = "%L [%t]
+  %m", timestamp_fmt = "%H:%M:%S", colors = getOption("lgr.colors")), appenders
+  = NULL, buffer_size = 1000, flush_threshold = "fatal", flush_on_exit = TRUE,
+  flush_on_rotate = TRUE, should_flush = default_should_flush, filters = NULL)
     x$flush()
 x$set_appenders(x)
-x$add_appender(appender, name = NULL)
+x$add_appender(appender, name = NULL)
 x$remove_appender(pos)
 x$append(event)
 x$set_buffer_size(x)
@@ -146,11 +148,11 @@ x$set_should_flush(x)
 x$set_flush_on_exit(x)
 x$set_flush_on_rotate(x)
 x$set_flush_threshold(level)
-x$show(threshold = NA_integer_, n = 20L)
+x$show(threshold = NA_integer_, n = 20L)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
-x$add_filter(filter, name = NULL)
+x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
 x$set_filters(filters)
     x$appenders

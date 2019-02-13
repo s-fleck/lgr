@@ -70,7 +70,7 @@ end of this document a list of available Appenders." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -99,6 +99,9 @@ end of this document a list of available Appenders." />
       <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -143,12 +146,12 @@ end of this document a list of available Appenders.</p>
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre>
-x &lt;- x$new(layout = Layout$new(), threshold = NA_integer_)
+x &lt;- x$new(layout = Layout$new(), threshold = NA_integer_)
     x$append(event)
 x$set_threshold(level)
 x$set_layout(layout)
 x$filter(event)
-x$add_filter(filter, name = NULL)
+x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
 x$set_filters(filters)
     x$destination
