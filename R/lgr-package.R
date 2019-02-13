@@ -108,10 +108,12 @@ NULL
     appenders[["memory"]] <- AppenderDt$new(layout = appenders$console$layout)
   }
 
-
   assign(
-    "lgr",
-    get_logger("root", parent = NULL, appenders = appenders, threshold = NA),
-    envir = parent.env(environment())
+    "root",
+    Logger$new("root", parent = NULL, appenders = appenders, threshold = NA),
+    envir = loggers
   )
+
+  assign("lgr", get_logger("root"), envir = parent.env(environment()))
+
 }

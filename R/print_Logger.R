@@ -165,20 +165,22 @@ format.ancestry <- function(
   ...
 ){
   assert(is_scalar_bool(color))
-  seps <- rep("||", length(x))
-  seps <- ifelse(x, " -> ", " | ")
-  seps[length(seps)] <- ""
-  l_names <- names(x)
+  sps <- rep("/", length(x))
+  nms <- names(x)
+
+  style <- identity
 
   if (color){
-    l_names <- style_subtle(names(x))
-    seps  <- style_subtle(seps)
-    for (i in seq_along(x)){
-      seps[[i]]  <- crayon::strip_style(seps[[i]])
-      l_names[[i]] <- crayon::strip_style(l_names[[i]])
-      if (!x[[i]]) break
+    for (i in rev(seq_along(x))){
+      nms[[i]] <- style(nms[[i]])
+      sps[[i]] <- style(sps[[i]])
+      if (!x[[i]]){
+        style <- style_subtle
+      }
     }
   }
 
-  paste0(l_names, seps, collapse = "")
+  sps[length(sps)] <- ""
+
+  paste0(nms, sps, collapse = "")
 }

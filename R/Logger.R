@@ -66,15 +66,12 @@
 #' \describe{
 #'   \item{`ancestry`}{A named `logical` vector of containing
 #'   the propagate value of each Logger upper the inheritance tree. The names
-#'   are the names of the appenders.}
+#'   are the names of the appenders. `ancestry` is an S3 class with a custom
+#'   `format()`/`print()` method, so if you want to use the plain logical
+#'   vector use `unclass(lg$ancestry)`}
 #'
 #'   \item{`inherited_appenders`}{A `list` of all inherited
 #'   appenders from ancestral Loggers of the current Logger}
-#'
-#'   \item{`full_name`}{`character` scalar. The full or *qualified* name of
-#'     the logger: The name of the logger and all loggers it inherits from
-#'     (except for the root logger)
-#'    }
 #'
 #'   \item{`last_event`}{The last LogEvent produced by the current Logger}
 #' }
@@ -524,14 +521,20 @@ Logger <- R6::R6Class(
     last_event = function() private$.last_event,
 
     ancestry = function(){
-      structure(
-        c(setNames(self$propagate, self$name), private$.parent$ancestry),
-        class = c("ancestry", "list")
-      )
-    },
 
-    full_name = function(){
-      paste(rev(setdiff(names(self$ancestry), "root")), collapse = ".")
+      nm <- unlist(strsplit(self$name, "/"))
+
+      res <- vapply(
+        seq_along(nm),
+        function(i) get_logger(nm[1:i])[["propagate"]],
+        logical(1)
+      )
+
+      structure(
+        setNames(res, nm),
+        class = c("ancestry", class(res))
+      )
+
     },
 
     parent = function() private$.parent,

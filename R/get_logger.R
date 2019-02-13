@@ -13,27 +13,36 @@ loggers <- new.env()
 #'
 #' @examples
 get_logger <- function(
-  logger,
+  name,
   ...
 ){
-
-  res <- get0(logger, envir = loggers)
+  nm_cur <- unlist(strsplit(name, "/", fixed = TRUE))
+  name   <- paste(nm_cur, collapse = "/")
+  res    <- get0(name, envir = loggers)
 
   if (!is.null(res)){
     return(res)
-
   }
 
-  names <- unlist(strsplit(logger, ".", fixed = TRUE))
-
-  if (identical(length(names), 1L)){
-    assign(logger, Logger$new(logger, ...), envir = loggers)
-    return(get(logger, envir = loggers))
-
+  if (length(nm_cur) > 1){
+    parent <- get_logger(nm_cur[-length(nm_cur)])
   } else {
-    get_logger(
-      names[length(names)],
-      parent = get_logger(names[length(names) - 1L])
-    )
+    parent <- get_logger("root")
   }
+
+  assign(
+    name,
+    Logger$new(name, parent = parent),
+    envir = loggers
+  )
+
+  get_logger(name)
+}
+
+
+
+exists_logger <- function(
+  name
+){
+  inherits(get0(name, envir = loggers), "Logger")
 }

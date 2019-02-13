@@ -4,7 +4,7 @@
 \alias{get_logger}
 \title{Title}
 \usage{
-get_logger(logger, ...)
+get_logger(name, ...)
 }
 \arguments{
 \item{...}{}
