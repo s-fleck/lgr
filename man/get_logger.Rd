@@ -2,13 +2,26 @@
 % Please edit documentation in R/get_logger.R
 \name{get_logger}
 \alias{get_logger}
-\title{Title}
+\alias{get_logger_glue}
+\title{Get/Create a Logger}
 \usage{
-get_logger(name, ...)
+get_logger(name, class = Logger)
+
+get_logger_glue(name)
 }
 \arguments{
-\item{...}{}
+\item{class}{An \link[R6:R6]{R6ClassGenerator} object. Usually \code{Logger} or \code{LoggerGlue}
+are the only valid choices.}
 }
 \description{
-Title
+Get/Create a Logger
+}
+\examples{
+
+lg <- get_logger("log/ger/test")
+get_logger_glue("log/ger")
+
+lg
+lg$parent
+
 }

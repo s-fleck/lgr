@@ -283,8 +283,7 @@ test_that("AppenderDt: default format for show_log looks like format.LogEvent", 
         appenders = list(file = AppenderFile$new(file = tf)),
         buffer_size = 10
       )
-    ),
-    parent = NULL
+    ), propagate = FALSE
   )
 
 
@@ -374,7 +373,7 @@ test_that("AppenderBuffer: flush on object destruction can be switched of", {
         buffer_size = 10
       )
     ),
-    parent = NULL
+    propagate = FALSE
   )
 
   l$info(LETTERS[1:3])

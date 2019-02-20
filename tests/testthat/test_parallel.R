@@ -23,7 +23,7 @@ for (strategy in c(
 
     tf <- tempfile()
 
-    lr <- Logger$new("par_root", parent = NULL, appenders = AppenderFile$new(tf))
+    lr <- Logger$new("par_root", propagate = FALSE, appenders = AppenderFile$new(tf))
     lg <- lr$spawn("par_child")
 
     x <- future::future(lr$info("root_logger"))

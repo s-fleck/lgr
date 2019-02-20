@@ -20,29 +20,29 @@ ml[["suspended"]] <- Logger$new(
   "suspended",
   threshold = 0,
   appenders = AppenderConsole$new(),
-  parent = NULL
+ propagate = FALSE
 )
 
 ml[["no appenders"]] <-
-  Logger$new("no appenders", appenders = NULL, parent = NULL)
+  Logger$new("no appenders", appenders = NULL,propagate = FALSE)
 
 ml[["dt"]] <-
-  Logger$new("memory dt", appenders = AppenderDt$new(), parent = NULL)
+  Logger$new("memory dt", appenders = AppenderDt$new(),propagate = FALSE)
 
 ml[["dt (cyle)"]] <-
-  Logger$new("memory dt", appenders = AppenderDt$new(buffer_size = 10), parent = NULL)
+  Logger$new("memory dt", appenders = AppenderDt$new(buffer_size = 10),propagate = FALSE)
 
 ml[["buffer"]] <-
-  Logger$new("memory buffer", appenders = AppenderBuffer$new(), parent = NULL)
+  Logger$new("memory buffer", appenders = AppenderBuffer$new(),propagate = FALSE)
 
 ml[["buffer (cycle)"]] <-
-  Logger$new("memory buffer", appenders = AppenderBuffer$new(buffer_size = 10), parent = NULL)
+  Logger$new("memory buffer", appenders = AppenderBuffer$new(buffer_size = 10),propagate = FALSE)
 
 ml[["default (no colors)"]] <-
-  Logger$new("default (no colors)", appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = NULL)), parent = NULL)
+  Logger$new("default (no colors)", appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = NULL)),propagate = FALSE)
 
 ml[["default (colors)"]] <-
-  Logger$new("default (colors)", appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = getOption("lgr.colors"))), parent = NULL)
+  Logger$new("default (colors)", appenders = AppenderConsole$new(layout = LayoutFormat$new(colors = getOption("lgr.colors"))),propagate = FALSE)
 
 
 # Setup bencharmks

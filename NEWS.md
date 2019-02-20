@@ -1,7 +1,9 @@
 # lgr 0.1.1.9000
 
 * `get_loggers()` registeres new loggers in the lgr::loggers namespace, this 
-  is a more global and decoupled approach to loggers
+  is a more global and decoupled approach to loggers. 
+* `lg$parent` is now derived from `lg$name`, `lg$set_parent()` is no longer
+  possible.
 * removed `full_name` active binding for loggers. Loggers now only have 
   qualified names and `name` is now identical to what `full_name` was before.
   For consistency the format method of `ancestry` has also been revised.

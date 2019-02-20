@@ -152,7 +152,7 @@ test_that("add/remove appenders", {
 
 
 test_that("modify appenders for a logger", {
-  ml <- Logger$new("test_logger", appenders = list(AppenderConsole$new()), parent = NULL)
+  ml <- Logger$new("test_logger", appenders = list(AppenderConsole$new()), propagate = FALSE)
   tf <- tempfile()
 
   # Add a new appender to a logger. We don't have to supply a name, but that
@@ -197,9 +197,14 @@ test_that("Logger inheritance and event propagation", {
   tf1 <- tempfile()
   tf2 <- tempfile()
   tf3 <- tempfile()
-  c1  <- Logger$new("c1", appenders = AppenderFile$new(tf1))
-  c2  <- Logger$new("c2", parent = c1, appenders = AppenderFile$new(tf2))
-  c3  <- Logger$new("c3", parent = c2, appenders = AppenderFile$new(tf3))
+  c1  <- get_logger("c1")
+  c1$add_appender(AppenderFile$new(tf1))
+
+  c2  <- get_logger("c1/c2")
+  c2$add_appender(AppenderFile$new(tf2))
+
+  c3  <- Logger$new("c1/c2/c3")
+  c3$add_appender(AppenderFile$new(tf3))
 
   expect_output(c3$fatal("blubb"), "FATAL.*blubb")
   expect_match(readLines(tf1), "FATAL.*blubb")
@@ -227,9 +232,9 @@ test_that("thresholds work", {
 
 test_that("ancestry querry works", {
   l1 <- Logger$new("l1", appenders = AppenderBuffer$new())
-  l2 <- Logger$new("l2", propagate = FALSE, parent = l1, appenders = AppenderConsole$new())
-  l3 <- Logger$new("l3", parent = l2, appenders = AppenderFile$new(tempfile()))
-  l4 <- Logger$new("l4", parent = l3, appenders = AppenderBuffer$new())
+  l2 <- Logger$new("l1/l2", propagate = FALSE, appenders = AppenderConsole$new())
+  l3 <- Logger$new("l1/l2/l3", appenders = AppenderFile$new(tempfile()))
+  l4 <- Logger$new("l1/l2/l3/l4", appenders = AppenderBuffer$new())
 
   expect_match(format(l4$ancestry), "(->.*){2}.*|")
 })
@@ -264,7 +269,7 @@ test_that("LoggerGlue creates custom fields", {
 
 
 test_that("LoggerGlue uses the correct evaluation environment", {
-  l <- LoggerGlue$new("glue", parent = NULL)
+  l <- LoggerGlue$new("glue", propagate = FALSE)
 
   expect_match(l$fatal("{iris[['Species']][[1]]}"), "setosa")
   expect_match(l$log(100, "{iris[['Species']][[1]]}"), "setosa")

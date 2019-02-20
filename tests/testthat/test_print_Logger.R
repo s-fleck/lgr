@@ -18,9 +18,9 @@ test_that("formatting Loggers works as expected", {
 
   # ensure that print doesn't raise exceptions
   expect_output(print(l))
-  expect_output(print(Logger$new("blubb", parent = NULL)))
-  expect_output(print(Logger$new("blubb", parent = NULL, propagate = FALSE)))
-  expect_output(print(Logger$new("blubb", parent = NULL, appenders = Appender$new())))
+  expect_output(print(Logger$new("blubb", propagate = FALSE)))
+  expect_output(print(Logger$new("blubb", propagate = FALSE)))
+  expect_output(print(Logger$new("blubb", propagate = FALSE, appenders = Appender$new())))
 })
 
 

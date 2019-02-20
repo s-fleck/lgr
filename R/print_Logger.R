@@ -144,13 +144,12 @@ srs_appender <- function(x){
 #'
 #' @examples
 #' # print only the ancestry of a logger
-#' l1 <- Logger$new("AegonV")
-#' l2 <- Logger$new("Aerys", parent = l1)
-#' l3 <- Logger$new("Rheagar", parent = l2, propagate = FALSE)
-#' l4 <- Logger$new("Aegon", parent = l3)
+#' lg <- get_logger("AegonV/Aerys/Rheagar/Aegon")
 #'
-#' print(l4$ancestry)
-#' unclass(l4$ancestry)
+#' get_logger("AegonV/Aerys/Rheagar")$set_propagate(FALSE)
+#'
+#' print(lg$ancestry)
+#' unclass(lg$ancestry)
 print.ancestry <- function(
   x,
   color = requireNamespace("crayon", quietly = TRUE),

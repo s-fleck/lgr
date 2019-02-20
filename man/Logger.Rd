@@ -21,8 +21,8 @@ lg <- get_logger("logger")
 
 \preformatted{# R6 constructor (not recommended for productive use)
 lg <- Logger$new(name = "(unnamed logger)", appenders = list(), threshold =
-  400L, filters = list(), parent = get_logger("root"), exception_handler =
-  default_exception_handler, propagate = TRUE)
+  NULL, filters = list(), exception_handler = default_exception_handler,
+  propagate = TRUE)
 
 lg$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
 lg$fatal(msg, ..., caller = get_caller(-8L))
@@ -37,7 +37,6 @@ lg$handle_exception(...)
 lg$set_name(x)
 lg$set_exception_handler(fun)
 lg$set_propagate(x)
-lg$set_parent(logger)
 lg$set_threshold(level)
 lg$set_appenders(x)
 lg$spawn(...)
@@ -105,10 +104,6 @@ inheritance structures).}
 
 \item{\code{threshold}, \code{set_threshold(level)}}{\code{character} or \code{integer} scalar.
 The minimum \link[=log_levels]{log level} that triggers this Logger}
-
-\item{\code{parent}, \code{set_parent(logger)}}{a \code{Logger}. Usually the root logger.
-Can also be \code{NULL}, but all Loggers must be descendants of the root logger
-for lgr to work as intended.}
 
 \item{\code{exception_handler}, \code{set_exception_handler()}}{a \code{function} that
 takes a single argument \code{e}. The function used to handle errors that occur

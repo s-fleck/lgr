@@ -62,10 +62,6 @@
 #'   \item{`threshold`, `set_threshold(level)`}{`character` or `integer` scalar.
 #'   The minimum [log level][log_levels] that triggers this Logger}
 #'
-#'   \item{`parent`, `set_parent(logger)`}{a `Logger`. Usually the root logger.
-#'   Can also be `NULL`, but all Loggers must be descendants of the root logger
-#'   for lgr to work as intended.}
-#'
 #'   \item{`exception_handler`, `set_exception_handler()`}{a `function` that
 #'   takes a single argument `e`. The function used to handle errors that occur
 #'   during logging. Defaults to demoting errors to [warnings].}
@@ -141,8 +137,7 @@
 #'      remove an Appender by position or name.
 #'    }
 #'
-#'    \item{`spawn(...)`}{Spawn a child Logger. `lg <- lgr$spawn("mylogger")` is
-#'      equivalent to `lg <- Logger$new("mylogger", parent = lgr)`}
+#'    \item{`spawn(...)`}{Spawn a child Logger}
 #' }
 #'
 #'
@@ -182,10 +177,10 @@
 #' readLines(tf)
 #'
 #' # This logger's print() method depicts this relationship
-#' lg2 <- Logger$new("child", parent = lg)
+#' lg2 <- Logger$new("lg/child")
 #' print(lg2)
 #' print(lg2$ancestry)
-#' print(lg2$full_name)
+#' print(lg2$name)
 #'
 #' # use formatting strings and custom fields
 #' tf2 <- tempfile()
@@ -221,7 +216,6 @@ Logger <- R6::R6Class(
       appenders = list(),
       threshold = NULL,
       filters = list(),
-      parent = get_logger("root"),
       exception_handler = default_exception_handler,
       propagate = TRUE
     ){
@@ -236,7 +230,6 @@ Logger <- R6::R6Class(
 
       self$set_appenders(appenders)
       self$set_exception_handler(exception_handler)
-      self$set_parent(parent)
       self$set_name(name)
       self$set_propagate(propagate)
       self$set_filters(filters)
@@ -488,12 +481,6 @@ Logger <- R6::R6Class(
       invisible(self)
     },
 
-    set_parent = function(logger){
-      assert(is.null(logger) || inherits(logger, "Logger"))
-      private$.parent <- logger
-      invisible(self)
-    },
-
 
     set_threshold = function(level){
 
@@ -528,8 +515,8 @@ Logger <- R6::R6Class(
     },
 
 
-    spawn = function(...){
-      Logger$new(..., parent = self)
+    spawn = function(name, ...){
+      Logger$new(..., name = paste0(self$name, "/", name))
     }
   ),
 
@@ -558,14 +545,20 @@ Logger <- R6::R6Class(
 
     },
 
-    parent = function() private$.parent,
+    parent = function() {
+      if (self$name == "root"){
+        return(NULL)
+      } else {
+        get_logger(names(self$ancestry[-length(self$ancestry)]))
+      }
+    },
 
     threshold = function() {
 
       res <- get(".threshold", envir = private)
 
       if (is.null(res)){
-        get(".parent", envir = private)[["threshold"]]
+        get("parent", envir = self)[["threshold"]]
       } else {
         res
       }
@@ -574,8 +567,8 @@ Logger <- R6::R6Class(
     inherited_appenders = function(){
       if (self$propagate){
         c(
-          private$.parent$appenders,
-          private$.parent$inherited_appenders
+          get("parent", envir = self)$appenders,
+          get("parent", envir = self)$inherited_appenders
         )
       } else {
         NULL
@@ -596,7 +589,6 @@ Logger <- R6::R6Class(
     .propagate = NULL,
     .exception_handler = NULL,
     .name = NULL,
-    .parent = NULL,
     .appenders = NULL,
     .threshold = NULL,
     .last_event = NULL
@@ -772,3 +764,8 @@ LoggerGlue <- R6::R6Class(
   )
 )
 
+
+
+is_Logger <- function(x){
+  inherits(x, "Logger")
+}

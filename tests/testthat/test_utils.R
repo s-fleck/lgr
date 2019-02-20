@@ -10,7 +10,7 @@ test_that("utils works as expected", {
   lg <- Logger$new(
     "test logger",
     appenders = AppenderConsole$new(layout = LayoutFormat$new(fmt = "%c")),
-    parent = NULL
+    propagate = FALSE
   )
 
 

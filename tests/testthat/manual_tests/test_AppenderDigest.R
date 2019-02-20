@@ -18,7 +18,7 @@ test_that("AppenderPushbullet: ERROR log level triggers push", {
         buffer_size = 3
       )
     ),
-    parent = NULL
+    propagate = FALSE
   )
 
   l$info("1")
@@ -51,7 +51,7 @@ test_that("AppenderSendmail: ERROR log level triggers push", {
       control = list(smtpServer = smtp, verboseShow = TRUE),
       buffer_size = 3,
       html = FALSE),
-    parent = NULL
+    propagate = FALSE
   )
 
   l$info("1")
@@ -77,7 +77,7 @@ test_that("AppenderGmail: ERROR log level triggers push", {
       to = email,
       html = TRUE,
       buffer_size = 3),
-    parent = NULL
+    propagate = FALSE
   )
 
   l$info("1")

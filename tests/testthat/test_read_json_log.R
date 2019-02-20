@@ -8,7 +8,7 @@ test_that("read_json_lines works as expected", {
     "test",
     appenders = AppenderFile$new(layout = lo, file = tf),
     threshold = NA,
-    parent = NULL
+    propagate = FALSE
   )
 
   lgr$fatal("test")

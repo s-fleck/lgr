@@ -110,7 +110,7 @@ NULL
 
   assign(
     "root",
-    Logger$new("root", parent = NULL, appenders = appenders, threshold = NA),
+    Logger$new("root", appenders = appenders, threshold = NA),
     envir = loggers
   )
 
