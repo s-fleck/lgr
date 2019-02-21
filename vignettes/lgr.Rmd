@@ -190,6 +190,9 @@ have to be instantiated with `<classname>$new()`. So if you want to create
 a new `AppenderFile`, you do this by calling 
 `AppenderFile$new(file = tempfile())`.
 
+Please not that Loggers should never be instantiated directly with `$new()` but
+always with `get_logger()`.
+
 
 
 ## Log Levels
@@ -219,11 +222,12 @@ ll <- data.frame(
 knitr::kable(ll)
 ```
 
-The list of named log levels is stored as an option 
+The list of named log levels is stored as a global option 
 (`getOption("lgr.log_levels")`) and you can use `add_log_levels()` and 
 `remove_log_levels()` to define your own named levels if you want to.
 There are only predefined logging methods (`lgr$fatal()`, etc..) for the
-standard log levels though.
+standard log levels and you have to use `lgr$log(level, message)` to create
+a LogEvent with a custom log level.
 
 
 ## Logging With the Root Logger
@@ -369,11 +373,21 @@ common in R to build complex systems of hierarchically organised packages,
 hierarchies will usually be pretty flat (i.e. most Loggers will only inherit
 from the root logger). 
 
-Each newly created Logger is child to a parent Logger. If no parent Logger
-is specified manually during a Logger's creation, its parent is the root 
-Logger. A logger dispatches the LogEvents it creates not only to its own
+Each newly created Logger is child to a parent Logger, derived from its name. 
+So `lg <- get_logger("foo/bar")` creates the logger with the qualified 
+name `foo/bar` whose parent is the logger `foo` whose parent is (implicitely)
+the `root` logger. If the logger `foo` does not exist in that scenario, it is 
+created automatically. This behaviour might sound strange at first, but it mimicks
+tried and tested behaviour of python logging. This way logging ist decoupled
+from the business logic and your program will not abort if you forgott to
+initialize some logger up the hierarchy for whatever reason.
+
+A logger dispatches the LogEvents it creates not only to its own
 Appenders, but also to the Appenders of all its ancestral Loggers (ignoring
 the threshold and Filters of the ancestral Loggers, but not of the Appenders). 
+When you define Loggers for your package, you should *not* configure them
+(with custom Appenders or thresholds); that should be left to the user of the 
+package.
 
 If all this sounds confusing to you, take a look at the
 [examples](#examples-hierarchy). The common use cases are pretty easy to 
@@ -402,9 +416,9 @@ To take advantage of glue, simply create a new LoggerGlue like this:
 ```{r}
 # install.packages("glue")
 
-l <- LoggerGlue$new("glue_logger")
+lg <- get_logger_glue("glue/logger")
 
-l$info(
+lg$info(
   "glue automatically ", 
   "pastes together unnamed arguments ",
   "and evaluates arbitray expressions inside braces {Sys.Date()}"
@@ -415,12 +429,12 @@ l$info(
 Glue lets you define temporary variables inside the `glue()` call.
 As with the normal Logger, named arguments get turned into custom fields. 
 ```{r}
-l$info("For more info on glue see {website}", website = "https://glue.tidyverse.org/")
+lg$info("For more info on glue see {website}", website = "https://glue.tidyverse.org/")
 ```
 
 You can suppress this behaviour by making named argument start with a `"."`.
 ```{r}
-l$info("Glue is available from {.cran}", .cran = "https://CRAN.R-project.org/package=glue")
+lg$info("Glue is available from {.cran}", .cran = "https://CRAN.R-project.org/package=glue")
 ```
 
 
@@ -433,8 +447,9 @@ lgr comes with simple but powerful formatting syntax for LogEvents. Please
 refer to `?format.LogEvent` for the full list of available placeholders.
 
 ```{r}
-lg <- Logger$new(
-  "test", 
+lg <- get_logger("test")
+
+lg$config( 
   appenders = list(cons = AppenderConsole$new()), 
   propagate = FALSE
 )
@@ -479,8 +494,9 @@ LayotJson as default Layout and a few extra features]
 # install.packages("jsonlite")
 tf <- tempfile()
 
-lg <- Logger$new(
-  "test logger",
+lg <- get_logger("test")
+
+lg$config(
   appenders = list(json = AppenderJson$new(file = tf)), 
   propagate = FALSE
 )
@@ -536,7 +552,8 @@ package.
 ```{r}
 # The logger name should be the same as the package name
 tf <- tempfile()
-lg <- Logger$new("mypackage", appenders = AppenderFile$new(tf))  
+lg <- get_logger("mypackage")
+lg$add_appender(AppenderFile$new(tf))  
 ```
 
 The `print()` method for Loggers gives a nice overview of the newly created
@@ -590,8 +607,9 @@ For example, the will output the last 5 LogEvents that happened before an
 `error` occurred.
 
 ```{r}
-lg <- Logger$new(
-  "buffer example",
+lg <- get_logger("buffer")
+
+lg$config(
   threshold = NA,
   propagate = FALSE,  # to suppress console output
   appenders = AppenderBuffer$new(
@@ -619,8 +637,9 @@ just set the buffer size to `0`.
 
 ```{r}
 # install.packages("RSQLite")
-lg <- Logger$new(
-  "db_logger",
+lg <- get_logger("db_logger")
+
+lg$config(
   appenders = list(db = AppenderDbi$new(
     conn = DBI::dbConnect(RSQLite::SQLite()),
     table = "log",
@@ -719,7 +738,7 @@ inside the `R/` directory of your package:
 .onLoad <- function(...){
   assign(
     "lg",  # the recommended name for a logger object
-    lgr::Logger$new(name = "mypackage"),  # should be the same as the package name
+    lgr::get_logger(name = "mypackage"),  # should be the same as the package name
     envir = parent.env(environment())
   )
 }
