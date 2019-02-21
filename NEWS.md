@@ -8,6 +8,9 @@
   qualified names and `name` is now identical to what `full_name` was before.
   For consistency the format method of `ancestry` has also been revised.
 * New Loggers now inherit the log level of their parent unless one is set
+* added a `config` method for Loggers.
+* Depend on R6 >= 2.4.0 (which includes some relevant fixes to finalizers)
+* finalize methods are now private
 
 
 # lgr 0.1.1

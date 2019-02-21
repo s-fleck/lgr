@@ -24,6 +24,7 @@ lg <- Logger$new(name = "(unnamed logger)", appenders = list(), threshold =
   NULL, filters = list(), exception_handler = default_exception_handler,
   propagate = TRUE)
 
+lg$config(appenders, threshold, filters, exception_handler, propagate)
 lg$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
 lg$fatal(msg, ..., caller = get_caller(-8L))
 lg$error(msg, ..., caller = get_caller(-8L))
@@ -39,7 +40,7 @@ lg$set_exception_handler(fun)
 lg$set_propagate(x)
 lg$set_threshold(level)
 lg$set_appenders(x)
-lg$spawn(...)
+lg$spawn(name, ...)
 lg$filter(event)
 lg$add_filter(filter, name = NULL)
 lg$remove_filter(pos)
@@ -195,8 +196,7 @@ refer to it via \code{logger$appenders$console}. \code{remove_appender()} can
 remove an Appender by position or name.
 }
 
-\item{\code{spawn(...)}}{Spawn a child Logger. \code{lg <- lgr$spawn("mylogger")} is
-equivalent to \code{lg <- Logger$new("mylogger", parent = lgr)}}
+\item{\code{spawn(...)}}{Spawn a child Logger}
 }
 
 
@@ -245,10 +245,10 @@ lg$fatal("blubb")
 readLines(tf)
 
 # This logger's print() method depicts this relationship
-lg2 <- Logger$new("child", parent = lg)
+lg2 <- Logger$new("lg/child")
 print(lg2)
 print(lg2$ancestry)
-print(lg2$full_name)
+print(lg2$name)
 
 # use formatting strings and custom fields
 tf2 <- tempfile()

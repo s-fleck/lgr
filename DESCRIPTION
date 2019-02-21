@@ -19,7 +19,7 @@ License: MIT + file LICENSE
 URL: https://github.com/s-fleck/lgr
 BugReports: https://github.com/s-fleck/lgr/issues
 Imports: 
-    R6
+    R6 (>= 2.4.0)
 Suggests: 
     covr,
     crayon,

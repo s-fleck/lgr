@@ -1149,10 +1149,6 @@ AppenderBuffer <- R6::R6Class(
       }
 
       invisible(self)
-    },
-
-    finalize = function(){
-      if (self$flush_on_exit) self$flush()
     }
   ),
 
@@ -1185,6 +1181,10 @@ AppenderBuffer <- R6::R6Class(
 
   # +- private  ---------------------------------------------------------
   private = list(
+    finalize = function(){
+      if (self$flush_on_exit) self$flush()
+    },
+
     .appenders = list()
   )
 )
@@ -1315,15 +1315,6 @@ AppenderDbi <- R6::R6Class(
       }
     },
 
-    finalize = function() {
-      if (self$flush_on_exit)
-        self$flush()
-
-      if (self$close_on_exit){
-        try(DBI::dbDisconnect(private$.conn), silent = TRUE)
-      }
-    },
-
     set_close_on_exit = function(x){
       assert(is_scalar_bool(x))
       private$.close_on_exit <- x
@@ -1436,6 +1427,15 @@ AppenderDbi <- R6::R6Class(
 
   # +- private -------------------------------------------------------------
   private = list(
+    finalize = function() {
+      if (self$flush_on_exit)
+        self$flush()
+
+      if (self$close_on_exit){
+        try(DBI::dbDisconnect(private$.conn), silent = TRUE)
+      }
+    },
+
     set_col_types = function(x){
       if (!is.null(x)){
         assert(is.character(x))

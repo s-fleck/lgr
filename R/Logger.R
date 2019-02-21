@@ -240,18 +240,28 @@ Logger <- R6::R6Class(
     },
 
 
-    finalize = function(){
-      # ensure appenders are destroyed before logger is destroyed so that the
-      # finalize method of the appenders can still access the logger if it
-      # wants to
-      for (i in rev(seq_along(self$appenders))){
-        self$remove_appender(i)
-      }
+    config = function(
+      appenders,
+      threshold,
+      filters,
+      exception_handler,
+      propagate
+    ){
+      if (!missing(appenders))
+        self$set_appenders(appenders)
 
-      gc()  # ensure that finalizers of appenders are executed now
-      invisible()
+      if (!missing(propagate))
+        self$set_propagate(propagate)
+
+      if (!missing(filters))
+        self$set_filters(filters)
+
+      if (!missing(threshold))
+        self$set_threshold(threshold)
+
+      if (!missing(exception_handler))
+        self$set_exception_handler(exception_handler)
     },
-
 
     log = function(
       level,
@@ -584,6 +594,18 @@ Logger <- R6::R6Class(
 
   # private -----------------------------------------------------------------
   private = list(
+
+    finalize = function(){
+      # ensure appenders are destroyed before logger is destroyed so that the
+      # finalize method of the appenders can still access the logger if it
+      # wants to
+      for (i in rev(seq_along(self$appenders))){
+        self$remove_appender(i)
+      }
+
+      gc()  # ensure that finalizers of appenders are executed now
+      invisible()
+    },
 
     # +- fields ---------------------------------------------------------------
     .propagate = NULL,

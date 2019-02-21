@@ -169,7 +169,7 @@ lg <- Logger$new(
   "test",
   appenders = list(memory = AppenderDt$new()),
   threshold = NA,
-  parent = NULL  # to prevent routing to root logger for this example
+  propagate = FALSE  # to prevent routing to root logger for this example
 )
 lg$debug("test")
 lg$error("test")

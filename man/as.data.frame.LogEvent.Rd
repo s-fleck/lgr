@@ -9,7 +9,7 @@
 \method{as.data.frame}{LogEvent}(x, row.names = NULL, optional = FALSE,
   stringsAsFactors = default.stringsAsFactors(), strict = FALSE, ...)
 
-\method{as.data.table}{LogEvent}(x, ...)
+as.data.table.LogEvent(x, ...)
 
 as_tibble.LogEvent(x, ...)
 }
