@@ -76,11 +76,11 @@ test_that("AppenderJson works as expected", {
   app <- AppenderJson$new(file = tf)
 
   for (i in 1:10) app$append(x)
-  r <- capture_output(app$show(n = 3))
+  r <- utils::capture.output(app$show(n = 3))
   expect_true(grepl( "(level.*)[3]", r))
   expect_false(grepl("(level.*)[4]", r))
 
-  r <- capture_output(app$show(threshold = 100))
+  r <- utils::capture.output(app$show(threshold = 100))
   expect_identical(r, "")
 })
 

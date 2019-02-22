@@ -34,6 +34,10 @@
 #' `foo/bar/baz`. Loggers further down the hierarchy are children of the loggers
 #' above.
 #'
+#' All calls to `get_logger()` with the same name return the same Logger
+#' instance. This means that Logger instances never need to be passed between
+#' different parts of an application.
+#'
 #' If you just want to log to an additional output (like a log file), you want
 #' a new [Appender], not a new Logger.
 #'
@@ -241,12 +245,16 @@ Logger <- R6::R6Class(
 
 
     config = function(
-      appenders,
-      threshold,
-      filters,
-      exception_handler,
-      propagate
+      appenders = NULL,
+      threshold = NULL,
+      filters = NULL,
+      exception_handler = NULL,
+      propagate = NULL
     ){
+
+      if (identical(self$name, "root") & is.null(threshold))
+        threshold <- NA_integer_
+
       if (!missing(appenders))
         self$set_appenders(appenders)
 
