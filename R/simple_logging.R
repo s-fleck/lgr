@@ -17,6 +17,75 @@ NULL
 
 
 
+#' Basic Setup for the Logging Systen
+#'
+#' Quick and easy way to configure the root logger for logging to a root file
+#'
+#' @param file `character` scalar: If not `NULL` a [AppenderFile] will be created
+#'   that logs to this file. If the filename ends in `.jsonl` an [AppenderJson]
+#'   will be created instead.
+#' @param fmt `character` scalar: Format to use if `file` is supplied and not
+#'   a `.jsonl` file. If `NULL` it defaults to `"%L [%t] %m"`
+#'   (see [format.LogEvent])
+#' @inheritParams print.LogEvent
+#' @inheritParams Logger
+#' @param appenders
+#'
+#' @return `NULL` (invisibly)
+#' @export
+#'
+#' @examples
+#'
+#' basic_config(tempfile())
+#' print(lgr)
+#'
+basic_config <- function(
+  file = NULL,
+  fmt = NULL,
+  timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
+  threshold = NA,
+  appenders = NULL
+){
+  assert(!is.null(threshold))
+
+
+  if (!is.null(file)){
+    assert(is.null(appenders), "`appenders` must be null if `file` is specified")
+
+    pos <- regexpr("\\.([[:alnum:]]+)$", file)
+    ext <- ifelse(pos > -1L, substring(file, pos + 1L), "")
+
+    if (identical(tolower(ext), "jsonl")){
+      assert (is.null(fmt), "`fmt` must be null if `file` is a '.jsonl' file")
+      appenders <- list(file = AppenderJson$new())
+    } else {
+      if (is.null(fmt))
+        fmt <- "%L [%t] %m"
+
+      appenders <- list(file = AppenderFile$new(
+        file = file,
+        layout = LayoutFormat$new(
+          fmt = fmt,
+          timestamp_fmt = timestamp_fmt
+        )
+      ))
+    }
+  }
+
+  l <- get_logger("root")
+  l$set_appenders(appenders)
+  l$set_threshold(threshold)
+
+  # reset to defaults
+  l$set_exception_handler(default_exception_handler)
+
+  invisible(NULL)
+}
+
+
+
+
+
 # logging -----------------------------------------------------------------
 
 #' @param msg,... passed on to [base::sprintf()]
