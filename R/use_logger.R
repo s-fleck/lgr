@@ -23,7 +23,7 @@ code <- sprintf(
 '.onLoad <- function(...){
   assign(
     "lg",
-    lgr::Logger$new(name = "%s"),
+    lgr::get_logger("%s"),
     envir = parent.env(environment())
   )
 }', pkg
