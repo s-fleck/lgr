@@ -5,21 +5,24 @@ loggers <- new.env()
 
 #' Get/Create a Logger
 #'
-#' @param name
+#' @param name a `character` scalar or vector: The qualified name of the Logger
+#'   as a hierarchical value.
 #' @param class An [R6ClassGenerator][R6::R6] object. Usually `Logger` or `LoggerGlue`
 #'   are the only valid choices.
 #'
-#' @return
+#' @return a [Logger]
 #' @export
 #'
 #' @examples
-#'
 #' lg <- get_logger("log/ger/test")
-#' get_logger_glue("log/ger")
-#'
+#' # equivalent to
+#' lg <- get_logger(c("log", "get", "test"))
+#' lg$warn("a %s message", "warning")
 #' lg
 #' lg$parent
 #'
+#' lg <- get_logger_glue("log/ger")
+#' lg$warn("a {.text} message", .text = "warning")
 get_logger <- function(
   name,
   class = Logger

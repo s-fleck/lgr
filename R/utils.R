@@ -210,8 +210,17 @@ dyn_register_s3_method <- function(
 
 
 
+
 last <- function(x){
   x[length(x)]
+}
+
+
+
+
+# to prevent "Namespace not imported from" NOTE on some systems
+cran_import_note <- function(...){
+  R6::is.R6(NULL)
 }
 
 # nocov end
