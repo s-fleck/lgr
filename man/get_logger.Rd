@@ -10,6 +10,9 @@ get_logger(name, class = Logger)
 get_logger_glue(name)
 }
 \arguments{
+\item{name}{a \code{character} scalar or vector: The qualified name of the Logger
+as a hierarchical value.}
+
 \item{class}{An \link[R6:R6]{R6ClassGenerator} object. Usually \code{Logger} or \code{LoggerGlue}
 are the only valid choices.}
 }
@@ -19,9 +22,13 @@ Get/Create a Logger
 \examples{
 
 lg <- get_logger("log/ger/test")
-get_logger_glue("log/ger")
-
+# equivalent to
+lg <- get_logger(c("log", "get", "test"))
+lg$warn("a \%s message", "warning")
 lg
 lg$parent
+
+lg <- get_logger_glue("log/ger")
+lg$warn("a {.text} message", .text = "warning")
 
 }
