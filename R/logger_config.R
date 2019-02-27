@@ -1,4 +1,9 @@
-logger_config <- function(x){
+as_logger_config <- function(x){
+  UseMethod("as_logger_config")
+}
+
+
+as_logger_config <- function(x){
   assert(is.list(x))
 
   assert(all(
