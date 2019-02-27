@@ -87,22 +87,10 @@ Filterable <- R6::R6Class(
       invisible(self)
     },
 
+
     set_filters = function(filters){
-
-      if (is_filter(filters)){
-        filters <- list(filters)
-      }
-
-      if (is.null(filters)){
-        private[[".filters"]] <- list()
-      } else {
-        assert(
-          is.list(filters) && all(vapply(filters, is_filter, logical(1))),
-          "'filters' must be a list of functions with the single argument 'event'"
-        )
-        private[[".filters"]] <- filters
-      }
-
+      filters <- standardize_filters_list(filters)
+      private[[".filters"]] <- filters
       invisible(self)
     }
   ),

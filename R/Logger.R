@@ -512,19 +512,10 @@ Logger <- R6::R6Class(
 
 
     set_appenders = function(x){
-      if (is.null(x)){
-        private$.appenders <- list()
-        return(invisible())
-      }
-      if (inherits(x, "Appender"))  x <- list(x)
 
-      assert(
-        is.list(x) && all(vapply(x, inherits, TRUE, "Appender")),
-        "'appenders' must either be a single Appender, a list thereof, or ",
-        "NULL for no appenders."
-      )
+      x <- standardize_appenders_list(x)
 
-      private$.appenders <- list()
+      private[[".appenders"]] <- list()
 
       for (i in seq_along(x))
         self$add_appender(x[[i]], name = names(x)[[i]])
@@ -795,6 +786,9 @@ LoggerGlue <- R6::R6Class(
 )
 
 
+
+
+# utils -------------------------------------------------------------------
 
 is_Logger <- function(x){
   inherits(x, "Logger")
