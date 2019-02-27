@@ -16,6 +16,7 @@ test_that("checking filters works", {
 
 
 
+
 test_that("Filterable works as expected", {
   app <- Appender$new()
 
