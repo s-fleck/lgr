@@ -1,0 +1,12 @@
+Logger:
+  name: test/blubb
+  threshold: info
+  propagate: false
+  appenders:
+    AppenderFile:
+      file: /tmp/blah.txt
+      LayoutFormat:
+        format: "%L %t - %m"
+    AppenderJson:
+      file: /tmp/blah.json
+      threshold: 200
