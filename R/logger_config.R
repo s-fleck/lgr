@@ -19,6 +19,57 @@ logger_config <- function(x){
 
 
 
+as_logger_config <- function(
+  x
+){
+  UseMethod("as_logger_config")
+}
+
+
+
+as_logger_config.character <- function(
+  x
+){
+  assert_namespace("yaml")
+
+  xe <- eval(substitute(x))
+
+  if (length(x) > 1 || !grepl("\n", x)){
+    dd <- yaml::read_yaml(file = x)
+  } else {
+    dd <- yaml::read_yaml(text = x)
+  }
+
+  assert(
+    identical(length(names(dd)), 1L),
+    "If 'x' is a yaml file, it must contain a single logger object"
+  )
+
+  root <- get0_R6Class(names(dd))
+  assert(
+    is_Logger(root),
+    "`", xe, "` is must start with a single Logger object.",
+    "See ?load_logger_config for examples"
+  )
+}
+
+
+
+
+
+get0_R6Class <- function(x){
+  assert(is_scalar_character(x))
+  res <- get0(x, envir = parent.env(environment()))
+
+  if (R6::is.R6Class(res)){
+    res
+  } else {
+    NULL
+  }
+}
+
+
+
 standardize_appenders_list <- function(x){
   if (is.null(x))
     return(list())
