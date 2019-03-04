@@ -16,9 +16,9 @@ options("datatable.showProgress" = FALSE)
 tsqlite <- tempfile()
 
 dbs <- list(
-  "MySQL via RMySQL" = list(
+  "MySQL via RMariaDB" = list(
     conn = try(silent = TRUE, DBI::dbConnect(
-      RMySQL::MySQL(),
+      RMariaDB::MariaDB(),
       username = "travis",
       dbname = "travis_ci_test",
       host = "localhost"
@@ -26,9 +26,9 @@ dbs <- list(
     ctor = AppenderDbi
   ),
 
-  "MySQL via RMariaDB" = list(
+  "MySQL via RMySQL" = list(
     conn = try(silent = TRUE, DBI::dbConnect(
-      RMariaDB::MariaDB(),
+      RMySQL::MySQL(),
       username = "travis",
       dbname = "travis_ci_test",
       host = "localhost"
