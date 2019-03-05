@@ -3,6 +3,8 @@ as_logger_config <- function(x){
 }
 
 
+
+
 as_logger_config <- function(x){
   assert(is.list(x))
 
