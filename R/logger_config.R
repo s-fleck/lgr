@@ -63,6 +63,26 @@ as_logger_config.character <- function(
 
 
 
+resolve_r6_ctors <- function(x){
+
+  ctors <- lapply(names(x), get0_R6Class)
+
+  for (i in seq_along(x)){
+    if (length(ctors) && !is.null(ctors[[i]])){
+      x[[i]] <- do.call(ctors[[i]]$new, resolve_r6_ctors(x[[i]]))
+    } else {
+      if (is.recursive(x[[i]])){
+        x[[i]] <- resolve_r6_ctors(x[[i]])
+      } else {
+        x[[i]] <- x[[i]]
+      }
+    }
+  }
+
+
+  x
+}
+
 
 get0_R6Class <- function(x){
   assert(is_scalar_character(x))
