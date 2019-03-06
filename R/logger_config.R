@@ -52,12 +52,15 @@ as_logger_config.character <- function(
     "If 'x' is a yaml file, it must contain a single logger object"
   )
 
-  root <- get0_R6Class(names(dd))
+  res <- resolve_r6_ctors(dd)
+
   assert(
-    is_Logger(root),
+    is_Logger(res),
     "`", xe, "` is must start with a single Logger object.",
     "See ?load_logger_config for examples"
   )
+
+  res
 }
 
 
@@ -80,7 +83,11 @@ resolve_r6_ctors <- function(x){
   }
 
 
-  x
+  if (is_scalar(x) && R6::is.R6(x[[1]])){
+    x[[1]]
+  } else {
+    x
+  }
 }
 
 
