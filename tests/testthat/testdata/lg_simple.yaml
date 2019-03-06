@@ -1,0 +1,9 @@
+Logger:
+  name: test/blubb
+  threshold: info
+  propagate: false
+  appenders:
+    AppenderFile:
+      file: /tmp/blah.txt
+      LayoutFormat:
+          fmt: "%L %t - %m"

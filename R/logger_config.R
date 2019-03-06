@@ -70,9 +70,27 @@ resolve_r6_ctors <- function(x){
 
   ctors <- lapply(names(x), get0_R6Class)
 
+
   for (i in seq_along(x)){
     if (length(ctors) && !is.null(ctors[[i]])){
-      x[[i]] <- do.call(ctors[[i]]$new, resolve_r6_ctors(x[[i]]))
+
+      args <- resolve_r6_ctors(x[[i]])
+
+      # Allow user to supply the layout directly without having to specify
+      # the layout: key manually for Appenders
+      if ("Appender" %in% deparse(ctors[[i]]$inherit)){
+        if (!"layout" %in% names(args)){
+          for (j in rev(seq_along(args))){
+            if (inherits(args[[j]], "Layout")){
+              args$layout <- args[[j]]
+              args[[j]] <- NULL
+              break
+            }
+          }
+        }
+      }
+
+      x[[i]] <- do.call(ctors[[i]]$new, args)
     } else {
       if (is.recursive(x[[i]])){
         x[[i]] <- resolve_r6_ctors(x[[i]])

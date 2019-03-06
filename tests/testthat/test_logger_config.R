@@ -12,6 +12,18 @@ test_that("logger_config works as expected", {
 
 
 
+test_that("logger_config works for simplified logger config", {
+  ty <- rprojroot::find_testthat_root_file("testdata", "lg_simple.yaml")
+  cfg <- as_logger_config(ty)
+
+  expect_identical(cfg$appenders[[1]]$layout$fmt, "%L %t - %m")
+  expect_true(is_Logger(cfg))
+})
+
+
+
+
+
 test_that("resolve_r6_ctors", {
 
   tf <- tempfile()
