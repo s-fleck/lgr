@@ -12,6 +12,18 @@ test_that("logger_config works as expected", {
 
 
 
+test_that("setting logger$config works as expected", {
+  ty <- rprojroot::find_testthat_root_file("testdata", "lg_full.yaml")
+  lg <- get_logger("test")
+
+  lg$config(ty)
+  lg$config(file = ty)
+  expect_error(lg$config(text = ty), "YAML")
+})
+
+
+
+
 test_that("logger_config works for simplified logger config", {
   ty <- rprojroot::find_testthat_root_file("testdata", "lg_simple.yaml")
   cfg <- as_logger_config(ty)
@@ -19,7 +31,6 @@ test_that("logger_config works for simplified logger config", {
   expect_identical(cfg$appenders[[1]]$layout$fmt, "%L %t - %m")
   expect_true(is_Logger(cfg))
 })
-
 
 
 

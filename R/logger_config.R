@@ -39,8 +39,6 @@ as_logger_config.character <- function(
 ){
   assert_namespace("yaml")
 
-  xe <- eval(substitute(x))
-
   if (length(x) > 1 || !grepl("\n", x)){
     dd <- yaml::read_yaml(file = x)
   } else {
@@ -49,15 +47,14 @@ as_logger_config.character <- function(
 
   assert(
     identical(length(names(dd)), 1L),
-    "If 'x' is a yaml file, it must contain a single logger object"
+    "If `x` is a yaml file or string, it must contain a single logger object"
   )
 
   res <- resolve_r6_ctors(dd)
 
   assert(
     is_Logger(res),
-    "`", xe, "` is must start with a single Logger object.",
-    "See ?load_logger_config for examples"
+    "If `x` is a yaml file or string, it must contain a single logger object"
   )
 
   res

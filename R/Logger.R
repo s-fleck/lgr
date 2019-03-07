@@ -245,31 +245,63 @@ Logger <- R6::R6Class(
 
 
     config = function(
+      cfg = NULL,
+      ...,
+      file = NULL,
+      text = NULL,
       appenders = NULL,
       threshold = NULL,
       filters = NULL,
       exception_handler = NULL,
       propagate = NULL
     ){
+      assert(
+        is.null(cfg) + is.null(file) + is.null(text) >= 2,
+        "You can only specify one of `cfg`, `file` and `text`."
+      )
 
-      if (identical(self$name, "root") & is.null(threshold))
+      if (!is.null(cfg)){
+        cfg <- as_logger_config(cfg)
+
+      } else if (!is.null(file)){
+        assert(
+          is_scalar_character(file) && !grepl("\n", file) && file.exists(file),
+          "`file` is not a valid path to a readable file"
+        )
+        cfg <- as_logger_config(file)
+
+      } else if (!is.null(text)){
+        assert(
+          is_scalar_character(text) && grepl("\n", text),
+          "`text` must be a character scalar containing valid YAML"
+        )
+        cfg <- as_logger_config(text)
+
+      } else {
+        cfg <- as_logger_config(
+          appenders = appenders,
+          threshold = threshold,
+          filters = filters,
+          exception_handler = exception_handler,
+          propagate = propagate
+        )
+      }
+
+
+      # root logger cannot have a NULL threshold
+      if (identical(self$name, "root") & is.null(threshold)){
         threshold <- NA_integer_
+      }
 
-      if (!missing(appenders))
-        self$set_appenders(appenders)
+      self$set_appenders(cfg$appenders)
+      self$set_propagate(cfg$propagate)
+      self$set_filters(cfg$filters)
+      self$set_threshold(cfg$threshold)
+      self$set_exception_handler(cfg$exception_handler)
 
-      if (!missing(propagate))
-        self$set_propagate(propagate)
-
-      if (!missing(filters))
-        self$set_filters(filters)
-
-      if (!missing(threshold))
-        self$set_threshold(threshold)
-
-      if (!missing(exception_handler))
-        self$set_exception_handler(exception_handler)
+      self
     },
+
 
     log = function(
       level,
