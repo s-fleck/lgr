@@ -255,7 +255,6 @@ Logger <- R6::R6Class(
       exception_handler = NULL,
       propagate = NULL
     ){
-
       if (identical(self$name, "root") & is.null(threshold))
         threshold <- NA_integer_
 
@@ -285,13 +284,13 @@ Logger <- R6::R6Class(
         cfg <- as_logger_config(text)
 
       } else {
-        cfg <- as_logger_config(
+        cfg <- as_logger_config(list(
           appenders = appenders,
           threshold = threshold,
           filters = filters,
           exception_handler = exception_handler,
           propagate = propagate
-        )
+        ))
       }
 
 
