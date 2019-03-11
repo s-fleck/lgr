@@ -24,7 +24,7 @@ lg <- Logger$new(name = "(unnamed logger)", appenders = list(), threshold =
   NULL, filters = list(), exception_handler = default_exception_handler,
   propagate = TRUE)
 
-lg$config(cfg = NULL, ..., file = NULL, text = NULL, appenders = NULL, threshold = NULL, filters = NULL, exception_handler = NULL, propagate = NULL)
+lg$config(cfg = NULL, file = NULL, text = NULL)
 lg$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
 lg$fatal(msg, ..., caller = get_caller(-8L))
 lg$error(msg, ..., caller = get_caller(-8L))

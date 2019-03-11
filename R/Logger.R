@@ -249,21 +249,9 @@ Logger <- R6::R6Class(
 
     config = function(
       cfg = NULL,
-      ...,
       file = NULL,
-      text = NULL,
-      appenders = NULL,
-      threshold = NULL,
-      filters = NULL,
-      exception_handler = NULL,
-      propagate = NULL
+      text = NULL
     ){
-      if (identical(self$name, "root") & is.null(threshold))
-        threshold <- NA_integer_
-
-      if (!missing(appenders))
-        self$set_appenders(appenders)
-
       assert(
         is.null(cfg) + is.null(file) + is.null(text) >= 2,
         "You can only specify one of `cfg`, `file` and `text`."
@@ -282,30 +270,18 @@ Logger <- R6::R6Class(
       } else if (!is.null(text)){
         assert(
           is_scalar_character(text) && grepl("\n", text),
-          "`text` must be a character scalar containing valid YAML"
+          "`text` must be a character scalar containing valid yaml"
         )
         cfg <- as_logger_config(text)
 
       } else {
-        cfg <- as_logger_config(list(
-          appenders = appenders,
-          threshold = threshold,
-          filters = filters,
-          exception_handler = exception_handler,
-          propagate = propagate
-        ))
+        cfg <- as_logger_config()
       }
 
-
-      # root logger cannot have a NULL threshold
-      if (identical(self$name, "root") & is.null(threshold)){
-        threshold <- NA_integer_
-      }
-
+      self$set_threshold(cfg$threshold)
       self$set_appenders(cfg$appenders)
       self$set_propagate(cfg$propagate)
       self$set_filters(cfg$filters)
-      self$set_threshold(cfg$threshold)
       self$set_exception_handler(cfg$exception_handler)
 
       self
@@ -825,6 +801,32 @@ LoggerGlue <- R6::R6Class(
     }
   )
 )
+
+
+
+
+# LoggerRoot --------------------------------------------------------------
+
+#' Special logger subclass for the root logger. Currently exactly like a
+#' normale Logger, but prevents the threshold to be set to NULL
+LoggerRoot <-
+  R6::R6Class(
+    "LoggerRoot",
+    inherit = Logger,
+    cloneable = FALSE,
+    public <- list(
+      set_threshold = function(level){
+        if (is.null(level)){
+          warning("Cannot set `threshold` to `NULL` for the root Logger")
+          level <- NA_integer_
+        }
+
+        level <- standardize_threshold(level)
+        private[[".threshold"]] <- level
+        invisible(self)
+      }
+    )
+  )
 
 
 
