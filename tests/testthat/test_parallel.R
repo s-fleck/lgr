@@ -26,7 +26,7 @@ for (strategy in c(
       appenders = AppenderFile$new(tf)
     )
 
-    lg <- lr$spawn("par_child")
+    lg <- get_logger("par_root/par_child")
 
     x <- future::future(lr$info("root_logger"))
     x <- future::value(x)

@@ -140,8 +140,6 @@
 #'      refer to it via `logger$appenders$console`. `remove_appender()` can
 #'      remove an Appender by position or name.
 #'    }
-#'
-#'    \item{`spawn(...)`}{Spawn a child Logger}
 #' }
 #'
 #'
@@ -559,11 +557,6 @@ Logger <- R6::R6Class(
         self$add_appender(x[[i]], name = names(x)[[i]])
 
       invisible(self)
-    },
-
-
-    spawn = function(name, ...){
-      Logger$new(..., name = paste0(self$name, "/", name))
     }
   ),
 
