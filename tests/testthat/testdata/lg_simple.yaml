@@ -5,9 +5,5 @@ Logger:
   appenders:
     AppenderFile:
       file: /tmp/blah.txt
-      layout:
-        LayoutFormat:
+      LayoutFormat:
           fmt: "%L %t - %m"
-    AppenderJson:
-      file: /tmp/blah.json
-      threshold: 200

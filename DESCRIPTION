@@ -35,6 +35,8 @@ Suggests:
     rmarkdown,
     sendmailR,
     RSQLite,
+    RMariaDB,
+    RPostgres,
     testthat,
     tibble,
     tools,

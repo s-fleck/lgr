@@ -10,7 +10,6 @@ for (strategy in c(
   # "multisession",
   # "cluster"
 )){
-
   context(sprintf("future plan = '%s'", strategy))
 
   if (!future::availableCores("multicore") > 1L){

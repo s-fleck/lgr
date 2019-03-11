@@ -245,6 +245,10 @@ Logger <- R6::R6Class(
 
 
     config = function(
+      cfg = NULL,
+      ...,
+      file = NULL,
+      text = NULL,
       appenders = NULL,
       threshold = NULL,
       filters = NULL,
@@ -258,18 +262,53 @@ Logger <- R6::R6Class(
       if (!missing(appenders))
         self$set_appenders(appenders)
 
-      if (!missing(propagate))
-        self$set_propagate(propagate)
+      assert(
+        is.null(cfg) + is.null(file) + is.null(text) >= 2,
+        "You can only specify one of `cfg`, `file` and `text`."
+      )
 
-      if (!missing(filters))
-        self$set_filters(filters)
+      if (!is.null(cfg)){
+        cfg <- as_logger_config(cfg)
 
-      if (!missing(threshold))
-        self$set_threshold(threshold)
+      } else if (!is.null(file)){
+        assert(
+          is_scalar_character(file) && !grepl("\n", file) && file.exists(file),
+          "`file` is not a valid path to a readable file"
+        )
+        cfg <- as_logger_config(file)
 
-      if (!missing(exception_handler))
-        self$set_exception_handler(exception_handler)
+      } else if (!is.null(text)){
+        assert(
+          is_scalar_character(text) && grepl("\n", text),
+          "`text` must be a character scalar containing valid YAML"
+        )
+        cfg <- as_logger_config(text)
+
+      } else {
+        cfg <- as_logger_config(
+          appenders = appenders,
+          threshold = threshold,
+          filters = filters,
+          exception_handler = exception_handler,
+          propagate = propagate
+        )
+      }
+
+
+      # root logger cannot have a NULL threshold
+      if (identical(self$name, "root") & is.null(threshold)){
+        threshold <- NA_integer_
+      }
+
+      self$set_appenders(cfg$appenders)
+      self$set_propagate(cfg$propagate)
+      self$set_filters(cfg$filters)
+      self$set_threshold(cfg$threshold)
+      self$set_exception_handler(cfg$exception_handler)
+
+      self
     },
+
 
     log = function(
       level,

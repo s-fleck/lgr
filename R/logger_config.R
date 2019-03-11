@@ -1,4 +1,11 @@
-logger_config <- function(x){
+as_logger_config <- function(x){
+  UseMethod("as_logger_config")
+}
+
+
+
+
+as_logger_config.list <- function(x){
   assert(is.list(x))
 
   assert(all(
@@ -32,8 +39,6 @@ as_logger_config.character <- function(
 ){
   assert_namespace("yaml")
 
-  xe <- eval(substitute(x))
-
   if (length(x) > 1 || !grepl("\n", x)){
     dd <- yaml::read_yaml(file = x)
   } else {
@@ -45,14 +50,60 @@ as_logger_config.character <- function(
     "If 'x' is a yaml file, it must contain a single logger object"
   )
 
-  root <- get0_R6Class(names(dd))
+  res <- resolve_r6_ctors(dd)
+
   assert(
-    is_Logger(root),
-    "`", xe, "` is must start with a single Logger object.",
-    "See ?load_logger_config for examples"
+    is_Logger(res),
+    "If `x` is a yaml file or string, it must contain a single logger object"
   )
+
+  res
 }
 
+
+
+
+resolve_r6_ctors <- function(x){
+
+  ctors <- lapply(names(x), get0_R6Class)
+
+
+  for (i in seq_along(x)){
+    if (length(ctors) && !is.null(ctors[[i]])){
+
+      args <- resolve_r6_ctors(x[[i]])
+
+      # Allow user to supply the layout directly without having to specify
+      # the layout: key manually for Appenders
+      if ("Appender" %in% deparse(ctors[[i]]$inherit)){
+        if (!"layout" %in% names(args)){
+          for (j in rev(seq_along(args))){
+            if (inherits(args[[j]], "Layout")){
+              args$layout <- args[[j]]
+              args[[j]] <- NULL
+              break
+            }
+          }
+        }
+      }
+
+      x[[i]] <- do.call(ctors[[i]]$new, args)
+    } else {
+      if (is.recursive(x[[i]])){
+        x[[i]] <- resolve_r6_ctors(x[[i]])
+      } else {
+        x[[i]] <- x[[i]]
+      }
+    }
+  }
+
+
+  if (is_scalar(x) && R6::is.R6(x[[1]])){
+    x[[1]]
+  } else {
+    x
+  }
+}
 
 
 
