@@ -200,7 +200,10 @@ refer to it via \code{logger$appenders$console}. \code{remove_appender()} can
 remove an Appender by position or name.
 }
 
-\item{\code{spawn(...)}}{Spawn a child Logger}
+\item{\code{spawn(...)}}{Spawn a child Logger.
+\code{get_logger("foo/bar")$spawn("baz")} is equivalent to
+\code{get_logger("foo/bar/baz")}, but can be convenient for programatic use
+when the name of the parent Logger is not known.}
 }
 
 

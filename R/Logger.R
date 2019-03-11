@@ -140,6 +140,11 @@
 #'      refer to it via `logger$appenders$console`. `remove_appender()` can
 #'      remove an Appender by position or name.
 #'    }
+#'
+#'    \item{`spawn(...)`}{Spawn a child Logger.
+#'      `get_logger("foo/bar")$spawn("baz")` is equivalent to
+#'      `get_logger("foo/bar/baz")`, but can be convenient for programatic use
+#'      when the name of the parent Logger is not known.}
 #' }
 #'
 #'
@@ -370,8 +375,8 @@ Logger <- R6::R6Class(
                 caller = caller,
                 msg = msg
               ),
-                dots[!not_named]
-              )
+              dots[!not_named]
+            )
           }
         }
 
@@ -395,7 +400,7 @@ Logger <- R6::R6Class(
 
         invisible(msg)
       },
-        error = get("handle_exception", envir = self)
+      error = get("handle_exception", envir = self)
       )
     },
 
@@ -557,6 +562,11 @@ Logger <- R6::R6Class(
         self$add_appender(x[[i]], name = names(x)[[i]])
 
       invisible(self)
+    },
+
+
+    spawn = function(name, ...){
+      get_logger(paste0(self$name, "/", name))
     }
   ),
 
