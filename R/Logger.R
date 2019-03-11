@@ -44,9 +44,9 @@
 #' @inheritSection Filterable Fields
 #' @section Fields:
 #'
-#' You can either specify these fields in `Logger$new()` or modify them after
-#' creation with setter functions of the form `logger$set_<fieldname>(value)`
-#' (see examples)
+#' You can modify the fields of an existing Logger with
+#' `logger$set_<fieldname>(value)` (see examples). Another way to configure
+#' loggers is via its `$config()` method.
 #'
 #' \describe{
 #'   \item{`name`, `set_name(x)`}{`character` scalar. A name for the Logger that should be

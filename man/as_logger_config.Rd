@@ -5,7 +5,7 @@
 \alias{as_logger_config.list}
 \alias{as_logger_config.character}
 \alias{as_logger_config.Logger}
-\title{Create logger configs from different sources}
+\title{Create logger configs}
 \usage{
 as_logger_config(x)
 
@@ -19,7 +19,11 @@ as_logger_config(x)
 \item{x}{any \R object. Especially:
 \itemize{
 \item A \code{character} scalar. This can either be the path to a
-\link[=https://yaml.org/]{yaml} file, or valid yaml directly.
+\link[=https://yaml.org/]{yaml} file, or directly valid yaml.
+\item a list containing the elements \code{appenders}, \code{threshold}, \code{exception_handler},
+\code{propagate} and \code{filters}. See the section \emph{Fields} in \link{Logger} for
+details.
+\item a Logger object, to clone its configuration.
 }}
 }
 \value{
