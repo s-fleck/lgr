@@ -1,3 +1,36 @@
+#' Create logger configs
+#'
+#' Coerce any supported \R object to a `logger_config` object. You usually do
+#' not have to call this function directly, as it is automatically
+#' invoked by the `config()` method of Loggers (see examples)
+#'
+#' @param x any \R object. Especially:
+#'   * A `character` scalar. This can either be the path to a
+#'     [yaml][https://yaml.org/] file, or directly valid yaml.
+#'   * a list containing the elements `appenders`, `threshold`, `exception_handler`,
+#'     `propagate` and `filters`. See the section *Fields* in [Logger] for
+#'     details.
+#'   * a Logger object, to clone its configuration.
+#'
+#'
+#' @return a logger_config object
+#' @export
+#'
+#' @examples
+#' cfg <- "
+#' Logger:
+#'   name: test/blubb
+#'   threshold: info
+#'   propagate: false
+#'   appenders:
+#'     AppenderFile:
+#'       file: /tmp/blah.txt
+#' "
+#' lg$config(as_logger_config(cfg))
+#' # but you can just do the following directly
+#' lg <- get_logger("test")
+#' lg$config(cfg)
+#'
 as_logger_config <- function(x){
   UseMethod("as_logger_config")
 }
@@ -5,6 +38,8 @@ as_logger_config <- function(x){
 
 
 
+#' @rdname as_logger_config
+#' @export
 as_logger_config.list <- function(x){
   assert(is.list(x))
 
@@ -26,14 +61,8 @@ as_logger_config.list <- function(x){
 
 
 
-as_logger_config <- function(
-  x
-){
-  UseMethod("as_logger_config")
-}
-
-
-
+#' @rdname as_logger_config
+#' @export
 as_logger_config.character <- function(
   x
 ){
@@ -58,6 +87,15 @@ as_logger_config.character <- function(
   )
 
   res
+}
+
+
+
+
+#' @param x
+#' @rdname as_logger_config
+as_logger_config.Logger <- function(x){
+  x
 }
 
 
@@ -118,6 +156,7 @@ get0_R6Class <- function(x){
     NULL
   }
 }
+
 
 
 

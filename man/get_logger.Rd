@@ -16,11 +16,13 @@ as a hierarchical value.}
 \item{class}{An \link[R6:R6]{R6ClassGenerator} object. Usually \code{Logger} or \code{LoggerGlue}
 are the only valid choices.}
 }
+\value{
+a \link{Logger}
+}
 \description{
 Get/Create a Logger
 }
 \examples{
-
 lg <- get_logger("log/ger/test")
 # equivalent to
 lg <- get_logger(c("log", "get", "test"))
@@ -30,5 +32,4 @@ lg$parent
 
 lg <- get_logger_glue("log/ger")
 lg$warn("a {.text} message", .text = "warning")
-
 }

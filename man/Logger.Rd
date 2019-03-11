@@ -24,7 +24,7 @@ lg <- Logger$new(name = "(unnamed logger)", appenders = list(), threshold =
   NULL, filters = list(), exception_handler = default_exception_handler,
   propagate = TRUE)
 
-lg$config(appenders, threshold, filters, exception_handler, propagate)
+lg$config(cfg = NULL, ..., file = NULL, text = NULL, appenders = NULL, threshold = NULL, filters = NULL, exception_handler = NULL, propagate = NULL)
 lg$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
 lg$fatal(msg, ..., caller = get_caller(-8L))
 lg$error(msg, ..., caller = get_caller(-8L))
@@ -76,6 +76,10 @@ Reference to the existing Logger.
 The \code{name} is potentially a \code{/} separated hierarchical value like
 \code{foo/bar/baz}. Loggers further down the hierarchy are children of the loggers
 above.
+
+All calls to \code{get_logger()} with the same name return the same Logger
+instance. This means that Logger instances never need to be passed between
+different parts of an application.
 
 If you just want to log to an additional output (like a log file), you want
 a new \link{Appender}, not a new Logger.

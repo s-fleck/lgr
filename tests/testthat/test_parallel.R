@@ -1,7 +1,3 @@
-
-
-
-
 for (strategy in c(
   "sequential",
   "transparent",
