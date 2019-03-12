@@ -75,7 +75,7 @@ logger_config <- function(
       exception_handler = exception_handler,
       propagate = propagate
     ),
-    CLASS = c("logger_config", "list")
+    class = c("logger_config", "list")
   )
 }
 
@@ -123,12 +123,7 @@ as_logger_config.character <- function(
 
   res <- resolve_r6_ctors(dd)
 
-  assert(
-    is_Logger(res),
-    "If `x` is a YAML file or string, it must contain a single logger object"
-  )
-
-  res
+  as_logger_config(res)
 }
 
 
@@ -137,7 +132,13 @@ as_logger_config.character <- function(
 #' @param x
 #' @rdname as_logger_config
 as_logger_config.Logger <- function(x){
-  x
+  logger_config(
+    appenders = x$appenders,
+    threshold = x$threshold,
+    exception_handler = x$exception_handler,
+    filters = x$filters,
+    propagate = x$propagate
+  )
 }
 
 
@@ -146,7 +147,6 @@ as_logger_config.Logger <- function(x){
 resolve_r6_ctors <- function(x){
 
   ctors <- lapply(names(x), get0_R6Class)
-
 
   for (i in seq_along(x)){
     if (length(ctors) && !is.null(ctors[[i]])){

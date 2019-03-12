@@ -2,7 +2,6 @@ context("logger_config")
 
 
 test_that("logger_config works as expected", {
-
   cfg <- logger_config(
     appenders = Appender$new(),
     propagate = FALSE,
@@ -10,56 +9,54 @@ test_that("logger_config works as expected", {
     threshold = NA,
     filters = FilterForceLevel$new("info")
   )
+  expect_s3_class(cfg, "logger_config")
 
   tl <- get_logger("test")$config(cfg)
-
   expect_true(inherits(tl$appenders[[1]], "Appender"))
+  expect_false(is_virgin_Logger(tl))
 
-  tl <- get_logger$config(basic_config())
-
-
+  tl <- get_logger("test")$config(logger_config())
+  expect_true(is_virgin_Logger(tl))
 })
 
 
 
-test_that("as_logger_config works as expected", {
+
+test_that("as_logger_config works as expected with YAML file", {
   ty <- rprojroot::find_testthat_root_file("testdata", "lg_full.yaml")
   cfg <- as_logger_config(ty)
+  expect_s3_class(cfg, "logger_config")
 
   expect_identical(cfg$appenders[[1]]$layout$fmt, "%L %t - %m")
-  expect_true(is_Logger(cfg))
+  expect_s3_class(cfg, "logger_config")
 })
 
 
 
 
-test_that("setting logger$config works as expected", {
+test_that("setting logger$config fails if yaml file is passed to `text` instead of `file`", {
   ty <- rprojroot::find_testthat_root_file("testdata", "lg_full.yaml")
   lg <- get_logger("test")
-
-  lg$config(ty)
-  lg$config(file = ty)
   expect_error(lg$config(text = ty), "YAML")
 })
 
 
 
 
-test_that("logger_config works for simplified logger config", {
+test_that("as_logger_config works for simplified yaml logger config", {
   ty <- rprojroot::find_testthat_root_file("testdata", "lg_simple.yaml")
   cfg <- as_logger_config(ty)
+  expect_s3_class(cfg, "logger_config")
 
   expect_identical(cfg$appenders[[1]]$layout$fmt, "%L %t - %m")
-  expect_true(is_Logger(cfg))
+  expect_s3_class(cfg, "logger_config")
 })
 
 
 
 
-test_that("resolve_r6_ctors", {
-
+test_that("resolve_r6_ctors works as expected", {
   tf <- tempfile()
-
   x <- list(
     "Logger" = list(
       name = "test",
@@ -70,14 +67,13 @@ test_that("resolve_r6_ctors", {
       )
     )
   )
-
   res <- resolve_r6_ctors(x)
   expect_true(is_Logger(res))
+  expect_s3_class(as_logger_config(res), "logger_config")
   expect_identical(res$appenders[[1]]$file, tf)
 
 
   tf <- tempfile()
-
   x <- list(
     "Logger" = list(
       name = "test2",
@@ -96,5 +92,6 @@ test_that("resolve_r6_ctors", {
 
   res <- resolve_r6_ctors(x)
   expect_true(is_Logger(res))
+  expect_s3_class(as_logger_config(res), "logger_config")
   expect_identical(res$appenders[[1]]$appenders[[1]]$file, tf)
 })
