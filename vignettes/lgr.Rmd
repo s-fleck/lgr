@@ -111,6 +111,63 @@ and easy for machines to parse
 read_json_lines(tf)
 ```
 
+
+
+### Simple Logger configuration with `$config()`
+
+The `$config()` method provides a flexible alternative to configuring loggers
+with their `$set_*()` methods.
+
+The simplest (but most limited) way to set up a Logger is with
+`basic_config()`
+
+```{r  eval = FALSE}
+# Simplified setup with basic_config
+lgr$config(basic_config(
+  threshold = "info",  # sets the Logger's threshold to info
+  file = "path/to/logfile",  # adds an AppenderFile, use 
+  fmt = "[L] %m"  #  set the format for the logfile
+))
+```
+
+A more explicit way is to use `logger_config()`, which can be used to specify
+all aspects of a Logger, at the cost of beeing more verbose 
+
+```{r eval = FALSE}
+
+# explicit setup with logger_config
+lgr$config(logger_config(
+  threshold = "info",
+  appenders = AppenderFile$new(
+    file = "path/to/logfile",
+    layout = LayoutFormat(fmt = "[%L] %m")
+  )
+))
+```
+
+You can also specify Logger configurations in yaml files
+
+```{r}
+#### contents of path/to/config.yaml #####
+# Logger:
+#   name: test/blubb
+#   threshold: info
+#   appenders:
+#     AppenderFile:
+#       file: /path/to/logfile
+#       LayoutFormat: 
+#          fmt: '[%L] %m'
+```
+
+```{r eval = FALSE}
+lgr$config("path/to/config.yaml")
+```
+
+* if `file` has the extension `jsonl`, `basic_config` will log in the jsonlines
+  format instead (via `AppenderJson`)
+
+
+
 ### Custom Fields
 
 Unlike many others Loggers for R, lgr treats a log *event* as a unit of data,
@@ -448,11 +505,9 @@ refer to `?format.LogEvent` for the full list of available placeholders.
 
 ```{r}
 lg <- get_logger("test")
+lg$set_appenders(list(cons = AppenderConsole$new()))
+lg$set_propagate(FALSE)
 
-lg$config( 
-  appenders = list(cons = AppenderConsole$new()), 
-  propagate = FALSE
-)
 
 lg$info("the default format")
 lg$appenders$cons$layout$set_fmt("%L (%n) [%t] %c(): !! %m !!")
@@ -496,10 +551,8 @@ tf <- tempfile()
 
 lg <- get_logger("test")
 
-lg$config(
-  appenders = list(json = AppenderJson$new(file = tf)), 
-  propagate = FALSE
-)
+lg$set_appenders(list(json = AppenderJson$new(file = tf)))
+lg$set_propagate(FALSE)
 
 lg$info("JSON naturally ", field = "custom")
 lg$info("supports custom", numbers = 1:3)
@@ -609,7 +662,7 @@ For example, the will output the last 5 LogEvents that happened before an
 ```{r}
 lg <- get_logger("buffer")
 
-lg$config(
+lg$config(logger_config(
   threshold = NA,
   propagate = FALSE,  # to suppress console output
   appenders = AppenderBuffer$new(
@@ -620,7 +673,7 @@ lg$config(
     should_flush = function(event) event$level <= 200,
     appenders = AppenderConsole$new(threshold = NA)
   )
-)
+))
 
 for (nm in month.name[1:8]) lg$debug("%s", nm)
 lg$error("But the days grow short when you reach September")

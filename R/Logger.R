@@ -248,9 +248,15 @@ Logger <- R6::R6Class(
 
 
     config = function(
-      cfg = NULL,
+      cfg  = NULL,
       file = NULL,
-      text = NULL
+      text = NULL,
+      ...,
+      appenders,
+      threshold,
+      filters,
+      exception_handler,
+      propagate
     ){
       assert(
         is.null(cfg) + is.null(file) + is.null(text) >= 2,

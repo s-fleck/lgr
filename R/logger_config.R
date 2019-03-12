@@ -38,6 +38,32 @@ as_logger_config <- function(x){
 
 
 
+logger_config <- function(
+  appenders = list(),
+  threshold = NULL,
+  filters = list(),
+  exception_handler = default_exception_handler,
+  propagate = TRUE
+){
+  assert(is.function(exception_handler))
+  assert(is_scalar_bool(propagate))
+
+  structure(
+    list(
+      appenders = standardize_appenders_list(appenders),
+      threshold = standardize_threshold(threshold),
+      filters   = standardize_filters_list(filters),
+      exception_handler = exception_handler,
+      propagate = propagate
+    ),
+    CLASS = c("logger_config", "list")
+  )
+}
+
+
+
+
+
 #' @rdname as_logger_config
 #' @export
 as_logger_config.list <- function(x){
@@ -193,4 +219,16 @@ standardize_filters_list <- function(x){
   )
 
   x
+}
+
+
+
+basic_config = function(
+  filename,
+  fmt,
+  fmt_timestamp,
+  threshold,
+  appenders
+){
+
 }

@@ -2,6 +2,27 @@ context("logger_config")
 
 
 test_that("logger_config works as expected", {
+
+  cfg <- logger_config(
+    appenders = Appender$new(),
+    propagate = FALSE,
+    exception_handler = default_exception_handler,
+    threshold = NA,
+    filters = FilterForceLevel$new("info")
+  )
+
+  tl <- get_logger("test")$config(cfg)
+
+  expect_true(inherits(tl$appenders[[1]], "Appender"))
+
+  tl <- get_logger$config(basic_config())
+
+
+})
+
+
+
+test_that("as_logger_config works as expected", {
   ty <- rprojroot::find_testthat_root_file("testdata", "lg_full.yaml")
   cfg <- as_logger_config(ty)
 
