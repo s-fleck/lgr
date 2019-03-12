@@ -1,50 +1,9 @@
-#' Create logger configs
+#' Logger Configuration Objects
 #'
-#' Coerce any supported \R object to a `logger_config` object. You usually do
-#' not have to call this function directly, as it is automatically
-#' invoked by the `config()` method of Loggers (see examples)
+#' `logger_config()` and `basic_config()` can be used to directly create
+#' objects that can be passed to the `$config()` method of Loggers.
 #'
-#' @param x any \R object. Especially:
-#'   * A `character` scalar. This can either be the path to a
-#'     [YAML][https://yaml.org/] file, or directly valid YAML
-#'   * a list containing the elements `appenders`, `threshold`, `exception_handler`,
-#'     `propagate` and `filters`. See the section *Fields* in [Logger] for
-#'     details.
-#'   * a Logger object, to clone its configuration.
-#'
-#'
-#' @return a logger_config object
-#' @export
-#'
-#' @examples
-#' cfg <- "
-#' Logger:
-#'   name: test/blubb
-#'   threshold: info
-#'   propagate: false
-#'   appenders:
-#'     AppenderFile:
-#'       file: /tmp/blah.txt
-#' "
-#' lg$config(as_logger_config(cfg))
-#' # but you can just do the following directly
-#' lg <- get_logger("test")
-#' lg$config(cfg)
-#'
-as_logger_config <- function(x){
-  UseMethod("as_logger_config")
-}
-
-
-
-
-#' Create a Logger configuration object
-#'
-#' @param appenders
-#' @param threshold
-#' @param filters
-#' @param exception_handler
-#' @param propagate
+#' @param appenders,threshold,filters,exception_handler,propagate see [Logger]
 #'
 #' @return a `list` with subclass `"logger_config"`
 #' @export
@@ -79,6 +38,42 @@ logger_config <- function(
   )
 }
 
+
+
+#' `as_logger_config()` coerces any supported \R object to a `logger_config`
+#' object. You usually do not have to call this function directly, as it is
+#' automatically invoked by the `config()` method of Loggers (see examples)
+#'
+#' @param x any \R object. Especially:
+#'   * A `character` scalar. This can either be the path to a
+#'     [YAML][https://yaml.org/] file, or directly valid YAML
+#'   * a list containing the elements `appenders`, `threshold`, `exception_handler`,
+#'     `propagate` and `filters`. See the section *Fields* in [Logger] for
+#'     details.
+#'   * a Logger object, to clone its configuration.
+#'
+#' @rdname logger_config
+#' @return a logger_config object
+#' @export
+#'
+#' @examples
+#' cfg <- "
+#' Logger:
+#'   name: test/blubb
+#'   threshold: info
+#'   propagate: false
+#'   appenders:
+#'     AppenderFile:
+#'       file: /tmp/blah.txt
+#' "
+#' lg$config(as_logger_config(cfg))
+#' # but you can just do the following directly
+#' lg <- get_logger("test")
+#' lg$config(cfg)
+#'
+as_logger_config <- function(x){
+  UseMethod("as_logger_config")
+}
 
 
 
@@ -239,8 +234,20 @@ standardize_filters_list <- function(x){
 
 
 
+#' Title
+#' @rdname logger_config
+#' @param file `character` scalar.
+#' @param fmt
+#' @param fmt_timestamp
+#' @param threshold
+#' @param appenders
+#'
+#' @return
+#' @export
+#'
+#' @examples
 basic_config = function(
-  filename,
+  file,
   fmt,
   fmt_timestamp,
   threshold,
