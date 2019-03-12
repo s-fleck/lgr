@@ -19,7 +19,7 @@ as_logger_config(x)
 \item{x}{any \R object. Especially:
 \itemize{
 \item A \code{character} scalar. This can either be the path to a
-\link[=https://yaml.org/]{yaml} file, or directly valid yaml.
+\link[=https://yaml.org/]{YAML} file, or directly valid YAML
 \item a list containing the elements \code{appenders}, \code{threshold}, \code{exception_handler},
 \code{propagate} and \code{filters}. See the section \emph{Fields} in \link{Logger} for
 details.

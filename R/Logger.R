@@ -235,28 +235,22 @@ Logger <- R6::R6Class(
         )
       }
 
-      self$set_appenders(appenders)
-      self$set_exception_handler(exception_handler)
       self$set_name(name)
+      private$.last_event <- LogEvent$new(self)
+
+      self$set_threshold(threshold)
+      self$set_appenders(appenders)
       self$set_propagate(propagate)
       self$set_filters(filters)
-      private$.last_event <- LogEvent$new(self)
-      self$set_threshold(threshold)
+      self$set_exception_handler(exception_handler)
 
       invisible(self)
     },
 
-
     config = function(
       cfg  = NULL,
       file = NULL,
-      text = NULL,
-      ...,
-      appenders,
-      threshold,
-      filters,
-      exception_handler,
-      propagate
+      text = NULL
     ){
       assert(
         is.null(cfg) + is.null(file) + is.null(text) >= 2,
@@ -276,7 +270,7 @@ Logger <- R6::R6Class(
       } else if (!is.null(text)){
         assert(
           is_scalar_character(text) && grepl("\n", text),
-          "`text` must be a character scalar containing valid yaml"
+          "`text` must be a character scalar containing valid YAML"
         )
         cfg <- as_logger_config(text)
 

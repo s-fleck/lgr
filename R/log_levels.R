@@ -198,7 +198,8 @@ colorize_levels <- function(
 #' @noRd
 standardize_threshold <- function(
   x,
-  log_levels = c(getOption("lgr.log_levels"), c("all" = NA_integer_, "off" = 0L))
+  log_levels = c(getOption("lgr.log_levels"), c("all" = NA_integer_, "off" = 0L)),
+  allow_null = FALSE
 ){
   assert(is_scalar(x), "A threshold must be a scalar (a vector of length 1)" )
 

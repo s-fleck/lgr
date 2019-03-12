@@ -21,10 +21,10 @@ for (strategy in c(
     tf <- tempfile()
 
     lr <- get_logger("par_root")
-    lr$config(
+    lr$config(logger_config(
       propagate = FALSE,
       appenders = AppenderFile$new(tf)
-    )
+    ))
 
     lg <- get_logger("par_root/par_child")
 

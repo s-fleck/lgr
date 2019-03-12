@@ -6,7 +6,7 @@
 #'
 #' @param x any \R object. Especially:
 #'   * A `character` scalar. This can either be the path to a
-#'     [yaml][https://yaml.org/] file, or directly valid yaml.
+#'     [YAML][https://yaml.org/] file, or directly valid YAML
 #'   * a list containing the elements `appenders`, `threshold`, `exception_handler`,
 #'     `propagate` and `filters`. See the section *Fields* in [Logger] for
 #'     details.
@@ -38,6 +38,21 @@ as_logger_config <- function(x){
 
 
 
+#' Create a Logger configuration object
+#'
+#' @param appenders
+#' @param threshold
+#' @param filters
+#' @param exception_handler
+#' @param propagate
+#'
+#' @return a `list` with subclass `"logger_config"`
+#' @export
+#'
+#' @examples
+#' # call without arguments to generate the default configuration
+#' cfg <- logger_config()
+#'
 logger_config <- function(
   appenders = list(),
   threshold = NULL,
@@ -48,10 +63,14 @@ logger_config <- function(
   assert(is.function(exception_handler))
   assert(is_scalar_bool(propagate))
 
+  if (!is.null(threshold)){
+    threshold <- standardize_threshold(threshold)
+  }
+
   structure(
     list(
       appenders = standardize_appenders_list(appenders),
-      threshold = standardize_threshold(threshold),
+      threshold = threshold,
       filters   = standardize_filters_list(filters),
       exception_handler = exception_handler,
       propagate = propagate
@@ -69,19 +88,16 @@ logger_config <- function(
 as_logger_config.list <- function(x){
   assert(is.list(x))
 
-  assert(all(
-    names(x) %in% c("exception_handler", "propagate", "threshold", "appenders", "filters")
+  assert(setequal(
+    names(x), c("exception_handler", "propagate", "threshold", "appenders", "filters")
   ))
 
-  assert(is.function(x$exception_handler))
-  assert(is_scalar_bool(x$propagate))
-
-  x$threshold <- standardize_threshold(x$threshold)
-  x$filters   <- standardize_filters_list(x$filters)
-  x$appenders <- standardize_appenders_list(x$appenders)
-
-  class(x) <- c("logger_config", "list")
-  x
+  logger_config(
+    threshold = x$threshold,
+    filters = x$filters,
+    appenders = x$appenders,
+    exception_handler = x$exception_handler
+  )
 }
 
 
@@ -102,14 +118,14 @@ as_logger_config.character <- function(
 
   assert(
     identical(length(names(dd)), 1L),
-    "If 'x' is a yaml file, it must contain a single logger object"
+    "If 'x' is a YAML file, it must contain a single logger object"
   )
 
   res <- resolve_r6_ctors(dd)
 
   assert(
     is_Logger(res),
-    "If `x` is a yaml file or string, it must contain a single logger object"
+    "If `x` is a YAML file or string, it must contain a single logger object"
   )
 
   res

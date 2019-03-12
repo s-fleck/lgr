@@ -691,14 +691,14 @@ just set the buffer size to `0`.
 ```{r}
 # install.packages("RSQLite")
 lg <- get_logger("db_logger")
-
-lg$config(
-  appenders = list(db = AppenderDbi$new(
+lg$set_propagate(FALSE)
+lg$add_appender(
+  name = "db", 
+  AppenderDbi$new(
     conn = DBI::dbConnect(RSQLite::SQLite()),
     table = "log",
     buffer_size = 2L
-  )), 
-  propagate = FALSE
+  )
 )
 
 lg$info("Logging to databases uses a buffer")
