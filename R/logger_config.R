@@ -91,7 +91,8 @@ as_logger_config.list <- function(x){
     threshold = x$threshold,
     filters = x$filters,
     appenders = x$appenders,
-    exception_handler = x$exception_handler
+    exception_handler = x$exception_handler,
+    propagate = x$propagate
   )
 }
 

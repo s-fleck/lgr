@@ -15,6 +15,9 @@ test_that("logger_config works as expected", {
   expect_true(inherits(tl$appenders[[1]], "Appender"))
   expect_false(is_virgin_Logger(tl))
 
+  expect_silent(tl$fatal("test"))  # propagate
+  expect_equal(tl$last_event$level, 400)  # force level filter
+
   tl <- get_logger("test")$config(logger_config())
   expect_true(is_virgin_Logger(tl))
 })

@@ -29,11 +29,11 @@ for (strategy in c(
     lg <- get_logger("par_root/par_child")
 
     x <- future::future(lr$info("root_logger"))
-    x <- future::value(x)
+    expect_silent(x <- future::value(x))
     expect_match(readLines(tf)[[1]], "root_logger")
 
     y <- future::future(lg$info("child_logger"))
-    y <- future::value(y)
+    expect_silent(y <- future::value(y))
     expect_match(readLines(tf)[[2]], "child_logger")
 
     future.apply::future_lapply(
