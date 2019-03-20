@@ -2,22 +2,61 @@
 % Please edit documentation in R/logger_config.R
 \name{logger_config}
 \alias{logger_config}
-\title{Create a Logger configuration object}
+\alias{as_logger_config}
+\alias{basic_config}
+\title{Logger Configuration Objects}
 \usage{
 logger_config(appenders = list(), threshold = NULL, filters = list(),
   exception_handler = default_exception_handler, propagate = TRUE)
+
+as_logger_config(x)
+
+basic_config(file = NULL, fmt = NULL,
+  timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3", threshold = NA,
+  appenders = NULL)
 }
 \arguments{
-\item{propagate}{}
+\item{appenders, threshold, filters, exception_handler, propagate}{see \link{Logger}}
+
+\item{x}{any \R object. Especially:
+\itemize{
+\item A \code{character} scalar. This can either be the path to a
+\link[=https://yaml.org/]{YAML} file, or directly valid YAML
+\item a list containing the elements \code{appenders}, \code{threshold}, \code{exception_handler},
+\code{propagate} and \code{filters}. See the section \emph{Fields} in \link{Logger} for
+details.
+\item a Logger object, to clone its configuration.
+}}
+
+\item{file}{\code{character} scalar.}
+
+\item{appenders}{}
 }
 \value{
 a \code{list} with subclass \code{"logger_config"}
+
+a logger_config object
 }
 \description{
-Create a Logger configuration object
+\code{logger_config()} and \code{basic_config()} can be used to directly create
+objects that can be passed to the \code{$config()} method of Loggers.
 }
 \examples{
 # call without arguments to generate the default configuration
 cfg <- logger_config()
+
+cfg <- "
+Logger:
+  name: test/blubb
+  threshold: info
+  propagate: false
+  appenders:
+    AppenderFile:
+      file: /tmp/blah.txt
+"
+lg$config(as_logger_config(cfg))
+# but you can just do the following directly
+lg <- get_logger("test")
+lg$config(cfg)
 
 }

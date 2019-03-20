@@ -4,6 +4,7 @@
 \alias{suspend_logging}
 \alias{unsuspend_logging}
 \alias{without_logging}
+\alias{with_logging}
 \title{Suspend All Logging}
 \usage{
 suspend_logging()
@@ -11,22 +12,39 @@ suspend_logging()
 unsuspend_logging()
 
 without_logging(code)
+
+with_logging(code)
 }
 \arguments{
+\item{code}{Any \R code}
+
 \item{code}{Any \R code}
 }
 \value{
 \code{suspend_logging()} and \code{unsuspend_logging()} return \code{NULL} (invisibly),
-\code{without_logging} returns whatever \code{code} returns
+\code{without_logging()} and \code{with_logging()} returns whatever \code{code} returns.
 }
 \description{
 Completely disable logging for all loggers. This is for example useful for
-automated test code.
+automated test code. \code{suspend_logging()} globally disables all logging with
+lgr until \code{unsuspend_logging()} is invoked, while \code{without_logging()} and
+\code{with_logging()} temporarily disable/enable logging.
 }
 \examples{
-without_logging({
-  FATAL("FOO")
-  INFO("BAR")
-})
+lg <- get_logger("test")
+
+# temporarily disable logging
+lg$fatal("foo")
+without_logging(lg$fatal("bar"))
+
+# globally disable logging
+suspend_logging()
+lg$fatal("bar")
+with_logging(lg$fatal("foo"))  # log anyways
+
+# globally enable logging again
+unsuspend_logging()
+lg$fatal("foo")
+
 
 }

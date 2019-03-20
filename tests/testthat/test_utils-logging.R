@@ -4,14 +4,21 @@ context("utils-logging")
 
 
 test_that("log suppression", {
-  expect_output(FATAL("test"), "FATAL")
-  expect_silent(without_logging(FATAL("test")))
-  expect_output(FATAL("test"), "FATAL")
+  lg <- get_logger("test")
 
+  # without_logging() suppresses log messages temporarily
+  expect_output(lg$fatal("test"), "FATAL")
+  expect_silent(without_logging(lg$fatal("test")))
+  expect_output(lg$fatal("test"), "FATAL")
+
+  # suspending works and can be ignored with with_logging()
   suspend_logging()
-  expect_silent(FATAL("test"))
+  expect_silent(lg$fatal("test"))
+  expect_output(with_logging(lg$fatal("test")))
+
+  # unsuspending logging works
   unsuspend_logging()
-  expect_output(FATAL("test"), "FATAL")
+  expect_output(lg$fatal("test"), "FATAL")
 })
 
 

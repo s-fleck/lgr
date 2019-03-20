@@ -1,4 +1,6 @@
-# lgr 0.1.1.9000
+# lgr 0.2.0.9000
+
+* to be released as 1.0.0
 
 * `get_loggers()` registeres new loggers in the lgr::loggers namespace, this 
   is a more global and decoupled approach to loggers. 
@@ -9,8 +11,12 @@
   For consistency the format method of `ancestry` has also been revised.
 * New Loggers now inherit the log level of their parent unless one is set
 * added a `config` method for Loggers.
-* Depend on R6 >= 2.4.0 (which includes some relevant fixes to finalizers)
+* Depend on R6 >= 2.4.0 (which includes relevant fixes to finalizers)
 * finalize methods are now private
+* support for new ways to configure loggers, including YAML config files 
+  (experimental)
+* added `with_logging()`, the opposite of `without_logging()`. This can be
+  handy for automated tests
 
 
 # lgr 0.1.1
