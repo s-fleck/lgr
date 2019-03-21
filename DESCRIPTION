@@ -1,7 +1,7 @@
 Type: Package
 Package: lgr
 Title: A Fully Featured Logging Framework
-Version: 0.9.0.9000
+Version: 0.2.0
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -37,6 +37,9 @@ Suggests:
     RSQLite,
     RMariaDB,
     RPostgres,
+    RMySQL, 
+    RPostgreSQL,
+    rprojroot,
     testthat,
     tibble,
     tools,

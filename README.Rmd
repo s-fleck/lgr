@@ -192,12 +192,12 @@ dependencies, and are well maintained :
     guessing the user name from various sources. You can also set the user name 
     manually if you want to use it for logging.
   - [desc](https://CRAN.R-project.org/package=desc) for the package development
-    convenince function `use_logger()`
+    convenience function `use_logger()`
   - [yaml](https://CRAN.R-project.org/package=yaml) for configuring loggers 
     via YAML files
     
   Other optional dependencies (future, future.apply) do not provide any extra
-  functionallity but had to be included for some of the automated unit tests
+  functionality but had to be included for some of the automated unit tests
   run by lgr.
     
 

@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>A Fully Featured Logging Framework for R — yog-package • yog</title>
+<title>Special logger subclass for the root logger. Currently exactly like a
+normal Logger, but prevents the threshold to be set to NULL — LoggerRoot • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -16,7 +17,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -30,11 +32,11 @@
 
 
 
-<meta property="og:title" content="A Fully Featured Logging Framework for R — yog-package" />
+<meta property="og:title" content="Special logger subclass for the root logger. Currently exactly like a
+normal Logger, but prevents the threshold to be set to NULL — LoggerRoot" />
 
-<meta property="og:description" content="A flexible R6 based logging framework. Yog is under
-    heavy development right now, please don't heistate to contact the
-    maintainer with bug reports, wishes, suggestions, etc..." />
+<meta property="og:description" content="Special logger subclass for the root logger. Currently exactly like a
+normal Logger, but prevents the threshold to be set to NULL" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -64,8 +66,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">yog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.9012</span>
+        <a class="navbar-link" href="../index.html">lgr</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -73,12 +75,12 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="../articles/yog.html">Get started</a>
+  <a href="../articles/lgr.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -91,16 +93,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/yog-examples.html">Example Configurations for yog</a>
+      <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/s-fleck/yog">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/s-fleck/lgr">
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -116,46 +121,24 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>A Fully Featured Logging Framework for R</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/yog/blob/master/R/yog-package.R'><code>R/yog-package.R</code></a></small>
-    <div class="hidden name"><code>yog-package.Rd</code></div>
+    <h1>Special logger subclass for the root logger. Currently exactly like a
+normal Logger, but prevents the threshold to be set to NULL</h1>
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/Logger.R'><code>R/Logger.R</code></a></small>
+    <div class="hidden name"><code>LoggerRoot.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A flexible R6 based logging framework. Yog is under
-    heavy development right now, please don't heistate to contact the
-    maintainer with bug reports, wishes, suggestions, etc...</p>
+    <p>Special logger subclass for the root logger. Currently exactly like a
+normal Logger, but prevents the threshold to be set to NULL</p>
     
     </div>
 
+    <pre class="usage"><span class='no'>LoggerRoot</span></pre>
         
-    <h2 class="hasAnchor" id="options"><a class="anchor" href="#options"></a>Options</h2>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    
-    <p>You can also set these options in your <code>.Rprofile</code> to make them permanent</p>
-<dl class='dl-horizontal'>
-<dt><code>yog.colors</code></dt><dd><p>a <code>list</code> of <code>functions</code> used for coloring the log
-levels in console output. Usually these will be functions from the
-package <strong>crayon</strong></p></dd>
-<dt><code>yog.log_levels</code></dt><dd><p>A named <code>integer</code> vector of log levels that are
-known to yog for labeling, setting thresholds, etc... . Instead of
-modifying this option manually use <code><a href='get_log_levels.html'>add_log_levels()</a></code> and
-<code><a href='get_log_levels.html'>remove_log_levels()</a></code></p></dd>
-<dt><code>yog.suspend_logging</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>. Suspend all logging for
-all loggers.  Instead of modifying this option manually use
-<code><a href='suspend_logging.html'>suspend_logging()</a></code> and <code><a href='suspend_logging.html'>unsuspend_logging()</a></code></p></dd>
-<dt><code>yog.user</code></dt><dd><p>a <code>character</code> scalar. The default username for new
-Loggers. Users can also be set per Logger, though this rarely makes
-sense.</p></dd>
-</dl>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Useful links:</p><ul>
-<li><p><a href='https://github.com/s-fleck/yog'>https://github.com/s-fleck/yog</a></p></li>
-<li><p>Report bugs at <a href='https://github.com/s-fleck/yog'>https://github.com/s-fleck/yog</a></p></li>
-</ul></div>
+    <p>An object of class <code>R6ClassGenerator</code> of length 24.</p>
     
 
   </div>
@@ -163,13 +146,9 @@ sense.</p></dd>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
-      <li><a href="#options">Options</a></li>
-
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#format">Format</a></li>
           </ul>
 
-    <h2>Author</h2>
-    <p><strong>Maintainer</strong>: Stefan Fleck <a href='mailto:stefan.b.fleck@gmail.com'>stefan.b.fleck@gmail.com</a> (0000-0003-3344-9851)</p>
   </div>
 </div>
 

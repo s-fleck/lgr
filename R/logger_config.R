@@ -77,7 +77,7 @@ logger_config <- function(
 #'   * a Logger object, to clone its configuration.
 #'
 #' @rdname logger_config
-#' @seealso \url{https://www.yaml.org/}
+#' @seealso \url{https://yaml.org/}
 #' @return a logger_config object
 #' @export
 #'

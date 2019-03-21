@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Information About the System — get_caller • lgr</title>
+<title>Logger Configuration Objects — logger_config • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -31,9 +31,12 @@
 
 
 
-<meta property="og:title" content="Information About the System — get_caller" />
+<meta property="og:title" content="Logger Configuration Objects — logger_config" />
 
-<meta property="og:description" content="get_caller() Tries to determine the calling functions based on where." />
+<meta property="og:description" content="logger_config() is an S3 constructor for logger_config objects
+that can be passed to the $config method of a Logger. You
+can just pass a normal list instead, but using this constructor is
+a more formal way that includes additional argument checking." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -118,49 +121,107 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Information About the System</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
-    <div class="hidden name"><code>system_infos.Rd</code></div>
+    <h1>Logger Configuration Objects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/logger_config.R'><code>R/logger_config.R</code></a></small>
+    <div class="hidden name"><code>logger_config.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>get_caller()</code> Tries to determine the calling functions based on <code>where</code>.</p>
+    <p><code>logger_config()</code> is an S3 constructor for <code>logger_config</code> objects
+that can be passed to the <code>$config</code> method of a <a href='Logger.html'>Logger</a>. You
+can just pass a normal <code>list</code> instead, but using this constructor is
+a more formal way that includes additional argument checking.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_caller</span>(<span class='kw'>where</span> <span class='kw'>=</span> -<span class='fl'>1L</span>)
+    <pre class="usage"><span class='fu'>logger_config</span>(<span class='kw'>appenders</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>filters</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(),
+  <span class='kw'>exception_handler</span> <span class='kw'>=</span> <span class='no'>default_exception_handler</span>, <span class='kw'>propagate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>get_user</span>(<span class='kw'>fallback</span> <span class='kw'>=</span> <span class='st'>"unknown user"</span>)</pre>
+<span class='fu'>as_logger_config</span>(<span class='no'>x</span>)
+
+<span class='co'># S3 method for list</span>
+<span class='fu'>as_logger_config</span>(<span class='no'>x</span>)
+
+<span class='co'># S3 method for character</span>
+<span class='fu'>as_logger_config</span>(<span class='no'>x</span>)
+
+<span class='co'># S3 method for Logger</span>
+<span class='fu'>as_logger_config</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>where</th>
-      <td><p><code>integer</code> scalar (usually negative). Look up that many frames
-up the call stack</p></td>
+      <th>appenders</th>
+      <td><p>see <a href='Logger.html'>Logger</a></p></td>
     </tr>
     <tr>
-      <th>fallback</th>
-      <td><p>A fallback in case the user name could not be determined</p></td>
+      <th>threshold</th>
+      <td><p>see <a href='Logger.html'>Logger</a></p></td>
+    </tr>
+    <tr>
+      <th>filters</th>
+      <td><p>see <a href='Logger.html'>Logger</a></p></td>
+    </tr>
+    <tr>
+      <th>exception_handler</th>
+      <td><p>see <a href='Logger.html'>Logger</a></p></td>
+    </tr>
+    <tr>
+      <th>propagate</th>
+      <td><p>see <a href='Logger.html'>Logger</a></p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>any <span style="R">R</span> object. Especially:</p><ul>
+<li><p>A <code>character</code> scalar. This can either be the path to a
+YAML file or a character scalar containing valid YAML</p></li>
+<li><p>a list containing the elements <code>appenders</code>, <code>threshold</code>, <code>exception_handler</code>,
+<code>propagate</code> and <code>filters</code>. See the section <em>Fields</em> in <a href='Logger.html'>Logger</a> for
+details.</p></li>
+<li><p>a Logger object, to clone its configuration.</p></li>
+</ul></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a <code>character</code> scalar.</p>
+    <p>a <code>list</code> with the subclass <code>"logger_config"</code></p>
+<p>a logger_config object</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://www.rdocumentation.org/packages/base/topics/sys.parent'>base::sys.call()</a></code></p>
-<p><code><a href='https://www.rdocumentation.org/packages/whoami/topics/whoami'>whoami::whoami()</a></code></p></div>
+    <div class='dont-index'><p><a href='https://yaml.org/'>https://yaml.org/</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>foo</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>get_caller</span>(-<span class='fl'>1L</span>)
-<span class='fu'>foo</span>()</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'><span class='fu'>get_user</span>()</div><div class='output co'>#&gt; [1] "stefan.b.fleck@gmail.com"</div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)
+
+<span class='co'># explicetely defining logger configurations with logger_config</span>
+
+<span class='co'># call without arguments to generate the default configuration</span>
+<span class='no'>cfg</span> <span class='kw'>&lt;-</span> <span class='fu'>logger_config</span>()  <span class='co'># same as the unconfigured state of a Logger</span>
+<span class='no'>lg</span>$<span class='fu'>config</span>(<span class='no'>cfg</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [<span style='color: #808080;'>all</span><span>] test
+#&gt; 
+#&gt; inherited appenders:
+#&gt;   console: &lt;AppenderConsole&gt; [info] -&gt; console
+#&gt;   memory : &lt;AppenderDt&gt;      [ all] -&gt; in memory data.table</div><div class='input'>
+
+<span class='co'># Creating a logger config form YAML</span>
+<span class='no'>cfg</span> <span class='kw'>&lt;-</span> <span class='st'>"
+Logger:
+  name: test/blubb
+  threshold: info
+  propagate: false
+  appenders:
+    AppenderFile:
+      file: /tmp/blah.txt
+"</span>
+<span class='no'>lg</span>$<span class='fu'>config</span>(<span class='no'>cfg</span>)  <span class='co'># calls as_logger_config() internally</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
+#&gt; 
+#&gt; appenders:
+#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/blah.txt</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

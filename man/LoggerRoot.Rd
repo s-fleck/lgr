@@ -4,13 +4,13 @@
 \name{LoggerRoot}
 \alias{LoggerRoot}
 \title{Special logger subclass for the root logger. Currently exactly like a
-normale Logger, but prevents the threshold to be set to NULL}
+normal Logger, but prevents the threshold to be set to NULL}
 \format{An object of class \code{R6ClassGenerator} of length 24.}
 \usage{
 LoggerRoot
 }
 \description{
 Special logger subclass for the root logger. Currently exactly like a
-normale Logger, but prevents the threshold to be set to NULL
+normal Logger, but prevents the threshold to be set to NULL
 }
 \keyword{datasets}

@@ -16,7 +16,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -69,7 +70,7 @@ logging as outlined in vignette(&quot;lgr&quot;, package = &quot;lgr&quot;)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -77,7 +78,7 @@ logging as outlined in vignette(&quot;lgr&quot;, package = &quot;lgr&quot;)." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -107,7 +108,7 @@ logging as outlined in vignette(&quot;lgr&quot;, package = &quot;lgr&quot;)." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/s-fleck/lgr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -143,42 +144,44 @@ logging as outlined in <code><a href='../articles/lgr.html'>vignette("lgr", pack
         
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
-    <pre>
-x &lt;- x$new(name = "(unnamed logger)", appenders = list(), threshold = 400L,
-  filters = list(), parent = get_logger("root"), exception_handler =
-  default_exception_handler, propagate = TRUE)
-    x$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
-x$fatal(msg, ..., caller = get_caller(-8L))
-x$error(msg, ..., caller = get_caller(-8L))
-x$warn(msg, ..., caller = get_caller(-8L))
-x$info(msg, ..., caller = get_caller(-8L))
-x$debug(msg, ..., caller = get_caller(-8L))
-x$trace(msg, ..., caller = get_caller(-8L))
-x$add_appender(appender, name = NULL)
-x$remove_appender(pos)
-x$handle_exception(...)
-x$set_name(x)
-x$set_exception_handler(fun)
-x$set_propagate(x)
-x$set_parent(logger)
-x$set_threshold(level)
-x$set_appenders(x)
-x$spawn(...)
-x$filter(event)
-x$add_filter(filter, name = NULL)
-x$remove_filter(pos)
-x$set_filters(filters)
-    x$ancestry
-x$appenders
-x$exception_handler
-x$full_name
-x$inherited_appenders
-x$last_event
-x$name
-x$parent
-x$propagate
-x$threshold
-x$filters
+    <pre># Cannonical way to initialize a new Logger (see "Creating Loggers")
+lg &lt;- get_logger("logger")
+</pre>
+    <pre># R6 constructor (not recommended for productive use)
+lg &lt;- Logger$new(name = "(unnamed logger)", appenders = list(), threshold =
+  NULL, filters = list(), exception_handler = default_exception_handler,
+  propagate = TRUE)
+    lg$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
+lg$fatal(msg, ..., caller = get_caller(-8L))
+lg$error(msg, ..., caller = get_caller(-8L))
+lg$warn(msg, ..., caller = get_caller(-8L))
+lg$info(msg, ..., caller = get_caller(-8L))
+lg$debug(msg, ..., caller = get_caller(-8L))
+lg$trace(msg, ..., caller = get_caller(-8L))
+lg$config(cfg = NULL, file = NULL, text = NULL)
+lg$add_appender(appender, name = NULL)
+lg$remove_appender(pos)
+lg$handle_exception(...)
+lg$set_name(x)
+lg$set_exception_handler(fun)
+lg$set_propagate(x)
+lg$set_threshold(level)
+lg$set_appenders(x)
+lg$spawn(name, ...)
+lg$filter(event)
+lg$add_filter(filter, name = NULL)
+lg$remove_filter(pos)
+lg$set_filters(filters)
+    lg$ancestry
+lg$appenders
+lg$exception_handler
+lg$inherited_appenders
+lg$last_event
+lg$name
+lg$parent
+lg$propagate
+lg$threshold
+lg$filters
     </pre>
     
     <h2 class="hasAnchor" id="creating-loggers"><a class="anchor" href="#creating-loggers"></a>Creating Loggers</h2>
@@ -188,15 +191,25 @@ x$filters
 package, but you do not need to configure it. Usually only the root logger
 needs to be configured (new Appenders added/removed, Layouts modified,
 etc...).</p>
+<p>Loggers should never be instantiated directly with <code>Logger$new()</code> but rather
+via <code><a href='get_logger.html'>get_logger("name")</a></code>. If <code>"name"</code> does not exist, a new
+Logger with that name will be created, otherwise the function returns a
+Reference to the existing Logger.</p>
+<p>The <code>name</code> is potentially a <code>/</code> separated hierarchical value like
+<code>foo/bar/baz</code>. Loggers further down the hierarchy are children of the loggers
+above.</p>
+<p>All calls to <code><a href='get_logger.html'>get_logger()</a></code> with the same name return the same Logger
+instance. This means that Logger instances never need to be passed between
+different parts of an application.</p>
 <p>If you just want to log to an additional output (like a log file), you want
 a new <a href='Appender.html'>Appender</a>, not a new Logger.</p>
     
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
-    <p>You can either specify these fields in <code>Logger$new()</code> or modify them after
-creation with setter functions of the form <code>logger$set_&lt;fieldname&gt;(value)</code>
-(see examples)</p>
+    <p>You can modify the fields of an existing Logger with
+<code>logger$set_&lt;fieldname&gt;(value)</code> (see examples). Another way to configure
+loggers is via its <code>$config()</code> method.</p>
 <dl class='dl-horizontal'>
 <dt><code>name</code>, <code>set_name(x)</code></dt><dd><p><code>character</code> scalar. A name for the Logger that should be
 unique among Loggers. This logger name is used in the Loggers print
@@ -212,9 +225,6 @@ also inherits the Appenders of its ancestors
 inheritance structures).</p></dd>
     <dt><code>threshold</code>, <code>set_threshold(level)</code></dt><dd><p><code>character</code> or <code>integer</code> scalar.
 The minimum <a href='get_log_levels.html'>log level</a> that triggers this Logger</p></dd>
-    <dt><code>parent</code>, <code>set_parent(logger)</code></dt><dd><p>a <code>Logger</code>. Usually the root logger.
-Can also be <code>NULL</code>, but all Loggers must be descendants of the root logger
-for lgr to work as intended.</p></dd>
     <dt><code>exception_handler</code>, <code>set_exception_handler()</code></dt><dd><p>a <code>function</code> that
 takes a single argument <code>e</code>. The function used to handle errors that occur
 during logging. Defaults to demoting errors to <a href='https://www.rdocumentation.org/packages/base/topics/warnings'>warnings</a>.</p></dd>
@@ -240,12 +250,11 @@ Loggers also have the following additional read-only bindings:</p>
 <dl class='dl-horizontal'>
 <dt><code>ancestry</code></dt><dd><p>A named <code>logical</code> vector of containing
 the propagate value of each Logger upper the inheritance tree. The names
-are the names of the appenders.</p></dd>
+are the names of the appenders. <code>ancestry</code> is an S3 class with a custom
+<code><a href='https://www.rdocumentation.org/packages/base/topics/format'>format()</a></code>/<code><a href='https://www.rdocumentation.org/packages/base/topics/print'>print()</a></code> method, so if you want to use the plain logical
+vector use <code><a href='https://www.rdocumentation.org/packages/base/topics/class'>unclass(lg$ancestry)</a></code></p></dd>
     <dt><code>inherited_appenders</code></dt><dd><p>A <code>list</code> of all inherited
 appenders from ancestral Loggers of the current Logger</p></dd>
-    <dt><code>full_name</code></dt><dd><p><code>character</code> scalar. The full or <em>qualified</em> name of
-the logger: The name of the logger and all loggers it inherits from
-(except for the root logger)</p></dd>
     <dt><code>last_event</code></dt><dd><p>The last LogEvent produced by the current Logger</p></dd>
 </dl>
     
@@ -279,13 +288,21 @@ characters.
 If the new LogEvent passes this Loggers filters, it will be dispatched
 to the relevant <a href='Appender.html'>Appenders</a> and checked against their thresholds and
 filters.</p></dd>
+    <dt><code>config(cfg  = NULL, file = NULL, text = NULL</code></dt><dd><p>Load a Logger
+configuration. <code>cfg</code> can be either a special list object, the path to
+a YAML config file, or a character scalar containing YAML. The arguments
+<code>file</code> and <code>text</code> can used alternatively and enforce that the supplied
+argument is of the specified type.
+See <a href='logger_config.html'>logger_config</a> for details.</p></dd>
     <dt><code><a href='simple_logging.html'>add_appender(appender, name = NULL)</a></code>, <code><a href='simple_logging.html'>remove_appender(pos)</a></code></dt><dd><p>Add or remove an <a href='Appender.html'>Appender</a>. Supplying a <code>name</code> is optional but
 recommended. After adding an Appender with
 <code>logger$add_appender(AppenderConsole$new(), name = "console")</code> you can
 refer to it via <code>logger$appenders$console</code>. <code><a href='simple_logging.html'>remove_appender()</a></code> can
 remove an Appender by position or name.</p></dd>
-    <dt><code>spawn(...)</code></dt><dd><p>Spawn a child Logger. <code>lg &lt;- lgr$spawn("mylogger")</code> is
-equivalent to <code>lg &lt;- Logger$new("mylogger", parent = lgr)</code></p></dd>
+    <dt><code>spawn(...)</code></dt><dd><p>Spawn a child Logger.
+<code>get_logger("foo/bar")$spawn("baz")</code> is equivalent to
+<code><a href='get_logger.html'>get_logger("foo/bar/baz")</a></code>, but can be convenient for programmatic use
+when the name of the parent Logger is not known.</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter(event)</a></code></dt><dd><p>Determine whether the LogEvent <code>x</code> should be passed
@@ -317,7 +334,7 @@ examples.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># lgr::lgr is the root logger that is always available</span>
-<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is %s"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>() )</div><div class='output co'>#&gt; INFO  [12:48:00.555] Today is 2019-02-13 </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"This is a serious error"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [12:48:00.558] This is a serious error </div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is %s"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>() )</div><div class='output co'>#&gt; INFO  [11:10:30.168] Today is 2019-03-22 </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"This is a serious error"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [11:10:30.171] This is a serious error </div><div class='input'>
 <span class='co'># You can create new loggers with Logger$new(). The following creates a</span>
 <span class='co'># logger that logs to a temporary file.</span>
 <span class='no'>tf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>()
@@ -326,26 +343,25 @@ examples.</p>
 <span class='co'># The new logger passes the log message on to the appenders of its parent</span>
 <span class='co'># logger, which is by default the root logger. This is why the following</span>
 <span class='co'># writes not only the file 'tf', but also to the console.</span>
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blubb"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [12:48:00.565] blubb </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2019-02-13 12:48:00.565] blubb"</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blubb"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [11:10:30.181] blubb </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2019-03-22 11:10:30.181] blubb"</div><div class='input'>
 <span class='co'># This logger's print() method depicts this relationship</span>
-<span class='no'>lg2</span> <span class='kw'>&lt;-</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"child"</span>, <span class='kw'>parent</span> <span class='kw'>=</span> <span class='no'>lg</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>lg2</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [info] child -&gt; mylogger -&gt; root
+<span class='no'>lg2</span> <span class='kw'>&lt;-</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"lg/child"</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>lg2</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>all</span><span>] lg/child
 #&gt; 
 #&gt; inherited appenders:
-#&gt;   [[1]]  : &lt;AppenderFile&gt;    [ all] -&gt; /tmp/RtmpK79QfJ/file266e423cd073
 #&gt;   console: &lt;AppenderConsole&gt; [info] -&gt; console
-#&gt;   memory : &lt;AppenderDt&gt;      [ all] -&gt; in memory data.table</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>lg2</span>$<span class='no'>ancestry</span>)</div><div class='output co'>#&gt; child -&gt; mylogger -&gt; root </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>lg2</span>$<span class='no'>full_name</span>)</div><div class='output co'>#&gt; [1] "mylogger.child"</div><div class='input'>
+#&gt;   memory : &lt;AppenderDt&gt;      [ all] -&gt; in memory data.table</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>lg2</span>$<span class='no'>ancestry</span>)</div><div class='output co'>#&gt; lg/child </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>lg2</span>$<span class='no'>name</span>)</div><div class='output co'>#&gt; [1] "lg/child"</div><div class='input'>
 <span class='co'># use formatting strings and custom fields</span>
 <span class='no'>tf2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>()
 <span class='no'>lg</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>tf2</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()))
-<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"Not all %s support custom fields"</span>, <span class='st'>"appenders"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"test"</span>)</div><div class='output co'>#&gt; INFO  [12:48:00.619] Not all appenders support custom fields </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>type</span><span style='color: #808080;'>: </span><span>test</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; FATAL [2019-02-13 12:48:00.565] blubb
-#&gt; INFO  [2019-02-13 12:48:00.619] Not all appenders support custom fields</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf2</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; {"level":400,"timestamp":"2019-02-13 12:48:00","logger":"mylogger","caller":"eval","msg":"Not all appenders support custom fields","type":"test"}</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"Not all %s support custom fields"</span>, <span class='st'>"appenders"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"test"</span>)</div><div class='output co'>#&gt; INFO  [11:10:30.242] Not all appenders support custom fields </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>type</span><span style='color: #808080;'>: </span><span>test</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; FATAL [2019-03-22 11:10:30.181] blubb
+#&gt; INFO  [2019-03-22 11:10:30.242] Not all appenders support custom fields</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf2</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; {"level":400,"timestamp":"2019-03-22 11:10:30","logger":"mylogger","caller":"eval","msg":"Not all appenders support custom fields","type":"test"}</div><div class='input'>
 <span class='co'># The following works because if no unnamed `...` are present, msg is not</span>
 <span class='co'># passed through sprintf() (otherwise you would have to escape the "%")</span>
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"100%"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [12:48:00.626] 100% </div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"100%"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [11:10:30.249] 100% </div><div class='input'>
 <span class='co'># LoggerGlue</span>
 <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='no'>LoggerGlue</span>$<span class='fu'>new</span>(<span class='st'>"glue"</span>)
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blah "</span>, <span class='st'>"fizz is set to: {fizz}"</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>, <span class='kw'>fizz</span> <span class='kw'>=</span> <span class='st'>"buzz"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [12:48:00.632] blah fizz is set to: buzz </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>foo</span><span style='color: #808080;'>: </span><span>bar</span><span style='color: #808080;'>, </span><span style='color: #D75FAF;'>fizz</span><span style='color: #808080;'>: </span><span>buzz</span><span style='color: #808080;'>}</span><span></div></span></pre>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blah "</span>, <span class='st'>"fizz is set to: {fizz}"</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>, <span class='kw'>fizz</span> <span class='kw'>=</span> <span class='st'>"buzz"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [11:10:30.257] blah fizz is set to: buzz </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>foo</span><span style='color: #808080;'>: </span><span>bar</span><span style='color: #808080;'>, </span><span style='color: #D75FAF;'>fizz</span><span style='color: #808080;'>: </span><span>buzz</span><span style='color: #808080;'>}</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

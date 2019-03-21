@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Print Ancestry of a Logger — print.ancestry • lgr</title>
+<title>Basic Setup for the Logging System — basic_config • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -16,7 +16,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -30,10 +31,9 @@
 
 
 
-<meta property="og:title" content="Print Ancestry of a Logger — print.ancestry" />
+<meta property="og:title" content="Basic Setup for the Logging System — basic_config" />
 
-<meta property="og:description" content="Print the LogEvent propagation structure of a chain of Loggers. Usually you
-won't have many chained loggers, but if you do this might proof useful." />
+<meta property="og:description" content="Quick and easy way to configure the root logger for logging to a file" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -64,7 +64,7 @@ won't have many chained loggers, but if you do this might proof useful." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -72,7 +72,7 @@ won't have many chained loggers, but if you do this might proof useful." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -90,19 +90,19 @@ won't have many chained loggers, but if you do this might proof useful." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/lgr-recipes.html">Example Configurations for lgr</a>
-    </li>
-    <li>
       <a href="../articles/lgr-simple.html">lgr-simple</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/s-fleck/lgr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -118,58 +118,64 @@ won't have many chained loggers, but if you do this might proof useful." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Print Ancestry of a Logger</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/print_Logger.R'><code>R/print_Logger.R</code></a></small>
-    <div class="hidden name"><code>print.ancestry.Rd</code></div>
+    <h1>Basic Setup for the Logging System</h1>
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/simple_logging.R'><code>R/simple_logging.R</code></a></small>
+    <div class="hidden name"><code>basic_config.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Print the LogEvent propagation structure of a chain of Loggers. Usually you
-won't have many chained loggers, but if you do this might proof useful.</p>
+    <p>Quick and easy way to configure the root logger for logging to a file</p>
     
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for ancestry</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ns-load'>requireNamespace</a></span>(<span class='st'>"crayon"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span>
-  <span class='fl'>TRUE</span>), <span class='no'>...</span>)
-
-<span class='co'># S3 method for ancestry</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/format'>format</a></span>(<span class='no'>x</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ns-load'>requireNamespace</a></span>(<span class='st'>"crayon"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span>
-  <span class='fl'>TRUE</span>), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>basic_config</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fmt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>timestamp_fmt</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%OS3"</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>appenders</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>any <span style="R">R</span> Object</p></td>
+      <th>file</th>
+      <td><p><code>character</code> scalar: If not <code>NULL</code> a <a href='AppenderFile.html'>AppenderFile</a> will be created
+that logs to this file. If the filename ends in <code>.jsonl</code> an <a href='AppenderJson.html'>AppenderJson</a>
+will be created instead.</p></td>
     </tr>
     <tr>
-      <th>color</th>
-      <td><p><code>TRUE</code> or <code>FALSE</code>: Output with color? Requires the Package
-<strong>crayon</strong></p></td>
+      <th>fmt</th>
+      <td><p><code>character</code> scalar: Format to use if <code>file</code> is supplied and not
+a <code>.jsonl</code> file. If <code>NULL</code> it defaults to <code>"%L [%t] %m"</code>
+(see <a href='print.LogEvent.html'>format.LogEvent</a>)</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>ignored</p></td>
+      <th>timestamp_fmt</th>
+      <td><p>see <code><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>format.POSIXct()</a></code></p></td>
+    </tr>
+    <tr>
+      <th>threshold</th>
+      <td><p><code>character</code> or <code>integer</code> scalar.
+The minimum <a href='get_log_levels.html'>log level</a> that should be processed by the root
+logger.</p></td>
+    </tr>
+    <tr>
+      <th>appenders</th>
+      <td><p>a single <a href='Appender.html'>Appender</a> or a list thereof. Must be <code>NULL</code> if
+if <code>file</code> is already specified.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>x</code> (invisibly)</p>
+    <p><code>NULL</code> (invisibly)</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'> <span class='no'>l1</span> <span class='kw'>&lt;-</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"AegonV"</span>)
- <span class='no'>l2</span> <span class='kw'>&lt;-</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"Aerys"</span>, <span class='kw'>parent</span> <span class='kw'>=</span> <span class='no'>l1</span>)
- <span class='no'>l3</span> <span class='kw'>&lt;-</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"Rheagar"</span>, <span class='kw'>parent</span> <span class='kw'>=</span> <span class='no'>l2</span>, <span class='kw'>propagate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
- <span class='no'>l4</span> <span class='kw'>&lt;-</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"Aegon"</span>, <span class='kw'>parent</span> <span class='kw'>=</span> <span class='no'>l3</span>)
-
- <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>l4</span>$<span class='no'>ancestry</span>)</div><div class='output co'>#&gt; Aegon -&gt; Rheagar | <span style='color: #808080;'>Aerys -&gt; AegonV -&gt; root</span><span> </div><div class='input'> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/class'>unclass</a></span>(<span class='no'>l4</span>$<span class='no'>ancestry</span>)</div><div class='output co'>#&gt;   Aegon Rheagar   Aerys  AegonV    root 
-#&gt;    TRUE   FALSE    TRUE    TRUE    TRUE </div><div class='input'>
-</div></span></pre>
+    <pre class="examples"># NOT RUN {
+make the root logger log to a file
+basic_config(file = tempfile())
+# }
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

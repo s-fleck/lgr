@@ -414,11 +414,11 @@ from the root logger).
 
 Each newly created Logger is child to a parent Logger, derived from its name. 
 So `lg <- get_logger("foo/bar")` creates the logger with the qualified 
-name `foo/bar` whose parent is the logger `foo` whose parent is (implicitely)
+name `foo/bar` whose parent is the logger `foo` whose parent is (implicitly)
 the `root` logger. If the logger `foo` does not exist in that scenario, it is 
-created automatically. This behaviour might sound strange at first, but it mimicks
-tried and tested behaviour of python logging. This way logging ist decoupled
-from the business logic and your program will not abort if you forgott to
+created automatically. This behaviour might sound strange at first, but it mimics
+tried and tested behaviour of python logging. This way logging is decoupled
+from the business logic and your program will not abort if you forgot to
 initialize some logger up the hierarchy for whatever reason.
 
 A logger dispatches the LogEvents it creates not only to its own

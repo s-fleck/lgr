@@ -74,5 +74,5 @@ Logger:
 lg$config(cfg)  # calls as_logger_config() internally
 }
 \seealso{
-\url{https://www.yaml.org/}
+\url{https://yaml.org/}
 }

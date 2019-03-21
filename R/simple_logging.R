@@ -16,7 +16,7 @@ NULL
 
 
 
-#' Basic Setup for the Logging Systen
+#' Basic Setup for the Logging System
 #'
 #' Quick and easy way to configure the root logger for logging to a file
 #'
@@ -28,7 +28,7 @@ NULL
 #'   (see [format.LogEvent])
 #' @inheritParams print.LogEvent
 #' @inheritParams Logger
-#' @param appenders a single [Appender] or a list thereof. Musst be `NULL` if
+#' @param appenders a single [Appender] or a list thereof. Must be `NULL` if
 #'   if `file` is already specified.
 #' @param threshold `character` or `integer` scalar.
 #'   The minimum [log level][log_levels] that should be processed by the root

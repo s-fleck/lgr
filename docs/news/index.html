@@ -16,7 +16,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -60,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -68,7 +69,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -98,7 +99,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/s-fleck/lgr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -118,13 +119,29 @@
       <small>Source: <a href='https://github.com/s-fleck/lgr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="lgr-0-1-1-9000" class="section level1">
+    <div id="lgr-0-2-0" class="section level1">
 <h1 class="page-header">
-<a href="#lgr-0-1-1-9000" class="anchor"></a>lgr 0.1.1.9000</h1>
+<a href="#lgr-0-2-0" class="anchor"></a>lgr 0.2.0<small> 2019-03-22 </small>
+</h1>
+<ul>
+<li>
+<code>get_loggers()</code> registers new loggers in the lgr::loggers namespace, this is a more global and decoupled approach similar to how python logging handles loggers.</li>
+<li>removed <code>full_name</code> active binding for loggers. Loggers now only have qualified names and <code>name</code> is now identical to what <code>full_name</code> was before. For consistency the format method of <code>ancestry</code> has also been revised.</li>
+<li>Logger inheritance is now derived from the qualified name of a logger. Consequently <code>lg$parent</code> is now derived from <code>lg$name</code>, <code>lg$set_parent()</code> is no longer possible.</li>
+<li>If no threshold is set of r a new Logger, it now inherits the threshold of its parent</li>
+<li>Depend on R6 &gt;= 2.4.0 which includes relevant fixes to finalizers. finalize methods are now private.</li>
+<li>Logger now have a <code>config</code> method that allows configuring Loggers with config objecgts and YAML files (experimental)</li>
+<li>added <code><a href="../reference/suspend_logging.html">with_logging()</a></code>, the opposite of <code><a href="../reference/suspend_logging.html">without_logging()</a></code>. This can be handy for automated tests where you might want so switch logging off/on only for specific unit tests.</li>
+</ul>
+</div>
+    <div id="lgr-0-1-1" class="section level1">
+<h1 class="page-header">
+<a href="#lgr-0-1-1" class="anchor"></a>lgr 0.1.1<small> 2019-02-22 </small>
+</h1>
 <ul>
 <li>Added <code><a href="../reference/simple_logging.html">show_data()</a></code> and <code><a href="../reference/simple_logging.html">show_dt()</a></code> for quick access to the root loggers in memory log as <code>data.frame</code> or <code>data.table</code> respectively</li>
 <li>numerous small fixes</li>
-<li>removed non-breaking-spaces from .RD files. This caused unforseen problems with the compiling the .pdf manuall during the CRAN submission process.</li>
+<li>removed non-breaking-spaces from .RD files. This caused unforeseen problems with the compiling the .pdf manual during the CRAN submission process.</li>
 </ul>
 </div>
   </div>
@@ -133,7 +150,8 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#lgr-0-1-1-9000">0.1.1.9000</a></li>
+        <li><a href="#lgr-0-2-0">0.2.0</a></li>
+        <li><a href="#lgr-0-1-1">0.1.1</a></li>
       </ul>
     </div>
   </div>

@@ -10,5 +10,5 @@
 
 0 errors | 0 warnings | 0 notes
 
-* This is a resubmission that removes non-breaking-space characters from the
-  .rd files for R6 classes, which caused problems with the pdf manual.
+Loggers now live in a global loggers namespace, YAML configuration for Loggers,
+lots of small bugfixes and enhancements

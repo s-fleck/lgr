@@ -151,7 +151,7 @@
 #'
 #'    \item{`spawn(...)`}{Spawn a child Logger.
 #'      `get_logger("foo/bar")$spawn("baz")` is equivalent to
-#'      `get_logger("foo/bar/baz")`, but can be convenient for programatic use
+#'      `get_logger("foo/bar/baz")`, but can be convenient for programmatic use
 #'      when the name of the parent Logger is not known.}
 #' }
 #'
@@ -818,7 +818,7 @@ LoggerGlue <- R6::R6Class(
 # LoggerRoot --------------------------------------------------------------
 
 #' Special logger subclass for the root logger. Currently exactly like a
-#' normale Logger, but prevents the threshold to be set to NULL
+#' normal Logger, but prevents the threshold to be set to NULL
 LoggerRoot <-
   R6::R6Class(
     "LoggerRoot",
