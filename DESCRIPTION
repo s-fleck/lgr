@@ -1,7 +1,7 @@
 Type: Package
 Package: lgr
 Title: A Fully Featured Logging Framework
-Version: 0.2.0.9001
+Version: 0.9.0.9000
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -41,7 +41,8 @@ Suggests:
     tibble,
     tools,
     utils,
-    whoami
+    whoami,
+    yaml
 VignetteBuilder: 
     knitr
 Encoding: UTF-8

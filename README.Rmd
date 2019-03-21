@@ -150,7 +150,6 @@ lgr is currently very actively developed, and feature requests are encouraged.
 
 
 
-
 ## Dependencies
 
 [R6](https://github.com/r-lib/R6): The R6 class system prevents the framework
@@ -194,6 +193,8 @@ dependencies, and are well maintained :
     manually if you want to use it for logging.
   - [desc](https://CRAN.R-project.org/package=desc) for the package development
     convenince function `use_logger()`
+  - [yaml](https://CRAN.R-project.org/package=yaml) for configuring loggers 
+    via YAML files
     
   Other optional dependencies (future, future.apply) do not provide any extra
   functionallity but had to be included for some of the automated unit tests

@@ -17,8 +17,6 @@ with_logging(code)
 }
 \arguments{
 \item{code}{Any \R code}
-
-\item{code}{Any \R code}
 }
 \value{
 \code{suspend_logging()} and \code{unsuspend_logging()} return \code{NULL} (invisibly),
@@ -35,7 +33,10 @@ lg <- get_logger("test")
 
 # temporarily disable logging
 lg$fatal("foo")
-without_logging(lg$fatal("bar"))
+without_logging({
+  lg$info("everything in this codeblock will be suppressed")
+  lg$fatal("bar")
+})
 
 # globally disable logging
 suspend_logging()
@@ -45,6 +46,4 @@ with_logging(lg$fatal("foo"))  # log anyways
 # globally enable logging again
 unsuspend_logging()
 lg$fatal("foo")
-
-
 }

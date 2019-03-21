@@ -3,7 +3,9 @@
 \name{logger_config}
 \alias{logger_config}
 \alias{as_logger_config}
-\alias{basic_config}
+\alias{as_logger_config.list}
+\alias{as_logger_config.character}
+\alias{as_logger_config.Logger}
 \title{Logger Configuration Objects}
 \usage{
 logger_config(appenders = list(), threshold = NULL, filters = list(),
@@ -11,40 +13,55 @@ logger_config(appenders = list(), threshold = NULL, filters = list(),
 
 as_logger_config(x)
 
-basic_config(file = NULL, fmt = NULL,
-  timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3", threshold = NA,
-  appenders = NULL)
+\method{as_logger_config}{list}(x)
+
+\method{as_logger_config}{character}(x)
+
+\method{as_logger_config}{Logger}(x)
 }
 \arguments{
-\item{appenders, threshold, filters, exception_handler, propagate}{see \link{Logger}}
+\item{appenders}{see \link{Logger}}
+
+\item{threshold}{see \link{Logger}}
+
+\item{filters}{see \link{Logger}}
+
+\item{exception_handler}{see \link{Logger}}
+
+\item{propagate}{see \link{Logger}}
 
 \item{x}{any \R object. Especially:
 \itemize{
 \item A \code{character} scalar. This can either be the path to a
-\link[=https://yaml.org/]{YAML} file, or directly valid YAML
+YAML file or a character scalar containing valid YAML
 \item a list containing the elements \code{appenders}, \code{threshold}, \code{exception_handler},
 \code{propagate} and \code{filters}. See the section \emph{Fields} in \link{Logger} for
 details.
 \item a Logger object, to clone its configuration.
 }}
-
-\item{file}{\code{character} scalar.}
-
-\item{appenders}{}
 }
 \value{
-a \code{list} with subclass \code{"logger_config"}
+a \code{list} with the subclass \code{"logger_config"}
 
 a logger_config object
 }
 \description{
-\code{logger_config()} and \code{basic_config()} can be used to directly create
-objects that can be passed to the \code{$config()} method of Loggers.
+\code{logger_config()} is an S3 constructor for \code{logger_config} objects
+that can be passed to the \code{$config} method of a \link{Logger}. You
+can just pass a normal \code{list} instead, but using this constructor is
+a more formal way that includes additional argument checking.
 }
 \examples{
-# call without arguments to generate the default configuration
-cfg <- logger_config()
+lg <- get_logger("test")
 
+# explicetely defining logger configurations with logger_config
+
+# call without arguments to generate the default configuration
+cfg <- logger_config()  # same as the unconfigured state of a Logger
+lg$config(cfg)
+
+
+# Creating a logger config form YAML
 cfg <- "
 Logger:
   name: test/blubb
@@ -54,9 +71,8 @@ Logger:
     AppenderFile:
       file: /tmp/blah.txt
 "
-lg$config(as_logger_config(cfg))
-# but you can just do the following directly
-lg <- get_logger("test")
-lg$config(cfg)
-
+lg$config(cfg)  # calls as_logger_config() internally
+}
+\seealso{
+\url{https://www.yaml.org/}
 }

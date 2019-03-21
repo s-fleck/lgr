@@ -14,7 +14,10 @@
 #'
 #' # temporarily disable logging
 #' lg$fatal("foo")
-#' without_logging(lg$fatal("bar"))
+#' without_logging({
+#'   lg$info("everything in this codeblock will be suppressed")
+#'   lg$fatal("bar")
+#' })
 #'
 #' # globally disable logging
 #' suspend_logging()
@@ -45,8 +48,6 @@ unsuspend_logging <- function(){
 #' @rdname suspend_logging
 #' @param code Any \R code
 #' @export
-#' @examples
-#'
 without_logging <- function(code){
   old <- getOption("lgr.logging_suspended")
   on.exit(options(lgr.logging_suspended = old))
@@ -58,13 +59,8 @@ without_logging <- function(code){
 
 
 
-#'
-#'
 #' @rdname suspend_logging
-#' @param code Any \R code
 #' @export
-#' @examples
-#'
 with_logging <- function(code){
   old <- getOption("lgr.logging_suspended")
   on.exit(options(lgr.logging_suspended = old))

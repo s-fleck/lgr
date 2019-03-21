@@ -3,7 +3,6 @@
 #' These functions provide a simple interface to the root logger. If you do not
 #' need any of the more advanced features of lgr, start here.
 #'
-#'
 #' @name simple_logging
 #'
 #' @examples
@@ -19,7 +18,7 @@ NULL
 
 #' Basic Setup for the Logging Systen
 #'
-#' Quick and easy way to configure the root logger for logging to a root file
+#' Quick and easy way to configure the root logger for logging to a file
 #'
 #' @param file `character` scalar: If not `NULL` a [AppenderFile] will be created
 #'   that logs to this file. If the filename ends in `.jsonl` an [AppenderJson]
@@ -29,16 +28,20 @@ NULL
 #'   (see [format.LogEvent])
 #' @inheritParams print.LogEvent
 #' @inheritParams Logger
-#' @param appenders
+#' @param appenders a single [Appender] or a list thereof. Musst be `NULL` if
+#'   if `file` is already specified.
+#' @param threshold `character` or `integer` scalar.
+#'   The minimum [log level][log_levels] that should be processed by the root
+#'   logger.
 #'
 #' @return `NULL` (invisibly)
 #' @export
 #'
 #' @examples
-#'
-#' basic_config(tempfile())
-#' print(lgr)
-#'
+#' \dontrun{
+#' make the root logger log to a file
+#' basic_config(file = tempfile())
+#' }
 basic_config <- function(
   file = NULL,
   fmt = NULL,
@@ -50,7 +53,7 @@ basic_config <- function(
 
 
   if (!is.null(file)){
-    assert(is.null(appenders), "`appenders` must be null if `file` is specified")
+    assert(is.null(appenders), "`appenders` must be NULL if `file` is specified")
 
     pos <- regexpr("\\.([[:alnum:]]+)$", file)
     ext <- ifelse(pos > -1L, substring(file, pos + 1L), "")
@@ -75,9 +78,6 @@ basic_config <- function(
   l <- get_logger("root")
   l$set_appenders(appenders)
   l$set_threshold(threshold)
-
-  # reset to defaults
-  l$set_exception_handler(default_exception_handler)
 
   invisible(NULL)
 }

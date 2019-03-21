@@ -133,6 +133,14 @@
 #'     filters.
 #'   }
 #'
+#'   \item{`config(cfg  = NULL, file = NULL, text = NULL`}{Load a Logger
+#'     configuration. `cfg` can be either a special list object, the path to
+#'     a YAML config file, or a character scalar containing YAML. The arguments
+#'     `file` and `text` can used alternatively and enforce that the supplied
+#'     argument is of the specified type.
+#'     See [logger_config] for details.
+#'   }
+#'
 #'   \item{`add_appender(appender, name = NULL)`, `remove_appender(pos)`}{
 #'     Add or remove an [Appender]. Supplying a `name` is optional but
 #'     recommended. After adding an Appender with
@@ -245,46 +253,6 @@ Logger <- R6::R6Class(
       self$set_exception_handler(exception_handler)
 
       invisible(self)
-    },
-
-    config = function(
-      cfg  = NULL,
-      file = NULL,
-      text = NULL
-    ){
-      assert(
-        is.null(cfg) + is.null(file) + is.null(text) >= 2,
-        "You can only specify one of `cfg`, `file` and `text`."
-      )
-
-      if (!is.null(cfg)){
-        cfg <- as_logger_config(cfg)
-
-      } else if (!is.null(file)){
-        assert(
-          is_scalar_character(file) && !grepl("\n", file) && file.exists(file),
-          "`file` is not a valid path to a readable file"
-        )
-        cfg <- as_logger_config(file)
-
-      } else if (!is.null(text)){
-        assert(
-          is_scalar_character(text) && grepl("\n", text),
-          "`text` must be a character scalar containing valid YAML"
-        )
-        cfg <- as_logger_config(text)
-
-      } else {
-        cfg <- as_logger_config()
-      }
-
-      self$set_threshold(cfg$threshold)
-      self$set_appenders(cfg$appenders)
-      self$set_propagate(cfg$propagate)
-      self$set_filters(cfg$filters)
-      self$set_exception_handler(cfg$exception_handler)
-
-      self
     },
 
 
@@ -452,6 +420,48 @@ Logger <- R6::R6Class(
         ...
       )
     },
+
+
+    config = function(
+      cfg  = NULL,
+      file = NULL,
+      text = NULL
+    ){
+      assert(
+        is.null(cfg) + is.null(file) + is.null(text) >= 2,
+        "You can only specify one of `cfg`, `file` and `text`."
+      )
+
+      if (!is.null(cfg)){
+        cfg <- as_logger_config(cfg)
+
+      } else if (!is.null(file)){
+        assert(
+          is_scalar_character(file) && !grepl("\n", file) && file.exists(file),
+          "`file` is not a valid path to a readable file"
+        )
+        cfg <- as_logger_config(file)
+
+      } else if (!is.null(text)){
+        assert(
+          is_scalar_character(text) && grepl("\n", text),
+          "`text` must be a character scalar containing valid YAML"
+        )
+        cfg <- as_logger_config(text)
+
+      } else {
+        cfg <- as_logger_config()
+      }
+
+      self$set_threshold(cfg$threshold)
+      self$set_appenders(cfg$appenders)
+      self$set_propagate(cfg$propagate)
+      self$set_filters(cfg$filters)
+      self$set_exception_handler(cfg$exception_handler)
+
+      self
+    },
+
 
     add_appender = function(
       appender,

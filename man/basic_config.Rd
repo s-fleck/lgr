@@ -19,17 +19,22 @@ a \code{.jsonl} file. If \code{NULL} it defaults to \code{"\%L [\%t] \%m"}
 
 \item{timestamp_fmt}{see \code{\link[=format.POSIXct]{format.POSIXct()}}}
 
-\item{appenders}{}
+\item{threshold}{\code{character} or \code{integer} scalar.
+The minimum \link[=log_levels]{log level} that should be processed by the root
+logger.}
+
+\item{appenders}{a single \link{Appender} or a list thereof. Musst be \code{NULL} if
+if \code{file} is already specified.}
 }
 \value{
 \code{NULL} (invisibly)
 }
 \description{
-Quick and easy way to configure the root logger for logging to a root file
+Quick and easy way to configure the root logger for logging to a file
 }
 \examples{
-
-basic_config(tempfile())
-print(lgr)
-
+\dontrun{
+make the root logger log to a file
+basic_config(file = tempfile())
+}
 }
