@@ -113,25 +113,10 @@ read_json_lines(tf)
 
 
 
-### Simple Logger configuration with `$config()`
+### Logger configuration with `$config()`
 
 The `$config()` method provides a flexible alternative to configuring loggers
 with their `$set_*()` methods.
-
-The simplest (but most limited) way to set up a Logger is with
-`basic_config()`
-
-```{r  eval = FALSE}
-# Simplified setup with basic_config
-lgr$config(basic_config(
-  threshold = "info",  # sets the Logger's threshold to info
-  file = "path/to/logfile",  # adds an AppenderFile, use 
-  fmt = "[L] %m"  #  set the format for the logfile
-))
-```
-
-A more explicit way is to use `logger_config()`, which can be used to specify
-all aspects of a Logger, at the cost of beeing more verbose 
 
 ```{r eval = FALSE}
 
@@ -162,9 +147,6 @@ You can also specify Logger configurations in yaml files
 ```{r eval = FALSE}
 lgr$config("path/to/config.yaml")
 ```
-
-* if `file` has the extension `jsonl`, `basic_config` will log in the jsonlines
-  format instead (via `AppenderJson`)
 
 
 
