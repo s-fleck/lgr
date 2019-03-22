@@ -1,4 +1,7 @@
-# lgr 0.2.0
+# lgr 0.2.0.9000
+
+
+# lgr 0.2.0 (2019-03-22)
 
 * `get_loggers()` registers new loggers in the lgr::loggers namespace, this 
   is a more global and decoupled approach similar to how python logging handles 
@@ -20,7 +23,7 @@
   for specific unit tests.
 
 
-# lgr 0.1.1
+# lgr 0.1.1 (2019-01-30)
 
 * Added `show_data()` and `show_dt()` for quick access to the root loggers
   in memory log as `data.frame` or `data.table` respectively

@@ -652,12 +652,15 @@ lg$config(logger_config(
     buffer_size = 5, # can hold 5 events, the 6th will trigger flushing
     flush_on_exit = FALSE,
     flush_on_rotate = FALSE,
-    should_flush = function(event) event$level <= 200,
+    flush_threshold = "error",
     appenders = AppenderConsole$new(threshold = NA)
   )
 ))
 
+# The for loop below stores 8 log events in the Buffer
 for (nm in month.name[1:8]) lg$debug("%s", nm)
+
+# An event of level 'error' or 'fatal' triggers flushing of the buffer
 lg$error("But the days grow short when you reach September")
 ```
 
