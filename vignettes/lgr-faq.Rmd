@@ -1,0 +1,33 @@
+---
+title: "Frequently Asked Questions"
+author: "Stefan Fleck"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+  toc: true
+number_sections: true
+vignette: >
+  %\VignetteIndexEntry{lgr-faq}
+%\VignetteEncoding{UTF-8}
+%\VignetteEngine{knitr::rmarkdown}
+editor_options:
+  chunk_output_type: console
+---
+
+
+# Frequently Asked Questions
+
+https://github.com/s-fleck/lgr/issues/17
+
+Sometimes I would like to have structured logging in order to be able to have msg in a log not as a plain string, but an easy to parse object. So it would be nice to have ability to specify on how to "translate" R's message into logging record. For example with JSON layout we can serialize R objects into json objects (and have fully machine-readable logs)
+
+AppenderJson looks a little bit weird - it mixes both file sink and JSON formatting.
+
+
+https://github.com/s-fleck/lgr/issues/15
+
+How can i have custom formatting for a package logger
+
+When should i use get_logger(), when should i use Logger$new
+
+Why is Logger (Appender, AppenderDigest, etc) exported

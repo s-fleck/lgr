@@ -790,6 +790,10 @@ After you set this up you can use `lg$fatal()`, `lg$info()`, etc...
 inside your package. You do not have to define any appenders, since all log 
 events will get redirected to the root Logger (see [Inheritance](#hierarchy)). 
 
+
+
+
+
 # References
 
 [Python Logging](https://docs.python.org/3/library/logging.html)
