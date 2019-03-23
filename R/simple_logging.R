@@ -46,38 +46,87 @@ basic_config <- function(
   file = NULL,
   fmt = NULL,
   timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
-  threshold = NA,
-  appenders = NULL
+  threshold = "info",
+  console = TRUE,
+  memory = TRUE,
+  appenders = NULL,
+  verbose = interactive()
 ){
-  assert(!is.null(threshold))
+  l <- get_logger("root")
+  l$config(logger_config(threshold = NA))  # reset root logger config
 
+  # threshold
+  assert(!is.null(threshold))
+  if (verbose){
+    message(sprintf(
+      "Setting threshold to '%s'", label_levels(standardize_threshold(threshold))
+    ))
+  }
+  l$set_threshold(threshold)
+
+  if (verbose) message("Adding appenders")
 
   if (!is.null(file)){
     assert(is.null(appenders), "`appenders` must be NULL if `file` is specified")
-
     pos <- regexpr("\\.([[:alnum:]]+)$", file)
     ext <- ifelse(pos > -1L, substring(file, pos + 1L), "")
 
     if (identical(tolower(ext), "jsonl")){
       assert (is.null(fmt), "`fmt` must be null if `file` is a '.jsonl' file")
-      appenders <- list(file = AppenderJson$new())
-    } else {
-      if (is.null(fmt))
-        fmt <- "%L [%t] %m"
+      if (verbose){
+        message(sprintf("  * file: logging to JSON file '%s'", file))
+      }
+      l$add_appender(
+        name = "file",
+        AppenderJson$new(threshold = NA)
+      )
 
-      appenders <- list(file = AppenderFile$new(
-        file = file,
-        layout = LayoutFormat$new(
-          fmt = fmt,
-          timestamp_fmt = timestamp_fmt
+    } else {
+      if (is.null(fmt))  fmt <- "%L [%t] %m"
+      if (verbose){
+        message(sprintf("  * file: logging to plaintext file '%s'", file))
+      }
+
+      l$add_appender(
+        name = "file",
+        AppenderFile$new(
+          file = file,
+          threshold = NA,
+          layout = LayoutFormat$new(
+            fmt = fmt,
+            timestamp_fmt = timestamp_fmt
+          )
         )
-      ))
+      )
     }
   }
 
-  l <- get_logger("root")
-  l$set_appenders(appenders)
-  l$set_threshold(threshold)
+  if (console){
+    if (is.null(fmt))  fmt <- "%L [%t] %m"
+    if (verbose) message("  * console")
+    l$add_appender(
+      name = "console",
+      AppenderConsole$new(
+        threshold = NA,
+        layout = LayoutFormat$new(
+          colors = getOption("lgr.colors"),
+          fmt = fmt,
+          timestamp_fmt = timestamp_fmt
+        )
+      )
+    )
+  }
+
+  if (memory){
+    if (verbose) {
+      message("  * memory: use `show_log()` to display buffered log")
+    }
+    l$add_appender(name = "memory", AppenderBuffer$new(
+      threshold = NA,
+      should_flush = function(event) FALSE
+    ))
+  }
+
 
   invisible(NULL)
 }
