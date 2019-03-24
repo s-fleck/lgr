@@ -627,9 +627,9 @@ Logger <- R6::R6Class(
       # wants to
       for (i in rev(seq_along(self$appenders))){
         self$remove_appender(i)
+        gc()
       }
 
-      gc()  # ensure that finalizers of appenders are executed now
       invisible()
     },
 

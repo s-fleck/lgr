@@ -1183,6 +1183,13 @@ AppenderBuffer <- R6::R6Class(
   private = list(
     finalize = function(){
       if (self$flush_on_exit) self$flush()
+      # Ensure child appenders are gc'ed first. This ensures more predictable
+      # behaviour when destroying an AppenderBuffer.
+      for (i in rev(seq_along(self$appenders))){
+        self$remove_appender(i)
+        gc()
+      }
+      invisible()
     },
 
     .appenders = list()
