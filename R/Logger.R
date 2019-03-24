@@ -818,25 +818,24 @@ LoggerGlue <- R6::R6Class(
 # LoggerRoot --------------------------------------------------------------
 
 #' Special logger subclass for the root logger. Currently exactly like a
-#' normal Logger, but prevents the threshold to be set to NULL
-LoggerRoot <-
-  R6::R6Class(
-    "LoggerRoot",
-    inherit = Logger,
-    cloneable = FALSE,
-    public <- list(
-      set_threshold = function(level){
-        if (is.null(level)){
-          warning("Cannot set `threshold` to `NULL` for the root Logger")
-          level <- NA_integer_
-        }
-
-        level <- standardize_threshold(level)
-        private[[".threshold"]] <- level
-        invisible(self)
+#' normal Logger, but prevents the threshold to be set to `NULL`
+#' @noRd
+LoggerRoot <- R6::R6Class(
+  "LoggerRoot",
+  inherit = Logger,
+  cloneable = FALSE,
+  public <- list(
+    set_threshold = function(level){
+      if (is.null(level)){
+        warning("Cannot set `threshold` to `NULL` for the root Logger")
+        level <- NA_integer_
       }
-    )
+      level <- standardize_threshold(level)
+      private[[".threshold"]] <- level
+      invisible(self)
+    }
   )
+)
 
 
 
