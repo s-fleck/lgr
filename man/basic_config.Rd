@@ -5,8 +5,9 @@
 \title{Basic Setup for the Logging System}
 \usage{
 basic_config(file = NULL, fmt = NULL,
-  timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3", threshold = NA,
-  appenders = NULL)
+  timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3", threshold = "info",
+  console = TRUE, memory = TRUE, appenders = NULL,
+  verbose = interactive())
 }
 \arguments{
 \item{file}{\code{character} scalar: If not \code{NULL} a \link{AppenderFile} will be created

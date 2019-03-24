@@ -1,0 +1,32 @@
+---
+title: "Example Configurations"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{lgr-simple}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "",
+  echo = FALSE
+)
+```
+
+```{r setup}
+library(lgr)
+```
+
+# minimal
+
+```{r}
+cfg <- system.file("configs/minimal.yaml", package = "lgr")
+invisible(as_logger_config(cfg))
+cat(readLines(cfg), sep = "\n")
+
+```
+
