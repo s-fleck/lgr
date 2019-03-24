@@ -12,7 +12,7 @@
 * Logger inheritance is now derived from the qualified name of a logger. 
   Consequently `lg$parent` is now derived from `lg$name`, `lg$set_parent()` 
   is no longer possible.
-* If no threshold is set of r a new Logger, it now inherits the threshold
+* If no threshold is set for a new Logger, it now inherits the threshold
   of its parent
 * Depend on R6 >= 2.4.0 which includes relevant fixes to finalizers. finalize 
   methods are now private.
