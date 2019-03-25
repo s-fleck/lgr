@@ -36,6 +36,7 @@
 #'       file: /tmp/testlog.txt
 #' "
 #' lg$config(cfg)  # calls as_logger_config() internally
+#' lg$config(logger_config())  # reset logger config to default state
 logger_config <- function(
   appenders = list(),
   threshold = NULL,

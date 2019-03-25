@@ -1,4 +1,7 @@
-# lgr 0.2.0.9000
+# lgr 0.2.1 (2019-03-25)
+
+* Emergency fix that ensures test suite cleanes up temporary files 
+* Removed .rd file for the unexporter LoggerRoot class
 
 
 # lgr 0.2.0 (2019-03-22)

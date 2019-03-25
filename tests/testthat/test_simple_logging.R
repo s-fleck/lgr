@@ -59,6 +59,8 @@ test_that("add/remove_appender", {
 
 
 test_that("option appenders setup", {
+  old <- getOption("lgr.log_file")
+
   options("lgr.log_file" = tempfile())
 
   res <- default_appenders()
@@ -66,6 +68,7 @@ test_that("option appenders setup", {
   expect_s3_class(res[[1]], "AppenderFile")
   expect_s3_class(res[[1]]$layout, "LayoutFormat")
   expect_true(is.na(res[[1]]$threshold))
+  unlink(getOption("lgr.log_file"))
 
   options("lgr.log_file" = tempfile(pattern = ".json"))
   res <- default_appenders()
@@ -73,6 +76,7 @@ test_that("option appenders setup", {
   expect_s3_class(res[[1]], "AppenderFile")
   expect_s3_class(res[[1]]$layout, "LayoutJson")
   expect_true(is.na(res[[1]]$threshold))
+  unlink(getOption("lgr.log_file"))
 
   options("lgr.log_file" = c(trace = tempfile(pattern = ".json")))
   res <- default_appenders()
@@ -80,9 +84,13 @@ test_that("option appenders setup", {
   expect_s3_class(res[[1]], "AppenderFile")
   expect_s3_class(res[[1]]$layout, "LayoutJson")
   expect_identical(res[[1]]$threshold, 600L)
+  unlink(getOption("lgr.log_file"))
 
   options("lgr.log_file" = c(blubb = tempfile('_fail')))
   expect_warning(res <- default_appenders(), "_fail")
+  unlink(getOption("lgr.log_file"))
+
+  options("lgr.log_file" = old)
 })
 
 

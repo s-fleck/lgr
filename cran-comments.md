@@ -10,5 +10,4 @@
 
 0 errors | 0 warnings | 0 notes
 
-Loggers now live in a global loggers namespace, YAML configuration for Loggers,
-lots of small bugfixes and enhancements
+Fixed issue where some tests would leave behind files in /tmp

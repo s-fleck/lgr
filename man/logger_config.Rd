@@ -72,6 +72,7 @@ Logger:
       file: /tmp/testlog.txt
 "
 lg$config(cfg)  # calls as_logger_config() internally
+lg$config(logger_config())  # reset logger config to default state
 }
 \seealso{
 \url{https://yaml.org/}

@@ -19,6 +19,7 @@ for (strategy in c(
     future::plan(strategy)
 
     tf <- tempfile()
+    on.exit(unlink(tf))
 
     lr <- get_logger("par_root")
     lr$config(logger_config(

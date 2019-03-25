@@ -57,7 +57,7 @@ basic_config <- function(
   warning("This function is still experimental and paramters might change in the near future", call. = FALSE)
 
   l <- get_logger("root")
-  l$config(logger_config(threshold = NA))  # reset root logger config
+  l$config(logger_config(threshold = NA_integer_))  # reset root logger config
 
 
   # threshold

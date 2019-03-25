@@ -149,6 +149,8 @@ l$info("A test message \%s strings", "with format strings", and = "custom_fields
 l$appenders[[1]]$show()
 l$appenders[[1]]$data
 
+# cleanup
+unlink(tf)
 }
 \seealso{
 \link{LayoutFormat}, \link{LayoutJson}

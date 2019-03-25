@@ -49,6 +49,7 @@ test_that("AppenderFile works as expected", {
   res <- readLines(tf)
   expect_true(grepl("foo", res[[1]]))
   expect_true(grepl("bar", res[[2]]))
+  unlink(tf)
 
   tf <- tempfile()
   # with Json
@@ -62,6 +63,7 @@ test_that("AppenderFile works as expected", {
   expect_identical(tres[["msg"]], eres[["msg"]])
   expect_true(all(is.na(tres[["caller"]])) && all(is.na(eres[["caller"]])))
   expect_equal(as.POSIXct(tres[["timestamp"]]), eres[["timestamp"]], tolerance = 1)
+  unlink(tf)
 })
 
 
@@ -85,6 +87,7 @@ test_that("AppenderJson show method works as expected", {
 
   r <- utils::capture.output(app$show(threshold = 100))
   expect_identical(r, "")
+  unlink(tf)
 })
 
 
@@ -278,12 +281,13 @@ test_that("AppenderDt: default format for show_log looks like format.LogEvent", 
 # AppenderBuffer ----------------------------------------------------
 # Tests must be executed in sequence
 # setup
-  tf <- tempfile()
+  buffer_log <- tempfile()
+  teardown(unlink(buffer_log))
   l <- Logger$new(
     "dummy",
     appenders = list(
       buffer = AppenderBuffer$new(
-        appenders = list(file = AppenderFile$new(file = tf)),
+        appenders = list(file = AppenderFile$new(file = buffer_log)),
         buffer_size = 10
       )
     ), propagate = FALSE
@@ -300,15 +304,15 @@ test_that("AppenderBuffer: FATAL log level triggers flush", {
   l$fatal(letters[1:3])
   expect_identical(l$appenders$buffer$buffer_events, list())
   expect_match(
-    paste(readLines(tf), collapse = "#"),
+    paste(readLines(buffer_log), collapse = "#"),
     "INFO.*A#INFO.*B#INFO.*C#INFO.*D#INFO.*E#INFO.*F#INFO.*G#FATAL.*a#FATAL.*b#FATAL.*c"
   )
 
   # Does the next flush flush the correct event?
   l$fatal("x")
-  expect_identical(length(readLines(tf)), 11L)
+  expect_identical(length(readLines(buffer_log)), 11L)
   expect_identical(l$appenders$buffer$buffer_events, list())
-  expect_match(paste(readLines(tf), collapse = "#"), ".*A#.*B#.*C#.*a#.*b#.*c#.*x")
+  expect_match(paste(readLines(buffer_log), collapse = "#"), ".*A#.*B#.*C#.*a#.*b#.*c#.*x")
 })
 
 
@@ -317,10 +321,10 @@ test_that("AppenderBuffer: memory is flushed on buffer cycling", {
   replicate(10, l$info("z"))
   expect_identical(length(l$appenders$buffer$buffer_events), 10L)
   l$info(c("y", "y", "y"))
-  expect_identical(length(readLines(tf)), 24L)
+  expect_identical(length(readLines(buffer_log)), 24L)
   expect_identical(l$appenders$buffer$buffer_events, list())
   expect_match(
-    paste(readLines(tf), collapse = "#"),
+    paste(readLines(buffer_log), collapse = "#"),
     ".*A#.*B#.*C#.*a#.*b#.*c#.*x(.*z.*){10}(.*y.*){3}"
   )
 })
@@ -329,21 +333,21 @@ test_that("AppenderBuffer: memory is flushed on buffer cycling", {
 test_that("AppenderBuffer: manual flush trigger works", {
   l$info(c("y", "y", "y"))
   l$appenders$buffer$flush()
-  expect_identical(length(readLines(tf)), 27L)
-  eres <- readLines(tf)
+  expect_identical(length(readLines(buffer_log)), 27L)
+  eres <- readLines(buffer_log)
   expect_match(paste(eres, collapse = "#"), "(.*z.*){10}(.*y.*){6}")
 })
 
 
 test_that("AppenderBuffer: flush on memory cycling can be suppressed", {
-  eres <- readLines(tf)
+  eres <- readLines(buffer_log)
   l$appenders$buffer$set_flush_on_rotate(FALSE)
   for (i in 1:15) l$info(i)
 
   # theres a 10% tolerance for flushing if no flush on rotate is set
   expect_true(length(l$appenders$buffer$buffer_events) >= 10L)
   # Nothing should have been flushed to the log file
-  expect_identical(readLines(tf), eres)
+  expect_identical(readLines(buffer_log), eres)
 })
 
 
@@ -356,10 +360,10 @@ test_that("AppenderBuffer: flush on object destruction works", {
   rm(l, inherits = TRUE)
   gc()
   expect_match(
-    paste(readLines(tf), collapse = "#"),
+    paste(readLines(buffer_log), collapse = "#"),
     "(.*destruction){2}"
   )
-  try(file.remove(tf), silent = TRUE)
+  try(file.remove(buffer_log), silent = TRUE)
 })
 
 
@@ -367,12 +371,12 @@ test_that("AppenderBuffer: flush on object destruction works", {
 # the following AppenderBuffer tests are self contained again
 test_that("AppenderBuffer: flush on object destruction can be switched of", {
   # must re-initilaize logger
-  tf <- tempfile()
+  buffer_log <- tempfile()
   l <- Logger$new(
     "dummy",
     appenders = list(
       buffer = AppenderBuffer$new(
-        appenders = list(file = AppenderFile$new(file = tf)),
+        appenders = list(file = AppenderFile$new(file = buffer_log)),
         buffer_size = 10
       )
     ),
@@ -383,8 +387,8 @@ test_that("AppenderBuffer: flush on object destruction can be switched of", {
   l$appenders$buffer$set_flush_on_exit(FALSE)
   rm(l)
   gc()
-  expect_false(file.exists(tf))
-  suppressWarnings(file.remove(tf))
+  expect_false(file.exists(buffer_log))
+  suppressWarnings(file.remove(buffer_log))
 })
 
 

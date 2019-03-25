@@ -14,6 +14,7 @@ options("datatable.showProgress" = FALSE)
 
 
 tsqlite <- tempfile()
+teardown(unlink(tsqlite))
 
 dbs <- list(
   "MySQL via RMariaDB" = list(

@@ -8,6 +8,8 @@ reference:
   - default_exception_handler
   - get_log_levels
   - simple_logging
+  - get_logger
+  - logger_config
 - title: Appenders
   desc: Output LogEvents to a destination
   contents:

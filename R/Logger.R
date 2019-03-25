@@ -204,6 +204,10 @@
 #' cat(readLines(tf), sep = "\n")
 #' cat(readLines(tf2), sep = "\n")
 #'
+#' # cleanup
+#' unlink(tf)
+#' unlink(tf2)
+#'
 #' # The following works because if no unnamed `...` are present, msg is not
 #' # passed through sprintf() (otherwise you would have to escape the "%")
 #' lg$fatal("100%")

@@ -225,6 +225,11 @@ AppenderConsole <- R6::R6Class(
 #' readLines(default)
 #' readLines(fancy)
 #' readLines(json)
+#'
+#' # cleanup
+#' unlink(default)
+#' unlink(fancy)
+#' unlink(json)
 NULL
 
 
@@ -320,6 +325,8 @@ AppenderFile <- R6::R6Class(
 #' l$appenders[[1]]$show()
 #' l$appenders[[1]]$data
 #'
+#' # cleanup
+#' unlink(tf)
 NULL
 
 

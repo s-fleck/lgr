@@ -116,6 +116,11 @@ logger$info("A test message")
 readLines(default)
 readLines(fancy)
 readLines(json)
+
+# cleanup
+unlink(default)
+unlink(fancy)
+unlink(json)
 }
 \seealso{
 \link{LayoutFormat}, \link{LayoutJson}
