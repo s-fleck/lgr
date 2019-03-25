@@ -4,6 +4,6 @@ Logger:
   propagate: false
   appenders:
     AppenderFile:
-      file: /tmp/blah.txt
+      file: /tmp/testlog.txt
       LayoutFormat:
           fmt: "%L %t - %m"

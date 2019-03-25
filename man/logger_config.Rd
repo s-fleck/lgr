@@ -69,7 +69,7 @@ Logger:
   propagate: false
   appenders:
     AppenderFile:
-      file: /tmp/blah.txt
+      file: /tmp/testlog.txt
 "
 lg$config(cfg)  # calls as_logger_config() internally
 }

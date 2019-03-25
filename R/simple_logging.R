@@ -18,7 +18,8 @@ NULL
 
 #' Basic Setup for the Logging System
 #'
-#' Quick and easy way to configure the root logger for logging to a file
+#' Quick and easy way to configure the root logger for logging to a file.
+#' **experimental**, paramters will likely change in the next lgr version.
 #'
 #' @param file `character` scalar: If not `NULL` a [AppenderFile] will be created
 #'   that logs to this file. If the filename ends in `.jsonl` an [AppenderJson]
@@ -33,8 +34,10 @@ NULL
 #' @param threshold `character` or `integer` scalar.
 #'   The minimum [log level][log_levels] that should be processed by the root
 #'   logger.
+#' @param memory `logical` scalar. add a memory appender
+#' @param console `logical` scalar. add a console appender
 #'
-#' @return `NULL` (invisibly)
+#' @return the `root` Logger (lgr)
 #' @export
 #'
 #' @examples
@@ -49,22 +52,18 @@ basic_config <- function(
   threshold = "info",
   console = TRUE,
   memory = TRUE,
-  appenders = NULL,
-  verbose = interactive()
+  appenders = NULL
 ){
+  warning("This function is still experimental and paramters might change in the near future", call. = FALSE)
+
   l <- get_logger("root")
   l$config(logger_config(threshold = NA))  # reset root logger config
 
+
   # threshold
   assert(!is.null(threshold))
-  if (verbose){
-    message(sprintf(
-      "Setting threshold to '%s'", label_levels(standardize_threshold(threshold))
-    ))
-  }
   l$set_threshold(threshold)
 
-  if (verbose) message("Adding appenders")
 
   if (!is.null(file)){
     assert(is.null(appenders), "`appenders` must be NULL if `file` is specified")
@@ -73,9 +72,6 @@ basic_config <- function(
 
     if (identical(tolower(ext), "jsonl")){
       assert (is.null(fmt), "`fmt` must be null if `file` is a '.jsonl' file")
-      if (verbose){
-        message(sprintf("  * file: logging to JSON file '%s'", file))
-      }
       l$add_appender(
         name = "file",
         AppenderJson$new(threshold = NA)
@@ -83,9 +79,6 @@ basic_config <- function(
 
     } else {
       if (is.null(fmt))  fmt <- "%L [%t] %m"
-      if (verbose){
-        message(sprintf("  * file: logging to plaintext file '%s'", file))
-      }
 
       l$add_appender(
         name = "file",
@@ -103,7 +96,6 @@ basic_config <- function(
 
   if (console){
     if (is.null(fmt))  fmt <- "%L [%t] %m"
-    if (verbose) message("  * console")
     l$add_appender(
       name = "console",
       AppenderConsole$new(
@@ -118,9 +110,6 @@ basic_config <- function(
   }
 
   if (memory){
-    if (verbose) {
-      message("  * memory: use `show_log()` to display buffered log")
-    }
     l$add_appender(name = "memory", AppenderBuffer$new(
       threshold = NA,
       should_flush = function(event) FALSE
@@ -128,7 +117,7 @@ basic_config <- function(
   }
 
 
-  invisible(NULL)
+  lgr
 }
 
 

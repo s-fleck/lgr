@@ -32,6 +32,8 @@ test_that("as_logger_config works as expected with YAML file", {
 
   expect_identical(cfg$appenders[[1]]$layout$fmt, "%L %t - %m")
   expect_s3_class(cfg, "logger_config")
+  try(unlink(cfg$appenders[[1]]$file), silent = TRUE)
+  try(unlink(cfg$appenders[[2]]$file), silent = TRUE)
 })
 
 
@@ -41,6 +43,7 @@ test_that("setting logger$config fails if yaml file is passed to `text` instead 
   ty <- rprojroot::find_testthat_root_file("testdata", "lg_full.yaml")
   lg <- get_logger("test")
   expect_error(lg$config(text = ty), "YAML")
+  lg$config(logger_config())  # reset logger
 })
 
 
@@ -53,6 +56,7 @@ test_that("as_logger_config works for simplified yaml logger config", {
 
   expect_identical(cfg$appenders[[1]]$layout$fmt, "%L %t - %m")
   expect_s3_class(cfg, "logger_config")
+  try(unlink(cfg$appenders[[1]]$file), silent = TRUE)
 })
 
 
@@ -74,6 +78,9 @@ test_that("resolve_r6_ctors works as expected", {
   expect_true(is_Logger(res))
   expect_s3_class(as_logger_config(res), "logger_config")
   expect_identical(res$appenders[[1]]$file, tf)
+  res$config(logger_config())  # reset logger
+  try(unlink(tf), silent = TRUE)
+
 
 
   tf <- tempfile()
@@ -97,4 +104,6 @@ test_that("resolve_r6_ctors works as expected", {
   expect_true(is_Logger(res))
   expect_s3_class(as_logger_config(res), "logger_config")
   expect_identical(res$appenders[[1]]$appenders[[1]]$file, tf)
+  res$config(logger_config())  # reset logger
+  try(unlink(tf), silent = TRUE)
 })

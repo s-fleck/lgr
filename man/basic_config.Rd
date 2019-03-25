@@ -6,8 +6,7 @@
 \usage{
 basic_config(file = NULL, fmt = NULL,
   timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3", threshold = "info",
-  console = TRUE, memory = TRUE, appenders = NULL,
-  verbose = interactive())
+  console = TRUE, memory = TRUE, appenders = NULL)
 }
 \arguments{
 \item{file}{\code{character} scalar: If not \code{NULL} a \link{AppenderFile} will be created
@@ -24,14 +23,19 @@ a \code{.jsonl} file. If \code{NULL} it defaults to \code{"\%L [\%t] \%m"}
 The minimum \link[=log_levels]{log level} that should be processed by the root
 logger.}
 
+\item{console}{\code{logical} scalar. add a console appender}
+
+\item{memory}{\code{logical} scalar. add a memory appender}
+
 \item{appenders}{a single \link{Appender} or a list thereof. Must be \code{NULL} if
 if \code{file} is already specified.}
 }
 \value{
-\code{NULL} (invisibly)
+the \code{root} Logger (lgr)
 }
 \description{
-Quick and easy way to configure the root logger for logging to a file
+Quick and easy way to configure the root logger for logging to a file.
+\strong{experimental}, paramters will likely change in the next lgr version.
 }
 \examples{
 \dontrun{
