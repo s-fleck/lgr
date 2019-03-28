@@ -109,7 +109,7 @@ Dependencies
 
 lgr comes with a long list of optional dependencies. These are not necessary to use lgr, but that are required for some extra functions. Most of these dependencies are tied to specific Appenders, though **crayon** and **data.table** are also relevant to interactive use of lgr.
 
-Care was taken to choose packages that are slim, stable, have minimal dependencies, and are well maintained :
+Care was taken to choose packages that are slim, stable, have minimal dependencies, and are well maintained:
 
 -   [crayon](https://github.com/r-lib/crayon) for colored console output.
 -   [glue](https://glue.tidyverse.org/) for a more flexible formatting syntax via LoggerGlue and LayoutGlue.
@@ -117,7 +117,7 @@ Care was taken to choose packages that are slim, stable, have minimal dependenci
 -   [jsonlite](https://github.com/jeroen/jsonlite) for JSON logging via `LayoutJson`. JSON is a popular plaintext based file format that is easy to read for humans and machines alike.
 -   [DBI](https://github.com/r-dbi/DBI) for logging to databases. Logging with lgr has been tested with the following backends:
     -   [RSQLite](https://github.com/r-dbi/RSQLite),
-    -   [RMySQL](https://cran.r-project.org/package=RMySQL) for MariaDB and MySQL (RMariaDB is currently broken, see [this issue](https://github.com/r-dbi/RMariaDB/issues/119)),
+    -   [RMySQL](https://cran.r-project.org/package=RMySQL) for MariaDB and MySQL,
     -   [RPostgres](https://cran.r-project.org/package=RPostgres),
     -   [RJDBC](https://github.com/s-u/RJDBC) for DB2.
 
