@@ -7,7 +7,7 @@
 \title{Coerce LogEvents to Data Frames}
 \usage{
 \method{as.data.frame}{LogEvent}(x, row.names = NULL, optional = FALSE,
-  stringsAsFactors = default.stringsAsFactors(), strict = FALSE, ...)
+  stringsAsFactors = FALSE, ...)
 
 as.data.table.LogEvent(x, ...)
 
@@ -19,14 +19,11 @@ as_tibble.LogEvent(x, ...)
 \item{row.names}{\code{NULL} or a character vector giving the row
     names for the data frame.  Missing values are not allowed.}
 
-\item{optional}{currently ignored}
+\item{optional}{currently ignored and only included for compatibility.}
 
-\item{stringsAsFactors}{logical: should the character vector be converted
-    to a factor?}
-
-\item{strict}{If \code{TRUE} as.data.frame will fail if \code{x} contains values that
-cannot be included in a data.frame. Ff \code{FALSE} (the default) they will
-be coerced}
+\item{stringsAsFactors}{\code{logical} scalar: should \code{character} vectors be
+converted to factors? Defaults to \code{FALSE} (as opposed to
+\code{\link[base:as.data.frame]{base::as.data.frame()}}) and is only included for compatibility.}
 
 \item{...}{passed on to \code{data.frame()}}
 }
@@ -35,14 +32,13 @@ Coerce LogEvents to \code{data.frames}, \code{\link[data.table:data.table]{data.
 or \code{\link[tibble:tibble]{tibbles}}.
 }
 \examples{
-l <- Logger$new("test")
-l$info("lorem ipsum")
-as.data.frame(l$last_event)
+lg <- Logger$new("test")
+lg$info("lorem ipsum")
+as.data.frame(lg$last_event)
 
-l$info("rememver LogEvents can store any custom log values", df = iris)
-as.data.frame(l$last_event)
-head(as.data.frame(l$last_event)$df[[1]])
-
+lg$info("LogEvents can store any custom log values", df = iris)
+as.data.frame(lg$last_event)
+head(as.data.frame(lg$last_event)$df[[1]])
 }
 \seealso{
 \link[data.table:data.table]{data.table::data.table}, \link[tibble:tibble]{tibble::tibble}

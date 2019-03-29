@@ -159,29 +159,27 @@ LogEvent <- R6::R6Class(
 #' or [`tibbles`][tibble::tibble].
 #'
 #' @inheritParams base::as.data.frame
+#' @param stringsAsFactors `logical` scalar: should `character` vectors be
+#'   converted to factors? Defaults to `FALSE` (as opposed to
+#'   [base::as.data.frame()]) and is only included for compatibility.
 #' @param ... passed on to `data.frame()`
-#' @param optional currently ignored
-#' @param strict If `TRUE` as.data.frame will fail if `x` contains values that
-#'   cannot be included in a data.frame. Ff `FALSE` (the default) they will
-#'   be coerced
+#' @param optional currently ignored and only included for compatibility.
 #' @export
 #' @seealso [data.table::data.table], [tibble::tibble]
 #'
 #' @examples
-#' l <- Logger$new("test")
-#' l$info("lorem ipsum")
-#' as.data.frame(l$last_event)
+#' lg <- Logger$new("test")
+#' lg$info("lorem ipsum")
+#' as.data.frame(lg$last_event)
 #'
-#' l$info("rememver LogEvents can store any custom log values", df = iris)
-#' as.data.frame(l$last_event)
-#' head(as.data.frame(l$last_event)$df[[1]])
-#'
+#' lg$info("LogEvents can store any custom log values", df = iris)
+#' as.data.frame(lg$last_event)
+#' head(as.data.frame(lg$last_event)$df[[1]])
 as.data.frame.LogEvent <- function(
   x,
   row.names = NULL,
   optional = FALSE,
-  stringsAsFactors = default.stringsAsFactors(),
-  strict = FALSE,
+  stringsAsFactors = FALSE,
   ...
 ){
   values <- x$values
