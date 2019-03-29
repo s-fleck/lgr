@@ -56,10 +56,17 @@ get_logger_glue <- function(
   name
 ){
   if (is_virgin_Logger(name)){
-    get_logger(name = name, class = LoggerGlue)
+    res <- get_logger(name = name, class = LoggerGlue)
   } else {
-    warning("Logger '", name, "' already exists.")
+    res <- get_logger(name = name)
   }
+
+  assert(
+    inherits(res, "LoggerGlue"),
+    sprintf("'%s' is a preconfigured <%s> and not a <LoggerGlue>", name, class(res)[[1]])
+  )
+
+  res
 }
 
 

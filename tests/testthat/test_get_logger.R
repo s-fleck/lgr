@@ -1,6 +1,8 @@
 context("get_logger")
 
 
+
+
 test_that("get_logger works as expected", {
 
   lg <- get_logger("blubb")
@@ -70,4 +72,26 @@ test_that("Creating LoggerGlue with get_logger_glue works as expected", {
   expect_s3_class(get_logger_glue("log/ger"), "LoggerGlue")
   expect_s3_class(get_logger("log/ger"), "LoggerGlue")
   expect_identical(lg$parent, get_logger("log/ger"))
+  lg$config(logger_config())  # reset logger
+})
+
+
+
+
+test_that("get_logger_glue succeedes to get preconfigured glue loggers", {
+  lg <- get_logger_glue("log/ger/test")
+  lg$set_threshold("fatal")
+  lg <- get_logger_glue("log/ger/test")
+  expect_s3_class(lg, "LoggerGlue")
+  lg$config(logger_config())  # reset logger
+})
+
+
+
+
+test_that("get_logger_glue fails to get preconfigured loggers that are not glue loggers", {
+  lg <- get_logger("log/ger/test2")
+  lg$set_threshold("fatal")
+  expect_error(get_logger_glue("log/ger/test2"), "LoggerGlue")
+  lg$config(logger_config())  # reset logger
 })

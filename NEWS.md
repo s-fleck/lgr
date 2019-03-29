@@ -1,3 +1,8 @@
+# lgr 0.2.1.9000
+
+* `get_logger_glue()` now works as intended
+
+
 # lgr 0.2.1 (2019-03-25)
 
 * Emergency fix that ensures test suite cleanes up temporary files 
