@@ -15,8 +15,9 @@
 #'     modifying this option manually use [add_log_levels()] and
 #'     [remove_log_levels()]}
 #'  \item{`lgr.suspend_logging`}{`TRUE` or `FALSE`. Suspend all logging for
-#'    all loggers.  Instead of modifying this option manually use
-#'    [suspend_logging()] and [unsuspend_logging()]}
+#'    all loggers. Defaults to the `TRUE` if the environment variable
+#'    `LGR_SUSPEND_LOGGING` is set to `"TRUE"`. Instead of modifying this 
+#'    option manually use [suspend_logging()] and [unsuspend_logging()]}
 #'  \item{`lgr.user`}{a `character` scalar. The default username for
 #'     `lgr::get_user()`.
 #'   }
@@ -95,6 +96,8 @@ NULL
     "trace" = 600L
   )
 
+  # +- defaults from env vars --------------------------------------------------
+  op.this[["lgr.suspend_logging"]] = identical(Sys.getenv("LGR_SUSPEND_LOGGING"), "TRUE")
 
   # +- set options -------------------------------------------------------------
     toset <- !(names(op.this) %in% names(op))
