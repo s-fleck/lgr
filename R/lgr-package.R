@@ -4,7 +4,9 @@
 #'
 #' @section Options:
 #'
-#' You can also set these options in your `.Rprofile` to make them permanent
+#' You can also set these options in your `.Rprofile` to make them permanent.
+#' Some options can also be set via environment variables (The environment
+#' variables are only used if the option is not set manually from R).
 #'
 #' \describe{
 #'   \item{`lgr.colors`}{a `list` of `functions` used for coloring the log
@@ -14,9 +16,22 @@
 #'     known to lgr for labeling, setting thresholds, etc... . Instead of
 #'     modifying this option manually use [add_log_levels()] and
 #'     [remove_log_levels()]}
+#'  \item{`lgr.default_threshold`}{
+#'    `character` or `integer` scalar. The minimum [log level][log_levels] that
+#'    should be processed by the root logger. Defaults to `400` (`"info"`),
+#'    or to the value of the environment variable `LGR_DEFAULT_THRESHOLD`
+#'    if it is set. This option overrides the threshold specified in
+#'    `lgr.default_config` if both are set.
+#'  }
+#'  \item{`lgr.default_config`}{
+#'    Default configuration for the root logger. Can either be a special list
+#'    object, a path to a YAML file, or a character scalar containing YAML
+#'    code. See [logger_config] for details. Defaults to the value of the
+#'    environment variable `LGR_DEFAULT_CONFIG` if it is set.
+#'  }
 #'  \item{`lgr.suspend_logging`}{`TRUE` or `FALSE`. Suspend all logging for
 #'    all loggers. Defaults to the `TRUE` if the environment variable
-#'    `LGR_SUSPEND_LOGGING` is set to `"TRUE"`. Instead of modifying this 
+#'    `LGR_SUSPEND_LOGGING` is set to `"TRUE"`. Instead of modifying this
 #'    option manually use [suspend_logging()] and [unsuspend_logging()]}
 #'  \item{`lgr.user`}{a `character` scalar. The default username for
 #'     `lgr::get_user()`.
@@ -41,11 +56,8 @@ NULL
   op.this <- list()
 
   # dyn s3 methods ----------------------------------------------------------
-  if (requireNamespace("data.table", quietly = TRUE)){
     dyn_register_s3_method("data.table", "as.data.table", "LogEvent")
     dyn_register_s3_method("tibble", "as_tibble", "LogEvent")
-  }
-
 
 
   # +- colors ------------------------------------------------------------------
@@ -97,7 +109,51 @@ NULL
   )
 
   # +- defaults from env vars --------------------------------------------------
-  op.this[["lgr.suspend_logging"]] = identical(Sys.getenv("LGR_SUSPEND_LOGGING"), "TRUE")
+    op.this[["lgr.suspend_logging"]] <- identical(Sys.getenv("LGR_SUSPEND_LOGGING"), "TRUE")
+
+    default_config <- Sys.getenv("LGR_DEFAULT_CONFIG")
+    if (is_blank(default_config)) {
+      default_config <- NULL
+
+    } else {
+      if (!is_scalar_character(default_config)){
+        warning("Environment variable 'LGR_DEFAULT_CONFIG' is set to an illegal value")
+      } else {
+        default_config <- tryCatch(
+          as_logger_config(default_config),
+          error = function(e){
+            warning(
+              "Environment variable 'LGR_DEFAULT_CONFIG' is set but '", default_config,
+              "' does not seem to be a valid logger_config"
+            )
+            NULL
+          }
+        )
+      }
+    }
+
+    op.this[["lgr.default_config"]]    <- default_config
+
+    default_threshold <- Sys.getenv("LGR_DEFAULT_THRESHOLD")
+
+    if (!is_blank(default_threshold)){
+      default_threshold <- tryCatch(
+        standardize_threshold(tolower(default_threshold)),
+        error = function(e){
+          warning(
+            "Environment variable 'LGR_DEFAULT_THRESHOLD' is set but '", config,
+            "' does not seem to be a valid threshold"
+          )
+          NULL
+        }
+      )
+    } else {
+      default_threshold <- NULL
+    }
+
+
+    op.this[["lgr.default_threshold"]] <- default_threshold
+
 
   # +- set options -------------------------------------------------------------
     toset <- !(names(op.this) %in% names(op))
@@ -106,16 +162,23 @@ NULL
 
 
   # root looger -------------------------------------------------------------
-  appenders <- list(console = AppenderConsole$new(threshold = 400L))
-  if (requireNamespace("data.table", quietly = TRUE)){
-    appenders[["memory"]] <- AppenderDt$new(layout = appenders$console$layout)
-  }
+  appenders <- list(console = AppenderConsole$new(threshold = NA))
 
   assign(
     "root",
-    LoggerRoot$new("root", appenders = appenders, threshold = NA),
+    LoggerRoot$new("root", appenders = appenders, threshold = NA),  # threshold cannot be null
     envir = loggers
   )
-
   assign("lgr", get_logger("root"), envir = parent.env(environment()))
+
+  if (!is.null(getOption("lgr.default_config"))){
+    tryCatch(
+      lgr$config(getOption("lgr.default_config")),
+      error = function(e)
+        warning("Option 'lgr.default_config' is set but does not seem to point ",
+                "to a valid logger_config:", e$message)
+    )
+  }
+
+  lgr$set_threshold(getOption("lgr.default_threshold", 400L))
 }

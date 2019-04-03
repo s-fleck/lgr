@@ -1,6 +1,8 @@
 # lgr 0.2.1.9000
 
 * `get_logger_glue()` now works as intended
+* Configure the root logger via options and/or environment variables
+* Default config of root logger now only contains a console appender
 
 
 # lgr 0.2.1 (2019-03-25)
