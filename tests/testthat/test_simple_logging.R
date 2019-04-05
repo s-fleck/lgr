@@ -1,13 +1,20 @@
 context("simple_logging")
 
+setup({
+  lgr$add_appender(AppenderDt$new(), "memory")
+})
+
+teardown({
+  lgr$remove_appender("memory")
+})
 
 
 test_that("simple_logging works as expected", {
-  expect_identical(threshold(), lgr::lgr$threshold)
-  expect_identical(console_threshold(), lgr::lgr$appenders$console$threshold)
+  expect_identical(threshold(), lgr$threshold)
+  expect_identical(console_threshold(), lgr$appenders$console$threshold)
 
-  yth <- lgr::lgr$threshold
-  cth <- lgr::lgr$appenders$console$threshold
+  yth <- lgr$threshold
+  cth <- lgr$appenders$console$threshold
 
   threshold(NA)
   console_threshold(NA)

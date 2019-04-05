@@ -45,117 +45,76 @@
 
 
 
-
 #' @export lgr
 NULL
 
 .onLoad <- function(...){
 
-  # options -----------------------------------------------------------------
+  # dyn s3 methods ------------------------------------------------------
+  dyn_register_s3_method("data.table", "as.data.table", "LogEvent")
+  dyn_register_s3_method("tibble", "as_tibble", "LogEvent")
+
+
+  # options -------------------------------------------------------------
   op <- options()
   op.this <- list()
 
-  # dyn s3 methods ----------------------------------------------------------
-    dyn_register_s3_method("data.table", "as.data.table", "LogEvent")
-    dyn_register_s3_method("tibble", "as_tibble", "LogEvent")
 
 
-  # +- colors ------------------------------------------------------------------
-  if (requireNamespace("crayon", quietly = TRUE) && crayon::has_color()){
+  # +- colors --------------------------------------------------------------
+    if (requireNamespace("crayon", quietly = TRUE) && crayon::has_color()){
+      style_error   <- crayon::make_style("#BB3333", colors = 256)
+      style_fatal   <- function(...) style_error(crayon::bold(...))
+      style_warning <- crayon::make_style("#EEBB50", colors = 256)
+      style_subtle  <- crayon::make_style(grDevices::grey(0.5), grey = TRUE)
+      style_accent  <- crayon::make_style("#ca2c92", colors = 256)
+      col_nchar     <- crayon::col_nchar
 
-    style_error   <- crayon::make_style("#BB3333", colors = 256)
-    style_fatal   <- function(...) style_error(crayon::bold(...))
-    style_warning <- crayon::make_style("#EEBB50", colors = 256)
-    style_subtle  <- crayon::make_style(grDevices::grey(0.5), grey = TRUE)
-    style_accent  <- crayon::make_style("#ca2c92", colors = 256)
+      op.this[["lgr.colors"]] <- list(
+        "fatal" = style_fatal,
+        "error" = style_error,
+        "warn"  = style_warning,
+        "debug" = style_subtle,
+        "trace" = style_subtle
+      )
+    } else {
+      style_fatal   <- function(...) paste(...)
+      style_error   <- style_fatal
+      style_warning <- style_fatal
+      style_subtle  <- style_fatal
+      style_accent  <- style_fatal
+      col_nchar     <- function(...) nchar(...)
 
-    col_nchar     <- crayon::col_nchar
+      op.this[["lgr.colors"]] = list()
+    }
 
-    op.this[["lgr.colors"]] <- list(
-      "fatal" = style_fatal,
-      "error" = style_error,
-      "warn"  = style_warning,
-      "debug" = style_subtle,
-      "trace" = style_subtle
-    )
-
-  } else {
-    style_fatal   <- function(...) paste(...)
-    style_error   <- style_fatal
-    style_warning <- style_fatal
-    style_subtle  <- style_fatal
-    style_accent  <- style_fatal
-    col_nchar     <- function(...) nchar(...)
-
-    op.this[["lgr.colors"]] = list()
-  }
-
-  assign("style_fatal", style_fatal, envir = parent.env(environment()))
-  assign("style_error", style_error, envir = parent.env(environment()))
-  assign("style_warning", style_warning, envir = parent.env(environment()))
-  assign("style_subtle", style_subtle, envir = parent.env(environment()))
-  assign("style_accent", style_accent, envir = parent.env(environment()))
-  assign("col_nchar", col_nchar, envir = parent.env(environment()))
+    # make color functions available inside the package
+    assign("style_fatal", style_fatal, envir = parent.env(environment()))
+    assign("style_error", style_error, envir = parent.env(environment()))
+    assign("style_warning", style_warning, envir = parent.env(environment()))
+    assign("style_subtle", style_subtle, envir = parent.env(environment()))
+    assign("style_accent", style_accent, envir = parent.env(environment()))
+    assign("col_nchar", col_nchar, envir = parent.env(environment()))
 
 
   # +- log_levels --------------------------------------------------------------
-  op.this[["lgr.log_levels"]] <- c(
-    "fatal" = 100L,
-    "error" = 200L,
-    "warn"  = 300L,
-    "info"  = 400L,
-    "debug" = 500L,
-    "trace" = 600L
-  )
-
-  # +- defaults from env vars --------------------------------------------------
-    op.this[["lgr.suspend_logging"]] <- identical(Sys.getenv("LGR_SUSPEND_LOGGING"), "TRUE")
-
-    default_config <- Sys.getenv("LGR_DEFAULT_CONFIG")
-    if (is_blank(default_config)) {
-      default_config <- NULL
-
-    } else {
-      if (!is_scalar_character(default_config)){
-        warning("Environment variable 'LGR_DEFAULT_CONFIG' is set to an illegal value")
-      } else {
-        default_config <- tryCatch(
-          as_logger_config(default_config),
-          error = function(e){
-            warning(
-              "Environment variable 'LGR_DEFAULT_CONFIG' is set but '", default_config,
-              "' does not seem to be a valid logger_config"
-            )
-            NULL
-          }
-        )
-      }
-    }
-
-    op.this[["lgr.default_config"]]    <- default_config
-
-    default_threshold <- Sys.getenv("LGR_DEFAULT_THRESHOLD")
-
-    if (!is_blank(default_threshold)){
-      default_threshold <- tryCatch(
-        standardize_threshold(tolower(default_threshold)),
-        error = function(e){
-          warning(
-            "Environment variable 'LGR_DEFAULT_THRESHOLD' is set but '", config,
-            "' does not seem to be a valid threshold"
-          )
-          NULL
-        }
-      )
-    } else {
-      default_threshold <- NULL
-    }
+    op.this[["lgr.log_levels"]] <- c(
+      "fatal" = 100L,
+      "error" = 200L,
+      "warn"  = 300L,
+      "info"  = 400L,
+      "debug" = 500L,
+      "trace" = 600L
+    )
 
 
-    op.this[["lgr.default_threshold"]] <- default_threshold
+  # +- options from envars -------------------------------------------------
+    op.this[["lgr.suspend_logging"]]   <- get_envar_suspend_logging()
+    op.this[["lgr.default_config"]]    <- get_envar_default_config()
+    op.this[["lgr.default_threshold"]] <- get_envar_default_threshold()
 
 
-  # +- set options -------------------------------------------------------------
+  # +- set options (if they were not set manually before) ------------------
     toset <- !(names(op.this) %in% names(op))
     if(any(toset)) options(op.this[toset])
 
@@ -181,4 +140,89 @@ NULL
   }
 
   lgr$set_threshold(getOption("lgr.default_threshold", 400L))
+}
+
+
+
+
+# get environment variables -----------------------------------------------
+
+get_envar_suspend_logging <- function(){
+  envar_suspend_logging <- toupper(Sys.getenv("LGR_SUSPEND_LOGGING"))
+
+  if (identical(envar_suspend_logging, "TRUE")){
+    TRUE
+  } else if (
+    identical(envar_suspend_logging, "FALSE") ||
+    is_blank(envar_suspend_logging)
+  ){
+    FALSE
+  } else {
+    warning(
+      "Environment variable 'LGR_SUSPEND_LOGGING' is set to '", envar_suspend_logging,
+      "' but must be either 'TRUE' or 'FALSE'")
+    FALSE
+  }
+}
+
+
+
+
+get_envar_default_config <- function(){
+  envar_default_config <- Sys.getenv("LGR_DEFAULT_CONFIG")
+
+  if (is_blank(envar_default_config)){
+    NULL
+  } else {
+    if (!is_scalar_character(envar_default_config)){
+      warning("Environment variable 'LGR_DEFAULT_CONFIG' must be a path to a YAML file")
+      NULL
+    } else {
+      tryCatch(
+        as_logger_config(envar_default_config),
+        error = function(e){
+          warning(
+            "Environment variable 'LGR_DEFAULT_CONFIG' is set but '", envar_default_config,
+            "' is not a path to a valid YAML file"
+          )
+          NULL
+        }
+      )
+    }
+  }
+}
+
+
+
+
+get_envar_default_threshold <- function(){
+  envvar_default_threshold <- tolower(Sys.getenv("LGR_DEFAULT_THRESHOLD"))
+
+  if (!is_scalar(envvar_default_threshold)){
+    warning(
+      "Environment variable 'LGR_DEFAULT_THRESHOLD' bust be a single",
+      "numeric or character value."
+    )
+    return(NULL)
+  }
+
+  int_threshold <- suppressWarnings(as.integer(envvar_default_threshold))
+
+  if (!is.na(int_threshold))
+      envvar_default_threshold <- int_threshold
+
+  if (is_blank(envvar_default_threshold)){
+    NULL
+  } else {
+    tryCatch(
+      standardize_threshold(envvar_default_threshold),
+      error = function(e){
+        warning(
+          "Environment variable 'LGR_DEFAULT_THRESHOLD' is set but '", envvar_default_threshold,
+          "' is not a valid threshold"
+        )
+        NULL
+      }
+    )
+  }
 }

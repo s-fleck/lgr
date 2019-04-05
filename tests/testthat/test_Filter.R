@@ -35,15 +35,21 @@ test_that(".obj() works as expected", {
 
 
 test_that("preset filters work", {
+  lg <- get_logger("test")
+  lg$set_threshold(NA)
+  lg$set_propagate(FALSE)
+  lg$add_appender(AppenderConsole$new(threshold = NA))
+
   analyse <- function(){
-    lgr$add_filter(FilterForceLevel$new("info"), "force")
-    lgr$add_filter(FilterInject$new(type = "analysis"), "inject")
-    on.exit(lgr$remove_filter(c("force", "inject")))
-    lgr$debug("a debug message")
-    lgr$error("an error")
+    lg$add_filter(FilterForceLevel$new("info"), "force")
+    lg$add_filter(FilterInject$new(type = "analysis"), "inject")
+    on.exit(lg$remove_filter(c("force", "inject")))
+    lg$debug("a debug message")
+    lg$error("an error")
   }
   expect_output(analyse(), "INFO.*debug.*type:.*INFO.*error.*type:.*")
   expect_length(lgr$filters, 0)
+  lg$config(logger_config())
 })
 
 

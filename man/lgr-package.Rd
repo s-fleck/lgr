@@ -27,7 +27,8 @@ modifying this option manually use \code{\link[=add_log_levels]{add_log_levels()
 \code{character} or \code{integer} scalar. The minimum \link[=log_levels]{log level} that
 should be processed by the root logger. Defaults to \code{400} (\code{"info"}),
 or to the value of the environment variable \code{LGR_DEFAULT_THRESHOLD}
-if it is set.
+if it is set. This option overrides the threshold specified in
+\code{lgr.default_config} if both are set.
 }
 \item{\code{lgr.default_config}}{
 Default configuration for the root logger. Can either be a special list

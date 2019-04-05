@@ -35,7 +35,12 @@ test_that("without_logging does not conflict with suspend/unsuspend logging", {
 
 
 test_that("with_log_level works", {
-  lg <- Logger$new("test")
+  lg <- get_logger("test")
+  lg$config(logger_config(
+    appenders = AppenderConsole$new(threshold = "info"),
+    threshold = NA,
+    propagate = FALSE
+  ))
 
   expect_output(
     with_log_level("warn", lg$info("blubb"), logger = lg),
