@@ -67,8 +67,7 @@ basic_config <- function(
 
   if (!is.null(file)){
     assert(is.null(appenders), "`appenders` must be NULL if `file` is specified")
-    pos <- regexpr("\\.([[:alnum:]]+)$", file)
-    ext <- ifelse(pos > -1L, substring(file, pos + 1L), "")
+    ext <- tools::file_ext(file)
 
     if (identical(tolower(ext), "jsonl")){
       assert (is.null(fmt), "`fmt` must be null if `file` is a '.jsonl' file")

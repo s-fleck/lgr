@@ -1,0 +1,1 @@
+{"Logger":{"threshold":["info"],"propagate":[false],"appenders":{"AppenderFile":{"file":["/tmp/testlog.txt"],"LayoutFormat":{"fmt":["%L %t - %m"]}}}}}

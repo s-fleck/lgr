@@ -37,13 +37,38 @@
 #' "
 #' lg$config(cfg)  # calls as_logger_config() internally
 #' lg$config(logger_config())  # reset logger config to default state
-logger_config <- function(
+logger_config  <- function(
   appenders = list(),
   threshold = NULL,
   filters = list(),
   exception_handler = default_exception_handler,
   propagate = TRUE
 ){
+  structure(
+    list(
+      appenders = standardize_appenders_list(appenders),
+      threshold = threshold,
+      filters   = standardize_filters_list(filters),
+      exception_handler = exception_handler,
+      propagate = propagate
+    ),
+    class = c("logger_config", "list")
+  )
+}
+
+
+
+parse_logger_config <- function(
+  x
+){
+  assert(is.list(x))
+
+  assert(setequal(
+    names(x), c("exception_handler", "propagate", "threshold", "appenders", "filters")
+  ))
+
+  res <- resolve_r6_ctors(x)
+
   assert(is.function(exception_handler))
   assert(is_scalar_bool(propagate))
 
@@ -59,10 +84,10 @@ logger_config <- function(
       exception_handler = exception_handler,
       propagate = propagate
     ),
-    class = c("logger_config", "list")
+    class = c("active_logger_config", "list")
   )
-}
 
+}
 
 
 #' `as_logger_config()` coerces any supported \R object to a `logger_config`
@@ -92,19 +117,14 @@ as_logger_config <- function(x){
 #' @rdname logger_config
 #' @export
 as_logger_config.list <- function(x){
-  assert(is.list(x))
+  if (identical(names(x), "Logger"))
+    x <- x[["Logger"]]
 
-  assert(setequal(
-    names(x), c("exception_handler", "propagate", "threshold", "appenders", "filters")
+  assert(all(
+    names(x) %in% c("exception_handler", "propagate", "threshold", "appenders", "filters")
   ))
-
-  logger_config(
-    threshold = x$threshold,
-    filters = x$filters,
-    appenders = x$appenders,
-    exception_handler = x$exception_handler,
-    propagate = x$propagate
-  )
+  class(x) <- c("logger_config", class(x))
+  x
 }
 
 
@@ -115,22 +135,24 @@ as_logger_config.list <- function(x){
 as_logger_config.character <- function(
   x
 ){
-  assert_namespace("yaml")
-
-  if (length(x) > 1 || !grepl("\n", x)){
-    dd <- yaml::read_yaml(file = x)
+  if (identical(length(x), 1L) && !grepl("\n", x)){
+    if (identical(tolower(tools::file_ext(x)), "json")){
+      assert_namespace("jsonlite")
+      dd <- jsonlite::read_json(x)
+    } else {
+      assert_namespace("yaml")
+      dd <- yaml::read_yaml(file = x)
+    }
   } else {
     dd <- yaml::read_yaml(text = x)
   }
 
   assert(
-    identical(length(names(dd)), 1L),
+    identical(names(dd), "Logger"),
     "If 'x' is a YAML file, it must contain a single logger object"
   )
 
-  res <- resolve_r6_ctors(dd)
-
-  as_logger_config(res)
+  as_logger_config(dd)
 }
 
 
