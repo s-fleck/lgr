@@ -83,7 +83,8 @@ with_logging <- function(code){
 #'
 #' @param level `integer` or `character` scalar: the desired log level
 #' @param code Any \R code
-#' @param logger a [Logger]. defaults to the root logger (lgr::lgr).
+#' @param logger a [Logger] or the name of one (see [get_logger()]). Defaults
+#'   to the root logger (`lgr::lgr`).
 #'
 #' @return whatever `code` would return
 #' @export
@@ -97,6 +98,11 @@ with_log_level <- function(
   code,
   logger = lgr::lgr
 ){
+  if (is_scalar_character(logger)){
+    logger <- get_logger(logger)
+  }
+  assert(is_Logger(logger))
+
   level <- standardize_log_level(level)
   force(level)
 
@@ -136,6 +142,10 @@ with_log_value <- function(
   code,
   logger = lgr::lgr
 ){
+  if (is_scalar_character(logger)){
+    logger <- get_logger(logger)
+  }
+  assert(is_Logger(logger))
   assert(is_equal_length(names(values), values))
 
   set_level <- function(event){

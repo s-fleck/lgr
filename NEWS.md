@@ -3,6 +3,8 @@
 * `get_logger_glue()` now works as intended
 * Configure the root logger via options and/or environment variables
 * Default config of root logger now only contains a console appender
+* `with_log_level()` and `with_log_value()` now accept logger names as well as 
+  Logger objects as the `logger` argument
 
 
 # lgr 0.2.1 (2019-03-25)
