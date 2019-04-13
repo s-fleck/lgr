@@ -1,5 +1,4 @@
 Logger:
-  name: test/blubb
   threshold: info
   propagate: false
   appenders:

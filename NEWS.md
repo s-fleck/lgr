@@ -1,8 +1,11 @@
 # lgr 0.2.1.9000
 
 * `get_logger_glue()` now works as intended
-* Configure the root logger via options and/or environment variables
-* Default config of root logger now only contains a console appender
+* The root logger can now be configured via `options()` and/or environment 
+  variables
+* Default config of root logger now only contains a console appender. To get
+  back the old behaviour add `options(lgr.config = "recommended")` to your
+  `.Rprofile`.
 * `with_log_level()` and `with_log_value()` now accept logger names as well as 
   Logger objects as the `logger` argument
 

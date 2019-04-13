@@ -51,8 +51,14 @@ test_that("setting logger$config fails if yaml file is passed to `text` instead 
 
 test_that("as_logger_config works for simplified yaml logger config", {
   ty <- rprojroot::find_testthat_root_file("testdata", "lg_simple.yaml")
-  cfg <- as_logger_config(ty)
-  expect_s3_class(cfg, "logger_config")
+  cy <- as_logger_config(ty)
+  expect_s3_class(cy, "logger_config")
+
+  ty <- rprojroot::find_testthat_root_file("testdata", "lg_simple.json")
+  cj <- as_logger_config(ty)
+  expect_s3_class(cj, "logger_config")
+
+  expect_identical(cj, cy)
 
   expect_identical(cfg$appenders[[1]]$layout$fmt, "%L %t - %m")
   expect_s3_class(cfg, "logger_config")
