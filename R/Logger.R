@@ -132,11 +132,12 @@
 #'     filters.
 #'   }
 #'
-#'   \item{`config(cfg  = NULL, file = NULL, text = NULL`}{Load a Logger
+#'   \item{`config(cfg, file, text`}{Load a Logger
 #'     configuration. `cfg` can be either a special list object, the path to
-#'     a YAML config file, or a character scalar containing YAML. The arguments
-#'     `file` and `text` can used alternatively and enforce that the supplied
-#'     argument is of the specified type.
+#'     a YAML/JSON config file, a `character` scalar containing YAML or
+#'     `NULL` (to reset the logger config to the defaults). The
+#'     arguments `file` and `text` can be used as an alternative to `cfg` that
+#'     enforces that the  supplied  argument is of the specified type.
 #'     See [logger_config] for details.
 #'   }
 #'
@@ -426,26 +427,26 @@ Logger <- R6::R6Class(
 
 
     config = function(
-      cfg  = NULL,
-      file = NULL,
-      text = NULL
+      cfg,
+      file,
+      text
     ){
       assert(
-        is.null(cfg) + is.null(file) + is.null(text) >= 2,
+        missing(cfg) + missing(file) + missing(text) >= 2,
         "You can only specify one of `cfg`, `file` and `text`."
       )
 
-      if (!is.null(cfg)){
+      if (!missing(cfg)){
         cfg <- as_logger_config(cfg)
 
-      } else if (!is.null(file)){
+      } else if (!missing(file)){
         assert(
           is_scalar_character(file) && !grepl("\n", file) && file.exists(file),
           "`file` is not a valid path to a readable file"
         )
         cfg <- as_logger_config(file)
 
-      } else if (!is.null(text)){
+      } else if (!missing(text)){
         assert(
           is_scalar_character(text) && grepl("\n", text),
           "`text` must be a character scalar containing valid YAML"
@@ -833,6 +834,24 @@ LoggerRoot <- R6::R6Class(
   inherit = Logger,
   cloneable = FALSE,
   public <- list(
+    config = function(
+      cfg,
+      file,
+      text
+    ){
+
+      if (is.null(cfg)){
+        cfg <- as_logger_config()
+        cfg$threshold <- getOption("lgr.default_threshold", 400L)
+      }
+
+      super$config(
+        cfg,
+        file,
+        text
+      )
+    },
+
     set_threshold = function(level){
       if (is.null(level)){
         warning("Cannot set `threshold` to `NULL` for the root Logger")

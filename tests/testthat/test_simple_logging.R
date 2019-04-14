@@ -2,6 +2,7 @@ context("simple_logging")
 
 setup({
   lgr$add_appender(AppenderDt$new(), "memory")
+  get_logger("test")$config(NULL)
 })
 
 teardown({

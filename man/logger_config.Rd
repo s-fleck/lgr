@@ -8,8 +8,8 @@
 \alias{as_logger_config.Logger}
 \title{Logger Configuration Objects}
 \usage{
-logger_config(appenders = list(), threshold = NULL, filters = list(),
-  exception_handler = default_exception_handler, propagate = TRUE)
+logger_config(appenders = NULL, threshold = NULL, filters = NULL,
+  exception_handler = NULL, propagate = TRUE)
 
 as_logger_config(x)
 

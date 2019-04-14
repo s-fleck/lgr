@@ -36,7 +36,7 @@
 #'       file: /tmp/testlog.txt
 #' "
 #' lg$config(cfg)  # calls as_logger_config() internally
-#' lg$config(logger_config())  # reset logger config to default state
+#' lg$config(NULL)  # reset logger config to default state
 logger_config <- function(
   appenders = NULL,
   threshold = NULL,
@@ -135,7 +135,7 @@ parse_logger_config <- function(
     res$threshold <- standardize_threshold(x$threshold)
 
   if ("filters" %in% names(x))
-    res$threshold <- standardize_filters_list(objects$filters)
+    res$filters <- standardize_filters_list(objects$filters)
 
   class(res) <-  c("parsed_logger_config", "list")
 
@@ -164,6 +164,14 @@ parse_logger_config <- function(
 #'
 as_logger_config <- function(x){
   UseMethod("as_logger_config")
+}
+
+
+
+
+#' @export
+as_logger_config.NULL <- function(x){
+  as_logger_config(list())
 }
 
 
@@ -229,7 +237,6 @@ as_logger_config.Logger <- function(x){
 
 
 resolve_r6_ctors <- function(x){
-
   ctors <- lapply(names(x), get0_R6Class)
 
   for (i in seq_along(x)){

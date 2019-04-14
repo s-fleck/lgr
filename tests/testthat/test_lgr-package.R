@@ -58,11 +58,11 @@ test_that("get_envar_default_threshold works as expected", {
   expect_identical(get_envar_default_threshold(), 400L)
 
   Sys.setenv("LGR_DEFAULT_THRESHOLD" = "-100")
-  expect_warning(expect_null(get_envar_default_threshold()))
+  expect_warning(expect_equal(get_envar_default_threshold(), 400L))  # default
 
   Sys.setenv("LGR_DEFAULT_THRESHOLD" = FALSE)
-  expect_warning(expect_null(get_envar_default_threshold()))
+  expect_warning(expect_equal(get_envar_default_threshold(), 400L))  # default
 
   Sys.setenv("LGR_DEFAULT_THRESHOLD" = "")
-  expect_null(get_envar_default_threshold())
+  expect_equal(get_envar_default_threshold(), 400L)  # default
 })
