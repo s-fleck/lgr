@@ -58,36 +58,48 @@ logger_config  <- function(
 
 
 
+
+is_logger_config <- function(x){
+  inherits(x, "logger_config")
+}
+
+
+
+
 parse_logger_config <- function(
-  x
+  x,
+  defaults = logger_config()
 ){
-  assert(is.list(x))
-
-  assert(setequal(
-    names(x), c("exception_handler", "propagate", "threshold", "appenders", "filters")
-  ))
-
-  res <- resolve_r6_ctors(x)
-
-  assert(is.function(exception_handler))
-  assert(is_scalar_bool(propagate))
-
-  if (!is.null(threshold)){
-    threshold <- standardize_threshold(threshold)
-  }
-
-  structure(
-    list(
-      appenders = standardize_appenders_list(appenders),
-      threshold = threshold,
-      filters   = standardize_filters_list(filters),
-      exception_handler = exception_handler,
-      propagate = propagate
-    ),
-    class = c("active_logger_config", "list")
+  stopifnot(
+    is.list(x),
+    all(names(x) %in% names(defaults))
   )
 
+  objects <- resolve_r6_ctors(x)
+
+  res <- defaults
+
+  if ("appenders" %in% names(x))
+    res$appenders <- standardize_appenders_list(objects$appenders)
+
+  if ("exception_handler" %in% names(x))
+    res$exception_handler <- eval(parse(text = x[["exception_handler"]]))
+
+  if ("propagate" %in% names(x))
+    res$propagate <- as.logical(toupper(x[["propagate"]]))
+
+  if ("threshold" %in% names(x))
+    res$threshold <- standardize_threshold(x$threshold)
+
+  if ("filters" %in% names(x))
+    res$threshold <- standardize_filters_list(objects$filters)
+
+  class(res) <-  c("parsed_logger_config", "list")
+
+  res
 }
+
+
 
 
 #' `as_logger_config()` coerces any supported \R object to a `logger_config`

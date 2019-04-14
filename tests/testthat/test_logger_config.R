@@ -109,3 +109,21 @@ test_that("resolve_r6_ctors works as expected", {
   res$config(logger_config())  # reset logger
   try(unlink(tf), silent = TRUE)
 })
+
+
+
+test_that("parse_logger_configs works", {
+  # parse_logger_config turns logger_configs into lists of R6 objects
+  # that cann direclty be applied to a logger
+  full <- as_logger_config(rprojroot::find_testthat_root_file("testdata", "lg_full.yaml"))
+  simple <- as_logger_config(rprojroot::find_testthat_root_file("testdata", "lg_simple.json"))
+
+  pf <- parse_logger_config(full)
+  ps <- parse_logger_config(simple)
+
+  lg <- get_logger("test")$config(full)
+
+
+
+})
+
