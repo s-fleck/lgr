@@ -25,15 +25,30 @@ test_that("logger_config works as expected", {
 
 
 
-test_that("as_logger_config works as expected with YAML file", {
-  ty <- rprojroot::find_testthat_root_file("testdata", "lg_full.yaml")
-  cfg <- as_logger_config(ty)
-  expect_s3_class(cfg, "logger_config")
+test_that("as_logger_config works as expected with YAML and JSON files", {
+  cy <- as_logger_config(rprojroot::find_testthat_root_file("testdata", "lg_full.yaml"))
+  cj <- as_logger_config(rprojroot::find_testthat_root_file("testdata", "lg_full.json"))
+  expect_identical(cj, cy)
+  expect_s3_class(cj, "logger_config")
 
-  expect_identical(cfg$appenders[[1]]$layout$fmt, "%L %t - %m")
-  expect_s3_class(cfg, "logger_config")
+  expect_identical(cfg$appenders[[1]]$layout$LayoutFormat$fmt, "%L %t - %m")
+
   try(unlink(cfg$appenders[[1]]$file), silent = TRUE)
   try(unlink(cfg$appenders[[2]]$file), silent = TRUE)
+})
+
+
+
+
+test_that("as_logger_config works for simplified yaml logger config", {
+  cy <- as_logger_config(rprojroot::find_testthat_root_file("testdata", "lg_simple.yaml"))
+  cj <- as_logger_config(rprojroot::find_testthat_root_file("testdata", "lg_simple.json"))
+  expect_identical(cj, cy)
+  expect_s3_class(cj, "logger_config")
+
+  expect_identical(cfg$appenders[[1]]$layout$LayoutFormat$fmt, "%L %t - %m")
+  expect_s3_class(cfg, "logger_config")
+  try(unlink(cfg$appenders[[1]]$file), silent = TRUE)
 })
 
 
@@ -44,25 +59,6 @@ test_that("setting logger$config fails if yaml file is passed to `text` instead 
   lg <- get_logger("test")
   expect_error(lg$config(text = ty), "YAML")
   lg$config(logger_config())  # reset logger
-})
-
-
-
-
-test_that("as_logger_config works for simplified yaml logger config", {
-  ty <- rprojroot::find_testthat_root_file("testdata", "lg_simple.yaml")
-  cy <- as_logger_config(ty)
-  expect_s3_class(cy, "logger_config")
-
-  ty <- rprojroot::find_testthat_root_file("testdata", "lg_simple.json")
-  cj <- as_logger_config(ty)
-  expect_s3_class(cj, "logger_config")
-
-  expect_identical(cj, cy)
-
-  expect_identical(cfg$appenders[[1]]$layout$fmt, "%L %t - %m")
-  expect_s3_class(cfg, "logger_config")
-  try(unlink(cfg$appenders[[1]]$file), silent = TRUE)
 })
 
 

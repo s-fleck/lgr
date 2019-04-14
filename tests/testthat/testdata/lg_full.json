@@ -1,0 +1,20 @@
+{
+  "Logger": {
+    "threshold": "info",
+    "propagate": false,
+    "appenders": {
+      "AppenderFile": {
+        "file": "/tmp/testlog.txt",
+        "layout": {
+          "LayoutFormat": {
+            "fmt": "%L %t - %m"
+          }
+        }
+      },
+      "AppenderJson": {
+        "file": "/tmp/blah.json",
+        "threshold": 200
+      }
+    }
+  }
+}

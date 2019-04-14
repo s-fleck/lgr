@@ -138,7 +138,7 @@ as_logger_config.character <- function(
   if (identical(length(x), 1L) && !grepl("\n", x)){
     if (identical(tolower(tools::file_ext(x)), "json")){
       assert_namespace("jsonlite")
-      dd <- jsonlite::read_json(x)
+      dd <- jsonlite::read_json(x, simplifyVector = TRUE)
     } else {
       assert_namespace("yaml")
       dd <- yaml::read_yaml(file = x)
@@ -182,20 +182,6 @@ resolve_r6_ctors <- function(x){
 
       args <- resolve_r6_ctors(x[[i]])
       if (is.null(args)) args <- list()
-
-      # Allow user to supply the layout directly without having to specify
-      # the layout: key manually for Appenders
-      if ("Appender" %in% deparse(ctors[[i]]$inherit)){
-        if (!"layout" %in% names(args)){
-          for (j in rev(seq_along(args))){
-            if (inherits(args[[j]], "Layout")){
-              args$layout <- args[[j]]
-              args[[j]] <- NULL
-              break
-            }
-          }
-        }
-      }
 
       # prevent logger not named warning
       suppressWarnings(x[[i]] <- do.call(ctors[[i]]$new, args))
