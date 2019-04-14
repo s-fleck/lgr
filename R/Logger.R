@@ -32,7 +32,8 @@
 #'
 #' The `name` is potentially a `/` separated hierarchical value like
 #' `foo/bar/baz`. Loggers further down the hierarchy are children of the loggers
-#' above.
+#' above. (This mechanism does not work of the Logger is initalized with
+#' `Logger$new()`)
 #'
 #' All calls to `get_logger()` with the same name return the same Logger
 #' instance. This means that Logger instances never need to be passed between
@@ -49,14 +50,6 @@
 #' loggers is via its `$config()` method.
 #'
 #' \describe{
-#'   \item{`name`, `set_name(x)`}{`character` scalar. A name for the Logger that should be
-#'     unique among Loggers. This logger name is used in the Loggers print
-#'     method and can be used by Appenders to indicate which logger the
-#'     log message came from. If you define a Logger for an R Package (the most
-#'     common case for defining new Loggers), the logger name should be the
-#'     same name as the Package name. If you do not define a Logger name
-#'     manually, a warning will be thrown.}
-#'
 #'   \item{`appenders`, `set_appenders(x)`}{A single [Appender] or a `list`
 #'     thereof. Appenders control the output of a Logger. Be aware that a Logger
 #'     also inherits the Appenders of its ancestors
@@ -81,6 +74,12 @@
 #' Loggers also have the following additional read-only bindings:
 #'
 #' \describe{
+#'   \item{`name`}{`character` scalar. A hierarchical value
+#'     (seperated by `"/"``) that indicates the loggers name and its ancestors.
+#'     If a logger is created with [get_logger()] uniqueness of the name is
+#'     enforced.
+#'   }
+#'
 #'   \item{`ancestry`}{A named `logical` vector of containing
 #'   the propagate value of each Logger upper the inheritance tree. The names
 #'   are the names of the appenders. `ancestry` is an S3 class with a custom
@@ -247,7 +246,7 @@ Logger <- R6::R6Class(
         )
       }
 
-      self$set_name(name)
+      private$set_name(name)
       private$.last_event <- LogEvent$new(self)
 
       self$set_threshold(threshold)
@@ -518,12 +517,6 @@ Logger <- R6::R6Class(
       private$.exception_handler(...)
     },
 
-    set_name = function(x){
-      assert(is_scalar_character(x))
-      private$.name <- x
-      invisible(self)
-    },
-
     set_exception_handler = function(fun){
       assert(is.function(fun))
       private$.exception_handler <- fun
@@ -630,6 +623,11 @@ Logger <- R6::R6Class(
 
   # private -----------------------------------------------------------------
   private = list(
+    set_name = function(x){
+      assert(is_scalar_character(x))
+      private$.name <- x
+      invisible(self)
+    },
 
     finalize = function(){
       # ensure appenders are destroyed before logger is destroyed so that the
