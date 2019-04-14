@@ -476,6 +476,25 @@ You can suppress this behaviour by making named argument start with a `"."`.
 lg$info("Glue is available from {.cran}", .cran = "https://CRAN.R-project.org/package=glue")
 ```
 
+# Configuration
+
+There are many ways to configure loggers. The most straight forward one is to
+use *setters* to specify the Loggers properties.
+```{r}
+  lg <- get_logger("test")
+  lg$set_threshold("info")
+```
+
+lgr sets up Loggers in a way so that R6 piping with `$` is possible. This works 
+similar to the magrittr (`#%>#`) pipes.
+```{r}
+  lg$
+    set_threshold("info")$
+    set_appenders(AppenderConsole$new(threshold = "info"))$
+    set_propagate(FALSE)
+
+```
+
 
 
 # Examples {#examples}

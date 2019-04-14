@@ -37,7 +37,50 @@
 #' "
 #' lg$config(cfg)  # calls as_logger_config() internally
 #' lg$config(logger_config())  # reset logger config to default state
-logger_config  <- function(
+logger_config <- function(
+  appenders = NULL,
+  threshold = NULL,
+  filters = NULL,
+  exception_handler = NULL,
+  propagate = TRUE
+){
+  if (is.function(exception_handler)){
+    exception_handler <- deparse(exception_handler)
+
+  } else if (!is.null(exception_handler)){
+    assert(
+      is.character(exception_handler),
+      "'exception_handler' must be a function, a character scalar giving the",
+      "name of a function, or a character vector containing arbitrary R code."
+    )
+  }
+
+  propagate <- as.logical(toupper(propagate))
+  assert(is_scalar_bool(propagate))
+
+  cfg <- compact(list(
+    appenders = appenders,
+    threshold = threshold,
+    filters   = filters,
+    exception_handler = exception_handler,
+    propagate = propagate
+  ))
+
+  class(cfg) <- c("logger_config", "list")
+  cfg
+}
+
+
+
+
+is_logger_config <- function(x){
+  inherits(x, "logger_config")
+}
+
+
+
+
+parsed_logger_config  <- function(
   appenders = list(),
   threshold = NULL,
   filters = list(),
@@ -52,15 +95,15 @@ logger_config  <- function(
       exception_handler = exception_handler,
       propagate = propagate
     ),
-    class = c("logger_config", "list")
+    class = c("parsed_logger_config", "list")
   )
 }
 
 
 
 
-is_logger_config <- function(x){
-  inherits(x, "logger_config")
+is_parsed_logger_config <- function(x){
+  inherits(x, "parsed_logger_config")
 }
 
 
@@ -68,10 +111,10 @@ is_logger_config <- function(x){
 
 parse_logger_config <- function(
   x,
-  defaults = logger_config()
+  defaults = parsed_logger_config()
 ){
   stopifnot(
-    is.list(x),
+    is_logger_config(x),
     all(names(x) %in% names(defaults))
   )
 
