@@ -4,5 +4,6 @@ Logger:
   appenders:
     AppenderFile:
       file: /tmp/testlog.txt
-      LayoutFormat:
+      layout:
+        LayoutFormat:
           fmt: "%L %t - %m"
