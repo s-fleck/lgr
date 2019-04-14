@@ -8,6 +8,9 @@
   `.Rprofile`.
 * `with_log_level()` and `with_log_value()` now accept logger names as well as 
   Logger objects as the `logger` argument
+* `$config(NULL)` now resets a Logger to its default/unconfigured state
+
+  
 
 
 # lgr 0.2.1 (2019-03-25)

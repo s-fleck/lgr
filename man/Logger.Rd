@@ -31,11 +31,10 @@ lg$warn(msg, ..., caller = get_caller(-8L))
 lg$info(msg, ..., caller = get_caller(-8L))
 lg$debug(msg, ..., caller = get_caller(-8L))
 lg$trace(msg, ..., caller = get_caller(-8L))
-lg$config(cfg = NULL, file = NULL, text = NULL)
+lg$config(cfg, file, text)
 lg$add_appender(appender, name = NULL)
 lg$remove_appender(pos)
 lg$handle_exception(...)
-lg$set_name(x)
 lg$set_exception_handler(fun)
 lg$set_propagate(x)
 lg$set_threshold(level)
@@ -75,7 +74,8 @@ Reference to the existing Logger.
 
 The \code{name} is potentially a \code{/} separated hierarchical value like
 \code{foo/bar/baz}. Loggers further down the hierarchy are children of the loggers
-above.
+above. (This mechanism does not work of the Logger is initalized with
+\code{Logger$new()})
 
 All calls to \code{get_logger()} with the same name return the same Logger
 instance. This means that Logger instances never need to be passed between
@@ -93,14 +93,6 @@ You can modify the fields of an existing Logger with
 loggers is via its \code{$config()} method.
 
 \describe{
-\item{\code{name}, \code{set_name(x)}}{\code{character} scalar. A name for the Logger that should be
-unique among Loggers. This logger name is used in the Loggers print
-method and can be used by Appenders to indicate which logger the
-log message came from. If you define a Logger for an R Package (the most
-common case for defining new Loggers), the logger name should be the
-same name as the Package name. If you do not define a Logger name
-manually, a warning will be thrown.}
-
 \item{\code{appenders}, \code{set_appenders(x)}}{A single \link{Appender} or a \code{list}
 thereof. Appenders control the output of a Logger. Be aware that a Logger
 also inherits the Appenders of its ancestors
@@ -140,6 +132,12 @@ In addition to the active bindings used to access the fields described above,
 Loggers also have the following additional read-only bindings:
 
 \describe{
+\item{\code{name}}{\code{character} scalar. A hierarchical value
+(seperated by `"/"``) that indicates the loggers name and its ancestors.
+If a logger is created with \code{\link[=get_logger]{get_logger()}} uniqueness of the name is
+enforced.
+}
+
 \item{\code{ancestry}}{A named \code{logical} vector of containing
 the propagate value of each Logger upper the inheritance tree. The names
 are the names of the appenders. \code{ancestry} is an S3 class with a custom
@@ -192,11 +190,12 @@ to the relevant \link{Appenders} and checked against their thresholds and
 filters.
 }
 
-\item{\code{config(cfg  = NULL, file = NULL, text = NULL}}{Load a Logger
+\item{\code{config(cfg, file, text}}{Load a Logger
 configuration. \code{cfg} can be either a special list object, the path to
-a YAML config file, or a character scalar containing YAML. The arguments
-\code{file} and \code{text} can used alternatively and enforce that the supplied
-argument is of the specified type.
+a YAML/JSON config file, a \code{character} scalar containing YAML or
+\code{NULL} (to reset the logger config to the defaults). The
+arguments \code{file} and \code{text} can be used as an alternative to \code{cfg} that
+enforces that the  supplied  argument is of the specified type.
 See \link{logger_config} for details.
 }
 

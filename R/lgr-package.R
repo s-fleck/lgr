@@ -111,7 +111,7 @@ NULL
   # +- options from envars -------------------------------------------------
     op.this[["lgr.suspend_logging"]]   <- get_envar_suspend_logging()
     op.this[["lgr.default_config"]]    <- get_envar_default_config()
-    op.this[["lgr.default_threshold"]] <- get_envar_default_threshold()
+    op.this[["lgr.default_threshold"]] <- get_envar_default_threshold(fallback = 400)
 
 
   # +- set options (if they were not set manually before) ------------------
@@ -195,7 +195,7 @@ get_envar_default_config <- function(){
 
 
 
-get_envar_default_threshold <- function(){
+get_envar_default_threshold <- function(fallback = 400){
   envvar_default_threshold <- tolower(Sys.getenv("LGR_DEFAULT_THRESHOLD"))
 
   if (!is_scalar(envvar_default_threshold)){
@@ -203,7 +203,7 @@ get_envar_default_threshold <- function(){
       "Environment variable 'LGR_DEFAULT_THRESHOLD' bust be a single",
       "numeric or character value."
     )
-    return(NULL)
+    return(fallback)
   }
 
   int_threshold <- suppressWarnings(as.integer(envvar_default_threshold))
@@ -212,7 +212,7 @@ get_envar_default_threshold <- function(){
       envvar_default_threshold <- int_threshold
 
   if (is_blank(envvar_default_threshold)){
-    NULL
+    fallback
   } else {
     tryCatch(
       standardize_threshold(envvar_default_threshold),
@@ -221,7 +221,7 @@ get_envar_default_threshold <- function(){
           "Environment variable 'LGR_DEFAULT_THRESHOLD' is set but '", envvar_default_threshold,
           "' is not a valid threshold"
         )
-        NULL
+        fallback
       }
     )
   }

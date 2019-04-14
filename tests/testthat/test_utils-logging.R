@@ -71,5 +71,5 @@ test_that("with_log_level works", {
     with_log_value(list(foo = "bar"), lg$info("blubb"), logger = lg)
   }
   expect_output(foo())
-
 })
+
