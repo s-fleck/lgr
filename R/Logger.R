@@ -457,6 +457,12 @@ Logger <- R6::R6Class(
         cfg <- as_logger_config()
       }
 
+      if (is_logger_config(cfg)){
+        cfg <- parse_logger_config(cfg)
+      }
+
+      assert(is_parsed_logger_config(cfg))
+
       self$set_threshold(cfg$threshold)
       self$set_appenders(cfg$appenders)
       self$set_propagate(cfg$propagate)
