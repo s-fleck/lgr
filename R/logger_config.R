@@ -44,6 +44,7 @@ logger_config <- function(
   exception_handler = NULL,
   propagate = TRUE
 ){
+  # init/preconditions
   if (is.function(exception_handler)){
     exception_handler <- deparse(exception_handler)
 
@@ -55,8 +56,18 @@ logger_config <- function(
     )
   }
 
-  propagate <- as.logical(toupper(propagate))
-  assert(is_scalar_bool(propagate))
+  assert(is.null(threshold) || is_threshold(threshold))
+  assert(is.null(appenders) || all(vapply(appenders, is.list, logical(1))))
+  assert(is.null(filters)   || all(vapply(filters,   is.list, logical(1))))
+
+  if (!is.null(propagate)){
+    assert(is_scalar(propagate))
+    if (is.character(propagate))  propagate <- toupper(propagate)
+    propagate <- as.logical(propagate)
+    assert(is_scalar_bool(propagate))
+  }
+
+
 
   cfg <- compact(list(
     appenders = appenders,

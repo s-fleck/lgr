@@ -221,6 +221,16 @@ standardize_threshold <- function(
 
 
 
+is_threshold <- function(x){
+  tryCatch(
+    {standardize_threshold(x); TRUE},
+    error = function(...) FALSE
+  )
+}
+
+
+
+
 standardize_log_level <- function(
   x,
   log_levels = getOption("lgr.log_levels")
@@ -241,6 +251,16 @@ standardize_log_level <- function(
 
 
 
+is_log_level <- function(x){
+  tryCatch(
+    {standardize_log_level(x); TRUE},
+    error = function(...) FALSE
+  )
+}
+
+
+
+
 standardize_log_levels <- function(
   x,
   log_levels = getOption("lgr.log_levels")
@@ -255,6 +275,16 @@ standardize_log_levels <- function(
   }
 
   stop(error_msg_log_levels(deparse(substitute(x)), log_levels))
+}
+
+
+
+
+is_log_levels <- function(x){
+  tryCatch(
+    {standardize_log_levels(x); TRUE},
+    error = function(...) FALSE
+  )
 }
 
 

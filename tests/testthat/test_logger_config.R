@@ -67,18 +67,11 @@ test_that("setting logger$config fails if yaml file is passed to `text` instead 
 
 test_that("resolve_r6_ctors works as expected", {
   tf <- tempfile()
-  x <- list(
-    "Logger" = list(
-      name = "test",
-      appenders = list(
-        "AppenderFile" = list(
-          file = tf
-        )
-      )
-    )
+  x <- logger_config(
+    appenders = list("AppenderFile" = list(file = tf))
   )
+
   res <- resolve_r6_ctors(x)
-  expect_true(is_Logger(res))
   expect_s3_class(as_logger_config(res), "logger_config")
   expect_identical(res$appenders[[1]]$file, tf)
   res$config(NULL)
