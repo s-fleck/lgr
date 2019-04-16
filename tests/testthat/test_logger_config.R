@@ -74,9 +74,7 @@ test_that("resolve_r6_ctors works as expected", {
   res <- resolve_r6_ctors(x)
   expect_s3_class(as_logger_config(res), "logger_config")
   expect_identical(res$appenders[[1]]$file, tf)
-  res$config(NULL)
   try(unlink(tf), silent = TRUE)
-
 
 
   tf <- tempfile()
@@ -96,10 +94,12 @@ test_that("resolve_r6_ctors works as expected", {
     )
   )
 
-  res <- resolve_r6_ctors(x)
+  res <- resolve_r6_ctors(x)[[1]]
   expect_true(is_Logger(res))
-  expect_s3_class(as_logger_config(res), "logger_config")
   expect_identical(res$appenders[[1]]$appenders[[1]]$file, tf)
+  expect_s3_class(res$appenders[[1]]$appenders[[2]], "AppenderFile")
+  expect_s3_class(res$appenders[[1]]$appenders[[2]], "Appender")
+
   res$config(NULL)
   try(unlink(tf), silent = TRUE)
 })
