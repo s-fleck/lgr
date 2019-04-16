@@ -83,7 +83,16 @@ Appender <- R6::R6Class(
     },
 
     set_layout = function(layout){
-      assert(inherits(layout, "Layout"))
+      if (is_scalar_list(layout)){
+        # set_layout also accepts a list of length 1 containing a single Layout
+        # object. This is a workaround for resolve_r6_ctors. This behaviour is
+        # intentionally not documented and you should not rely on it.
+        layout <- layout[[1]]
+      }
+      assert(
+        inherits(layout, "Layout"),
+        "`layout` must a `Layout` object, but is ", preview_object(layout)
+      )
       private$.layout <- layout
       invisible(self)
     }
