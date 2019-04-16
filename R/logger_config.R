@@ -267,12 +267,7 @@ resolve_r6_ctors <- function(x){
     }
   }
 
-
-  if (is_scalar(x) && R6::is.R6(x[[1]])){
-    x[[1]]
-  } else {
-    x
-  }
+  x
 }
 
 
