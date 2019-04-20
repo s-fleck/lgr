@@ -2,7 +2,6 @@
 
 S3method(as.data.frame,LogEvent)
 S3method(as_logger_config,"NULL")
-S3method(as_logger_config,Logger)
 S3method(as_logger_config,character)
 S3method(as_logger_config,list)
 S3method(format,LogEvent)
