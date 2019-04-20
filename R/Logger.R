@@ -132,13 +132,17 @@
 #'     filters.
 #'   }
 #'
-#'   \item{`config(cfg, file, text`}{Load a Logger
-#'     configuration. `cfg` can be either a special list object, the path to
-#'     a YAML/JSON config file, a `character` scalar containing YAML or
-#'     `NULL` (to reset the logger config to the defaults). The
-#'     arguments `file` and `text` can be used as an alternative to `cfg` that
-#'     enforces that the  supplied  argument is of the specified type.
-#'     See [logger_config] for details.
+#'   \item{`config(cfg, file, text, list`}{Load a Logger
+#'     configuration. `cfg` can be either
+#'   * a special list object with any or all of the the following elements:
+#'     `appenders`, `threshold`, `filters`, `propagate`, `exception_handler`,
+#'   * the path to a `YAML`/`JSON` config file,
+#'   * a `character` scalar containing `YAML`, or
+#'   *  `NULL` (to reset the logger config to the defaults)
+#'
+#'   The arguments `file`, `text` and `list` can be used as an alternative to
+#'     `cfg` that  enforces that the  supplied  argument is of the specified
+#'     type. See [logger_config] for details.
 #'   }
 #'
 #'   \item{`add_appender(appender, name = NULL)`, `remove_appender(pos)`}{
@@ -429,15 +433,20 @@ Logger <- R6::R6Class(
     config = function(
       cfg,
       file,
-      text
+      text,
+      list
     ){
       assert(
-        missing(cfg) + missing(file) + missing(text) >= 2,
-        "You can only specify one of `cfg`, `file` and `text`."
+        missing(cfg) + missing(file) + missing(text) + missing(list) >= 3,
+        "You can only specify one of `cfg`, `file`, `text` and `list`."
       )
 
       if (!missing(cfg)){
-        cfg <- as_logger_config(cfg)
+        if (is.list(cfg)){
+          cfg <- as_parsed_logger_config.list(cfg)
+        } else {
+          cfg <- as_logger_config(cfg)
+        }
 
       } else if (!missing(file)){
         assert(
@@ -452,6 +461,9 @@ Logger <- R6::R6Class(
           "`text` must be a character scalar containing valid YAML"
         )
         cfg <- as_logger_config(text)
+
+      } else if (!missing(list)){
+        cfg <- as_parsed_logger_config.list(list)
 
       } else {
         cfg <- as_logger_config()
