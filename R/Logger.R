@@ -181,13 +181,19 @@
 #' @seealso [glue](https://glue.tidyverse.org/)
 #' @examples
 #' # lgr::lgr is the root logger that is always available
-#' lgr$info("Today is %s", Sys.Date() )
+#' lgr$info("Today is a good day")
 #' lgr$fatal("This is a serious error")
 #'
-#' # You can create new loggers with Logger$new(). The following creates a
-#' # logger that logs to a temporary file.
+#' # Loggers use sprintf() for string formatting by default
+#' lgr$info("Today is %s", Sys.Date() )
+#'
+#' # If no unnamed `...` are present, msg is not passed through sprintf()
+#' lg$fatal("100% bad")  # so this works
+#' lg$fatal("%s%% bad", 100)  # if you use unnamed arguments, you must escape %
+#'
+#' # You can create new loggers with get_logger()
 #' tf <- tempfile()
-#' lg <- Logger$new("mylogger", appenders = AppenderFile$new(tf))
+#' lg <- get_logger("mylogger")$set_appenders(AppenderFile$new(tf))
 #'
 #' # The new logger passes the log message on to the appenders of its parent
 #' # logger, which is by default the root logger. This is why the following
@@ -195,10 +201,9 @@
 #' lg$fatal("blubb")
 #' readLines(tf)
 #'
-#' # This logger's print() method depicts this relationship
+#' # This logger's print() method depicts this relationship.
 #' lg2 <- Logger$new("lg/child")
 #' print(lg2)
-#' print(lg2$ancestry)
 #' print(lg2$name)
 #'
 #' # use formatting strings and custom fields
@@ -212,13 +217,45 @@
 #' unlink(tf)
 #' unlink(tf2)
 #'
-#' # The following works because if no unnamed `...` are present, msg is not
-#' # passed through sprintf() (otherwise you would have to escape the "%")
-#' lg$fatal("100%")
-#'
 #' # LoggerGlue
+#' # You can also create a new logger that uses the awesome glue library for
+#' # string formatting instead of sprintf
 #' lg <- LoggerGlue$new("glue")
 #' lg$fatal("blah ", "fizz is set to: {fizz}", foo = "bar", fizz = "buzz")
+#' # prevent creation of custom fields with prefixing a dot
+#' lg$fatal("blah ", "fizz is set to: {.fizz}", foo = "bar", .fizz = "buzz")
+#'
+#'
+#' # Configuring a Logger
+#'
+#' lg$config(NULL)  # resets logger to unconfigured state
+#'
+#' # With setters
+#' lg$
+#'   set_threshold("info")$
+#'   set_propagate(TRUE)$
+#'   set_appenders(AppenderFile$new(file = "/tmp/testlog.txt"))
+#' lg$config(NULL)
+#'
+#' # With a list
+#' lg$config(list(
+#'   threshold = "info",
+#'   propagate = TRUE,
+#'   appenders = AppenderFile$new(file = "/tmp/testlog.txt")
+#' ))
+#' lg$config(NULL)  # resets logger to unconfigured state
+#'
+#' # Via YAML
+#' cfg <- "
+#' Logger:
+#'   threshold: info
+#'   propagate: false
+#'   appenders:
+#'     AppenderFile:
+#'       file: /tmp/testlog.txt
+#' "
+#' lg$config(cfg)
+#' lg$config(NULL)  # reset
 NULL
 
 

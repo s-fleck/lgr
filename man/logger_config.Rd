@@ -48,29 +48,6 @@ that can be passed to the \code{$config} method of a \link{Logger}. You
 can just pass a normal \code{list} instead, but using this constructor is
 a more formal way that includes additional argument checking.
 }
-\examples{
-lg <- get_logger("test")
-
-# explicetely defining logger configurations with logger_config
-
-# call without arguments to generate the default configuration
-cfg <- logger_config()  # same as the unconfigured state of a Logger
-lg$config(cfg)
-
-
-# Creating a logger config form YAML
-cfg <- "
-Logger:
-  name: test/blubb
-  threshold: info
-  propagate: false
-  appenders:
-    AppenderFile:
-      file: /tmp/testlog.txt
-"
-lg$config(cfg)  # calls as_logger_config() internally
-lg$config(NULL)  # reset logger config to default state
-}
 \seealso{
 \url{https://yaml.org/}
 }

@@ -13,30 +13,7 @@
 #' @param propagate see [Logger]
 #'
 #' @return a `list` with the subclass `"logger_config"`
-#' @export
 #'
-#' @examples
-#' lg <- get_logger("test")
-#'
-#' # explicetely defining logger configurations with logger_config
-#'
-#' # call without arguments to generate the default configuration
-#' cfg <- logger_config()  # same as the unconfigured state of a Logger
-#' lg$config(cfg)
-#'
-#'
-#' # Creating a logger config form YAML
-#' cfg <- "
-#' Logger:
-#'   name: test/blubb
-#'   threshold: info
-#'   propagate: false
-#'   appenders:
-#'     AppenderFile:
-#'       file: /tmp/testlog.txt
-#' "
-#' lg$config(cfg)  # calls as_logger_config() internally
-#' lg$config(NULL)  # reset logger config to default state
 logger_config <- function(
   appenders = NULL,
   threshold = NULL,
