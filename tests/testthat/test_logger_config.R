@@ -27,12 +27,22 @@ test_that("logger_config works as expected", {
 
 
 test_that("as_logger_config works as expected with YAML and JSON files", {
+  # files work...
   cy <- as_logger_config(rprojroot::find_testthat_root_file("testdata", "lg_full.yaml"))
   cj <- as_logger_config(rprojroot::find_testthat_root_file("testdata", "lg_full.json"))
   expect_identical(cj, cy)
   expect_s3_class(cj, "logger_config")
-
   expect_identical(cy$appenders[[1]]$layout$LayoutFormat$fmt, "%L %t - %m")
+
+  # so do text vectors (and scalars with newlines)
+  cy2 <- as_logger_config(
+    readLines(rprojroot::find_testthat_root_file("testdata", "lg_full.yaml"))
+  )
+  cj2 <- as_logger_config(
+    paste(readLines(rprojroot::find_testthat_root_file("testdata", "lg_full.json")), collapse = "\n")
+  )
+  expect_identical(cj2, cj)
+  expect_identical(cy2, cy)
 
   try(unlink(cy$appenders[[1]]$file), silent = TRUE)
   try(unlink(cy$appenders[[2]]$file), silent = TRUE)
