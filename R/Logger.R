@@ -443,7 +443,7 @@ Logger <- R6::R6Class(
 
       if (!missing(cfg)){
         if (is.list(cfg)){
-          cfg <- as_parsed_logger_config.list(cfg)
+          cfg <- parse_logger_config(cfg)
         } else {
           cfg <- as_logger_config(cfg)
         }
@@ -463,7 +463,7 @@ Logger <- R6::R6Class(
         cfg <- as_logger_config(text)
 
       } else if (!missing(list)){
-        cfg <- as_parsed_logger_config.list(list)
+        cfg <- parse_logger_config(list)
 
       } else {
         cfg <- as_logger_config()
