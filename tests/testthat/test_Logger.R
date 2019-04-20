@@ -276,3 +276,23 @@ test_that("LoggerGlue uses the correct evaluation environment", {
   expect_match(l$fatal(100, "{x}", x = iris[['Species']][[1]]), "setosa")
   expect_match(l$log(100, "{x}", x = iris[['Species']][[1]]), "setosa")
 })
+
+
+
+
+test_that("$config works with lists", {
+  l <- LoggerGlue$new("glue", propagate = FALSE)
+
+  cfg <- list(
+    appenders = list(blubb = AppenderConsole$new()),
+    propagate = FALSE
+  )
+
+  expect_identical(names(l$config(cfg)$appenders), "blubb")
+  expect_identical(names(l$config(list = cfg)$appenders), "blubb")
+  expect_identical(l$config(cfg)$propagate, FALSE)
+  expect_error(l$config(cfg = cfg, list = cfg))
+
+  l$config(NULL)
+  expect_true(is_virgin_Logger(l))
+})

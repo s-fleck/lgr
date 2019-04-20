@@ -112,6 +112,19 @@ parsed_logger_config  <- function(
 
 
 
+as_parsed_logger_config <- function(x){
+  UseMethod("as_parsed_logger_config")
+}
+
+
+
+
+as_parsed_logger_config.list <- function(x){
+  do.call(parsed_logger_config, x)
+}
+
+
+
 
 is_parsed_logger_config <- function(x){
   inherits(x, "parsed_logger_config")
@@ -124,6 +137,9 @@ parse_logger_config <- function(
   x,
   defaults = parsed_logger_config()
 ){
+  if (is_parsed_logger_config(x))
+    return(x)
+
   stopifnot(
     is_logger_config(x),
     all(names(x) %in% names(defaults))

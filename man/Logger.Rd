@@ -31,7 +31,7 @@ lg$warn(msg, ..., caller = get_caller(-8L))
 lg$info(msg, ..., caller = get_caller(-8L))
 lg$debug(msg, ..., caller = get_caller(-8L))
 lg$trace(msg, ..., caller = get_caller(-8L))
-lg$config(cfg, file, text)
+lg$config(cfg, file, text, list)
 lg$add_appender(appender, name = NULL)
 lg$remove_appender(pos)
 lg$handle_exception(...)
@@ -190,13 +190,19 @@ to the relevant \link{Appenders} and checked against their thresholds and
 filters.
 }
 
-\item{\code{config(cfg, file, text}}{Load a Logger
-configuration. \code{cfg} can be either a special list object, the path to
-a YAML/JSON config file, a \code{character} scalar containing YAML or
-\code{NULL} (to reset the logger config to the defaults). The
-arguments \code{file} and \code{text} can be used as an alternative to \code{cfg} that
-enforces that the  supplied  argument is of the specified type.
-See \link{logger_config} for details.
+\item{\code{config(cfg, file, text, list}}{Load a Logger
+configuration. \code{cfg} can be either
+\itemize{
+\item a special list object with any or all of the the following elements:
+\code{appenders}, \code{threshold}, \code{filters}, \code{propagate}, \code{exception_handler},
+\item the path to a \code{YAML}/\code{JSON} config file,
+\item a \code{character} scalar containing \code{YAML}, or
+\item \code{NULL} (to reset the logger config to the defaults)
+}
+
+The arguments \code{file}, \code{text} and \code{list} can be used as an alternative to
+\code{cfg} that  enforces that the  supplied  argument is of the specified
+type. See \link{logger_config} for details.
 }
 
 \item{\code{add_appender(appender, name = NULL)}, \code{remove_appender(pos)}}{
