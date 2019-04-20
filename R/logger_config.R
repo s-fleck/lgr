@@ -112,19 +112,6 @@ parsed_logger_config  <- function(
 
 
 
-as_parsed_logger_config <- function(x){
-  UseMethod("as_parsed_logger_config")
-}
-
-
-
-
-as_parsed_logger_config.list <- function(x){
-  do.call(parsed_logger_config, x)
-}
-
-
-
 
 is_parsed_logger_config <- function(x){
   inherits(x, "parsed_logger_config")
@@ -137,34 +124,39 @@ parse_logger_config <- function(
   x,
   defaults = parsed_logger_config()
 ){
-  if (is_parsed_logger_config(x))
+  if (is_parsed_logger_config(x)){
     return(x)
+  } else {
+    assert(all(names(x) %in% names(defaults)))
+  }
 
-  stopifnot(
-    is_logger_config(x),
-    all(names(x) %in% names(defaults))
-  )
 
-  objects <- resolve_r6_ctors(x)
+  if (is_logger_config(x)){
+    objects <- resolve_r6_ctors(x)
 
-  res <- defaults
+    res <- defaults
 
-  if ("appenders" %in% names(x))
-    res$appenders <- standardize_appenders_list(objects$appenders)
+    if ("appenders" %in% names(x))
+      res$appenders <- standardize_appenders_list(objects$appenders)
 
-  if ("exception_handler" %in% names(x))
-    res$exception_handler <- eval(parse(text = x[["exception_handler"]]))
+    if ("exception_handler" %in% names(x))
+      res$exception_handler <- eval(parse(text = x[["exception_handler"]]))
 
-  if ("propagate" %in% names(x))
-    res$propagate <- as.logical(toupper(x[["propagate"]]))
+    if ("propagate" %in% names(x))
+      res$propagate <- as.logical(toupper(x[["propagate"]]))
 
-  if ("threshold" %in% names(x))
-    res$threshold <- standardize_threshold(x$threshold)
+    if ("threshold" %in% names(x))
+      res$threshold <- standardize_threshold(x$threshold)
 
-  if ("filters" %in% names(x))
-    res$filters <- standardize_filters_list(objects$filters)
+    if ("filters" %in% names(x))
+      res$filters <- standardize_filters_list(objects$filters)
 
-  class(res) <-  c("parsed_logger_config", "list")
+    class(res) <-  c("parsed_logger_config", "list")
+
+  } else {
+    res <- do.call(parsed_logger_config, x)
+
+  }
 
   res
 }
