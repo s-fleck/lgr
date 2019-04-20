@@ -5,7 +5,6 @@
 \alias{as_logger_config}
 \alias{as_logger_config.list}
 \alias{as_logger_config.character}
-\alias{as_logger_config.Logger}
 \title{Logger Configuration Objects}
 \usage{
 logger_config(appenders = NULL, threshold = NULL, filters = NULL,
@@ -16,8 +15,6 @@ as_logger_config(x)
 \method{as_logger_config}{list}(x)
 
 \method{as_logger_config}{character}(x)
-
-\method{as_logger_config}{Logger}(x)
 }
 \arguments{
 \item{appenders}{see \link{Logger}}
@@ -72,7 +69,7 @@ Logger:
       file: /tmp/testlog.txt
 "
 lg$config(cfg)  # calls as_logger_config() internally
-lg$config(logger_config())  # reset logger config to default state
+lg$config(NULL)  # reset logger config to default state
 }
 \seealso{
 \url{https://yaml.org/}

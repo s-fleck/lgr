@@ -232,21 +232,6 @@ as_logger_config.character <- function(
 
 
 
-#' @export
-#' @rdname logger_config
-as_logger_config.Logger <- function(x){
-  logger_config(
-    appenders = x$appenders,
-    threshold = x$threshold,
-    exception_handler = x$exception_handler,
-    filters = x$filters,
-    propagate = x$propagate
-  )
-}
-
-
-
-
 resolve_r6_ctors <- function(x){
   ctors <- lapply(names(x), get0_R6Class)
 
