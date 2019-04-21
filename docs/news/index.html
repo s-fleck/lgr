@@ -16,7 +16,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -60,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9001</span>
       </span>
     </div>
 
@@ -68,7 +69,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -78,18 +79,6 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/lgr-simple.html">lgr-simple</a>
-    </li>
-  </ul>
-</li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -98,7 +87,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/s-fleck/lgr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -118,9 +107,26 @@
       <small>Source: <a href='https://github.com/s-fleck/lgr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="lgr-0-2-1-9000" class="section level1">
+<h1 class="page-header">
+<a href="#lgr-0-2-1-9000" class="anchor"></a>lgr 0.2.1.9000<small> Unreleased </small>
+</h1>
+<ul>
+<li>
+<code><a href="../reference/get_logger.html">get_logger_glue()</a></code> now works as intended</li>
+<li>The root logger can now be configured via <code><a href="https://www.rdocumentation.org/packages/base/topics/options">options()</a></code> and/or environment variables</li>
+<li>Default config of root logger now only contains a console appender. To get back the old behaviour add <code><a href="https://www.rdocumentation.org/packages/base/topics/options">options(lgr.config = "recommended")</a></code> to your <code>.Rprofile</code>.</li>
+<li>
+<code><a href="../reference/with_log_level.html">with_log_level()</a></code> and <code><a href="../reference/with_log_level.html">with_log_value()</a></code> now accept logger names as well as Logger objects as the <code>logger</code> argument</li>
+<li>
+<code>$config(NULL)</code> now resets a Logger to its default/unconfigured state</li>
+<li>
+<code>$config</code> now handles YAML and JSON.</li>
+</ul>
+</div>
     <div id="lgr-0-2-1-2019-03-25" class="section level1">
 <h1 class="page-header">
-<a href="#lgr-0-2-1-2019-03-25" class="anchor"></a>lgr 0.2.1 (2019-03-25)<small> Unreleased </small>
+<a href="#lgr-0-2-1-2019-03-25" class="anchor"></a>lgr 0.2.1 (2019-03-25)<small> 2019-03-25 </small>
 </h1>
 <ul>
 <li>Emergency fix that ensures test suite cleanes up temporary files</li>
@@ -138,7 +144,7 @@
 <li>Logger inheritance is now derived from the qualified name of a logger. Consequently <code>lg$parent</code> is now derived from <code>lg$name</code>, <code>lg$set_parent()</code> is no longer possible.</li>
 <li>If no threshold is set for a new Logger, it now inherits the threshold of its parent</li>
 <li>Depend on R6 &gt;= 2.4.0 which includes relevant fixes to finalizers. finalize methods are now private.</li>
-<li>Logger now have a <code>config</code> method that allows configuring Loggers with config objecgts and YAML files (experimental)</li>
+<li>Logger now have a <code>config</code> method that allows configuring Loggers with config objects and YAML files (experimental)</li>
 <li>added <code><a href="../reference/suspend_logging.html">with_logging()</a></code>, the opposite of <code><a href="../reference/suspend_logging.html">without_logging()</a></code>. This can be handy for automated tests where you might want so switch logging off/on only for specific unit tests.</li>
 </ul>
 </div>
@@ -158,6 +164,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#lgr-0-2-1-9000">0.2.1.9000</a></li>
         <li><a href="#lgr-0-2-1-2019-03-25">0.2.1</a></li>
         <li><a href="#lgr-0-2-0-2019-03-22">0.2.0</a></li>
         <li><a href="#lgr-0-1-1-2019-01-30">0.1.1</a></li>
