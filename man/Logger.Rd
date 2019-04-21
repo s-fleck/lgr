@@ -257,8 +257,8 @@ lgr$fatal("This is a serious error")
 lgr$info("Today is \%s", Sys.Date() )
 
 # If no unnamed `...` are present, msg is not passed through sprintf()
-lg$fatal("100\% bad")  # so this works
-lg$fatal("\%s\%\% bad", 100)  # if you use unnamed arguments, you must escape \%
+lgr$fatal("100\% bad")  # so this works
+lgr$fatal("\%s\%\% bad", 100)  # if you use unnamed arguments, you must escape \%
 
 # You can create new loggers with get_logger()
 tf <- tempfile()
@@ -271,9 +271,9 @@ lg$fatal("blubb")
 readLines(tf)
 
 # This logger's print() method depicts this relationship.
-lg2 <- Logger$new("lg/child")
-print(lg2)
-print(lg2$name)
+child <- get_logger("lg/child")
+print(child)
+print(child$name)
 
 # use formatting strings and custom fields
 tf2 <- tempfile()
