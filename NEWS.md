@@ -9,6 +9,7 @@
 * `with_log_level()` and `with_log_value()` now accept logger names as well as 
   Logger objects as the `logger` argument
 * `$config(NULL)` now resets a Logger to its default/unconfigured state
+* `$config` now handles YAML and JSON.
 
   
 
@@ -35,7 +36,7 @@
 * Depend on R6 >= 2.4.0 which includes relevant fixes to finalizers. finalize 
   methods are now private.
 * Logger now have a `config` method that allows configuring Loggers with config
-  objecgts and YAML files (experimental)
+  objects and YAML files (experimental)
 * added `with_logging()`, the opposite of `without_logging()`. This can be
   handy for automated tests where you might want so switch logging off/on only
   for specific unit tests.
