@@ -13,7 +13,9 @@
 * `with_log_level()` and `with_log_value()` now accept logger names as well as 
   Logger objects as the `logger` argument
 * `get_logger_glue()` now works as intended
-  
+* `AppenderFileRotating`, `AppenderFileRotatingDate` and 
+  `AppenderFileRotatingTime` for rotating file appenders 
+  via the package [rotor](https://github.com/s-fleck/rotor).
 
 
 # lgr 0.2.1 (2019-03-25)

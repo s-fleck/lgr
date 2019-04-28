@@ -23,7 +23,7 @@ loggers <- new.env()
 #'
 #' lg <- get_logger_glue("log/ger")
 #' lg$warn("a {.text} message", .text = "warning")
-get_logger <- function(
+  get_logger <- function(
   name,
   class = Logger
 ){
