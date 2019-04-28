@@ -45,7 +45,8 @@ Suggests:
     tools,
     utils,
     whoami,
-    yaml
+    yaml,
+    rotor
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
@@ -77,3 +78,4 @@ Collate:
     'utils-formatting.R'
     'utils-logging.R'
     'utils-rd.R'
+    'utils-rotor.R'
