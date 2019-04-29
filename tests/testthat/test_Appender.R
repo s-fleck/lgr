@@ -513,9 +513,45 @@ test_that("AppenderBuffer: Custom should_flush can be defined", {
 
 
 
-# AppenderFileRotating ----------------------------------------------------
+# AppenderFileRotating -----------------------------------------------------
 
 test_that("AppenderFileRotating works as expected", {
+  tf <- file.path(td, "test.log")
+  lg <-
+    lgr::get_logger("test")$
+    set_propagate(FALSE)$
+    set_appenders(AppenderFileRotating$new(file = tf)$set_size(-1))
+
+  lg$fatal("test")
+
+  # first rotate roates a file with content
+  lg$appenders[[1]]$rotate()
+  expect_gt(lg$appenders[[1]]$backups[1, ]$size, 0L)
+  expect_identical(nrow(lg$appenders[[1]]$backups), 1L)
+
+  # second rotate only has a file of size 0 to rotate
+  lg$appenders[[1]]$rotate()
+  expect_equal(lg$appenders[[1]]$backups[1, ]$size, 0)
+  expect_identical(nrow(lg$appenders[[1]]$backups), 2L)
+
+  # compression is possible
+  lg$appenders[[1]]$set_compression(TRUE)
+  lg$appenders[[1]]$rotate()
+  expect_identical(lg$appenders[[1]]$backups$ext, c("log.zip", "log", "log"))
+  expect_identical(lg$appenders[[1]]$backups$sfx, as.character(1:3))
+
+  # cleanup
+  lg$appenders[[1]]$prune(0)
+  expect_identical(nrow(lg$appenders[[1]]$backups), 0L)
+  lg$config(NULL)
+})
+
+
+
+
+# AppenderFileRotatingDate ----------------------------------------------------
+
+test_that("AppenderFileRotatingDate works as expected", {
   tf <- file.path(td, "test.log")
   lg <-
     lgr::get_logger("test")$
@@ -539,6 +575,6 @@ test_that("AppenderFileRotating works as expected", {
 
   # cleanup
   lg$appenders[[1]]$prune(0)
-  lg$appenders[[1]]$backups
+  expect_identical(nrow(lg$appenders[[1]]$backups), 0L)
   lg$config(NULL)
 })
