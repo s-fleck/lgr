@@ -2222,7 +2222,7 @@ AppenderGmail <- R6::R6Class(
 
 
 # AppenderFileRotating ----------------------------------------------------
-
+#' @export
 AppenderFileRotating <- R6::R6Class(
   "AppenderFileRotating",
   inherit = AppenderFile,
@@ -2334,13 +2334,132 @@ AppenderFileRotating <- R6::R6Class(
 )
 
 
+# AppenderFileRotatingDateTime ------------------------------------------------
+
+#' @export
+AppenderFileRotatingDateTime <- R6::R6Class(
+  "AppenderFileRotating",
+  inherit = AppenderFileRotating,
+  public = list(
+    initialize = function(
+      file,
+      threshold = NA_integer_,
+      layout = LayoutFormat$new(),
+      filters = NULL,
+      age = NULL,
+      timestamp_fmt = "%Y-%m-%d--%H-%M-%S",
+      size = 1,
+      max_backups = Inf,
+      compression = FALSE,
+      overwrite = FALSE,
+      create_file = TRUE
+    ){
+      assert_namespace("rotor")
+      self$set_file(file)
+      self$set_threshold(threshold)
+      self$set_layout(layout)
+      self$set_filters(filters)
+
+      self$set_timestamp_fmt(timestamp_fmt)
+      self$set_age(age)
+      self$set_size(size)
+      self$set_max_backups(max_backups)
+      self$set_compression(compression)
+      self$set_overwrite(overwrite)
+      self$set_create_file(create_file)
+
+      self
+    },
+
+
+    rotate = function(
+      dry_run     = getOption("rotor.dry_run", FALSE),
+      verbose     = getOption("rotor.dry_run", dry_run),
+      now = Sys.Date()
+    ){
+      rotor::rotate_time(
+        self$file,
+        age = self$age,
+        format      = self$timestamp_fmt,
+        size    = self$size,
+        max_backups = self$max_backups,
+        compression = self$compression,
+        overwrite   = self$overwrite,
+        create_file = self$create_file,
+        now = now,
+        dry_run     = dry_run,
+        verbose     = verbose
+      )
+
+      self
+    },
+
+
+    prune = function(max_backups = self$max_backups){
+      rotor::BackupQueueDate$new(self$file)$prune(max_backups)
+      self
+    },
+
+
+    set_age = function(
+      x
+    ){
+      private[[".age"]] <- x
+      self
+    },
+
+
+    set_timestamp_fmt = function(
+      x
+    ){
+      assert(rotor:::assert_valid_datetime_format(x))
+      private[[".timestamp_fmt"]] <- x
+      self
+    },
+
+
+    set_overwrite = function(
+      x
+    ){
+      assert(is_scalar_logical(x))
+      private[[".overwrite"]] <- x
+      self
+    }
+  ),
+
+
+  active = list(
+    age = function() get(".age", private),
+    timestamp_fmt = function() get(".timestamp_fmt", private),
+    size = function() get(".size", private),
+    max_backups = function() get(".max_backups", private),
+    compression = function() get(".compression", private),
+    overwrite = function() get(".overwrite", private),
+    create_file = function() get(".create_file", private),
+
+    backups = function(){
+      rotor::BackupQueueDateTime$new(self$file)$backups
+    }
+  ),
+
+  private = list(
+    .age = NULL,
+    .timestamp_fmt = NULL,
+    .size = NULL,
+    .max_backups = NULL,
+    .compression = NULL,
+    .overwrite = NULL,
+    .create_file = NULL
+  )
+)
+
 
 
 # AppenderFileRotatingDate ----------------------------------------------------
-
+#' @export
 AppenderFileRotatingDate <- R6::R6Class(
-  "AppenderFileRotating",
-  inherit = AppenderFileRotating,
+  "AppenderFileRotatingDate",
+  inherit = AppenderFileRotatingDateTime,
   public = list(
     initialize = function(
       file,
@@ -2372,10 +2491,11 @@ AppenderFileRotatingDate <- R6::R6Class(
       self
     },
 
+
     rotate = function(
       dry_run     = getOption("rotor.dry_run", FALSE),
       verbose     = getOption("rotor.dry_run", dry_run),
-      now = Sys.Date()
+      now = Sys.time()
     ){
       rotor::rotate_date(
         self$file,
@@ -2395,59 +2515,19 @@ AppenderFileRotatingDate <- R6::R6Class(
     },
 
 
-    prune = function(max_backups = self$max_backups){
-      rotor::BackupQueueDate$new(self$file)$prune(max_backups)
-      self
-    },
-
-    set_age = function(
-      x
-    ){
-      private[[".age"]] <- x
-      self
-    },
-
     set_timestamp_fmt = function(
       x
     ){
-      assert(is_valid_date_format(x))
+      assert(rotor:::assert_valid_date_format(x))
       private[[".timestamp_fmt"]] <- x
       self
-    },
-
-   set_overwrite = function(
-      x
-    ){
-      assert(is_scalar_logical(x))
-      private[[".overwrite"]] <- x
-      self
     }
-  ),
-
-  active = list(
-    age = function() get(".age", private),
-    timestamp_fmt = function() get(".timestamp_fmt", private),
-    size = function() get(".size", private),
-    max_backups = function() get(".max_backups", private),
-    compression = function() get(".compression", private),
-    overwrite = function() get(".overwrite", private),
-    create_file = function() get(".create_file", private),
-
-    backups = function(){
-      rotor::BackupQueueDate$new(self$file)$backups
-    }
-  ),
-
-  private = list(
-    .age = NULL,
-    .timestamp_fmt = NULL,
-    .size = NULL,
-    .max_backups = NULL,
-    .compression = NULL,
-    .overwrite = NULL,
-    .create_file = NULL
   )
 )
+
+
+
+
 
 
 
