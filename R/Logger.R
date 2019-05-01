@@ -137,8 +137,8 @@
 #'   * a special list object with any or all of the the following elements:
 #'     `appenders`, `threshold`, `filters`, `propagate`, `exception_handler`,
 #'   * the path to a `YAML`/`JSON` config file,
-#'   * a `character` scalar containing `YAML`, or
-#'   *  `NULL` (to reset the logger config to the defaults)
+#'   * a `character` scalar containing `YAML`,
+#'   *  `NULL` (to reset the logger config to the default/unconfigured state)
 #'
 #'   The arguments `file`, `text` and `list` can be used as an alternative to
 #'     `cfg` that  enforces that the  supplied  argument is of the specified
@@ -481,8 +481,10 @@ Logger <- R6::R6Class(
       if (!missing(cfg)){
         if (is.list(cfg)){
           cfg <- parse_logger_config(cfg)
+        } else if (is_scalar_character(cfg) && cfg %in% names(DEFAULT_CONFIGS)){
+          cfg <- DEFAULT_CONFIGS[[cfg]]
         } else {
-          cfg <- as_logger_config(cfg)
+          as_logger_config(cfg)
         }
 
       } else if (!missing(file)){

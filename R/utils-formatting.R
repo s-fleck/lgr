@@ -38,8 +38,7 @@ fmt_threshold <- function(
   type = "both",
   log_levels = getOption("lgr.log_levels")
 ){
-  assert(is_scalar(threshold))
-  assert(is.na(x) || is_integerish(x) || is.character(x))
+  assert(all(is.na(x)) ||  is_integerish(x[!is.na(x)]) || is.character(x))
 
   log_levels = c("off" = 0L, log_levels)
   if (is.character(x)){

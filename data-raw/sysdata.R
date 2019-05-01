@@ -1,4 +1,7 @@
+DEFAULT_CONFIGS <- list(
+  minimal = as_logger_config(system.file("configs", "minimal.yaml", package = "lgr")),
+  interactive = as_logger_config(system.file("configs", "recommended.yaml", package = "lgr"))
+)
 
-cfg_recommended <- as_logger_config(system.file("configs", "recommended.yaml", package = "lgr"))
 
-usethis::use_data(cfg_recommended, internal = TRUE)
+usethis::use_data(DEFAULT_CONFIGS, internal = TRUE, overwrite = TRUE)
