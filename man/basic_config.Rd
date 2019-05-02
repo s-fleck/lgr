@@ -4,9 +4,10 @@
 \alias{basic_config}
 \title{Basic Setup for the Logging System}
 \usage{
-basic_config(file = NULL, fmt = NULL,
-  timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3", threshold = "info",
-  console = TRUE, memory = TRUE, appenders = NULL)
+basic_config(file = NULL, fmt = "\%L [\%t] \%m",
+  timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3", threshold = "all",
+  appenders = NULL, console = if (is.null(appenders)) "info" else
+  FALSE, memory = if (is.null(appenders)) "all" else FALSE)
 }
 \arguments{
 \item{file}{\code{character} scalar: If not \code{NULL} a \link{AppenderFile} will be created
@@ -23,12 +24,14 @@ a \code{.jsonl} file. If \code{NULL} it defaults to \code{"\%L [\%t] \%m"}
 The minimum \link[=log_levels]{log level} that should be processed by the root
 logger.}
 
-\item{console}{\code{logical} scalar. add a console appender}
-
-\item{memory}{\code{logical} scalar. add a memory appender}
-
 \item{appenders}{a single \link{Appender} or a list thereof. Must be \code{NULL} if
 if \code{file} is already specified.}
+
+\item{console}{logical\code{scalar. or a}threshold` (see above). Add an appender logs to the console
+(i.e. displays log messages in an interactive R session)}
+
+\item{memory}{\code{logical} scalar. or a \code{threshold} (see above). Add an Appender
+that logs to a memory buffer, see also \code{\link[=show_log]{show_log()}}}
 }
 \value{
 the \code{root} Logger (lgr)

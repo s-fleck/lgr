@@ -1,16 +1,18 @@
 # lgr 0.2.1.9000
 
-* `get_logger_glue()` now works as intended
 * The root logger can now be configured via `options()` and/or environment 
-  variables
-* Default config of root logger now only contains a console appender. To get
-  back the old behaviour add `options(lgr.config = "recommended")` to your
-  `.Rprofile`.
+  variables (see `?lgr`)
+* The default config of the root logger has changed. It now only has a
+  console appender and a default threshold of `"info"`. To get
+  back the old behaviour (`"info"` console appender, `"all"` in-memory appender) 
+  run `basic_config()` with default arguments.
+* `basic_config()` now accepts thresholds ("info", "fatal") as arguments to
+  `console` and `memory`. 
+* `$config(NULL)` now resets a Logger to its default/unconfigured state
+* `$config()` now accepts YAML as well as JSON files or code
 * `with_log_level()` and `with_log_value()` now accept logger names as well as 
   Logger objects as the `logger` argument
-* `$config(NULL)` now resets a Logger to its default/unconfigured state
-* `$config` now handles YAML and JSON.
-
+* `get_logger_glue()` now works as intended
   
 
 

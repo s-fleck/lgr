@@ -196,8 +196,8 @@ configuration. \code{cfg} can be either
 \item a special list object with any or all of the the following elements:
 \code{appenders}, \code{threshold}, \code{filters}, \code{propagate}, \code{exception_handler},
 \item the path to a \code{YAML}/\code{JSON} config file,
-\item a \code{character} scalar containing \code{YAML}, or
-\item \code{NULL} (to reset the logger config to the defaults)
+\item a \code{character} scalar containing \code{YAML},
+\item \code{NULL} (to reset the logger config to the default/unconfigured state)
 }
 
 The arguments \code{file}, \code{text} and \code{list} can be used as an alternative to

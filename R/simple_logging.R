@@ -29,13 +29,14 @@ NULL
 #'   (see [format.LogEvent])
 #' @inheritParams print.LogEvent
 #' @inheritParams Logger
-#' @param appenders a single [Appender] or a list thereof. Must be `NULL` if
-#'   if `file` is already specified.
+#' @param appenders a single [Appender] or a list thereof.
 #' @param threshold `character` or `integer` scalar.
 #'   The minimum [log level][log_levels] that should be processed by the root
 #'   logger.
-#' @param memory `logical` scalar. add a memory appender
-#' @param console `logical` scalar. add a console appender
+#' @param memory `logical` scalar. or a `threshold` (see above). Add an Appender
+#'   that logs to a memory buffer, see also [show_log()]
+#' @param console logical` scalar. or a `threshold` (see above). Add an appender logs to the console
+#'   (i.e. displays log messages in an interactive R session)
 #'
 #' @return the `root` Logger (lgr)
 #' @export
@@ -49,18 +50,18 @@ basic_config <- function(
   file = NULL,
   fmt = "%L [%t] %m",
   timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
-  threshold = "info",
-  console = TRUE,
-  memory = TRUE,
-  appenders = NULL
+  threshold = "all",
+  appenders = NULL,
+  console = if(is.null(appenders)) "info" else FALSE,
+  memory  = if (is.null(appenders)) "all" else FALSE
 ){
   stopifnot(
     is.null(file) || is_scalar_character(file),
     is.null(fmt) || is_scalar_character(fmt),
     is_scalar_character(timestamp_fmt),
     is_threshold(threshold),
-    is_scalar_bool(console),
-    is_scalar_bool(memory),
+    is_scalar_bool(console) || is_threshold(console),
+    is_scalar_bool(memory) || is_threshold(console),
     is.null(appenders) || is.list(appenders) || inherits(appenders, "Appender")
   )
 
@@ -70,8 +71,26 @@ basic_config <- function(
     set_threshold(threshold)
 
 
+
+  if (length(appenders)){
+    assert(
+      is.null(file)    || !"file" %in% names(appenders),
+      "If `appenders` contains an appender named `file`, the `file` argument to basic_config() must be `NULL`"
+    )
+    assert(
+      isFALSE(console) || !"console" %in% names(appenders),
+      "If `appenders` contains an appender named `console`, the `console` argument to basic_config() must be `FALSE`"
+    )
+    assert(
+      isFALSE(memory)  || !"memory" %in% names(appenders),
+      "If `appenders` contains an appender named `memory`, the `memory` argument to basic_config() must be `FALSE`"
+    )
+
+    l$set_appenders(appenders)
+  }
+
+
   if (!is.null(file)){
-    assert(is.null(appenders), "`appenders` must be NULL if `file` is specified")
     ext <- tools::file_ext(file)
 
     if (identical(tolower(ext), "json")){
@@ -90,8 +109,6 @@ basic_config <- function(
       )
 
     } else {
-      if (is.null(fmt))  fmt <-
-
       l$add_appender(
         name = "file",
         AppenderFile$new(
@@ -106,11 +123,13 @@ basic_config <- function(
     }
   }
 
-  if (console){
+
+  if (!isFALSE(console)){
+    if (isTRUE(console)) console <- 400
     l$add_appender(
       name = "console",
       AppenderConsole$new(
-        threshold = NA,
+        threshold = console,
         layout = LayoutFormat$new(
           colors = getOption("lgr.colors"),
           fmt = fmt,
@@ -120,9 +139,10 @@ basic_config <- function(
     )
   }
 
-  if (memory){
+  if  (!isFALSE(memory)){
+    if (isTRUE(memory)) memory <- NA
     l$add_appender(name = "memory", AppenderBuffer$new(
-      threshold = NA,
+      threshold = memory,
       should_flush = function(event) FALSE
     ))
   }
@@ -320,10 +340,11 @@ remove_appender <- function(
 #' @description
 #' `show_log()` displays the last `n` log entries of `target` if `target` is
 #' an Appender with a `show()` method or a Logger with at least one such
-#' Appender attached. `target` defaults to the root logger, which has an
-#' [AppenderDt] attached by default if the package **data.table** is installed.
-#' With the default logging settings this includes also `TRACE` and `DEBUG`
-#' messages, even if they were not printed to the console before.
+#' Appender attached. `target` defaults to the root logger. If you have
+#' configured the root logger with
+#' [`basic_config(memory = TRUE)`][basic_config()], it will have an
+#' [AppenderBuffer] that logs all log messages (including `TRACE` and `DEBUG`),
+#' even if they were not printed to the console before.
 #'
 #' `show_data()` and `show_dt()` work similar to `show_log()`, except that
 #' they return the log as `data.frame` or `data.table` respectively.

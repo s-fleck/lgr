@@ -109,10 +109,11 @@ other Appenders.
 
 \code{show_log()} displays the last \code{n} log entries of \code{target} if \code{target} is
 an Appender with a \code{show()} method or a Logger with at least one such
-Appender attached. \code{target} defaults to the root logger, which has an
-\link{AppenderDt} attached by default if the package \strong{data.table} is installed.
-With the default logging settings this includes also \code{TRACE} and \code{DEBUG}
-messages, even if they were not printed to the console before.
+Appender attached. \code{target} defaults to the root logger. If you have
+configured the root logger with
+\code{\link[=basic_config]{basic_config(memory = TRUE)}}, it will have an
+\link{AppenderBuffer} that logs all log messages (including \code{TRACE} and \code{DEBUG}),
+even if they were not printed to the console before.
 
 \code{show_data()} and \code{show_dt()} work similar to \code{show_log()}, except that
 they return the log as \code{data.frame} or \code{data.table} respectively.
