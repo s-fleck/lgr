@@ -481,8 +481,6 @@ Logger <- R6::R6Class(
       if (!missing(cfg)){
         if (is.list(cfg)){
           cfg <- parse_logger_config(cfg)
-        } else if (is_scalar_character(cfg) && cfg %in% names(DEFAULT_CONFIGS)){
-          cfg <- DEFAULT_CONFIGS[[cfg]]
         } else {
           as_logger_config(cfg)
         }
@@ -892,7 +890,7 @@ LoggerRoot <- R6::R6Class(
     ){
 
       if (is.null(cfg)){
-        cfg <- as_logger_config()
+        cfg <- logger_config()
         cfg$threshold <- getOption("lgr.default_threshold", 400L)
       }
 

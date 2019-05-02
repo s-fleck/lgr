@@ -47,29 +47,42 @@ NULL
 #' }
 basic_config <- function(
   file = NULL,
-  fmt = NULL,
+  fmt = "%L [%t] %m",
   timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
   threshold = "info",
   console = TRUE,
   memory = TRUE,
   appenders = NULL
 ){
-  warning("This function is still experimental and paramters might change in the near future", call. = FALSE)
+  stopifnot(
+    is.null(file) || is_scalar_character(file),
+    is.null(fmt) || is_scalar_character(fmt),
+    is_scalar_character(timestamp_fmt),
+    is_threshold(threshold),
+    is_scalar_bool(console),
+    is_scalar_bool(memory),
+    is.null(appenders) || is.list(appenders) || inherits(appenders, "Appender")
+  )
 
-  l <- get_logger("root")
-  l$config(logger_config(threshold = NA_integer_))  # reset root logger config
-
-
-  # threshold
-  assert(!is.null(threshold))
-  l$set_threshold(threshold)
+  l <-
+    get_logger()$
+    config(NULL)$
+    set_threshold(threshold)
 
 
   if (!is.null(file)){
     assert(is.null(appenders), "`appenders` must be NULL if `file` is specified")
     ext <- tools::file_ext(file)
 
-    if (identical(tolower(ext), "jsonl")){
+    if (identical(tolower(ext), "json")){
+      stop(
+        "Please use `.jsonl` and not `.json` as file extension for JSON log",
+        "files. The reason is that that JSON files created",
+        "by lgr are not true JSON files but JSONlines files.",
+        "See http://jsonlines.org/ for more infos."
+      )
+
+    } else if (identical(tolower(ext), "jsonl")){
       assert (is.null(fmt), "`fmt` must be null if `file` is a '.jsonl' file")
       l$add_appender(
         name = "file",
@@ -77,7 +90,7 @@ basic_config <- function(
       )
 
     } else {
-      if (is.null(fmt))  fmt <- "%L [%t] %m"
+      if (is.null(fmt))  fmt <-
 
       l$add_appender(
         name = "file",
@@ -94,7 +107,6 @@ basic_config <- function(
   }
 
   if (console){
-    if (is.null(fmt))  fmt <- "%L [%t] %m"
     l$add_appender(
       name = "console",
       AppenderConsole$new(
