@@ -2222,6 +2222,95 @@ AppenderGmail <- R6::R6Class(
 
 
 # AppenderFileRotating ----------------------------------------------------
+
+#' Log to a rotating file
+#'
+#' An extension of [AppenderFile] that rotates logfiles based on certain
+#' conditions. Please refert to the documentation of [rotor::rotate()] for
+#' the meanings of the extra arguments
+#'
+#' @eval r6_usage(AppenderFileRotating)
+#'
+#' @inheritSection AppenderFile Creating a New Appender
+#' @inheritSection AppenderFile Fields
+#' @inheritSection AppenderFile Methods
+#'
+#' @section Fields:
+#'
+#' \describe{
+#'   \item{`age`, `timestamp_fmt`, `overwrite`, `compression`, `size`}{
+#'   see [rotor::rotate()]}
+#'  }
+#'
+#'
+#' @export
+#' @seealso [LayoutFormat], [LayoutJson]
+#' @family Appenders
+#' @name AppenderFileRotating
+#' @aliases AppenderFileRotatingDate AppenderFileRotatingDateTime
+NULL
+
+
+
+
+#' Log to a rotating file
+#'
+#' An extension of [AppenderFile] that rotates logfiles based on certain
+#' conditions. Please refert to the documentation of [rotor::rotate()] for
+#' the meanings of the extra arguments
+#'
+#' @eval r6_usage(AppenderFileRotatingDate)
+#'
+#' @inheritSection AppenderFile Creating a New Appender
+#' @inheritSection AppenderFile Fields
+#' @inheritSection AppenderFile Methods
+#'
+#' @section Fields:
+#'
+#' \describe{
+#'   \item{`age`, `timestamp_fmt`, `overwrite`, `compression`, `size`}{
+#'   see [rotor::rotate()]}
+#'  }
+#'
+#'
+#' @export
+#' @seealso [LayoutFormat], [LayoutJson]
+#' @family Appenders
+#' @name AppenderFileRotatingDate
+#' @aliases AppenderFileRotatingDate AppenderFileRotatingDateTime
+NULL
+
+
+
+#' Log to a rotating file
+#'
+#' An extension of [AppenderFile] that rotates logfiles based on certain
+#' conditions. Please refert to the documentation of [rotor::rotate()] for
+#' the meanings of the extra arguments
+#'
+#' @eval r6_usage(AppenderFileRotatingDateTime)
+#'
+#' @inheritSection AppenderFile Creating a New Appender
+#' @inheritSection AppenderFile Fields
+#' @inheritSection AppenderFile Methods
+#'
+#' @section Fields:
+#'
+#' \describe{
+#'   \item{`age`, `timestamp_fmt`, `overwrite`, `compression`, `size`}{
+#'   see [rotor::rotate()]}
+#'  }
+#'
+#'
+#' @export
+#' @seealso [LayoutFormat], [LayoutJson]
+#' @family Appenders
+#' @name AppenderFileRotatingDateTime
+NULL
+
+
+
+
 #' @export
 AppenderFileRotating <- R6::R6Class(
   "AppenderFileRotating",
