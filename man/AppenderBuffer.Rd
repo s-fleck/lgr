@@ -204,8 +204,12 @@ and AppenderBuffer if you actually want to buffer events
 \link{LayoutFormat}
 
 Other Appenders: \code{\link{AppenderConsole}},
-  \code{\link{AppenderDbi}}, \code{\link{AppenderFile}},
-  \code{\link{AppenderGmail}}, \code{\link{AppenderJson}},
+  \code{\link{AppenderDbi}},
+  \code{\link{AppenderFileRotatingDateTime}},
+  \code{\link{AppenderFileRotatingDate}},
+  \code{\link{AppenderFileRotating}},
+  \code{\link{AppenderFile}}, \code{\link{AppenderGmail}},
+  \code{\link{AppenderJson}},
   \code{\link{AppenderPushbullet}},
   \code{\link{AppenderRjdbc}},
   \code{\link{AppenderSendmail}},
