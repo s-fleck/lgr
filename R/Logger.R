@@ -482,7 +482,7 @@ Logger <- R6::R6Class(
         if (is.list(cfg)){
           cfg <- parse_logger_config(cfg)
         } else {
-          as_logger_config(cfg)
+          cfg <- as_logger_config(cfg)
         }
 
       } else if (!missing(file)){
@@ -511,7 +511,6 @@ Logger <- R6::R6Class(
       }
 
       assert(is_parsed_logger_config(cfg))
-
       self$set_threshold(cfg$threshold)
       self$set_appenders(cfg$appenders)
       self$set_propagate(cfg$propagate)
@@ -888,7 +887,6 @@ LoggerRoot <- R6::R6Class(
       file,
       text
     ){
-
       if (is.null(cfg)){
         cfg <- logger_config()
         cfg$threshold <- getOption("lgr.default_threshold", 400L)
