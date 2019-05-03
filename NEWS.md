@@ -2,6 +2,9 @@
   * `AppenderFileRotating`, `AppenderFileRotatingDate` and 
     `AppenderFileRotatingTime` for rotating file appenders via the 
     [rotor](https://github.com/s-fleck/rotor).
+  * functions like `show_log()`, `show_data()`, etc.. now accept logger names
+    ass their `target`
+
 
 
 

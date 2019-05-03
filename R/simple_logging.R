@@ -415,6 +415,10 @@ find_target <- function(
 ){
   assert(is_scalar_character(name))
 
+  if (is_scalar_character(x)) {
+    x <- get_logger(x)
+  }
+
   if (inherits(x, "Appender")){
     if (name %in% names(x)){
       return(x)
