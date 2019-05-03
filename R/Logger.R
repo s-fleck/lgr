@@ -482,7 +482,7 @@ Logger <- R6::R6Class(
         if (is.list(cfg)){
           cfg <- parse_logger_config(cfg)
         } else {
-          as_logger_config(cfg)
+          cfg <- as_logger_config(cfg)
         }
 
       } else if (!missing(file)){
