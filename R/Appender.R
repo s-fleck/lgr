@@ -2294,6 +2294,7 @@ AppenderFileRotating <- R6::R6Class(
     set_compression = function(
       x
     ){
+      assert_valid_compression(x)
       private[[".compression"]] <- x
       self
     },
@@ -2495,7 +2496,7 @@ AppenderFileRotatingDate <- R6::R6Class(
     rotate = function(
       dry_run     = getOption("rotor.dry_run", FALSE),
       verbose     = getOption("rotor.dry_run", dry_run),
-      now = Sys.time()
+      now         = Sys.Date()
     ){
       rotor::rotate_date(
         self$file,
