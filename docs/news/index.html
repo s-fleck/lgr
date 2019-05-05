@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9002</span>
       </span>
     </div>
 
@@ -112,16 +112,18 @@
 <a href="#lgr-0-2-1-9000" class="anchor"></a>lgr 0.2.1.9000<small> Unreleased </small>
 </h1>
 <ul>
+<li>The root logger can now be configured via <code><a href="https://www.rdocumentation.org/packages/base/topics/options">options()</a></code> and/or environment variables (see <code><a href="../reference/lgr-package.html">?lgr</a></code>)</li>
+<li>The default config of the root logger has changed. It now only has a console appender and a default threshold of <code>"info"</code>. To get back the old behaviour (<code>"info"</code> console appender, <code>"all"</code> in-memory appender) run <code><a href="../reference/basic_config.html">basic_config()</a></code> with default arguments.</li>
 <li>
-<code><a href="../reference/get_logger.html">get_logger_glue()</a></code> now works as intended</li>
-<li>The root logger can now be configured via <code><a href="https://www.rdocumentation.org/packages/base/topics/options">options()</a></code> and/or environment variables</li>
-<li>Default config of root logger now only contains a console appender. To get back the old behaviour add <code><a href="https://www.rdocumentation.org/packages/base/topics/options">options(lgr.config = "recommended")</a></code> to your <code>.Rprofile</code>.</li>
-<li>
-<code><a href="../reference/with_log_level.html">with_log_level()</a></code> and <code><a href="../reference/with_log_level.html">with_log_value()</a></code> now accept logger names as well as Logger objects as the <code>logger</code> argument</li>
+<code><a href="../reference/basic_config.html">basic_config()</a></code> now accepts thresholds (“info”, “fatal”) as arguments to <code>console</code> and <code>memory</code>.</li>
 <li>
 <code>$config(NULL)</code> now resets a Logger to its default/unconfigured state</li>
 <li>
-<code>$config</code> now handles YAML and JSON.</li>
+<code>$config()</code> now accepts YAML as well as JSON files or code</li>
+<li>
+<code><a href="../reference/with_log_level.html">with_log_level()</a></code> and <code><a href="../reference/with_log_level.html">with_log_value()</a></code> now accept logger names as well as Logger objects as the <code>logger</code> argument</li>
+<li>
+<code><a href="../reference/get_logger.html">get_logger_glue()</a></code> now works as intended</li>
 </ul>
 </div>
     <div id="lgr-0-2-1-2019-03-25" class="section level1">
@@ -129,8 +131,8 @@
 <a href="#lgr-0-2-1-2019-03-25" class="anchor"></a>lgr 0.2.1 (2019-03-25)<small> 2019-03-25 </small>
 </h1>
 <ul>
-<li>Emergency fix that ensures test suite cleanes up temporary files</li>
-<li>Removed .rd file for the unexporter LoggerRoot class</li>
+<li>Emergency fix that ensures test suite cleans up temporary files</li>
+<li>Removed .rd file for the unexported LoggerRoot class</li>
 </ul>
 </div>
     <div id="lgr-0-2-0-2019-03-22" class="section level1">

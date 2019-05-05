@@ -74,7 +74,7 @@ Reference to the existing Logger.
 
 The \code{name} is potentially a \code{/} separated hierarchical value like
 \code{foo/bar/baz}. Loggers further down the hierarchy are children of the loggers
-above. (This mechanism does not work of the Logger is initalized with
+above. (This mechanism does not work of the Logger is initialized with
 \code{Logger$new()})
 
 All calls to \code{get_logger()} with the same name return the same Logger
@@ -133,7 +133,7 @@ Loggers also have the following additional read-only bindings:
 
 \describe{
 \item{\code{name}}{\code{character} scalar. A hierarchical value
-(seperated by `"/"``) that indicates the loggers name and its ancestors.
+(separated by `"/"``) that indicates the loggers name and its ancestors.
 If a logger is created with \code{\link[=get_logger]{get_logger()}} uniqueness of the name is
 enforced.
 }

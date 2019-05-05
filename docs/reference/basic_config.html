@@ -34,7 +34,7 @@
 <meta property="og:title" content="Basic Setup for the Logging System — basic_config" />
 
 <meta property="og:description" content="Quick and easy way to configure the root logger for logging to a file.
-experimental, paramters will likely change in the next lgr version." />
+experimental, parameters will likely change in the next lgr version." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -65,7 +65,7 @@ experimental, paramters will likely change in the next lgr version." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9002</span>
       </span>
     </div>
 
@@ -115,13 +115,14 @@ experimental, paramters will likely change in the next lgr version." />
     <div class="ref-description">
     
     <p>Quick and easy way to configure the root logger for logging to a file.
-<strong>experimental</strong>, paramters will likely change in the next lgr version.</p>
+<strong>experimental</strong>, parameters will likely change in the next lgr version.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>basic_config</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fmt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>timestamp_fmt</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%OS3"</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='st'>"info"</span>,
-  <span class='kw'>console</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>memory</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>appenders</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>basic_config</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fmt</span> <span class='kw'>=</span> <span class='st'>"%L [%t] %m"</span>,
+  <span class='kw'>timestamp_fmt</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%OS3"</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='st'>"all"</span>,
+  <span class='kw'>appenders</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>console</span> <span class='kw'>=</span> <span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/NULL'>is.null</a></span>(<span class='no'>appenders</span>)) <span class='st'>"info"</span> <span class='kw'>else</span>
+  <span class='fl'>FALSE</span>, <span class='kw'>memory</span> <span class='kw'>=</span> <span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/NULL'>is.null</a></span>(<span class='no'>appenders</span>)) <span class='st'>"all"</span> <span class='kw'>else</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,17 +150,18 @@ The minimum <a href='get_log_levels.html'>log level</a> that should be processed
 logger.</p></td>
     </tr>
     <tr>
+      <th>appenders</th>
+      <td><p>a single <a href='Appender.html'>Appender</a> or a list thereof.</p></td>
+    </tr>
+    <tr>
       <th>console</th>
-      <td><p><code>logical</code> scalar. add a console appender</p></td>
+      <td><p>logical<code>scalar. or a</code>threshold` (see above). Add an appender logs to the console
+(i.e. displays log messages in an interactive R session)</p></td>
     </tr>
     <tr>
       <th>memory</th>
-      <td><p><code>logical</code> scalar. add a memory appender</p></td>
-    </tr>
-    <tr>
-      <th>appenders</th>
-      <td><p>a single <a href='Appender.html'>Appender</a> or a list thereof. Must be <code>NULL</code> if
-if <code>file</code> is already specified.</p></td>
+      <td><p><code>logical</code> scalar. or a <code>threshold</code> (see above). Add an Appender
+that logs to a memory buffer, see also <code><a href='simple_logging.html'>show_log()</a></code></p></td>
     </tr>
     </table>
     

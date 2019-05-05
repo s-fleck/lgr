@@ -49,10 +49,11 @@ add_appender() and remove_appender() add Appenders to Loggers and
 other Appenders.
 show_log() displays the last n log entries of target if target is
 an Appender with a show() method or a Logger with at least one such
-Appender attached. target defaults to the root logger, which has an
-AppenderDt attached by default if the package data.table is installed.
-With the default logging settings this includes also TRACE and DEBUG
-messages, even if they were not printed to the console before.
+Appender attached. target defaults to the root logger. If you have
+configured the root logger with
+basic_config(memory = TRUE), it will have an
+AppenderBuffer that logs all log messages (including TRACE and DEBUG),
+even if they were not printed to the console before.
 show_data() and show_dt() work similar to show_log(), except that
 they return the log as data.frame or data.table respectively." />
 <meta name="twitter:card" content="summary" />
@@ -85,7 +86,7 @@ they return the log as data.frame or data.table respectively." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9002</span>
       </span>
     </div>
 
@@ -150,10 +151,11 @@ console output for a given <span style="R">R</span> session.</p>
 other Appenders.</p>
 <p><code>show_log()</code> displays the last <code>n</code> log entries of <code>target</code> if <code>target</code> is
 an Appender with a <code>show()</code> method or a Logger with at least one such
-Appender attached. <code>target</code> defaults to the root logger, which has an
-<a href='AppenderDt.html'>AppenderDt</a> attached by default if the package <strong>data.table</strong> is installed.
-With the default logging settings this includes also <code>TRACE</code> and <code>DEBUG</code>
-messages, even if they were not printed to the console before.</p>
+Appender attached. <code>target</code> defaults to the root logger. If you have
+configured the root logger with
+<code><a href='basic_config.html'>basic_config(memory = TRUE)</a></code>, it will have an
+<a href='AppenderBuffer.html'>AppenderBuffer</a> that logs all log messages (including <code>TRACE</code> and <code>DEBUG</code>),
+even if they were not printed to the console before.</p>
 <p><code>show_data()</code> and <code>show_dt()</code> work similar to <code>show_log()</code>, except that
 they return the log as <code>data.frame</code> or <code>data.table</code> respectively.</p>
     
@@ -251,12 +253,12 @@ a <code>data.table</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>FATAL</span>(<span class='st'>"This is an important message about %s going wrong"</span>, <span class='st'>"something"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:20:53.153] This is an important message about something going wrong </div><div class='input'><span class='fu'>DEBUG</span>(<span class='st'>"Debug messages are hidden by default"</span>)</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>console_threshold</span>(<span class='st'>"debug"</span>)  <span class='co'># you must use lower case names here</span>
+    <pre class="examples"><div class='input'><span class='fu'>FATAL</span>(<span class='st'>"This is an important message about %s going wrong"</span>, <span class='st'>"something"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [10:49:14.823] This is an important message about something going wrong </div><div class='input'><span class='fu'>DEBUG</span>(<span class='st'>"Debug messages are hidden by default"</span>)</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>console_threshold</span>(<span class='st'>"debug"</span>)  <span class='co'># you must use lower case names here</span>
 <span class='fu'>DEBUG</span>(<span class='st'>"Unless we lower the threshold"</span>)</div><div class='output co'>#&gt; NULL</div><div class='input'>
 <span class='fu'>add_appender</span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(), <span class='st'>"second_console_appender"</span>)
-<span class='fu'>FATAL</span>(<span class='st'>"Multiple console appenders are a bad idea"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:20:53.160] Multiple console appenders are a bad idea 
-#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:20:53.160] Multiple console appenders are a bad idea </div><div class='input'><span class='fu'>remove_appender</span>(<span class='st'>"second_console_appender"</span>)
-<span class='fu'>INFO</span>(<span class='st'>"Good that we defined an appender name, so it's easy to remove"</span>)</div><div class='output co'>#&gt; INFO  [09:20:53.165] Good that we defined an appender name, so it's easy to remove </div></span></pre>
+<span class='fu'>FATAL</span>(<span class='st'>"Multiple console appenders are a bad idea"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [10:49:14.833] Multiple console appenders are a bad idea 
+#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [10:49:14.833] Multiple console appenders are a bad idea </div><div class='input'><span class='fu'>remove_appender</span>(<span class='st'>"second_console_appender"</span>)
+<span class='fu'>INFO</span>(<span class='st'>"Good that we defined an appender name, so it's easy to remove"</span>)</div><div class='output co'>#&gt; INFO  [10:49:14.839] Good that we defined an appender name, so it's easy to remove </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

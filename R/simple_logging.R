@@ -19,7 +19,7 @@ NULL
 #' Basic Setup for the Logging System
 #'
 #' Quick and easy way to configure the root logger for logging to a file.
-#' **experimental**, paramters will likely change in the next lgr version.
+#' **experimental**, parameters will likely change in the next lgr version.
 #'
 #' @param file `character` scalar: If not `NULL` a [AppenderFile] will be created
 #'   that logs to this file. If the filename ends in `.jsonl` an [AppenderJson]

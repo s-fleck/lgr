@@ -27,7 +27,7 @@ that have experience with [shiny](https://github.com/rstudio/shiny),
 logging](https://docs.python.org/3/library/logging.html) or [Apache
 Log4j](https://logging.apache.org/log4j/2.x/) will feel at home. User
 that are proficient with R6 classes will also find it easy to extend and
-customise lgr, for example with their own appenders Loggers or
+customize lgr, for example with their own appenders Loggers or
 Appenders.
 
 ## Features
@@ -64,13 +64,13 @@ vignette.
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [09:15:53.243] A critical error
+#> FATAL [10:46:01.105] A critical error
 lgr$error("A less severe error")
-#> ERROR [09:15:53.377] A less severe error
+#> ERROR [10:46:01.233] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [09:15:53.389] A potentially bad situation
+#> WARN  [10:46:01.244] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [09:15:53.392] iris has 150 rows
+#> INFO  [10:46:01.247] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
@@ -86,9 +86,9 @@ appender to log to a file with little effort.
 tf <- tempfile()
 lgr$add_appender(AppenderJson$new(tf))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [09:15:53.420] cars has 50 rows
+#> INFO  [10:46:01.266] cars has 50 rows
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2019-04-21 09:15:53","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-05-05 10:46:01","logger":"root","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 JSON naturally supports custom fields. Named arguments passed to
@@ -96,10 +96,10 @@ JSON naturally supports custom fields. Named arguments passed to
 
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [09:15:53.452] loading cars {rows: 50, cols: 2}
+#> INFO  [10:46:01.295] loading cars {rows: 50, cols: 2}
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2019-04-21 09:15:53","logger":"root","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2019-04-21 09:15:53","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
+#> {"level":400,"timestamp":"2019-05-05 10:46:01","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-05-05 10:46:01","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
 ```
 
 For more examples please see the package
@@ -143,7 +143,7 @@ encouraged.
 
 ## Dependencies
 
-[R6](https://github.com/r-lib/R6): The R6 class system prevents the
+[R6](https://github.com/r-lib/R6): The R6 class system provides the
 framework on which lgr is built and the **only Package lgr will ever
 depend on**.
 

@@ -24,8 +24,7 @@ a \code{.jsonl} file. If \code{NULL} it defaults to \code{"\%L [\%t] \%m"}
 The minimum \link[=log_levels]{log level} that should be processed by the root
 logger.}
 
-\item{appenders}{a single \link{Appender} or a list thereof. Must be \code{NULL} if
-if \code{file} is already specified.}
+\item{appenders}{a single \link{Appender} or a list thereof.}
 
 \item{console}{logical\code{scalar. or a}threshold` (see above). Add an appender logs to the console
 (i.e. displays log messages in an interactive R session)}
@@ -38,7 +37,7 @@ the \code{root} Logger (lgr)
 }
 \description{
 Quick and easy way to configure the root logger for logging to a file.
-\strong{experimental}, paramters will likely change in the next lgr version.
+\strong{experimental}, parameters will likely change in the next lgr version.
 }
 \examples{
 \dontrun{
