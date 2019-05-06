@@ -37,7 +37,7 @@ the \code{root} Logger (lgr)
 }
 \description{
 Quick and easy way to configure the root logger for logging to a file.
-\strong{experimental}, paramters will likely change in the next lgr version.
+\strong{experimental}, parameters will likely change in the next lgr version.
 }
 \examples{
 \dontrun{

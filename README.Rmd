@@ -38,7 +38,7 @@ User that have experience with
   [python logging](https://docs.python.org/3/library/logging.html) or 
   [Apache Log4j](https://logging.apache.org/log4j/2.x/) will feel
 at home. User that are proficient with R6 classes will also find it easy
-to extend and customise lgr, for example with their own appenders Loggers or 
+to extend and customize lgr, for example with their own appenders Loggers or 
 Appenders. 
 
 
@@ -152,7 +152,7 @@ lgr is currently very actively developed, and feature requests are encouraged.
 
 ## Dependencies
 
-[R6](https://github.com/r-lib/R6): The R6 class system prevents the framework
+[R6](https://github.com/r-lib/R6): The R6 class system provides the framework
 on which lgr is built and the **only Package lgr will ever depend on**.
 
 ### Optional Dependencies

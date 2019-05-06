@@ -32,7 +32,7 @@
 #'
 #' The `name` is potentially a `/` separated hierarchical value like
 #' `foo/bar/baz`. Loggers further down the hierarchy are children of the loggers
-#' above. (This mechanism does not work of the Logger is initalized with
+#' above. (This mechanism does not work of the Logger is initialized with
 #' `Logger$new()`)
 #'
 #' All calls to `get_logger()` with the same name return the same Logger
@@ -75,7 +75,7 @@
 #'
 #' \describe{
 #'   \item{`name`}{`character` scalar. A hierarchical value
-#'     (seperated by `"/"``) that indicates the loggers name and its ancestors.
+#'     (separated by `"/"``) that indicates the loggers name and its ancestors.
 #'     If a logger is created with [get_logger()] uniqueness of the name is
 #'     enforced.
 #'   }

@@ -83,3 +83,8 @@ config
 csv
 finalizers
 github
+appenders
+logfiles
+LoggerRoot
+magrittr
+unconfigured
