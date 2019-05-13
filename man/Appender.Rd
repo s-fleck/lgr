@@ -96,8 +96,6 @@ was specified)
 \seealso{
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderFileRotatingDateTime}},
-  \code{\link{AppenderFileRotatingDate}},
   \code{\link{AppenderFileRotating}},
   \code{\link{AppenderFile}}, \code{\link{AppenderGmail}},
   \code{\link{AppenderJson}},

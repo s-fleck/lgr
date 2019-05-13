@@ -3,7 +3,7 @@
 \name{AppenderFileRotating}
 \alias{AppenderFileRotating}
 \alias{AppenderFileRotatingDate}
-\alias{AppenderFileRotatingDateTime}
+\alias{AppenderFileRotatingTime}
 \title{Log to a rotating file}
 \description{
 An extension of \link{AppenderFile} that rotates logfiles based on certain
@@ -16,14 +16,32 @@ x <- AppenderFileRotating$new(file, threshold = NA_integer_, layout =
   LayoutFormat$new(), filters = NULL, timestamp_fmt = "\%Y-\%m-\%d", size = 1,
   max_backups = Inf, compression = FALSE, overwrite = FALSE, create_file =
   TRUE)
+}
 
-x$rotate(dry_run = getOption("rotor.dry_run", FALSE), verbose = getOption("rotor.dry_run", dry_run))
+\preformatted{
+x <- AppenderFileRotatingDate$new(file, threshold = NA_integer_, layout =
+  LayoutFormat$new(), filters = NULL, age = NULL, timestamp_fmt = "\%Y-\%m-\%d",
+  size = 1, max_backups = Inf, compression = FALSE, overwrite = FALSE,
+  create_file = TRUE)
+}
+
+\preformatted{
+x <- AppenderFileRotatingTime$new(file, threshold = NA_integer_, layout =
+  LayoutFormat$new(), filters = NULL, age = NULL, timestamp_fmt =
+  "\%Y-\%m-\%d--\%H-\%M-\%S", size = 1, max_backups = Inf, compression = FALSE,
+  overwrite = FALSE, create_file = TRUE)
+
+x$rotate(dry_run = FALSE, verbose = dry_run, now = Sys.Date())
 x$prune(max_backups = self$max_backups)
+x$set_age(x)
+x$set_timestamp_fmt(x)
+x$set_overwrite(x)
+x$clone(deep = FALSE)
+x$rotate(dry_run = FALSE, verbose = dry_run)
 x$set_size(x)
 x$set_max_backups(x)
 x$set_compression(x)
 x$set_create_file(x)
-x$clone(deep = FALSE)
 x$append(event)
 x$set_file(file)
 x$set_threshold(level)
@@ -127,8 +145,6 @@ was specified)
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderFileRotatingDateTime}},
-  \code{\link{AppenderFileRotatingDate}},
   \code{\link{AppenderFile}}, \code{\link{AppenderGmail}},
   \code{\link{AppenderJson}},
   \code{\link{AppenderPushbullet}},

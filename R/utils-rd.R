@@ -2,20 +2,36 @@ r6_usage <- function(
   x,
   name = "x",
   ignore = NULL,
-  header = ""
+  header = "",
+  methods = TRUE,
+  section = TRUE
 ){
   classname <- deparse(substitute(x))
-
   els <- collect_usage(x, name = classname, ignore = ignore)
 
-  c(
-    "@section Usage:",
+  res <- c()
+
+  if (section){
+    res <- c("@section Usage:", "")
+  }
+
+  res <- c(
+    res,
     "```", header,
-    strwrap(paste0(name, " <- ", els$ctor), width = 80, exdent = 2), "",
-    paste0(name, "$",  els$methods), "",
-    paste0(name, "$", els$fields), "",
-    "```"
+    strwrap(paste0(name, " <- ", els$ctor), width = 80, exdent = 2)
   )
+
+  if (methods){
+    res <- c(
+      res, "",
+      paste0(name, "$",  els$methods), "",
+      paste0(name, "$", els$fields), "",
+      "```"
+    )
+  }
+
+  res
+
 }
 
 

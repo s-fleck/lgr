@@ -2229,7 +2229,9 @@ AppenderGmail <- R6::R6Class(
 #' conditions. Please refert to the documentation of [rotor::rotate()] for
 #' the meanings of the extra arguments
 #'
-#' @eval r6_usage(AppenderFileRotating)
+#' @eval r6_usage(AppenderFileRotating, methods = FALSE)
+#' @eval r6_usage(AppenderFileRotatingDate, methods = FALSE)
+#' @eval r6_usage(AppenderFileRotatingTime)
 #'
 #' @inheritSection AppenderFile Creating a New Appender
 #' @inheritSection AppenderFile Fields
@@ -2247,65 +2249,7 @@ AppenderGmail <- R6::R6Class(
 #' @seealso [LayoutFormat], [LayoutJson]
 #' @family Appenders
 #' @name AppenderFileRotating
-#' @aliases AppenderFileRotatingDate AppenderFileRotatingDateTime
-NULL
-
-
-
-
-#' Log to a rotating file
-#'
-#' An extension of [AppenderFile] that rotates logfiles based on certain
-#' conditions. Please refert to the documentation of [rotor::rotate()] for
-#' the meanings of the extra arguments
-#'
-#' @eval r6_usage(AppenderFileRotatingDate)
-#'
-#' @inheritSection AppenderFile Creating a New Appender
-#' @inheritSection AppenderFile Fields
-#' @inheritSection AppenderFile Methods
-#'
-#' @section Fields:
-#'
-#' \describe{
-#'   \item{`age`, `timestamp_fmt`, `overwrite`, `compression`, `size`}{
-#'   see [rotor::rotate()]}
-#'  }
-#'
-#'
-#' @export
-#' @seealso [LayoutFormat], [LayoutJson]
-#' @family Appenders
-#' @name AppenderFileRotatingDate
-#' @aliases AppenderFileRotatingDate AppenderFileRotatingDateTime
-NULL
-
-
-
-#' Log to a rotating file
-#'
-#' An extension of [AppenderFile] that rotates logfiles based on certain
-#' conditions. Please refert to the documentation of [rotor::rotate()] for
-#' the meanings of the extra arguments
-#'
-#' @eval r6_usage(AppenderFileRotatingDateTime)
-#'
-#' @inheritSection AppenderFile Creating a New Appender
-#' @inheritSection AppenderFile Fields
-#' @inheritSection AppenderFile Methods
-#'
-#' @section Fields:
-#'
-#' \describe{
-#'   \item{`age`, `timestamp_fmt`, `overwrite`, `compression`, `size`}{
-#'   see [rotor::rotate()]}
-#'  }
-#'
-#'
-#' @export
-#' @seealso [LayoutFormat], [LayoutJson]
-#' @family Appenders
-#' @name AppenderFileRotatingDateTime
+#' @aliases AppenderFileRotatingDate AppenderFileRotatingTime
 NULL
 
 
@@ -2343,8 +2287,8 @@ AppenderFileRotating <- R6::R6Class(
     },
 
     rotate = function(
-      dry_run     = getOption("rotor.dry_run", FALSE),
-      verbose     = getOption("rotor.dry_run", dry_run)
+      dry_run     = FALSE,
+      verbose     = dry_run
     ){
       rotor::rotate(
         self$file,
@@ -2424,10 +2368,10 @@ AppenderFileRotating <- R6::R6Class(
 )
 
 
-# AppenderFileRotatingDateTime ------------------------------------------------
+# AppenderFileRotatingTime ------------------------------------------------
 
 #' @export
-AppenderFileRotatingDateTime <- R6::R6Class(
+AppenderFileRotatingTime <- R6::R6Class(
   "AppenderFileRotating",
   inherit = AppenderFileRotating,
   public = list(
@@ -2463,8 +2407,8 @@ AppenderFileRotatingDateTime <- R6::R6Class(
 
 
     rotate = function(
-      dry_run     = getOption("rotor.dry_run", FALSE),
-      verbose     = getOption("rotor.dry_run", dry_run),
+      dry_run     = FALSE,
+      verbose     = dry_run,
       now = Sys.Date()
     ){
       rotor::rotate_time(
@@ -2549,7 +2493,7 @@ AppenderFileRotatingDateTime <- R6::R6Class(
 #' @export
 AppenderFileRotatingDate <- R6::R6Class(
   "AppenderFileRotatingDate",
-  inherit = AppenderFileRotatingDateTime,
+  inherit = AppenderFileRotatingTime,
   public = list(
     initialize = function(
       file,
@@ -2583,8 +2527,8 @@ AppenderFileRotatingDate <- R6::R6Class(
 
 
     rotate = function(
-      dry_run     = getOption("rotor.dry_run", FALSE),
-      verbose     = getOption("rotor.dry_run", dry_run),
+      dry_run     = FALSE,
+      verbose     = dry_run,
       now         = Sys.Date()
     ){
       rotor::rotate_date(

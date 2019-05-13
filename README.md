@@ -64,13 +64,13 @@ vignette.
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [10:46:01.105] A critical error
+#> FATAL [10:51:19.060] A critical error
 lgr$error("A less severe error")
-#> ERROR [10:46:01.233] A less severe error
+#> ERROR [10:51:19.191] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [10:46:01.244] A potentially bad situation
+#> WARN  [10:51:19.201] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [10:46:01.247] iris has 150 rows
+#> INFO  [10:51:19.203] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
@@ -86,9 +86,9 @@ appender to log to a file with little effort.
 tf <- tempfile()
 lgr$add_appender(AppenderJson$new(tf))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [10:46:01.266] cars has 50 rows
+#> INFO  [10:51:19.226] cars has 50 rows
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2019-05-05 10:46:01","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-05-05 10:51:19","logger":"root","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 JSON naturally supports custom fields. Named arguments passed to
@@ -96,10 +96,10 @@ JSON naturally supports custom fields. Named arguments passed to
 
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [10:46:01.295] loading cars {rows: 50, cols: 2}
+#> INFO  [10:51:19.249] loading cars {rows: 50, cols: 2}
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2019-05-05 10:46:01","logger":"root","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2019-05-05 10:46:01","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
+#> {"level":400,"timestamp":"2019-05-05 10:51:19","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-05-05 10:51:19","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
 ```
 
 For more examples please see the package
