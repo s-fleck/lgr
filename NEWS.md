@@ -2,10 +2,8 @@
   * `AppenderFileRotating`, `AppenderFileRotatingDate` and 
     `AppenderFileRotatingTime` for rotating file appenders via the 
     [rotor](https://github.com/s-fleck/rotor).
-  * functions like `show_log()`, `show_data()`, etc.. now accept logger names
-    ass their `target`
-
-
+  * functions like `show_log()`, `show_data()`,... now accept logger names
+    as `target`.
 
 
 # lgr 0.2.2 (unreleased)
@@ -23,6 +21,8 @@
 * `with_log_level()` and `with_log_value()` now accept logger names as well as 
   Logger objects as the `logger` argument
 * `get_logger_glue()` now works as intended
+* `FATAL()`, `ERROR()`,... are now deprecated and will be removed from future
+  versions. Use lgr$fatal(), lgr$error(), ... instead.
 
 
 # lgr 0.2.1 (2019-03-25)

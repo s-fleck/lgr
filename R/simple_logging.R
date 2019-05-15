@@ -168,6 +168,10 @@ basic_config <- function(
 #'   as a `character` vector.
 #' @rdname simple_logging
 FATAL <- function(msg, ...){
+  .Deprecated(msg = paste(
+    "FATAL(), ERROR(),... are deprecated and will be removed.",
+    "Use lgr$fatal(), lgr$error(),... instead."
+  ))
   lgr$fatal(msg, ...)
 }
 
@@ -177,6 +181,10 @@ FATAL <- function(msg, ...){
 #' @export
 #' @rdname simple_logging
 ERROR <- function(msg, ...){
+  .Deprecated(msg = paste(
+    "FATAL(), ERROR(),... are deprecated and will be removed.",
+    "Use lgr$fatal(), lgr$error(),... instead."
+  ))
   lgr$error(msg, ...)
 }
 
@@ -186,6 +194,10 @@ ERROR <- function(msg, ...){
 #' @export
 #' @rdname simple_logging
 WARN <- function(msg, ...){
+  .Deprecated(msg = paste(
+    "FATAL(), ERROR(),... are deprecated and will be removed.",
+    "Use lgr$fatal(), lgr$error(),... instead."
+  ))
   lgr$warn(msg, ...)
 }
 
@@ -195,6 +207,10 @@ WARN <- function(msg, ...){
 #' @export
 #' @rdname simple_logging
 INFO <- function(msg, ...){
+  .Deprecated(msg = paste(
+    "FATAL(), ERROR(),... are deprecated and will be removed.",
+    "Use lgr$fatal(), lgr$error(),... instead."
+  ))
   lgr$info(msg, ...)
 }
 
@@ -204,6 +220,10 @@ INFO <- function(msg, ...){
 #' @export
 #' @rdname simple_logging
 DEBUG <- function(msg, ...){
+  .Deprecated(msg = paste(
+    "FATAL(), ERROR(),... are deprecated and will be removed.",
+    "Use lgr$fatal(), lgr$error(),... instead."
+  ))
   lgr$debug(msg, ...)
 }
 
@@ -213,6 +233,10 @@ DEBUG <- function(msg, ...){
 #' @export
 #' @rdname simple_logging
 TRACE <- function(msg, ...){
+  .Deprecated(msg = paste(
+    "FATAL(), ERROR(),... are deprecated and will be removed.",
+    "Use lgr$fatal(), lgr$error(),... instead."
+  ))
   lgr$trace(msg, ...)
 }
 
