@@ -2335,11 +2335,10 @@ AppenderFileRotating <- R6::R6Class(
     set_create_file = function(
       x
     ){
-      assert(is_scalar_logical(x))
+      assert(is_scalar_bool(x))
       private[[".create_file"]] <- x
       self
     }
-
   ),
 
   active = list(
@@ -2409,7 +2408,7 @@ AppenderFileRotatingTime <- R6::R6Class(
     rotate = function(
       dry_run     = FALSE,
       verbose     = dry_run,
-      now = Sys.Date()
+      now         = Sys.time()
     ){
       rotor::rotate_time(
         self$file,
@@ -2455,7 +2454,7 @@ AppenderFileRotatingTime <- R6::R6Class(
     set_overwrite = function(
       x
     ){
-      assert(is_scalar_logical(x))
+      assert(is_scalar_bool(x))
       private[[".overwrite"]] <- x
       self
     }
