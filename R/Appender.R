@@ -2243,10 +2243,12 @@ AppenderGmail <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{`age`, `size`, `max_backups`, `timestamp_fmt`, `overwrite`, `compression`, `backup_dir`}{
-#'   Passed on to [rotor::rotate()], [rotor::rotate_date()] or [rotor::rotate_time()]}.
+#'   Passed on to [rotor::rotate()], [rotor::rotate_date()] or [rotor::rotate_time()].
 #'   Please note that `timestamp_fmt` is passed on as the `format` argument to
-#'   `rotate_date()` and `rotate_time()`. The name could not be used as
-#'   `format` is reserved for method dispatch for R6 classes.#'
+#'   `rotate_date()` and `rotate_time()`}
+#'
+#'   \item{`backups`}{A `data.frame` containing information on path, file size,
+#'   etc... on the available backups of `file`.}
 #'  }
 #'
 #'
@@ -2270,11 +2272,11 @@ AppenderFileRotating <- R6::R6Class(
       threshold = NA_integer_,
       layout = LayoutFormat$new(),
       filters = NULL,
-      timestamp_fmt = "%Y-%m-%d",
+
       size = 1,
       max_backups = Inf,
       compression = FALSE,
-      overwrite = FALSE,
+      backup_dir = dirname(file),
       create_file = TRUE
     ){
       assert_namespace("rotor")
@@ -2286,6 +2288,7 @@ AppenderFileRotating <- R6::R6Class(
       self$set_size(size)
       self$set_max_backups(max_backups)
       self$set_compression(compression)
+      self$set_backup_dir(backup_dir)
       self$set_create_file(create_file)
 
       self
@@ -2343,6 +2346,15 @@ AppenderFileRotating <- R6::R6Class(
       assert(is_scalar_bool(x))
       private[[".create_file"]] <- x
       self
+    },
+
+    set_backup_dir = function(
+      x
+    ){
+      assert(is_scalar_character(x))
+      assert(dir.exists(x))
+      private[[".backup_dir"]] <- x
+      self
     }
   ),
 
@@ -2366,6 +2378,7 @@ AppenderFileRotating <- R6::R6Class(
     .size = NULL,
     .max_backups = NULL,
     .compression = NULL,
+    .backup_dir = NULL,
     .overwrite = NULL,
     .create_file = NULL
   )
@@ -2384,11 +2397,13 @@ AppenderFileRotatingTime <- R6::R6Class(
       threshold = NA_integer_,
       layout = LayoutFormat$new(),
       filters = NULL,
+
       age = NULL,
-      timestamp_fmt = "%Y-%m-%d--%H-%M-%S",
       size = 1,
       max_backups = Inf,
       compression = FALSE,
+      backup_dir = dirname(file),
+      timestamp_fmt = "%Y-%m-%d--%H-%M-%S",
       overwrite = FALSE,
       create_file = TRUE
     ){
@@ -2403,6 +2418,7 @@ AppenderFileRotatingTime <- R6::R6Class(
       self$set_size(size)
       self$set_max_backups(max_backups)
       self$set_compression(compression)
+      self$set_backup_dir(backup_dir)
       self$set_overwrite(overwrite)
       self$set_create_file(create_file)
 
@@ -2504,11 +2520,13 @@ AppenderFileRotatingDate <- R6::R6Class(
       threshold = NA_integer_,
       layout = LayoutFormat$new(),
       filters = NULL,
+
       age = NULL,
-      timestamp_fmt = "%Y-%m-%d",
       size = 1,
       max_backups = Inf,
       compression = FALSE,
+      backup_dir = dirname(file),
+      timestamp_fmt = "%Y-%m-%d",
       overwrite = FALSE,
       create_file = TRUE
     ){
@@ -2523,6 +2541,7 @@ AppenderFileRotatingDate <- R6::R6Class(
       self$set_size(size)
       self$set_max_backups(max_backups)
       self$set_compression(compression)
+      self$set_backup_dir(backup_dir)
       self$set_overwrite(overwrite)
       self$set_create_file(create_file)
 
