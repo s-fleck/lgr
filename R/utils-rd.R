@@ -141,8 +141,8 @@ fmt_r6_usage <- function(
   if (show_methods){
     res <- c(
       res,
-      paste0(name, "$",  x$methods), "",
-      paste0(name, "$", x$fields), "",
+      paste0(name, "$", sort(x$methods)), "",
+      paste0(name, "$", sort(x$fields)), "",
       "```"
     )
   }

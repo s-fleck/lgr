@@ -17,41 +17,41 @@ x <- AppenderGmail$new(to, threshold = NA_integer_, flush_threshold = "fatal",
   subject_layout = LayoutFormat$new(fmt = "[LGR] \%L: \%m"), buffer_size = 30,
   from = get_user(), cc = NULL, bcc = NULL, html = FALSE, filters = NULL)
 
-x$flush()
-x$set_to(x)
-x$set_from(x)
-x$set_cc(x)
-x$set_bcc(x)
-x$set_html(x)
-x$set_subject_layout(layout)
-x$append(event)
-x$set_buffer_size(x)
-x$set_should_flush(x)
-x$set_flush_threshold(level)
-x$show(threshold = NA_integer_, n = 20L)
-x$set_threshold(level)
-x$set_layout(layout)
-x$filter(event)
 x$add_filter(filter, name = NULL)
+x$append(event)
+x$filter(event)
+x$flush()
 x$remove_filter(pos)
+x$set_bcc(x)
+x$set_buffer_size(x)
+x$set_cc(x)
 x$set_filters(filters)
+x$set_flush_threshold(level)
+x$set_from(x)
+x$set_html(x)
+x$set_layout(layout)
+x$set_should_flush(x)
+x$set_subject_layout(layout)
+x$set_threshold(level)
+x$set_to(x)
+x$show(threshold = NA_integer_, n = 20L)
 
 x$bcc
-x$cc
-x$from
-x$html
-x$to
-x$subject_layout
 x$buffer_df
 x$buffer_dt
 x$buffer_events
 x$buffer_size
-x$flush_threshold
-x$should_flush
+x$cc
 x$destination
-x$layout
-x$threshold
 x$filters
+x$flush_threshold
+x$from
+x$html
+x$layout
+x$should_flush
+x$subject_layout
+x$threshold
+x$to
 
 }
 }

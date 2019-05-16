@@ -27,40 +27,40 @@ x <- AppenderFileRotatingTime$new(file, threshold = NA_integer_, layout =
   "\%Y-\%m-\%d--\%H-\%M-\%S", size = 1, max_backups = Inf, compression = FALSE,
   overwrite = FALSE, create_file = TRUE)
 
-x$rotate(dry_run = FALSE, verbose = dry_run)
+x$add_filter(filter, name = NULL)
+x$append(event)
+x$clone(deep = FALSE)
+x$filter(event)
 x$prune(max_backups = self$max_backups)
-x$set_size(x)
-x$set_max_backups(x)
+x$remove_filter(pos)
+x$rotate(dry_run = FALSE, verbose = dry_run, now = Sys.Date())
+x$rotate(dry_run = FALSE, verbose = dry_run, now = Sys.time())
+x$rotate(dry_run = FALSE, verbose = dry_run)
+x$set_age(x)
 x$set_compression(x)
 x$set_create_file(x)
-x$clone(deep = FALSE)
-x$append(event)
 x$set_file(file)
-x$set_threshold(level)
-x$set_layout(layout)
-x$filter(event)
-x$add_filter(filter, name = NULL)
-x$remove_filter(pos)
 x$set_filters(filters)
-x$rotate(dry_run = FALSE, verbose = dry_run, now = Sys.Date())
-x$set_timestamp_fmt(x)
-x$rotate(dry_run = FALSE, verbose = dry_run, now = Sys.time())
-x$set_age(x)
+x$set_layout(layout)
+x$set_max_backups(x)
 x$set_overwrite(x)
+x$set_size(x)
+x$set_threshold(level)
+x$set_timestamp_fmt(x)
 
 x$age
 x$backups
 x$compression
 x$create_file
+x$destination
+x$file
+x$filters
+x$layout
 x$max_backups
 x$overwrite
 x$size
-x$timestamp_fmt
-x$destination
-x$file
-x$layout
 x$threshold
-x$filters
+x$timestamp_fmt
 
 }
 }
@@ -70,10 +70,9 @@ x$filters
 
 \describe{
 \item{\code{age}, \code{size}, \code{max_backups}, \code{timestamp_fmt}, \code{overwrite}, \code{compression}, \code{backup_dir}}{
-Passed on to \code{\link[rotor:rotate]{rotor::rotate()}}, \code{\link[rotor:rotate_date]{rotor::rotate_date()}} or \code{\link[rotor:rotate_time]{rotor::rotate_time()}}}.
+Passed on to \code{\link[rotor:rotate]{rotor::rotate()}}, \code{\link[rotor:rotate_date]{rotor::rotate_date()}} or \code{\link[rotor:rotate_time]{rotor::rotate_time()}}.
 Please note that \code{timestamp_fmt} is passed on as the \code{format} argument to
-\code{rotate_date()} and \code{rotate_time()}. The name could not be used as
-\code{format} is reserved for method dispatch for R6 classes.#'
+\code{rotate_date()} and \code{rotate_time()}}
 }
 
 
