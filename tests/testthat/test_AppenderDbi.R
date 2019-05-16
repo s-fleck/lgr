@@ -48,12 +48,20 @@ dbs <- list(
   ),
 
   "PostgreSQL via RPostgres" = list(
-    conn = try(silent = TRUE, DBI::dbConnect(
-      RPostgres::Postgres(),
-      user = "postgres",
-      host = "localhost",
-      dbname = "travis_ci_test"
-    )),
+    conn = try(
+      silent = TRUE, {
+        assert(packageVersion("RPostgres") > "1.1.1",
+          "RPostgres <= 1.1.1 works but tests are disabled due to this bug:",
+          "https://github.com/r-dbi/RMariaDB/issues/119"
+        )
+        DBI::dbConnect(
+          RPostgres::Postgres(),
+          user = "postgres",
+          host = "localhost",
+          dbname = "travis_ci_test"
+        )
+      }
+    ),
     ctor = AppenderDbi
   ),
 
