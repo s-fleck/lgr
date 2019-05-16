@@ -2229,9 +2229,11 @@ AppenderGmail <- R6::R6Class(
 #' conditions. Please refert to the documentation of [rotor::rotate()] for
 #' the meanings of the extra arguments
 #'
-#' @eval r6_usage(AppenderFileRotating, methods = FALSE)
-#' @eval r6_usage(AppenderFileRotatingDate, methods = FALSE)
-#' @eval r6_usage(AppenderFileRotatingTime)
+#' @eval r6_usage(list(
+#'   AppenderFileRotating,
+#'   AppenderFileRotatingDate,
+#'   AppenderFileRotatingTime
+#' ))
 #'
 #' @inheritSection AppenderFile Creating a New Appender
 #' @inheritSection AppenderFile Fields
@@ -2240,8 +2242,11 @@ AppenderGmail <- R6::R6Class(
 #' @section Fields:
 #'
 #' \describe{
-#'   \item{`age`, `timestamp_fmt`, `overwrite`, `compression`, `size`}{
-#'   see [rotor::rotate()]}
+#'   \item{`age`, `size`, `max_backups`, `timestamp_fmt`, `overwrite`, `compression`, `backup_dir`}{
+#'   Passed on to [rotor::rotate()], [rotor::rotate_date()] or [rotor::rotate_time()]}.
+#'   Please note that `timestamp_fmt` is passed on as the `format` argument to
+#'   `rotate_date()` and `rotate_time()`. The name could not be used as
+#'   `format` is reserved for method dispatch for R6 classes.#'
 #'  }
 #'
 #'
