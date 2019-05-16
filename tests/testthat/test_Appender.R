@@ -1,8 +1,6 @@
 context("Appender")
 
 
-
-
 x <- LogEvent$new(
   logger = Logger$new("dummy"),
   level = 200L,
