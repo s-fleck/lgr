@@ -1,7 +1,7 @@
 Type: Package
 Package: lgr
 Title: A Fully Featured Logging Framework
-Version: 0.2.2.9000
+Version: 0.2.2.9001
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -18,6 +18,8 @@ Description: A flexible, feature-rich yet light-weight logging
 License: MIT + file LICENSE
 URL: https://github.com/s-fleck/lgr
 BugReports: https://github.com/s-fleck/lgr/issues
+Depends:
+    R (>= 2.10)
 Imports: 
     R6 (>= 2.4.0)
 Suggests: 
@@ -32,29 +34,27 @@ Suggests:
     gmailr,
     jsonlite,
     knitr,
-    rmarkdown,
-    sendmailR,
-    RSQLite,
     RMariaDB,
+    rmarkdown,
+    RMySQL,
+    rotor,
     RPostgres,
-    RMySQL, 
     RPostgreSQL,
     rprojroot,
+    RSQLite,
+    sendmailR,
     testthat,
     tibble,
     tools,
     utils,
     whoami,
-    yaml,
-    rotor
+    yaml
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
-Depends:
-    R (>= 2.10)
 Collate: 
     'Filterable.R'
     'utils-sfmisc.R'

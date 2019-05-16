@@ -51,6 +51,3 @@ test_that("preset filters work", {
   expect_length(lgr$filters, 0)
   lg$config(logger_config())
 })
-
-
-

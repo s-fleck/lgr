@@ -13,19 +13,18 @@ the meanings of the extra arguments
 \section{Usage}{
 \preformatted{
 x <- AppenderFileRotating$new(file, threshold = NA_integer_, layout =
-  LayoutFormat$new(), filters = NULL, timestamp_fmt = "\%Y-\%m-\%d", size = 1,
-  max_backups = Inf, compression = FALSE, overwrite = FALSE, create_file =
-  TRUE)
+  LayoutFormat$new(), filters = NULL, size = 1, max_backups = Inf, compression
+  = FALSE, backup_dir = dirname(file), create_file = TRUE)
 
 x <- AppenderFileRotatingDate$new(file, threshold = NA_integer_, layout =
-  LayoutFormat$new(), filters = NULL, age = NULL, timestamp_fmt = "\%Y-\%m-\%d",
-  size = 1, max_backups = Inf, compression = FALSE, overwrite = FALSE,
-  create_file = TRUE)
+  LayoutFormat$new(), filters = NULL, age = NULL, size = 1, max_backups = Inf,
+  compression = FALSE, backup_dir = dirname(file), timestamp_fmt = "\%Y-\%m-\%d",
+  overwrite = FALSE, create_file = TRUE)
 
 x <- AppenderFileRotatingTime$new(file, threshold = NA_integer_, layout =
-  LayoutFormat$new(), filters = NULL, age = NULL, timestamp_fmt =
-  "\%Y-\%m-\%d--\%H-\%M-\%S", size = 1, max_backups = Inf, compression = FALSE,
-  overwrite = FALSE, create_file = TRUE)
+  LayoutFormat$new(), filters = NULL, age = NULL, size = 1, max_backups = Inf,
+  compression = FALSE, backup_dir = dirname(file), timestamp_fmt =
+  "\%Y-\%m-\%d--\%H-\%M-\%S", overwrite = FALSE, create_file = TRUE)
 
 x$add_filter(filter, name = NULL)
 x$append(event)
@@ -37,6 +36,7 @@ x$rotate(dry_run = FALSE, verbose = dry_run, now = Sys.Date())
 x$rotate(dry_run = FALSE, verbose = dry_run, now = Sys.time())
 x$rotate(dry_run = FALSE, verbose = dry_run)
 x$set_age(x)
+x$set_backup_dir(x)
 x$set_compression(x)
 x$set_create_file(x)
 x$set_file(file)
@@ -49,6 +49,7 @@ x$set_threshold(level)
 x$set_timestamp_fmt(x)
 
 x$age
+x$backup_dir
 x$backups
 x$compression
 x$create_file
@@ -73,6 +74,9 @@ x$timestamp_fmt
 Passed on to \code{\link[rotor:rotate]{rotor::rotate()}}, \code{\link[rotor:rotate_date]{rotor::rotate_date()}} or \code{\link[rotor:rotate_time]{rotor::rotate_time()}}.
 Please note that \code{timestamp_fmt} is passed on as the \code{format} argument to
 \code{rotate_date()} and \code{rotate_time()}}
+
+\item{\code{backups}}{A \code{data.frame} containing information on path, file size,
+etc... on the available backups of \code{file}.}
 }
 
 

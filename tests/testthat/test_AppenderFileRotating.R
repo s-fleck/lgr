@@ -1,12 +1,10 @@
 context("AppenderFileRotating")
 
-dr <- tempdir()
-td <- file.path(dr, "lgr")
+td <- file.path(tempdir(), "lgr")
 dir.create(td, recursive = TRUE)
 
 teardown({
   unlink(td, recursive = TRUE)
-  if (!length(list.files(dr))) unlink(dr, recursive = TRUE)
 })
 
 
@@ -21,6 +19,7 @@ test_that("AppenderFileRotating works as expected", {
     set_appenders(AppenderFileRotating$new(file = tf)$set_size(-1))
 
   lg$fatal("test")
+  expect_true(file.exists(lg$appenders[[1]]$file))
 
   # first rotate roates a file with content
   lg$appenders[[1]]$rotate()

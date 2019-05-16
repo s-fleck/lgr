@@ -16,8 +16,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -67,7 +66,7 @@ with_logging() temporarily disable/enable logging." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9001</span>
       </span>
     </div>
 
@@ -75,7 +74,7 @@ with_logging() temporarily disable/enable logging." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -93,7 +92,7 @@ with_logging() temporarily disable/enable logging." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/s-fleck/lgr">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -150,7 +149,7 @@ lgr until <code>unsuspend_logging()</code> is invoked, while <code>without_loggi
     <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)
 
 <span class='co'># temporarily disable logging</span>
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"foo"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [10:49:14.973] foo </div><div class='input'><span class='fu'>without_logging</span>({
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"foo"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [14:54:15.700] foo </div><div class='input'><span class='fu'>without_logging</span>({
   <span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"everything in this codeblock will be suppressed"</span>)
   <span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"bar"</span>)
 })
@@ -158,10 +157,10 @@ lgr until <code>unsuspend_logging()</code> is invoked, while <code>without_loggi
 <span class='co'># globally disable logging</span>
 <span class='fu'>suspend_logging</span>()
 <span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"bar"</span>)
-<span class='fu'>with_logging</span>(<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"foo"</span>))  <span class='co'># log anyways</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [10:49:14.986] foo </div><div class='input'>
+<span class='fu'>with_logging</span>(<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"foo"</span>))  <span class='co'># log anyways</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [14:54:15.709] foo </div><div class='input'>
 <span class='co'># globally enable logging again</span>
 <span class='fu'>unsuspend_logging</span>()
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"foo"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [10:49:14.993] foo </div></span></pre>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"foo"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [14:54:15.714] foo </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

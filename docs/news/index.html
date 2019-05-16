@@ -16,8 +16,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -61,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9001</span>
       </span>
     </div>
 
@@ -69,7 +68,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -87,7 +86,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/s-fleck/lgr">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -107,9 +106,21 @@
       <small>Source: <a href='https://github.com/s-fleck/lgr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="lgr-0-2-1-9000" class="section level1">
+    <div id="lgr-0-2-2-9000" class="section level1">
 <h1 class="page-header">
-<a href="#lgr-0-2-1-9000" class="anchor"></a>lgr 0.2.1.9000<small> Unreleased </small>
+<a href="#lgr-0-2-2-9000" class="anchor"></a>lgr 0.2.2.9000<small> Unreleased </small>
+</h1>
+<ul>
+<li>
+<code>AppenderFileRotating</code>, <code>AppenderFileRotatingDate</code> and <code>AppenderFileRotatingTime</code> for rotating file appenders via the <a href="https://github.com/s-fleck/rotor">rotor</a>.</li>
+<li>functions like <code><a href="../reference/simple_logging.html">show_log()</a></code>, <code><a href="../reference/simple_logging.html">show_data()</a></code>,… now accept logger names as <code>target</code>.</li>
+<li>
+<code>AppenderFile$new()</code> now creates an empty file, or fails if it can’t</li>
+</ul>
+</div>
+    <div id="lgr-0-2-2-unreleased" class="section level1">
+<h1 class="page-header">
+<a href="#lgr-0-2-2-unreleased" class="anchor"></a>lgr 0.2.2 (unreleased)<small> Unreleased </small>
 </h1>
 <ul>
 <li>The root logger can now be configured via <code><a href="https://www.rdocumentation.org/packages/base/topics/options">options()</a></code> and/or environment variables (see <code><a href="../reference/lgr-package.html">?lgr</a></code>)</li>
@@ -124,6 +135,8 @@
 <code><a href="../reference/with_log_level.html">with_log_level()</a></code> and <code><a href="../reference/with_log_level.html">with_log_value()</a></code> now accept logger names as well as Logger objects as the <code>logger</code> argument</li>
 <li>
 <code><a href="../reference/get_logger.html">get_logger_glue()</a></code> now works as intended</li>
+<li>
+<code><a href="../reference/simple_logging.html">FATAL()</a></code>, <code><a href="../reference/simple_logging.html">ERROR()</a></code>,… are now deprecated and will be removed from future versions. Use <code>lgr$fatal()</code>, <code>lgr$error()</code>, … instead.</li>
 </ul>
 </div>
     <div id="lgr-0-2-1-2019-03-25" class="section level1">
@@ -166,7 +179,8 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#lgr-0-2-1-9000">0.2.1.9000</a></li>
+        <li><a href="#lgr-0-2-2-9000">0.2.2.9000</a></li>
+        <li><a href="#lgr-0-2-2-unreleased">0.2.2</a></li>
         <li><a href="#lgr-0-2-1-2019-03-25">0.2.1</a></li>
         <li><a href="#lgr-0-2-0-2019-03-22">0.2.0</a></li>
         <li><a href="#lgr-0-1-1-2019-01-30">0.1.1</a></li>

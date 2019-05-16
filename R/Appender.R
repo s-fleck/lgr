@@ -273,7 +273,9 @@ AppenderFile <- R6::R6Class(
 
     set_file = function(file){
       assert(is_scalar_character(file))
+      assert(dir.exists(dirname(file)))
       private$.file <- file
+      if (!file.exists(file))  file.create(file)
       invisible(self)
     }
   ),
@@ -2288,8 +2290,13 @@ AppenderFileRotating <- R6::R6Class(
       self$set_size(size)
       self$set_max_backups(max_backups)
       self$set_compression(compression)
-      self$set_backup_dir(backup_dir)
       self$set_create_file(create_file)
+
+      if (is.null(backup_dir)){
+        self$set_backup_dir(dirname(file))
+      } else {
+        self$set_backup_dir(backup_dir)
+      }
 
       self
     },
@@ -2303,6 +2310,7 @@ AppenderFileRotating <- R6::R6Class(
         size        = self$size,
         max_backups = self$max_backups,
         compression = self$compression,
+        backup_dir  = self$backup_dir,
         create_file = self$create_file,
         dry_run     = dry_run,
         verbose     = verbose
@@ -2351,8 +2359,10 @@ AppenderFileRotating <- R6::R6Class(
     set_backup_dir = function(
       x
     ){
-      assert(is_scalar_character(x))
-      assert(dir.exists(x))
+      assert(
+        is_scalar_character(x) && dir.exists(x),
+        "backup dir '", x, "' does not exist."
+      )
       private[[".backup_dir"]] <- x
       self
     }
@@ -2369,7 +2379,9 @@ AppenderFileRotating <- R6::R6Class(
 
     backups = function(){
       rotor::BackupQueueIndex$new(self$file)$backups
-    }
+    },
+
+    backup_dir = function() get(".backup_dir", private)
   ),
 
   private = list(
@@ -2418,9 +2430,14 @@ AppenderFileRotatingTime <- R6::R6Class(
       self$set_size(size)
       self$set_max_backups(max_backups)
       self$set_compression(compression)
-      self$set_backup_dir(backup_dir)
       self$set_overwrite(overwrite)
       self$set_create_file(create_file)
+
+      if (is.null(backup_dir)){
+        self$set_backup_dir(dirname(file))
+      } else {
+        self$set_backup_dir(backup_dir)
+      }
 
       self
     },
@@ -2433,14 +2450,15 @@ AppenderFileRotatingTime <- R6::R6Class(
     ){
       rotor::rotate_time(
         self$file,
-        age = self$age,
+        age         = self$age,
         format      = self$timestamp_fmt,
-        size    = self$size,
+        size        = self$size,
         max_backups = self$max_backups,
         compression = self$compression,
+        backup_dir  = self$backup_dir,
         overwrite   = self$overwrite,
         create_file = self$create_file,
-        now = now,
+        now         = now,
         dry_run     = dry_run,
         verbose     = verbose
       )
@@ -2541,9 +2559,14 @@ AppenderFileRotatingDate <- R6::R6Class(
       self$set_size(size)
       self$set_max_backups(max_backups)
       self$set_compression(compression)
-      self$set_backup_dir(backup_dir)
       self$set_overwrite(overwrite)
       self$set_create_file(create_file)
+
+      if (is.null(backup_dir)){
+        self$set_backup_dir(dirname(file))
+      } else {
+        self$set_backup_dir(backup_dir)
+      }
 
       self
     },
@@ -2558,12 +2581,13 @@ AppenderFileRotatingDate <- R6::R6Class(
         self$file,
         age = self$age,
         format      = self$timestamp_fmt,
-        size    = self$size,
+        size        = self$size,
         max_backups = self$max_backups,
         compression = self$compression,
+        backup_dir  = self$backup_dir,
         overwrite   = self$overwrite,
         create_file = self$create_file,
-        now = now,
+        now         = now,
         dry_run     = dry_run,
         verbose     = verbose
       )

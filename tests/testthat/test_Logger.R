@@ -184,10 +184,6 @@ test_that("Exceptions are cought and turned into warnings", {
 
   expect_warning(ml$fatal(stop("blubb")), "Error.*blubb")
   expect_warning(ml$fatal(), "Error")
-  ml$add_appender(AppenderFile$new(
-    file = file.path(tempfile(), "non", "existing", "directory" )
-  ))
-  expect_output(expect_warning(ml$fatal("blubb"), "Error"))
 })
 
 
