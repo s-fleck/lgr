@@ -4,6 +4,7 @@
     [rotor](https://github.com/s-fleck/rotor).
   * functions like `show_log()`, `show_data()`,... now accept logger names
     as `target`.
+  * `AppenderFile$new()` now creates an empty file, or fails if it can't
 
 
 # lgr 0.2.2 (unreleased)
@@ -22,7 +23,7 @@
   Logger objects as the `logger` argument
 * `get_logger_glue()` now works as intended
 * `FATAL()`, `ERROR()`,... are now deprecated and will be removed from future
-  versions. Use lgr$fatal(), lgr$error(), ... instead.
+  versions. Use `lgr$fatal()`, `lgr$error()`, ... instead.
 
 
 # lgr 0.2.1 (2019-03-25)

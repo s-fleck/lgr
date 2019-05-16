@@ -3,43 +3,65 @@ r6_usage <- function(
   name = "x",
   ignore = NULL,
   header = "",
-  methods = TRUE,
-  section = TRUE
+  show_methods = TRUE
 ){
-  classname <- deparse(substitute(x))
-  els <- collect_usage(x, name = classname, ignore = ignore)
+  if (is.list(x)){
+    classname <- deparse(substitute(x))
+    classname <- gsub("(list\\()|\\)$", "", classname)
+    classname <- unlist(strsplit(classname, ", ", fixed = TRUE))
 
-  res <- c()
-
-  if (section){
-    res <- c("@section Usage:", "")
-  }
-
-  res <- c(
-    res,
-    "```", header,
-    strwrap(paste0(name, " <- ", els$ctor), width = 80, exdent = 2)
-  )
-
-  if (methods){
-    res <- c(
-      res, "",
-      paste0(name, "$",  els$methods), "",
-      paste0(name, "$", els$fields), "",
-      "```"
+    res <- lapply(
+      seq_along(x),
+      function(i){
+        collect_usage.R6(
+          x = x[[i]],
+          classname = classname[[i]],
+          ignore = ignore
+        )
+      }
     )
+
+    res <- list(
+      ctor    = unlist(lapply(res, `[[`, "ctor")),
+      fields  = unique(unlist(lapply(res, `[[`, "fields"))),
+      methods = unique(unlist(lapply(res, `[[`, "methods")))
+    )
+
+  } else if (R6::is.R6Class(x)){
+    res <- collect_usage.R6(
+      x,
+      classname = deparse(substitute(x)),
+      ignore = ignore
+    )
+  } else {
+    stop("Object ", preview_object(x), "not supported")
   }
 
-  res
 
+  fmt_r6_usage(
+    res,
+    name = name,
+    header = header,
+    show_methods = show_methods
+  )
 }
 
 
 
-collect_usage <- function(
+
+#' Format R6 usage
+#'
+#' @param x an `R6ClassGenerator`
+#' @param classname `character` scalar. The name of the R6 class
+#' @param ignore `character` vector. methods/fields to ignore when generating
+#'   usage
+#'
+#' @return a `list` with the components `ctor`, `fields` and `methods`
+#' @noRd
+collect_usage.R6 <- function(
   x,
-  name = deparse(substitute(x)),
-  ignore = NULL
+  classname = deparse(substitute(x)),
+  ignore = TRUE
 ){
   public_methods <- vapply(
     setdiff(names(x$public_methods), ignore),
@@ -47,10 +69,9 @@ collect_usage <- function(
     character(1)
   )
 
-
   if ("initialize" %in% names(public_methods)){
     ctor <- public_methods[["initialize"]]
-    ctor <- gsub("^initialize", paste0(name, "$new"), ctor)
+    ctor <- gsub("^initialize", paste0(classname, "$new"), ctor)
   } else {
     ctor <- NULL
   }
@@ -71,10 +92,10 @@ collect_usage <- function(
 
   els <- els[!vapply(els, is_empty, FALSE)]
 
-  if ("get_inherit" %in% names(x)){
-    els <- c(els, collect_usage(x$get_inherit(), ignore = ignore))
+   if ("get_inherit" %in% names(x)){
+    els <- c(els, collect_usage.R6(x$get_inherit(), ignore = ignore))
     list(
-      ctors   = els$ctor,  # the first one
+      ctor    = els$ctor,
       fields  = unique(unlist(els[names(els) == "fields"])),
       methods = unique(unlist(els[names(els) == "methods"]))
     )
@@ -82,6 +103,56 @@ collect_usage <- function(
     els
   }
 }
+
+
+
+#' Format R6 usage
+#'
+#' @param x output of collect_usage.R6
+#' @param header an optional `character` vector for a heading
+#' @param show_methods `logical` scalar: Show methods
+#'
+#' @return a `character` vector
+#' @noRd
+fmt_r6_usage <- function(
+  x,
+  name = x,
+  header = "",
+  show_methods = TRUE
+){
+  assert(is_scalar_bool(show_methods))
+
+  res <- c()
+  res <- c("@section Usage:", "")
+
+
+  ctors <- unlist(lapply(
+    x$ctor,
+    function(.x) c(strwrap(paste0(name, " <- ", .x), width = 80, exdent = 2), "")
+  ))
+
+  res <- c(
+    res,
+    "```",
+    header,
+    ctors
+  )
+
+  if (show_methods){
+    res <- c(
+      res,
+      paste0(name, "$", sort(x$methods)), "",
+      paste0(name, "$", sort(x$fields)), "",
+      "```"
+    )
+  }
+
+  res
+}
+
+
+
+
 
 
 make_function_usage <- function(name, arglist){

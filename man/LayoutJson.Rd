@@ -10,9 +10,9 @@ Format a LogEvent as JSON
 \preformatted{
 x <- LayoutJson$new(toJSON_args = list(auto_unbox = TRUE))
 
+x$clone(deep = FALSE)
 x$format_event(event)
 x$set_toJSON_args(x)
-x$clone(deep = FALSE)
 
 x$toJSON_args
 

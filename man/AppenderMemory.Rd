@@ -14,33 +14,33 @@ buffer, such as \link{AppenderBuffer} and \link{AppenderPushbullet}.
 \preformatted{
 x <- x$get_inherit()$new(layout = Layout$new(), threshold = NA_integer_)
 
+x$add_filter(filter, name = NULL)
 x$append(event)
+x$filter(event)
 x$flush()
+x$remove_filter(pos)
 x$set_buffer_size(x)
-x$set_should_flush(x)
+x$set_filters(filters)
 x$set_flush_on_exit(x)
 x$set_flush_on_rotate(x)
 x$set_flush_threshold(level)
-x$show(threshold = NA_integer_, n = 20L)
-x$set_threshold(level)
 x$set_layout(layout)
-x$filter(event)
-x$add_filter(filter, name = NULL)
-x$remove_filter(pos)
-x$set_filters(filters)
+x$set_should_flush(x)
+x$set_threshold(level)
+x$show(threshold = NA_integer_, n = 20L)
 
 x$buffer_df
 x$buffer_dt
 x$buffer_events
 x$buffer_size
+x$destination
+x$filters
 x$flush_on_exit
 x$flush_on_rotate
 x$flush_threshold
-x$should_flush
-x$destination
 x$layout
+x$should_flush
 x$threshold
-x$filters
 
 }
 }

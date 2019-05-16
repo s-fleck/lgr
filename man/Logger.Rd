@@ -24,37 +24,37 @@ lg <- Logger$new(name = "(unnamed logger)", appenders = list(), threshold =
   NULL, filters = list(), exception_handler = default_exception_handler,
   propagate = TRUE)
 
-lg$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
-lg$fatal(msg, ..., caller = get_caller(-8L))
-lg$error(msg, ..., caller = get_caller(-8L))
-lg$warn(msg, ..., caller = get_caller(-8L))
-lg$info(msg, ..., caller = get_caller(-8L))
-lg$debug(msg, ..., caller = get_caller(-8L))
-lg$trace(msg, ..., caller = get_caller(-8L))
-lg$config(cfg, file, text, list)
 lg$add_appender(appender, name = NULL)
-lg$remove_appender(pos)
+lg$add_filter(filter, name = NULL)
+lg$config(cfg, file, text, list)
+lg$debug(msg, ..., caller = get_caller(-8L))
+lg$error(msg, ..., caller = get_caller(-8L))
+lg$fatal(msg, ..., caller = get_caller(-8L))
+lg$filter(event)
 lg$handle_exception(...)
+lg$info(msg, ..., caller = get_caller(-8L))
+lg$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
+lg$remove_appender(pos)
+lg$remove_filter(pos)
+lg$set_appenders(x)
 lg$set_exception_handler(fun)
+lg$set_filters(filters)
 lg$set_propagate(x)
 lg$set_threshold(level)
-lg$set_appenders(x)
 lg$spawn(name, ...)
-lg$filter(event)
-lg$add_filter(filter, name = NULL)
-lg$remove_filter(pos)
-lg$set_filters(filters)
+lg$trace(msg, ..., caller = get_caller(-8L))
+lg$warn(msg, ..., caller = get_caller(-8L))
 
 lg$ancestry
 lg$appenders
 lg$exception_handler
+lg$filters
 lg$inherited_appenders
 lg$last_event
 lg$name
 lg$parent
 lg$propagate
 lg$threshold
-lg$filters
 
 }
 }

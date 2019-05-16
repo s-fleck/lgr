@@ -19,37 +19,37 @@ x <- AppenderPushbullet$new(threshold = NA_integer_, flush_threshold = "fatal",
   recipients = NULL, email = NULL, channel = NULL, devices = NULL, apikey =
   NULL, filters = NULL)
 
+x$add_filter(filter, name = NULL)
+x$append(event)
+x$filter(event)
 x$flush()
+x$remove_filter(pos)
 x$set_apikey(x)
-x$set_recipients(x)
-x$set_email(x)
+x$set_buffer_size(x)
 x$set_channel(x)
 x$set_devices(x)
-x$set_subject_layout(layout)
-x$append(event)
-x$set_buffer_size(x)
-x$set_should_flush(x)
-x$set_flush_threshold(level)
-x$show(threshold = NA_integer_, n = 20L)
-x$set_threshold(level)
-x$set_layout(layout)
-x$filter(event)
-x$add_filter(filter, name = NULL)
-x$remove_filter(pos)
+x$set_email(x)
 x$set_filters(filters)
+x$set_flush_threshold(level)
+x$set_layout(layout)
+x$set_recipients(x)
+x$set_should_flush(x)
+x$set_subject_layout(layout)
+x$set_threshold(level)
+x$show(threshold = NA_integer_, n = 20L)
 
 x$apikey
-x$subject_layout
 x$buffer_df
 x$buffer_dt
 x$buffer_events
 x$buffer_size
-x$flush_threshold
-x$should_flush
 x$destination
-x$layout
-x$threshold
 x$filters
+x$flush_threshold
+x$layout
+x$should_flush
+x$subject_layout
+x$threshold
 
 }
 }

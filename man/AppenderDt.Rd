@@ -31,21 +31,21 @@ x <- AppenderDt$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt =
   NA_character_, caller = NA_character_, msg = NA_character_, .custom =
   list(list())), buffer_size = 1e+05, filters = NULL)
 
-x$append(event)
-x$show(threshold = NA_integer_, n = 20L)
-x$set_layout(layout)
-x$set_threshold(level)
-x$filter(event)
 x$add_filter(filter, name = NULL)
+x$append(event)
+x$filter(event)
 x$remove_filter(pos)
 x$set_filters(filters)
+x$set_layout(layout)
+x$set_threshold(level)
+x$show(threshold = NA_integer_, n = 20L)
 
 x$data
 x$destination
 x$dt
+x$filters
 x$layout
 x$threshold
-x$filters
 
 }
 }

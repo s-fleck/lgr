@@ -67,6 +67,19 @@ test_that("AppenderFile works as expected", {
 
 
 
+test_that("AppenderFile creates empty log file on init", {
+  tf <- tempfile()
+  on.exit(file.remove(tf))
+
+  expect_error(AppenderFile$new(
+    file = file.path(tempdir(), "non", "existing", "directory" )
+  ))
+
+  AppenderFile$new(file = file.path(tf))
+  expect_true(file.exists(tf))
+})
+
+
 # AppenderJson ------------------------------------------------------------
 
 test_that("AppenderJson show method works as expected", {
@@ -388,8 +401,10 @@ test_that("AppenderBuffer: flush on object destruction can be switched of", {
   l$appenders$buffer$set_flush_on_exit(FALSE)
   rm(l)
   gc()
-  expect_false(file.exists(buffer_log))
-  suppressWarnings(file.remove(buffer_log))
+  expect_true(file.exists(buffer_log))
+  expect_equal(file.size(buffer_log), 0)
+
+  expect_true(file.remove(buffer_log))
 })
 
 

@@ -16,8 +16,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -66,7 +65,7 @@ comfortably access the underlying file." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9001</span>
       </span>
     </div>
 
@@ -74,7 +73,7 @@ comfortably access the underlying file." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -92,7 +91,7 @@ comfortably access the underlying file." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/s-fleck/lgr">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -127,19 +126,19 @@ comfortably access the underlying file.</p>
     <pre>
 x &lt;- AppenderFile$new(file, threshold = NA_integer_, layout =
   LayoutFormat$new(), filters = NULL)
-    x$append(event)
-x$set_file(file)
-x$set_threshold(level)
-x$set_layout(layout)
+    x$add_filter(filter, name = NULL)
+x$append(event)
 x$filter(event)
-x$add_filter(filter, name = NULL)
 x$remove_filter(pos)
+x$set_file(file)
 x$set_filters(filters)
+x$set_layout(layout)
+x$set_threshold(level)
     x$destination
 x$file
+x$filters
 x$layout
 x$threshold
-x$filters
     </pre>
     
     <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
@@ -224,6 +223,7 @@ was specified)</p></dd>
     <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a>, <a href='LayoutJson.html'>LayoutJson</a></p>
 <p>Other Appenders: <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
   <code><a href='AppenderConsole.html'>AppenderConsole</a></code>, <code><a href='AppenderDbi.html'>AppenderDbi</a></code>,
+  <code><a href='AppenderFileRotating.html'>AppenderFileRotating</a></code>,
   <code><a href='AppenderFile.html'>AppenderFile</a></code>, <code><a href='AppenderGmail.html'>AppenderGmail</a></code>,
   <code><a href='AppenderPushbullet.html'>AppenderPushbullet</a></code>,
   <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>,
@@ -238,10 +238,10 @@ was specified)</p></dd>
 <span class='no'>l</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)
 <span class='no'>l</span>$<span class='fu'>info</span>(<span class='st'>"A test message %s strings"</span>, <span class='st'>"with format strings"</span>, <span class='kw'>and</span> <span class='kw'>=</span> <span class='st'>"custom_fields"</span>)
 
-<span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2019-05-05 10:49:05","logger":"testlogger","caller":"eval","msg":"A test message"}
-#&gt; {"level":400,"timestamp":"2019-05-05 10:49:05","logger":"testlogger","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp     logger caller
-#&gt; 1   400 2019-05-05 10:49:05 testlogger   eval
-#&gt; 2   400 2019-05-05 10:49:05 testlogger   eval
+<span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2019-05-16 14:54:01","logger":"testlogger","caller":"eval","msg":"A test message"}
+#&gt; {"level":400,"timestamp":"2019-05-16 14:54:01","logger":"testlogger","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>l</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp     logger caller
+#&gt; 1   400 2019-05-16 14:54:01 testlogger   eval
+#&gt; 2   400 2019-05-16 14:54:01 testlogger   eval
 #&gt;                                          msg           and
 #&gt; 1                             A test message          &lt;NA&gt;
 #&gt; 2 A test message with format strings strings custom_fields</div><div class='input'>

@@ -14,18 +14,18 @@ x <- AppenderConsole$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt
   = "\%L [\%t] \%m \%f", timestamp_fmt = "\%H:\%M:\%OS3", colors =
   getOption("lgr.colors", list())), filters = NULL)
 
-x$append(event)
-x$set_threshold(level)
-x$set_layout(layout)
-x$filter(event)
 x$add_filter(filter, name = NULL)
+x$append(event)
+x$filter(event)
 x$remove_filter(pos)
 x$set_filters(filters)
+x$set_layout(layout)
+x$set_threshold(level)
 
 x$destination
+x$filters
 x$layout
 x$threshold
-x$filters
 
 }
 }

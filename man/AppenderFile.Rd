@@ -14,20 +14,20 @@ to log to text files, consider logging to JSON files and take a look at
 x <- AppenderFile$new(file, threshold = NA_integer_, layout =
   LayoutFormat$new(), filters = NULL)
 
-x$append(event)
-x$set_file(file)
-x$set_threshold(level)
-x$set_layout(layout)
-x$filter(event)
 x$add_filter(filter, name = NULL)
+x$append(event)
+x$filter(event)
 x$remove_filter(pos)
+x$set_file(file)
 x$set_filters(filters)
+x$set_layout(layout)
+x$set_threshold(level)
 
 x$destination
 x$file
+x$filters
 x$layout
 x$threshold
-x$filters
 
 }
 }

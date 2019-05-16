@@ -29,17 +29,17 @@ x <- LayoutDbi$new(col_types = NULL, fmt = "\%L [\%t] \%m \%f", timestamp_fmt =
   "\%Y-\%m-\%d \%H:\%M:\%S", colors = getOption("lgr.colors", list()), pad_levels =
   "right")
 
-x$format_table_name(x)
+x$clone(deep = FALSE)
 x$format_colnames(x)
 x$format_data(x)
-x$set_col_types(x)
-x$sql_create_table(table)
-x$clone(deep = FALSE)
 x$format_event(event)
-x$set_fmt(x)
-x$set_timestamp_fmt(x)
+x$format_table_name(x)
+x$set_col_types(x)
 x$set_colors(x)
+x$set_fmt(x)
 x$set_pad_levels(x)
+x$set_timestamp_fmt(x)
+x$sql_create_table(table)
 
 x$col_names
 x$col_types
