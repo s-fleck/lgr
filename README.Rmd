@@ -13,6 +13,7 @@ knitr::opts_chunk$set(
 )
 
 library(lgr)
+basic_config()  # ensure default config
 # <img src="man/figures/lgr-logo-plain.svg" align="right" width=160 height=160/>
 ```
 # lgr
@@ -89,13 +90,15 @@ log to a file with little effort.
 
 ```{r}
 tf <- tempfile()
-lgr$add_appender(AppenderJson$new(tf))
+lgr$add_appender(AppenderFile$new(tf, layout = LayoutJson$new()))
 lgr$info("cars has %s rows", nrow(cars))
 cat(readLines(tf))
 ```
 
-JSON naturally supports custom fields. Named arguments passed to `info()`, 
-`warn()`, etc... are interpreted as custom fields.
+By passing a named argument to `info()`, `warn()`, and co you can log not only 
+text but arbitrary R objects. Not all appenders handle such _custom fields_
+perfectly, but JSON does. This way you can create 
+logfiles that are machine as well as (somewhat) human readable.
 
 ```{r}
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
@@ -119,23 +122,23 @@ lgr is used to govern console output in my shiny based csv editor
 
 ```{r eval = FALSE}
 # install.packages("remotes")
-
 remotes::install_github("s-fleck/shed")
 library(shed)
-library(lgr)
 
-# the root loggers threshold is NA (= log everything), but the console appender
-# only displays `info` level messages by default. Let's set it to NA/"all" so
-# that we get more exciting output when running shed
-console_threshold(NA)
-
-# you also have to set the threshold of the logger of shed which is "info" by
-# default
-shed:::lg$set_threshold(NA)
+# log only output from the "shed" logger to a file
+logfile <- tempfile()
+lgr::get_logger("shed")$add_appender(AppenderFile$new(logfile))
+lgr::threshold("all")
 
 # edit away and watch the rstudio console!
+lgr$info("starting shed")
 shed(iris)  
+lgr$info("this will not end up in the log file")
 
+readLines(logfile)
+
+# cleanup
+file.remove(logfile)
 ```
 
 
@@ -157,10 +160,11 @@ on which lgr is built and the **only Package lgr will ever depend on**.
 
 ### Optional Dependencies
 
-lgr comes with a long list of optional dependencies. These are not necessary to 
-use lgr, but that are required for some extra functions. Most of these 
-dependencies are tied to specific Appenders, though **crayon** and 
-**data.table** are also relevant to interactive use of lgr.
+lgr comes with a long list of optional dependencies that make a wide range of
+appenders possible. You only need the dependencies for the appenders you 
+actually want to use. If you are a developer and want to use lgr in one of your 
+packages, you do not have to worry about these dependencies (configuring loggers
+should be left to the user of your package). 
 
 Care was taken to choose packages that are slim, stable, have minimal 
 dependencies, and are well maintained :
@@ -195,6 +199,8 @@ dependencies, and are well maintained :
     convenience function `use_logger()`
   - [yaml](https://CRAN.R-project.org/package=yaml) for configuring loggers 
     via YAML files
+  - [rotor](https://github.com/s-fleck/rotor) for log rotation via 
+    AppenderFileRotating and co.
     
   Other optional dependencies (future, future.apply) do not provide any extra
   functionality but had to be included for some of the automated unit tests

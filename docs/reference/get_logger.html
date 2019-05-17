@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9002</span>
       </span>
     </div>
 
@@ -144,7 +144,7 @@ are the only valid choices.</p></td>
     <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'>get_logger</span>(<span class='st'>"log/ger/test"</span>)
 <span class='co'># equivalent to</span>
 <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'>get_logger</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"log"</span>, <span class='st'>"get"</span>, <span class='st'>"test"</span>))
-<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a %s message"</span>, <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [14:54:14.049] a warning message </div><div class='input'><span class='no'>lg</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] log/get/test
+<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a %s message"</span>, <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [08:34:15.865] a warning message </div><div class='input'><span class='no'>lg</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] log/get/test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='no'>lg</span>$<span class='no'>parent</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] log/get
@@ -152,7 +152,7 @@ are the only valid choices.</p></td>
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'>
 <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'>get_logger_glue</span>(<span class='st'>"log/ger"</span>)
-<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a {.text} message"</span>, <span class='kw'>.text</span> <span class='kw'>=</span> <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [14:54:14.076] a warning message </div></span></pre>
+<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a {.text} message"</span>, <span class='kw'>.text</span> <span class='kw'>=</span> <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [08:34:15.886] a warning message </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

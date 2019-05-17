@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9002</span>
       </span>
     </div>
 
@@ -113,7 +113,7 @@
 <ul>
 <li>
 <code>AppenderFileRotating</code>, <code>AppenderFileRotatingDate</code> and <code>AppenderFileRotatingTime</code> for rotating file appenders via the <a href="https://github.com/s-fleck/rotor">rotor</a>.</li>
-<li>functions like <code><a href="../reference/simple_logging.html">show_log()</a></code>, <code><a href="../reference/simple_logging.html">show_data()</a></code>,… now accept logger names as <code>target</code>.</li>
+<li>functions like <code><a href="../reference/simple_logging.html">show_log()</a></code>, <code><a href="../reference/simple_logging.html">show_data()</a></code>,… now accept logger names as well as Logger or Appender objects as <code>target</code>.</li>
 <li>
 <code>AppenderFile$new()</code> now creates an empty file, or fails if it can’t</li>
 </ul>
@@ -124,19 +124,19 @@
 </h1>
 <ul>
 <li>The root logger can now be configured via <code><a href="https://www.rdocumentation.org/packages/base/topics/options">options()</a></code> and/or environment variables (see <code><a href="../reference/lgr-package.html">?lgr</a></code>)</li>
-<li>The default config of the root logger has changed. It now only has a console appender and a default threshold of <code>"info"</code>. To get back the old behaviour (<code>"info"</code> console appender, <code>"all"</code> in-memory appender) run <code><a href="../reference/basic_config.html">basic_config()</a></code> with default arguments.</li>
 <li>
 <code><a href="../reference/basic_config.html">basic_config()</a></code> now accepts thresholds (“info”, “fatal”) as arguments to <code>console</code> and <code>memory</code>.</li>
+<li>The default config of the root logger has changed. It now only has a console appender and a default threshold of <code>"info"</code>. To get back the old behaviour run <code><a href="../reference/basic_config.html">basic_config(threshold = "all", console = "info", memory = "all")</a></code>.</li>
 <li>
 <code>$config(NULL)</code> now resets a Logger to its default/unconfigured state</li>
 <li>
-<code>$config()</code> now accepts YAML as well as JSON files or code</li>
+<code>$config()</code> now accepts YAML as well as JSON files (or YAML/JSON as a character string)</li>
 <li>
 <code><a href="../reference/with_log_level.html">with_log_level()</a></code> and <code><a href="../reference/with_log_level.html">with_log_value()</a></code> now accept logger names as well as Logger objects as the <code>logger</code> argument</li>
 <li>
 <code><a href="../reference/get_logger.html">get_logger_glue()</a></code> now works as intended</li>
 <li>
-<code><a href="../reference/simple_logging.html">FATAL()</a></code>, <code><a href="../reference/simple_logging.html">ERROR()</a></code>,… are now deprecated and will be removed from future versions. Use <code>lgr$fatal()</code>, <code>lgr$error()</code>, … instead.</li>
+<code><a href="../reference/simple_logging.html">FATAL()</a></code>, <code><a href="../reference/simple_logging.html">ERROR()</a></code>,… are deprecated and will be removed from future versions. Use <code>lgr$fatal()</code>, <code>lgr$error()</code>, … instead.</li>
 </ul>
 </div>
     <div id="lgr-0-2-1-2019-03-25" class="section level1">

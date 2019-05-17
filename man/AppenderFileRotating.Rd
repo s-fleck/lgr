@@ -7,7 +7,7 @@
 \title{Log to a rotating file}
 \description{
 An extension of \link{AppenderFile} that rotates logfiles based on certain
-conditions. Please refert to the documentation of \code{\link[rotor:rotate]{rotor::rotate()}} for
+conditions. Please refer to the documentation of \code{\link[rotor:rotate]{rotor::rotate()}} for
 the meanings of the extra arguments
 }
 \section{Usage}{

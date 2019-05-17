@@ -2,8 +2,8 @@
   * `AppenderFileRotating`, `AppenderFileRotatingDate` and 
     `AppenderFileRotatingTime` for rotating file appenders via the 
     [rotor](https://github.com/s-fleck/rotor).
-  * functions like `show_log()`, `show_data()`,... now accept logger names
-    as `target`.
+  * functions like `show_log()`, `show_data()`,... now accept logger names as
+    well as Logger or Appender objects as `target`.
   * `AppenderFile$new()` now creates an empty file, or fails if it can't
 
 
@@ -11,18 +11,19 @@
 
 * The root logger can now be configured via `options()` and/or environment 
   variables (see `?lgr`)
-* The default config of the root logger has changed. It now only has a
-  console appender and a default threshold of `"info"`. To get
-  back the old behaviour (`"info"` console appender, `"all"` in-memory appender) 
-  run `basic_config()` with default arguments.
 * `basic_config()` now accepts thresholds ("info", "fatal") as arguments to
   `console` and `memory`. 
+* The default config of the root logger has changed. It now only has a
+  console appender and a default threshold of `"info"`. To get
+  back the old behaviour run 
+  `basic_config(threshold = "all", console = "info", memory = "all")`.
 * `$config(NULL)` now resets a Logger to its default/unconfigured state
-* `$config()` now accepts YAML as well as JSON files or code
+* `$config()` now accepts YAML as well as JSON files (or YAML/JSON as a 
+  character string)
 * `with_log_level()` and `with_log_value()` now accept logger names as well as 
   Logger objects as the `logger` argument
 * `get_logger_glue()` now works as intended
-* `FATAL()`, `ERROR()`,... are now deprecated and will be removed from future
+* `FATAL()`, `ERROR()`,... are deprecated and will be removed from future
   versions. Use `lgr$fatal()`, `lgr$error()`, ... instead.
 
 

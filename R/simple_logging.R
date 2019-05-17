@@ -19,11 +19,11 @@ NULL
 #' Basic Setup for the Logging System
 #'
 #' Quick and easy way to configure the root logger for logging to a file.
-#' **experimental**, parameters will likely change in the next lgr version.
 #'
 #' @param file `character` scalar: If not `NULL` a [AppenderFile] will be created
-#'   that logs to this file. If the filename ends in `.jsonl` an [AppenderJson]
-#'   will be created instead.
+#'   that logs to this file. If the filename ends in `.jsonl`, the Appender will
+#'   be set up to use the [JSON Lines](http://http://jsonlines.org/) format
+#'   instead of plain text (see [AppenderFile] and [AppenderJson]).
 #' @param fmt `character` scalar: Format to use if `file` is supplied and not
 #'   a `.jsonl` file. If `NULL` it defaults to `"%L [%t] %m"`
 #'   (see [format.LogEvent])
@@ -34,9 +34,9 @@ NULL
 #'   The minimum [log level][log_levels] that should be processed by the root
 #'   logger.
 #' @param memory `logical` scalar. or a `threshold` (see above). Add an Appender
-#'   that logs to a memory buffer, see also [show_log()]
-#' @param console logical` scalar. or a `threshold` (see above). Add an appender logs to the console
-#'   (i.e. displays log messages in an interactive R session)
+#'   that logs to a memory buffer, see also [show_log()] and [AppenderBuffer]
+#' @param console logical` scalar. or a `threshold` (see above). Add an appender
+#'   logs to the console (i.e. displays messages in an interactive R session)
 #'
 #' @return the `root` Logger (lgr)
 #' @export
@@ -50,10 +50,10 @@ basic_config <- function(
   file = NULL,
   fmt = "%L [%t] %m",
   timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
-  threshold = "all",
+  threshold = "info",
   appenders = NULL,
-  console = if(is.null(appenders)) "info" else FALSE,
-  memory  = if (is.null(appenders)) "all" else FALSE
+  console = if (is.null(appenders)) "all" else FALSE,
+  memory  = FALSE
 ){
   stopifnot(
     is.null(file) || is_scalar_character(file),
