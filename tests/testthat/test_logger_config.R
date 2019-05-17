@@ -126,8 +126,24 @@ test_that("parse_logger_configs works", {
   ps <- parse_logger_config(simple)
 
   lg <- get_logger("test")$config(full)
+  on.exit(lg$config(NULL))
 
+  expect_length(lg$appenders, 2)
+  expect_identical(lg$appenders$AppenderFile$file, "/tmp/testlog.txt")
+  expect_identical(lg$appenders$AppenderJson$file, "/tmp/blah.json")
+  expect_identical(lg$appenders$AppenderJson$threshold, 200L)
+  expect_identical(lg$threshold, 400L)
+  file.remove(
+    lg$appenders$AppenderFile$file,
+    lg$appenders$AppenderJson$file
+  )
 
-
+  lg <- get_logger("test")$config(simple)
+  expect_identical(lg$appenders$AppenderFile$file, "/tmp/testlog.txt")
+  expect_identical(lg$propagate, FALSE)
+  expect_identical(lg$threshold, 400L)
+  file.remove(
+    lg$appenders$AppenderFile$file
+  )
 })
 
