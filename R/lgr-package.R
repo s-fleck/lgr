@@ -121,23 +121,34 @@ NULL
 
 
   # root looger -------------------------------------------------------------
-  appenders <- list(console = AppenderConsole$new(threshold = NA))
-
-  assign(
-    "root",
-    LoggerRoot$new("root", appenders = appenders, threshold = NA),  # threshold cannot be null
-    envir = loggers
-  )
-  assign("lgr", get_logger("root"), envir = parent.env(environment()))
-
-  if (!is.null(getOption("lgr.default_config"))){
-    tryCatch(
-      lgr$config(getOption("lgr.default_config")),
-      error = function(e)
-        warning("Option 'lgr.default_config' is set but does not seem to point ",
-                "to a valid logger_config:", e$message)
+    assign(
+      "root",
+      LoggerRoot$new("root", threshold = NA),  # threshold cannot be null
+      envir = loggers
     )
-  }
+    assign(
+      "lgr",
+      get_logger("root"),
+      envir = parent.env(environment())
+    )
+
+    # config
+    default_config <- getOption("lgr.default_config")
+
+    if (is.null(default_config)){
+      basic_config()
+
+    } else {
+      tryCatch(
+        lgr$config(default_config),
+        error = function(e) {
+          warning(
+            "The option 'lgr.default_config' is set to an invalid logger_config: ",
+            e$message, call. = FALSE
+          )
+        }
+      )
+    }
 
   lgr$set_threshold(getOption("lgr.default_threshold", 400L))
 }
@@ -160,7 +171,7 @@ get_envar_suspend_logging <- function(){
   } else {
     warning(
       "Environment variable 'LGR_SUSPEND_LOGGING' is set to '", envar_suspend_logging,
-      "' but must be either 'TRUE' or 'FALSE'")
+      "' but must be either 'TRUE' or 'FALSE'",  call. = FALSE)
     FALSE
   }
 }
@@ -175,7 +186,7 @@ get_envar_default_config <- function(){
     NULL
   } else {
     if (!is_scalar_character(envar_default_config)){
-      warning("Environment variable 'LGR_DEFAULT_CONFIG' must be a path to a YAML file")
+      warning("Environment variable 'LGR_DEFAULT_CONFIG' must be a path to a YAML or JSON config file", call. = FALSE)
       NULL
     } else {
       tryCatch(
@@ -183,7 +194,7 @@ get_envar_default_config <- function(){
         error = function(e){
           warning(
             "Environment variable 'LGR_DEFAULT_CONFIG' is set but '", envar_default_config,
-            "' is not a path to a valid YAML file"
+            "' is not a path to a valid YAML file", call. = FALSE
           )
           NULL
         }
@@ -201,7 +212,7 @@ get_envar_default_threshold <- function(fallback = 400){
   if (!is_scalar(envvar_default_threshold)){
     warning(
       "Environment variable 'LGR_DEFAULT_THRESHOLD' bust be a single",
-      "numeric or character value."
+      "numeric or character value.", call. = FALSE
     )
     return(fallback)
   }
@@ -219,7 +230,7 @@ get_envar_default_threshold <- function(fallback = 400){
       error = function(e){
         warning(
           "Environment variable 'LGR_DEFAULT_THRESHOLD' is set but '", envvar_default_threshold,
-          "' is not a valid threshold"
+          "' is not a valid threshold", call. = FALSE
         )
         fallback
       }

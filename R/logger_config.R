@@ -204,6 +204,7 @@ as_logger_config.character <- function(
       dd <- jsonlite::read_json(x, simplifyVector = TRUE)
 
     } else {
+      assert(file.exists(x), "The file '", x, "' does not exist.")
       assert_namespace("yaml")
       dd <- yaml::read_yaml(file = x)
     }

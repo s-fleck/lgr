@@ -6,8 +6,10 @@ setup({
 })
 
 teardown({
-  lgr$remove_appender("memory")
+  basic_config()
 })
+
+
 
 
 test_that("simple_logging works as expected", {
@@ -17,23 +19,21 @@ test_that("simple_logging works as expected", {
   yth <- lgr$threshold
   cth <- lgr$appenders$console$threshold
 
+  on.exit({
+    lgr$set_threshold(yth)
+    lgr$appenders$console$set_threshold(cth)
+  })
+
   threshold(NA)
   console_threshold(NA)
 
-  expect_output(FATAL("test"), "FATAL")
-  expect_output(ERROR("test"), "ERROR")
-  expect_output(WARN("test"), "WARN")
-  expect_output(INFO("test"), "INFO")
-  expect_output(DEBUG("test"), "DEBUG")
-  expect_output(TRACE("test"), "TRACE")
+  expect_output(lgr$fatal("test"), "FATAL")
+  expect_output(lgr$trace("test"), "TRACE")
 
   expect_error(
     expect_output(log_exception(stop("oops")), "FATAL.*oops$"),
     "oops"
   )
-
-  lgr$set_threshold(yth)
-  lgr$appenders$console$set_threshold(cth)
 })
 
 
@@ -41,7 +41,7 @@ test_that("simple_logging works as expected", {
 
 test_that("show_log()", {
   expect_output(expect_true(is.data.frame(show_log())))
-  expect_output(expect_true(nrow(show_log()) > 5))
+  expect_output(expect_true(nrow(show_log()) > 2))
   expect_output(
     expect_identical(show_log(), show_log(target = lgr$appenders$memory))
   )
@@ -54,6 +54,7 @@ test_that("show_log()", {
 
 
 
+
 test_that("add/remove_appender", {
   tlg <- Logger$new("test", propagate = FALSE)
 
@@ -63,6 +64,7 @@ test_that("add/remove_appender", {
   expect_silent(tlg$warn("test"))
   expect_error(show_log(tlg))
 })
+
 
 
 
@@ -100,5 +102,3 @@ test_that("option appenders setup", {
 
   options("lgr.log_file" = old)
 })
-
-

@@ -12,7 +12,5 @@ test_that("utils-rd works as expected", {
     AppenderFileRotatingTime
   ))
 
-
-  cat(res, sep = "\n")
-
+  expect_true(is.character(res))
 })

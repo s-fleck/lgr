@@ -20,24 +20,25 @@ NULL
 #'
 #' Quick and easy way to configure the root logger for logging to a file.
 #'
-#' @param file `character` scalar: If not `NULL` a [AppenderFile] will be created
-#'   that logs to this file. If the filename ends in `.jsonl`, the Appender will
-#'   be set up to use the [JSON Lines](http://http://jsonlines.org/) format
-#'   instead of plain text (see [AppenderFile] and [AppenderJson]).
-#' @param file_fmt `character` scalar: Format to use if `file` is supplied and not
-#'   a `.jsonl` file. If `NULL` it defaults to `"%L [%t] %m"`
-#'   (see [format.LogEvent])
-#' @param console_fmt `character` scalar: Format to use for formatting log messages
-#'   to the console if `console` is not `FALSE` (see [format.LogEvent])
+#' @param file `character` scalar: If not `NULL` a [AppenderFile] will be
+#'   created that logs to this file. If the filename ends in `.jsonl`, the
+#'   Appender will be set up to use the [JSON
+#'   Lines](http://http://jsonlines.org/) format instead of plain text (see
+#'   [AppenderFile] and [AppenderJson]).
+#' @param fmt `character` scalar: Format to use if `file` is supplied and not a
+#'   `.jsonl` file. If `NULL` it defaults to `"%L [%t] %m"` (see
+#'   [format.LogEvent])
+#' @param console_fmt `character` scalar: like `fmt` but used for console output
+#' @param console_timestamp_fmt `character` scalar: like `timestamp_fmt` but
+#'   used for console output
 #' @inheritParams print.LogEvent
 #' @inheritParams Logger
 #' @param appenders a single [Appender] or a list thereof.
-#' @param threshold `character` or `integer` scalar.
-#'   The minimum [log level][log_levels] that should be processed by the root
-#'   logger.
+#' @param threshold `character` or `integer` scalar. The minimum [log
+#'   level][log_levels] that should be processed by the root logger.
 #' @param memory `logical` scalar. or a `threshold` (see above). Add an Appender
 #'   that logs to a memory buffer, see also [show_log()] and [AppenderBuffer]
-#' @param console logical` scalar. or a `threshold` (see above). Add an appender
+#' @param console `logical` scalar or a `threshold` (see above). Add an appender
 #'   logs to the console (i.e. displays messages in an interactive R session)
 #'
 #' @return the `root` Logger (lgr)
@@ -50,17 +51,18 @@ NULL
 #' }
 basic_config <- function(
   file = NULL,
-  file_fmt = "%L [%t] %m",
+  fmt = "%L [%t] %m",
   timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
   threshold = "info",
   appenders = NULL,
   console = if (is.null(appenders)) "all" else FALSE,
   console_fmt = "%L [%t] %m %f",
+  console_timestamp_fmt = "%H:%M:%OS3",
   memory  = FALSE
 ){
   stopifnot(
     is.null(file) || is_scalar_character(file),
-    is_scalar_character(file_fmt),
+    is_scalar_character(fmt),
     is_scalar_character(console_fmt),
     is_scalar_character(timestamp_fmt),
     is_threshold(threshold),
@@ -106,7 +108,7 @@ basic_config <- function(
       )
 
     } else if (identical(tolower(ext), "jsonl")){
-      assert (is.null(file_fmt), "`file_fmt` must be null if `file` is a '.jsonl' file")
+      assert (is.null(fmt), "`fmt` must be null if `file` is a '.jsonl' file")
       l$add_appender(
         name = "file",
         AppenderJson$new(threshold = NA)
@@ -119,7 +121,7 @@ basic_config <- function(
           file = file,
           threshold = NA,
           layout = LayoutFormat$new(
-            fmt = file_fmt,
+            fmt = fmt,
             timestamp_fmt = timestamp_fmt
           )
         )
@@ -137,7 +139,7 @@ basic_config <- function(
         layout = LayoutFormat$new(
           colors = getOption("lgr.colors"),
           fmt = console_fmt,
-          timestamp_fmt = timestamp_fmt
+          timestamp_fmt = console_timestamp_fmt
         )
       )
     )

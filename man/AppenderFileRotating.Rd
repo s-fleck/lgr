@@ -13,17 +13,17 @@ the meanings of the extra arguments
 \section{Usage}{
 \preformatted{
 x <- AppenderFileRotating$new(file, threshold = NA_integer_, layout =
-  LayoutFormat$new(), filters = NULL, size = 1, max_backups = Inf, compression
-  = FALSE, backup_dir = dirname(file), create_file = TRUE)
+  LayoutFormat$new(), filters = NULL, size = Inf, max_backups = Inf,
+  compression = FALSE, backup_dir = dirname(file), create_file = TRUE)
 
 x <- AppenderFileRotatingDate$new(file, threshold = NA_integer_, layout =
-  LayoutFormat$new(), filters = NULL, age = NULL, size = 1, max_backups = Inf,
-  compression = FALSE, backup_dir = dirname(file), timestamp_fmt = "\%Y-\%m-\%d",
-  overwrite = FALSE, create_file = TRUE)
+  LayoutFormat$new(), filters = NULL, age = NULL, size = Inf, max_backups =
+  Inf, compression = FALSE, backup_dir = dirname(file), timestamp_fmt =
+  "\%Y-\%m-\%d", overwrite = FALSE, create_file = TRUE)
 
 x <- AppenderFileRotatingTime$new(file, threshold = NA_integer_, layout =
-  LayoutFormat$new(), filters = NULL, age = NULL, size = 1, max_backups = Inf,
-  compression = FALSE, backup_dir = dirname(file), timestamp_fmt =
+  LayoutFormat$new(), filters = NULL, age = NULL, size = Inf, max_backups =
+  Inf, compression = FALSE, backup_dir = dirname(file), timestamp_fmt =
   "\%Y-\%m-\%d--\%H-\%M-\%S", overwrite = FALSE, create_file = TRUE)
 
 x$add_filter(filter, name = NULL)
@@ -32,9 +32,9 @@ x$clone(deep = FALSE)
 x$filter(event)
 x$prune(max_backups = self$max_backups)
 x$remove_filter(pos)
-x$rotate(dry_run = FALSE, verbose = dry_run, now = Sys.Date())
-x$rotate(dry_run = FALSE, verbose = dry_run, now = Sys.time())
-x$rotate(dry_run = FALSE, verbose = dry_run)
+x$rotate(force = FALSE, dry_run = FALSE, verbose = dry_run, now = Sys.Date())
+x$rotate(force = FALSE, dry_run = FALSE, verbose = dry_run, now = Sys.time())
+x$rotate(force = FALSE, dry_run = FALSE, verbose = dry_run)
 x$set_age(x)
 x$set_backup_dir(x)
 x$set_compression(x)

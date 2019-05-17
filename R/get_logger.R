@@ -28,7 +28,7 @@ loggers <- new.env()
   class = Logger
 ){
   if (missing(name) || !length(name) || all(is_blank(name))){
-    return(lgr::lgr)
+    return(lgr)
   }
   nm_cur <- unlist(strsplit(name, "/", fixed = TRUE))
   name   <- paste(nm_cur, collapse = "/")

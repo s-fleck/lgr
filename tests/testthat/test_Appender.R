@@ -274,6 +274,7 @@ test_that("AppenderDt: memory cycling works", {
 
 test_that("AppenderDt: default format for show_log looks like format.LogEvent", {
   lg <- get_logger("test")
+  on.exit(lg$config(NULL))
   lg$add_appender(AppenderDt$new(), "memory")
 
   xo <- capture.output(lg$fatal("blubb"))
@@ -287,7 +288,6 @@ test_that("AppenderDt: default format for show_log looks like format.LogEvent", 
   expect_identical(xo, xp)
 
   expect_length(capture.output(lg$appenders$memory$show(n = 2)), 2)
-  lg$config(NULL)
 })
 
 
