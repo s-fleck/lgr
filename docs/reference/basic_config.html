@@ -32,8 +32,7 @@
 
 <meta property="og:title" content="Basic Setup for the Logging System — basic_config" />
 
-<meta property="og:description" content="Quick and easy way to configure the root logger for logging to a file.
-experimental, parameters will likely change in the next lgr version." />
+<meta property="og:description" content="Quick and easy way to configure the root logger for logging to a file." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -64,7 +63,7 @@ experimental, parameters will likely change in the next lgr version." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9002</span>
       </span>
     </div>
 
@@ -113,15 +112,14 @@ experimental, parameters will likely change in the next lgr version." />
 
     <div class="ref-description">
     
-    <p>Quick and easy way to configure the root logger for logging to a file.
-<strong>experimental</strong>, parameters will likely change in the next lgr version.</p>
+    <p>Quick and easy way to configure the root logger for logging to a file.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>basic_config</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fmt</span> <span class='kw'>=</span> <span class='st'>"%L [%t] %m"</span>,
-  <span class='kw'>timestamp_fmt</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%OS3"</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='st'>"all"</span>,
-  <span class='kw'>appenders</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>console</span> <span class='kw'>=</span> <span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/NULL'>is.null</a></span>(<span class='no'>appenders</span>)) <span class='st'>"info"</span> <span class='kw'>else</span>
-  <span class='fl'>FALSE</span>, <span class='kw'>memory</span> <span class='kw'>=</span> <span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/NULL'>is.null</a></span>(<span class='no'>appenders</span>)) <span class='st'>"all"</span> <span class='kw'>else</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>timestamp_fmt</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%OS3"</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='st'>"info"</span>,
+  <span class='kw'>appenders</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>console</span> <span class='kw'>=</span> <span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/NULL'>is.null</a></span>(<span class='no'>appenders</span>)) <span class='st'>"all"</span> <span class='kw'>else</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>memory</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -129,8 +127,9 @@ experimental, parameters will likely change in the next lgr version." />
     <tr>
       <th>file</th>
       <td><p><code>character</code> scalar: If not <code>NULL</code> a <a href='AppenderFile.html'>AppenderFile</a> will be created
-that logs to this file. If the filename ends in <code>.jsonl</code> an <a href='AppenderJson.html'>AppenderJson</a>
-will be created instead.</p></td>
+that logs to this file. If the filename ends in <code>.jsonl</code>, the Appender will
+be set up to use the <a href='http://http://jsonlines.org/'>JSON Lines</a> format
+instead of plain text (see <a href='AppenderFile.html'>AppenderFile</a> and <a href='AppenderJson.html'>AppenderJson</a>).</p></td>
     </tr>
     <tr>
       <th>fmt</th>
@@ -154,13 +153,13 @@ logger.</p></td>
     </tr>
     <tr>
       <th>console</th>
-      <td><p>logical<code>scalar. or a</code>threshold` (see above). Add an appender logs to the console
-(i.e. displays log messages in an interactive R session)</p></td>
+      <td><p>logical<code>scalar. or a</code>threshold` (see above). Add an appender
+logs to the console (i.e. displays messages in an interactive R session)</p></td>
     </tr>
     <tr>
       <th>memory</th>
       <td><p><code>logical</code> scalar. or a <code>threshold</code> (see above). Add an Appender
-that logs to a memory buffer, see also <code><a href='simple_logging.html'>show_log()</a></code></p></td>
+that logs to a memory buffer, see also <code><a href='simple_logging.html'>show_log()</a></code> and <a href='AppenderBuffer.html'>AppenderBuffer</a></p></td>
     </tr>
     </table>
     

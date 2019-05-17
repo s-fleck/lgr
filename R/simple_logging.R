@@ -19,14 +19,16 @@ NULL
 #' Basic Setup for the Logging System
 #'
 #' Quick and easy way to configure the root logger for logging to a file.
-#' **experimental**, parameters will likely change in the next lgr version.
 #'
 #' @param file `character` scalar: If not `NULL` a [AppenderFile] will be created
-#'   that logs to this file. If the filename ends in `.jsonl` an [AppenderJson]
-#'   will be created instead.
-#' @param fmt `character` scalar: Format to use if `file` is supplied and not
+#'   that logs to this file. If the filename ends in `.jsonl`, the Appender will
+#'   be set up to use the [JSON Lines](http://http://jsonlines.org/) format
+#'   instead of plain text (see [AppenderFile] and [AppenderJson]).
+#' @param file_fmt `character` scalar: Format to use if `file` is supplied and not
 #'   a `.jsonl` file. If `NULL` it defaults to `"%L [%t] %m"`
 #'   (see [format.LogEvent])
+#' @param console_fmt `character` scalar: Format to use for formatting log messages
+#'   to the console if `console` is not `FALSE` (see [format.LogEvent])
 #' @inheritParams print.LogEvent
 #' @inheritParams Logger
 #' @param appenders a single [Appender] or a list thereof.
@@ -34,9 +36,9 @@ NULL
 #'   The minimum [log level][log_levels] that should be processed by the root
 #'   logger.
 #' @param memory `logical` scalar. or a `threshold` (see above). Add an Appender
-#'   that logs to a memory buffer, see also [show_log()]
-#' @param console logical` scalar. or a `threshold` (see above). Add an appender logs to the console
-#'   (i.e. displays log messages in an interactive R session)
+#'   that logs to a memory buffer, see also [show_log()] and [AppenderBuffer]
+#' @param console logical` scalar. or a `threshold` (see above). Add an appender
+#'   logs to the console (i.e. displays messages in an interactive R session)
 #'
 #' @return the `root` Logger (lgr)
 #' @export
@@ -48,16 +50,18 @@ NULL
 #' }
 basic_config <- function(
   file = NULL,
-  fmt = "%L [%t] %m",
+  file_fmt = "%L [%t] %m",
   timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
-  threshold = "all",
+  threshold = "info",
   appenders = NULL,
-  console = if(is.null(appenders)) "info" else FALSE,
-  memory  = if (is.null(appenders)) "all" else FALSE
+  console = if (is.null(appenders)) "all" else FALSE,
+  console_fmt = "%L [%t] %m %f",
+  memory  = FALSE
 ){
   stopifnot(
     is.null(file) || is_scalar_character(file),
-    is.null(fmt) || is_scalar_character(fmt),
+    is_scalar_character(file_fmt),
+    is_scalar_character(console_fmt),
     is_scalar_character(timestamp_fmt),
     is_threshold(threshold),
     is_scalar_bool(console) || is_threshold(console),
@@ -102,7 +106,7 @@ basic_config <- function(
       )
 
     } else if (identical(tolower(ext), "jsonl")){
-      assert (is.null(fmt), "`fmt` must be null if `file` is a '.jsonl' file")
+      assert (is.null(file_fmt), "`file_fmt` must be null if `file` is a '.jsonl' file")
       l$add_appender(
         name = "file",
         AppenderJson$new(threshold = NA)
@@ -115,7 +119,7 @@ basic_config <- function(
           file = file,
           threshold = NA,
           layout = LayoutFormat$new(
-            fmt = fmt,
+            fmt = file_fmt,
             timestamp_fmt = timestamp_fmt
           )
         )
@@ -132,7 +136,7 @@ basic_config <- function(
         threshold = console,
         layout = LayoutFormat$new(
           colors = getOption("lgr.colors"),
-          fmt = fmt,
+          fmt = console_fmt,
           timestamp_fmt = timestamp_fmt
         )
       )
@@ -150,6 +154,7 @@ basic_config <- function(
 
   lgr
 }
+
 
 
 

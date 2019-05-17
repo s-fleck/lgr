@@ -78,8 +78,6 @@ dbs <- list(
 
 options("datatable.showProgress" = dt_sp)
 
-nm <- "SQLite via RSQLite"  # for manual testing, can be deleted
-nm <- "DB2 via RJDBC" # for manual testing, can be deleted
 
 
 

@@ -2228,7 +2228,7 @@ AppenderGmail <- R6::R6Class(
 #' Log to a rotating file
 #'
 #' An extension of [AppenderFile] that rotates logfiles based on certain
-#' conditions. Please refert to the documentation of [rotor::rotate()] for
+#' conditions. Please refer to the documentation of [rotor::rotate()] for
 #' the meanings of the extra arguments
 #'
 #' @eval r6_usage(list(

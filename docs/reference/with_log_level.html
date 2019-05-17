@@ -64,7 +64,7 @@ created by target Logger." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9002</span>
       </span>
     </div>
 
@@ -159,12 +159,12 @@ produce hard to reason about code.</p>
     <pre class="examples"><div class='input'><span class='fu'>with_log_level</span>(<span class='st'>"warn"</span>, {
   <span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"More important than it seems"</span>)
   <span class='fu'><a href='simple_logging.html'>FATAL</a></span>(<span class='st'>"Really not so bad"</span>)
-})</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [14:54:20.485] More important than it seems </div><div class='output co'>#&gt; <span class='warning'>Warning: FATAL(), ERROR(),... are deprecated and will be removed. Use lgr$fatal(), lgr$error(),... instead.</span></div><div class='output co'>#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [14:54:20.488] Really not so bad </div><div class='input'>
+})</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [08:34:19.079] More important than it seems </div><div class='output co'>#&gt; <span class='warning'>Warning: FATAL(), ERROR(),... are deprecated and will be removed. Use lgr$fatal(), lgr$error(),... instead.</span></div><div class='output co'>#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [08:34:19.081] Really not so bad </div><div class='input'>
 <span class='fu'>with_log_value</span>(
   <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"overriden msg"</span>),  {
   <span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"bar"</span>)
   <span class='fu'><a href='simple_logging.html'>INFO</a></span>(<span class='st'>"FOO"</span>)
-})</div><div class='output co'>#&gt; INFO  [14:54:20.494] overriden msg </div><div class='output co'>#&gt; <span class='warning'>Warning: FATAL(), ERROR(),... are deprecated and will be removed. Use lgr$fatal(), lgr$error(),... instead.</span></div><div class='output co'>#&gt; INFO  [14:54:20.496] overriden msg </div></span></pre>
+})</div><div class='output co'>#&gt; INFO  [08:34:19.087] overriden msg </div><div class='output co'>#&gt; <span class='warning'>Warning: FATAL(), ERROR(),... are deprecated and will be removed. Use lgr$fatal(), lgr$error(),... instead.</span></div><div class='output co'>#&gt; INFO  [08:34:19.094] overriden msg </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

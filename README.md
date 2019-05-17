@@ -64,19 +64,17 @@ vignette.
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [10:51:19.060] A critical error
+#> FATAL [2019-05-17 08:32:57.442] A critical error
 lgr$error("A less severe error")
-#> ERROR [10:51:19.191] A less severe error
+#> ERROR [2019-05-17 08:32:57.470] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [10:51:19.201] A potentially bad situation
+#> WARN  [2019-05-17 08:32:57.480] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [10:51:19.203] iris has 150 rows
+#> INFO  [2019-05-17 08:32:57.482] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
-#> NULL
 lgr$trace("A finer grained debug message")
-#> NULL
 ```
 
 A Logger can have several Appenders. For example, we can add a JSON
@@ -84,22 +82,24 @@ appender to log to a file with little effort.
 
 ``` r
 tf <- tempfile()
-lgr$add_appender(AppenderJson$new(tf))
+lgr$add_appender(AppenderFile$new(tf, layout = LayoutJson$new()))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [10:51:19.226] cars has 50 rows
+#> INFO  [2019-05-17 08:32:57.498] cars has 50 rows
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2019-05-05 10:51:19","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-05-17 08:32:57","logger":"root","caller":"eval","msg":"cars has 50 rows"}
 ```
 
-JSON naturally supports custom fields. Named arguments passed to
-`info()`, `warn()`, etc… are interpreted as custom fields.
+By passing a named argument to `info()`, `warn()`, and co you can log
+not only text but arbitrary R objects. Not all appenders handle such
+*custom fields* perfectly, but JSON does. This way you can create
+logfiles that are machine as well as (somewhat) human readable.
 
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [10:51:19.249] loading cars {rows: 50, cols: 2}
+#> INFO  [2019-05-17 08:32:57.521] loading cars
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2019-05-05 10:51:19","logger":"root","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2019-05-05 10:51:19","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
+#> {"level":400,"timestamp":"2019-05-17 08:32:57","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-05-17 08:32:57","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
 ```
 
 For more examples please see the package
@@ -113,22 +113,23 @@ lgr is used to govern console output in my shiny based csv editor
 
 ``` r
 # install.packages("remotes")
-
 remotes::install_github("s-fleck/shed")
 library(shed)
-library(lgr)
 
-# the root loggers threshold is NA (= log everything), but the console appender
-# only displays `info` level messages by default. Let's set it to NA/"all" so
-# that we get more exciting output when running shed
-console_threshold(NA)
-
-# you also have to set the threshold of the logger of shed which is "info" by
-# default
-shed:::lg$set_threshold(NA)
+# log only output from the "shed" logger to a file
+logfile <- tempfile()
+lgr::get_logger("shed")$add_appender(AppenderFile$new(logfile))
+lgr::threshold("all")
 
 # edit away and watch the rstudio console!
+lgr$info("starting shed")
 shed(iris)  
+lgr$info("this will not end up in the log file")
+
+readLines(logfile)
+
+# cleanup
+file.remove(logfile)
 ```
 
 ## Development Status
@@ -149,11 +150,12 @@ depend on**.
 
 ### Optional Dependencies
 
-lgr comes with a long list of optional dependencies. These are not
-necessary to use lgr, but that are required for some extra functions.
-Most of these dependencies are tied to specific Appenders, though
-**crayon** and **data.table** are also relevant to interactive use of
-lgr.
+lgr comes with a long list of optional dependencies that make a wide
+range of appenders possible. You only need the dependencies for the
+appenders you actually want to use. If you are a developer and want to
+use lgr in one of your packages, you do not have to worry about these
+dependencies (configuring loggers should be left to the user of your
+package).
 
 Care was taken to choose packages that are slim, stable, have minimal
 dependencies, and are well maintained :
@@ -191,6 +193,8 @@ dependencies, and are well maintained :
     development convenience function `use_logger()`
   - [yaml](https://CRAN.R-project.org/package=yaml) for configuring
     loggers via YAML files
+  - [rotor](https://github.com/s-fleck/rotor) for log rotation via
+    AppenderFileRotating and co.
 
 Other optional dependencies (future, future.apply) do not provide any
 extra functionality but had to be included for some of the automated

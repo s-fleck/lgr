@@ -88,3 +88,4 @@ logfiles
 LoggerRoot
 magrittr
 unconfigured
+AppenderFileRotating

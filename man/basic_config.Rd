@@ -4,17 +4,18 @@
 \alias{basic_config}
 \title{Basic Setup for the Logging System}
 \usage{
-basic_config(file = NULL, fmt = "\%L [\%t] \%m",
-  timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3", threshold = "all",
-  appenders = NULL, console = if (is.null(appenders)) "info" else
-  FALSE, memory = if (is.null(appenders)) "all" else FALSE)
+basic_config(file = NULL, file_fmt = "\%L [\%t] \%m",
+  timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3", threshold = "info",
+  appenders = NULL, console = if (is.null(appenders)) "all" else FALSE,
+  console_fmt = "\%L [\%t] \%m \%f", memory = FALSE)
 }
 \arguments{
 \item{file}{\code{character} scalar: If not \code{NULL} a \link{AppenderFile} will be created
-that logs to this file. If the filename ends in \code{.jsonl} an \link{AppenderJson}
-will be created instead.}
+that logs to this file. If the filename ends in \code{.jsonl}, the Appender will
+be set up to use the \href{http://http://jsonlines.org/}{JSON Lines} format
+instead of plain text (see \link{AppenderFile} and \link{AppenderJson}).}
 
-\item{fmt}{\code{character} scalar: Format to use if \code{file} is supplied and not
+\item{file_fmt}{\code{character} scalar: Format to use if \code{file} is supplied and not
 a \code{.jsonl} file. If \code{NULL} it defaults to \code{"\%L [\%t] \%m"}
 (see \link{format.LogEvent})}
 
@@ -26,18 +27,20 @@ logger.}
 
 \item{appenders}{a single \link{Appender} or a list thereof.}
 
-\item{console}{logical\code{scalar. or a}threshold` (see above). Add an appender logs to the console
-(i.e. displays log messages in an interactive R session)}
+\item{console}{logical\code{scalar. or a}threshold` (see above). Add an appender
+logs to the console (i.e. displays messages in an interactive R session)}
+
+\item{console_fmt}{\code{character} scalar: Format to use for formatting log messages
+to the console if \code{console} is not \code{FALSE} (see \link{format.LogEvent})}
 
 \item{memory}{\code{logical} scalar. or a \code{threshold} (see above). Add an Appender
-that logs to a memory buffer, see also \code{\link[=show_log]{show_log()}}}
+that logs to a memory buffer, see also \code{\link[=show_log]{show_log()}} and \link{AppenderBuffer}}
 }
 \value{
 the \code{root} Logger (lgr)
 }
 \description{
 Quick and easy way to configure the root logger for logging to a file.
-\strong{experimental}, parameters will likely change in the next lgr version.
 }
 \examples{
 \dontrun{
