@@ -2275,7 +2275,7 @@ AppenderFileRotating <- R6::R6Class(
       layout = LayoutFormat$new(),
       filters = NULL,
 
-      size = 1,
+      size = Inf,
       max_backups = Inf,
       compression = FALSE,
       backup_dir = dirname(file),
@@ -2301,13 +2301,21 @@ AppenderFileRotating <- R6::R6Class(
       self
     },
 
+    append = function(event){
+      super$append(event)
+      self$rotate()
+    },
+
     rotate = function(
-      dry_run     = FALSE,
-      verbose     = dry_run
+      force   = FALSE,
+      dry_run = FALSE,
+      verbose = dry_run
     ){
+      assert(is_scalar_bool(force))
+
       rotor::rotate(
         self$file,
-        size        = self$size,
+        size        = if (force) -1 else self$size,
         max_backups = self$max_backups,
         compression = self$compression,
         backup_dir  = self$backup_dir,
@@ -2378,7 +2386,7 @@ AppenderFileRotating <- R6::R6Class(
     create_file = function() get(".create_file", private),
 
     backups = function(){
-      rotor::BackupQueueIndex$new(self$file)$backups
+      rotor::BackupQueueIndex$new(self$file, backup_dir = self$backup_dir)$backups
     },
 
     backup_dir = function() get(".backup_dir", private)
@@ -2411,7 +2419,7 @@ AppenderFileRotatingTime <- R6::R6Class(
       filters = NULL,
 
       age = NULL,
-      size = 1,
+      size = Inf,
       max_backups = Inf,
       compression = FALSE,
       backup_dir = dirname(file),
@@ -2442,17 +2450,19 @@ AppenderFileRotatingTime <- R6::R6Class(
       self
     },
 
-
     rotate = function(
-      dry_run     = FALSE,
-      verbose     = dry_run,
-      now         = Sys.time()
+      force   = FALSE,
+      dry_run = FALSE,
+      verbose = dry_run,
+      now     = Sys.time()
     ){
+      assert(is_scalar_bool(force))
+
       rotor::rotate_time(
         self$file,
-        age         = self$age,
+        age         = if (force) NULL else self$age,
         format      = self$timestamp_fmt,
-        size        = self$size,
+        size        = if (force) -1 else self$size,
         max_backups = self$max_backups,
         compression = self$compression,
         backup_dir  = self$backup_dir,
@@ -2540,7 +2550,7 @@ AppenderFileRotatingDate <- R6::R6Class(
       filters = NULL,
 
       age = NULL,
-      size = 1,
+      size = Inf,
       max_backups = Inf,
       compression = FALSE,
       backup_dir = dirname(file),
@@ -2571,17 +2581,19 @@ AppenderFileRotatingDate <- R6::R6Class(
       self
     },
 
-
     rotate = function(
-      dry_run     = FALSE,
-      verbose     = dry_run,
-      now         = Sys.Date()
+      force   = FALSE,
+      dry_run = FALSE,
+      verbose = dry_run,
+      now     = Sys.Date()
     ){
+      assert(is_scalar_bool(force))
+
       rotor::rotate_date(
         self$file,
-        age = self$age,
+        age         = if (force) NULL else self$age,
         format      = self$timestamp_fmt,
-        size        = self$size,
+        size        = if (force) -1 else self$size,
         max_backups = self$max_backups,
         compression = self$compression,
         backup_dir  = self$backup_dir,

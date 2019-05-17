@@ -13,27 +13,36 @@ teardown({
 
 test_that("AppenderFileRotating works as expected", {
   tf <- file.path(td, "test.log")
+  app <- AppenderFileRotating$new(file = tf, size = "1tb")
+
   lg <-
     lgr::get_logger("test")$
     set_propagate(FALSE)$
-    set_appenders(AppenderFileRotating$new(file = tf)$set_size(-1))
+    set_appenders(app)
+
+  on.exit({
+    lg$config(NULL)
+    file.remove(tf)
+  })
+
+  expect_identical(app, lg$appenders[[1]])
 
   lg$fatal("test")
   expect_true(file.exists(lg$appenders[[1]]$file))
 
   # first rotate roates a file with content
-  lg$appenders[[1]]$rotate()
+  app$rotate(force = TRUE)
   expect_gt(lg$appenders[[1]]$backups[1, ]$size, 0L)
   expect_identical(nrow(lg$appenders[[1]]$backups), 1L)
 
   # second rotate only has a file of size 0 to rotate
-  lg$appenders[[1]]$rotate()
+  lg$appenders[[1]]$rotate(force = TRUE)
   expect_equal(lg$appenders[[1]]$backups[1, ]$size, 0)
   expect_identical(nrow(lg$appenders[[1]]$backups), 2L)
 
   # compression is possible
   lg$appenders[[1]]$set_compression(TRUE)
-  lg$appenders[[1]]$rotate()
+  lg$appenders[[1]]$rotate(force = TRUE)
   expect_identical(lg$appenders[[1]]$backups$ext, c("log.zip", "log", "log"))
   expect_identical(lg$appenders[[1]]$backups$sfx, as.character(1:3))
 
@@ -41,6 +50,40 @@ test_that("AppenderFileRotating works as expected", {
   lg$appenders[[1]]$prune(0)
   expect_identical(nrow(lg$appenders[[1]]$backups), 0L)
   lg$config(NULL)
+})
+
+
+
+test_that("AppenderFileRotating works with different backup_dir", {
+  tf     <- file.path(td, "test.log")
+  bu_dir <- file.path(td, "backups")
+  on.exit(unlink(c(tf, bu_dir), recursive = TRUE))
+
+  # backup_dir does not exist
+  expect_error(
+    app <- AppenderFileRotating$new(file = tf, backup_dir = bu_dir)
+  )
+
+  # rotating to different dir works
+  dir.create(bu_dir)
+  app <- AppenderFileRotating$new(
+    file = tf,
+    backup_dir = bu_dir,
+    size = 100
+  )
+  lg <- get_logger("test")$set_propagate(FALSE)
+  on.exit(lg$config(NULL))
+  lg$add_appender(app)
+
+  lg$info(paste(LETTERS))
+  app$set_compression(TRUE)
+  lg$info(paste(LETTERS))
+
+  expect_equal(file.size(tf), 0)
+
+  expect_equal(list.files(bu_dir), basename(app$backups$path))
+  expect_setequal(app$backups$ext, c("log.zip", "log"))
+  file.remove(app$backups$path)
 })
 
 
@@ -77,16 +120,25 @@ test_that("AppenderFileRotating works as expected", {
 
 test_that("AppenderFileRotatingDate works as expected", {
   tf <- file.path(td, "test.log")
+
+  app <- AppenderFileRotatingDate$new(file = tf)
   lg <-
     lgr::get_logger("test")$
     set_propagate(FALSE)$
-    set_appenders(AppenderFileRotatingDate$new(file = tf, size = -1))
+    set_appenders(app)
+
+  on.exit({
+    app$prune(0)
+    lg$config(NULL)
+    unlink(tf)
+  })
 
   lg$fatal("test")
 
   # first rotate roates a file with content
+  app$set_size(-1)
   lg$appenders[[1]]$rotate(now = as.Date("2019-01-01"))
-  expect_gt(lg$appenders[[1]]$backups[1, ]$size, 0)
+  expect_gt(app$backups[1, ]$size, 0)
 
   # second rotate only has a file of size 0 to rotate
   lg$appenders[[1]]$rotate(now = as.Date("2019-01-02"))
@@ -96,11 +148,6 @@ test_that("AppenderFileRotatingDate works as expected", {
   lg$appenders[[1]]$set_compression(TRUE)
   lg$appenders[[1]]$rotate(now = as.Date("2019-01-03"))
   expect_identical(lg$appenders[[1]]$backups$ext, c("log.zip", "log", "log"))
-
-  # cleanup
-  lg$appenders[[1]]$prune(0)
-  expect_identical(nrow(lg$appenders[[1]]$backups), 0L)
-  lg$config(NULL)
 })
 
 
@@ -110,15 +157,22 @@ test_that("AppenderFileRotatingDate works as expected", {
 
 test_that("AppenderFileRotatingTime works as expected", {
   tf <- file.path(td, "test.log")
-  app <- AppenderFileRotatingTime$new(file = tf, size = -1)
+  app <- AppenderFileRotatingTime$new(file = tf)
   lg <-
     lgr::get_logger("test")$
     set_propagate(FALSE)$
     set_appenders(app)
 
+  on.exit({
+    app$prune(0)
+    lg$config(NULL)
+    unlink(tf)
+  })
+
   lg$fatal("test")
 
   # first rotate roates a file with content
+  app$set_size(-1)
   lg$appenders[[1]]$rotate(now = "2019-01-03--12-01")
   expect_gt(lg$appenders[[1]]$backups[1, ]$size, 0)
   expect_match(app$backups[1, ]$path, "2019-01-03--12-01-00")
