@@ -57,7 +57,6 @@ test_that("AppenderFileRotating works as expected", {
 test_that("AppenderFileRotating works with different backup_dir", {
   tf     <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
-  on.exit(unlink(c(tf, bu_dir), recursive = TRUE))
 
   # backup_dir does not exist
   expect_error(
@@ -71,9 +70,15 @@ test_that("AppenderFileRotating works with different backup_dir", {
     backup_dir = bu_dir,
     size = 100
   )
-  lg <- get_logger("test")$set_propagate(FALSE)
-  on.exit(lg$config(NULL))
-  lg$add_appender(app)
+  lg <- get_logger("test")$
+    set_propagate(FALSE)$
+    add_appender(app)
+
+  on.exit({
+    app$prune(0)
+    lg$config(NULL)
+    unlink(c(tf, bu_dir), recursive = TRUE)
+  })
 
   lg$info(paste(LETTERS))
   app$set_compression(TRUE)
@@ -153,6 +158,46 @@ test_that("AppenderFileRotatingDate works as expected", {
 
 
 
+test_that("AppenderFileRotatingDate works with different backup_dir", {
+  tf     <- file.path(td, "test.log")
+  bu_dir <- file.path(td, "backups")
+
+  # backup_dir does not exist
+  expect_error(
+    app <- AppenderFileRotatingDate$new(file = tf, backup_dir = bu_dir)
+  )
+
+  # setup
+  dir.create(bu_dir)
+  app <- AppenderFileRotatingDate$new(
+    file = tf,
+    backup_dir = bu_dir,
+    size = 100
+  )
+  lg <- get_logger("test")$set_propagate(FALSE)
+  lg$add_appender(app)
+
+  on.exit({
+    app$prune(0)
+    unlink(c(tf, bu_dir), recursive = TRUE)
+    lg$config(NULL)
+  })
+
+
+  # rotating to different dir works
+  lg$info(paste(LETTERS))
+  app$set_compression(TRUE)
+  lg$info(paste(LETTERS))
+
+  expect_equal(file.size(tf), 0)
+
+  expect_equal(list.files(bu_dir), basename(app$backups$path))
+  expect_setequal(app$backups$ext, c("log.zip", "log"))
+  file.remove(app$backups$path)
+})
+
+
+
 # AppenderFileRotatingTime ----------------------------------------------------
 
 test_that("AppenderFileRotatingTime works as expected", {
@@ -192,4 +237,45 @@ test_that("AppenderFileRotatingTime works as expected", {
   lg$appenders[[1]]$prune(0)
   expect_identical(nrow(lg$appenders[[1]]$backups), 0L)
   lg$config(NULL)
+})
+
+
+
+test_that("AppenderFileRotatingTime works with different backup_dir", {
+  tf     <- file.path(td, "test.log")
+  bu_dir <- file.path(td, "backups")
+
+  # backup_dir does not exist
+  expect_error(
+    app <- AppenderFileRotatingTime$new(file = tf, backup_dir = bu_dir)
+  )
+
+  # setup
+  dir.create(bu_dir)
+  app <- AppenderFileRotatingTime$new(
+    file = tf,
+    backup_dir = bu_dir,
+    size = 100
+  )
+  lg <- get_logger("test")$
+    set_propagate(FALSE)$
+    add_appender(app)
+
+  on.exit({
+    app$prune(0)
+    unlink(c(tf, bu_dir), recursive = TRUE)
+    lg$config(NULL)
+  })
+
+
+  # rotating to different dir works
+  lg$info(paste(LETTERS))
+  app$set_compression(TRUE)
+  lg$info(paste(LETTERS))
+
+  expect_equal(file.size(tf), 0)
+
+  expect_equal(list.files(bu_dir), basename(app$backups$path))
+  expect_setequal(app$backups$ext, c("log.zip", "log"))
+  file.remove(app$backups$path)
 })
