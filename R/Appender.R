@@ -642,59 +642,59 @@ AppenderDt <- R6::R6Class(
       # AppenderDt is designed for minimum overhead, so it does not use a
       # Layout for transforming the log event into a tabular structure but
       # rather the process is hardcoded
-        dt <- get(".data", private)
-        datanames <- names(dt)
-        valnames  <- setdiff(datanames, ".id")
+      dt <- get(".data", private)
+      datanames <- names(dt)
+      valnames  <- setdiff(datanames, ".id")
 
       # Select and prepare event values to be inserted into data
-        vals <- event[["values"]]
+      vals <- event[["values"]]
 
-        # handle .custom
-        if (".custom" %in% datanames){
-          vals[[".custom"]] <- vals[!names(vals) %in% valnames]
-        }
+      # handle .custom
+      if (".custom" %in% datanames){
+        vals[[".custom"]] <- vals[!names(vals) %in% valnames]
+      }
 
-        vals <- vals[valnames]
-        names(vals) <- valnames
+      vals <- vals[valnames]
+      names(vals) <- valnames
 
 
-        # handle list-columns
-        vals[vapply(vals, is.null, FALSE)] <- list(NULL)
-        list_cols <- get("list_cols", private)
-        vals[list_cols] <- lapply(vals[list_cols], list)
+      # handle list-columns
+      vals[vapply(vals, is.null, FALSE)] <- list(NULL)
+      list_cols <- get("list_cols", private)
+      vals[list_cols] <- lapply(vals[list_cols], list)
 
       # Prepare values for vectorized insert (if necessary)
-        lengths <- vapply(vals, length, 1L, USE.NAMES = FALSE)
-        lenmax  <- max(lengths)
-        assert(all(lengths %in% c(1, lenmax)))
+      lengths <- vapply(vals, length, 1L, USE.NAMES = FALSE)
+      lenmax  <- max(lengths)
+      assert(all(lengths %in% c(1, lenmax)))
 
-        # take special care if vectorized insert is bigger than buffer size
-        if (lenmax > nrow(dt)){
-          vals <- lapply(vals, trim_to_buffer_size, nrow(dt))
-          private[["id"]] <- get("id", envir = private) + lenmax - nrow(private$.data)
-          lenmax <- nrow(dt)
-        }
-        i   <- seq_len(lenmax)
+      # take special care if vectorized insert is bigger than buffer size
+      if (lenmax > nrow(dt)){
+        vals <- lapply(vals, trim_to_buffer_size, nrow(dt))
+        private[["id"]] <- get("id", envir = private) + lenmax - nrow(private$.data)
+        lenmax <- nrow(dt)
+      }
+      i   <- seq_len(lenmax)
 
       # generate new ids
-        ids <- i + get("id", private)
+      ids <- i + get("id", private)
 
       # check if rotation is necessary
-        if (get("current_row", private) + lenmax <= nrow(dt)){
-          i   <- i + get("current_row", envir = private)
-          private[["current_row"]] <- get("current_row", envir = private) + lenmax
-        } else {
-          # rotate buffer
-          assign("current_row", lenmax, envir = private)
-        }
+      if (get("current_row", private) + lenmax <= nrow(dt)){
+        i   <- i + get("current_row", envir = private)
+        private[["current_row"]] <- get("current_row", envir = private) + lenmax
+      } else {
+        # rotate buffer
+        assign("current_row", lenmax, envir = private)
+      }
 
       # Perform the insert
-        data.table::set(
-          dt,
-          i,
-          j = c(".id", names(vals)),
-          value = c(list(ids), vals)
-        )
+      data.table::set(
+        dt,
+        i,
+        j = c(".id", names(vals)),
+        value = c(list(ids), vals)
+      )
 
       private[["id"]] <- get("id", envir = private) + lenmax
     },
@@ -863,7 +863,7 @@ AppenderMemory <- R6::R6Class(
         }
       }
 
-    NULL
+      NULL
     },
 
     flush = function(){},
@@ -1658,28 +1658,28 @@ NULL
 
 
 AppenderDigest <-  R6::R6Class(
-    "AppenderDigest",
-    inherit = AppenderMemory,
-    cloneable = FALSE,
+  "AppenderDigest",
+  inherit = AppenderMemory,
+  cloneable = FALSE,
 
-    # +- public --------------------------------------------------------------
-    public = list(
+  # +- public --------------------------------------------------------------
+  public = list(
 
-      set_subject_layout = function(layout){
-        assert(inherits(layout, "Layout"))
-        private$.subject_layout <- layout
-        invisible(self)
-      }
-    ),
+    set_subject_layout = function(layout){
+      assert(inherits(layout, "Layout"))
+      private$.subject_layout <- layout
+      invisible(self)
+    }
+  ),
 
-    active = list(
-      subject_layout = function() get(".subject_layout", private)
-    ),
+  active = list(
+    subject_layout = function() get(".subject_layout", private)
+  ),
 
-    private = list(
-      .subject_layout = NULL
-    )
+  private = list(
+    .subject_layout = NULL
   )
+)
 
 
 
@@ -2308,22 +2308,18 @@ AppenderFileRotating <- R6::R6Class(
     },
 
     rotate = function(
-      force   = FALSE,
-      dry_run = FALSE,
-      verbose = dry_run
+      force   = FALSE
     ){
       assert(is_scalar_bool(force))
 
-      rotor::rotate(
-        self$file,
-        size        = if (force) -1 else self$size,
-        max_backups = self$max_backups,
-        compression = self$compression,
-        backup_dir  = self$backup_dir,
-        create_file = self$create_file,
-        dry_run     = dry_run,
-        verbose     = verbose
-      )
+      bq <- get("bq", private)
+
+      if (force || bq$should_rotate(size = self$size)){
+        bq$push_backup(compression = self$compression)
+        bq$prune(max_backups = self$max_backups)
+        file.remove(self$file)
+        file.create(self$file)
+      }
 
       self
     },
@@ -2467,29 +2463,29 @@ AppenderFileRotatingTime <- R6::R6Class(
     },
 
     rotate = function(
-      force   = FALSE,
-      dry_run = FALSE,
-      verbose = dry_run,
-      now     = Sys.time()
+      force = FALSE,
+      now   = Sys.time()
     ){
       assert(is_scalar_bool(force))
+      bq <- get("bq", private)
 
-
-
-      rotor::rotate_time(
-        self$file,
-        age         = if (force) NULL else self$age,
-        format      = self$timestamp_fmt,
-        size        = if (force) -1 else self$size,
-        max_backups = self$max_backups,
-        compression = self$compression,
-        backup_dir  = self$backup_dir,
-        overwrite   = self$overwrite,
-        create_file = self$create_file,
-        now         = now,
-        dry_run     = dry_run,
-        verbose     = verbose
-      )
+      if (
+        force ||
+        bq$should_rotate(
+          size = self$size,
+          age = self$age,
+          now = now
+        )
+      ){
+        bq$push_backup(
+          compression = self$compression,
+          overwrite = self$overwrite,
+          now = now
+        )
+        bq$prune(max_backups = self$max_backups)
+        file.remove(self$file)
+        file.create(self$file)
+      }
 
       self
     },
@@ -2632,28 +2628,9 @@ AppenderFileRotatingDate <- R6::R6Class(
 
     rotate = function(
       force   = FALSE,
-      dry_run = FALSE,
-      verbose = dry_run,
       now     = Sys.Date()
     ){
-      assert(is_scalar_bool(force))
-
-      rotor::rotate_date(
-        self$file,
-        age         = if (force) NULL else self$age,
-        format      = self$timestamp_fmt,
-        size        = if (force) -1 else self$size,
-        max_backups = self$max_backups,
-        compression = self$compression,
-        backup_dir  = self$backup_dir,
-        overwrite   = self$overwrite,
-        create_file = self$create_file,
-        now         = now,
-        dry_run     = dry_run,
-        verbose     = verbose
-      )
-
-      self
+      super$rotate(force = force, now = now)
     },
 
     set_file = function(

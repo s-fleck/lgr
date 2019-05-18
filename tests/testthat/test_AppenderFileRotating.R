@@ -36,7 +36,7 @@ test_that("AppenderFileRotating works as expected", {
 
   # second rotate only has a file of size 0 to rotate
   lg$appenders[[1]]$rotate(force = TRUE)
-  expect_equal(lg$appenders[[1]]$backups[1, ]$size, 0)
+  expect_equal(app$backups[1, ]$size, 0)
   expect_identical(nrow(lg$appenders[[1]]$backups), 2L)
 
   # compression is possible
@@ -142,13 +142,10 @@ test_that("AppenderFileRotatingDate works as expected", {
   # first rotate roates a file with content
   app$set_size(-1)
   app$rotate(now = as.Date("2019-01-01"))
-  app$.__enclos_env__$private$bq$backups
-
-
   expect_gt(app$backups[1, ]$size, 0)
 
   # second rotate only has a file of size 0 to rotate
-  lg$appenders[[1]]$rotate(now = as.Date("2019-01-02"))
+  app$rotate(now = as.Date("2019-01-02"))
   expect_equal(lg$appenders[[1]]$backups[1, ]$size, 0)
 
   # compression is possible
