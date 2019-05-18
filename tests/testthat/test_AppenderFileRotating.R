@@ -26,7 +26,6 @@ test_that("AppenderFileRotating works as expected", {
   })
 
   expect_identical(app, lg$appenders[[1]])
-
   lg$fatal("test")
   expect_true(file.exists(lg$appenders[[1]]$file))
 
@@ -142,7 +141,10 @@ test_that("AppenderFileRotatingDate works as expected", {
 
   # first rotate roates a file with content
   app$set_size(-1)
-  lg$appenders[[1]]$rotate(now = as.Date("2019-01-01"))
+  app$rotate(now = as.Date("2019-01-01"))
+  app$.__enclos_env__$private$bq$backups
+
+
   expect_gt(app$backups[1, ]$size, 0)
 
   # second rotate only has a file of size 0 to rotate

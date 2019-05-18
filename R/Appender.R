@@ -2292,6 +2292,7 @@ AppenderFileRotating <- R6::R6Class(
       self$set_compression(compression)
       self$set_create_file(create_file)
 
+
       if (is.null(backup_dir)){
         self$set_backup_dir(dirname(file))
       } else {
@@ -2333,6 +2334,17 @@ AppenderFileRotating <- R6::R6Class(
       self
     },
 
+    set_file = function(
+      file
+    ){
+      super$set_file(file)
+      private$bq <- rotor::BackupQueueIndex$new(
+        self$file,
+        backup_dir = private$bq$backup_dir
+      )
+      self
+    },
+
     set_size = function(
       x
     ){
@@ -2371,7 +2383,10 @@ AppenderFileRotating <- R6::R6Class(
         is_scalar_character(x) && dir.exists(x),
         "backup dir '", x, "' does not exist."
       )
-      private[[".backup_dir"]] <- x
+      private$bq <- rotor::BackupQueueIndex$new(
+        self$file,
+        backup_dir = x
+      )
       self
     }
   ),
@@ -2386,10 +2401,10 @@ AppenderFileRotating <- R6::R6Class(
     create_file = function() get(".create_file", private),
 
     backups = function(){
-      rotor::BackupQueueIndex$new(self$file, backup_dir = self$backup_dir)$backups
+      private$bq$backups
     },
 
-    backup_dir = function() get(".backup_dir", private)
+    backup_dir = function() get("bq", private)$backup_dir
   ),
 
   private = list(
@@ -2400,7 +2415,8 @@ AppenderFileRotating <- R6::R6Class(
     .compression = NULL,
     .backup_dir = NULL,
     .overwrite = NULL,
-    .create_file = NULL
+    .create_file = NULL,
+    bq = NULL
   )
 )
 
@@ -2458,6 +2474,8 @@ AppenderFileRotatingTime <- R6::R6Class(
     ){
       assert(is_scalar_bool(force))
 
+
+
       rotor::rotate_time(
         self$file,
         age         = if (force) NULL else self$age,
@@ -2479,6 +2497,17 @@ AppenderFileRotatingTime <- R6::R6Class(
 
     prune = function(max_backups = self$max_backups){
       rotor::BackupQueueDate$new(self$file)$prune(max_backups)
+      self
+    },
+
+    set_file = function(
+      file
+    ){
+      super$set_file(file)
+      private$bq <- rotor::BackupQueueDateTime$new(
+        self$file,
+        backup_dir = private$bq$backup_dir
+      )
       self
     },
 
@@ -2506,6 +2535,28 @@ AppenderFileRotatingTime <- R6::R6Class(
       assert(is_scalar_bool(x))
       private[[".overwrite"]] <- x
       self
+    },
+
+    set_last_rotation = function(
+      x = Sys.time()
+    ){
+      assert(is_scalar_Date(x) || is_scalar_POSIXct(x))
+      private[[".last_rotation"]] <- x
+      self
+    },
+
+    set_backup_dir = function(
+      x
+    ){
+      assert(
+        is_scalar_character(x) && dir.exists(x),
+        "backup dir '", x, "' does not exist."
+      )
+      private$bq <- rotor::BackupQueueDateTime$new(
+        self$file,
+        backup_dir = x
+      )
+      self
     }
   ),
 
@@ -2518,10 +2569,7 @@ AppenderFileRotatingTime <- R6::R6Class(
     compression = function() get(".compression", private),
     overwrite = function() get(".overwrite", private),
     create_file = function() get(".create_file", private),
-
-    backups = function(){
-      rotor::BackupQueueDateTime$new(self$file)$backups
-    }
+    last_rotation = function() get(".last_rotation", private)
   ),
 
   private = list(
@@ -2531,7 +2579,8 @@ AppenderFileRotatingTime <- R6::R6Class(
     .max_backups = NULL,
     .compression = NULL,
     .overwrite = NULL,
-    .create_file = NULL
+    .create_file = NULL,
+    .last_rotation = NULL
   )
 )
 
@@ -2607,6 +2656,31 @@ AppenderFileRotatingDate <- R6::R6Class(
       self
     },
 
+    set_file = function(
+      file
+    ){
+      super$set_file(file)
+      private$bq <- rotor::BackupQueueDate$new(
+        self$file,
+        backup_dir = private$bq$backup_dir
+      )
+      self
+    },
+
+
+    set_backup_dir = function(
+      x
+    ){
+      assert(
+        is_scalar_character(x) && dir.exists(x),
+        "backup dir '", x, "' does not exist."
+      )
+      private$bq <- rotor::BackupQueueDate$new(
+        self$file,
+        backup_dir = x
+      )
+      self
+    },
 
     set_timestamp_fmt = function(
       x
