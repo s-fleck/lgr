@@ -24,7 +24,7 @@ library(lgr)
 ```
 
 ```{r}
-ITS = seq_len(1e2)
+ITS <- seq_len(1e2)
 ```
 
 
@@ -34,15 +34,45 @@ app <- list(
   disabled = AppenderFile$new(tempfile()),
   plain    = AppenderFile$new(tempfile()),
   rotating = AppenderFileRotating$new(tempfile()),
+  rotating_date = AppenderFileRotatingDate$new(tempfile()),
   json     = AppenderJson$new(tempfile())
 )
+
+# configure AppenderRotatingDate so that it is forced to 
+# check the date stamp on each log (the wors-case scenario)
+td <- list()
+td$rotating      <- file.path(tempdir(), "rotating")
+td$rotating_date <- file.path(tempdir(), "rotating_date")
+lapply(td, dir.create)
+
+# set backup dirs so that they don't conflict
+app$rotating$
+  set_backup_dir(td$rotating)
+
+app$rotating_date$
+  set_size(-1)$
+  set_age("1 year")$
+  set_backup_dir(td$rotating_date)
+
+app$rotating$rotate()
+app$rotating_date$rotate()
+app$rotating_date$rotate()
+stopifnot(nrow(app$rotating_date$backups) == 1)
+stopifnot(nrow(app$rotating$backups) == 0)
 
 loggers = list(
   disabled = get_logger("disabled")$set_propagate(FALSE)$add_appender(app$disabled)$set_threshold(0),
   plain = get_logger("plain")$set_propagate(FALSE)$add_appender(app$plain),
   rotating = get_logger("rotating")$set_propagate(FALSE)$add_appender(app$rotating),
+  rotating_date = get_logger("rotating_date")$set_propagate(FALSE)$add_appender(app$rotating_date),
   json = get_logger("json")$set_propagate(FALSE)$add_appender(app$json)
 )
+
+
+loggers$rotating$info("test")
+loggers$rotating$info("test")
+loggers$rotating_date$info("test")
+loggers$rotating_date$info("test")
 
 ```
 
@@ -80,6 +110,7 @@ plot(res)
 # length(readLines(app$rotating$file)) == length(ITS)
 
 lapply(app, function(a) unlink(a$file))
+lapply(td,  function(d) unlink(d, recursive = TRUE))
 
 ```
 
