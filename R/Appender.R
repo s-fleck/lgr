@@ -2282,6 +2282,12 @@ AppenderFileRotating <- R6::R6Class(
       create_file = TRUE
     ){
       assert_namespace("rotor")
+
+      private$bq <- rotor::BackupQueueIndex$new(
+        file,
+        backup_dir = backup_dir
+      )
+
       self$set_file(file)
       self$set_threshold(threshold)
       self$set_layout(layout)
@@ -2326,7 +2332,7 @@ AppenderFileRotating <- R6::R6Class(
 
 
     prune = function(max_backups = self$max_backups){
-      rotor::BackupQueueIndex$new(self$file)$prune(max_backups)
+      get("bq", envir = private)$prune(max_backups)
       self
     },
 
@@ -2334,10 +2340,7 @@ AppenderFileRotating <- R6::R6Class(
       file
     ){
       super$set_file(file)
-      private$bq <- rotor::BackupQueueIndex$new(
-        self$file,
-        backup_dir = private$bq$backup_dir
-      )
+      private$bq$set_file(self$file)
       self
     },
 
@@ -2375,14 +2378,7 @@ AppenderFileRotating <- R6::R6Class(
     set_backup_dir = function(
       x
     ){
-      assert(
-        is_scalar_character(x) && dir.exists(x),
-        "backup dir '", x, "' does not exist."
-      )
-      private$bq <- rotor::BackupQueueIndex$new(
-        self$file,
-        backup_dir = x
-      )
+      private$bq$set_backup_dir(x)
       self
     }
   ),
@@ -2437,9 +2433,16 @@ AppenderFileRotatingTime <- R6::R6Class(
       backup_dir = dirname(file),
       timestamp_fmt = "%Y-%m-%d--%H-%M-%S",
       overwrite = FALSE,
-      create_file = TRUE
+      create_file = TRUE,
+      cache_backups = TRUE
     ){
       assert_namespace("rotor")
+
+      private$bq <- rotor::BackupQueueDateTime$new(
+        file,
+        backup_dir = backup_dir
+      )
+
       self$set_file(file)
       self$set_threshold(threshold)
       self$set_layout(layout)
@@ -2458,6 +2461,8 @@ AppenderFileRotatingTime <- R6::R6Class(
       } else {
         self$set_backup_dir(backup_dir)
       }
+
+      self$set_cache_backups(cache_backups)
 
       self
     },
@@ -2490,24 +2495,6 @@ AppenderFileRotatingTime <- R6::R6Class(
       self
     },
 
-
-    prune = function(max_backups = self$max_backups){
-      rotor::BackupQueueDate$new(self$file)$prune(max_backups)
-      self
-    },
-
-    set_file = function(
-      file
-    ){
-      super$set_file(file)
-      private$bq <- rotor::BackupQueueDateTime$new(
-        self$file,
-        backup_dir = private$bq$backup_dir
-      )
-      self
-    },
-
-
     set_age = function(
       x
     ){
@@ -2533,25 +2520,10 @@ AppenderFileRotatingTime <- R6::R6Class(
       self
     },
 
-    set_last_rotation = function(
-      x = Sys.time()
-    ){
-      assert(is_scalar_Date(x) || is_scalar_POSIXct(x))
-      private[[".last_rotation"]] <- x
-      self
-    },
-
-    set_backup_dir = function(
+    set_cache_backups = function(
       x
     ){
-      assert(
-        is_scalar_character(x) && dir.exists(x),
-        "backup dir '", x, "' does not exist."
-      )
-      private$bq <- rotor::BackupQueueDateTime$new(
-        self$file,
-        backup_dir = x
-      )
+      private$bq$set_cache_backups(x)
       self
     }
   ),
@@ -2564,8 +2536,7 @@ AppenderFileRotatingTime <- R6::R6Class(
     max_backups = function() get(".max_backups", private),
     compression = function() get(".compression", private),
     overwrite = function() get(".overwrite", private),
-    create_file = function() get(".create_file", private),
-    last_rotation = function() get(".last_rotation", private)
+    create_file = function() get(".create_file", private)
   ),
 
   private = list(
@@ -2575,8 +2546,7 @@ AppenderFileRotatingTime <- R6::R6Class(
     .max_backups = NULL,
     .compression = NULL,
     .overwrite = NULL,
-    .create_file = NULL,
-    .last_rotation = NULL
+    .create_file = NULL
   )
 )
 
@@ -2601,9 +2571,16 @@ AppenderFileRotatingDate <- R6::R6Class(
       backup_dir = dirname(file),
       timestamp_fmt = "%Y-%m-%d",
       overwrite = FALSE,
-      create_file = TRUE
+      create_file = TRUE,
+      cache_backups = TRUE
     ){
       assert_namespace("rotor")
+
+      private$bq <- rotor::BackupQueueDate$new(
+        file,
+        backup_dir = backup_dir
+      )
+
       self$set_file(file)
       self$set_threshold(threshold)
       self$set_layout(layout)
@@ -2623,6 +2600,8 @@ AppenderFileRotatingDate <- R6::R6Class(
         self$set_backup_dir(backup_dir)
       }
 
+      self$set_cache_backups(cache_backups)
+
       self
     },
 
@@ -2631,32 +2610,6 @@ AppenderFileRotatingDate <- R6::R6Class(
       now     = Sys.Date()
     ){
       super$rotate(force = force, now = now)
-    },
-
-    set_file = function(
-      file
-    ){
-      super$set_file(file)
-      private$bq <- rotor::BackupQueueDate$new(
-        self$file,
-        backup_dir = private$bq$backup_dir
-      )
-      self
-    },
-
-
-    set_backup_dir = function(
-      x
-    ){
-      assert(
-        is_scalar_character(x) && dir.exists(x),
-        "backup dir '", x, "' does not exist."
-      )
-      private$bq <- rotor::BackupQueueDate$new(
-        self$file,
-        backup_dir = x
-      )
-      self
     },
 
     set_timestamp_fmt = function(

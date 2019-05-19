@@ -233,8 +233,8 @@ test_that("AppenderFileRotatingTime works as expected", {
   expect_match(app$backups[1, ]$path, "2019-01-03--12-03-00.log.zip")
 
   # cleanup
-  lg$appenders[[1]]$prune(0)
-  expect_identical(nrow(lg$appenders[[1]]$backups), 0L)
+  app$prune(0)
+  expect_identical(nrow(app$backups), 0L)
   lg$config(NULL)
 })
 

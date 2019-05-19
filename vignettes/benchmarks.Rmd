@@ -25,6 +25,8 @@ library(lgr)
 
 ```{r}
 ITS <- seq_len(1e2)
+
+
 ```
 
 
@@ -34,7 +36,8 @@ app <- list(
   disabled = AppenderFile$new(tempfile()),
   plain    = AppenderFile$new(tempfile()),
   rotating = AppenderFileRotating$new(tempfile()),
-  rotating_date = AppenderFileRotatingDate$new(tempfile()),
+  rotating_date = AppenderFileRotatingDate$new(tempfile(), cache_backups = FALSE),
+  rotating_date_cached = AppenderFileRotatingDate$new(tempfile(), cache_backups = TRUE),
   json     = AppenderJson$new(tempfile())
 )
 
@@ -43,6 +46,7 @@ app <- list(
 td <- list()
 td$rotating      <- file.path(tempdir(), "rotating")
 td$rotating_date <- file.path(tempdir(), "rotating_date")
+td$rotating_date_cached <- file.path(tempdir(), "rotating_date_cached")
 lapply(td, dir.create)
 
 # set backup dirs so that they don't conflict
@@ -54,27 +58,51 @@ app$rotating_date$
   set_age("1 year")$
   set_backup_dir(td$rotating_date)
 
+app$rotating_date_cached$
+  set_size(-1)$
+  set_age("1 year")$
+  set_backup_dir(td$rotating_date_cached)
+
 app$rotating$rotate()
 app$rotating_date$rotate()
 app$rotating_date$rotate()
-stopifnot(nrow(app$rotating_date$backups) == 1)
+app$rotating_date_cached$rotate()
+app$rotating_date_cached$rotate()
+
+stopifnot(isTRUE(app$rotating_date_cached$.__enclos_env__$private$bq$cache_backups))
+stopifnot(isFALSE(app$rotating_date$.__enclos_env__$private$bq$cache_backups))
+
 stopifnot(nrow(app$rotating$backups) == 0)
+stopifnot(nrow(app$rotating_date$backups) == 1)
+stopifnot(nrow(app$rotating_date_cached$backups) == 1)
 
 loggers = list(
   disabled = get_logger("disabled")$set_propagate(FALSE)$add_appender(app$disabled)$set_threshold(0),
   plain = get_logger("plain")$set_propagate(FALSE)$add_appender(app$plain),
   rotating = get_logger("rotating")$set_propagate(FALSE)$add_appender(app$rotating),
   rotating_date = get_logger("rotating_date")$set_propagate(FALSE)$add_appender(app$rotating_date),
+  rotating_date_cached = get_logger("rotating_date_cached")$set_propagate(FALSE)$add_appender(app$rotating_date_cached),
   json = get_logger("json")$set_propagate(FALSE)$add_appender(app$json)
 )
 
-
 loggers$rotating$info("test")
 loggers$rotating$info("test")
-loggers$rotating_date$info("test")
 loggers$rotating_date$info("test")
 
 ```
+
+```{r eval = FALSE}
+
+profvis::profvis({
+  for (i in 1:10) loggers$rotating_date$fatal("test")
+})
+
+
+profvis::profvis({
+  for (i in 1:10) loggers$rotating_date_cached$fatal("test")
+})
+```
+
 
 ```{r}
 exprs <- lapply(
