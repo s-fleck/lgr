@@ -2283,6 +2283,8 @@ AppenderFileRotating <- R6::R6Class(
     ){
       assert_namespace("rotor")
 
+      if (!file.exists(file))  file.create(file)
+
       private$bq <- rotor::BackupQueueIndex$new(
         file,
         backup_dir = backup_dir
@@ -2321,15 +2323,14 @@ AppenderFileRotating <- R6::R6Class(
       bq <- get("bq", private)
 
       if (force || bq$should_rotate(size = self$size)){
-        bq$push_backup(compression = self$compression)
-        bq$prune(max_backups = self$max_backups)
+        bq$push_backup()
+        bq$prune()
         file.remove(self$file)
         file.create(self$file)
       }
 
       self
     },
-
 
     prune = function(max_backups = self$max_backups){
       get("bq", envir = private)$prune(max_backups)
@@ -2354,16 +2355,14 @@ AppenderFileRotating <- R6::R6Class(
     set_max_backups = function(
       x
     ){
-      assert(is.infinite(x) || is_n0(x))
-      private[[".max_backups"]] <- x
+      private[["bq"]]$set_max_backups(x)
       self
     },
 
     set_compression = function(
       x
     ){
-      assert_valid_compression(x)
-      private[[".compression"]] <- x
+      private[["bq"]]$set_compression(x)
       self
     },
 
@@ -2384,29 +2383,17 @@ AppenderFileRotating <- R6::R6Class(
   ),
 
   active = list(
-    age = function() get(".age", private),
-    timestamp_fmt = function() get(".timestamp_fmt", private),
     size = function() get(".size", private),
-    max_backups = function() get(".max_backups", private),
-    compression = function() get(".compression", private),
-    overwrite = function() get(".overwrite", private),
     create_file = function() get(".create_file", private),
 
-    backups = function(){
-      private$bq$backups
-    },
-
-    backup_dir = function() get("bq", private)$backup_dir
+    compression = function() get("bq", private)$compression,
+    max_backups = function() get("bq", private)$max_backups,
+    backups     = function() get("bq", private)$backups,
+    backup_dir  = function() get("bq", private)$backup_dir
   ),
 
   private = list(
-    .age = NULL,
-    .timestamp_fmt = NULL,
     .size = NULL,
-    .max_backups = NULL,
-    .compression = NULL,
-    .backup_dir = NULL,
-    .overwrite = NULL,
     .create_file = NULL,
     bq = NULL
   )
@@ -2437,6 +2424,8 @@ AppenderFileRotatingTime <- R6::R6Class(
       cache_backups = TRUE
     ){
       assert_namespace("rotor")
+
+      if (!file.exists(file))  file.create(file)
 
       private$bq <- rotor::BackupQueueDateTime$new(
         file,
@@ -2483,11 +2472,10 @@ AppenderFileRotatingTime <- R6::R6Class(
         )
       ){
         bq$push_backup(
-          compression = self$compression,
           overwrite = self$overwrite,
           now = now
         )
-        bq$prune(max_backups = self$max_backups)
+        bq$prune()
         file.remove(self$file)
         file.create(self$file)
       }
@@ -2506,8 +2494,7 @@ AppenderFileRotatingTime <- R6::R6Class(
     set_timestamp_fmt = function(
       x
     ){
-      assert(rotor:::assert_valid_datetime_format(x))
-      private[[".timestamp_fmt"]] <- x
+      get("bq", private)$set_fmt(x)
       self
     },
 
@@ -2531,22 +2518,15 @@ AppenderFileRotatingTime <- R6::R6Class(
 
   active = list(
     age = function() get(".age", private),
-    timestamp_fmt = function() get(".timestamp_fmt", private),
-    size = function() get(".size", private),
-    max_backups = function() get(".max_backups", private),
-    compression = function() get(".compression", private),
     overwrite = function() get(".overwrite", private),
-    create_file = function() get(".create_file", private)
+
+    timestamp_fmt = function() get("bq", private)$fmt,
+    cache_backups = function() get("bq", private)$cache_backups
   ),
 
   private = list(
     .age = NULL,
-    .timestamp_fmt = NULL,
-    .size = NULL,
-    .max_backups = NULL,
-    .compression = NULL,
-    .overwrite = NULL,
-    .create_file = NULL
+    .overwrite = NULL
   )
 )
 
@@ -2575,6 +2555,8 @@ AppenderFileRotatingDate <- R6::R6Class(
       cache_backups = TRUE
     ){
       assert_namespace("rotor")
+
+      if (!file.exists(file))  file.create(file)
 
       private$bq <- rotor::BackupQueueDate$new(
         file,
@@ -2610,14 +2592,6 @@ AppenderFileRotatingDate <- R6::R6Class(
       now     = Sys.Date()
     ){
       super$rotate(force = force, now = now)
-    },
-
-    set_timestamp_fmt = function(
-      x
-    ){
-      assert(rotor:::assert_valid_date_format(x))
-      private[[".timestamp_fmt"]] <- x
-      self
     }
   )
 )

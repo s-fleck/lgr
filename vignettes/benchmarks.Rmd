@@ -84,7 +84,7 @@ loggers = list(
   rotating_date_cached = get_logger("rotating_date_cached")$set_propagate(FALSE)$add_appender(app$rotating_date_cached),
   json = get_logger("json")$set_propagate(FALSE)$add_appender(app$json)
 )
-
+  
 loggers$rotating$info("test")
 loggers$rotating$info("test")
 loggers$rotating_date$info("test")
