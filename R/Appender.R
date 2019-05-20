@@ -2298,14 +2298,8 @@ AppenderFileRotating <- R6::R6Class(
       self$set_size(size)
       self$set_max_backups(max_backups)
       self$set_compression(compression)
+      self$set_backup_dir(backup_dir)
       self$set_create_file(create_file)
-
-
-      if (is.null(backup_dir)){
-        self$set_backup_dir(dirname(file))
-      } else {
-        self$set_backup_dir(backup_dir)
-      }
 
       self
     },
@@ -2443,18 +2437,13 @@ AppenderFileRotatingTime <- R6::R6Class(
       self$set_max_backups(max_backups)
       self$set_compression(compression)
       self$set_overwrite(overwrite)
+      self$set_backup_dir(backup_dir)
       self$set_create_file(create_file)
-
-      if (is.null(backup_dir)){
-        self$set_backup_dir(dirname(file))
-      } else {
-        self$set_backup_dir(backup_dir)
-      }
-
       self$set_cache_backups(cache_backups)
 
       self
     },
+
 
     rotate = function(
       force = FALSE,
@@ -2483,6 +2472,7 @@ AppenderFileRotatingTime <- R6::R6Class(
       self
     },
 
+
     set_age = function(
       x
     ){
@@ -2507,6 +2497,7 @@ AppenderFileRotatingTime <- R6::R6Class(
       self
     },
 
+
     set_cache_backups = function(
       x
     ){
@@ -2519,10 +2510,10 @@ AppenderFileRotatingTime <- R6::R6Class(
   active = list(
     age = function() get(".age", private),
     overwrite = function() get(".overwrite", private),
-
     timestamp_fmt = function() get("bq", private)$fmt,
     cache_backups = function() get("bq", private)$cache_backups
   ),
+
 
   private = list(
     .age = NULL,
@@ -2575,23 +2566,10 @@ AppenderFileRotatingDate <- R6::R6Class(
       self$set_compression(compression)
       self$set_overwrite(overwrite)
       self$set_create_file(create_file)
-
-      if (is.null(backup_dir)){
-        self$set_backup_dir(dirname(file))
-      } else {
-        self$set_backup_dir(backup_dir)
-      }
-
+      self$set_backup_dir(backup_dir)
       self$set_cache_backups(cache_backups)
 
       self
-    },
-
-    rotate = function(
-      force   = FALSE,
-      now     = Sys.Date()
-    ){
-      super$rotate(force = force, now = now)
     }
   )
 )
