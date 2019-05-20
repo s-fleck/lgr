@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9003</span>
       </span>
     </div>
 
@@ -119,23 +119,24 @@
     <pre class="usage"><span class='fu'>basic_config</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fmt</span> <span class='kw'>=</span> <span class='st'>"%L [%t] %m"</span>,
   <span class='kw'>timestamp_fmt</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%OS3"</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='st'>"info"</span>,
   <span class='kw'>appenders</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>console</span> <span class='kw'>=</span> <span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/NULL'>is.null</a></span>(<span class='no'>appenders</span>)) <span class='st'>"all"</span> <span class='kw'>else</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>memory</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>console_fmt</span> <span class='kw'>=</span> <span class='st'>"%L [%t] %m %f"</span>,
+  <span class='kw'>console_timestamp_fmt</span> <span class='kw'>=</span> <span class='st'>"%H:%M:%OS3"</span>, <span class='kw'>memory</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>file</th>
-      <td><p><code>character</code> scalar: If not <code>NULL</code> a <a href='AppenderFile.html'>AppenderFile</a> will be created
-that logs to this file. If the filename ends in <code>.jsonl</code>, the Appender will
-be set up to use the <a href='http://http://jsonlines.org/'>JSON Lines</a> format
-instead of plain text (see <a href='AppenderFile.html'>AppenderFile</a> and <a href='AppenderJson.html'>AppenderJson</a>).</p></td>
+      <td><p><code>character</code> scalar: If not <code>NULL</code> a <a href='AppenderFile.html'>AppenderFile</a> will be
+created that logs to this file. If the filename ends in <code>.jsonl</code>, the
+Appender will be set up to use the <a href='http://http://jsonlines.org/'>JSON Lines</a> format instead of plain text (see
+<a href='AppenderFile.html'>AppenderFile</a> and <a href='AppenderJson.html'>AppenderJson</a>).</p></td>
     </tr>
     <tr>
       <th>fmt</th>
-      <td><p><code>character</code> scalar: Format to use if <code>file</code> is supplied and not
-a <code>.jsonl</code> file. If <code>NULL</code> it defaults to <code>"%L [%t] %m"</code>
-(see <a href='print.LogEvent.html'>format.LogEvent</a>)</p></td>
+      <td><p><code>character</code> scalar: Format to use if <code>file</code> is supplied and not a
+<code>.jsonl</code> file. If <code>NULL</code> it defaults to <code>"%L [%t] %m"</code> (see
+<a href='print.LogEvent.html'>format.LogEvent</a>)</p></td>
     </tr>
     <tr>
       <th>timestamp_fmt</th>
@@ -143,9 +144,7 @@ a <code>.jsonl</code> file. If <code>NULL</code> it defaults to <code>"%L [%t] %
     </tr>
     <tr>
       <th>threshold</th>
-      <td><p><code>character</code> or <code>integer</code> scalar.
-The minimum <a href='get_log_levels.html'>log level</a> that should be processed by the root
-logger.</p></td>
+      <td><p><code>character</code> or <code>integer</code> scalar. The minimum <a href='get_log_levels.html'>log level</a> that should be processed by the root logger.</p></td>
     </tr>
     <tr>
       <th>appenders</th>
@@ -153,8 +152,17 @@ logger.</p></td>
     </tr>
     <tr>
       <th>console</th>
-      <td><p>logical<code>scalar. or a</code>threshold` (see above). Add an appender
+      <td><p><code>logical</code> scalar or a <code>threshold</code> (see above). Add an appender
 logs to the console (i.e. displays messages in an interactive R session)</p></td>
+    </tr>
+    <tr>
+      <th>console_fmt</th>
+      <td><p><code>character</code> scalar: like <code>fmt</code> but used for console output</p></td>
+    </tr>
+    <tr>
+      <th>console_timestamp_fmt</th>
+      <td><p><code>character</code> scalar: like <code>timestamp_fmt</code> but
+used for console output</p></td>
     </tr>
     <tr>
       <th>memory</th>

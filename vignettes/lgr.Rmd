@@ -444,8 +444,8 @@ lg$info("Glue is available from {.cran}", .cran = "https://CRAN.R-project.org/pa
 
 ## With setters
 
-There are many ways to configure loggers. The most straight forward one is to
-use *setters* to specify the Loggers properties.
+There are several different ways to configure loggers. The most straight 
+forward one is to use *setters* to specify the Loggers properties.
 ```{r}
 lg <- get_logger("test")
 lg$config(NULL)  # resets logger to unconfigured state

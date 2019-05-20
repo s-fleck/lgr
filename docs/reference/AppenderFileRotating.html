@@ -65,7 +65,7 @@ the meanings of the extra arguments" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9003</span>
       </span>
     </div>
 
@@ -125,60 +125,67 @@ the meanings of the extra arguments</p>
 
     <pre>
 x &lt;- AppenderFileRotating$new(file, threshold = NA_integer_, layout =
-  LayoutFormat$new(), filters = NULL, size = 1, max_backups = Inf, compression
-  = FALSE, backup_dir = dirname(file), create_file = TRUE)
+  LayoutFormat$new(), filters = NULL, size = Inf, max_backups = Inf,
+  compression = FALSE, backup_dir = dirname(file), create_file = TRUE)
     x &lt;- AppenderFileRotatingDate$new(file, threshold = NA_integer_, layout =
-  LayoutFormat$new(), filters = NULL, age = NULL, size = 1, max_backups = Inf,
-  compression = FALSE, backup_dir = dirname(file), timestamp_fmt = "%Y-%m-%d",
-  overwrite = FALSE, create_file = TRUE)
+  LayoutFormat$new(), filters = NULL, age = NULL, size = Inf, max_backups =
+  Inf, compression = FALSE, backup_dir = dirname(file), fmt = "%Y-%m-%d",
+  overwrite = FALSE, create_file = TRUE, cache_backups = TRUE)
     x &lt;- AppenderFileRotatingTime$new(file, threshold = NA_integer_, layout =
-  LayoutFormat$new(), filters = NULL, age = NULL, size = 1, max_backups = Inf,
-  compression = FALSE, backup_dir = dirname(file), timestamp_fmt =
-  "%Y-%m-%d--%H-%M-%S", overwrite = FALSE, create_file = TRUE)
+  LayoutFormat$new(), filters = NULL, age = NULL, size = Inf, max_backups =
+  Inf, compression = FALSE, backup_dir = dirname(file), fmt =
+  "%Y-%m-%d--%H-%M-%S", overwrite = FALSE, create_file = TRUE, cache_backups =
+  TRUE)
     x$add_filter(filter, name = NULL)
 x$append(event)
 x$clone(deep = FALSE)
 x$filter(event)
 x$prune(max_backups = self$max_backups)
 x$remove_filter(pos)
-x$rotate(dry_run = FALSE, verbose = dry_run, now = Sys.Date())
-x$rotate(dry_run = FALSE, verbose = dry_run, now = Sys.time())
-x$rotate(dry_run = FALSE, verbose = dry_run)
+x$rotate(force = FALSE, now = Sys.time())
+x$rotate(force = FALSE)
 x$set_age(x)
 x$set_backup_dir(x)
+x$set_cache_backups(x)
 x$set_compression(x)
 x$set_create_file(x)
 x$set_file(file)
 x$set_filters(filters)
+x$set_fmt(x)
 x$set_layout(layout)
 x$set_max_backups(x)
 x$set_overwrite(x)
 x$set_size(x)
 x$set_threshold(level)
-x$set_timestamp_fmt(x)
     x$age
 x$backup_dir
 x$backups
+x$cache_backups
 x$compression
 x$create_file
 x$destination
 x$file
 x$filters
+x$fmt
 x$layout
 x$max_backups
 x$overwrite
 x$size
 x$threshold
-x$timestamp_fmt
     </pre>
     
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>age</code>, <code>size</code>, <code>max_backups</code>, <code>timestamp_fmt</code>, <code>overwrite</code>, <code>compression</code>, <code>backup_dir</code></dt><dd><p>Passed on to <code><a href='https://www.rdocumentation.org/packages/rotor/topics/rotate'>rotor::rotate()</a></code>, <code><a href='https://www.rdocumentation.org/packages/rotor/topics/rotate'>rotor::rotate_date()</a></code> or <code><a href='https://www.rdocumentation.org/packages/rotor/topics/rotate'>rotor::rotate_time()</a></code>.
-Please note that <code>timestamp_fmt</code> is passed on as the <code>format</code> argument to
-<code>rotate_date()</code> and <code>rotate_time()</code></p></dd>
+<dt><code>age</code>, <code>size</code>, <code>max_backups</code>, <code>fmt</code>, <code>overwrite</code>, <code>compression</code>, <code>backup_dir</code></dt><dd><p>Please see <code><a href='https://www.rdocumentation.org/packages/rotor/topics/rotate'>rotor::rotate()</a></code> for the meaning of these arguments
+(<code>fmt</code> is passed on as <code>format</code>).</p></dd>
+    <dt><code>cache_backups</code>, <code>set_cache_backups()</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>. If <code>TRUE</code> (the default) the list of backups is cached,
+if <code>FALSE</code> it is read from disk every time this appender triggers.
+Caching brings a significant speedup for checking whether to rotate or
+not based on the <code>age</code> of the last backup, but is only safe if
+there are no other programs/functions (except this appender) interacting
+with the backups.</p></dd>
     <dt><code>backups</code></dt><dd><p>A <code>data.frame</code> containing information on path, file size,
 etc... on the available backups of <code>file</code>.</p></dd>
 </dl>
@@ -232,7 +239,7 @@ was specified)</p></dd>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a>, <a href='LayoutJson.html'>LayoutJson</a></p>
+    <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a>, <a href='LayoutJson.html'>LayoutJson</a>, <code><a href='https://www.rdocumentation.org/packages/rotor/topics/rotate'>rotor::rotate()</a></code></p>
 <p>Other Appenders: <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
   <code><a href='AppenderConsole.html'>AppenderConsole</a></code>, <code><a href='AppenderDbi.html'>AppenderDbi</a></code>,
   <code><a href='AppenderFile.html'>AppenderFile</a></code>, <code><a href='AppenderGmail.html'>AppenderGmail</a></code>,
