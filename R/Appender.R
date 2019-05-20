@@ -2244,10 +2244,19 @@ AppenderGmail <- R6::R6Class(
 #' @section Fields:
 #'
 #' \describe{
-#'   \item{`age`, `size`, `max_backups`, `timestamp_fmt`, `overwrite`, `compression`, `backup_dir`}{
-#'   Passed on to [rotor::rotate()], [rotor::rotate_date()] or [rotor::rotate_time()].
-#'   Please note that `timestamp_fmt` is passed on as the `format` argument to
-#'   `rotate_date()` and `rotate_time()`}
+#'   \item{`age`, `size`, `max_backups`, `fmt`, `overwrite`, `compression`, `backup_dir`}{
+#'     Please see [rotor::rotate()] for the meaning of these arguments
+#'     (`fmt` is passed on as `format`).
+#'   }
+#'
+#'   \item{`cache_backups`, `set_cache_backups()`}{
+#'     `TRUE` or `FALSE`. If `TRUE` (the default) the list of backups is cached,
+#'     if `FALSE` it is read from disk every time this appender triggers.
+#'     Caching brings a significant speedup for checking whether to rotate or
+#'     not based on the `age` of the last backup, but is only safe if
+#'     there are no other programs/functions (except this appender) interacting
+#'     with the backups.
+#'   }
 #'
 #'   \item{`backups`}{A `data.frame` containing information on path, file size,
 #'   etc... on the available backups of `file`.}
@@ -2255,7 +2264,7 @@ AppenderGmail <- R6::R6Class(
 #'
 #'
 #' @export
-#' @seealso [LayoutFormat], [LayoutJson]
+#' @seealso [LayoutFormat], [LayoutJson], [rotor::rotate()]
 #' @family Appenders
 #' @name AppenderFileRotating
 #' @aliases AppenderFileRotatingDate AppenderFileRotatingTime
@@ -2412,7 +2421,7 @@ AppenderFileRotatingTime <- R6::R6Class(
       max_backups = Inf,
       compression = FALSE,
       backup_dir = dirname(file),
-      timestamp_fmt = "%Y-%m-%d--%H-%M-%S",
+      fmt = "%Y-%m-%d--%H-%M-%S",
       overwrite = FALSE,
       create_file = TRUE,
       cache_backups = TRUE
@@ -2431,7 +2440,7 @@ AppenderFileRotatingTime <- R6::R6Class(
       self$set_layout(layout)
       self$set_filters(filters)
 
-      self$set_timestamp_fmt(timestamp_fmt)
+      self$set_fmt(fmt)
       self$set_age(age)
       self$set_size(size)
       self$set_max_backups(max_backups)
@@ -2481,7 +2490,7 @@ AppenderFileRotatingTime <- R6::R6Class(
     },
 
 
-    set_timestamp_fmt = function(
+    set_fmt = function(
       x
     ){
       get("bq", private)$set_fmt(x)
@@ -2510,7 +2519,7 @@ AppenderFileRotatingTime <- R6::R6Class(
   active = list(
     age = function() get(".age", private),
     overwrite = function() get(".overwrite", private),
-    timestamp_fmt = function() get("bq", private)$fmt,
+    fmt = function() get("bq", private)$fmt,
     cache_backups = function() get("bq", private)$cache_backups
   ),
 
@@ -2540,7 +2549,7 @@ AppenderFileRotatingDate <- R6::R6Class(
       max_backups = Inf,
       compression = FALSE,
       backup_dir = dirname(file),
-      timestamp_fmt = "%Y-%m-%d",
+      fmt = "%Y-%m-%d",
       overwrite = FALSE,
       create_file = TRUE,
       cache_backups = TRUE
@@ -2559,7 +2568,7 @@ AppenderFileRotatingDate <- R6::R6Class(
       self$set_layout(layout)
       self$set_filters(filters)
 
-      self$set_timestamp_fmt(timestamp_fmt)
+      self$set_fmt(fmt)
       self$set_age(age)
       self$set_size(size)
       self$set_max_backups(max_backups)

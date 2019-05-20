@@ -29,9 +29,10 @@ ITS <- seq_len(1e2)
 
 ```
 
+A simple comparison of the perfromance of various Appenders
 
 # Setup loggers
-```{r}
+```{r, results="hide"}
 app <- list(
   disabled = AppenderFile$new(tempfile()),
   plain    = AppenderFile$new(tempfile()),
@@ -91,7 +92,7 @@ loggers$rotating_date$info("test")
 
 ```
 
-```{r eval = FALSE}
+```{r eval = FALSE, echo = FALSE}
 
 profvis::profvis({
   for (i in 1:10) loggers$rotating_date$fatal("test")
@@ -132,11 +133,6 @@ plot(res)
 
 
 ```{r}
-# length(readLines(app$disabled$file)) == 0
-# length(readLines(app$plain$file)) == length(ITS)
-# length(readLines(app$json$file)) == length(ITS)
-# length(readLines(app$rotating$file)) == length(ITS)
-
 lapply(app, function(a) unlink(a$file))
 lapply(td,  function(d) unlink(d, recursive = TRUE))
 

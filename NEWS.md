@@ -1,7 +1,7 @@
 # lgr 0.2.2.9000
-  * `AppenderFileRotating`, `AppenderFileRotatingDate` and 
-    `AppenderFileRotatingTime` for rotating file appenders via the 
-    [rotor](https://github.com/s-fleck/rotor).
+  * Added support for rotating log files via `AppenderFileRotating`, 
+    `AppenderFileRotatingDate` and `AppenderFileRotatingTime`. Requires the
+    package [rotor](https://github.com/s-fleck/rotor).
   * functions like `show_log()`, `show_data()`,... now accept logger names as
     well as Logger or Appender objects as `target`.
   * `AppenderFile$new()` now creates an empty file, or fails if it can't

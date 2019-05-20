@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9003</span>
       </span>
     </div>
 
@@ -111,8 +111,7 @@
 <a href="#lgr-0-2-2-9000" class="anchor"></a>lgr 0.2.2.9000<small> Unreleased </small>
 </h1>
 <ul>
-<li>
-<code>AppenderFileRotating</code>, <code>AppenderFileRotatingDate</code> and <code>AppenderFileRotatingTime</code> for rotating file appenders via the <a href="https://github.com/s-fleck/rotor">rotor</a>.</li>
+<li>Added support for rotating log files via <code>AppenderFileRotating</code>, <code>AppenderFileRotatingDate</code> and <code>AppenderFileRotatingTime</code>. Requires the package <a href="https://github.com/s-fleck/rotor">rotor</a>.</li>
 <li>functions like <code><a href="../reference/simple_logging.html">show_log()</a></code>, <code><a href="../reference/simple_logging.html">show_data()</a></code>,… now accept logger names as well as Logger or Appender objects as <code>target</code>.</li>
 <li>
 <code>AppenderFile$new()</code> now creates an empty file, or fails if it can’t</li>

@@ -18,13 +18,14 @@ x <- AppenderFileRotating$new(file, threshold = NA_integer_, layout =
 
 x <- AppenderFileRotatingDate$new(file, threshold = NA_integer_, layout =
   LayoutFormat$new(), filters = NULL, age = NULL, size = Inf, max_backups =
-  Inf, compression = FALSE, backup_dir = dirname(file), timestamp_fmt =
-  "\%Y-\%m-\%d", overwrite = FALSE, create_file = TRUE)
+  Inf, compression = FALSE, backup_dir = dirname(file), fmt = "\%Y-\%m-\%d",
+  overwrite = FALSE, create_file = TRUE, cache_backups = TRUE)
 
 x <- AppenderFileRotatingTime$new(file, threshold = NA_integer_, layout =
   LayoutFormat$new(), filters = NULL, age = NULL, size = Inf, max_backups =
-  Inf, compression = FALSE, backup_dir = dirname(file), timestamp_fmt =
-  "\%Y-\%m-\%d--\%H-\%M-\%S", overwrite = FALSE, create_file = TRUE)
+  Inf, compression = FALSE, backup_dir = dirname(file), fmt =
+  "\%Y-\%m-\%d--\%H-\%M-\%S", overwrite = FALSE, create_file = TRUE, cache_backups =
+  TRUE)
 
 x$add_filter(filter, name = NULL)
 x$append(event)
@@ -32,36 +33,37 @@ x$clone(deep = FALSE)
 x$filter(event)
 x$prune(max_backups = self$max_backups)
 x$remove_filter(pos)
-x$rotate(force = FALSE, dry_run = FALSE, verbose = dry_run, now = Sys.Date())
-x$rotate(force = FALSE, dry_run = FALSE, verbose = dry_run, now = Sys.time())
-x$rotate(force = FALSE, dry_run = FALSE, verbose = dry_run)
+x$rotate(force = FALSE, now = Sys.time())
+x$rotate(force = FALSE)
 x$set_age(x)
 x$set_backup_dir(x)
+x$set_cache_backups(x)
 x$set_compression(x)
 x$set_create_file(x)
 x$set_file(file)
 x$set_filters(filters)
+x$set_fmt(x)
 x$set_layout(layout)
 x$set_max_backups(x)
 x$set_overwrite(x)
 x$set_size(x)
 x$set_threshold(level)
-x$set_timestamp_fmt(x)
 
 x$age
 x$backup_dir
 x$backups
+x$cache_backups
 x$compression
 x$create_file
 x$destination
 x$file
 x$filters
+x$fmt
 x$layout
 x$max_backups
 x$overwrite
 x$size
 x$threshold
-x$timestamp_fmt
 
 }
 }
@@ -70,10 +72,19 @@ x$timestamp_fmt
 
 
 \describe{
-\item{\code{age}, \code{size}, \code{max_backups}, \code{timestamp_fmt}, \code{overwrite}, \code{compression}, \code{backup_dir}}{
-Passed on to \code{\link[rotor:rotate]{rotor::rotate()}}, \code{\link[rotor:rotate_date]{rotor::rotate_date()}} or \code{\link[rotor:rotate_time]{rotor::rotate_time()}}.
-Please note that \code{timestamp_fmt} is passed on as the \code{format} argument to
-\code{rotate_date()} and \code{rotate_time()}}
+\item{\code{age}, \code{size}, \code{max_backups}, \code{fmt}, \code{overwrite}, \code{compression}, \code{backup_dir}}{
+Please see \code{\link[rotor:rotate]{rotor::rotate()}} for the meaning of these arguments
+(\code{fmt} is passed on as \code{format}).
+}
+
+\item{\code{cache_backups}, \code{set_cache_backups()}}{
+\code{TRUE} or \code{FALSE}. If \code{TRUE} (the default) the list of backups is cached,
+if \code{FALSE} it is read from disk every time this appender triggers.
+Caching brings a significant speedup for checking whether to rotate or
+not based on the \code{age} of the last backup, but is only safe if
+there are no other programs/functions (except this appender) interacting
+with the backups.
+}
 
 \item{\code{backups}}{A \code{data.frame} containing information on path, file size,
 etc... on the available backups of \code{file}.}
@@ -144,7 +155,7 @@ was specified)
 }
 
 \seealso{
-\link{LayoutFormat}, \link{LayoutJson}
+\link{LayoutFormat}, \link{LayoutJson}, \code{\link[rotor:rotate]{rotor::rotate()}}
 
 Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
