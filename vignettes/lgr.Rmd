@@ -438,7 +438,11 @@ You can suppress this behaviour by making named argument start with a `"."`.
 lg$info("Glue is available from {.cran}", .cran = "https://CRAN.R-project.org/package=glue")
 ```
 
+
 # Configuration
+
+
+## With setters
 
 There are many ways to configure loggers. The most straight forward one is to
 use *setters* to specify the Loggers properties.
@@ -447,8 +451,6 @@ lg <- get_logger("test")
 lg$config(NULL)  # resets logger to unconfigured state
 lg$set_threshold("fatal")
 ```
-
-## With setters
 
 lgr sets up Loggers in a way so that R6 piping with `$` is possible. This works 
 similar to the magrittr (`#%>#`) pipes.
