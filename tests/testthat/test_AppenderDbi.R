@@ -1,7 +1,11 @@
 # Test multiple RDBMS
 
 dt_sp <- options("datatable.showProgress")
-options("datatable.showProgress" = FALSE)
+
+setup(options("datatable.showProgress" = FALSE))
+teardown({
+  options("datatable.showProgress" = dt_sp)
+})
 
 
 
@@ -70,16 +74,32 @@ dbs <- list(
     ctor = AppenderRjdbc
   ),
 
+  "DB2 via odbc" = list(
+    conn = try(silent = TRUE, dataSTAT::dbConnectDB2("RTEST", "rtest", "rtest", type = "odbc")),
+    ctor = AppenderDbi,
+    layout = LayoutDb2$new(
+      col_types = c(
+        level = "smallint",
+        timestamp = "timestamp",
+        logger= "varchar(512)",
+        msg = "varchar(1024)",
+        caller = "varchar(1024)",
+        foo = "varchar(256)"
+      )
+    )
+  ),
+
   "SQLite via RSQLite" = list(
     conn = DBI::dbConnect(RSQLite::SQLite(), database = tsqlite),
     ctor = AppenderDbi
   )
 )
 
-options("datatable.showProgress" = dt_sp)
 
 
 
+nm <- "DB2 via RJDBC"  # for manual testing
+nm <- "DB2 via odbc"
 
 # +- tests -------------------------------------------------------------------
 
@@ -111,6 +131,39 @@ for (nm in names(dbs)){
   )
 
 
+
+
+  test_that(paste0(nm, ": initializing appender creates table in schema"), {
+
+    if (nm == "SQLite via RSQLite"){
+      skip("SQLite doesn't support schemas")
+    }
+
+    tab <-  DBI::Id(schema = "TMP", table = "TEST")
+
+    ap <- ctor$new(
+      conn = conn,
+      table = tab,
+      close_on_exit = FALSE,
+      layout = LayoutDbi$new(
+      col_types = c(
+        timestamp = "timestamp",
+        level = "integer",
+        msg = "varchar(128)",
+        caller  = "varchar(128)"
+      ),
+    ))
+
+    expect_identical(
+      nrow(DBI::dbGetQuery(conn, paste("select * from", ap$table_name))),
+      0L
+    )
+    DBI::dbRemoveTable(conn, ap$table)
+  })
+
+
+
+
   test_that(paste0(nm, ": round trip event inserts"), {
     expect_silent(app$append(e))
     expect_silent(app$append(e))
@@ -124,8 +177,10 @@ for (nm in names(dbs)){
     # small tolerance is allowed for timestamps
     tdiff <- as.numeric(tres[, 2]) - as.numeric(eres[, 2])
     expect_true(all(tdiff < 1), info = tdiff)
-    expect_true(all(format(tres$timestamp) == format(e$timestamp, usetz = FALSE)))
+    expect_equal_timestamp(tres$timestamp, eres$timestamp)
   })
+
+
 
 
   test_that(paste0(nm, ": col order does not impact inserts"), {
@@ -134,8 +189,10 @@ for (nm in names(dbs)){
       expect_silent(app$append(e))
     }
     expect_true(all(vapply(app$data$timestamp, all_are_identical, logical(1))))
-    expect_true(all(format(app$data$timestamp) == format(e$timestamp)))
+    expect_setequal_timestamp(app$data$timestamp, e$timestamp)
   })
+
+
 
 
   test_that(paste0(nm, ": querying / displaying logs works"), {
@@ -149,10 +206,10 @@ for (nm in names(dbs)){
   })
 
 
+
+
   # custom fields
   test_that(paste0(nm, ": Creating tables with custom fields works"), {
-    try(DBI::dbRemoveTable(conn, "logging_test_create"), silent = TRUE)
-
     lg <- Logger$new(
       "test_dbi",
       threshold = "trace",
@@ -161,7 +218,10 @@ for (nm in names(dbs)){
     )
 
 
-    if (ctor$classname == "AppenderRjdbc"){
+    if ("layout" %in% names(dbs[[nm]])){
+      lo <- dbs[[nm]]$layout
+
+    } else if (ctor$classname == "AppenderRjdbc"){
       lo <- LayoutRjdbc$new(
         col_types = c(
           level = "smallint",
@@ -189,43 +249,32 @@ for (nm in names(dbs)){
       lg$add_appender(
         ctor$new(
           conn = conn,
-          table = "logging_test_create",
+          table = "LOGGING_TEST_CREATE",
           layout = lo,
           close_on_exit = FALSE
         ), "db"
       ),
     "Creating"
     )
+    on.exit(
+      try(DBI::dbRemoveTable(conn, "LOGGING_TEST_CREATE"), silent = TRUE)
+    )
 
     lg$fatal("test", foo = "bar")
     expect_false(is.na(lg$appenders$db$data$foo[[1]]))
     lg$fatal("test")
     expect_true(is.na(lg$appenders$db$data$foo[[2]]))
+
+    # Log to all fields that are already present in table by default
+    lg$fatal("test2", foo = "baz", blubb = "blah")
+    expect_identical(tail(lg$appenders$db$data, 1)$foo, "baz")
+    expect_false("blubb" %in% names(lg$appenders$db$data))
+
     lg$remove_appender("db")
   })
 
 
-  test_that(paste0(nm, ": Log to all fields that are already present in table by default"), {
-    lg <- Logger$new(
-      "test_dbi",
-      threshold = "trace",
-      propagate = FALSE,
-      exception_handler = function (...) stop(...)
-    )
 
-    lg$set_appenders(list(db =
-      ctor$new(
-        conn = conn,
-        table = "logging_test_create",
-        close_on_exit = FALSE
-      ))
-    )
-
-    lg$fatal("test2", foo = "baz", blubb = "blah")
-    expect_identical(tail(lg$appenders$db$data, 1)$foo, "baz")
-
-    try(DBI::dbRemoveTable(conn, "logging_test_create"), silent = TRUE)
-  })
 
 
   test_that(paste0(nm, ": Buffered inserts work"), {
@@ -239,11 +288,15 @@ for (nm in names(dbs)){
     lg$set_appenders(list(db =
       ctor$new(
         conn = conn,
-        table = "logging_test_buffer",
+        table = "LOGGING_TEST_BUFFER",
         close_on_exit = FALSE,
         buffer_size = 10
       ))
     )
+    on.exit(
+      try(DBI::dbRemoveTable(conn, "LOGGING_TEST_BUFFER"), silent = TRUE)
+    )
+
 
     replicate(10, lg$info("buffered_insert", foo = "baz", blubb = "blah"))
 

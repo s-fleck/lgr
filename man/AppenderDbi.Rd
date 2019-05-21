@@ -65,6 +65,7 @@ x$flush_threshold
 x$layout
 x$should_flush
 x$table
+x$table_name
 x$threshold
 
 }

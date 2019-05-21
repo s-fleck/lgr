@@ -1330,6 +1330,7 @@ AppenderDbi <- R6::R6Class(
       self$set_close_on_exit(close_on_exit)
 
 
+
       if (DBI::dbExistsTable(self$conn, table)){
         # do nothing
       } else if (is.null(self$layout$col_types)) {
@@ -1346,17 +1347,20 @@ AppenderDbi <- R6::R6Class(
       }
     },
 
+
     set_close_on_exit = function(x){
       assert(is_scalar_bool(x))
       private$.close_on_exit <- x
       invisible(self)
     },
 
+
     set_conn = function(conn){
       assert(inherits(conn, "DBIConnection"))
       private$.conn <- conn
       invisible(self)
     },
+
 
     show = function(
       threshold = NA_integer_,
@@ -1383,6 +1387,7 @@ AppenderDbi <- R6::R6Class(
 
       invisible(dd)
     },
+
 
     flush = function(){
       lo <- get(".layout", envir = private)
@@ -1422,6 +1427,7 @@ AppenderDbi <- R6::R6Class(
       fmt_tname(self$table)
     },
 
+
     conn = function(){
       private$.conn
     },
@@ -1430,6 +1436,7 @@ AppenderDbi <- R6::R6Class(
     close_on_exit = function(){
       private$.close_on_exit
     },
+
 
     col_types = function(){
       if (is.null(get(".col_types", envir = private))){
@@ -1443,9 +1450,22 @@ AppenderDbi <- R6::R6Class(
       }
     },
 
+
     table = function(){
       get(".table", envir = private)
     },
+
+
+    table_name = function(){
+      x <- get(".table", envir = private)@name
+
+      if (length(x) == 1){
+        x[["table"]]
+      } else if (length(x) == 2){
+        paste0(x[["schema"]], ".", x[["table"]])
+      }
+    },
+
 
     data = function(){
       tbl <- get("table", envir = self)
@@ -1474,6 +1494,7 @@ AppenderDbi <- R6::R6Class(
       }
     },
 
+
     set_col_types = function(x){
       if (!is.null(x)){
         assert(is.character(x))
@@ -1483,12 +1504,25 @@ AppenderDbi <- R6::R6Class(
       invisible(self)
     },
 
+
     set_table = function(table){
-      if (!inherits(table, "Id") && any(grepl(".", table))){
-        warning(
-          "For qualified table names it is recommended to use ",
-          "DBI::Id(schema = , table = ) instead of '.' sepparated strings"
-        )}
+      if (inherits(table, "Id")){
+        assert("table" %in% names(table@name))
+
+      } else if (is_scalar_character(table)){
+        table <- unlist(strsplit(table, ".", fixed = TRUE))
+        if (identical(length(table), 1L)){
+          table <- DBI::Id(table = table)
+        } else if (identical(length(table), 2L)) {
+          table <- DBI::Id(schema = table[[1]], table = table[[2]])
+
+        } else {
+          stop(
+          "`table` must either be DBI::Id object or a character scalar of ",
+          "the form <schema>.<table>")
+        }
+      }
+
       private[[".table"]] <- table
       self
     },
@@ -1572,16 +1606,20 @@ AppenderRjdbc <- R6::R6Class(
 
       # database
       private[[".conn"]]  <- conn
-      private[[".table"]] <- table
+      private$set_table(table)
       self$set_close_on_exit(close_on_exit)
 
-      table_exists <- try(DBI::dbGetQuery(conn, paste("SELECT 1 FROM", table)), silent = TRUE)
-      table_exists <- !inherits(table_exists, "try-error")
+      table_exists <- tryCatch(
+        is.data.frame(DBI::dbGetQuery(conn, paste("SELECT 1 FROM", self$table))),
+        error = function(e) FALSE
+      )
 
       if (!table_exists) {
-        message("Creating '", fmt_tname(table), "' with manually specified column types")
-        RJDBC::dbSendUpdate(conn, layout$sql_create_table(toupper(table)))
+        message("Creating '", fmt_tname(self$table), "' with manually specified column types")
+        RJDBC::dbSendUpdate(conn, layout$sql_create_table(toupper(self$table_name)))
       }
+
+      self
     },
 
 
@@ -1602,7 +1640,7 @@ AppenderRjdbc <- R6::R6Class(
           data <- as.list(dd[i, ])
           q <-  sprintf(
             "INSERT INTO %s (%s) VALUES (%s)",
-            private$.table,
+            get("table", self),
             paste(names(data), collapse = ", "),
             paste(rep("?", length(data)), collapse = ", ")
           )
@@ -1618,6 +1656,11 @@ AppenderRjdbc <- R6::R6Class(
 
 
   active = list(
+
+    table = function(){
+      self$table_name
+    },
+
     data = function(){
       dd <- try(DBI::dbGetQuery(self$conn, paste("SELECT * FROM", self$table)))
 

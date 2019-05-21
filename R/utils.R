@@ -137,7 +137,6 @@ sql_create_table <- function(
   col_types,
   sql_opts = rep("", length(col_names))
 ){
-  browser()
   # preconditions
   stopifnot(
     is_scalar_character(tname),
