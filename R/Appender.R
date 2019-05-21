@@ -1326,22 +1326,22 @@ AppenderDbi <- R6::R6Class(
 
       # database
       self$set_conn(conn)
-      private[[".table"]] <- table
+      private$set_table(table)
       self$set_close_on_exit(close_on_exit)
 
-      if (any(grepl("."), table)){
-        tid <- strsplit(table, ".", fixed = TRUE)[[1]]
-        assert(identical(length(tid), 2L))
-        tid <- DBI::Id(schema = tid[[1]], table = tid[[2]])
-      }
 
-      if (DBI::dbExistsTable(self$conn, tid)){
+      if (DBI::dbExistsTable(self$conn, table)){
         # do nothing
       } else if (is.null(self$layout$col_types)) {
         message(paste0("Creating '", fmt_tname(table), "' on first log. "))
 
       } else {
         message("Creating '", fmt_tname(table), "' with manually specified column types")
+
+        if (inherits(table, "Id")){
+          table <- paste0(table@name[["schema"]], ".", table@name[["table"]])
+        }
+
         DBI::dbExecute(conn, layout$sql_create_table(table))
       }
     },
@@ -1392,10 +1392,13 @@ AppenderDbi <- R6::R6Class(
 
       if (length(buffer)){
         dd <- lo[["format_data"]](buffer)
-        cn <- names(get("col_types", envir = self))
+        cn <- names(get("col_types", envir = lo))
 
-        if (!is.null(cn))
-          dd <- dd[, intersect(cn, names(dd))]
+        if (!is.null(cn)){
+          sel <- which(toupper(names(dd)) %in% toupper(cn))
+          dd <- dd[, sel, with = FALSE]
+        }
+
 
         DBI::dbWriteTable(
           conn  = get(".conn", envir = private),
@@ -1415,10 +1418,14 @@ AppenderDbi <- R6::R6Class(
 
   # +- active ---------------------------------------------------------------
   active = list(
-    destination = function() private$.table,
+    destination = function(){
+      fmt_tname(self$table)
+    },
+
     conn = function(){
       private$.conn
     },
+
 
     close_on_exit = function(){
       private$.close_on_exit
@@ -1437,7 +1444,7 @@ AppenderDbi <- R6::R6Class(
     },
 
     table = function(){
-      self[["layout"]][["format_table_name"]](get(".table", envir = private))
+      get(".table", envir = private)
     },
 
     data = function(){
@@ -1474,6 +1481,16 @@ AppenderDbi <- R6::R6Class(
       }
       private$.col_types <- x
       invisible(self)
+    },
+
+    set_table = function(table){
+      if (!inherits(table, "Id") && any(grepl(".", table))){
+        warning(
+          "For qualified table names it is recommended to use ",
+          "DBI::Id(schema = , table = ) instead of '.' sepparated strings"
+        )}
+      private[[".table"]] <- table
+      self
     },
 
     .col_types = NULL,
