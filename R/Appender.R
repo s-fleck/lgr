@@ -1338,11 +1338,12 @@ AppenderDbi <- R6::R6Class(
 
       } else {
         message("Creating '", fmt_tname(table), "' with manually specified column types")
-        if (inherits(table, "Id")){
-          table <- paste0(table@name[["schema"]], ".", table@name[["table"]])
-        }
-        tname <- layout$format_table_name(table)
-        DBI::dbExecute(conn, layout$sql_create_table(tname))
+
+        DBI::dbCreateTable(
+          self$conn,
+          self$table,
+          fields = layout$col_types
+        )
       }
     },
 
@@ -1403,7 +1404,6 @@ AppenderDbi <- R6::R6Class(
           dd <- dd[, sel, with = FALSE]
         }
 
-
         DBI::dbWriteTable(
           conn  = get(".conn", envir = private),
           name  = table,
@@ -1459,10 +1459,12 @@ AppenderDbi <- R6::R6Class(
       x <- get(".table", envir = private)@name
 
       if (length(x) == 1){
-        x[["table"]]
+        res <- x[["table"]]
       } else if (length(x) == 2){
-        paste0(x[["schema"]], ".", x[["table"]])
+        res <- paste0(x[["schema"]], ".", x[["table"]])
       }
+
+      self$layout$format_table_name(res)
     },
 
 
