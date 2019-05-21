@@ -1329,7 +1329,13 @@ AppenderDbi <- R6::R6Class(
       private[[".table"]] <- table
       self$set_close_on_exit(close_on_exit)
 
-      if (DBI::dbExistsTable(self$conn, table)){
+      if (any(grepl("."), table)){
+        tid <- strsplit(table, ".", fixed = TRUE)[[1]]
+        assert(identical(length(tid), 2L))
+        tid <- DBI::Id(schema = tid[[1]], table = tid[[2]])
+      }
+
+      if (DBI::dbExistsTable(self$conn, tid)){
         # do nothing
       } else if (is.null(self$layout$col_types)) {
         message(paste0("Creating '", fmt_tname(table), "' on first log. "))
