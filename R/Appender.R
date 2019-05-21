@@ -1329,8 +1329,6 @@ AppenderDbi <- R6::R6Class(
       private$set_table(table)
       self$set_close_on_exit(close_on_exit)
 
-
-
       if (DBI::dbExistsTable(self$conn, table)){
         # do nothing
       } else if (is.null(self$layout$col_types)) {
@@ -1338,10 +1336,9 @@ AppenderDbi <- R6::R6Class(
 
       } else {
         message("Creating '", fmt_tname(table), "' with manually specified column types")
-
         DBI::dbCreateTable(
           self$conn,
-          self$table,
+          layout$format_table_name(self$table),
           fields = layout$col_types
         )
       }
@@ -1406,7 +1403,7 @@ AppenderDbi <- R6::R6Class(
 
         DBI::dbWriteTable(
           conn  = get(".conn", envir = private),
-          name  = table,
+          name  = tname,
           value = dd,
           row.names = FALSE,
           append = TRUE
@@ -1467,6 +1464,23 @@ AppenderDbi <- R6::R6Class(
       self$layout$format_table_name(res)
     },
 
+    table_id = function(){
+
+      table <- self$table
+      table <- unlist(strsplit(table, ".", fixed = TRUE))
+
+      if (identical(length(table), 1L)){
+        table <- DBI::Id(table = table)
+      } else if (identical(length(table), 2L)) {
+        table <- DBI::Id(schema = table[[1]], table = table[[2]])
+
+      } else {
+        stop(
+          "`table` must either be DBI::Id object or a character scalar of ",
+          "the form <schema>.<table>")
+      }
+    },
+
 
     data = function(){
       tbl <- get("table", envir = self)
@@ -1510,18 +1524,8 @@ AppenderDbi <- R6::R6Class(
       if (inherits(table, "Id")){
         assert("table" %in% names(table@name))
 
-      } else if (is_scalar_character(table)){
-        table <- unlist(strsplit(table, ".", fixed = TRUE))
-        if (identical(length(table), 1L)){
-          table <- DBI::Id(table = table)
-        } else if (identical(length(table), 2L)) {
-          table <- DBI::Id(schema = table[[1]], table = table[[2]])
-
-        } else {
-          stop(
-          "`table` must either be DBI::Id object or a character scalar of ",
-          "the form <schema>.<table>")
-        }
+      } else {
+        assert(is_scalar_character(table))
       }
 
       private[[".table"]] <- table
