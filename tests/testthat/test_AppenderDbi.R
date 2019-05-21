@@ -158,7 +158,7 @@ for (nm in names(dbs)){
       nrow(DBI::dbGetQuery(conn, paste("select * from", ap$table_name))),
       0L
     )
-    DBI::dbRemoveTable(conn, ap$table)
+    dbRemoveTableCaseInsensitive(conn, ap$table)
   })
 
 
@@ -257,7 +257,7 @@ for (nm in names(dbs)){
     "Creating"
     )
     on.exit(
-      try(DBI::dbRemoveTable(conn, "LOGGING_TEST_CREATE"), silent = TRUE)
+      try(dbRemoveTableCaseInsensitive(conn, "LOGGING_TEST_CREATE"), silent = TRUE)
     )
 
     lg$fatal("test", foo = "bar")
@@ -294,7 +294,7 @@ for (nm in names(dbs)){
       ))
     )
     on.exit(
-      try(DBI::dbRemoveTable(conn, "LOGGING_TEST_BUFFER"), silent = TRUE)
+      try(dbRemoveTableCaseInsensitive(conn, "LOGGING_TEST_BUFFER"), silent = TRUE)
     )
 
 
@@ -313,7 +313,7 @@ for (nm in names(dbs)){
     # cleanup
     expect_true(
       x <- tryCatch({
-        r <- DBI::dbRemoveTable(conn, lg$appenders$db$layout$format_table_name("LOGGING_TEST_BUFFER"))
+        r <- dbRemoveTableCaseInsensitive(conn, lg$appenders$db$layout$format_table_name("LOGGING_TEST_BUFFER"))
         if (!length(r)) TRUE else r # for RJDBC
       },
         error = function(e) FALSE # for RJDBC
@@ -339,7 +339,8 @@ for (nm in names(dbs)){
       DBI::dbExistsTable(conn, toupper(tname))
     )
     expect_silent({
-      DBI::dbRemoveTable(conn, tname)
+      dbRemoveTableCaseInsensitive(conn, tname)
+      dbRemoveTableCaseInsensitive(conn, tname)
       expect_false(DBI::dbExistsTable(conn, tname))
       DBI::dbDisconnect(conn)
     })
@@ -348,14 +349,8 @@ for (nm in names(dbs)){
 
 
 
-# +- teardown looped tests ---------------------------------------------------
-unlink(tsqlite)
-
-
 
 # SQLite extra tests ------------------------------------------------------
-
-
 context("AppenderDbi / SQLite: Extra Tests")
 
 test_that("AppenderDbi / RSQLite: manual field types work", {

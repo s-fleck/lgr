@@ -1338,12 +1338,11 @@ AppenderDbi <- R6::R6Class(
 
       } else {
         message("Creating '", fmt_tname(table), "' with manually specified column types")
-
         if (inherits(table, "Id")){
           table <- paste0(table@name[["schema"]], ".", table@name[["table"]])
         }
-
-        DBI::dbExecute(conn, layout$sql_create_table(table))
+        tname <- layout$format_table_name(table)
+        DBI::dbExecute(conn, layout$sql_create_table(tname))
       }
     },
 

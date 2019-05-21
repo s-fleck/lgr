@@ -19,3 +19,24 @@ expect_setequal_timestamp = function(x, y){
     format(x, usetz = FALSE), format(y, usetz = FALSE)
   )
 }
+
+
+
+
+dbRemoveTableCaseInsensitive <- function(
+  conn,
+  name
+){
+  if (!inherits(name, "Id")){
+    r1 <- try(DBI::dbRemoveTable(conn, name), silent = TRUE)
+    r2 <- try(DBI::dbRemoveTable(conn, toupper(name)), silent = TRUE)
+    r3 <- try(DBI::dbRemoveTable(conn, tolower(name)), silent = TRUE)
+    res <- !is_try_error(r1) || !is_try_error(r2) || !is_try_error(r3)
+
+  } else {
+    res <- try(DBI::dbRemoveTable(conn, tolower(name)), silent = TRUE)
+    res <- !is_try_error(res)
+  }
+
+  res
+}
