@@ -76,7 +76,6 @@ Collate:
     'print_Logger.R'
     'read_json_log.R'
     'simple_logging.R'
-    'test.R'
     'use_logger.R'
     'utils-formatting.R'
     'utils-logging.R'

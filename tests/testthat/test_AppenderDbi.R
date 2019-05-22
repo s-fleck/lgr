@@ -102,6 +102,23 @@ nm <- "DB2 via RJDBC"  # for manual testing
 nm <- "DB2 via odbc"
 
 
+init_test_appender = function(ctor, conn, table = "logging_test"){
+  ap <- ctor$new(
+    conn = conn,
+    table = table,
+    close_on_exit = FALSE,
+    layout = select_dbi_layout(conn, tab)$set_col_types(c(
+      level = "smallint",
+      timestamp = "timestamp",
+      logger= "varchar(512)",
+      msg = "varchar(1024)",
+      caller = "varchar(1024)",
+      foo = "varchar(256)"
+    ))
+  )
+}
+
+
 for (nm in names(dbs)){
 
 # +- setup test appender --------------------------------------------------
@@ -110,31 +127,17 @@ for (nm in names(dbs)){
   ctor <- dbs[[nm]]$ctor
   title <- paste(ctor$classname, "/", nm)
   context(title)
+  lg <- get_logger("db_test")$set_propagate(FALSE)
 
   if (is_try_error(conn)){
     test_that(title, trimws(strwrap(skip("Cannot establish connection"))))
     next
   }
 
-  tname <- "logging_test"
-
-  suppressMessages(
-    app <- ctor$new(
-      conn = conn,
-      table = tname,
-      close_on_exit = FALSE,  # we are closing manually and dont want warnings
-      buffer_size = 0L
-    )
-  )
-
-  e <- LogEvent$new(
-    lgr, level = 600L, msg = "ohno", caller = "nope()", timestamp = Sys.time()
-  )
 
 
 
   # +- tests -------------------------------------------------------------------
-
   test_that(paste0(nm, ": initializing appender creates table in schema"), {
     if (nm == "SQLite via RSQLite"){
       skip("SQLite doesn't support schemas")
@@ -142,25 +145,13 @@ for (nm in names(dbs)){
 
     tab <-  DBI::Id(schema = "TMP", table = "TEST")
 
-    ap <- ctor$new(
-      conn = conn,
-      table = tab,
-      close_on_exit = FALSE,
-      layout = select_dbi_layout(conn, tab)$set_col_types(c(
-        level = "smallint",
-        timestamp = "timestamp",
-        logger= "varchar(512)",
-        msg = "varchar(1024)",
-        caller = "varchar(1024)",
-        foo = "varchar(256)"
-      ))
-    )
+    ap <- init_test_appender(ctor, conn, tab)
+    on.exit(dbRemoveTableCaseInsensitive(conn, ap$table))
+    lg$set_appenders(list(db = ap))
 
-    expect_identical(
-      nrow(DBI::dbReadTable(conn, tab)),
-      0L
-    )
-    dbRemoveTableCaseInsensitive(conn, ap$table)
+    expect_identical(nrow(DBI::dbReadTable(conn, tab)),  0L)
+    lg$fatal("test")
+    expect_identical(nrow(ap$data),  1L)
   })
 
 
@@ -171,22 +162,10 @@ for (nm in names(dbs)){
       skip("SQLite doesn't support schemas")
     }
 
-    tab <-  "TMP.TEST"
+    tab <-  "TmP.TeST"
 
-    ap <- ctor$new(
-      conn = conn,
-      table = tab,
-      close_on_exit = FALSE,
-      layout = select_dbi_layout(conn, tab)$set_col_types(c(
-        level = "smallint",
-        timestamp = "timestamp",
-        logger= "varchar(512)",
-        msg = "varchar(1024)",
-        caller = "varchar(1024)",
-        foo = "varchar(256)"
-      ))
-    )
-
+    ap <- init_test_appender(ctor, conn, tab)
+    on.exit(dbRemoveTableCaseInsensitive(conn, ap$table))
 
     if (inherits(conn, "JDBCConnection")){
       expect_identical(
@@ -199,53 +178,64 @@ for (nm in names(dbs)){
 
     }
 
-    dbRemoveTableCaseInsensitive(conn, ap$table)
+    lg$set_appenders(list(db = ap))
+    lg$fatal("test")
+    expect_identical(nrow(ap$data),  1L)
   })
 
 
 
 
   test_that(paste0(nm, ": round trip event inserts"), {
-    expect_silent(app$append(e))
-    expect_silent(app$append(e))
+    app <- init_test_appender(ctor, conn)
+    on.exit(dbRemoveTableCaseInsensitive(conn, app$table))
+    lg$set_appenders(list(db = app))
+
+    lg$log(
+      200L,
+      "test",
+      timestamp = as.POSIXct("2019-12-31"),
+      caller = "foo()",
+      foo = "bar"
+    )
 
     tres <- app$data
-    eres <- rbind(
-      as.data.frame(e, stringsAsFactors = FALSE),
-      as.data.frame(e, stringsAsFactors = FALSE)
+
+    eres <- data.frame(
+      level = 200L,
+      timestamp = as.POSIXct("2019-12-31"),
+      logger = "db_test",
+      msg = "test",
+      caller = "foo()",
+      foo = "bar",
+      stringsAsFactors = FALSE
     )
-    expect_equal(tres[, -2], eres[, -2])
-    # small tolerance is allowed for timestamps
-    tdiff <- as.numeric(tres[, 2]) - as.numeric(eres[, 2])
-    expect_true(all(tdiff < 1), info = tdiff)
-    expect_equal_timestamp(tres$timestamp, eres$timestamp)
+
+    expect_equal(tres, eres)
   })
 
 
 
 
   test_that(paste0(nm, ": col order does not impact inserts"), {
+    app <- init_test_appender(ctor, conn)
+    on.exit(dbRemoveTableCaseInsensitive(conn, app$table))
+    lg$set_appenders(list(db = app))
+
     for (i in 1:20){
       app$layout$set_col_types(sample(app$layout$col_types))
-      expect_silent(app$append(e))
+      lg$log(
+        200L,
+        "test",
+        timestamp = as.POSIXct("2019-12-31"),
+        caller = "foo()",
+        foo = "bar"
+      )
     }
+
     expect_true(all(vapply(app$data$timestamp, all_are_identical, logical(1))))
-    expect_setequal_timestamp(app$data$timestamp, e$timestamp)
+    expect_setequal_timestamp(app$data$timestamp, as.POSIXct("2019-12-31"))
   })
-
-
-
-
-  test_that(paste0(nm, ": querying / displaying logs works"), {
-    expect_output(app$show(n = 5), paste(rep("TRACE.*", 5), collapse = "") )
-    expect_output(expect_identical(nrow(app$show(n = 1)), 1L), "TRACE")
-    expect_output(expect_identical(show_log(target = app), app$show()))
-    expect_identical(
-      capture.output(show_log(target = app)),
-      capture.output(app$show())
-    )
-  })
-
 
 
 
@@ -298,7 +288,7 @@ for (nm in names(dbs)){
     "Creating"
     )
     on.exit(
-      try(dbRemoveTableCaseInsensitive(conn, "LOGGING_TEST_CREATE"), silent = TRUE)
+      dbRemoveTableCaseInsensitive(conn, "LOGGING_TEST_CREATE")
     )
 
     lg$fatal("test", foo = "bar")
@@ -313,7 +303,6 @@ for (nm in names(dbs)){
 
     lg$remove_appender("db")
   })
-
 
 
 
@@ -363,28 +352,18 @@ for (nm in names(dbs)){
   })
 
 
+
   test_that(paste0(nm, ": SQL is sanitzed"), {
+    app <- init_test_appender(ctor, conn)
+    on.exit(dbRemoveTableCaseInsensitive(conn, app$table))
+
     msg <- ";*/;   \"' /* blubb;"
     e <- LogEvent$new(
       lgr, level = 600L, msg = msg, caller = "nope()", timestamp = Sys.time()
     )
     app$append(e)
-    res <- app$data$msg
-    expect_identical(res[length(res)], msg)
-  })
-
-
-  test_that(paste0(nm, ": cleanup behaves as expected"), {
-    expect_true(
-      DBI::dbExistsTable(conn, tname) ||
-      DBI::dbExistsTable(conn, toupper(tname))
-    )
-    expect_silent({
-      dbRemoveTableCaseInsensitive(conn, tname)
-      dbRemoveTableCaseInsensitive(conn, tname)
-      expect_false(DBI::dbExistsTable(conn, tname))
-      DBI::dbDisconnect(conn)
-    })
+    app$flush()
+    expect_identical(app$data$msg, msg)
   })
 }
 

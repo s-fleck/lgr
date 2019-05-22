@@ -1405,7 +1405,7 @@ AppenderDbi <- R6::R6Class(
 
         DBI::dbWriteTable(
           conn  = get(".conn", envir = private),
-          name  = tname,
+          name  = table,
           value = dd,
           row.names = FALSE,
           append = TRUE
