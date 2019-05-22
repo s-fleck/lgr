@@ -5,6 +5,7 @@
   * functions like `show_log()`, `show_data()`,... now accept logger names as
     well as Logger or Appender objects as `target`.
   * `AppenderFile$new()` now creates an empty file, or fails if it can't
+  * Improved support for RMariaDB and dropped support for RMySQL
 
 
 # lgr 0.2.2 (unreleased)

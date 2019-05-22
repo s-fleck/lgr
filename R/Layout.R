@@ -828,6 +828,13 @@ select_dbi_layout <- function(
 ){
   cls <- c(class(conn))
 
+  if (identical(class, "MySQLConnection")){
+    stop(
+      "'RMySQL' is not supported by lgr. Please use the newer 'RMariaDB'",
+      "package to connect to MySQL and MariaDB databases"
+    )
+  }
+
   res <- switch(
     cls,
     "PostgreSQLConnection" = LayoutPostgres$new(),

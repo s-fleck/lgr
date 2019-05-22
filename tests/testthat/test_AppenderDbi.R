@@ -29,16 +29,6 @@ dbs <- list(
     ctor = AppenderDbi
   ),
 
-  "MySQL via RMySQL" = list(
-    conn = try(silent = TRUE, DBI::dbConnect(
-      RMySQL::MySQL(),
-      username = "travis",
-      dbname = "travis_ci_test",
-      host = "localhost"
-    )),
-    ctor = AppenderDbi
-  ),
-
   "PostgreSQL via RPostgreSQL" = list(
     conn = try(silent = TRUE, DBI::dbConnect(
       RPostgreSQL::PostgreSQL(),
@@ -93,28 +83,37 @@ dbs <- list(
   )
 )
 
+teardown({
+  for (db in dbs){
+    try(DBI::dbDisconnect(db$conn), silent = TRUE)
+  }
+})
 
 
 
 nm <- "MySQL via RMySQL"
-nm <- "MySQL via RMariaDB"
 nm <- "DB2 via RJDBC"  # for manual testing
 nm <- "DB2 via odbc"
+nm <- "MySQL via RMariaDB"
+nm <- "SQLite via RSQLite"
 
-
-init_test_appender = function(ctor, conn, table = "logging_test"){
+init_test_appender = function(
+  ctor,
+  conn,
+  table = "logging_test",
+  layout = select_dbi_layout(conn, table)$set_col_types(c(
+    level = "smallint",
+    timestamp = "timestamp",
+    logger= "varchar(512)",
+    msg = "varchar(1024)",
+    caller = "varchar(1024)",
+    foo = "varchar(256)"
+  ))){
   ap <- ctor$new(
     conn = conn,
     table = table,
-    close_on_exit = FALSE,
-    layout = select_dbi_layout(conn, tab)$set_col_types(c(
-      level = "smallint",
-      timestamp = "timestamp",
-      logger= "varchar(512)",
-      msg = "varchar(1024)",
-      caller = "varchar(1024)",
-      foo = "varchar(256)"
-    ))
+    layout = layout,
+    close_on_exit = FALSE
   )
 }
 
@@ -122,7 +121,6 @@ init_test_appender = function(ctor, conn, table = "logging_test"){
 for (nm in names(dbs)){
 
 # +- setup test appender --------------------------------------------------
-
   conn <- dbs[[nm]]$conn
   ctor <- dbs[[nm]]$ctor
   title <- paste(ctor$classname, "/", nm)
@@ -138,7 +136,7 @@ for (nm in names(dbs)){
 
 
   # +- tests -------------------------------------------------------------------
-  test_that(paste0(nm, ": initializing appender creates table in schema"), {
+  test_that(paste0(nm, ": create schema.table at initalization via DBI::Id"), {
     if (nm == "SQLite via RSQLite"){
       skip("SQLite doesn't support schemas")
     }
@@ -146,10 +144,10 @@ for (nm in names(dbs)){
     tab <-  DBI::Id(schema = "TMP", table = "TEST")
 
     ap <- init_test_appender(ctor, conn, tab)
-    on.exit(dbRemoveTableCaseInsensitive(conn, ap$table))
+    on.exit(dbRemoveTableCaseInsensitive(conn, tab))
     lg$set_appenders(list(db = ap))
 
-    expect_identical(nrow(DBI::dbReadTable(conn, tab)),  0L)
+    expect_identical(nrow(ap$data), 0L)
     lg$fatal("test")
     expect_identical(nrow(ap$data),  1L)
   })
@@ -157,7 +155,7 @@ for (nm in names(dbs)){
 
 
 
-  test_that(paste0(nm, ": creating schema.table with case insentitive table name"), {
+  test_that(paste0(nm, ": create schema.table at initalization via qualified table name"), {
     if (nm == "SQLite via RSQLite"){
       skip("SQLite doesn't support schemas")
     }
@@ -241,14 +239,6 @@ for (nm in names(dbs)){
 
   # custom fields
   test_that(paste0(nm, ": Creating tables with custom fields works"), {
-    lg <- Logger$new(
-      "test_dbi",
-      threshold = "trace",
-      propagate = FALSE,
-      exception_handler = function (...) stop(...)
-    )
-
-
     if ("layout" %in% names(dbs[[nm]])){
       lo <- dbs[[nm]]$layout
 
@@ -276,29 +266,21 @@ for (nm in names(dbs)){
       )
     }
 
-    expect_message(
-      lg$add_appender(
-        ctor$new(
-          conn = conn,
-          table = "LOGGING_TEST_CREATE",
-          layout = lo,
-          close_on_exit = FALSE
-        ), "db"
-      ),
-    "Creating"
-    )
-    on.exit(
-      dbRemoveTableCaseInsensitive(conn, "LOGGING_TEST_CREATE")
-    )
+    ap <- init_test_appender(ctor, conn, "LOGGING_TEST_CREATE", layout = lo)
+    on.exit(dbRemoveTableCaseInsensitive(conn, app$table))
+    lg$set_appenders(list(db = ap))
+    on.exit(dbRemoveTableCaseInsensitive(conn, ap$table))
 
     lg$fatal("test", foo = "bar")
+    expect_identical(nrow(ap$data), 1L)
     expect_false(is.na(lg$appenders$db$data$foo[[1]]))
     lg$fatal("test")
+    expect_identical(nrow(ap$data), 2L)
     expect_true(is.na(lg$appenders$db$data$foo[[2]]))
 
     # Log to all fields that are already present in table by default
     lg$fatal("test2", foo = "baz", blubb = "blah")
-    expect_identical(tail(lg$appenders$db$data, 1)$foo, "baz")
+    expect_identical(tail(ap$data, 1)$foo, "baz")
     expect_false("blubb" %in% names(lg$appenders$db$data))
 
     lg$remove_appender("db")
@@ -308,48 +290,21 @@ for (nm in names(dbs)){
 
 
   test_that(paste0(nm, ": Buffered inserts work"), {
-    lg <- Logger$new(
-      "test_dbi",
-      threshold = "trace",
-      propagate = FALSE,
-      exception_handler = function (...) stop(...)
-    )
-
-    lg$set_appenders(list(db =
-      ctor$new(
-        conn = conn,
-        table = "LOGGING_TEST_BUFFER",
-        close_on_exit = FALSE,
-        buffer_size = 10
-      ))
-    )
-    on.exit(
-      try(dbRemoveTableCaseInsensitive(conn, "LOGGING_TEST_BUFFER"), silent = TRUE)
-    )
-
+    ap <- init_test_appender(ctor, conn, "LOGGING_TEST_BUFFER")
+    ap$set_buffer_size(10L)
+    on.exit(dbRemoveTableCaseInsensitive(conn, ap$table))
+    lg$set_appenders(list(db = ap))
 
     replicate(10, lg$info("buffered_insert", foo = "baz", blubb = "blah"))
 
     expect_length(lg$appenders$db$buffer_events, 10)
-    expect_true(
-      is.null(lg$appenders$db$data) ||
-      identical(nrow(lg$appenders$db$data), 0L)
-    )
+    expect_identical(nrow(ap$data), 0L)
 
     lg$info("test")
     expect_length(lg$appenders$db$buffer_events, 0)
     expect_identical(nrow(lg$appenders$db$data), 11L)
-
-    # cleanup
-    expect_true(
-      x <- tryCatch({
-        r <- dbRemoveTableCaseInsensitive(conn, lg$appenders$db$layout$format_table_name("LOGGING_TEST_BUFFER"))
-        if (!length(r)) TRUE else r # for RJDBC
-      },
-        error = function(e) FALSE # for RJDBC
-      )
-    )
   })
+
 
 
 

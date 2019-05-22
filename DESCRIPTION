@@ -1,7 +1,7 @@
 Type: Package
 Package: lgr
 Title: A Fully Featured Logging Framework
-Version: 0.2.2.9005
+Version: 0.2.2.9006
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -36,7 +36,6 @@ Suggests:
     knitr,
     RMariaDB,
     rmarkdown,
-    RMySQL,
     rotor,
     RPostgres,
     RPostgreSQL,
@@ -51,13 +50,13 @@ Suggests:
     yaml
 VignetteBuilder: 
     knitr
+Remotes: 
+    r-dbi/RPostgres,
+    s-fleck/rotor
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
-Remotes: 
-    s-fleck/rotor,
-    r-dbi/RPostgres
 Collate: 
     'Filterable.R'
     'utils-sfmisc.R'

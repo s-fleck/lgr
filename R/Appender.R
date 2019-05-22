@@ -1330,8 +1330,7 @@ AppenderDbi <- R6::R6Class(
       self$set_close_on_exit(close_on_exit)
 
 
-
-      if (DBI::dbExistsTable(self$conn, table)){
+      if (DBI::dbExistsTable(self$conn, layout$format_table_name(self$table))){
         # do nothing
       } else if (is.null(self$layout$col_types)) {
         message(paste0("Creating '", fmt_tname(table), "' on first log. "))
@@ -1356,6 +1355,14 @@ AppenderDbi <- R6::R6Class(
 
     set_conn = function(conn){
       assert(inherits(conn, "DBIConnection"))
+
+      if (inherits(conn, "MySQLConnection")){
+        stop(
+          "'RMySQL' is not supported by lgr. Please use the newer 'RMariaDB'",
+          "package to connect to MySQL and MariaDB databases instead."
+        )
+      }
+
       private$.conn <- conn
       invisible(self)
     },
@@ -1487,7 +1494,10 @@ AppenderDbi <- R6::R6Class(
       }
 
       names(dd) <- tolower(names(dd))
-      dd[["timestamp"]] <- as.POSIXct(dd[["timestamp"]])
+      if (nrow(dd) > 0){
+        dd[["timestamp"]] <- as.POSIXct(dd[["timestamp"]])
+      }
+
       dd[["level"]] <- as.integer(dd[["level"]])
       dd
     }
