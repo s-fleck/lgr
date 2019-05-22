@@ -218,4 +218,8 @@ last <- function(x){
 
 
 
+is_Id = function(x){
+  inherits(x, "Id")
+}
+
 # nocov end
