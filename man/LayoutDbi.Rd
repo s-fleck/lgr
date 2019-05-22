@@ -4,6 +4,7 @@
 \alias{LayoutDbi}
 \alias{LayoutSqlite}
 \alias{LayoutRjdbc}
+\alias{LayoutRjdbcDb2}
 \alias{LayoutDb2}
 \alias{LayoutMySql}
 \alias{LayoutPostgres}

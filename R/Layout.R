@@ -350,7 +350,7 @@ LayoutGlue <- R6::R6Class(
 #'
 #'
 #' @name LayoutDbi
-#' @aliases LayoutSqlite LayoutRjdbc LayoutDb2 LayoutMySql LayoutPostgres
+#' @aliases LayoutSqlite LayoutRjdbc LayoutRjdbcDb2 LayoutDb2 LayoutMySql LayoutPostgres
 #' @family Layouts
 #' @family database layouts
 #' @include Filterable.R
@@ -891,13 +891,3 @@ get_col_types <- function(conn, table){
 
   res
 }
-
-
-
-
-is_id <- function(){
-  inherits(x, "Id")
-}
-
-
-
