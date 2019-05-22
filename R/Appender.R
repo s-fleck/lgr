@@ -1361,6 +1361,11 @@ AppenderDbi <- R6::R6Class(
           "'RMySQL' is not supported by lgr. Please use the newer 'RMariaDB'",
           "package to connect to MySQL and MariaDB databases instead."
         )
+      } else if (inherits(conn, "PostgreSQLConnection")){
+        stop(
+          "'PostgreSQL' is not supported by lgr. Please use the newer
+          'Rpostgres' package to connect to Postgres databases instead."
+        )
       }
 
       private$.conn <- conn

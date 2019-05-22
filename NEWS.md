@@ -6,7 +6,7 @@
     well as Logger or Appender objects as `target`.
   * `AppenderFile$new()` now creates an empty file, or fails if it can't
   * Improved support for RMariaDB and dropped support for RMySQL
-
+  * Improved support for RPostgres and dropped support for RPostgreSQL
 
 # lgr 0.2.2 (unreleased)
 

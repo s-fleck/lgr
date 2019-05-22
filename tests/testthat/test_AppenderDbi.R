@@ -29,16 +29,6 @@ dbs <- list(
     ctor = AppenderDbi
   ),
 
-  "PostgreSQL via RPostgreSQL" = list(
-    conn = try(silent = TRUE, DBI::dbConnect(
-      RPostgreSQL::PostgreSQL(),
-      user = "postgres",
-      host = "localhost",
-      dbname = "travis_ci_test"
-    )),
-    ctor = AppenderDbi
-  ),
-
   "PostgreSQL via RPostgres" = list(
     conn = try(
       silent = TRUE, {

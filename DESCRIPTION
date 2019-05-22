@@ -38,7 +38,6 @@ Suggests:
     rmarkdown,
     rotor,
     RPostgres,
-    RPostgreSQL,
     rprojroot,
     RSQLite,
     sendmailR,
