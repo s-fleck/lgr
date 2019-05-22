@@ -29,7 +29,7 @@ dbRemoveTableCaseInsensitive <- function(
 ){
   if (inherits(name, "Id")){
     r0 <- try(DBI::dbRemoveTable(conn, tolower(name)), silent = TRUE)
-    name <- paste0(name@namne[["schema"]], ".", name@namne[["table"]])
+    name <- paste0(name@name[["schema"]], ".", name@name[["table"]])
   }
 
     r1 <- try(DBI::dbRemoveTable(conn, name), silent = TRUE)

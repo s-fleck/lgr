@@ -13,9 +13,7 @@ teardown({
 # RDBMS batch tests -------------------------------------------------------
 
 
-# +- setup ----------------------------------------------------------------
-
-
+# +- setup connections -----------------------------------------------------
 
 tsqlite <- tempfile()
 teardown(unlink(tsqlite))
@@ -98,25 +96,26 @@ dbs <- list(
 
 
 
-nm <- "DB2 via RJDBC"  # for manual testing
-nm <- "DB2 via odbc"
 nm <- "MySQL via RMySQL"
 nm <- "MySQL via RMariaDB"
+nm <- "DB2 via RJDBC"  # for manual testing
+nm <- "DB2 via odbc"
 
-# +- tests -------------------------------------------------------------------
 
 for (nm in names(dbs)){
+
+# +- setup test appender --------------------------------------------------
+
   conn <- dbs[[nm]]$conn
   ctor <- dbs[[nm]]$ctor
   title <- paste(ctor$classname, "/", nm)
   context(title)
 
-  if (inherits(conn, "try-error")) {
-    test_that(title, {trimws(strwrap(skip(conn)))})
+  if (is_try_error(conn)){
+    test_that(title, trimws(strwrap(skip("Cannot establish connection"))))
     next
   }
 
-  # setup test environment
   tname <- "logging_test"
 
   suppressMessages(
@@ -134,6 +133,7 @@ for (nm in names(dbs)){
 
 
 
+  # +- tests -------------------------------------------------------------------
 
   test_that(paste0(nm, ": initializing appender creates table in schema"), {
     if (nm == "SQLite via RSQLite"){
@@ -157,9 +157,48 @@ for (nm in names(dbs)){
     )
 
     expect_identical(
-      nrow(DBI::dbReadTable(conn, ap$table_name)),
+      nrow(DBI::dbReadTable(conn, tab)),
       0L
     )
+    dbRemoveTableCaseInsensitive(conn, ap$table)
+  })
+
+
+
+
+  test_that(paste0(nm, ": creating schema.table with case insentitive table name"), {
+    if (nm == "SQLite via RSQLite"){
+      skip("SQLite doesn't support schemas")
+    }
+
+    tab <-  "TMP.TEST"
+
+    ap <- ctor$new(
+      conn = conn,
+      table = tab,
+      close_on_exit = FALSE,
+      layout = select_dbi_layout(conn, tab)$set_col_types(c(
+        level = "smallint",
+        timestamp = "timestamp",
+        logger= "varchar(512)",
+        msg = "varchar(1024)",
+        caller = "varchar(1024)",
+        foo = "varchar(256)"
+      ))
+    )
+
+
+    if (inherits(conn, "JDBCConnection")){
+      expect_identical(
+        nrow(DBI::dbGetQuery(conn, paste("select * from", ap$table_name))),
+        0L
+      )
+
+    } else {
+      expect_identical(nrow(DBI::dbReadTable(conn, ap$table_name)),  0L)
+
+    }
+
     dbRemoveTableCaseInsensitive(conn, ap$table)
   })
 
