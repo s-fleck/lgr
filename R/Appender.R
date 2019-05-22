@@ -1329,6 +1329,8 @@ AppenderDbi <- R6::R6Class(
       private$set_table(table)
       self$set_close_on_exit(close_on_exit)
 
+
+
       if (DBI::dbExistsTable(self$conn, table)){
         # do nothing
       } else if (is.null(self$layout$col_types)) {
@@ -1448,21 +1450,14 @@ AppenderDbi <- R6::R6Class(
 
 
     table = function(){
-      get(".table", envir = private)
+      self$layout$format_table_name(get(".table", envir = private))
     },
 
 
     table_name = function(){
-      x <- get(".table", envir = private)@name
-
-      if (length(x) == 1){
-        res <- x[["table"]]
-      } else if (length(x) == 2){
-        res <- paste0(x[["schema"]], ".", x[["table"]])
-      }
-
-      self$layout$format_table_name(res)
+      as_tname(get(".table", envir = private))
     },
+
 
     table_id = function(){
 
@@ -1610,7 +1605,7 @@ AppenderRjdbc <- R6::R6Class(
       self$set_flush_on_rotate(flush_on_rotate)
 
       # database
-      private[[".conn"]]  <- conn
+      self$set_conn(conn)
       private$set_table(table)
       self$set_close_on_exit(close_on_exit)
 
@@ -1621,7 +1616,7 @@ AppenderRjdbc <- R6::R6Class(
 
       if (!table_exists) {
         message("Creating '", fmt_tname(self$table), "' with manually specified column types")
-        RJDBC::dbSendUpdate(conn, layout$sql_create_table(toupper(self$table_name)))
+        RJDBC::dbSendUpdate(conn, layout$sql_create_table(self$table))
       }
 
       self
@@ -1661,10 +1656,6 @@ AppenderRjdbc <- R6::R6Class(
 
 
   active = list(
-
-    table = function(){
-      self$table_name
-    },
 
     data = function(){
       dd <- try(DBI::dbGetQuery(self$conn, paste("SELECT * FROM", self$table)))
@@ -2679,4 +2670,31 @@ fmt_tname <- function(x){
   } else {
     x
   }
+}
+
+
+
+
+as_tname <- function(x){
+  if (is_scalar_character(x)){
+    return(x)
+
+  } else if (is_Id(x)){
+    x <- x@name
+
+    if (identical(length(x), 1L)){
+      assert(identical(names(x), "table"))
+      x <- x[["table"]]
+
+    } else if (identical(length(x), 2L)){
+      assert(setequal(names(x), c("schema", "table")))
+      x <- paste0(x[["schema"]], ".", x[["table"]])
+
+    } else {
+
+      stop("Table identifiers must contain a table and may contain a schema")
+    }
+  }
+
+  x
 }
