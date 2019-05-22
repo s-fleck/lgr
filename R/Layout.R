@@ -498,7 +498,9 @@ LayoutPostgres <- R6::R6Class(
       colors = getOption("lgr.colors", list()),
       pad_levels = "right",
 
-      format_table_name = tolower,
+      format_table_name = function(x){
+        if (is_Id(x)) x else tolower(x)
+      },
       format_colnames = tolower,
       format_data = identity
     ){

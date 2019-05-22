@@ -1462,7 +1462,7 @@ AppenderDbi <- R6::R6Class(
 
 
     table_name = function(){
-      as_tname(get(".table", envir = private))
+      as_tname(get("table", envir = self))
     },
 
 

@@ -91,11 +91,6 @@ teardown({
 
 
 
-nm <- "MySQL via RMySQL"
-nm <- "DB2 via RJDBC"  # for manual testing
-nm <- "DB2 via odbc"
-nm <- "MySQL via RMariaDB"
-nm <- "SQLite via RSQLite"
 
 init_test_appender = function(
   ctor,
@@ -116,6 +111,16 @@ init_test_appender = function(
     close_on_exit = FALSE
   )
 }
+
+
+
+# for manual testing
+nm <- "MySQL via RMySQL"
+nm <- "DB2 via RJDBC"
+nm <- "DB2 via odbc"
+nm <- "MySQL via RMariaDB"
+nm <- "SQLite via RSQLite"
+nm <-  "PostgreSQL via RPostgres"
 
 
 for (nm in names(dbs)){
@@ -143,8 +148,13 @@ for (nm in names(dbs)){
 
     tab <-  DBI::Id(schema = "TMP", table = "TEST")
 
+    if (inherits(conn, "PqConnection")){
+      try(DBI::dbExecute(conn, 'create schema "TMP"'), silent = TRUE)
+      on.exit(DBI::dbExecute(conn, 'drop schema "TMP" cascade'))
+    }
+
     ap <- init_test_appender(ctor, conn, tab)
-    on.exit(dbRemoveTableCaseInsensitive(conn, tab))
+    on.exit(dbRemoveTableCaseInsensitive(conn, tab), add = TRUE)
     lg$set_appenders(list(db = ap))
 
     expect_identical(nrow(ap$data), 0L)
@@ -170,10 +180,8 @@ for (nm in names(dbs)){
         nrow(DBI::dbGetQuery(conn, paste("select * from", ap$table_name))),
         0L
       )
-
     } else {
       expect_identical(nrow(DBI::dbReadTable(conn, ap$table_name)),  0L)
-
     }
 
     lg$set_appenders(list(db = ap))
