@@ -17,15 +17,14 @@ x <- AppenderFileRotating$new(file, threshold = NA_integer_, layout =
   compression = FALSE, backup_dir = dirname(file), create_file = TRUE)
 
 x <- AppenderFileRotatingDate$new(file, threshold = NA_integer_, layout =
-  LayoutFormat$new(), filters = NULL, age = NULL, size = Inf, max_backups =
-  Inf, compression = FALSE, backup_dir = dirname(file), fmt = "\%Y-\%m-\%d",
-  overwrite = FALSE, create_file = TRUE, cache_backups = TRUE)
+  LayoutFormat$new(), filters = NULL, age = Inf, size = -1, max_backups = Inf,
+  compression = FALSE, backup_dir = dirname(file), fmt = "\%Y-\%m-\%d", overwrite
+  = FALSE, create_file = TRUE, cache_backups = TRUE)
 
 x <- AppenderFileRotatingTime$new(file, threshold = NA_integer_, layout =
-  LayoutFormat$new(), filters = NULL, age = NULL, size = Inf, max_backups =
-  Inf, compression = FALSE, backup_dir = dirname(file), fmt =
-  "\%Y-\%m-\%d--\%H-\%M-\%S", overwrite = FALSE, create_file = TRUE, cache_backups =
-  TRUE)
+  LayoutFormat$new(), filters = NULL, age = Inf, size = -1, max_backups = Inf,
+  compression = FALSE, backup_dir = dirname(file), fmt = "\%Y-\%m-\%d--\%H-\%M-\%S",
+  overwrite = FALSE, create_file = TRUE, cache_backups = TRUE)
 
 x$add_filter(filter, name = NULL)
 x$append(event)
