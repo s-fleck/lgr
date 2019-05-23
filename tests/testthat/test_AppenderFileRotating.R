@@ -23,32 +23,40 @@ test_that("AppenderFileRotating works as expected", {
   on.exit({
     lg$config(NULL)
     file.remove(tf)
+    app$prune(0)
   })
 
+  # appender logs to file
   expect_identical(app, lg$appenders[[1]])
-  lg$fatal("test")
-  expect_true(file.exists(lg$appenders[[1]]$file))
+  lg$fatal("test973")
+  expect_true(file.exists(app$file))
+  expect_length(readLines(app$file), 1)
+  expect_match(readLines(app$file), "test973")
 
-  # first rotate roates a file with content
+  # first rotate rotates a file with content
   app$rotate(force = TRUE)
   expect_gt(lg$appenders[[1]]$backups[1, ]$size, 0L)
   expect_identical(nrow(lg$appenders[[1]]$backups), 1L)
+  expect_length(readLines(app$file), 0)
+  expect_match(readLines(app$backups$path[[1]]), "test973")
 
   # second rotate only has a file of size 0 to rotate
-  lg$appenders[[1]]$rotate(force = TRUE)
+  app$rotate(force = TRUE)
   expect_equal(app$backups[1, ]$size, 0)
   expect_identical(nrow(lg$appenders[[1]]$backups), 2L)
 
-  # compression is possible
+  # compression works
+  lg$fatal("test987")
   lg$appenders[[1]]$set_compression(TRUE)
   lg$appenders[[1]]$rotate(force = TRUE)
   expect_identical(lg$appenders[[1]]$backups$ext, c("log.zip", "log", "log"))
   expect_identical(lg$appenders[[1]]$backups$sfx, as.character(1:3))
+  con <- unz(app$backups$path[[1]], filename = "test.log")
+  on.exit(close(con), add = TRUE)
+  expect_match(readLines(con), "test987")
 
-  # cleanup
-  lg$appenders[[1]]$prune(0)
-  expect_identical(nrow(lg$appenders[[1]]$backups), 0L)
-  lg$config(NULL)
+  # pruning works
+  expect_identical(nrow(app$prune(0)$backups), 0L)
 })
 
 
@@ -67,7 +75,7 @@ test_that("AppenderFileRotating works with different backup_dir", {
   app <- AppenderFileRotating$new(
     file = tf,
     backup_dir = bu_dir,
-    size = 100
+    size = 10
   )
   lg <- get_logger("test")$
     set_propagate(FALSE)$
@@ -79,26 +87,41 @@ test_that("AppenderFileRotating works with different backup_dir", {
     unlink(c(tf, bu_dir), recursive = TRUE)
   })
 
-  lg$info(paste(LETTERS))
+
+  # triggers rotation because resulting file will is bigger than 100 byte
+  lg$info(paste(LETTERS, collapse = "-"))
   app$set_compression(TRUE)
-  lg$info(paste(LETTERS))
+  lg$info(paste(letters, collapse = "-"))
 
+  # paths are as expected
   expect_equal(file.size(tf), 0)
-
   expect_equal(list.files(bu_dir), basename(app$backups$path))
   expect_setequal(app$backups$ext, c("log.zip", "log"))
+  expect_match(app$backups$path[[1]], "lgr/backups")
+  expect_match(app$backups$path[[2]], "lgr/backups")
+
+  # file contents are as expected
+  con <- unz(app$backups$path[[1]], filename = "test.log")
+  on.exit(close(con), add = TRUE)
+  expect_match(readLines(con), "a-b-.*-y-z")
+  expect_match(readLines(app$backups$path[[2]]), "A-B-.*-Y-Z")
+
+
   file.remove(app$backups$path)
 })
 
 
 
 
-test_that("AppenderFileRotating works as expected", {
+test_that("AppenderFileRotating `size` argument works as expected", {
   #setup
     tf <- file.path(td, "test.log")
     app <- AppenderFileRotating$new(file = tf)$set_size(-1)
     saveRDS(iris, app$file)
-    on.exit(file.remove(tf))
+    on.exit({
+      unlink(tf)
+      app$prune(0)
+    })
 
   # logic
     app$set_size("3 KiB")
@@ -110,12 +133,6 @@ test_that("AppenderFileRotating works as expected", {
     expect_identical(nrow(app$backups), 1L)
     expect_gt(app$backups$size[[1]], 10)
     expect_equal(file.size(app$file), 0)
-
-    app$prune(0)
-    app$set_size(0)
-
-  # cleanup
-    app$prune(0)
 })
 
 
@@ -124,34 +141,56 @@ test_that("AppenderFileRotating works as expected", {
 
 test_that("AppenderFileRotatingDate works as expected", {
   tf <- file.path(td, "test.log")
-
-  app <- AppenderFileRotatingDate$new(file = tf)
+  app <- AppenderFileRotatingDate$new(file = tf, size = "1tb")
   lg <-
     lgr::get_logger("test")$
     set_propagate(FALSE)$
     set_appenders(app)
 
   on.exit({
-    app$prune(0)
     lg$config(NULL)
-    unlink(tf)
+    file.remove(tf)
+    app$prune(0)
   })
 
-  lg$fatal("test")
+  # appender logs to file
+  expect_identical(app, lg$appenders[[1]])
+  lg$fatal("test341")
+  expect_true(file.exists(app$file))
+  expect_length(readLines(app$file), 1)
+  expect_match(readLines(app$file), "test341")
+  expect_identical(nrow(app$backups), 0L)
 
-  # first rotate roates a file with content
+  # first rotate rotates a file with content
   app$set_size(-1)
   app$rotate(now = as.Date("2019-01-01"))
-  expect_gt(app$backups[1, ]$size, 0)
+  expect_identical(nrow(app$backups), 1L)
+  expect_gt(lg$appenders[[1]]$backups[1, ]$size, 0L)
+  expect_length(readLines(app$file), 0)
+  expect_match(app$backups$path[[1]], "2019-01-01")
+  expect_match(readLines(app$backups$path[[1]]), "test341")
 
   # second rotate only has a file of size 0 to rotate
-  app$rotate(now = as.Date("2019-01-02"))
-  expect_equal(lg$appenders[[1]]$backups[1, ]$size, 0)
+  app$rotate(now = "2019-01-02")
+  expect_identical(nrow(app$backups), 2L)
+  expect_equal(app$backups[1, ]$size, 0)
+  expect_match(app$backups$path[[1]], "2019-01-02")
 
-  # compression is possible
+  # compression works
+  app$set_age("10000 years")  # prevent rotation on log
+  lg$fatal("test938")
+  app$set_age("1 day")
   lg$appenders[[1]]$set_compression(TRUE)
   lg$appenders[[1]]$rotate(now = as.Date("2019-01-03"))
-  expect_identical(lg$appenders[[1]]$backups$ext, c("log.zip", "log", "log"))
+  expect_identical(nrow(app$backups), 3L)
+  expect_identical(app$backups$ext, c("log.zip", "log", "log"))
+  expect_identical(lg$appenders[[1]]$backups$sfx, c("2019-01-03", "2019-01-02", "2019-01-01"))
+  con <- unz(app$backups$path[[1]], filename = "test.log")
+  on.exit(close(con), add = TRUE)
+  expect_match(readLines(con), "test938")
+
+  # pruning works
+  expect_identical(nrow(app$prune(0)$backups), 0L)
 })
 
 
