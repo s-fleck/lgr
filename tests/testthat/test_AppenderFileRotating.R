@@ -236,6 +236,39 @@ test_that("AppenderFileRotatingDate works with different backup_dir", {
 
 
 
+
+test_that("AppenderFileRotatingDate `size` and `age` arguments work as expected", {
+  #setup
+  tf <- file.path(td, "test.log")
+  app <- AppenderFileRotatingDate$new(file = tf)$set_size(-1)
+  saveRDS(iris, app$file)
+  on.exit({
+    unlink(tf)
+    app$prune(0)
+  })
+
+  # file size to small
+  app$set_size("3 KiB")
+  app$rotate()
+  expect_identical(nrow(app$backups), 0L)
+
+  app$set_size("0.5 KiB")
+  app$rotate(now = "2019-01-01")
+  expect_identical(nrow(app$backups), 1L)
+
+  # age to small
+  app$set_size(-1)
+  app$set_age("1 day")
+  app$rotate(now = "2019-01-01")
+  expect_identical(nrow(app$backups), 1L)
+
+  app$rotate(now = "2019-01-02")
+  expect_identical(nrow(app$backups), 2L)
+})
+
+
+
+
 # AppenderFileRotatingTime ----------------------------------------------------
 
 test_that("AppenderFileRotatingTime works as expected", {
@@ -279,6 +312,7 @@ test_that("AppenderFileRotatingTime works as expected", {
 
 
 
+
 test_that("AppenderFileRotatingTime works with different backup_dir", {
   tf     <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
@@ -316,4 +350,36 @@ test_that("AppenderFileRotatingTime works with different backup_dir", {
   expect_equal(list.files(bu_dir), basename(app$backups$path))
   expect_setequal(app$backups$ext, c("log.zip", "log"))
   file.remove(app$backups$path)
+})
+
+
+
+
+test_that("AppenderFileRotatingTime `size` and `age` arguments work as expected", {
+  #setup
+  tf <- file.path(td, "test.log")
+  app <- AppenderFileRotatingTime$new(file = tf)$set_size(-1)
+  saveRDS(iris, app$file)
+  on.exit({
+    unlink(tf)
+    app$prune(0)
+  })
+
+  # file size to small
+  app$set_size("3 KiB")
+  app$rotate()
+  expect_identical(nrow(app$backups), 0L)
+
+  app$set_size("0.5 KiB")
+  app$rotate(now = "2019-01-01")
+  expect_identical(nrow(app$backups), 1L)
+
+  # age to small
+  app$set_size(-1)
+  app$set_age("1 day")
+  app$rotate(now = "2019-01-01")
+  expect_identical(nrow(app$backups), 1L)
+
+  app$rotate(now = "2019-01-02")
+  expect_identical(nrow(app$backups), 2L)
 })

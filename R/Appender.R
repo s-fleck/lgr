@@ -2493,8 +2493,8 @@ AppenderFileRotatingTime <- R6::R6Class(
       layout = LayoutFormat$new(),
       filters = NULL,
 
-      age = NULL,
-      size = Inf,
+      age  = Inf,
+      size = -1,
       max_backups = Inf,
       compression = FALSE,
       backup_dir = dirname(file),
@@ -2621,8 +2621,8 @@ AppenderFileRotatingDate <- R6::R6Class(
       layout = LayoutFormat$new(),
       filters = NULL,
 
-      age = NULL,
-      size = Inf,
+      age  = Inf,
+      size = -1,
       max_backups = Inf,
       compression = FALSE,
       backup_dir = dirname(file),
