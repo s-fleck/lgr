@@ -65,7 +65,7 @@ table up manually with an SQL CREATE TABLE statement instead." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9006</span>
       </span>
     </div>
 
@@ -136,12 +136,10 @@ LogEvents directly, but their <code>data.table</code> representations (see
     <pre>
 x &lt;- LayoutDbi$new(col_types = NULL, fmt = "%L [%t] %m %f", timestamp_fmt =
   "%Y-%m-%d %H:%M:%S", colors = getOption("lgr.colors", list()), pad_levels =
-  "right")
+  "right", format_table_name = identity, format_colnames = identity,
+  format_data = identity)
     x$clone(deep = FALSE)
-x$format_colnames(x)
-x$format_data(x)
 x$format_event(event)
-x$format_table_name(x)
 x$set_col_types(x)
 x$set_colors(x)
 x$set_fmt(x)
@@ -152,6 +150,9 @@ x$sql_create_table(table)
 x$col_types
 x$colors
 x$fmt
+x$format_colnames
+x$format_data
+x$format_table_name
 x$pad_levels
 x$timestamp_fmt
     </pre>

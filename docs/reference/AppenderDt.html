@@ -64,7 +64,7 @@ Appender is useful for interactive use, and has very little overhead." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9006</span>
       </span>
     </div>
 
@@ -263,20 +263,20 @@ and AppenderBuffer if you actually want to buffer events</p>
 
 <span class='co'># Displaying the log</span>
 <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span></div><div class='output co'>#&gt;   .id level           timestamp logger caller  msg .custom
-#&gt; 1   1   500 2019-05-20 11:18:21   test   eval test    NULL
-#&gt; 2   2   200 2019-05-20 11:18:21   test   eval test    NULL</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='fu'>show</span>()</div><div class='output co'>#&gt; <span style='color: #808080;'>DEBUG</span><span> [11:18:21.523] test 
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [11:18:21.551] test </div><div class='input'><span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [11:18:21.523] test 
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [11:18:21.551] test </div><div class='input'>
+#&gt; 1   1   500 2019-05-23 06:43:31   test   eval test    NULL
+#&gt; 2   2   200 2019-05-23 06:43:31   test   eval test    NULL</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='fu'>show</span>()</div><div class='output co'>#&gt; <span style='color: #808080;'>DEBUG</span><span> [06:43:31.844] test 
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [06:43:31.874] test </div><div class='input'><span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [06:43:31.844] test 
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [06:43:31.874] test </div><div class='input'>
 <span class='co'># If you pass a Logger to show_log(), it looks for the first AppenderDt</span>
 <span class='co'># that it can find.</span>
-<span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [11:18:21.523] test 
-#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [11:18:21.551] test </div><div class='input'>
+<span class='fu'><a href='simple_logging.html'>show_log</a></span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)</div><div class='output co'>#&gt; </span><span style='color: #808080;'>DEBUG</span><span> [06:43:31.844] test 
+#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [06:43:31.874] test </div><div class='input'>
 <span class='co'># Custom fields are stored in the list column .custom by default</span>
 <span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"the iris data frame"</span>, <span class='kw'>caps</span> <span class='kw'>=</span> <span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])
 <span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span></div><div class='output co'>#&gt;   .id level           timestamp logger caller                 msg       .custom
-#&gt; 1   1   500 2019-05-20 11:18:21   test   eval                test          NULL
-#&gt; 2   2   200 2019-05-20 11:18:21   test   eval                test          NULL
-#&gt; 3   3   400 2019-05-20 11:18:21   test   eval the iris data frame A, B, C, D, E</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span>$<span class='no'>.custom</span><span class='kw'>[[</span><span class='fl'>3</span>]]$<span class='no'>caps</span></div><div class='output co'>#&gt; [1] "A" "B" "C" "D" "E"</div><div class='input'>
+#&gt; 1   1   500 2019-05-23 06:43:31   test   eval                test          NULL
+#&gt; 2   2   200 2019-05-23 06:43:31   test   eval                test          NULL
+#&gt; 3   3   400 2019-05-23 06:43:31   test   eval the iris data frame A, B, C, D, E</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>memory</span>$<span class='no'>data</span>$<span class='no'>.custom</span><span class='kw'>[[</span><span class='fl'>3</span>]]$<span class='no'>caps</span></div><div class='output co'>#&gt; [1] "A" "B" "C" "D" "E"</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

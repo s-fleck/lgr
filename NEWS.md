@@ -8,6 +8,7 @@
   * Improved support for RMariaDB and dropped support for RMySQL
   * Improved support for RPostgres and dropped support for RPostgreSQL
 
+
 # lgr 0.2.2 (unreleased)
 
 * The root logger can now be configured via `options()` and/or environment 

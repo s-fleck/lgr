@@ -177,12 +177,13 @@ dependencies, and are well maintained :
   - [jsonlite](https://github.com/jeroen/jsonlite) for JSON logging via 
     `LayoutJson`. JSON is a popular plaintext based file format that is easy to 
     read for humans and machines alike.
-  - [DBI](https://github.com/r-dbi/DBI) for logging to databases. Logging with
-    lgr has been tested with the following backends: 
+  - [DBI](https://github.com/r-dbi/DBI) for logging to databases. lgr is 
+    confirmed to work with the following backends: 
     - [RSQLite](https://github.com/r-dbi/RSQLite), 
-    - [RMySQL](https://cran.r-project.org/package=RMySQL) for MariaDB and MySQL (RMariaDB is currently broken, see [this issue](https://github.com/r-dbi/RMariaDB/issues/119)),
+    - [RMariaDB](https://github.com/r-dbi/RMariaDB) for MariaDB and MySQL,
     - [RPostgres](https://cran.r-project.org/package=RPostgres),
-    - [RJDBC](https://github.com/s-u/RJDBC) for DB2. 
+    - [RJDBC](https://github.com/s-u/RJDBC) for DB2, and
+    - [odbc](https://github.com/r-dbi/odbc) also for DB2. 
     
     In theory all DBI compliant database packages should work. If you
     are using lgr with a database backend, please report your (positive and
@@ -203,8 +204,8 @@ dependencies, and are well maintained :
     AppenderFileRotating and co.
     
   Other optional dependencies (future, future.apply) do not provide any extra
-  functionality but had to be included for some of the automated unit tests
-  run by lgr.
+  functionality but had to be included as Suggests for some of the automated 
+  unit tests run by lgr.
     
 
 ## Installation

@@ -64,13 +64,13 @@ vignette.
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [2019-05-17 08:32:57.442] A critical error
+#> FATAL [06:42:54.110] A critical error
 lgr$error("A less severe error")
-#> ERROR [2019-05-17 08:32:57.470] A less severe error
+#> ERROR [06:42:54.139] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [2019-05-17 08:32:57.480] A potentially bad situation
+#> WARN  [06:42:54.150] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [2019-05-17 08:32:57.482] iris has 150 rows
+#> INFO  [06:42:54.152] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
@@ -84,9 +84,9 @@ appender to log to a file with little effort.
 tf <- tempfile()
 lgr$add_appender(AppenderFile$new(tf, layout = LayoutJson$new()))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [2019-05-17 08:32:57.498] cars has 50 rows
+#> INFO  [06:42:54.168] cars has 50 rows
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2019-05-17 08:32:57","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-05-23 06:42:54","logger":"root","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 By passing a named argument to `info()`, `warn()`, and co you can log
@@ -96,10 +96,10 @@ logfiles that are machine as well as (somewhat) human readable.
 
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [2019-05-17 08:32:57.521] loading cars
+#> INFO  [06:42:54.191] loading cars {rows: 50, cols: 2}
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2019-05-17 08:32:57","logger":"root","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2019-05-17 08:32:57","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
+#> {"level":400,"timestamp":"2019-05-23 06:42:54","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-05-23 06:42:54","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
 ```
 
 For more examples please see the package
@@ -169,14 +169,14 @@ dependencies, and are well maintained :
   - [jsonlite](https://github.com/jeroen/jsonlite) for JSON logging via
     `LayoutJson`. JSON is a popular plaintext based file format that is
     easy to read for humans and machines alike.
-  - [DBI](https://github.com/r-dbi/DBI) for logging to databases.
-    Logging with lgr has been tested with the following backends:
+  - [DBI](https://github.com/r-dbi/DBI) for logging to databases. lgr is
+    confirmed to work with the following backends:
       - [RSQLite](https://github.com/r-dbi/RSQLite),
-      - [RMySQL](https://cran.r-project.org/package=RMySQL) for MariaDB
-        and MySQL (RMariaDB is currently broken, see [this
-        issue](https://github.com/r-dbi/RMariaDB/issues/119)),
+      - [RMariaDB](https://github.com/r-dbi/RMariaDB) for MariaDB and
+        MySQL,
       - [RPostgres](https://cran.r-project.org/package=RPostgres),
-      - [RJDBC](https://github.com/s-u/RJDBC) for DB2.
+      - [RJDBC](https://github.com/s-u/RJDBC) for DB2, and
+      - [odbc](https://github.com/r-dbi/odbc) also for DB2.
     In theory all DBI compliant database packages should work. If you
     are using lgr with a database backend, please report your (positive
     and negative) experiences, as database support is still somewhat
@@ -197,8 +197,8 @@ dependencies, and are well maintained :
     AppenderFileRotating and co.
 
 Other optional dependencies (future, future.apply) do not provide any
-extra functionality but had to be included for some of the automated
-unit tests run by lgr.
+extra functionality but had to be included as Suggests for some of the
+automated unit tests run by lgr.
 
 ## Installation
 
