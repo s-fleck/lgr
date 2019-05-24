@@ -2326,7 +2326,7 @@ AppenderGmail <- R6::R6Class(
 #'     (`fmt` is passed on as `format`).
 #'   }
 #'
-#'   \item{`cache_backups`, `set_cache_backups()`}{
+#'   \item{`cache_backups`, `set_cache_backups(x)`}{
 #'     `TRUE` or `FALSE`. If `TRUE` (the default) the list of backups is cached,
 #'     if `FALSE` it is read from disk every time this appender triggers.
 #'     Caching brings a significant speedup for checking whether to rotate or
