@@ -69,13 +69,11 @@ collect_usage.R6 <- function(
     character(1)
   )
 
-  if ("initialize" %in% names(public_methods)){
-    ctor <- public_methods[["initialize"]]
-    ctor <- gsub("^initialize", paste0(classname, "$new"), ctor)
-  } else {
-    ctor <- NULL
-  }
 
+  ctor <- get_public_method_recursively(x, "initialize")
+  if (!is.null(ctor)){
+    ctor <- make_function_usage(paste0(classname, "$new"), formals(ctor))
+  }
 
   fields <- c(names(x$public_fields), names(x$active))
 
@@ -92,7 +90,7 @@ collect_usage.R6 <- function(
 
   els <- els[!vapply(els, is_empty, FALSE)]
 
-   if ("get_inherit" %in% names(x)){
+  if ("get_inherit" %in% names(x)){
     els <- c(els, collect_usage.R6(x$get_inherit(), ignore = ignore))
     list(
       ctor    = els$ctor,
@@ -103,6 +101,7 @@ collect_usage.R6 <- function(
     els
   }
 }
+
 
 
 
@@ -151,6 +150,21 @@ fmt_r6_usage <- function(
 }
 
 
+
+
+get_public_method_recursively = function(ctor, method){
+  if (is.function(ctor))
+    return(ctor)
+  else if (is.null(ctor))
+    return(NULL)
+
+  if (method %in% names(ctor$public_methods)){
+    return(ctor$public_methods[[method]])
+
+  } else {
+    get_public_method_recursively(ctor$get_inherit(), method)
+  }
+}
 
 
 
