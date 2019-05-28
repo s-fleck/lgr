@@ -12,9 +12,9 @@ Maintainer: Stefan Fleck <stefan.b.fleck@gmail.com>
 Description: A flexible, feature-rich yet light-weight logging
     framework based on 'R6' classes. It supports hierarchical loggers,
     custom log levels, arbitrary data fields in log events, logging to
-    plaintext, 'JSON', memory buffers, and databases, as well as email and
-    push notifications. For a full list of features with examples please
-    refer to the package vignette.
+    plaintext, 'JSON', (rotating) files, memory buffers, and databases, as 
+    well as email and push notifications. For a full list of features with 
+    examples please refer to the package vignette.
 License: MIT + file LICENSE
 URL: https://github.com/s-fleck/lgr
 BugReports: https://github.com/s-fleck/lgr/issues
