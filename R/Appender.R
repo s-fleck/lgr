@@ -378,6 +378,8 @@ AppenderJson <- R6::R6Class(
       self$set_filters(filters)
     }
   ),
+
+
   active = list(
     data = function(){
       read_json_lines(self$file)
