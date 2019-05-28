@@ -16,13 +16,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -69,7 +71,7 @@ logging as outlined in vignette(&quot;lgr&quot;, package = &quot;lgr&quot;)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9007</span>
       </span>
     </div>
 
@@ -77,7 +79,7 @@ logging as outlined in vignette(&quot;lgr&quot;, package = &quot;lgr&quot;)." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -95,7 +97,7 @@ logging as outlined in vignette(&quot;lgr&quot;, package = &quot;lgr&quot;)." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/s-fleck/lgr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -207,15 +209,15 @@ inheritance structures).</p></dd>
 The minimum <a href='get_log_levels.html'>log level</a> that triggers this Logger</p></dd>
     <dt><code>exception_handler</code>, <code>set_exception_handler()</code></dt><dd><p>a <code>function</code> that
 takes a single argument <code>e</code>. The function used to handle errors that occur
-during logging. Defaults to demoting errors to <a href='https://www.rdocumentation.org/packages/base/topics/warnings'>warnings</a>.</p></dd>
+during logging. Defaults to demoting errors to <a href='https://rdrr.io/r/base/warnings.html'>warnings</a>.</p></dd>
     <dt><code>propagate</code>, <code>set_propagate()</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>. Should LogEvents
 be passed on to the appenders of the ancestral Loggers?</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>filters</code>, <code>set_filters(filters)</code></dt><dd><p>a <code>list</code> that may contain
-<code>functions</code> or any <span style="R">R</span> object with a <code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter()</a></code> method. These functions
+<code>functions</code> or any <span style="R">R</span> object with a <code><a href='https://rdrr.io/r/stats/filter.html'>filter()</a></code> method. These functions
 must have exactly one argument: <code>event</code> which will get passed the
-LogEvent when the Filterable's <code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter()</a></code> method is invoked.
+LogEvent when the Filterable's <code><a href='https://rdrr.io/r/stats/filter.html'>filter()</a></code> method is invoked.
 If all of these functions evaluate to <code>TRUE</code> the LogEvent is passed on.
 Since LogEvents have reference semantics, filters can also be abused to
 modify them before they are passed on. Look at the source code of
@@ -235,8 +237,8 @@ enforced.</p></dd>
     <dt><code>ancestry</code></dt><dd><p>A named <code>logical</code> vector of containing
 the propagate value of each Logger upper the inheritance tree. The names
 are the names of the appenders. <code>ancestry</code> is an S3 class with a custom
-<code><a href='https://www.rdocumentation.org/packages/base/topics/format'>format()</a></code>/<code><a href='https://www.rdocumentation.org/packages/base/topics/print'>print()</a></code> method, so if you want to use the plain logical
-vector use <code><a href='https://www.rdocumentation.org/packages/base/topics/class'>unclass(lg$ancestry)</a></code></p></dd>
+<code><a href='https://rdrr.io/r/base/format.html'>format()</a></code>/<code><a href='https://rdrr.io/r/base/print.html'>print()</a></code> method, so if you want to use the plain logical
+vector use <code><a href='https://rdrr.io/r/base/class.html'>unclass(lg$ancestry)</a></code></p></dd>
     <dt><code>inherited_appenders</code></dt><dd><p>A <code>list</code> of all inherited
 appenders from ancestral Loggers of the current Logger</p></dd>
     <dt><code>last_event</code></dt><dd><p>The last LogEvent produced by the current Logger</p></dd>
@@ -248,7 +250,7 @@ appenders from ancestral Loggers of the current Logger</p></dd>
     <dl class='dl-horizontal'>
 <dt><code>fatal(msg, ..., caller = get_caller(-8L))</code></dt><dd><p>Logs a message with
 level <code>fatal</code> on this logger. If there are <em>unnamed</em> arguments in <code>...</code>,
-they will be passed to <code><a href='https://www.rdocumentation.org/packages/base/topics/sprintf'>base::sprintf()</a></code> along with message. Named
+they will be passed to <code><a href='https://rdrr.io/r/base/sprintf.html'>base::sprintf()</a></code> along with message. Named
 arguments will be passed as custom fields to <a href='LogEvent.html'>LogEvent</a>. If there are named
 arguments the names must be unique. <code>caller</code> refers to the name of the
 calling function and if specified manually must be a <code>character</code> scalar.</p></dd>
@@ -258,16 +260,16 @@ The arguments are interpreted as for <code>fatal()</code>.</p></dd>
 The arguments are interpreted as for <code>fatal()</code>.</p></dd>
     <dt><code>info(msg, ..., caller = get_caller(-8L))</code></dt><dd><p>Logs a message with level <code>info</code> on this logger.
 The arguments are interpreted as for <code>fatal()</code>.</p></dd>
-    <dt><code><a href='https://www.rdocumentation.org/packages/base/topics/debug'>debug(msg, ..., caller = get_caller(-8L))</a></code></dt><dd><p>Logs a message with level <code>debug</code> on this logger.
+    <dt><code><a href='https://rdrr.io/r/base/debug.html'>debug(msg, ..., caller = get_caller(-8L))</a></code></dt><dd><p>Logs a message with level <code>debug</code> on this logger.
 The arguments are interpreted as for <code>fatal()</code>.</p></dd>
-    <dt><code><a href='https://www.rdocumentation.org/packages/base/topics/trace'>trace(msg, ..., caller = get_caller(-8L))</a></code></dt><dd><p>Logs a message with level <code>trace</code> on this logger.
+    <dt><code><a href='https://rdrr.io/r/base/trace.html'>trace(msg, ..., caller = get_caller(-8L))</a></code></dt><dd><p>Logs a message with level <code>trace</code> on this logger.
 The arguments are interpreted as for <code>fatal()</code>.</p></dd>
-    <dt><code><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log(level, msg, ..., timestamp, caller)</a></code></dt><dd><p>If the <code>level</code> passes the Logger <code>threshold</code> a new <a href='LogEvent.html'>LogEvent</a>
+    <dt><code><a href='https://rdrr.io/r/base/Log.html'>log(level, msg, ..., timestamp, caller)</a></code></dt><dd><p>If the <code>level</code> passes the Logger <code>threshold</code> a new <a href='LogEvent.html'>LogEvent</a>
 with <code>level</code>, <code>msg</code>, <code>timestamp</code> and <code>caller</code> is created. Unnamed
-arguments in <code>...</code> will be combined with <code>msg</code> via <code><a href='https://www.rdocumentation.org/packages/base/topics/sprintf'>base::sprintf()</a></code>.
+arguments in <code>...</code> will be combined with <code>msg</code> via <code><a href='https://rdrr.io/r/base/sprintf.html'>base::sprintf()</a></code>.
 Named arguments in <code>...</code> will be passed on to <code>LogEvent$new()</code> as custom
 fields. If no unnamed arguments are present, <code>msg</code> will <em>not</em> be passed
-to <code><a href='https://www.rdocumentation.org/packages/base/topics/sprintf'>sprintf()</a></code>, so in that case you do not have to escape <code>"%"</code>
+to <code><a href='https://rdrr.io/r/base/sprintf.html'>sprintf()</a></code>, so in that case you do not have to escape <code>"%"</code>
 characters.
 If the new LogEvent passes this Loggers filters, it will be dispatched
 to the relevant <a href='Appender.html'>Appenders</a> and checked against their thresholds and
@@ -295,7 +297,7 @@ remove an Appender by position or name.</p></dd>
 when the name of the parent Logger is not known.</p></dd>
 </dl>
     <dl class='dl-horizontal'>
-<dt><code><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter(event)</a></code></dt><dd><p>Determine whether the LogEvent <code>x</code> should be passed
+<dt><code><a href='https://rdrr.io/r/stats/filter.html'>filter(event)</a></code></dt><dd><p>Determine whether the LogEvent <code>x</code> should be passed
 on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the active binding
 <code>filters</code></p></dd>
 <dt><code>add_filter(filter, name = NULL)</code>, <code>remove_filter(pos)</code></dt><dd><p>Add or remove a filter. When adding a filter an optional <code>name</code> can
@@ -306,11 +308,11 @@ was specified)</p></dd>
     <h2 class="hasAnchor" id="loggerglue"><a class="anchor" href="#loggerglue"></a>LoggerGlue</h2>
 
     
-    <p><code>LoggerGlue</code> uses <code><a href='https://www.rdocumentation.org/packages/glue/topics/glue'>glue::glue()</a></code> instead of <code><a href='https://www.rdocumentation.org/packages/base/topics/sprintf'>base::sprintf()</a></code> to construct
+    <p><code>LoggerGlue</code> uses <code><a href='https://rdrr.io/pkg/glue/man/glue.html'>glue::glue()</a></code> instead of <code><a href='https://rdrr.io/r/base/sprintf.html'>base::sprintf()</a></code> to construct
 log messages. <strong>glue</strong> is a very well designed package for
 string interpolation. It makes composing log messages
 more flexible and comfortable at the price of an additional dependency and
-slightly less performance than <code><a href='https://www.rdocumentation.org/packages/base/topics/sprintf'>sprintf()</a></code>.</p>
+slightly less performance than <code><a href='https://rdrr.io/r/base/sprintf.html'>sprintf()</a></code>.</p>
 <p><code>glue()</code> lets you define temporary named variables inside the call.
 As with the normal Logger, these named arguments get turned into custom
 fields; however, you can suppress this behaviour by making named argument
@@ -324,40 +326,40 @@ examples.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># lgr::lgr is the root logger that is always available</span>
-<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is a good day"</span>)</div><div class='output co'>#&gt; INFO  [06:43:39.329] Today is a good day </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"This is a serious error"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [06:43:39.333] This is a serious error </div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is a good day"</span>)</div><div class='output co'>#&gt; INFO  [14:04:17.558] Today is a good day </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"This is a serious error"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [14:04:17.560] This is a serious error </div><div class='input'>
 <span class='co'># Loggers use sprintf() for string formatting by default</span>
-<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is %s"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>() )</div><div class='output co'>#&gt; INFO  [06:43:39.336] Today is 2019-05-23 </div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is %s"</span>, <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span>() )</div><div class='output co'>#&gt; INFO  [14:04:17.566] Today is 2019-05-28 </div><div class='input'>
 <span class='co'># If no unnamed `...` are present, msg is not passed through sprintf()</span>
-<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"100% bad"</span>)  <span class='co'># so this works</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [06:43:39.340] 100% bad </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"%s%% bad"</span>, <span class='fl'>100</span>)  <span class='co'># if you use unnamed arguments, you must escape %</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [06:43:39.342] 100% bad </div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"100% bad"</span>)  <span class='co'># so this works</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [14:04:17.568] 100% bad </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"%s%% bad"</span>, <span class='fl'>100</span>)  <span class='co'># if you use unnamed arguments, you must escape %</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [14:04:17.570] 100% bad </div><div class='input'>
 <span class='co'># You can create new loggers with get_logger()</span>
-<span class='no'>tf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>()
+<span class='no'>tf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>()
 <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"mylogger"</span>)$<span class='fu'>set_appenders</span>(<span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>tf</span>))
 
 <span class='co'># The new logger passes the log message on to the appenders of its parent</span>
 <span class='co'># logger, which is by default the root logger. This is why the following</span>
 <span class='co'># writes not only the file 'tf', but also to the console.</span>
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blubb"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [06:43:39.350] blubb </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2019-05-23 06:43:39.350] blubb"</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blubb"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [14:04:17.576] blubb </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2019-05-28 14:04:17.576] blubb"</div><div class='input'>
 <span class='co'># This logger's print() method depicts this relationship.</span>
 <span class='no'>child</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"lg/child"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>child</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] lg/child
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>child</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] lg/child
 #&gt; 
 #&gt; inherited appenders:
-#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>child</span>$<span class='no'>name</span>)</div><div class='output co'>#&gt; [1] "lg/child"</div><div class='input'>
+#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>child</span>$<span class='no'>name</span>)</div><div class='output co'>#&gt; [1] "lg/child"</div><div class='input'>
 <span class='co'># use formatting strings and custom fields</span>
-<span class='no'>tf2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>()
+<span class='no'>tf2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>()
 <span class='no'>lg</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>tf2</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()))
-<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"Not all %s support custom fields"</span>, <span class='st'>"appenders"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"test"</span>)</div><div class='output co'>#&gt; INFO  [06:43:39.397] Not all appenders support custom fields </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>type</span><span style='color: #808080;'>: </span><span>test</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; FATAL [2019-05-23 06:43:39.350] blubb
-#&gt; INFO  [2019-05-23 06:43:39.397] Not all appenders support custom fields</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readLines'>readLines</a></span>(<span class='no'>tf2</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; {"level":400,"timestamp":"2019-05-23 06:43:39","logger":"mylogger","caller":"eval","msg":"Not all appenders support custom fields","type":"test"}</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"Not all %s support custom fields"</span>, <span class='st'>"appenders"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"test"</span>)</div><div class='output co'>#&gt; INFO  [14:04:17.621] Not all appenders support custom fields </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>type</span><span style='color: #808080;'>: </span><span>test</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>tf</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; FATAL [2019-05-28 14:04:17.576] blubb
+#&gt; INFO  [2019-05-28 14:04:17.621] Not all appenders support custom fields</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>tf2</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; {"level":400,"timestamp":"2019-05-28 14:04:17","logger":"mylogger","caller":"eval","msg":"Not all appenders support custom fields","type":"test"}</div><div class='input'>
 <span class='co'># cleanup</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unlink'>unlink</a></span>(<span class='no'>tf</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unlink'>unlink</a></span>(<span class='no'>tf2</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>tf</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>tf2</span>)
 
 <span class='co'># LoggerGlue</span>
 <span class='co'># You can also create a new logger that uses the awesome glue library for</span>
 <span class='co'># string formatting instead of sprintf</span>
 <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='no'>LoggerGlue</span>$<span class='fu'>new</span>(<span class='st'>"glue"</span>)
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blah "</span>, <span class='st'>"fizz is set to: {fizz}"</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>, <span class='kw'>fizz</span> <span class='kw'>=</span> <span class='st'>"buzz"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [06:43:39.413] blah fizz is set to: buzz </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>foo</span><span style='color: #808080;'>: </span><span>bar</span><span style='color: #808080;'>, </span><span style='color: #D75FAF;'>fizz</span><span style='color: #808080;'>: </span><span>buzz</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='co'># prevent creation of custom fields with prefixing a dot</span>
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blah "</span>, <span class='st'>"fizz is set to: {.fizz}"</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>, <span class='kw'>.fizz</span> <span class='kw'>=</span> <span class='st'>"buzz"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [06:43:39.441] blah fizz is set to: buzz </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>foo</span><span style='color: #808080;'>: </span><span>bar</span><span style='color: #808080;'>}</span><span></div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blah "</span>, <span class='st'>"fizz is set to: {fizz}"</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>, <span class='kw'>fizz</span> <span class='kw'>=</span> <span class='st'>"buzz"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [14:04:17.638] blah fizz is set to: buzz </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>foo</span><span style='color: #808080;'>: </span><span>bar</span><span style='color: #808080;'>, </span><span style='color: #D75FAF;'>fizz</span><span style='color: #808080;'>: </span><span>buzz</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='co'># prevent creation of custom fields with prefixing a dot</span>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blah "</span>, <span class='st'>"fizz is set to: {.fizz}"</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>, <span class='kw'>.fizz</span> <span class='kw'>=</span> <span class='st'>"buzz"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [14:04:17.663] blah fizz is set to: buzz </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>foo</span><span style='color: #808080;'>: </span><span>bar</span><span style='color: #808080;'>}</span><span></div><div class='input'>
 
 <span class='co'># Configuring a Logger</span>
 
@@ -375,7 +377,7 @@ examples.</p>
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'>
 <span class='co'># With a list</span>
-<span class='no'>lg</span>$<span class='fu'>config</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
+<span class='no'>lg</span>$<span class='fu'>config</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
   <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='st'>"info"</span>,
   <span class='kw'>propagate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>appenders</span> <span class='kw'>=</span> <span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>"/tmp/testlog.txt"</span>)
@@ -436,7 +438,7 @@ Logger:
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
 </div>
       </footer>
    </div>

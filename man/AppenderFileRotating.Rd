@@ -47,6 +47,7 @@ x$set_max_backups(x)
 x$set_overwrite(x)
 x$set_size(x)
 x$set_threshold(level)
+x$show(threshold = NA_integer_, n = 20L)
 
 x$age
 x$backup_dir
@@ -76,7 +77,7 @@ Please see \code{\link[rotor:rotate]{rotor::rotate()}} for the meaning of these 
 (\code{fmt} is passed on as \code{format}).
 }
 
-\item{\code{cache_backups}, \code{set_cache_backups()}}{
+\item{\code{cache_backups}, \code{set_cache_backups(x)}}{
 \code{TRUE} or \code{FALSE}. If \code{TRUE} (the default) the list of backups is cached,
 if \code{FALSE} it is read from disk every time this appender triggers.
 Caching brings a significant speedup for checking whether to rotate or

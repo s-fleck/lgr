@@ -592,6 +592,37 @@ unlink(tf)
 
 
 
+## Logging to rotating files
+
+lgr can also log to rotating files. The following example logs to a file that
+is reset and backed-up once it reaches a size of 10kb. Only the last 5 backups
+of the logfile are kept.
+
+```{r}
+# install.packages("rotor")
+tf <- tempfile(fileext = ".log")
+
+lg <- get_logger("test")$
+  set_propagate(FALSE)$
+  set_appenders(list(rotating = AppenderFileRotating$new(
+    file = tf, 
+    size = "10 kb",
+    max_backups = 5))
+  )
+
+for (i in 1:100) lg$info(paste(LETTERS, sep = "-"))
+
+# display info on the backups of tf
+lg$appenders$rotating$backups
+
+# manually delete all backups
+invisible(lg$appenders$rotating$prune(0))
+lg$appenders$rotating$backups
+#cleanup
+file.remove(tf)
+```
+
+
 
 ## Logger hierarchies  {#examples-hierarchy}
 

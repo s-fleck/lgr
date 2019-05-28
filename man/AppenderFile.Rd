@@ -22,6 +22,7 @@ x$set_file(file)
 x$set_filters(filters)
 x$set_layout(layout)
 x$set_threshold(level)
+x$show(threshold = NA_integer_, n = 20L)
 
 x$destination
 x$file

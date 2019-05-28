@@ -7,15 +7,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>A Fully Featured Logging Framework • lgr</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="A Fully Featured Logging Framework">
 <meta property="og:description" content="A flexible, feature-rich yet light-weight logging
     framework based on 'R6' classes. It supports hierarchical loggers,
     custom log levels, arbitrary data fields in log events, logging to
-    plaintext, 'JSON', memory buffers, and databases, as well as email and
-    push notifications. For a full list of features with examples please
-    refer to the package vignette.">
+    plaintext, 'JSON', (rotating) files, memory buffers, and databases, as 
+    well as email and push notifications. For a full list of features with 
+    examples please refer to the package vignette.">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -35,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9007</span>
       </span>
     </div>
 
@@ -43,7 +44,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -60,7 +61,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/s-fleck/lgr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -93,51 +94,53 @@
 <li>
 <em>Hierarchical loggers</em> like in log4j and python logging. This is useful if you want to be able to configure logging on a per-package basis.</li>
 <li>An <em>arbitrary number of appenders</em> for each logger. A single logger can write to the console, a logfile, a database, etc… .</li>
-<li>Allow for <em>custom fields</em> in log events. As opposed to many other logging packages for R a log event is not just a message with a timestamp, but can contain arbitrary data fields. This is very helpful if you want to produce logs that are machine readable and easy to analyze.</li>
+<li>Allow for <em>custom fields</em> in log events. As opposed to many other logging packages for R a log event is not just a message with a timestamp, but an object that can contain arbitrary data fields. This is useful for producing machine readable logs.</li>
 <li>
 <em>Vectorized</em> logging (so <code>lgr$fatal(capture.output(iris))</code> works)</li>
-<li>Lightning fast <em>in-memory log</em> based in <code>data.table</code> included for interactive use.</li>
-<li>Comes with a <em>wide range of appenders</em>, for example for:
+<li>Lightning fast <em>in-memory logs</em> for interactive use.</li>
+<li>Appenders that write logs to a wide range of destinations:
 <ul>
-<li>Appending to Databases (buffered or directly)</li>
-<li>Sending notifications via email or pushbullet</li>
-<li>writing JSON with arbitrary data fields</li>
-<li>In memory buffers</li>
-<li>colored console output</li>
+<li>databases (buffered or directly)</li>
+<li>email or pushbullet</li>
+<li>plaintext files (with a powerful formatting syntax)</li>
+<li>JSON files with arbitrary data fields</li>
+<li>Rotating files that are reset and backed-up after they reach a certain file size or age</li>
+<li>memory buffers</li>
+<li>(colored) console output</li>
 </ul>
 </li>
-<li>Optional support to use <a href="https://glue.tidyverse.org/">glue</a> instead of <code><a href="https://www.rdocumentation.org/packages/base/topics/sprintf">sprintf()</a></code> for composing log messages.</li>
+<li>Optional support to use <a href="https://glue.tidyverse.org/">glue</a> instead of <code><a href="https://rdrr.io/r/base/sprintf.html">sprintf()</a></code> for composing log messages.</li>
 </ul>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
-<p>To log an <em>event</em> with with lgr we call <code>lgr$&lt;logging function&gt;()</code>. Unnamed arguments to the logging function are interpreted by <code><a href="https://www.rdocumentation.org/packages/base/topics/sprintf">sprintf()</a></code>. For a way to create loggers that <a href="https://glue.tidyverse.org/">glue</a> instead please refer to the vignette.</p>
+<p>To log an <em>event</em> with with lgr we call <code>lgr$&lt;logging function&gt;()</code>. Unnamed arguments to the logging function are interpreted by <code><a href="https://rdrr.io/r/base/sprintf.html">sprintf()</a></code>. For a way to create loggers that <a href="https://glue.tidyverse.org/">glue</a> instead please refer to the vignette.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">lgr<span class="op">$</span><span class="kw">fatal</span>(<span class="st">"A critical error"</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; FATAL [06:43:24.245] A critical error</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; FATAL [14:04:03.397] A critical error</span></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">lgr<span class="op">$</span><span class="kw">error</span>(<span class="st">"A less severe error"</span>)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; ERROR [06:43:24.285] A less severe error</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; ERROR [14:04:03.440] A less severe error</span></a>
 <a class="sourceLine" id="cb1-5" data-line-number="5">lgr<span class="op">$</span><span class="kw">warn</span>(<span class="st">"A potentially bad situation"</span>)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; WARN  [06:43:24.296] A potentially bad situation</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"iris has %s rows"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(iris))</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; INFO  [06:43:24.298] iris has 150 rows</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; WARN  [14:04:03.451] A potentially bad situation</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"iris has %s rows"</span>, <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(iris))</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; INFO  [14:04:03.453] iris has 150 rows</span></a>
 <a class="sourceLine" id="cb1-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co"># the following log levels are hidden by default</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">lgr<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/debug">debug</a></span>(<span class="st">"A debug message"</span>)</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">lgr<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/trace">trace</a></span>(<span class="st">"A finer grained debug message"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb1-11" data-line-number="11">lgr<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/debug.html">debug</a></span>(<span class="st">"A debug message"</span>)</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">lgr<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/trace.html">trace</a></span>(<span class="st">"A finer grained debug message"</span>)</a></code></pre></div>
 <p>A Logger can have several Appenders. For example, we can add a JSON appender to log to a file with little effort.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">tf &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempfile</a></span>()</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">tf &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>()</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">lgr<span class="op">$</span><span class="kw"><a href="reference/simple_logging.html">add_appender</a></span>(AppenderFile<span class="op">$</span><span class="kw">new</span>(tf, <span class="dt">layout =</span> LayoutJson<span class="op">$</span><span class="kw">new</span>()))</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"cars has %s rows"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(cars))</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; INFO  [06:43:24.315] cars has 50 rows</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(tf))</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; {"level":400,"timestamp":"2019-05-23 06:43:24","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-3" data-line-number="3">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"cars has %s rows"</span>, <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(cars))</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; INFO  [14:04:03.469] cars has 50 rows</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(tf))</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; {"level":400,"timestamp":"2019-05-28 14:04:03","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></a></code></pre></div>
 <p>By passing a named argument to <code>info()</code>, <code>warn()</code>, and co you can log not only text but arbitrary R objects. Not all appenders handle such <em>custom fields</em> perfectly, but JSON does. This way you can create logfiles that are machine as well as (somewhat) human readable.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"loading cars"</span>, <span class="st">"cars"</span>, <span class="dt">rows =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(cars), <span class="dt">cols =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">ncol</a></span>(cars))</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; INFO  [06:43:24.336] loading cars {rows: 50, cols: 2}</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(tf), <span class="dt">sep =</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; {"level":400,"timestamp":"2019-05-23 06:43:24","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; {"level":400,"timestamp":"2019-05-23 06:43:24","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"loading cars"</span>, <span class="st">"cars"</span>, <span class="dt">rows =</span> <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(cars), <span class="dt">cols =</span> <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span>(cars))</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; INFO  [14:04:03.489] loading cars {rows: 50, cols: 2}</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(tf), <span class="dt">sep =</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; {"level":400,"timestamp":"2019-05-28 14:04:03","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; {"level":400,"timestamp":"2019-05-28 14:04:03","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}</span></a></code></pre></div>
 <p>For more examples please see the package <a href="https://s-fleck.github.io/lgr/articles/lgr.html">vignette</a> and <a href="https://s-fleck.github.io/lgr/">documentation</a></p>
 </div>
 <div id="see-lgr-in-action" class="section level2">
@@ -145,23 +148,23 @@
 <a href="#see-lgr-in-action" class="anchor"></a>See lgr in Action</h2>
 <p>lgr is used to govern console output in my shiny based csv editor <a href="https://github.com/s-fleck/shed">shed</a></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># install.packages("remotes")</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"s-fleck/shed"</span>)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(shed)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"s-fleck/shed"</span>)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(shed)</a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co"># log only output from the "shed" logger to a file</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">logfile &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempfile</a></span>()</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">lgr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/lgr/topics/get_logger">get_logger</a></span>(<span class="st">"shed"</span>)<span class="op">$</span><span class="kw"><a href="reference/simple_logging.html">add_appender</a></span>(AppenderFile<span class="op">$</span><span class="kw">new</span>(logfile))</a>
-<a class="sourceLine" id="cb4-8" data-line-number="8">lgr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/lgr/topics/simple_logging">threshold</a></span>(<span class="st">"all"</span>)</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">logfile &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>()</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">lgr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lgr/man/get_logger.html">get_logger</a></span>(<span class="st">"shed"</span>)<span class="op">$</span><span class="kw"><a href="reference/simple_logging.html">add_appender</a></span>(AppenderFile<span class="op">$</span><span class="kw">new</span>(logfile))</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">lgr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lgr/man/simple_logging.html">threshold</a></span>(<span class="st">"all"</span>)</a>
 <a class="sourceLine" id="cb4-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co"># edit away and watch the rstudio console!</span></a>
 <a class="sourceLine" id="cb4-11" data-line-number="11">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"starting shed"</span>)</a>
 <a class="sourceLine" id="cb4-12" data-line-number="12"><span class="kw">shed</span>(iris)  </a>
 <a class="sourceLine" id="cb4-13" data-line-number="13">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"this will not end up in the log file"</span>)</a>
 <a class="sourceLine" id="cb4-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(logfile)</a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(logfile)</a>
 <a class="sourceLine" id="cb4-16" data-line-number="16"></a>
 <a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co"># cleanup</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/files">file.remove</a></span>(logfile)</a></code></pre></div>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="kw"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span>(logfile)</a></code></pre></div>
 </div>
 <div id="development-status" class="section level2">
 <h2 class="hasAnchor">
@@ -223,10 +226,10 @@ In theory all DBI compliant database packages should work. If you are using lgr 
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install lgr from CRAN</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"lgr"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"lgr"</span>)</a></code></pre></div>
 <p>Or you can install the current development version directly from github</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co">#install.packages("remotes")</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"s-fleck/lgr"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb6-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"s-fleck/lgr"</span>)</a></code></pre></div>
 </div>
 <div id="outlook" class="section level2">
 <h2 class="hasAnchor">
@@ -297,7 +300,7 @@ In theory all DBI compliant database packages should work. If you are using lgr 
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
 </div>
       </footer>
 </div>

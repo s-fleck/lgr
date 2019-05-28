@@ -16,13 +16,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -64,7 +66,7 @@ or tibbles." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9007</span>
       </span>
     </div>
 
@@ -72,7 +74,7 @@ or tibbles." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -90,7 +92,7 @@ or tibbles." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/s-fleck/lgr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -113,13 +115,13 @@ or tibbles." />
 
     <div class="ref-description">
     
-    <p>Coerce LogEvents to <code>data.frames</code>, <code><a href='https://www.rdocumentation.org/packages/data.table/topics/data.table'>data.tables</a></code>,
+    <p>Coerce LogEvents to <code>data.frames</code>, <code><a href='https://rdrr.io/pkg/data.table/man/data.table.html'>data.tables</a></code>,
 or <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibbles</a></code>.</p>
     
     </div>
 
     <pre class="usage"><span class='co'># S3 method for LogEvent</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.data.frame'>as.data.frame</a></span>(<span class='no'>x</span>, <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>optional</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+<span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='no'>x</span>, <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>optional</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='fu'>as.data.table.LogEvent</span>(<span class='no'>x</span>, <span class='no'>...</span>)
@@ -146,27 +148,27 @@ or <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibbles</a
       <th>stringsAsFactors</th>
       <td><p><code>logical</code> scalar: should <code>character</code> vectors be
 converted to factors? Defaults to <code>FALSE</code> (as opposed to
-<code><a href='https://www.rdocumentation.org/packages/base/topics/as.data.frame'>base::as.data.frame()</a></code>) and is only included for compatibility.</p></td>
+<code><a href='https://rdrr.io/r/base/as.data.frame.html'>base::as.data.frame()</a></code>) and is only included for compatibility.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>passed on to <code><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame()</a></code></p></td>
+      <td><p>passed on to <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame()</a></code></p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='https://www.rdocumentation.org/packages/data.table/topics/data.table'>data.table::data.table</a>, <a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble</a></p></div>
+    <div class='dont-index'><p><a href='https://rdrr.io/pkg/data.table/man/data.table.html'>data.table::data.table</a>, <a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"test"</span>)
-<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"lorem ipsum"</span>)</div><div class='output co'>#&gt; INFO  [06:43:43.093] lorem ipsum </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.data.frame'>as.data.frame</a></span>(<span class='no'>lg</span>$<span class='no'>last_event</span>)</div><div class='output co'>#&gt;   level           timestamp logger caller         msg
-#&gt; 1   400 2019-05-23 06:43:43   test   eval lorem ipsum</div><div class='input'>
-<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"LogEvents can store any custom log values"</span>, <span class='kw'>df</span> <span class='kw'>=</span> <span class='no'>iris</span>)</div><div class='output co'>#&gt; INFO  [06:43:43.100] LogEvents can store any custom log values <span style='color: #808080;'>{</span><span style='color: #D75FAF;'>df</span><span style='color: #808080;'>: </span><span>&lt;data.frame&gt;</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.data.frame'>as.data.frame</a></span>(<span class='no'>lg</span>$<span class='no'>last_event</span>)</div><div class='output co'>#&gt;   level           timestamp logger caller
-#&gt; 1   400 2019-05-23 06:43:43   test   eval
+<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"lorem ipsum"</span>)</div><div class='output co'>#&gt; INFO  [14:04:18.783] lorem ipsum </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='no'>lg</span>$<span class='no'>last_event</span>)</div><div class='output co'>#&gt;   level           timestamp logger caller         msg
+#&gt; 1   400 2019-05-28 14:04:18   test   eval lorem ipsum</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"LogEvents can store any custom log values"</span>, <span class='kw'>df</span> <span class='kw'>=</span> <span class='no'>iris</span>)</div><div class='output co'>#&gt; INFO  [14:04:18.792] LogEvents can store any custom log values <span style='color: #808080;'>{</span><span style='color: #D75FAF;'>df</span><span style='color: #808080;'>: </span><span>&lt;data.frame&gt;</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='no'>lg</span>$<span class='no'>last_event</span>)</div><div class='output co'>#&gt;   level           timestamp logger caller
+#&gt; 1   400 2019-05-28 14:04:18   test   eval
 #&gt;                                         msg           df
-#&gt; 1 LogEvents can store any custom log values c(5.1, 4....</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.data.frame'>as.data.frame</a></span>(<span class='no'>lg</span>$<span class='no'>last_event</span>)$<span class='no'>df</span><span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+#&gt; 1 LogEvents can store any custom log values c(5.1, 4....</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='no'>lg</span>$<span class='no'>last_event</span>)$<span class='no'>df</span><span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
 #&gt; 1          5.1         3.5          1.4         0.2  setosa
 #&gt; 2          4.9         3.0          1.4         0.2  setosa
 #&gt; 3          4.7         3.2          1.3         0.2  setosa
@@ -193,7 +195,7 @@ converted to factors? Defaults to <code>FALSE</code> (as opposed to
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
 </div>
       </footer>
    </div>
