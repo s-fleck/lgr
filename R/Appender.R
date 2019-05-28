@@ -2338,7 +2338,7 @@ AppenderGmail <- R6::R6Class(
 #'   }
 #'
 #'   \item{`backups`}{A `data.frame` containing information on path, file size,
-#'   etc... on the available backups of `file`.}
+#'     etc... on the available backups of `file`.}
 #'  }
 #'
 #'

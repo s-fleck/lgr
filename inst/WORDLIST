@@ -89,3 +89,5 @@ LoggerRoot
 magrittr
 unconfigured
 AppenderFileRotating
+LayoutJson
+kb
