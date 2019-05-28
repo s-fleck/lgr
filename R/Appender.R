@@ -277,6 +277,23 @@ AppenderFile <- R6::R6Class(
       private$.file <- file
       if (!file.exists(file))  file.create(file)
       invisible(self)
+    },
+
+    show = function(
+      threshold = NA_integer_,
+      n = 20L
+    ){
+      assert(is_scalar_integerish(n))
+      threshold <- standardize_threshold(threshold)
+
+      if (!is.na(threshold)){
+        sel <- self$data$level <= threshold
+      } else {
+        sel <- TRUE
+      }
+      dd <- tail(readLines(self$file)[sel], n)
+      cat(dd, sep = "\n")
+      invisible(dd)
     }
   ),
 
@@ -359,23 +376,6 @@ AppenderJson <- R6::R6Class(
       self$set_threshold(threshold)
       self$set_layout(layout)
       self$set_filters(filters)
-    },
-
-    show = function(
-      threshold = NA_integer_,
-      n = 20L
-    ){
-      assert(is_scalar_integerish(n))
-      threshold <- standardize_threshold(threshold)
-
-      if (!is.na(threshold)){
-        sel <- self$data$level <= threshold
-      } else {
-        sel <- TRUE
-      }
-      dd <- tail(readLines(self$file)[sel], n)
-      cat(dd, sep = "\n")
-      invisible(dd)
     }
   ),
   active = list(
