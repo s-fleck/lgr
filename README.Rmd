@@ -51,18 +51,20 @@ Appenders.
 * An *arbitrary number of appenders* for each logger. A single logger can write
   to the console, a logfile, a database, etc... .
 * Allow for *custom fields* in log events. As opposed to many other logging 
-  packages for R a log event is not just a message with a timestamp, but
-  can contain arbitrary data fields. This is very helpful if you want to produce
-  logs that are machine readable and easy to analyze.
+  packages for R a log event is not just a message with a timestamp, but an
+  object that can contain arbitrary data fields. This is useful for producing 
+  machine readable logs.
 * *Vectorized* logging (so `lgr$fatal(capture.output(iris))` works)
-* Lightning fast *in-memory log* based in `data.table` included for 
-  interactive use.
-* Comes with a *wide range of appenders*, for example for:
-    * Appending to Databases (buffered or directly)
-    * Sending notifications via email or pushbullet
-    * writing JSON with arbitrary data fields
-    * In memory buffers
-    * colored console output
+* Lightning fast *in-memory logs* for interactive use.
+* Appenders that write logs to a wide range of destinations:
+    * databases (buffered or directly)
+    * email or pushbullet
+    * plaintext files (with a powerful formatting syntax)
+    * JSON files with arbitrary data fields
+    * Rotating files that are reset and backed-up after they reach
+      a certain file size or age
+    * memory buffers
+    * (colored) console output
 * Optional support to use [glue](https://glue.tidyverse.org/) instead of 
   `sprintf()` for composing log messages.
 
