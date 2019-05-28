@@ -198,12 +198,11 @@ Layouts for relational database tables are tricky as they have very strict
 column types and further restrictions. On top of that implementation details
 vary between database backends.
 
-To make setting up \code{AppenderDbi} as painless as possible, the helper
-function \code{\link[=select_dbi_layout]{select_dbi_layout()}} tries to automatically determine sensible
-\link{LayoutDbi} settings based on \code{conn} and - if it exists in the database
-already - \code{table}. If \code{table} does not
-exist in the database and you start logging, a new table will be created
-with the \code{col_types} from \code{layout}.
+To make setting up \code{AppenderDbi} as painless as possible, the helper function
+\code{\link[=select_dbi_layout]{select_dbi_layout()}} tries to automatically determine sensible \link{LayoutDbi}
+settings based on \code{conn} and - if it exists in the database already -
+\code{table}. If \code{table} does not exist in the database and you start logging, a
+new table will be created with the \code{col_types} from \code{layout}.
 }
 
 \seealso{

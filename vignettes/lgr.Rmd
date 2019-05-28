@@ -28,12 +28,10 @@ knitr::opts_chunk$set(
 lgr is a logging framework for R inspired by 
 [Apache Log4j](https://logging.apache.org/log4j/2.x/) and
 [Python logging](https://docs.python.org/3/library/logging.html).
-It follows a traditional object oriented design implemented through
+It follows an object oriented design implemented throughR
 [R6 classes](https://github.com/r-lib/R6). This enables lgr to have a larger
-set of features than other logging packages for R, and makes it easy to extend 
-for people that have experience with R6 classes. This also makes Logger 
-configuration a bit more verbose than for other packages, but I hope
-also more flexible and transparent. 
+set of features than other logging packages for R, and makes it flexible and 
+easy to extend.  
 
 If you are not sure if lgr is the right package for you, take a look 
 [examples](#examples) to see what lgr can do for you.
@@ -58,6 +56,7 @@ You can use formatting strings that are passed on to `sprintf()` in lgr.
 ```{r}
 lgr$error("Vampires generally arrive in carriages drawn by %i black horses.", 2)
 ```
+
 
 ### Logging to plaintext files
 
@@ -87,6 +86,7 @@ lgr$info("No, I am quite serious")
 readLines(tf)
 ```
 
+
 ### Logging to JSON files
 
 If you log to files, you should not log normal text. If you want to analyse 
@@ -101,6 +101,7 @@ lgr$remove_appender("file")
 lgr$add_appender(AppenderJson$new(tf), name = "json")
 lgr$info("We lived in Styria")
 ```
+
 JSON is still somewhat human readable
 ```{r}
 cat(readLines(tf))
@@ -116,7 +117,7 @@ read_json_lines(tf)
 
 ### Custom Fields
 
-Unlike many others Loggers for R, lgr treats a log *event* as a unit of data,
+Unlike many others Loggers for R, lgr treats a  *LogEvent* as a unit of data,
 not just a message with a timestamp. A log event can contain arbitrary data,
 though not all Appenders can handle that well. The JSON appender we added
 above is particularly good at handling most R objects.
