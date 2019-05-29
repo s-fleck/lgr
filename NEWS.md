@@ -1,4 +1,4 @@
-# lgr 0.2.2.9000
+# lgr 0.3.0
   * Added support for rotating log files via `AppenderFileRotating`, 
     `AppenderFileRotatingDate` and `AppenderFileRotatingTime`. Requires the
     package [rotor](https://github.com/s-fleck/rotor).
@@ -7,7 +7,7 @@
   * `AppenderFile$new()` now creates an empty file, or fails if it can't
   * Improved support for RMariaDB and dropped support for RMySQL
   * Improved support for RPostgres and dropped support for RPostgreSQL
-
+  * removed `FATAL()`, `ERROR()`. Use `lgr$fatal()`, `lgr$error()`, ... instead.
 
 # lgr 0.2.2 (unreleased)
 
@@ -25,8 +25,7 @@
 * `with_log_level()` and `with_log_value()` now accept logger names as well as 
   Logger objects as the `logger` argument
 * `get_logger_glue()` now works as intended
-* `FATAL()`, `ERROR()`,... are deprecated and will be removed from future
-  versions. Use `lgr$fatal()`, `lgr$error()`, ... instead.
+
 
 
 # lgr 0.2.1 (2019-03-25)
