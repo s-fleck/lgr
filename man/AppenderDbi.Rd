@@ -20,8 +20,8 @@ whenever the buffer is full (\code{buffer_size}, default is 10 LogEvents),
 whenever a LogEvent with a level of \code{fatal} or \code{error} is encountered
 (\code{flush_threshold}) or when the Appender is garbage collected
 (\code{flush_on_exit}), i.e. when you close the \R session or shortly after you
-remove the Appender object via \code{rm()} or the likes. If you want to avoid
-this behaviour, just set \code{buffer_size} to \code{0}.
+remove the Appender object via \code{rm()}. If you want to disable buffering, just
+set \code{buffer_size} to \code{0}.
 }
 
 \section{Usage}{
@@ -173,12 +173,11 @@ Layouts for relational database tables are tricky as they have very strict
 column types and further restrictions. On top of that implementation details
 vary between database backends.
 
-To make setting up \code{AppenderDbi} as painless as possible, the helper
-function \code{\link[=select_dbi_layout]{select_dbi_layout()}} tries to automatically determine sensible
-\link{LayoutDbi} settings based on \code{conn} and - if it exists in the database
-already - \code{table}. If \code{table} does not
-exist in the database and you start logging, a new table will be created
-with the \code{col_types} from \code{layout}.
+To make setting up \code{AppenderDbi} as painless as possible, the helper function
+\code{\link[=select_dbi_layout]{select_dbi_layout()}} tries to automatically determine sensible \link{LayoutDbi}
+settings based on \code{conn} and - if it exists in the database already -
+\code{table}. If \code{table} does not exist in the database and you start logging, a
+new table will be created with the \code{col_types} from \code{layout}.
 }
 
 \section{Methods}{

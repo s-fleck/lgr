@@ -1,15 +1,14 @@
 #' Appenders
 #'
 #' @description
-#' Appenders are assigned to [Loggers] and
-#' manage the output of the [LogEvents] to a destination, such as the console or
-#' a text file. An Appender must have a single [Layout] that tells it how to
-#' format the LogEvent. For details please refer to the documentations of the
-#' specific Appenders.
+#' Appenders are assigned to [Loggers] and manage the output of the [LogEvents]
+#' to a destination (such as the console or a text file). An Appender has a
+#' single [Layout] that tells it how to format the LogEvent. For details
+#' please refer to the documentations of the specific Appenders.
 #'
-#' **Appender is not designed for direct usage**, but it is the basis on which all
-#' other Appenders are built. Please see the **see also** section towards the
-#' end of this document a list of available Appenders.
+#' The Appender class itself **is not designed for direct usage**, but it is the
+#' basis on which all other Appenders are built. Please see the **see also**
+#' section towards the end of this document a list of available Appenders.
 #'
 #' @eval r6_usage(Appender)
 #'
@@ -1239,8 +1238,8 @@ AppenderBuffer <- R6::R6Class(
 #' whenever a LogEvent with a level of `fatal` or `error` is encountered
 #' (`flush_threshold`) or when the Appender is garbage collected
 #' (`flush_on_exit`), i.e. when you close the \R session or shortly after you
-#' remove the Appender object via `rm()` or the likes. If you want to avoid
-#' this behaviour, just set `buffer_size` to `0`.
+#' remove the Appender object via `rm()`. If you want to disable buffering, just
+#' set `buffer_size` to `0`.
 #'
 #' @eval r6_usage(AppenderDbi)
 #'
@@ -1276,12 +1275,11 @@ AppenderBuffer <- R6::R6Class(
 #' column types and further restrictions. On top of that implementation details
 #' vary between database backends.
 #'
-#' To make setting up `AppenderDbi` as painless as possible, the helper
-#' function [select_dbi_layout()] tries to automatically determine sensible
-#' [LayoutDbi] settings based on `conn` and - if it exists in the database
-#' already - `table`. If `table` does not
-#' exist in the database and you start logging, a new table will be created
-#' with the `col_types` from `layout`.
+#' To make setting up `AppenderDbi` as painless as possible, the helper function
+#' [select_dbi_layout()] tries to automatically determine sensible [LayoutDbi]
+#' settings based on `conn` and - if it exists in the database already -
+#' `table`. If `table` does not exist in the database and you start logging, a
+#' new table will be created with the `col_types` from `layout`.
 #'
 #' @export
 #' @family Appenders
