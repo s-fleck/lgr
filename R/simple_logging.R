@@ -5,12 +5,6 @@
 #'
 #' @name simple_logging
 #'
-#' @examples
-#' FATAL("This is an important message about %s going wrong", "something")
-#' DEBUG("Debug messages are hidden by default")
-#' console_threshold("debug")  # you must use lower case names here
-#' DEBUG("Unless we lower the threshold")
-#'
 NULL
 
 
@@ -23,7 +17,7 @@ NULL
 #' @param file `character` scalar: If not `NULL` a [AppenderFile] will be
 #'   created that logs to this file. If the filename ends in `.jsonl`, the
 #'   Appender will be set up to use the [JSON
-#'   Lines](http://http://jsonlines.org/) format instead of plain text (see
+#'   Lines](http://jsonlines.org/) format instead of plain text (see
 #'   [AppenderFile] and [AppenderJson]).
 #' @param fmt `character` scalar: Format to use if `file` is supplied and not a
 #'   `.jsonl` file. If `NULL` it defaults to `"%L [%t] %m"` (see
@@ -46,8 +40,8 @@ NULL
 #'
 #' @examples
 #' \dontrun{
-#' make the root logger log to a file
-#' basic_config(file = tempfile())
+#' # make the root logger log to a file
+#'   basic_config(file = tempfile())
 #' }
 basic_config <- function(
   file = NULL,
@@ -341,9 +335,9 @@ console_threshold <- function(
 #' @export
 #' @examples
 #' add_appender(AppenderConsole$new(), "second_console_appender")
-#' FATAL("Multiple console appenders are a bad idea")
+#' lgr$fatal("Multiple console appenders are a bad idea")
 #' remove_appender("second_console_appender")
-#' INFO("Good that we defined an appender name, so it's easy to remove")
+#' lgr$info("Good that we defined an appender name, so it's easy to remove")
 add_appender <- function(
   appender,
   name = NULL,

@@ -1,4 +1,5 @@
 # lgr 0.3.0
+
   * Added support for rotating log files via `AppenderFileRotating`, 
     `AppenderFileRotatingDate` and `AppenderFileRotatingTime`. Requires the
     package [rotor](https://github.com/s-fleck/rotor).
@@ -8,8 +9,9 @@
   * Improved support for RMariaDB and dropped support for RMySQL
   * Improved support for RPostgres and dropped support for RPostgreSQL
   * removed `FATAL()`, `ERROR()`. Use `lgr$fatal()`, `lgr$error()`, ... instead.
+  
 
-# lgr 0.2.2 (unreleased)
+# lgr 0.2.2
 
 * The root logger can now be configured via `options()` and/or environment 
   variables (see `?lgr`)
@@ -27,14 +29,13 @@
 * `get_logger_glue()` now works as intended
 
 
-
-# lgr 0.2.1 (2019-03-25)
+# lgr 0.2.1
 
 * Emergency fix that ensures test suite cleans up temporary files 
 * Removed .rd file for the unexported LoggerRoot class
 
 
-# lgr 0.2.0 (2019-03-22)
+# lgr 0.2.0
 
 * `get_loggers()` registers new loggers in the lgr::loggers namespace, this 
   is a more global and decoupled approach similar to how python logging handles 
@@ -56,7 +57,7 @@
   for specific unit tests.
 
 
-# lgr 0.1.1 (2019-01-30)
+# lgr 0.1.1
 
 * Added `show_data()` and `show_dt()` for quick access to the root loggers
   in memory log as `data.frame` or `data.table` respectively

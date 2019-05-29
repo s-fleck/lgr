@@ -51,5 +51,4 @@ add_log_levels(c(errorish = 250))
 get_log_levels()
 remove_log_levels("errorish")
 get_log_levels()
-
 }

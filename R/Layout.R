@@ -211,7 +211,7 @@ LayoutFormat <- R6::R6Class(
 #' @seealso lgr exports a number of formatting utility functions that are
 #'   useful for layout glue: [colorize_levels()], [pad_left()], [pad_right()].
 #' @examples
-#' lg <- Logger$new("testlogger", appenders = AppenderConsole$new(), propagate = FALSE)
+#' lg <- Logger$new("test", appenders = AppenderConsole$new(), propagate = FALSE)
 #' lg$appenders[[1]]$set_layout(LayoutGlue$new())
 #' lg$fatal("test")
 #'
@@ -221,7 +221,7 @@ LayoutFormat <- R6::R6Class(
 #'   "{logger$name} {level_name}({level}) {caller}: {toupper(msg)} {{custom: {custom}}}"
 #' )
 #' lg$fatal("test", custom = "foobar")
-#'
+#' lg$config(NULL)  # reset logger config
 #'
 NULL
 

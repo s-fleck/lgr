@@ -41,10 +41,8 @@ these Loggers.
 \examples{
 # print most important details of logger
 print(lgr)
-
 # print only the ancestry of a logger
 lg <- get_logger("AegonV/Aerys/Rheagar/Aegon")
-
 get_logger("AegonV/Aerys/Rheagar")$set_propagate(FALSE)
 
 print(lg$ancestry)

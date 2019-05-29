@@ -187,7 +187,7 @@ show_log(target = lg)
 lg$info("the iris data frame", caps = LETTERS[1:5])
 lg$appenders$memory$data
 lg$appenders$memory$data$.custom[[3]]$caps
-
+lg$config(NULL)
 }
 \seealso{
 \link{LayoutFormat}, \link{simple_logging}, \link[data.table:data.table]{data.table::data.table}

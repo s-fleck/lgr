@@ -142,15 +142,16 @@ was specified)
 
 \examples{
 tf <- tempfile()
-l <- Logger$new("testlogger", appenders = AppenderJson$new(tf), propagate = FALSE)
+lg <- Logger$new("test", appenders = AppenderJson$new(tf), propagate = FALSE)
 
-l$info("A test message")
-l$info("A test message \%s strings", "with format strings", and = "custom_fields")
+lg$info("A test message")
+lg$info("A test message \%s strings", "with format strings", and = "custom_fields")
 
-l$appenders[[1]]$show()
-l$appenders[[1]]$data
+lg$appenders[[1]]$show()
+lg$appenders[[1]]$data
 
 # cleanup
+lg$config(NULL)
 unlink(tf)
 }
 \seealso{

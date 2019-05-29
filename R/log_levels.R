@@ -53,7 +53,6 @@ DEFAULT_LOG_LEVELS <- c("fatal", "error", "warn", "info", "debug", "trace")
 #' get_log_levels()
 #' remove_log_levels("errorish")
 #' get_log_levels()
-#'
 get_log_levels <- function(){
   getOption("lgr.log_levels")
 }
@@ -325,7 +324,7 @@ error_msg_log_levels <- function(varname, log_levels){
 #' x <- label_levels(c(seq(0, 600, by = 100), NA))
 #' print(x)
 #' unlabel_levels(x)
-#'
+
 label_levels <- function(
   levels,
   log_levels = getOption("lgr.log_levels")

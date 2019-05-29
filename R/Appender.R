@@ -139,14 +139,15 @@ Appender <- R6::R6Class(
 #' # create a new logger with propagate = FALSE to prevent routing to the root
 #' # logger. Please look at the section "Logger Hirarchies" in the package
 #' # vignette for more info.
-#' logger  <- Logger$new("testlogger", propagate = FALSE)
+#' lg  <- Logger$new("test", propagate = FALSE)
 #'
-#' logger$add_appender(AppenderConsole$new())
-#' logger$add_appender(AppenderConsole$new(
+#' lg$add_appender(AppenderConsole$new())
+#' lg$add_appender(AppenderConsole$new(
 #'   layout = LayoutFormat$new("[%t] %c(): [%n] %m", colors = getOption("lgr.colors"))))
 #'
 #' # Will output the message twice because we attached two console appenders
-#' logger$warn("A test message")
+#' lg$warn("A test message")
+#' lg$config(NULL) # reset config
 #'
 NULL
 
@@ -215,26 +216,27 @@ AppenderConsole <- R6::R6Class(
 #' @name AppenderFile
 #'
 #' @examples
-#' logger <- Logger$new("loggername")
+#' lg <- Logger$new("test")
 #' default <- tempfile()
 #' fancy <- tempfile()
 #' json <- tempfile()
 #'
-#' logger$add_appender(AppenderFile$new(default), "default")
-#' logger$add_appender(
+#' lg$add_appender(AppenderFile$new(default), "default")
+#' lg$add_appender(
 #'   AppenderFile$new(fancy, layout = LayoutFormat$new("[%t] %c(): %L %m")), "fancy"
 #' )
-#' logger$add_appender(
+#' lg$add_appender(
 #'   AppenderFile$new(json, layout = LayoutJson$new()), "json"
 #' )
 #'
-#' logger$info("A test message")
+#' lg$info("A test message")
 #'
 #' readLines(default)
 #' readLines(fancy)
 #' readLines(json)
 #'
 #' # cleanup
+#' lg$config(NULL)
 #' unlink(default)
 #' unlink(fancy)
 #' unlink(json)
@@ -344,15 +346,16 @@ AppenderFile <- R6::R6Class(
 #' @seealso [LayoutFormat], [LayoutJson]
 #' @examples
 #' tf <- tempfile()
-#' l <- Logger$new("testlogger", appenders = AppenderJson$new(tf), propagate = FALSE)
+#' lg <- Logger$new("test", appenders = AppenderJson$new(tf), propagate = FALSE)
 #'
-#' l$info("A test message")
-#' l$info("A test message %s strings", "with format strings", and = "custom_fields")
+#' lg$info("A test message")
+#' lg$info("A test message %s strings", "with format strings", and = "custom_fields")
 #'
-#' l$appenders[[1]]$show()
-#' l$appenders[[1]]$data
+#' lg$appenders[[1]]$show()
+#' lg$appenders[[1]]$data
 #'
 #' # cleanup
+#' lg$config(NULL)
 #' unlink(tf)
 NULL
 
@@ -560,7 +563,7 @@ AppenderTable <- R6::R6Class(
 #' lg$info("the iris data frame", caps = LETTERS[1:5])
 #' lg$appenders$memory$data
 #' lg$appenders$memory$data$.custom[[3]]$caps
-#'
+#' lg$config(NULL)
 NULL
 
 

@@ -31,7 +31,6 @@ Label/Unlabel Log Levels
 x <- label_levels(c(seq(0, 600, by = 100), NA))
 print(x)
 unlabel_levels(x)
-
 }
 \seealso{
 \code{\link[=get_log_levels]{get_log_levels()}}

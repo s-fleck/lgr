@@ -13,7 +13,7 @@ basic_config(file = NULL, fmt = "\%L [\%t] \%m",
 \arguments{
 \item{file}{\code{character} scalar: If not \code{NULL} a \link{AppenderFile} will be
 created that logs to this file. If the filename ends in \code{.jsonl}, the
-Appender will be set up to use the \href{http://http://jsonlines.org/}{JSON Lines} format instead of plain text (see
+Appender will be set up to use the \href{http://jsonlines.org/}{JSON Lines} format instead of plain text (see
 \link{AppenderFile} and \link{AppenderJson}).}
 
 \item{fmt}{\code{character} scalar: Format to use if \code{file} is supplied and not a
@@ -45,7 +45,7 @@ Quick and easy way to configure the root logger for logging to a file.
 }
 \examples{
 \dontrun{
-make the root logger log to a file
-basic_config(file = tempfile())
+# make the root logger log to a file
+  basic_config(file = tempfile())
 }
 }

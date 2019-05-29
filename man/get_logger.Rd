@@ -25,11 +25,12 @@ Get/Create a Logger
 \examples{
 lg <- get_logger("log/ger/test")
 # equivalent to
-lg <- get_logger(c("log", "get", "test"))
+lg <- get_logger(c("log", "ger", "test"))
 lg$warn("a \%s message", "warning")
 lg
 lg$parent
 
 lg <- get_logger_glue("log/ger")
 lg$warn("a {.text} message", .text = "warning")
+lg$config(NULL)  # reset logger config
 }

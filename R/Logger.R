@@ -216,6 +216,7 @@
 #' # cleanup
 #' unlink(tf)
 #' unlink(tf2)
+#' lg$config(NULL)  # reset logger config
 #'
 #' # LoggerGlue
 #' # You can also create a new logger that uses the awesome glue library for
@@ -232,27 +233,28 @@
 #'
 #' # With setters
 #' lg$
-#'   set_threshold("info")$
-#'   set_propagate(TRUE)$
-#'   set_appenders(AppenderFile$new(file = "/tmp/testlog.txt"))
+#'   set_threshold("error")$
+#'   set_propagate(FALSE)$
+#'   set_appenders(AppenderConsole$new(threshold = "info"))
+#'
 #' lg$config(NULL)
 #'
 #' # With a list
 #' lg$config(list(
-#'   threshold = "info",
-#'   propagate = TRUE,
-#'   appenders = AppenderFile$new(file = "/tmp/testlog.txt")
+#'   threshold = "error",
+#'   propagate = FALSE,
+#'   appenders = list(AppenderConsole$new(threshold = "info"))
 #' ))
 #' lg$config(NULL)  # resets logger to unconfigured state
 #'
 #' # Via YAML
 #' cfg <- "
 #' Logger:
-#'   threshold: info
+#'   threshold: error
 #'   propagate: false
 #'   appenders:
-#'     AppenderFile:
-#'       file: /tmp/testlog.txt
+#'     AppenderConsole:
+#'       threshold: info
 #' "
 #' lg$config(cfg)
 #' lg$config(NULL)  # reset

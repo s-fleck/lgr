@@ -87,23 +87,23 @@ created this event, equivalent to \code{event$logger_user})}
 }
 
 \examples{
-l <- Logger$new("dummy logger", appenders = NULL)
-l$error("foo bar")
+lg <- Logger$new("dummy logger", appenders = NULL)
+lg$error("foo bar")
 
 # The last LogEvent produced by a Logger is stored in the last_event field
-l$last_event  # formatted by default
-l$last_event$values  # values stored in the event
+lg$last_event  # formatted by default
+lg$last_event$values  # values stored in the event
 
 # Also contains the Logger that created it as .logger
-l$last_event$logger
+lg$last_event$logger
 # equivalent to
-l$last_event$.logger$name
+lg$last_event$.logger$name
 
 # This is really a reference to the complete Logger, so the following is
 # possible (though nonsensical)
-l$last_event$.logger$last_event$msg
-identical(l, l$last_event$.logger)
-
+lg$last_event$.logger$last_event$msg
+identical(lg, lg$last_event$.logger)
+lg$config(NULL)  # reset logger config
 }
 \seealso{
 \code{\link[=as.data.frame.LogEvent]{as.data.frame.LogEvent()}}

@@ -16,7 +16,7 @@
 #' @examples
 #' # print most important details of logger
 #' print(lgr)
-#'
+
 print.Logger <- function(
   x,
   color = requireNamespace("crayon", quietly = TRUE),
@@ -145,11 +145,11 @@ srs_appender <- function(x){
 #' @examples
 #' # print only the ancestry of a logger
 #' lg <- get_logger("AegonV/Aerys/Rheagar/Aegon")
-#'
 #' get_logger("AegonV/Aerys/Rheagar")$set_propagate(FALSE)
 #'
 #' print(lg$ancestry)
 #' unclass(lg$ancestry)
+
 print.ancestry <- function(
   x,
   color = requireNamespace("crayon", quietly = TRUE),

@@ -119,13 +119,8 @@ even if they were not printed to the console before.
 they return the log as \code{data.frame} or \code{data.table} respectively.
 }
 \examples{
-FATAL("This is an important message about \%s going wrong", "something")
-DEBUG("Debug messages are hidden by default")
-console_threshold("debug")  # you must use lower case names here
-DEBUG("Unless we lower the threshold")
-
 add_appender(AppenderConsole$new(), "second_console_appender")
-FATAL("Multiple console appenders are a bad idea")
+lgr$fatal("Multiple console appenders are a bad idea")
 remove_appender("second_console_appender")
-INFO("Good that we defined an appender name, so it's easy to remove")
+lgr$info("Good that we defined an appender name, so it's easy to remove")
 }

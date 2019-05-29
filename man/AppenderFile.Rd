@@ -99,26 +99,27 @@ was specified)
 }
 
 \examples{
-logger <- Logger$new("loggername")
+lg <- Logger$new("test")
 default <- tempfile()
 fancy <- tempfile()
 json <- tempfile()
 
-logger$add_appender(AppenderFile$new(default), "default")
-logger$add_appender(
+lg$add_appender(AppenderFile$new(default), "default")
+lg$add_appender(
   AppenderFile$new(fancy, layout = LayoutFormat$new("[\%t] \%c(): \%L \%m")), "fancy"
 )
-logger$add_appender(
+lg$add_appender(
   AppenderFile$new(json, layout = LayoutJson$new()), "json"
 )
 
-logger$info("A test message")
+lg$info("A test message")
 
 readLines(default)
 readLines(fancy)
 readLines(json)
 
 # cleanup
+lg$config(NULL)
 unlink(default)
 unlink(fancy)
 unlink(json)

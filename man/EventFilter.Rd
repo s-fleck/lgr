@@ -59,12 +59,13 @@ lgr$error("an error")
 
 
 # using .obj()
-l <- Logger$new("foo", threshold = "debug")
+lg <- get_logger("test")
 f <- function(event) {
   cat("via event$.logger:", event$.logger$threshold, "\\n")  #  works for loggers only
   cat("via .obj():      ",.obj()$threshold, "\\n") # works for loggers and appenders
   TRUE
 }
-l$add_filter(f)
-l$fatal("test")
+lg$add_filter(f)
+lg$fatal("test")
+lg$config(NULL)
 }
