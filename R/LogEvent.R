@@ -65,7 +65,7 @@
 #' @seealso [as.data.frame.LogEvent()]
 #' @aliases LogEvents
 #' @examples
-#' lg <- Logger$new("dummy logger", appenders = NULL)
+#' lg <- get_logger("test")
 #' lg$error("foo bar")
 #'
 #' # The last LogEvent produced by a Logger is stored in the last_event field
@@ -168,7 +168,7 @@ LogEvent <- R6::R6Class(
 #' @seealso [data.table::data.table], [tibble::tibble]
 #'
 #' @examples
-#' lg <- Logger$new("test")
+#' lg <- get_logger("test")
 #' lg$info("lorem ipsum")
 #' as.data.frame(lg$last_event)
 #'

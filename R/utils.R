@@ -49,12 +49,12 @@ get_caller <- function(
 #'
 #' @seealso [whoami::whoami()]
 #' @name system_infos
-#' @examples
-#' get_user()
-#'
 #' @param fallback A fallback in case the user name could not be determined
 #' @rdname system_infos
 #' @export
+#' @examples
+#' get_user()
+
 get_user <- function(fallback = "unknown user"){
   guess_user <- function(){
     if (requireNamespace("whoami", quietly = TRUE)){

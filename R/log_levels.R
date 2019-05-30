@@ -320,7 +320,6 @@ error_msg_log_levels <- function(varname, log_levels){
 #' @family formatting utils
 #' @export
 #' @examples
-#'
 #' x <- label_levels(c(seq(0, 600, by = 100), NA))
 #' print(x)
 #' unlabel_levels(x)
