@@ -176,7 +176,7 @@ test_that("AppenderFileRotatingDate works as expected", {
 
   # first rotate rotates a file with content
   app$set_size(-1)$set_age("1 day")
-  app$rotate(now = as.Date("2019-01-01"))
+  app$rotate(now = as.Date("2019-01-01"), force = TRUE)
   expect_identical(nrow(app$backups), 1L)
   expect_gt(lg$appenders[[1]]$backups[1, ]$size, 0L)
   expect_length(readLines(app$file), 0)
@@ -270,16 +270,16 @@ test_that("AppenderFileRotatingDate `size` and `age` arguments work as expected"
   expect_identical(nrow(app$backups), 0L)
 
   app$set_size("0.5 KiB")
-  app$rotate(now = "2019-01-01")
+  app$rotate(now = "2999-01-01")
   expect_identical(nrow(app$backups), 1L)
 
   # age to small
   app$set_size(-1)
   app$set_age("1 day")
-  app$rotate(now = "2019-01-01")
+  app$rotate(now = "2999-01-01")
   expect_identical(nrow(app$backups), 1L)
 
-  app$rotate(now = "2019-01-02")
+  app$rotate(now = "2999-01-02")
   expect_identical(nrow(app$backups), 2L)
 })
 
@@ -310,20 +310,20 @@ test_that("AppenderFileRotatingTime works as expected", {
   # first rotate roates a file with content
   app$set_size(-1)
   app$set_age(-1)
-  app$rotate(now = "2019-01-03--12-01")
+  app$rotate(now = "2999-01-03--12-01")
   expect_gt(app$backups[1, ]$size, 0)
-  expect_match(app$backups[1, ]$path, "2019-01-03--12-01-00")
+  expect_match(app$backups[1, ]$path, "2999-01-03--12-01-00")
 
   # second rotate only has a file of size 0 to rotate
-  lg$appenders[[1]]$rotate(now = "2019-01-03--12-02")
+  lg$appenders[[1]]$rotate(now = "2999-01-03--12-02")
   expect_equal(lg$appenders[[1]]$backups[1, ]$size, 0)
-  expect_match(app$backups[1, ]$path, "2019-01-03--12-02-00")
+  expect_match(app$backups[1, ]$path, "2999-01-03--12-02-00")
 
   # compression is possible
   lg$appenders[[1]]$set_compression(TRUE)
-  lg$appenders[[1]]$rotate(now = "2019-01-03--12-03")
+  lg$appenders[[1]]$rotate(now = "2999-01-03--12-03")
   expect_identical(lg$appenders[[1]]$backups$ext, c("log.zip", "log", "log"))
-  expect_match(app$backups[1, ]$path, "2019-01-03--12-03-00.log.zip")
+  expect_match(app$backups[1, ]$path, "2999-01-03--12-03-00.log.zip")
 
   # cleanup
   app$prune(0)
@@ -397,15 +397,15 @@ test_that("AppenderFileRotatingTime `size` and `age` arguments work as expected"
   expect_identical(nrow(app$backups), 0L)
 
   app$set_size("0.5 KiB")
-  app$rotate(now = "2019-01-01")
+  app$rotate(now = "2999-01-01")
   expect_identical(nrow(app$backups), 1L)
 
   # age to small
   app$set_size(-1)
   app$set_age("1 day")
-  app$rotate(now = "2019-01-01")
+  app$rotate(now = "2999-01-01")
   expect_identical(nrow(app$backups), 1L)
 
-  app$rotate(now = "2019-01-02")
+  app$rotate(now = "2999-01-02")
   expect_identical(nrow(app$backups), 2L)
 })

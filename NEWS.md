@@ -1,3 +1,5 @@
+# lgr (development version)
+
 # lgr 0.3.0
 
   * Added support for rotating log files via `AppenderFileRotating`, 
