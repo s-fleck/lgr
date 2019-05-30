@@ -2,11 +2,15 @@ Logger:
   threshold: info
   propagate: false
   appenders:
-    AppenderFile:
-      file: /tmp/testlog.txt
+    AppenderConsole:
+      threshold: error
       layout:
         LayoutFormat:
           fmt: "%L %t - %m"
-    AppenderJson:
-      file: /tmp/blah.json
-      threshold: 200
+    AppenderBuffer:
+      appenders:
+        AppenderConsole:
+          threshold: 123
+          layout:
+            LayoutFormat:
+              fmt: "%L %t - %m"

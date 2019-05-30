@@ -2,8 +2,8 @@ Logger:
   threshold: info
   propagate: false
   appenders:
-    AppenderFile:
-      file: /tmp/testlog.txt
+    AppenderConsole:
+      threshold: error
       layout:
         LayoutFormat:
           fmt: "%L %t - %m"

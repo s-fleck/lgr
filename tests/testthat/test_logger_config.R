@@ -43,9 +43,6 @@ test_that("as_logger_config works as expected with YAML and JSON files", {
   )
   expect_identical(cj2, cj)
   expect_identical(cy2, cy)
-
-  try(unlink(cy$appenders[[1]]$file), silent = TRUE)
-  try(unlink(cy$appenders[[2]]$file), silent = TRUE)
 })
 
 
@@ -59,7 +56,6 @@ test_that("as_logger_config works for simplified yaml logger config", {
 
   expect_identical(cy$appenders[[1]]$layout$LayoutFormat$fmt, "%L %t - %m")
   expect_s3_class(cy, "logger_config")
-  try(unlink(cy$appenders[[1]]$file), silent = TRUE)
 })
 
 
@@ -77,6 +73,7 @@ test_that("setting logger$config fails if yaml file is passed to `text` instead 
 
 test_that("resolve_r6_ctors works as expected", {
   tf <- tempfile()
+  on.exit(unlink(tf))
   x <- logger_config(
     appenders = list("AppenderFile" = list(file = tf))
   )
@@ -84,10 +81,11 @@ test_that("resolve_r6_ctors works as expected", {
   res <- resolve_r6_ctors(x)
   expect_s3_class(as_logger_config(res), "logger_config")
   expect_identical(res$appenders[[1]]$file, tf)
-  try(unlink(tf), silent = TRUE)
 
 
-  tf <- tempfile()
+  tf2 <- tempfile()
+  tf3 <- tempfile()
+  on.exit(unlink(c(tf2, tf3)), add = TRUE)
   x <- list(
     "Logger" = list(
       name = "test2",
@@ -95,8 +93,8 @@ test_that("resolve_r6_ctors works as expected", {
         "AppenderBuffer" = list(
           threshold = NA,
           appenders = list(
-            "AppenderJson" = list(threshold = 100, file = tf),
-            "AppenderFile" = list(file = tempfile()),
+            "AppenderJson" = list(threshold = 100, file = tf2),
+            "AppenderFile" = list(file = tf3),
             "Appender" = list()
           )
         )
@@ -106,12 +104,12 @@ test_that("resolve_r6_ctors works as expected", {
 
   res <- resolve_r6_ctors(x)[[1]]
   expect_true(is_Logger(res))
-  expect_identical(res$appenders[[1]]$appenders[[1]]$file, tf)
+  expect_identical(res$appenders[[1]]$appenders[[1]]$file, tf2)
   expect_s3_class(res$appenders[[1]]$appenders[[2]], "AppenderFile")
-  expect_s3_class(res$appenders[[1]]$appenders[[2]], "Appender")
+  expect_identical(res$appenders[[1]]$appenders[[2]]$file, tf3)
+  expect_s3_class(res$appenders[[1]]$appenders[[3]], "Appender")
 
   res$config(NULL)
-  try(unlink(tf), silent = TRUE)
 })
 
 
@@ -129,21 +127,13 @@ test_that("parse_logger_configs works", {
   on.exit(lg$config(NULL))
 
   expect_length(lg$appenders, 2)
-  expect_identical(lg$appenders$AppenderFile$file, "/tmp/testlog.txt")
-  expect_identical(lg$appenders$AppenderJson$file, "/tmp/blah.json")
-  expect_identical(lg$appenders$AppenderJson$threshold, 200L)
+  expect_identical(lg$appenders$AppenderConsole$threshold, 200L)
+  expect_identical(lg$appenders$AppenderBuffer$appenders[[1]]$threshold, 123L)
   expect_identical(lg$threshold, 400L)
-  file.remove(
-    lg$appenders$AppenderFile$file,
-    lg$appenders$AppenderJson$file
-  )
 
   lg <- get_logger("test")$config(simple)
-  expect_identical(lg$appenders$AppenderFile$file, "/tmp/testlog.txt")
+  expect_identical(lg$appenders$AppenderConsole$threshold, 200L)
   expect_identical(lg$propagate, FALSE)
   expect_identical(lg$threshold, 400L)
-  file.remove(
-    lg$appenders$AppenderFile$file
-  )
 })
 
