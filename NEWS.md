@@ -9,7 +9,9 @@
   * Improved support for RMariaDB and dropped support for RMySQL
   * Improved support for RPostgres and dropped support for RPostgreSQL
   * removed `FATAL()`, `ERROR()`. Use `lgr$fatal()`, `lgr$error()`, ... instead.
-  
+  * added `reset` argument to `get_logger()`. This completely resets the
+    configuration of the logger and also replaces special loggers (such as 
+    `LoggerGlue`) with vanilla ones.
 
 # lgr 0.2.2
 

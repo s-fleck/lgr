@@ -9,6 +9,9 @@ loggers <- new.env()
 #'   as a hierarchical value.
 #' @param class An [R6ClassGenerator][R6::R6] object. Usually `Logger` or `LoggerGlue`
 #'   are the only valid choices.
+#' @param reset a `logical` scalar. If `TRUE` the logger is reset to an
+#'   unconfigured state. Unlinke `$config(NULL)` this aso replaces a
+#'   `LoggerGlue` with vanilla `Logger`.
 #'
 #' @return a [Logger]
 #' @export
@@ -24,9 +27,10 @@ loggers <- new.env()
 #' lg <- get_logger_glue("log/ger")
 #' lg$warn("a {.text} message", .text = "warning")
 #' lg$config(NULL)  # reset logger config
-  get_logger <- function(
+get_logger <- function(
   name,
-  class = Logger
+  class = Logger,
+  reset = FALSE
 ){
   if (missing(name) || !length(name) || all(is_blank(name))){
     return(lgr)
@@ -35,7 +39,7 @@ loggers <- new.env()
   name   <- paste(nm_cur, collapse = "/")
   res    <- get0(name, envir = loggers)
 
-  if (inherits(res, class$classname)){
+  if (inherits(res, class$classname) || reset){
     return(res)
   }
 
@@ -64,7 +68,13 @@ get_logger_glue <- function(
 
   assert(
     inherits(res, "LoggerGlue"),
-    sprintf("'%s' is a preconfigured <%s> and not a <LoggerGlue>", name, class(res)[[1]])
+    sprintf(
+      "'%s' must be an unconfigured <Logger> or a <LoggerGlue>. You can use
+      `get_logger('%s')$config(NULL)` to reset its configuration.",
+      name,
+      name,
+      class(res)[[1]]
+    )
   )
 
   res
