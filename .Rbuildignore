@@ -18,3 +18,4 @@
 ^vignettes/lgr-faq.Rmd$
 ^vignettes/lgr-configs.Rmd$
 ^vignettes/benchmarks\.Rmd$
+^revdep$
