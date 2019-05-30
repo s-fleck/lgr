@@ -39,6 +39,7 @@ test_that("setting appender threshold works", {
 # AppenderFile ---------------------------------------------------------
 test_that("AppenderFile works as expected", {
   tf <- tempfile()
+  on.exit(unlink(tf))
 
   # with default format
   app <- AppenderFile$new(file = tf)
@@ -50,6 +51,7 @@ test_that("AppenderFile works as expected", {
   unlink(tf)
 
   tf <- tempfile()
+  on.exit(unlink(tf))
   # with Json
   app <- AppenderFile$new(file = tf, layout = LayoutJson$new())
   app$append(x)
@@ -61,7 +63,6 @@ test_that("AppenderFile works as expected", {
   expect_identical(tres[["msg"]], eres[["msg"]])
   expect_true(all(is.na(tres[["caller"]])) && all(is.na(eres[["caller"]])))
   expect_equal(as.POSIXct(tres[["timestamp"]]), eres[["timestamp"]], tolerance = 1)
-  unlink(tf)
 })
 
 
@@ -69,7 +70,7 @@ test_that("AppenderFile works as expected", {
 
 test_that("AppenderFile creates empty log file on init", {
   tf <- tempfile()
-  on.exit(file.remove(tf))
+  on.exit(unlink(tf))
 
   expect_error(AppenderFile$new(
     file = file.path(tempdir(), "non", "existing", "directory" )
@@ -84,6 +85,7 @@ test_that("AppenderFile creates empty log file on init", {
 
 test_that("AppenderJson show method works as expected", {
   tf <- tempfile()
+  on.exit(unlink(tf))
 
   # with default format
   app <- AppenderJson$new(file = tf)
@@ -98,7 +100,6 @@ test_that("AppenderJson show method works as expected", {
 
   r <- utils::capture.output(app$show(threshold = 100))
   expect_identical(r, "")
-  unlink(tf)
 })
 
 
@@ -246,8 +247,6 @@ test_that("AppenderDt: .custom works", {
       .custom = NA_integer_
     ))
   )
-
-
 })
 
 

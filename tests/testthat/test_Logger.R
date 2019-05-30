@@ -122,7 +122,9 @@ test_that("suspending loggers works", {
 
 
 test_that("add/remove appenders", {
-  ml <- Logger$new("test_logger", appenders = AppenderFile$new(file = tempfile()))
+  tf <- tempfile()
+  on.exit(unlink(tf))
+  ml <- Logger$new("test_logger", appenders = AppenderFile$new(file = tf))
   app1 <- AppenderConsole$new(threshold = 100)
   app2 <- AppenderConsole$new(threshold = 300)
 
@@ -154,6 +156,7 @@ test_that("add/remove appenders", {
 test_that("modify appenders for a logger", {
   ml <- Logger$new("test_logger", appenders = list(AppenderConsole$new()), propagate = FALSE)
   tf <- tempfile()
+  on.exit(unlink(tf))
 
   # Add a new appender to a logger. We don't have to supply a name, but that
   # mak1es it easier to remove later.
@@ -168,16 +171,17 @@ test_that("modify appenders for a logger", {
   expect_silent(ml$debug("A debug message that the console appender doesn't show."))
   expect_identical(length(readLines(tf)), 2L)
   expect_match(paste(readLines(tf), collapse = "---"), "INFO.*---DEBUG.*")
-  file.remove(tf)
 })
 
 
 
 
 test_that("Exceptions are cought and turned into warnings", {
+  tf <- tempfile()
+  on.exit(unlink(tf))
   ml <- Logger$new("test_logger",
     appenders = list(
-      AppenderFile$new(file = tempfile()),
+      AppenderFile$new(file = tf),
       AppenderConsole$new()
     )
   )
@@ -193,6 +197,8 @@ test_that("Logger inheritance and event propagation", {
   tf1 <- tempfile()
   tf2 <- tempfile()
   tf3 <- tempfile()
+  on.exit(unlink(c(tf1, tf2, tf3)))
+
   c1  <- get_logger("c1")
   c1$add_appender(AppenderFile$new(tf1))
 
@@ -227,9 +233,12 @@ test_that("thresholds work", {
 
 
 test_that("ancestry querry works", {
+  tf <- tempfile()
+  on.exit(unlink(tf))
+
   l1 <- Logger$new("l1", appenders = AppenderBuffer$new())
   l2 <- Logger$new("l1/l2", propagate = FALSE, appenders = AppenderConsole$new())
-  l3 <- Logger$new("l1/l2/l3", appenders = AppenderFile$new(tempfile()))
+  l3 <- Logger$new("l1/l2/l3", appenders = AppenderFile$new(tf))
   l4 <- Logger$new("l1/l2/l3/l4", appenders = AppenderBuffer$new())
 
   expect_match(format(l4$ancestry), "(->.*){2}.*|")

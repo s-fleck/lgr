@@ -70,6 +70,7 @@ test_that("add/remove_appender", {
 
 test_that("option appenders setup", {
   old <- getOption("lgr.log_file")
+  on.exit(options("lgr.log_file" = old))
 
   options("lgr.log_file" = tempfile())
 
@@ -99,6 +100,4 @@ test_that("option appenders setup", {
   options("lgr.log_file" = c(blubb = tempfile('_fail')))
   expect_warning(res <- default_appenders(), "_fail")
   unlink(getOption("lgr.log_file"))
-
-  options("lgr.log_file" = old)
 })
