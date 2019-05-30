@@ -16,7 +16,7 @@ Description: A flexible, feature-rich yet light-weight logging
     well as email and push notifications. For a full list of features with
     examples please refer to the package vignette.
 License: MIT + file LICENSE
-URL: https://github.com/s-fleck/lgr
+URL: https://s-fleck.github.io/lgr
 BugReports: https://github.com/s-fleck/lgr/issues
 Depends:
     R (>= 2.10)
