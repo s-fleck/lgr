@@ -37,12 +37,6 @@ NULL
 #'
 #' @return the `root` Logger (lgr)
 #' @export
-#'
-#' @examples
-#' \dontrun{
-#' # make the root logger log to a file
-#'   basic_config(file = tempfile())
-#' }
 basic_config <- function(
   file = NULL,
   fmt = "%L [%t] %m",
