@@ -32,7 +32,7 @@ Coerce LogEvents to \code{data.frames}, \code{\link[data.table:data.table]{data.
 or \code{\link[tibble:tibble]{tibbles}}.
 }
 \examples{
-lg <- Logger$new("test")
+lg <- get_logger("test")
 lg$info("lorem ipsum")
 as.data.frame(lg$last_event)
 

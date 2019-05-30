@@ -211,7 +211,7 @@ LayoutFormat <- R6::R6Class(
 #' @seealso lgr exports a number of formatting utility functions that are
 #'   useful for layout glue: [colorize_levels()], [pad_left()], [pad_right()].
 #' @examples
-#' lg <- get_logger_glue("test")$
+#' lg <- get_logger("test")$
 #'   set_appenders(AppenderConsole$new())$
 #'   set_propagate(FALSE)
 #'

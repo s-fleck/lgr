@@ -165,12 +165,12 @@ and AppenderBuffer if you actually want to buffer events
 }
 
 \examples{
-lg <- Logger$new(
-  "test",
-  appenders = list(memory = AppenderDt$new()),
+lg <- get_logger("test")
+lg$config(list(
+  appenders = list(memory = AppenderBuffer$new()),
   threshold = NA,
   propagate = FALSE  # to prevent routing to root logger for this example
-)
+))
 lg$debug("test")
 lg$error("test")
 

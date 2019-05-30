@@ -139,7 +139,7 @@ Appender <- R6::R6Class(
 #' # create a new logger with propagate = FALSE to prevent routing to the root
 #' # logger. Please look at the section "Logger Hirarchies" in the package
 #' # vignette for more info.
-#' lg  <- Logger$new("test", propagate = FALSE)
+#' lg  <- get_logger("test")$set_propagate(FALSE)
 #'
 #' lg$add_appender(AppenderConsole$new())
 #' lg$add_appender(AppenderConsole$new(
@@ -148,7 +148,6 @@ Appender <- R6::R6Class(
 #' # Will output the message twice because we attached two console appenders
 #' lg$warn("A test message")
 #' lg$config(NULL) # reset config
-#'
 NULL
 
 
@@ -216,7 +215,7 @@ AppenderConsole <- R6::R6Class(
 #' @name AppenderFile
 #'
 #' @examples
-#' lg <- Logger$new("test")
+#' lg <- get_logger("test")
 #' default <- tempfile()
 #' fancy <- tempfile()
 #' json <- tempfile()
@@ -346,7 +345,9 @@ AppenderFile <- R6::R6Class(
 #' @seealso [LayoutFormat], [LayoutJson]
 #' @examples
 #' tf <- tempfile()
-#' lg <- Logger$new("test", appenders = AppenderJson$new(tf), propagate = FALSE)
+#' lg <- get_logger("test")$
+#'   set_appenders(AppenderJson$new(tf))$
+#'   set_propagate(FALSE)
 #'
 #' lg$info("A test message")
 #' lg$info("A test message %s strings", "with format strings", and = "custom_fields")
@@ -541,12 +542,12 @@ AppenderTable <- R6::R6Class(
 #' @name AppenderDt
 #'
 #' @examples
-#' lg <- Logger$new(
-#'   "test",
-#'   appenders = list(memory = AppenderDt$new()),
+#' lg <- get_logger("test")
+#' lg$config(list(
+#'   appenders = list(memory = AppenderBuffer$new()),
 #'   threshold = NA,
 #'   propagate = FALSE  # to prevent routing to root logger for this example
-#' )
+#' ))
 #' lg$debug("test")
 #' lg$error("test")
 #'

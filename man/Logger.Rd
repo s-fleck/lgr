@@ -290,14 +290,22 @@ lg$config(NULL)  # reset logger config
 # LoggerGlue
 # You can also create a new logger that uses the awesome glue library for
 # string formatting instead of sprintf
-lg <- LoggerGlue$new("glue")
-lg$fatal("blah ", "fizz is set to: {fizz}", foo = "bar", fizz = "buzz")
-# prevent creation of custom fields with prefixing a dot
-lg$fatal("blah ", "fizz is set to: {.fizz}", foo = "bar", .fizz = "buzz")
+
+if (requireNamespace("glue")){
+
+  lg <- get_logger_glue("glue")
+  lg$fatal("blah ", "fizz is set to: {fizz}", foo = "bar", fizz = "buzz")
+  # prevent creation of custom fields with prefixing a dot
+  lg$fatal("blah ", "fizz is set to: {.fizz}", foo = "bar", .fizz = "buzz")
+
+  #' # completely reset 'glue' to an unconfigured vanilla Logger
+  get_logger("glue", reset = TRUE)
+
+}
 
 
 # Configuring a Logger
-
+lg <- get_logger("test")
 lg$config(NULL)  # resets logger to unconfigured state
 
 # With setters
@@ -326,7 +334,7 @@ Logger:
       threshold: info
 "
 lg$config(cfg)
-lg$config(NULL)  # reset
+lg$config(NULL)
 }
 \seealso{
 \href{https://glue.tidyverse.org/}{glue}

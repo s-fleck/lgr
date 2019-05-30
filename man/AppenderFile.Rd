@@ -99,7 +99,7 @@ was specified)
 }
 
 \examples{
-lg <- Logger$new("test")
+lg <- get_logger("test")
 default <- tempfile()
 fancy <- tempfile()
 json <- tempfile()

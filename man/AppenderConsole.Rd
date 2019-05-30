@@ -92,7 +92,7 @@ was specified)
 # create a new logger with propagate = FALSE to prevent routing to the root
 # logger. Please look at the section "Logger Hirarchies" in the package
 # vignette for more info.
-lg  <- Logger$new("test", propagate = FALSE)
+lg  <- get_logger("test")$set_propagate(FALSE)
 
 lg$add_appender(AppenderConsole$new())
 lg$add_appender(AppenderConsole$new(
@@ -101,7 +101,6 @@ lg$add_appender(AppenderConsole$new(
 # Will output the message twice because we attached two console appenders
 lg$warn("A test message")
 lg$config(NULL) # reset config
-
 }
 \seealso{
 \link{LayoutFormat}

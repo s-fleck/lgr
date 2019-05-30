@@ -26,7 +26,6 @@ a \code{character} scalar.
 foo <- function() get_caller(-1L)
 foo()
 get_user()
-
 }
 \seealso{
 \code{\link[base:sys.call]{base::sys.call()}}

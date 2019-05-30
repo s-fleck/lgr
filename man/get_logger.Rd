@@ -5,7 +5,7 @@
 \alias{get_logger_glue}
 \title{Get/Create a Logger}
 \usage{
-get_logger(name, class = Logger)
+get_logger(name, class = Logger, reset = FALSE)
 
 get_logger_glue(name)
 }
@@ -15,6 +15,10 @@ as a hierarchical value.}
 
 \item{class}{An \link[R6:R6]{R6ClassGenerator} object. Usually \code{Logger} or \code{LoggerGlue}
 are the only valid choices.}
+
+\item{reset}{a \code{logical} scalar. If \code{TRUE} the logger is reset to an
+unconfigured state. Unlinke \code{$config(NULL)} this aso replaces a
+\code{LoggerGlue} with vanilla \code{Logger}.}
 }
 \value{
 a \link{Logger}
@@ -30,7 +34,10 @@ lg$warn("a \%s message", "warning")
 lg
 lg$parent
 
-lg <- get_logger_glue("log/ger")
+if (requireNamespace('glue')){
+  lg <- get_logger_glue("log/ger")
+}
 lg$warn("a {.text} message", .text = "warning")
-lg$config(NULL)  # reset logger config
+# completely reset 'glue' to an unconfigured vanilla Logger
+get_logger("glue", reset = TRUE)
 }

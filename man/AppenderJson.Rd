@@ -142,7 +142,9 @@ was specified)
 
 \examples{
 tf <- tempfile()
-lg <- Logger$new("test", appenders = AppenderJson$new(tf), propagate = FALSE)
+lg <- get_logger("test")$
+  set_appenders(AppenderJson$new(tf))$
+  set_propagate(FALSE)
 
 lg$info("A test message")
 lg$info("A test message \%s strings", "with format strings", and = "custom_fields")

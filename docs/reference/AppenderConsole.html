@@ -207,19 +207,18 @@ was specified)</p></dd>
     <pre class="examples"><div class='input'><span class='co'># create a new logger with propagate = FALSE to prevent routing to the root</span>
 <span class='co'># logger. Please look at the section "Logger Hirarchies" in the package</span>
 <span class='co'># vignette for more info.</span>
-<span class='no'>lg</span>  <span class='kw'>&lt;-</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"test"</span>, <span class='kw'>propagate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>lg</span>  <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)$<span class='fu'>set_propagate</span>(<span class='fl'>FALSE</span>)
 
 <span class='no'>lg</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>())
 <span class='no'>lg</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(
   <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(<span class='st'>"[%t] %c(): [%n] %m"</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"lgr.colors"</span>))))
 
 <span class='co'># Will output the message twice because we attached two console appenders</span>
-<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [00:06:28.942] A test message 
-#&gt; [2019-05-30 00:06:28.942] eval(): [</span><span style='color: #FFD75F;'>300</span><span>] A test message</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>) <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] test
+<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [06:41:22.333] A test message 
+#&gt; [2019-05-30 06:41:22.333] eval(): [</span><span style='color: #FFD75F;'>300</span><span>] A test message</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>) <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] test
 #&gt; 
 #&gt; inherited appenders:
-#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'>
-</div></span></pre>
+#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

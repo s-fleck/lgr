@@ -48,7 +48,10 @@ argument \code{fmt} that is passed on to \code{glue::glue()} for each LogEvent.
 }
 
 \examples{
-lg <- Logger$new("test", appenders = AppenderConsole$new(), propagate = FALSE)
+lg <- get_logger("test")$
+  set_appenders(AppenderConsole$new())$
+  set_propagate(FALSE)
+
 lg$appenders[[1]]$set_layout(LayoutGlue$new())
 lg$fatal("test")
 

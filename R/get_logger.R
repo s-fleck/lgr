@@ -24,9 +24,12 @@ loggers <- new.env()
 #' lg
 #' lg$parent
 #'
-#' lg <- get_logger_glue("log/ger")
+#' if (requireNamespace('glue')){
+#'   lg <- get_logger_glue("log/ger")
+#' }
 #' lg$warn("a {.text} message", .text = "warning")
-#' lg$config(NULL)  # reset logger config
+#' # completely reset 'glue' to an unconfigured vanilla Logger
+#' get_logger("glue", reset = TRUE)
 get_logger <- function(
   name,
   class = Logger,

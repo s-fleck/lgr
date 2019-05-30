@@ -187,30 +187,30 @@ created this event, equivalent to <code>event$logger_user</code>)</p></dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"dummy logger"</span>, <span class='kw'>appenders</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-<span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"foo bar"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;'>ERROR</span><span> [00:06:37.380] foo bar </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)
+<span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"foo bar"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;'>ERROR</span><span> [06:41:28.522] foo bar </div><div class='input'>
 <span class='co'># The last LogEvent produced by a Logger is stored in the last_event field</span>
-<span class='no'>lg</span>$<span class='no'>last_event</span>  <span class='co'># formatted by default</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [2019-05-30 00:06:37] foo bar  </div><div class='input'><span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>values</span>  <span class='co'># values stored in the event</span></div><div class='output co'>#&gt; $level
+<span class='no'>lg</span>$<span class='no'>last_event</span>  <span class='co'># formatted by default</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [2019-05-30 06:41:28] foo bar  </div><div class='input'><span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>values</span>  <span class='co'># values stored in the event</span></div><div class='output co'>#&gt; $level
 #&gt; [1] 200
 #&gt; 
 #&gt; $timestamp
-#&gt; [1] "2019-05-30 00:06:37 CEST"
+#&gt; [1] "2019-05-30 06:41:28 CEST"
 #&gt; 
 #&gt; $logger
-#&gt; [1] "dummy logger"
+#&gt; [1] "test"
 #&gt; 
 #&gt; $caller
 #&gt; [1] "eval"
 #&gt; 
 #&gt; $msg
-#&gt; [1] "foo bar"
+#&gt; foo bar
 #&gt; </div><div class='input'>
 <span class='co'># Also contains the Logger that created it as .logger</span>
-<span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>logger</span></div><div class='output co'>#&gt; [1] "dummy logger"</div><div class='input'><span class='co'># equivalent to</span>
-<span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>.logger</span>$<span class='no'>name</span></div><div class='output co'>#&gt; [1] "dummy logger"</div><div class='input'>
+<span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>logger</span></div><div class='output co'>#&gt; [1] "test"</div><div class='input'><span class='co'># equivalent to</span>
+<span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>.logger</span>$<span class='no'>name</span></div><div class='output co'>#&gt; [1] "test"</div><div class='input'>
 <span class='co'># This is really a reference to the complete Logger, so the following is</span>
 <span class='co'># possible (though nonsensical)</span>
-<span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>.logger</span>$<span class='no'>last_event</span>$<span class='no'>msg</span></div><div class='output co'>#&gt; [1] "foo bar"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='no'>lg</span>, <span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>.logger</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)  <span class='co'># reset logger config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] dummy logger
+<span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>.logger</span>$<span class='no'>last_event</span>$<span class='no'>msg</span></div><div class='output co'>#&gt; foo bar</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='no'>lg</span>, <span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>.logger</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)  <span class='co'># reset logger config</span></div><div class='output co'>#&gt; &lt;LoggerGlue&gt; [</span><span style='color: #808080;'>info</span><span>] test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div></span></pre>

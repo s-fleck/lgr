@@ -87,7 +87,7 @@ created this event, equivalent to \code{event$logger_user})}
 }
 
 \examples{
-lg <- Logger$new("dummy logger", appenders = NULL)
+lg <- get_logger("test")
 lg$error("foo bar")
 
 # The last LogEvent produced by a Logger is stored in the last_event field
