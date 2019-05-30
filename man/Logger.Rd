@@ -283,8 +283,7 @@ cat(readLines(tf), sep = "\\n")
 cat(readLines(tf2), sep = "\\n")
 
 # cleanup
-unlink(tf)
-unlink(tf2)
+unlink(c(tf, tf2))
 lg$config(NULL)  # reset logger config
 
 # LoggerGlue
@@ -322,6 +321,7 @@ lg$config(list(
   propagate = FALSE,
   appenders = list(AppenderConsole$new(threshold = "info"))
 ))
+
 lg$config(NULL)  # resets logger to unconfigured state
 
 # Via YAML
@@ -333,6 +333,7 @@ Logger:
     AppenderConsole:
       threshold: info
 "
+
 lg$config(cfg)
 lg$config(NULL)
 }

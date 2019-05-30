@@ -47,15 +47,18 @@ Logger/Appender from within a filter
 
 \examples{
 # using filters to modify log events
+lg <- get_logger("test")
+
 analyse <- function(){
-  lgr$add_filter(FilterForceLevel$new("info"), "force")
-  lgr$add_filter(FilterInject$new(type = "analysis"), "inject")
-  on.exit(lgr$remove_filter(c("force", "inject")))
-  lgr$debug("a debug message")
-  lgr$error("an error")
+  lg$add_filter(FilterForceLevel$new("info"), "force")
+  lg$add_filter(FilterInject$new(type = "analysis"), "inject")
+  on.exit(lg$remove_filter(c("force", "inject")))
+  lg$debug("a debug message")
+  lg$error("an error")
 }
 analyse()
-lgr$error("an error")
+lg$error("an error")
+lg$config(NULL)  # reset config
 
 
 # using .obj()

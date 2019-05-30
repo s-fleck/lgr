@@ -94,7 +94,7 @@ etc... on the available backups of \code{file}.}
 
 \describe{
 \item{\code{file}, \code{set_file(file)}}{\code{character} scalar. Path to the desired log
-file. If the file does not exist it will be created}
+file. If the file does not exist it will be created.}
 }
 
 

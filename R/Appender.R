@@ -272,8 +272,14 @@ AppenderFile <- R6::R6Class(
     },
 
     set_file = function(file){
-      assert(is_scalar_character(file))
-      assert(dir.exists(dirname(file)))
+      assert(
+        is_scalar_character(file),
+        "`file` must be character scalar, not: ", preview_object(file)
+      )
+      assert(
+        dir.exists(dirname(file)),
+        "Cannot create file: directory '", dirname(file), "' does not exist."
+      )
       private$.file <- file
       if (!file.exists(file))  file.create(file)
       invisible(self)

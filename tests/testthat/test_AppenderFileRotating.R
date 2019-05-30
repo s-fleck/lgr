@@ -1,7 +1,11 @@
 context("AppenderFileRotating")
 
-td <- file.path(tempdir(), "lgr")
-dir.create(td, recursive = TRUE)
+setup({
+  td <- file.path(tempdir(), "lgr")
+  assign("td", td, parent.env(environment()))
+  dir.create(td, recursive = TRUE)
+})
+
 
 teardown({
   unlink(td, recursive = TRUE)

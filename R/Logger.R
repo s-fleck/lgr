@@ -264,6 +264,7 @@
 #'     AppenderConsole:
 #'       threshold: info
 #' "
+#'
 #' lg$config(cfg)
 #' lg$config(NULL)
 

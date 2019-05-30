@@ -84,6 +84,9 @@ Formatting is handled by **Layouts**, and each Appender has exactly one:
 lgr$appenders$file$set_layout(LayoutFormat$new(timestamp_fmt = "%B %d %T"))
 lgr$info("No, I am quite serious")
 readLines(tf)
+
+#cleanup
+unlink(tf)
 ```
 
 
@@ -360,8 +363,6 @@ readLines(tf)
 
 # Remove the appender again
 lgr$remove_appender("file")
-```
-```{r echo = FALSE}
 unlink(tf)
 ```
 
@@ -466,8 +467,8 @@ lg$
 ```{r}
 lg$config(list(
   threshold = "info",
-  propagate = TRUE,
-  appenders = AppenderFile$new(file = "/tmp/testlog.txt")
+  propagate = FALSE,
+  appenders = AppenderConsole$new(threshold = "info")
 ))
 ```
 
@@ -488,8 +489,8 @@ cfg <- "
     threshold: info
     propagate: false
     appenders:
-      AppenderFile:
-        file: /tmp/testlog.txt
+      AppenderConsole:
+        threshold: info
 "
 lg$config(cfg)
 ```
@@ -583,11 +584,9 @@ cat(readLines(tf), sep = "\n")
 ```{r echo = FALSE}
 lg$appenders$json$show()
 ```
-
-
-
-
-```{r, echo = FALSE}
+```{r}
+# cleanup
+lg$config(NULL)
 unlink(tf)
 ```
 
@@ -619,8 +618,9 @@ lg$appenders$rotating$backups
 # manually delete all backups
 invisible(lg$appenders$rotating$prune(0))
 lg$appenders$rotating$backups
+
 #cleanup
-file.remove(tf)
+unlink(tf)
 ```
 
 
@@ -671,7 +671,9 @@ Consequently, `lg` no longer outputs log messages to he console
 ```{r}
 lg$info("Nothing to see here")
 ```
-```{r echo = FALSE}
+```{r}
+# cleanup
+lg$config(NULL)
 unlink(tf)
 ```
 
