@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 lgr is a logging framework for R inspired by 
 [Apache Log4j](https://logging.apache.org/log4j/2.x/) and
 [Python logging](https://docs.python.org/3/library/logging.html).
-It follows an object oriented design implemented throughR
+It follows an object oriented design implemented through
 [R6 classes](https://github.com/r-lib/R6). This enables lgr to have a larger
 set of features than other logging packages for R, and makes it flexible and 
 easy to extend.  

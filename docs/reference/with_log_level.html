@@ -90,12 +90,7 @@ created by target Logger." />
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/s-fleck/lgr">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -109,7 +104,7 @@ created by target Logger." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Inject Values into Logging Calls</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/utils-logging.R'><code>R/utils-logging.R</code></a></small>
+    
     <div class="hidden name"><code>with_log_level.Rd</code></div>
     </div>
 
@@ -161,13 +156,13 @@ produce hard to reason about code.</p>
     <pre class="examples"><div class='input'><span class='fu'>with_log_level</span>(<span class='st'>"warn"</span>, {
   <span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"More important than it seems"</span>)
   <span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"Really not so bad"</span>)
-})</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [06:41:35.053] More important than it seems 
-#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [06:41:35.055] Really not so bad </div><div class='input'><span class='fu'>with_log_value</span>(
+})</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [12:47:44.086] More important than it seems 
+#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [12:47:44.088] Really not so bad </div><div class='input'><span class='fu'>with_log_value</span>(
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"overriden msg"</span>),  {
   <span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"bar"</span>)
   <span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"FOO"</span>)
-})</div><div class='output co'>#&gt; INFO  [06:41:35.064] overriden msg 
-#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [06:41:35.066] overriden msg </div></span></pre>
+})</div><div class='output co'>#&gt; INFO  [12:47:44.091] overriden msg 
+#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [12:47:44.092] overriden msg </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

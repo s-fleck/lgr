@@ -92,12 +92,7 @@ with_logging() temporarily disable/enable logging." />
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/s-fleck/lgr">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -111,7 +106,7 @@ with_logging() temporarily disable/enable logging." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Suspend All Logging</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/utils-logging.R'><code>R/utils-logging.R</code></a></small>
+    
     <div class="hidden name"><code>suspend_logging.Rd</code></div>
     </div>
 
@@ -151,16 +146,18 @@ lgr until <code>unsuspend_logging()</code> is invoked, while <code>without_loggi
     <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)
 
 <span class='co'># temporarily disable logging</span>
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"foo"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [06:41:33.072] foo </div><div class='input'><span class='fu'>without_logging</span>({
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"foo"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [12:47:41.997] foo </div><div class='input'><span class='fu'>without_logging</span>({
   <span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"everything in this codeblock will be suppressed"</span>)
   <span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"bar"</span>)
-})</div><div class='output co'>#&gt; <span class='warning'>Warning: [2019-05-30 06:41:33.075] An error occurred during logging: Error in doTryCatch(return(expr), name, parentenv, handler): object 'msg' not found</span></div><div class='output co'>#&gt; <span class='warning'>Warning: [2019-05-30 06:41:33.076] An error occurred during logging: Error in doTryCatch(return(expr), name, parentenv, handler): object 'msg' not found</span></div><div class='input'>
+})
+
 <span class='co'># globally disable logging</span>
 <span class='fu'>suspend_logging</span>()
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"bar"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: [2019-05-30 06:41:33.079] An error occurred during logging: Error in doTryCatch(return(expr), name, parentenv, handler): object 'msg' not found</span></div><div class='input'><span class='fu'>with_logging</span>(<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"foo"</span>))  <span class='co'># log anyways</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [06:41:33.081] foo </div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"bar"</span>)
+<span class='fu'>with_logging</span>(<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"foo"</span>))  <span class='co'># log anyways</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [12:47:42.026] foo </div><div class='input'>
 <span class='co'># globally enable logging again</span>
 <span class='fu'>unsuspend_logging</span>()
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"foo"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [06:41:33.085] foo </div></span></pre>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"foo"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [12:47:42.035] foo </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

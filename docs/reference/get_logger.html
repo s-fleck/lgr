@@ -89,12 +89,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/s-fleck/lgr">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -108,7 +103,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get/Create a Logger</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/get_logger.R'><code>R/get_logger.R</code></a></small>
+    
     <div class="hidden name"><code>get_logger.Rd</code></div>
     </div>
 
@@ -138,7 +133,7 @@ are the only valid choices.</p></td>
     <tr>
       <th>reset</th>
       <td><p>a <code>logical</code> scalar. If <code>TRUE</code> the logger is reset to an
-unconfigured state. Unlinke <code>$config(NULL)</code> this aso replaces a
+unconfigured state. Unlike <code>$config(NULL)</code> this also replaces a
 <code>LoggerGlue</code> with vanilla <code>Logger</code>.</p></td>
     </tr>
     </table>
@@ -152,7 +147,7 @@ unconfigured state. Unlinke <code>$config(NULL)</code> this aso replaces a
     <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'>get_logger</span>(<span class='st'>"log/ger/test"</span>)
 <span class='co'># equivalent to</span>
 <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'>get_logger</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"log"</span>, <span class='st'>"ger"</span>, <span class='st'>"test"</span>))
-<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a %s message"</span>, <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [06:41:31.276] a warning message </div><div class='input'><span class='no'>lg</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] log/ger/test
+<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a %s message"</span>, <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [12:47:39.744] a warning message </div><div class='input'><span class='no'>lg</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] log/ger/test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='no'>lg</span>$<span class='no'>parent</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] log/ger
@@ -162,8 +157,11 @@ unconfigured state. Unlinke <code>$config(NULL)</code> this aso replaces a
 <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>'glue'</span>)){
   <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'>get_logger_glue</span>(<span class='st'>"log/ger"</span>)
 }
-<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a {.text} message"</span>, <span class='kw'>.text</span> <span class='kw'>=</span> <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [06:41:31.294] a warning message </div><div class='input'><span class='co'># completely reset 'glue' to an unconfigured vanilla Logger</span>
-<span class='fu'>get_logger</span>(<span class='st'>"glue"</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; NULL</div></span></pre>
+<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a {.text} message"</span>, <span class='kw'>.text</span> <span class='kw'>=</span> <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [12:47:39.763] a warning message </div><div class='input'><span class='co'># completely reset 'glue' to an unconfigured vanilla Logger</span>
+<span class='fu'>get_logger</span>(<span class='st'>"glue"</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; &lt;LoggerGlue&gt; [</span><span style='color: #808080;'>info</span><span>] glue
+#&gt; 
+#&gt; inherited appenders:
+#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

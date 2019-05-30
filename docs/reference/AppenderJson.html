@@ -91,12 +91,7 @@ comfortably access the underlying file." />
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/s-fleck/lgr">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -110,7 +105,7 @@ comfortably access the underlying file." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Log to a JSON File</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/Appender.R'><code>R/Appender.R</code></a></small>
+    
     <div class="hidden name"><code>AppenderJson.Rd</code></div>
     </div>
 
@@ -157,7 +152,7 @@ form of <code>appender$set_&lt;fieldname&gt;(value)</code></p>
     
     <dl class='dl-horizontal'>
 <dt><code>file</code>, <code>set_file(file)</code></dt><dd><p><code>character</code> scalar. Path to the desired log
-file. If the file does not exist it will be created</p></dd>
+file. If the file does not exist it will be created.</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>threshold</code>, <code>set_threshold(level)</code></dt><dd><p><code>character</code> or <code>integer</code> scalar.
@@ -243,10 +238,10 @@ was specified)</p></dd>
 <span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)
 <span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message %s strings"</span>, <span class='st'>"with format strings"</span>, <span class='kw'>and</span> <span class='kw'>=</span> <span class='st'>"custom_fields"</span>)
 
-<span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2019-05-30 06:41:24","logger":"test","caller":"eval","msg":"A test message"}
-#&gt; {"level":400,"timestamp":"2019-05-30 06:41:24","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp logger caller
-#&gt; 1   400 2019-05-30 06:41:24   test   eval
-#&gt; 2   400 2019-05-30 06:41:24   test   eval
+<span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2019-05-30 12:47:32","logger":"test","caller":"eval","msg":"A test message"}
+#&gt; {"level":400,"timestamp":"2019-05-30 12:47:32","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp logger caller
+#&gt; 1   400 2019-05-30 12:47:32   test   eval
+#&gt; 2   400 2019-05-30 12:47:32   test   eval
 #&gt;                                          msg           and
 #&gt; 1                             A test message          &lt;NA&gt;
 #&gt; 2 A test message with format strings strings custom_fields</div><div class='input'>

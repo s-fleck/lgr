@@ -36,7 +36,7 @@ Suggests:
     knitr,
     RMariaDB,
     rmarkdown,
-    rotor (>= 2.2.0),
+    rotor (>= 0.2.2),
     RPostgres,
     rprojroot,
     RSQLite,

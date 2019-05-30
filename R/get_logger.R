@@ -10,7 +10,7 @@ loggers <- new.env()
 #' @param class An [R6ClassGenerator][R6::R6] object. Usually `Logger` or `LoggerGlue`
 #'   are the only valid choices.
 #' @param reset a `logical` scalar. If `TRUE` the logger is reset to an
-#'   unconfigured state. Unlinke `$config(NULL)` this aso replaces a
+#'   unconfigured state. Unlike `$config(NULL)` this also replaces a
 #'   `LoggerGlue` with vanilla `Logger`.
 #'
 #' @return a [Logger]
