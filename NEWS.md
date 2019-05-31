@@ -15,6 +15,7 @@
     configuration of the logger and also replaces special loggers (such as 
     `LoggerGlue`) with vanilla ones.
 
+
 # lgr 0.2.2
 
 * The root logger can now be configured via `options()` and/or environment 
