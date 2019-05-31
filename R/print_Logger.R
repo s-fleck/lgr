@@ -156,7 +156,7 @@ print.ancestry <- function(
   ...
 ){
   assert(is_scalar_bool(color))
-  cat(format(x), "\n")
+  cat(format(x, color = color), "\n")
   invisible(x)
 }
 

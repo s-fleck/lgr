@@ -233,15 +233,13 @@ test_that("thresholds work", {
 
 
 test_that("ancestry querry works", {
-  tf <- tempfile()
-  on.exit(unlink(tf))
+  l4 <- get_logger("l1/l2/l3/l4")
+  l2 <- get_logger("l1/l2")$set_propagate(FALSE)
 
-  l1 <- Logger$new("l1", appenders = AppenderBuffer$new())
-  l2 <- Logger$new("l1/l2", propagate = FALSE, appenders = AppenderConsole$new())
-  l3 <- Logger$new("l1/l2/l3", appenders = AppenderFile$new(tf))
-  l4 <- Logger$new("l1/l2/l3/l4", appenders = AppenderBuffer$new())
-
-  expect_match(format(l4$ancestry), "(->.*){2}.*|")
+  expect_equal(
+    unname(unclass(l4$ancestry)),
+    c(TRUE, FALSE, TRUE, TRUE)
+  )
 })
 
 
