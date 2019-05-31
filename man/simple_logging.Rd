@@ -2,12 +2,6 @@
 % Please edit documentation in R/simple_logging.R
 \name{simple_logging}
 \alias{simple_logging}
-\alias{FATAL}
-\alias{ERROR}
-\alias{WARN}
-\alias{INFO}
-\alias{DEBUG}
-\alias{TRACE}
 \alias{log_exception}
 \alias{threshold}
 \alias{console_threshold}
@@ -18,18 +12,6 @@
 \alias{show_data}
 \title{Simple Logging}
 \usage{
-FATAL(msg, ...)
-
-ERROR(msg, ...)
-
-WARN(msg, ...)
-
-INFO(msg, ...)
-
-DEBUG(msg, ...)
-
-TRACE(msg, ...)
-
 log_exception(code, logfun = lgr$fatal, caller = get_caller(-3))
 
 threshold(level, target = lgr::lgr)
@@ -47,8 +29,6 @@ show_dt(target = lgr::lgr)
 show_data(target = lgr::lgr)
 }
 \arguments{
-\item{msg, ...}{passed on to \code{\link[base:sprintf]{base::sprintf()}}}
-
 \item{code}{Any \R code}
 
 \item{logfun}{a \code{function} for processing the log request, usually
@@ -56,11 +36,7 @@ show_data(target = lgr::lgr)
 
 \item{caller}{a \code{character} scalar. The name of the calling function}
 
-\item{level, threshold}{an \code{integer} or \code{character} scalar, see
-\code{getOption("lgr.log_levels")} for possible values. For \code{threshold} \code{0}
-(\code{"off"}) and \code{NA} (\code{"all"}) are also valid.}
-
-\item{target}{a \link{Logger} or \link{Appender}. Defaults to the root logger.}
+\item{level}{\code{integer} or \code{character} scalar: the desired log level}
 
 \item{appender}{an \code{Appender}}
 
@@ -72,9 +48,6 @@ show_data(target = lgr::lgr)
 \code{threshold}}
 }
 \value{
-\code{FATAL()} ... \code{TRACE()} and \code{log_exception()} return the log message
-as a \code{character} vector.
-
 \code{threshold()} and \code{console_threshold()} return the \link{log_level} of \code{target}
 as \code{integer} (invisibly)
 

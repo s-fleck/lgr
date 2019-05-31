@@ -1,5 +1,7 @@
 # lgr (development version)
 
+* Removed `FATAL()`, `ERROR()`. Use `lgr$fatal()`, `lgr$error()`, ... instead.
+
 # lgr 0.3.0
 
   * Added support for rotating log files via `AppenderFileRotating`, 
@@ -10,7 +12,6 @@
   * `AppenderFile$new()` now creates an empty file, or fails if it can't
   * Improved support for RMariaDB and dropped support for RMySQL
   * Improved support for RPostgres and dropped support for RPostgreSQL
-  * removed `FATAL()`, `ERROR()`. Use `lgr$fatal()`, `lgr$error()`, ... instead.
   * added `reset` argument to `get_logger()`. This completely resets the
     configuration of the logger and also replaces special loggers (such as 
     `LoggerGlue`) with vanilla ones.
@@ -32,6 +33,7 @@
 * `with_log_level()` and `with_log_value()` now accept logger names as well as 
   Logger objects as the `logger` argument
 * `get_logger_glue()` now works as intended
+* Deprecated `FATAL()`, `ERROR()`. Use `lgr$fatal()`, `lgr$error()`, ... instead.
 
 
 # lgr 0.2.1
