@@ -245,4 +245,24 @@ is_zipcmd_available <- function(cmd = Sys.getenv("R_ZIPCMD", "zip")){
   res == 0
 }
 
+
+
+
+fmt_bytes <- function(
+  x
+){
+  x <- as.numeric(x)
+
+  readablifiy <- function(.x){
+    for (unit in c("B", "KiB", "MiB", "GiB", "TiB")){
+      if (max(abs(.x)) < 1024 || unit == "TiB")
+        break
+      else
+        .x <- .x / 1024
+    }
+    return(paste(round(.x, 1), unit))
+  }
+
+  vapply(x, readablifiy, character(1))
+}
 # nocov end

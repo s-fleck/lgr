@@ -94,7 +94,36 @@ Appender <- R6::R6Class(
       )
       private$.layout <- layout
       invisible(self)
+    },
+
+    format = function(
+      color = FALSE,
+      ...
+    ){
+      assert(is_scalar_bool(color))
+      if (!color)
+        style_subtle <- identity
+
+      thr <- fmt_threshold(self$threshold, type = "character")
+
+      header <- paste(
+        paste0("<", class(self)[[1]], "> [", thr, "]")
+      )
+
+      res <- c(
+        header,
+        paste0("  ", class(self$layout)[[1]], ": ", self$layout$toString())
+      )
+
+      if (!is.null(self$destination)){
+        res <- c(
+          res, paste("  Destination:", self$destination)
+        )
+      }
+
+      res
     }
+
   ),
 
 
@@ -1187,6 +1216,21 @@ AppenderBuffer <- R6::R6Class(
       }
 
       invisible(self)
+    },
+
+
+    format = function(
+      ...
+    ){
+      res <- super$format()
+      appenders <- appender_summary(self$appenders)
+      if (!is.null(appenders)){
+        res <-c(
+          res, paste0("    ", appenders)
+        )
+      }
+
+      res
     }
   ),
 
@@ -2409,10 +2453,12 @@ AppenderFileRotating <- R6::R6Class(
       self
     },
 
+
     append = function(event){
       super$append(event)
       self$rotate()
     },
+
 
     rotate = function(
       force   = FALSE
@@ -2431,10 +2477,12 @@ AppenderFileRotating <- R6::R6Class(
       self
     },
 
+
     prune = function(max_backups = self$max_backups){
       get("bq", envir = private)$prune(max_backups)
       self
     },
+
 
     set_file = function(
       file
@@ -2444,12 +2492,14 @@ AppenderFileRotating <- R6::R6Class(
       self
     },
 
+
     set_size = function(
       x
     ){
       private[[".size"]] <- x
       self
     },
+
 
     set_max_backups = function(
       x
@@ -2458,12 +2508,14 @@ AppenderFileRotating <- R6::R6Class(
       self
     },
 
+
     set_compression = function(
       x
     ){
       private[["bq"]]$set_compression(x)
       self
     },
+
 
     set_create_file = function(
       x
@@ -2473,13 +2525,36 @@ AppenderFileRotating <- R6::R6Class(
       self
     },
 
+
     set_backup_dir = function(
       x
     ){
       private$bq$set_backup_dir(x)
       self
+    },
+
+
+    format = function(
+      ...
+    ){
+      res <- super$format()
+
+      size <- {
+        if (is.infinite(self$size))
+          "Inf"
+        else if (is.numeric(self$size))
+          fmt_bytes(self$size)
+        else
+          self$size
+      }
+      c(
+        res,
+        sprintf("  Backups: %s/%s", private$bq$n_backups, self$max_backups),
+        paste0("  Size: ", size)
+      )
     }
   ),
+
 
   active = list(
     size = function() get(".size", private),
@@ -2490,6 +2565,7 @@ AppenderFileRotating <- R6::R6Class(
     backups     = function() get("bq", private)$backups,
     backup_dir  = function() get("bq", private)$backup_dir
   ),
+
 
   private = list(
     .size = NULL,
@@ -2608,6 +2684,16 @@ AppenderFileRotatingTime <- R6::R6Class(
     ){
       private$bq$set_cache_backups(x)
       self
+    },
+
+    format = function(
+      ...
+    ){
+      res <- super$format()
+      c(
+        res,
+        sprintf("  Age: %s", self$age)
+      )
     }
   ),
 

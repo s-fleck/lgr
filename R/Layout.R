@@ -156,6 +156,10 @@ LayoutFormat <- R6::R6Class(
       assert(is_scalar_character(x))
       private$.pad_levels <- x
       invisible(self)
+    },
+
+    toString = function(){
+      self$fmt
     }
   ),
 
@@ -419,6 +423,10 @@ LayoutDbi <- R6::R6Class(
         col_types = private$.col_types,
         col_names = names(private$.col_types)
       )
+    },
+
+    toString = function(){
+      paste(self$col_names, collapse = ", ")
     }
   ),
 
@@ -759,7 +767,9 @@ LayoutJson <- R6::R6Class(
       assert(identical(length(names(x)), length(x)))
       private$.toJSON_args <- x
       invisible(self)
-    }
+    },
+
+    toString = function() "JSON"
   ),
 
   active = list(
