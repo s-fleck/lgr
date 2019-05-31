@@ -19,6 +19,7 @@ x$set_colors(x)
 x$set_fmt(x)
 x$set_pad_levels(x)
 x$set_timestamp_fmt(x)
+x$toString()
 
 x$colors
 x$fmt

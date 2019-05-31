@@ -2,7 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderJson}
 \alias{AppenderJson}
-\title{Log to a JSON File}
+\title{Log to a JSON file}
 \description{
 \code{AppenderJson} is a shortcut for \code{AppenderFile} with \code{\link{LayoutJson}}, but
 comes with an extra method \code{show()} and an extra active field \code{data} to
@@ -16,6 +16,7 @@ x <- AppenderFile$new(file, threshold = NA_integer_, layout =
 x$add_filter(filter, name = NULL)
 x$append(event)
 x$filter(event)
+x$format(color = FALSE, ...)
 x$remove_filter(pos)
 x$set_file(file)
 x$set_filters(filters)

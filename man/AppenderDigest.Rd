@@ -2,7 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderDigest}
 \alias{AppenderDigest}
-\title{Abstract Class for Digests}
+\title{Abstract class for digests}
 \description{
 \strong{Abstract classes} are exported for package developers that want to extend
 them, they cannot be instantiated directly.

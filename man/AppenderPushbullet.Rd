@@ -2,7 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderPushbullet}
 \alias{AppenderPushbullet}
-\title{Send Push-Notifications via RPushbullet}
+\title{Send push-notifications via RPushbullet}
 \description{
 Send push notifications via \href{https://www.pushbullet.com/}{pushbullet}. This
 Appender keeps an in-memory buffer like \link{AppenderBuffer}. If the buffer is
@@ -23,6 +23,7 @@ x$add_filter(filter, name = NULL)
 x$append(event)
 x$filter(event)
 x$flush()
+x$format(color = FALSE, ...)
 x$remove_filter(pos)
 x$set_apikey(x)
 x$set_buffer_size(x)
@@ -43,12 +44,16 @@ x$buffer_df
 x$buffer_dt
 x$buffer_events
 x$buffer_size
+x$channel
 x$data
 x$destination
+x$devices
 x$dt
+x$email
 x$filters
 x$flush_threshold
 x$layout
+x$recipients
 x$should_flush
 x$subject_layout
 x$threshold

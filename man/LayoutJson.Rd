@@ -13,6 +13,7 @@ x <- LayoutJson$new(toJSON_args = list(auto_unbox = TRUE))
 x$clone(deep = FALSE)
 x$format_event(event)
 x$set_toJSON_args(x)
+x$toString()
 
 x$toJSON_args
 

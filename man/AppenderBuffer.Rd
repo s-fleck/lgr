@@ -2,7 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderBuffer}
 \alias{AppenderBuffer}
-\title{Log to a Memory Buffer}
+\title{Log to a memory buffer}
 \description{
 An Appender that Buffers LogEvents in-memory and and redirects them to other
 Appenders once certain conditions are met.
@@ -20,6 +20,8 @@ x$add_filter(filter, name = NULL)
 x$append(event)
 x$filter(event)
 x$flush()
+x$format(...)
+x$format(color = FALSE, ...)
 x$remove_appender(pos)
 x$remove_filter(pos)
 x$set_appenders(x)

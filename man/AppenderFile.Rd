@@ -2,7 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderFile}
 \alias{AppenderFile}
-\title{Log to a File}
+\title{Log to a file}
 \description{
 A simple Appender that outputs to a file in the file system. If you plan
 to log to text files, consider logging to JSON files and take a look at
@@ -17,6 +17,7 @@ x <- AppenderFile$new(file, threshold = NA_integer_, layout =
 x$add_filter(filter, name = NULL)
 x$append(event)
 x$filter(event)
+x$format(color = FALSE, ...)
 x$remove_filter(pos)
 x$set_file(file)
 x$set_filters(filters)

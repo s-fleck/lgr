@@ -2,7 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderRjdbc}
 \alias{AppenderRjdbc}
-\title{Log to Databases via RJDBC}
+\title{Log to databases via RJDBC}
 \description{
 Log to a database table with the \strong{RJDBC} package. \strong{RJDBC} is only
 somewhat  \strong{DBI} compliant and does not work with \link{AppenderDbi}.
@@ -21,6 +21,7 @@ x$add_filter(filter, name = NULL)
 x$append(event)
 x$filter(event)
 x$flush()
+x$format(color = FALSE, ...)
 x$remove_filter(pos)
 x$set_buffer_size(x)
 x$set_close_on_exit(x)

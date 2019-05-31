@@ -247,6 +247,7 @@ LayoutGlue <- R6::R6Class(
       self$set_fmt(fmt)
     },
 
+
     format_event = function(
       event
     ){
@@ -256,11 +257,13 @@ LayoutGlue <- R6::R6Class(
       unclass(glue::glue(get(".fmt", private), .envir = event))
     },
 
+
     set_fmt = function(x){
       assert(is_scalar_character(x))
       private$.fmt <- x
       invisible(self)
     },
+
 
     set_colors = function(x){
       assert(
@@ -272,7 +275,10 @@ LayoutGlue <- R6::R6Class(
       invisible(self)
     },
 
-    toString = function() self$fmt
+
+    toString = function() {
+      self$fmt
+    }
   ),
 
 
@@ -428,10 +434,12 @@ LayoutDbi <- R6::R6Class(
       )
     },
 
+
     toString = function(){
       paste(self$col_names, collapse = ", ")
     }
   ),
+
 
   active = list(
     col_types = function() {

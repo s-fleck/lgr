@@ -2,7 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderDbi}
 \alias{AppenderDbi}
-\title{Log to Databases via DBI}
+\title{Log to databases via DBI}
 \description{
 Log to a database table with any \strong{DBI} compatible backend. Please be
 aware that AppenderDbi does \emph{not} support case sensitive / quoted column
@@ -35,6 +35,7 @@ x$add_filter(filter, name = NULL)
 x$append(event)
 x$filter(event)
 x$flush()
+x$format(color = FALSE, ...)
 x$remove_filter(pos)
 x$set_buffer_size(x)
 x$set_close_on_exit(x)

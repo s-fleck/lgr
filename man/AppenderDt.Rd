@@ -3,7 +3,7 @@
 \name{AppenderDt}
 \alias{AppenderDt}
 \alias{lgr_data}
-\title{Log to an In-Memory Data.Table}
+\title{Log to an in-memory data.table}
 \description{
 An Appender that outputs to an in-memory \code{data.table}. This kind of
 Appender is useful for interactive use, and has very little overhead.
@@ -34,6 +34,7 @@ x <- AppenderDt$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt =
 x$add_filter(filter, name = NULL)
 x$append(event)
 x$filter(event)
+x$format(color = FALSE, ...)
 x$remove_filter(pos)
 x$set_filters(filters)
 x$set_layout(layout)

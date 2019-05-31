@@ -3,7 +3,7 @@
 \docType{data}
 \name{AppenderMail}
 \alias{AppenderMail}
-\title{Abstract Class for Email Appenders}
+\title{Abstract class for email appenders}
 \format{An object of class \code{R6ClassGenerator} of length 24.}
 \usage{
 AppenderMail

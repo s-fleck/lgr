@@ -39,6 +39,7 @@ x$set_fmt(x)
 x$set_pad_levels(x)
 x$set_timestamp_fmt(x)
 x$sql_create_table(table)
+x$toString()
 
 x$col_names
 x$col_types

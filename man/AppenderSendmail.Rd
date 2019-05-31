@@ -2,7 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderSendmail}
 \alias{AppenderSendmail}
-\title{Send Log Emails via sendmailR}
+\title{Send emails via sendmailR}
 \description{
 Send mails via \code{\link[sendmailR:sendmail]{sendmailR::sendmail()}}, which requires that you have access
 to an SMTP server that does not require authentication. This
@@ -27,6 +27,7 @@ x$add_filter(filter, name = NULL)
 x$append(event)
 x$filter(event)
 x$flush()
+x$format(color = FALSE, ...)
 x$remove_filter(pos)
 x$set_bcc(x)
 x$set_buffer_size(x)

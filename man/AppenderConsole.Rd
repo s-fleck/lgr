@@ -2,7 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderConsole}
 \alias{AppenderConsole}
-\title{Log to the Console}
+\title{Log to the console}
 \description{
 A simple Appender that outputs to the console. If you have the package
 \strong{crayon} installed log levels will be coloured by default
@@ -17,6 +17,7 @@ x <- AppenderConsole$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt
 x$add_filter(filter, name = NULL)
 x$append(event)
 x$filter(event)
+x$format(color = FALSE, ...)
 x$remove_filter(pos)
 x$set_filters(filters)
 x$set_layout(layout)

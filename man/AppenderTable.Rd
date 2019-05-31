@@ -2,7 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderTable}
 \alias{AppenderTable}
-\title{Abstract Class for Logging to Tabular Structures}
+\title{Abstract class for logging to tabular structures}
 \description{
 \strong{Abstract classes} are exported for package developers that want to extend
 them, they cannot be instantiated directly.

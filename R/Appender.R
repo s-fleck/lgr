@@ -156,7 +156,7 @@ Appender <- R6::R6Class(
 
 # AppenderConsole ---------------------------------------------------------
 
-#' Log to the Console
+#' Log to the console
 #'
 #' A simple Appender that outputs to the console. If you have the package
 #' **crayon** installed log levels will be coloured by default
@@ -226,7 +226,7 @@ AppenderConsole <- R6::R6Class(
 
 # AppenderFile ------------------------------------------------------------
 
-#' Log to a File
+#' Log to a file
 #'
 #' A simple Appender that outputs to a file in the file system. If you plan
 #' to log to text files, consider logging to JSON files and take a look at
@@ -358,7 +358,7 @@ AppenderFile <- R6::R6Class(
 
 # AppenderJson ------------------------------------------------------------
 
-#' Log to a JSON File
+#' Log to a JSON file
 #'
 #' `AppenderJson` is a shortcut for `AppenderFile` with [`LayoutJson`], but
 #' comes with an extra method `show()` and an extra active field `data` to
@@ -443,7 +443,7 @@ AppenderJson <- R6::R6Class(
 
 # AppenderTable -----------------------------------------------------------
 
-#' Abstract Class for Logging to Tabular Structures
+#' Abstract class for logging to tabular structures
 #'
 #' @template abstract_class
 #'
@@ -518,7 +518,7 @@ AppenderTable <- R6::R6Class(
 
 # AppenderDt ----------------------------------------------------------
 
-#' Log to an In-Memory Data.Table
+#' Log to an in-memory data.table
 #'
 #' An Appender that outputs to an in-memory `data.table`. This kind of
 #' Appender is useful for interactive use, and has very little overhead.
@@ -842,7 +842,7 @@ AppenderDt <- R6::R6Class(
 
 # AppenderMemory  --------------------------------------------------
 
-#' Abstract Class for Logging to Memory Buffers
+#' Abstract class for logging to memory buffers
 #'
 #' @template abstract_class
 #'
@@ -1091,7 +1091,7 @@ AppenderMemory <- R6::R6Class(
 
 # AppenderBuffer --------------------------------------------------
 
-#' Log to a Memory Buffer
+#' Log to a memory buffer
 #'
 #' An Appender that Buffers LogEvents in-memory and and redirects them to other
 #' Appenders once certain conditions are met.
@@ -1325,7 +1325,7 @@ AppenderBuffer <- R6::R6Class(
 # AppenderDbi -------------------------------------------------------------
 
 
-#' Log to Databases via DBI
+#' Log to databases via DBI
 #'
 #' Log to a database table with any **DBI** compatible backend. Please be
 #' aware that AppenderDbi does *not* support case sensitive / quoted column
@@ -1658,7 +1658,7 @@ AppenderDbi <- R6::R6Class(
 
 # AppenderRjdbc -------------------------------------------------------------
 
-#' Log to Databases via RJDBC
+#' Log to databases via RJDBC
 #'
 #' Log to a database table with the **RJDBC** package. **RJDBC** is only
 #' somewhat  **DBI** compliant and does not work with [AppenderDbi].
@@ -1806,7 +1806,7 @@ AppenderRjdbc <- R6::R6Class(
 
 # AppenderDigest --------------------------------------------------------
 
-#' Abstract Class for Digests
+#' Abstract class for digests
 #'
 #' @template abstract_class
 #'
@@ -1886,7 +1886,7 @@ AppenderDigest <-  R6::R6Class(
 # AppenderPushbullet --------------------------------------------------------
 
 
-#' Send Push-Notifications via RPushbullet
+#' Send push-notifications via RPushbullet
 #'
 #' Send push notifications via [pushbullet](https://www.pushbullet.com/). This
 #' Appender keeps an in-memory buffer like [AppenderBuffer]. If the buffer is
@@ -2061,7 +2061,7 @@ AppenderPushbullet <- R6::R6Class(
 
 # AppenderMail ------------------------------------------------------------
 
-#' Abstract Class for Email Appenders
+#' Abstract class for email appenders
 #'
 #' @template abstract_class
 #'
@@ -2162,7 +2162,7 @@ AppenderMail <- R6::R6Class(
 
 # AppenderSendmail --------------------------------------------------------
 
-#' Send Log Emails via sendmailR
+#' Send emails via sendmailR
 #'
 #' Send mails via [sendmailR::sendmail()], which requires that you have access
 #' to an SMTP server that does not require authentication. This
@@ -2329,7 +2329,7 @@ AppenderSendmail <- R6::R6Class(
 # AppenderGmail --------------------------------------------------------
 
 
-#' Send Log Emails via gmailr
+#' Send emails via gmailr
 #'
 #' Send mails via [gmailr::send_message()]. This
 #' Appender keeps an in-memory buffer like [AppenderBuffer]. If the buffer is
@@ -2809,6 +2809,7 @@ AppenderFileRotatingTime <- R6::R6Class(
 
 
 # AppenderFileRotatingDate ----------------------------------------------------
+
 #' @export
 AppenderFileRotatingDate <- R6::R6Class(
   "AppenderFileRotatingDate",

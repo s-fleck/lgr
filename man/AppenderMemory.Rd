@@ -2,7 +2,7 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderMemory}
 \alias{AppenderMemory}
-\title{Abstract Class for Logging to Memory Buffers}
+\title{Abstract class for logging to memory buffers}
 \description{
 \strong{Abstract classes} are exported for package developers that want to extend
 them, they cannot be instantiated directly.
@@ -18,6 +18,7 @@ x$add_filter(filter, name = NULL)
 x$append(event)
 x$filter(event)
 x$flush()
+x$format(color = FALSE, ...)
 x$remove_filter(pos)
 x$set_buffer_size(x)
 x$set_filters(filters)

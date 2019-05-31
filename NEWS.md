@@ -1,5 +1,7 @@
 # lgr (development version)
 
+## new features
+* added `print()` and `format()` methods for Appenders
 
 ## bug fixes
 * `show_data()` and `show_dt()` now work as documented with AppenderMemory

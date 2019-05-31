@@ -18,6 +18,7 @@ x$clone(deep = FALSE)
 x$format_event(event)
 x$set_colors(x)
 x$set_fmt(x)
+x$toString()
 
 x$fmt
 
