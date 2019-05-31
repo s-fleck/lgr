@@ -39,7 +39,8 @@ Layout <- R6::R6Class(
   "Layout",
 
   public = list(
-    format_event = function(event) paste(capture.output(print(event$values)), collapse = " ")
+    format_event = function(event) paste(capture.output(print(event$values)), collapse = " "),
+    toString = function() "<empty>"
   )
 )
 
@@ -269,7 +270,9 @@ LayoutGlue <- R6::R6Class(
       )
       private$.colors <- x
       invisible(self)
-    }
+    },
+
+    toString = function() self$fmt
   ),
 
 
@@ -769,7 +772,9 @@ LayoutJson <- R6::R6Class(
       invisible(self)
     },
 
-    toString = function() "JSON"
+    toString = function() {
+      "JSON"
+    }
   ),
 
   active = list(

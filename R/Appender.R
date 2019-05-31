@@ -110,10 +110,12 @@ Appender <- R6::R6Class(
         paste0("<", class(self)[[1]], "> [", thr, "]")
       )
 
-      res <- c(
-        header,
-        paste0("  ", class(self$layout)[[1]], ": ", self$layout$toString())
-      )
+      if (!is.null(self$layout)){
+        res <- c(
+          header,
+          paste0("  ", class(self$layout)[[1]], ": ", self$layout$toString())
+        )
+      }
 
       if (!is.null(self$destination)){
         res <- c(
@@ -121,7 +123,14 @@ Appender <- R6::R6Class(
         )
       }
 
-      res
+      if (!color)
+        style_error <- identity
+
+      if (class(self)[[1]] == "Appender"){
+        paste(res[[1]], style_error("[abstract class]"))
+      } else {
+        res
+      }
     }
 
   ),
@@ -475,7 +484,23 @@ AppenderTable <- R6::R6Class(
   cloneable = FALSE,
 
   public = list(
-    show = function(threshold = NA_integer_, n = 20L) NULL
+    show = function(threshold = NA_integer_, n = 20L) NULL,
+
+    format = function(
+      color = FALSE,
+      ...
+    ){
+      res <- super$format(color = color, ...)
+
+      if (!color)
+        style_error <- identity
+
+      if (class(self)[[1]] == "AppenderTable"){
+        paste(res[[1]], style_error("[abstract class]"))
+      } else {
+        res
+      }
+    }
   ),
 
   active = list(
@@ -957,6 +982,22 @@ AppenderMemory <- R6::R6Class(
       assign("logger", self[[".logger"]], dd)
       cat(self$layout$format_event(dd), sep = "\n")
       invisible(dd)
+    },
+
+    format = function(
+      color = FALSE,
+      ...
+    ){
+      res <- super$format(color = color, ...)
+
+      if (!color)
+        style_error <- identity
+
+      if (class(self)[[1]] == "AppenderMemory"){
+        paste(res[[1]], style_error("[abstract class]"))
+      } else {
+        res
+      }
     }
   ),
 
@@ -1804,17 +1845,35 @@ AppenderDigest <-  R6::R6Class(
 
   # +- public --------------------------------------------------------------
   public = list(
-
     set_subject_layout = function(layout){
       assert(inherits(layout, "Layout"))
       private$.subject_layout <- layout
       invisible(self)
+    },
+
+
+    format = function(
+      color = FALSE,
+      ...
+    ){
+      res <- super$format(color = color, ...)
+
+      if (!color)
+        style_error <- identity
+
+      if (class(self)[[1]] == "AppenderDigest"){
+        paste(res[[1]], style_error("[abstract class]"))
+      } else {
+        res
+      }
     }
   ),
+
 
   active = list(
     subject_layout = function() get(".subject_layout", private)
   ),
+
 
   private = list(
     .subject_layout = NULL
@@ -1971,7 +2030,20 @@ AppenderPushbullet <- R6::R6Class(
 
   # +- active ---------------------------------------------------------------
   active = list(
-    apikey = function() private$.apikey
+    apikey = function() private$.apikey,
+    recipients = function() get(".recipients", private),
+    email = function() get(".email", private),
+    channel = function() get(".channel", private),
+    devices = function() get(".devices", private),
+    destination = function(){
+      if (!is.null(self$recipients))
+        return(self$recipients)
+      else if (!is.null(self$email)){
+        return(self$email)
+      } else if (!is.null(self$channel)){
+        self$channel
+      }
+    }
   ),
 
 
@@ -2022,25 +2094,46 @@ AppenderMail <- R6::R6Class(
       invisible(self)
     },
 
+
     set_from = function(x){
       private$.from <- x
       invisible(self)
     },
+
 
     set_cc = function(x){
       private$.cc <- x
       invisible(self)
     },
 
+
     set_bcc = function(x){
       private$.bcc <- x
       invisible(self)
     },
 
+
     set_html = function(x){
       assert(is_scalar_bool(x))
       private$.html <- x
       invisible(self)
+    },
+
+
+    format = function(
+      color = FALSE,
+      ...
+    ){
+      res <- super$format(color = color, ...)
+
+      if (!color)
+        style_error <- identity
+
+      if (class(self)[[1]] == "AppenderMail"){
+        paste(res[[1]], style_error("[abstract class]"))
+      } else {
+        res
+      }
     }
   ),
 
@@ -2051,7 +2144,8 @@ AppenderMail <- R6::R6Class(
     from = function() get(".from", envir = private),
     cc = function() get(".cc", envir = private),
     bcc = function() get(".bcc", envir = private),
-    html = function() get(".html", envir = private)
+    html = function() get(".html", envir = private),
+    destination = function() self$to
   ),
 
   private = list(

@@ -6,33 +6,25 @@ test_that("print_Appender works as expected", {
   on.exit(unlink(tf))
 
 
-  c <- AppenderConsole$new()
-  c
 
-  d <- AppenderDbi$new(RSQLite::dbConnect(RSQLite::SQLite()), "blubb")
-  d
-
-  b <- AppenderBuffer$new(appenders = list(
+  Appender$new()
+  AppenderConsole$new()
+  AppenderDbi$new(RSQLite::dbConnect(RSQLite::SQLite()), "blubb")
+  AppenderMemory$new()
+  AppenderMail$new()
+  AppenderSendmail$new("test@blah.com", control = list())
+  AppenderTable$new()
+  AppenderBuffer$new(appenders = list(
     AppenderConsole$new(),
     blah = AppenderBuffer$new()
   ))
-  b
+  AppenderPushbullet$new(recipients = "blubb")
+  AppenderFileRotating$new(tf)
+  AppenderFileRotating$new(tf, size = "1kb")
+  AppenderFileRotatingDate$new(tf, layout = LayoutJson$new())
+  AppenderFileRotatingTime$new(tf, layout = LayoutJson$new(), age = "2 years", size = 9000)
+  AppenderFile$new(tf)
 
-
-  r <- AppenderFileRotating$new(tf)
-  r
-
-  r <- AppenderFileRotating$new(tf, size = "1kb")
-  r
-
-  r <- AppenderFileRotatingDate$new(tf, layout = LayoutJson$new())
-  r
-
-  r <- AppenderFileRotatingTime$new(tf, layout = LayoutJson$new(), age = "2 years", size = 9000)
-  r
-
-  fl <- AppenderFile$new(tf)
-  fl
 
 })
 
