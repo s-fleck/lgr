@@ -101,3 +101,23 @@ test_that("option appenders setup", {
   expect_warning(res <- default_appenders(), "_fail")
   unlink(getOption("lgr.log_file"))
 })
+
+
+
+
+test_that("show_data() works", {
+  basic_config(memory = TRUE)
+  on.exit(basic_config())
+
+  expect_output({
+    lgr$info("a log message")
+    lgr$info("another message with data", data = 1:10)
+    lgr$info(c("a vectorized message", "blubb"))
+  })
+
+  expect_output(show_log())
+  expect_s3_class(show_data(), "data.frame")
+  expect_identical(nrow(show_data()), 4L)
+  expect_s3_class(show_dt(), "data.table")
+  expect_identical(nrow(show_dt()), 4L)
+})

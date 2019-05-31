@@ -43,7 +43,9 @@ x$buffer_df
 x$buffer_dt
 x$buffer_events
 x$buffer_size
+x$data
 x$destination
+x$dt
 x$filters
 x$flush_threshold
 x$layout

@@ -44,6 +44,7 @@ x$col_types
 x$conn
 x$data
 x$destination
+x$dt
 x$filters
 x$flush_on_exit
 x$flush_on_rotate

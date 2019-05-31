@@ -42,7 +42,9 @@ x$buffer_dt
 x$buffer_events
 x$buffer_size
 x$cc
+x$data
 x$destination
+x$dt
 x$filters
 x$flush_threshold
 x$from

@@ -64,6 +64,7 @@ Collate:
     'Layout.R'
     'LogEvent.R'
     'Logger.R'
+    'basic_config.R'
     'default_functions.R'
     'get_logger.R'
     'lgr-package.R'

@@ -1,150 +1,12 @@
 #' Simple Logging
 #'
-#' These functions provide a simple interface to the root logger. If you do not
-#' need any of the more advanced features of lgr, start here.
+#' lgr provides convenience functions managing the root Logger. These are
+#' designed chiefly for interactive use and are less verbose than their
+#' R6 method counterparts.
 #'
 #' @name simple_logging
 #'
 NULL
-
-
-
-
-#' Basic Setup for the Logging System
-#'
-#' Quick and easy way to configure the root logger for logging to a file.
-#'
-#' @param file `character` scalar: If not `NULL` a [AppenderFile] will be
-#'   created that logs to this file. If the filename ends in `.jsonl`, the
-#'   Appender will be set up to use the [JSON
-#'   Lines](http://jsonlines.org/) format instead of plain text (see
-#'   [AppenderFile] and [AppenderJson]).
-#' @param fmt `character` scalar: Format to use if `file` is supplied and not a
-#'   `.jsonl` file. If `NULL` it defaults to `"%L [%t] %m"` (see
-#'   [format.LogEvent])
-#' @param console_fmt `character` scalar: like `fmt` but used for console output
-#' @param console_timestamp_fmt `character` scalar: like `timestamp_fmt` but
-#'   used for console output
-#' @inheritParams print.LogEvent
-#' @inheritParams Logger
-#' @param appenders a single [Appender] or a list thereof.
-#' @param threshold `character` or `integer` scalar. The minimum [log
-#'   level][log_levels] that should be processed by the root logger.
-#' @param memory `logical` scalar. or a `threshold` (see above). Add an Appender
-#'   that logs to a memory buffer, see also [show_log()] and [AppenderBuffer]
-#' @param console `logical` scalar or a `threshold` (see above). Add an appender
-#'   logs to the console (i.e. displays messages in an interactive R session)
-#'
-#' @return the `root` Logger (lgr)
-#' @export
-basic_config <- function(
-  file = NULL,
-  fmt = "%L [%t] %m",
-  timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
-  threshold = "info",
-  appenders = NULL,
-  console = if (is.null(appenders)) "all" else FALSE,
-  console_fmt = "%L [%t] %m %f",
-  console_timestamp_fmt = "%H:%M:%OS3",
-  memory  = FALSE
-){
-  stopifnot(
-    is.null(file) || is_scalar_character(file),
-    is_scalar_character(fmt),
-    is_scalar_character(console_fmt),
-    is_scalar_character(timestamp_fmt),
-    is_threshold(threshold),
-    is_scalar_bool(console) || is_threshold(console),
-    is_scalar_bool(memory) || is_threshold(console),
-    is.null(appenders) || is.list(appenders) || inherits(appenders, "Appender")
-  )
-
-  l <-
-    get_logger()$
-    config(NULL)$
-    set_threshold(threshold)
-
-
-
-  if (length(appenders)){
-    assert(
-      is.null(file)    || !"file" %in% names(appenders),
-      "If `appenders` contains an appender named `file`, the `file` argument to basic_config() must be `NULL`"
-    )
-    assert(
-      isFALSE(console) || !"console" %in% names(appenders),
-      "If `appenders` contains an appender named `console`, the `console` argument to basic_config() must be `FALSE`"
-    )
-    assert(
-      isFALSE(memory)  || !"memory" %in% names(appenders),
-      "If `appenders` contains an appender named `memory`, the `memory` argument to basic_config() must be `FALSE`"
-    )
-
-    l$set_appenders(appenders)
-  }
-
-
-  if (!is.null(file)){
-    ext <- tools::file_ext(file)
-
-    if (identical(tolower(ext), "json")){
-      stop(
-        "Please use `.jsonl` and not `.json` as file extension for JSON log",
-        "files. The reason is that that JSON files created",
-        "by lgr are not true JSON files but JSONlines files.",
-        "See http://jsonlines.org/ for more infos."
-      )
-
-    } else if (identical(tolower(ext), "jsonl")){
-      assert (is.null(fmt), "`fmt` must be null if `file` is a '.jsonl' file")
-      l$add_appender(
-        name = "file",
-        AppenderJson$new(threshold = NA)
-      )
-
-    } else {
-      l$add_appender(
-        name = "file",
-        AppenderFile$new(
-          file = file,
-          threshold = NA,
-          layout = LayoutFormat$new(
-            fmt = fmt,
-            timestamp_fmt = timestamp_fmt
-          )
-        )
-      )
-    }
-  }
-
-
-  if (!isFALSE(console)){
-    if (isTRUE(console)) console <- 400
-    l$add_appender(
-      name = "console",
-      AppenderConsole$new(
-        threshold = console,
-        layout = LayoutFormat$new(
-          colors = getOption("lgr.colors"),
-          fmt = console_fmt,
-          timestamp_fmt = console_timestamp_fmt
-        )
-      )
-    )
-  }
-
-  if  (!isFALSE(memory)){
-    if (isTRUE(memory)) memory <- NA
-    l$add_appender(name = "memory", AppenderBuffer$new(
-      threshold = memory,
-      should_flush = function(event) FALSE
-    ))
-  }
-
-
-  lgr
-}
-
 
 
 
@@ -181,21 +43,21 @@ log_exception <- function(
 # managment ---------------------------------------------------------------
 
 #' @description
-#'   lgr provides convenience functions to manage the root Logger. These
-#'   are intended for interactive use, and for people who just need basic
-#'   logging facilities and don't want to worry about hierarchical loggers and
-#'   R6 classes.
 #'
 #'   `threshold()` sets or retrieves the threshold for an [Appender] or [Logger]
-#'   (the minimum level of log messages it processes). It's `target` defaults
-#'   to the root logger.
+#'   (the minimum level of log messages it processes). It's `target` defaults to
+#'   the root logger. (equivalent to `lgr::lgr$threshold` and
+#'   `lgr::lgr$set_threshold`)
 #'
 #'   `console_threshold()` is a shortcut to set the threshold of the root
 #'   loggers [AppenderConsole], which is usually the only Appender that manages
-#'   console output for a given \R session.
+#'   console output for a given \R session. (equivalent to
+#'   `lgr::lgr$appenders$console$threshold` and
+#'   `lgr::lgr$appenders$console$set_threshold`)
 #'
-#'   `add_appender()` and `remove_appender()` add Appenders to Loggers and
-#'   other Appenders.
+#'   `add_appender()` and `remove_appender()` add Appenders to Loggers and other
+#'   Appenders. (equivalent to `lgr::lgr$add_appender` and
+#'   `lgr::lgr$remove_appender`)
 #'
 #' @rdname simple_logging
 #' @return
@@ -271,28 +133,43 @@ remove_appender <- function(
 
 
 #' @description
-#' `show_log()` displays the last `n` log entries of `target` if `target` is
-#' an Appender with a `show()` method or a Logger with at least one such
-#' Appender attached. `target` defaults to the root logger. If you have
-#' configured the root logger with
-#' [`basic_config(memory = TRUE)`][basic_config()], it will have an
-#' [AppenderBuffer] that logs all log messages (including `TRACE` and `DEBUG`),
-#' even if they were not printed to the console before.
+#' `show_log()` displays the last `n` log entries of an Appender (or a Logger
+#' with such an Appender attached) with a `$show()` method. Most, but not all
+#' Appenders support this function (try [AppenderFile] or [AppenderBuffer]).
 #'
 #' `show_data()` and `show_dt()` work similar to `show_log()`, except that
-#' they return the log as `data.frame` or `data.table` respectively.
+#' they return the log as `data.frame` or `data.table` respectively. Only
+#' Appenders that log to formats that can easily be converted to `data.frames`
+#' are supported (try [AppenderJson] or [AppenderBuffer]).
+#'
+#' The easiest way to try out this features is by adding an AppenderBuffer
+#' to the root logger with [`basic_config(memory = TRUE)`][basic_config()].
 #'
 #' @param n `integer` scalar. Show only the last `n` log entries that match
 #'   `threshold`
 #'
 #' @return `show_log()` prints to the console and returns whatever the target
-#'   Appender's `$show()` method returns, usually a `data.frame` or `data.table`
-#'   (invisibly).
+#'   Appender's `$show()` method returns, usually a `character` vector,
+#'   `data.frame` or `data.table` (invisibly).
 #'
 #'   `show_data()` always returns a `data.frame` and `show_dt()` always returns
 #'   a `data.table`.
 #' @rdname simple_logging
 #' @export
+#'
+#' @examples
+#'
+#' # Reconfigure the root logger
+#' basic_config(memory = TRUE)
+#'
+#' # log some messages
+#' lgr$info("a log message")
+#' lgr$info("another message with data", data = 1:3)
+#'
+#' show_log()
+#' show_data()
+#'
+#'
 show_log <- function(
   threshold = NA_integer_,
   n = 20L,
@@ -310,14 +187,12 @@ show_log <- function(
 show_dt <- function(
   target = lgr::lgr
 ){
-  dd <- try(find_target(target, "dt"), silent = TRUE)
-
-  if (inherits(dd, "try-error")){
-    dd <- find_target(target, "data")
-    data.table::as.data.table(dd$data)
-  } else {
-    dd$dt
-  }
+  tryCatch(
+    find_target(target, "dt")[["dt"]],
+    error = function(e){
+      data.table::as.data.table(find_target(target, "data")[["data"]])
+    }
+  )
 }
 
 
@@ -328,7 +203,7 @@ show_dt <- function(
 show_data <- function(
   target = lgr::lgr
 ){
-  dd <- find_target(target, "dt")
+  dd <- find_target(target, "data")
   as.data.frame(dd$data)
 }
 
