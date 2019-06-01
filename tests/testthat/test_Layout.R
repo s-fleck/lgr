@@ -12,7 +12,7 @@ tevent <- LogEvent$new(
 
 
 
-test_that("layouts works as expected", {
+test_that("Layouts works as expected", {
   lo <- Layout$new()
   expect_match(lo$format_event(tevent), "19:33")
   expect_true(is_scalar_character(lo$format_event(tevent)))

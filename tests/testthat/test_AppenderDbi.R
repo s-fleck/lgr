@@ -369,7 +369,7 @@ test_that("AppenderDbi / RSQLite: manual field types work", {
 
 
 
-test_that("displaying logs works for Loggers", {
+test_that("AppenderDBI / RSQLite: $show()", {
   if (!requireNamespace("RSQLite", quietly = TRUE))
     skip("Test requires RSQLite")
 
@@ -415,7 +415,7 @@ test_that("displaying logs works for Loggers", {
 
 
 
-test_that("Automatic closing of connections works", {
+test_that("AppenderDbi / RSQLite: automatic closing of connections works", {
   if (!requireNamespace("RSQLite", quietly = TRUE))
     skip("Test requires RSQLite")
 

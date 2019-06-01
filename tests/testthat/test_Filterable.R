@@ -1,7 +1,7 @@
 context("Filterable")
 
 
-test_that("checking filters works", {
+test_that("is_filter() works", {
   fil <- function(event) { blubb }
   expect_true(is_filter(fil))
   expect_false(is_filter(mean))
@@ -17,7 +17,7 @@ test_that("checking filters works", {
 
 
 
-test_that("Filterable works as expected", {
+test_that("Filterable: $add_filter(), $remove_filter(), $filters", {
   app <- Appender$new()
 
   fil <- function(event) { FALSE }

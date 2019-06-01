@@ -1,7 +1,7 @@
 context("logger_config")
 
 
-test_that("logger_config works as expected", {
+test_that("logger_config() works as expected", {
   cfg <- logger_config(
     appenders = list("Appender" = list()),
     propagate = FALSE,
@@ -26,7 +26,7 @@ test_that("logger_config works as expected", {
 
 
 
-test_that("as_logger_config works as expected with YAML and JSON files", {
+test_that("as_logger_config() works as expected with YAML and JSON files", {
   # files work...
   cy <- as_logger_config(rprojroot::find_testthat_root_file("testdata", "lg_full.yaml"))
   cj <- as_logger_config(rprojroot::find_testthat_root_file("testdata", "lg_full.json"))
@@ -48,7 +48,7 @@ test_that("as_logger_config works as expected with YAML and JSON files", {
 
 
 
-test_that("as_logger_config works for simplified yaml logger config", {
+test_that("as_logger_config() works for simplified yaml logger config", {
   cy <- as_logger_config(rprojroot::find_testthat_root_file("testdata", "lg_simple.yaml"))
   cj <- as_logger_config(rprojroot::find_testthat_root_file("testdata", "lg_simple.json"))
   expect_identical(cj, cy)
@@ -61,7 +61,7 @@ test_that("as_logger_config works for simplified yaml logger config", {
 
 
 
-test_that("setting logger$config fails if yaml file is passed to `text` instead of `file`", {
+test_that("logger$config() fails if yaml file is passed to `text` instead of `file`", {
   ty <- rprojroot::find_testthat_root_file("testdata", "lg_full.yaml")
   lg <- get_logger("test")
   expect_error(lg$config(text = ty), "YAML")
@@ -71,7 +71,7 @@ test_that("setting logger$config fails if yaml file is passed to `text` instead 
 
 
 
-test_that("resolve_r6_ctors works as expected", {
+test_that("resolve_r6_ctors() works as expected", {
   tf <- tempfile()
   on.exit(unlink(tf))
   x <- logger_config(
@@ -114,7 +114,7 @@ test_that("resolve_r6_ctors works as expected", {
 
 
 
-test_that("parse_logger_configs works", {
+test_that("parse_logger_config() works", {
   # parse_logger_config turns logger_configs into lists of R6 objects
   # that cann direclty be applied to a logger
   full <- as_logger_config(rprojroot::find_testthat_root_file("testdata", "lg_full.yaml"))
@@ -136,4 +136,3 @@ test_that("parse_logger_configs works", {
   expect_identical(lg$propagate, FALSE)
   expect_identical(lg$threshold, 400L)
 })
-

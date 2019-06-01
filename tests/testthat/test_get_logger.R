@@ -3,7 +3,7 @@ context("get_logger")
 
 
 
-test_that("get_logger works as expected", {
+test_that("get_logger(): works as expected", {
 
   lg <- get_logger("blubb")
 
@@ -53,7 +53,7 @@ test_that("get_logger is not confused by existing objects with the same name as 
 
 
 
-test_that("is_virgin_Logger identifies loggers without settings", {
+test_that("is_virgin_Logger() identifies loggers without settings", {
   lg1 <- get_logger("foo/bar")
   expect_true(is_virgin_Logger("foo/bar"))
   lg1$set_threshold("off")
@@ -65,7 +65,7 @@ test_that("is_virgin_Logger identifies loggers without settings", {
 
 
 
-test_that("Creating LoggerGlue with get_logger_glue works as expected", {
+test_that("get_logger_glue() works as expected", {
   lg <- get_logger("log/ger/test")
 
   expect_true(is_Logger(lg))
@@ -78,20 +78,20 @@ test_that("Creating LoggerGlue with get_logger_glue works as expected", {
 
 
 
-test_that("get_logger_glue succeedes to get preconfigured glue loggers", {
+test_that("get_logger_glue() succeedes to get preconfigured glue loggers", {
   lg <- get_logger_glue("log/ger/test")
   lg$set_threshold("fatal")
   lg <- get_logger_glue("log/ger/test")
   expect_s3_class(lg, "LoggerGlue")
-  lg$config(NULL)
+  get_logger("log/ger/test", reset = TRUE)
 })
 
 
 
 
-test_that("get_logger_glue fails to get preconfigured loggers that are not glue loggers", {
+test_that("get_logger_glue() fails to get preconfigured loggers that are not glue loggers", {
   lg <- get_logger("log/ger/test2")
   lg$set_threshold("fatal")
   expect_error(get_logger_glue("log/ger/test2"), "LoggerGlue")
-  lg$config(NULL)
+  get_logger("log/ger/test2", reset = TRUE)
 })

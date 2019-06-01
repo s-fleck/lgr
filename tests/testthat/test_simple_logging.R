@@ -12,7 +12,7 @@ teardown({
 
 
 
-test_that("simple_logging works as expected", {
+test_that("threshold(), console_threshold() and log_exception() work as expected", {
   expect_identical(threshold(), lgr$threshold)
   expect_identical(console_threshold(), lgr$appenders$console$threshold)
 
@@ -55,7 +55,7 @@ test_that("show_log()", {
 
 
 
-test_that("add/remove_appender", {
+test_that("add_appender() and remove_appender() work", {
   tlg <- Logger$new("test", propagate = FALSE)
 
   add_appender(AppenderConsole$new(), target = tlg)
@@ -68,7 +68,7 @@ test_that("add/remove_appender", {
 
 
 
-test_that("option appenders setup", {
+test_that("Option 'lgr.log_file' works", {
   old <- getOption("lgr.log_file")
   on.exit(options("lgr.log_file" = old))
 

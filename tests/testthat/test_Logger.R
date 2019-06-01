@@ -3,7 +3,7 @@ context("Logger")
 
 
 
-test_that("active bindings", {
+test_that("set_threshold()", {
   ml <- Logger$new("test_logger")
 
   expect_silent(ml$set_threshold(5))
@@ -19,7 +19,7 @@ test_that("active bindings", {
 
 
 
-test_that("basic logging", {
+test_that("$log() & co work", {
   ml <- Logger$new("test_logger", appenders = list(memory = AppenderDt$new()))
   ts <- structure(1540486764.41946, class = c("POSIXct", "POSIXt"))
 
@@ -42,7 +42,7 @@ test_that("basic logging", {
 
 
 
-test_that("logger returns formatted message", {
+test_that("string formatting works", {
   l <- Logger$new("test_logger", propagate = FALSE)
 
   expect_identical(l$fatal("test"), "test")
@@ -53,7 +53,7 @@ test_that("logger returns formatted message", {
 
 
 
-test_that("string formatting is used when appropriate", {
+test_that("string formatting is only used if unnamed arguments exist", {
   lg <- Logger$new(
     "test",
     appenders = list(AppenderConsole$new()),
@@ -72,7 +72,7 @@ test_that("string formatting is used when appropriate", {
 
 
 
-test_that("setting appender threshold works", {
+test_that("set_threshold() works for Loggers and Appenders", {
   lg <- Logger$new("dummy", appenders = AppenderConsole$new())
   lg$set_threshold(200)
   expect_identical(lg$threshold, 200L)
@@ -95,7 +95,7 @@ test_that("setting appender threshold works", {
 
 
 
-test_that("suspending loggers works", {
+test_that("threshold of `0` suspends logging", {
   ml <- Logger$new("test_logger")
 
   expect_output(ml$info("blubb"), "blubb")
@@ -121,7 +121,7 @@ test_that("suspending loggers works", {
 
 
 
-test_that("add/remove appenders", {
+test_that("add_appenders()/remove_appenders()", {
   tf <- tempfile()
   on.exit(unlink(tf))
   ml <- Logger$new("test_logger", appenders = AppenderFile$new(file = tf))
@@ -153,7 +153,7 @@ test_that("add/remove appenders", {
 
 
 
-test_that("modify appenders for a logger", {
+test_that("setting Appender properties works", {
   ml <- Logger$new("test_logger", appenders = list(AppenderConsole$new()), propagate = FALSE)
   tf <- tempfile()
   on.exit(unlink(tf))
@@ -193,7 +193,7 @@ test_that("Exceptions are cought and turned into warnings", {
 
 
 
-test_that("Logger inheritance and event propagation", {
+test_that("Inheritance and event propagation works", {
   tf1 <- tempfile()
   tf2 <- tempfile()
   tf3 <- tempfile()
@@ -222,7 +222,7 @@ test_that("Logger inheritance and event propagation", {
 
 
 
-test_that("thresholds work", {
+test_that("threshold works", {
   c1  <- Logger$new("c1")
   expect_output(c1$error("blubb"), "ERROR")
   c1$set_threshold(100)
@@ -232,7 +232,7 @@ test_that("thresholds work", {
 
 
 
-test_that("ancestry querry works", {
+test_that("$ancestry works", {
   l4 <- get_logger("l1/l2/l3/l4")
   l2 <- get_logger("l1/l2")$set_propagate(FALSE)
 
@@ -247,7 +247,7 @@ test_that("ancestry querry works", {
 
 # LoggerGlue --------------------------------------------------------------
 
-test_that("LoggerGlue creates custom fields", {
+test_that("LoggerGlue supports custom fields", {
   l <- LoggerGlue$new("glue")
 
   expect_output(l$fatal("test", "test"), glue::glue("test", "test"))

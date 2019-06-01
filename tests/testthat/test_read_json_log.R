@@ -1,7 +1,7 @@
 context("read_json_lines")
 
 
-test_that("read_json_lines works as expected", {
+test_that("read_json_lines() works as expected", {
   tf <- tempfile()
   lo <- LayoutJson$new()
   lgr <- Logger$new(

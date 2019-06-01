@@ -1,7 +1,7 @@
 context("simple_logging")
 
 
-test_that("simple_logging works as expected", {
+test_that("add_log_levels(), get_log_levels() works as expected", {
   ml <- Logger$new("dummy")
 
   expect_error(ml$set_threshold("blubb"))
@@ -28,7 +28,7 @@ test_that("simple_logging works as expected", {
 
 
 
-test_that("labelling/unlabelling log levels is symetirc", {
+test_that("label_levels() & unlabel_levels() are symetirc", {
   tdat <- sample(c(seq(0, 600, by = 100), NA))
 
   expect_silent({
@@ -54,7 +54,7 @@ test_that("labelling/unlabelling log levels is symetirc", {
 
 
 
-test_that("colorize log levels works", {
+test_that("colorize_levels() works as expected", {
   if (!crayon::has_color()) skip("Terminal does not support colors")
   # set colors manualy so that we also check on systems without real color support
   colors <- list(
@@ -80,7 +80,7 @@ test_that("colorize log levels works", {
 
 
 
-test_that("named_union", {
+test_that("named_union() works as expected", {
   x <- c("blah" = "blubb", "fizz" = "buzz")
   y <- c("foo" = "bar", "blah2" = "blubb")
 

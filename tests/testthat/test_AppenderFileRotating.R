@@ -15,7 +15,7 @@ teardown({
 
 # AppenderFileRotating -----------------------------------------------------
 
-test_that("AppenderFileRotating works as expected", {
+test_that("AppenderFileRotating: works as expected", {
   if (!is_zipcmd_available())
     skip("Test requires a workings system zip command")
 
@@ -68,7 +68,7 @@ test_that("AppenderFileRotating works as expected", {
 
 
 
-test_that("AppenderFileRotating works with different backup_dir", {
+test_that("AppenderFileRotating: works with different backup_dir", {
   if (!is_zipcmd_available())
     skip("Test requires a workings system zip command")
 
@@ -123,7 +123,7 @@ test_that("AppenderFileRotating works with different backup_dir", {
 
 
 
-test_that("AppenderFileRotating `size` argument works as expected", {
+test_that("AppenderFileRotating: `size` argument works as expected", {
   #setup
     tf <- file.path(td, "test.log")
     app <- AppenderFileRotating$new(file = tf)$set_size(-1)
@@ -149,7 +149,7 @@ test_that("AppenderFileRotating `size` argument works as expected", {
 
 # AppenderFileRotatingDate ----------------------------------------------------
 
-test_that("AppenderFileRotatingDate works as expected", {
+test_that("AppenderFileRotatingDate: works as expected", {
   if (!is_zipcmd_available())
     skip("Test requires a workings system zip command")
 
@@ -209,7 +209,7 @@ test_that("AppenderFileRotatingDate works as expected", {
 
 
 
-test_that("AppenderFileRotatingDate works with different backup_dir", {
+test_that("AppenderFileRotatingDate: works with different backup_dir", {
   if (!is_zipcmd_available())
     skip("Test requires a workings system zip command")
 
@@ -254,7 +254,7 @@ test_that("AppenderFileRotatingDate works with different backup_dir", {
 
 
 
-test_that("AppenderFileRotatingDate `size` and `age` arguments work as expected", {
+test_that("AppenderFileRotatingDate: `size` and `age` arguments work as expected", {
   #setup
   tf <- file.path(td, "test.log")
   app <- AppenderFileRotatingDate$new(file = tf)$set_age(-1)
@@ -288,7 +288,7 @@ test_that("AppenderFileRotatingDate `size` and `age` arguments work as expected"
 
 # AppenderFileRotatingTime ----------------------------------------------------
 
-test_that("AppenderFileRotatingTime works as expected", {
+test_that("AppenderFileRotatingTime: works as expected", {
   if (!is_zipcmd_available())
     skip("Test requires a workings system zip command")
 
@@ -334,7 +334,7 @@ test_that("AppenderFileRotatingTime works as expected", {
 
 
 
-test_that("AppenderFileRotatingTime works with different backup_dir", {
+test_that("AppenderFileRotatingTime: works with different backup_dir", {
   if (!is_zipcmd_available())
     skip("Test requires a workings system zip command")
 
@@ -381,7 +381,7 @@ test_that("AppenderFileRotatingTime works with different backup_dir", {
 
 
 
-test_that("AppenderFileRotatingTime `size` and `age` arguments work as expected", {
+test_that("AppenderFileRotatingTime: `size` and `age` arguments work as expected", {
   #setup
   tf <- file.path(td, "test.log")
   app <- AppenderFileRotatingTime$new(file = tf)$set_age(-1)

@@ -2,7 +2,7 @@ context("format")
 
 
 
-test_that("formatting Loggers works as expected", {
+test_that("print.Logger() works as expected", {
 
   tf1 <- tempfile()
   tf2 <- tempfile()

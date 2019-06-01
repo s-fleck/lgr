@@ -1,7 +1,7 @@
 context("LogEvent")
 
 
-test_that("custom LogEvents", {
+test_that("LogEvent can have custom fields", {
   l  <- Logger$new("l")
 
   expect_output(l$log(100, "blubb", user_agent = "007"))
@@ -19,7 +19,7 @@ test_that("custom LogEvents", {
 
 
 
-test_that("field order in LogEvents stays as specified", {
+test_that("LogEvents preserves field order", {
   l  <- Logger$new("l", propagate = FALSE)
 
   l$fatal("test", c = "1", a = "2", b = "3")
@@ -32,7 +32,7 @@ test_that("field order in LogEvents stays as specified", {
 
 
 
-test_that("as.data.table and as.data.frame work with list columns", {
+test_that("as.data.table.LogEvent() and as.data.frame.LogEvent() work with list columns", {
   l  <- Logger$new("l", propagate = FALSE)
   l$fatal("test", df = iris)
   dte <- data.table::as.data.table(l$last_event)

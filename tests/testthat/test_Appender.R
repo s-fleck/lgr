@@ -13,7 +13,7 @@ x <- LogEvent$new(
 
 
 # Appender --------------------------------------------------------------------
-test_that("dummy Appender works as expected", {
+test_that("Appender: $append() works", {
   app <- Appender$new()
   expect_match(app$append(x), "foo bar")
 })
@@ -21,7 +21,7 @@ test_that("dummy Appender works as expected", {
 
 
 
-test_that("setting appender threshold works", {
+test_that("Appender: $set_threshold() works", {
   app <- Appender$new()
 
   app$set_threshold(200)
@@ -37,22 +37,24 @@ test_that("setting appender threshold works", {
 
 
 # AppenderFile ---------------------------------------------------------
-test_that("AppenderFile works as expected", {
+test_that("AppenderFile: logging with LayoutFormat", {
   tf <- tempfile()
   on.exit(unlink(tf))
 
-  # with default format
   app <- AppenderFile$new(file = tf)
   app$append(x)
   app$append(x)
   res <- readLines(tf)
   expect_true(grepl("foo", res[[1]]))
   expect_true(grepl("bar", res[[2]]))
-  unlink(tf)
+})
 
+
+
+test_that("AppenderFile: logging with LayoutJson", {
   tf <- tempfile()
   on.exit(unlink(tf))
-  # with Json
+
   app <- AppenderFile$new(file = tf, layout = LayoutJson$new())
   app$append(x)
   app$append(x)
@@ -67,8 +69,7 @@ test_that("AppenderFile works as expected", {
 
 
 
-
-test_that("AppenderFile creates empty log file on init", {
+test_that("AppenderFile: creates empty log file on init", {
   tf <- tempfile()
   on.exit(unlink(tf))
 
@@ -81,9 +82,11 @@ test_that("AppenderFile creates empty log file on init", {
 })
 
 
+
+
 # AppenderJson ------------------------------------------------------------
 
-test_that("AppenderJson show method works as expected", {
+test_that("AppenderJson: $show() works", {
   tf <- tempfile()
   on.exit(unlink(tf))
 
@@ -107,7 +110,7 @@ test_that("AppenderJson show method works as expected", {
 
 # AppenderConsole ---------------------------------------------------------
 
-test_that("AppenderConsole works as expected", {
+test_that("AppenderConsole: $append() works", {
   app <- AppenderConsole$new()
   expect_match(
     capture.output(app$append(x)),
@@ -118,7 +121,7 @@ test_that("AppenderConsole works as expected", {
 
 
 
-test_that("Appender: filters work", {
+test_that("AppenderConsole: $filter() works", {
   app1 <- AppenderConsole$new()
   expect_true(app1$filter(x))
   app1$set_filters(list(function(event) FALSE))
@@ -271,7 +274,7 @@ test_that("AppenderDt: memory cycling works", {
 
 
 
-test_that("AppenderDt: default format for show_log looks like format.LogEvent", {
+test_that("AppenderDt: default format for show_log() looks like format.LogEvent()", {
   lg <- get_logger("test")
   on.exit(lg$config(NULL))
   lg$add_appender(AppenderDt$new(), "memory")
@@ -330,7 +333,8 @@ test_that("AppenderBuffer: FATAL log level triggers flush", {
 
 
 
-test_that("AppenderBuffer: memory is flushed on buffer cycling", {
+
+test_that("AppenderBuffer: buffer cycling triggers flush", {
   replicate(10, l$info("z"))
   expect_identical(length(l$appenders$buffer$buffer_events), 10L)
   l$info(c("y", "y", "y"))
@@ -343,6 +347,8 @@ test_that("AppenderBuffer: memory is flushed on buffer cycling", {
 })
 
 
+
+
 test_that("AppenderBuffer: manual flush trigger works", {
   l$info(c("y", "y", "y"))
   l$appenders$buffer$flush()
@@ -352,7 +358,9 @@ test_that("AppenderBuffer: manual flush trigger works", {
 })
 
 
-test_that("AppenderBuffer: flush on memory cycling can be suppressed", {
+
+
+test_that("AppenderBuffer: flush on buffer cycling can be suppressed", {
   eres <- readLines(buffer_log)
   l$appenders$buffer$set_flush_on_rotate(FALSE)
   for (i in 1:15) l$info(i)
@@ -364,7 +372,9 @@ test_that("AppenderBuffer: flush on memory cycling can be suppressed", {
 })
 
 
-test_that("AppenderBuffer: flush on object destruction works", {
+
+
+test_that("AppenderBuffer: object destruction triggers flush", {
   # this test also cleans up behind the logger created at the beginning
   # of this section
   l$appenders$buffer$flush()  # ensure empty appender
@@ -381,8 +391,9 @@ test_that("AppenderBuffer: flush on object destruction works", {
 
 
 
+
 # the following AppenderBuffer tests are self contained again
-test_that("AppenderBuffer: flush on object destruction can be switched of", {
+test_that("AppenderBuffer: flush on object destruction can be suppressed", {
   # must re-initilaize logger
   buffer_log <- tempfile()
   l <- Logger$new(
@@ -408,7 +419,8 @@ test_that("AppenderBuffer: flush on object destruction can be switched of", {
 
 
 
-test_that("AppenderBuffer: add/remove appenders", {
+
+test_that("AppenderBuffer: $add_appender()/$remove_appender()", {
   sapp  <- AppenderBuffer$new()
   app1 <- AppenderConsole$new(threshold = 100)
   app2 <- AppenderConsole$new(threshold = 300)
@@ -438,7 +450,8 @@ test_that("AppenderBuffer: add/remove appenders", {
 
 
 
-test_that("AppenderBuffer: view log", {
+
+test_that("AppenderBuffer: $show()", {
   l <- Logger$new(
     "buffer test",
     appenders = AppenderBuffer$new(should_flush = NULL),
@@ -457,7 +470,7 @@ test_that("AppenderBuffer: view log", {
 
 
 
-test_that("AppenderBuffer: cycling is implemented correctly", {
+test_that("AppenderBuffer: cycling works", {
   l <- Logger$new(
     "buffer test",
     appenders = AppenderBuffer$new(buffer_size = 3L, flush_on_rotate = FALSE),
@@ -478,7 +491,8 @@ test_that("AppenderBuffer: cycling is implemented correctly", {
 
 
 
-test_that("AppenderBuffer: Custom should_flush can be defined", {
+
+test_that("AppenderBuffer: Custom $should_flush works", {
   l <- Logger$new(
     "buffer test",
     appenders = AppenderBuffer$new(),

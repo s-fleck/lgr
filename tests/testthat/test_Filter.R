@@ -1,7 +1,7 @@
 context("Filter")
 
 
-test_that("Filter works as expected", {
+test_that("FilterForceLevel and FilterInject work as expected", {
 
   l <- Logger$new("foo")
 
@@ -34,7 +34,7 @@ test_that(".obj() works as expected", {
 
 
 
-test_that("preset filters work", {
+test_that("FilterForceLevel and FilterInject work inside function", {
   lg <- get_logger("test")
   lg$set_threshold(NA)
   lg$set_propagate(FALSE)
