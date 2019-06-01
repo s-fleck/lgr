@@ -2,7 +2,7 @@
 % Please edit documentation in R/default_functions.R
 \name{default_should_flush}
 \alias{default_should_flush}
-\title{Default Should Flush Function}
+\title{Default should_flush function}
 \usage{
 default_should_flush(event)
 }
@@ -13,7 +13,7 @@ default_should_flush(event)
 \code{TRUE} or \code{FALSE}
 }
 \description{
-This is the default "should flush" trigger function for Appenders that
+This is the default "\code{should_flush()}" trigger function for Appenders that
 support such a mechanism, such as \link{AppenderBuffer} and \link{AppenderDbi}. It
 returns \code{TRUE} if the event's \code{level} meets or exceeds the Appender's
 \code{flush_threshold}.

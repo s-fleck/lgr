@@ -1,12 +1,11 @@
 # utils -------------------------------------------------------------------
 
-#' Demote an Exception to a Warning
+#' Demote an exception to a warning
 #'
 #' Throws a timestamped warning instead of stopping the program. This is
 #' the default exception handler used by [Loggers].
 #'
-#' @param e a `character` scalar, usually a `try-error` as thrown by
-#' [base::tryCatch()]
+#' @param e an `error condition` object
 #'
 #' @return The warning as `character` vector
 #' @export
@@ -24,9 +23,9 @@ default_exception_handler <- function(e){
 
 
 
-#' Default Should Flush Function
+#' Default should_flush function
 #'
-#' This is the default "should flush" trigger function for Appenders that
+#' This is the default "`should_flush()`" trigger function for Appenders that
 #' support such a mechanism, such as [AppenderBuffer] and [AppenderDbi]. It
 #' returns `TRUE` if the event's `level` meets or exceeds the Appender's
 #' `flush_threshold`.
@@ -35,7 +34,6 @@ default_exception_handler <- function(e){
 #'
 #' @return `TRUE` or `FALSE`
 #' @export
-#'
 default_should_flush <- function(event){
   is.na(.obj()[["flush_threshold"]]) || all(event[["level"]] <= .obj()[["flush_threshold"]])
 }

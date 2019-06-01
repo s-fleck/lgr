@@ -2,13 +2,12 @@
 % Please edit documentation in R/default_functions.R
 \name{default_exception_handler}
 \alias{default_exception_handler}
-\title{Demote an Exception to a Warning}
+\title{Demote an exception to a warning}
 \usage{
 default_exception_handler(e)
 }
 \arguments{
-\item{e}{a \code{character} scalar, usually a \code{try-error} as thrown by
-\code{\link[base:tryCatch]{base::tryCatch()}}}
+\item{e}{an \code{error condition} object}
 }
 \value{
 The warning as \code{character} vector
