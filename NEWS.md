@@ -1,15 +1,16 @@
 # lgr (development version)
 
 ## new features
-* added `print()` and `format()` methods for Appenders
+  * added `print()` and `format()` methods for Appenders
+  * `AppenderMemory`: added `data` and `dt` active fields
+
+## API changes
+  * Removed deprecated functions `FATAL()`, `ERROR()`. Use `lgr$fatal()`, 
+  `lgr$error()`, ... instead.
 
 ## bug fixes
-* `show_data()` and `show_dt()` now work as documented with AppenderMemory
-* fixed bug where `AppenderMemory$buffer_dt()` would not handle custom fields
-  containing atomic vectors correctly
-
-## changes
-* Removed `FATAL()`, `ERROR()`. Use `lgr$fatal()`, `lgr$error()`, ... instead.
+  * `AppenderMemory`: `$buffer_dt()` and `$show()` now handle custom fields
+    containing atomic vectors correctly
 
 
 # lgr 0.3.0
