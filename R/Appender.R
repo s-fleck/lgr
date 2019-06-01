@@ -113,13 +113,13 @@ Appender <- R6::R6Class(
       if (!is.null(self$layout)){
         res <- c(
           header,
-          paste0("  ", class(self$layout)[[1]], ": ", self$layout$toString())
+          paste0("  layout: ", self$layout$toString())
         )
       }
 
       if (!is.null(self$destination)){
         res <- c(
-          res, paste("  Destination:", self$destination)
+          res, paste("  destination:", self$destination)
         )
       }
 
@@ -2629,9 +2629,17 @@ AppenderFileRotating <- R6::R6Class(
 
 
     format = function(
+      color = false,
       ...
     ){
-      res <- super$format()
+      res <- super$format(color = color, ...)
+
+      if (!color)
+        style_subtle <- identity
+
+      cs <- style_subtle(
+        sprintf("(current size: %s)", fmt_bytes(file.size(self$file)))
+      )
 
       size <- {
         if (is.infinite(self$size))
@@ -2641,10 +2649,12 @@ AppenderFileRotating <- R6::R6Class(
         else
           self$size
       }
+
+      size <- paste(size, cs)
       c(
         res,
-        sprintf("  Backups: %s/%s", private$bq$n_backups, self$max_backups),
-        paste0("  Size: ", size)
+        sprintf("  backups: %s/%s", private$bq$n_backups, self$max_backups),
+        paste("  size:", size)
       )
     }
   ),
@@ -2781,12 +2791,23 @@ AppenderFileRotatingTime <- R6::R6Class(
     },
 
     format = function(
+      color = FALSE,
       ...
     ){
-      res <- super$format()
+      res <- super$format(color = color, ...)
+
+      if (!color)
+        style_subtle <- identity
+
+      lr <- private$bq$last_rotation
+      if (!is.null(lr))
+        lr <- style_subtle(sprintf(" (last rotation: %s)", format(lr)))
+      else
+        lr <- ""
+
       c(
         res,
-        sprintf("  Age: %s", self$age)
+        sprintf("  age: %s%s", self$age, lr)
       )
     }
   ),

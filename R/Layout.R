@@ -160,7 +160,7 @@ LayoutFormat <- R6::R6Class(
     },
 
     toString = function(){
-      self$fmt
+      paste(fmt_class(class(self)[[1]]), self$fmt)
     }
   ),
 
@@ -277,7 +277,7 @@ LayoutGlue <- R6::R6Class(
 
 
     toString = function() {
-      self$fmt
+      paste(fmt_class(class(self)[[1]]), self$fmt)
     }
   ),
 
@@ -436,7 +436,10 @@ LayoutDbi <- R6::R6Class(
 
 
     toString = function(){
-      paste(self$col_names, collapse = ", ")
+      paste(
+        fmt_class(class(self)[[1]]),
+        paste(self$col_names, collapse = ", ")
+      )
     }
   ),
 
@@ -781,7 +784,7 @@ LayoutJson <- R6::R6Class(
     },
 
     toString = function() {
-      "JSON"
+      fmt_class(class(self)[[1]])
     }
   ),
 
