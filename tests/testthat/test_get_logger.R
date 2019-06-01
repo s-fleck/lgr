@@ -95,3 +95,22 @@ test_that("get_logger_glue() fails to get preconfigured loggers that are not glu
   expect_error(get_logger_glue("log/ger/test2"), "LoggerGlue")
   get_logger("log/ger/test2", reset = TRUE)
 })
+
+
+
+
+test_that("get_logger(reset == TRUE) completely resets logger", {
+  lg <- get_logger_glue("log/ger/reset")
+  lg$set_threshold("fatal")
+  lg$add_appender(AppenderConsole$new())
+
+  expect_s3_class(lg, "LoggerGlue")
+  expect_identical(lg$threshold, 100L)
+  expect_identical(lg, get_logger("log/ger/reset"))
+
+  lg2 <- get_logger("log/ger/reset", reset = TRUE)
+  lg1 <- get_logger("log/ger/reset")
+  expect_identical(lg1, lg2)
+  expect_false(inherits(lg2, "LoggerGlue"))
+  expect_identical(lg2$threshold, 400L)
+})

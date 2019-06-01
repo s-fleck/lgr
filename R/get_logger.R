@@ -35,24 +35,26 @@ get_logger <- function(
   class = Logger,
   reset = FALSE
 ){
+  assert(is_scalar_bool(reset))
+
   if (missing(name) || !length(name) || all(is_blank(name))){
     return(lgr)
   }
   nm_cur <- unlist(strsplit(name, "/", fixed = TRUE))
   name   <- paste(nm_cur, collapse = "/")
-  res    <- get0(name, envir = loggers)
 
-  if (inherits(res, class$classname) || reset){
-    return(res)
+  res <- if (reset) NULL else get0(name, envir = loggers, inherits = FALSE)
+
+  if (is.null(res)){
+    assign(name, class$new(name), envir = loggers, inherits = FALSE)
+    return(get_logger(name, class = class))
   }
 
-  assign(
-    name,
-    class$new(name),
-    envir = loggers
-  )
-
-  get_logger(name)
+  if (inherits(res, class$classname)){
+    return(res)
+  } else {
+    stop(sprintf("'%s' is a %s but not a %s", name, class_fmt(res), fmt_class(class$classname)))
+  }
 }
 
 
@@ -64,7 +66,7 @@ get_logger_glue <- function(
   name
 ){
   if (is_virgin_Logger(name)){
-    res <- get_logger(name = name, class = LoggerGlue)
+    res <- get_logger(name = name, class = LoggerGlue, reset = TRUE)
   } else {
     res <- get_logger(name = name)
   }
