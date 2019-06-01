@@ -1,6 +1,6 @@
 #' Basic Setup for the Logging System
 #'
-#' Quick and easy way to configure the root logger for logging to a file.
+#' A quick and easy way to configure the root logger.
 #'
 #' @param file `character` scalar: If not `NULL` a [AppenderFile] will be
 #'   created that logs to this file. If the filename ends in `.jsonl`, the
@@ -25,6 +25,24 @@
 #'
 #' @return the `root` Logger (lgr)
 #' @export
+#'
+#' @examples
+#' # log to a file
+#' basic_config(file = tempfile())
+#' unlink(lgr$appenders$file$file)  # cleanup
+#'
+#  # log to a JSON file
+#' basic_config(file = tempfile(fileext = "jsonl"))
+#' unlink(lgr$appenders$file$file)  # cleanup
+#'
+#' # log debug messages to a memory buffer
+#' basic_config(threshold = "all", memory = "all", console = "info")
+#' lgr$info("an info message")
+#' lgr$debug("a hidden message")
+#' show_log()
+#'
+#' # reset to default config
+#' basic_config()
 basic_config <- function(
   file = NULL,
   fmt = "%L [%t] %m",
@@ -51,7 +69,6 @@ basic_config <- function(
     get_logger()$
     config(NULL)$
     set_threshold(threshold)
-
 
 
   if (length(appenders)){

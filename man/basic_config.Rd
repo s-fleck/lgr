@@ -41,5 +41,22 @@ that logs to a memory buffer, see also \code{\link[=show_log]{show_log()}} and \
 the \code{root} Logger (lgr)
 }
 \description{
-Quick and easy way to configure the root logger for logging to a file.
+A quick and easy way to configure the root logger.
+}
+\examples{
+# log to a file
+basic_config(file = tempfile())
+unlink(lgr$appenders$file$file)  # cleanup
+
+basic_config(file = tempfile(fileext = "jsonl"))
+unlink(lgr$appenders$file$file)  # cleanup
+
+# log debug messages to a memory buffer
+basic_config(threshold = "all", memory = "all", console = "info")
+lgr$info("an info message")
+lgr$debug("a hidden message")
+show_log()
+
+# reset to default config
+basic_config()
 }
