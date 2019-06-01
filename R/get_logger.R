@@ -50,7 +50,7 @@ get_logger <- function(
     return(get_logger(name, class = class))
   }
 
-  if (inherits(res, class$classname)){
+  if (class$classname %in% class(res)){
     return(res)
   } else {
     stop(sprintf("'%s' is a %s but not a %s", name, class_fmt(res), fmt_class(class$classname)))
@@ -72,7 +72,7 @@ get_logger_glue <- function(
   }
 
   assert(
-    inherits(res, "LoggerGlue"),
+    "LoggerGlue" %in% class(res),
     sprintf(
       "'%s' must be an unconfigured <Logger> or a <LoggerGlue>. You can use
       `get_logger('%s')$config(NULL)` to reset its configuration.",
@@ -106,9 +106,10 @@ is_virgin_Logger <- function(
     assert(is_Logger(x))
   }
 
-  !length(x$appenders) &
-  !length(x$filters) &
-  isTRUE(x$propagate) &
-  identical(x$exception_handler, default_exception_handler) &
+  identical(class(x), c("Logger", "Filterable", "R6")) &&
+  !length(x$appenders) &&
+  !length(x$filters) &&
+  isTRUE(x$propagate) &&
+  identical(x$exception_handler, default_exception_handler) &&
   is.null(x$.__enclos_env__$private$.threshold)
 }

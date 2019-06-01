@@ -110,7 +110,18 @@ test_that("get_logger(reset == TRUE) completely resets logger", {
 
   lg2 <- get_logger("log/ger/reset", reset = TRUE)
   lg1 <- get_logger("log/ger/reset")
+  expect_identical(
+    data.table::address(lg1),
+    data.table::address(lg2)
+  )
+
+  lg_g1 <- get_logger_glue("log/ger/reset")
+  lg_g2 <- get_logger_glue("log/ger/reset")
   expect_identical(lg1, lg2)
+  expect_identical(
+    data.table::address(lg_g1),
+    data.table::address(lg_g2)
+  )
   expect_false(inherits(lg2, "LoggerGlue"))
   expect_identical(lg2$threshold, 400L)
 })
