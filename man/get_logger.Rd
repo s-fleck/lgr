@@ -18,7 +18,8 @@ are the only valid choices.}
 
 \item{reset}{a \code{logical} scalar. If \code{TRUE} the logger is reset to an
 unconfigured state. Unlike \code{$config(NULL)} this also replaces a
-\code{LoggerGlue} with vanilla \code{Logger}.}
+\code{LoggerGlue} with vanilla \code{Logger}. Please note that this will invalidate
+Logger references created before the reset call (see examples).}
 }
 \value{
 a \link{Logger}
@@ -38,6 +39,13 @@ if (requireNamespace('glue')){
   lg <- get_logger_glue("log/ger")
 }
 lg$warn("a {.text} message", .text = "warning")
+
 # completely reset 'glue' to an unconfigured vanilla Logger
 get_logger("glue", reset = TRUE)
+# this invalidates references to the Logger
+try(lg$info("lg has been invalidated an no longer works"))
+
+# we have to recreate it
+lg <- get_logger("glue")
+lg$info("now all is well again")
 }

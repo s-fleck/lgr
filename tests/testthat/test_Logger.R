@@ -13,7 +13,6 @@ test_that("set_threshold()", {
   expect_error(ml$set_threshold("blubb"), "fatal.*trace")
 
   walk(ml$appenders, function(.x) expect_true(inherits(.x, "Appender")))
-
 })
 
 
@@ -297,5 +296,6 @@ test_that("$config works with lists", {
   expect_error(l$config(cfg = cfg, list = cfg))
 
   l$config(NULL)
-  expect_true(is_virgin_Logger(l))
+  expect_true(is_virgin_Logger(l, allow_subclass = TRUE))
+  expect_false(is_virgin_Logger(l))
 })

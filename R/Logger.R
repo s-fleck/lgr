@@ -603,9 +603,7 @@ Logger <- R6::R6Class(
 
 
     set_appenders = function(x){
-
       x <- standardize_appenders_list(x)
-
       private[[".appenders"]] <- list()
 
       for (i in seq_along(x))

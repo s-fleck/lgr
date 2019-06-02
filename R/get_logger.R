@@ -11,7 +11,8 @@ loggers <- new.env()
 #'   are the only valid choices.
 #' @param reset a `logical` scalar. If `TRUE` the logger is reset to an
 #'   unconfigured state. Unlike `$config(NULL)` this also replaces a
-#'   `LoggerGlue` with vanilla `Logger`.
+#'   `LoggerGlue` with vanilla `Logger`. Please note that this will invalidate
+#'   Logger references created before the reset call (see examples).
 #'
 #' @return a [Logger]
 #' @export
@@ -28,22 +29,41 @@ loggers <- new.env()
 #'   lg <- get_logger_glue("log/ger")
 #' }
 #' lg$warn("a {.text} message", .text = "warning")
+#'
 #' # completely reset 'glue' to an unconfigured vanilla Logger
-#' get_logger("glue", reset = TRUE)
+#' get_logger("log/ger", reset = TRUE)
+#' # this invalidates references to the Logger
+#' try(lg$info("lg has been invalidated an no longer works"))
+#'
+#' # we have to recreate it
+#' lg <- get_logger("log/ger")
+#' lg$info("now all is well again")
 get_logger <- function(
   name,
   class = Logger,
   reset = FALSE
 ){
-  assert(is_scalar_bool(reset))
-
   if (missing(name) || !length(name) || all(is_blank(name))){
     return(lgr)
   }
+
+  assert(is.character(name))
+  assert(is_scalar_bool(reset))
+  assert(R6::is.R6Class(class), "`class` must be an R6ClassGenerator")
+
   nm_cur <- unlist(strsplit(name, "/", fixed = TRUE))
   name   <- paste(nm_cur, collapse = "/")
+  res    <- get0(name, envir = loggers, inherits = FALSE)
 
-  res <- if (reset) NULL else get0(name, envir = loggers, inherits = FALSE)
+  if (reset && is_Logger(res)){
+    res$set_filters(function(event) stop(call. = FALSE, sprintf(paste(
+      "Trying to log via a Logger reference that is no longer valid.",
+      "Logger references become invalid when you reset a when you reset a",
+      "Logger with `get_logger(reset = TRUE)`. Please",
+      "re-create the Logger reference with with `get_logger(%s)`"), name
+    )))
+    res <- NULL
+  }
 
   if (is.null(res)){
     assign(name, class$new(name), envir = loggers, inherits = FALSE)
@@ -98,15 +118,17 @@ exists_logger <- function(
 
 
 is_virgin_Logger <- function(
-  x
+  x,
+  allow_subclass = FALSE
 ){
+  assert(is_scalar_bool(allow_subclass))
   if (is.character(x)){
     x <- get_logger(x)
   } else {
     assert(is_Logger(x))
   }
 
-  identical(class(x), c("Logger", "Filterable", "R6")) &&
+  (identical(class(x), c("Logger", "Filterable", "R6")) || allow_subclass) &&
   !length(x$appenders) &&
   !length(x$filters) &&
   isTRUE(x$propagate) &&
