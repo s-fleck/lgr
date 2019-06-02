@@ -41,11 +41,11 @@ if (requireNamespace('glue')){
 lg$warn("a {.text} message", .text = "warning")
 
 # completely reset 'glue' to an unconfigured vanilla Logger
-get_logger("glue", reset = TRUE)
+get_logger("log/ger", reset = TRUE)
 # this invalidates references to the Logger
 try(lg$info("lg has been invalidated an no longer works"))
 
 # we have to recreate it
-lg <- get_logger("glue")
+lg <- get_logger("log/ger")
 lg$info("now all is well again")
 }

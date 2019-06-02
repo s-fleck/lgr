@@ -69,6 +69,7 @@ Collate:
     'get_logger.R'
     'lgr-package.R'
     'logger_config.R'
+    'logger_tree.R'
     'print_Appender.R'
     'print_Logger.R'
     'read_json_log.R'
