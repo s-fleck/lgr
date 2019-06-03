@@ -418,6 +418,7 @@ Logger <- R6::R6Class(
       )
     },
 
+
     error = function(msg, ..., caller = get_caller(-8L)){
       if (isTRUE(get("threshold", envir = self) < 200L)) return(invisible())
 
@@ -429,6 +430,7 @@ Logger <- R6::R6Class(
         ...
       )
     },
+
 
     warn = function(msg, ..., caller = get_caller(-8L)){
       if (isTRUE(get("threshold", envir = self) < 300L)) return(invisible())
@@ -442,6 +444,7 @@ Logger <- R6::R6Class(
       )
     },
 
+
     info = function(msg, ..., caller = get_caller(-8L)){
       if (isTRUE(get("threshold", envir = self) < 400L))  return(invisible())
 
@@ -454,6 +457,7 @@ Logger <- R6::R6Class(
       )
     },
 
+
     debug = function(msg, ..., caller = get_caller(-8L)){
       if (isTRUE(get("threshold", envir = self) < 500L))  return(invisible())
 
@@ -465,6 +469,7 @@ Logger <- R6::R6Class(
         ...
       )
     },
+
 
     trace = function(msg, ..., caller = get_caller(-8L)){
       if (isTRUE(get("threshold", envir = self) < 600L))  return(invisible())
@@ -574,15 +579,18 @@ Logger <- R6::R6Class(
       invisible(self)
     },
 
+
     handle_exception = function(...){
       private$.exception_handler(...)
     },
+
 
     set_exception_handler = function(fun){
       assert(is.function(fun))
       private$.exception_handler <- fun
       invisible(self)
     },
+
 
     set_propagate = function(x){
       assert(is_scalar_bool(x))
@@ -626,22 +634,20 @@ Logger <- R6::R6Class(
 
     last_event = function() private$.last_event,
 
+
     ancestry = function(){
-
       nm <- unlist(strsplit(self$name, "/"))
-
       res <- vapply(
         seq_along(nm),
         function(i) get_logger(nm[1:i])[["propagate"]],
         logical(1)
       )
-
       structure(
         setNames(res, nm),
         class = c("ancestry", class(res))
       )
-
     },
+
 
     parent = function() {
       if (self$name == "root"){
@@ -651,16 +657,16 @@ Logger <- R6::R6Class(
       }
     },
 
+
     threshold = function() {
-
       res <- get(".threshold", envir = private)
-
       if (is.null(res)){
         get("parent", envir = self)[["threshold"]]
       } else {
         res
       }
     },
+
 
     inherited_appenders = function(){
       if (self$propagate){
@@ -674,6 +680,7 @@ Logger <- R6::R6Class(
     },
 
     exception_handler = function() {private$.exception_handler},
+
 
     appenders = function() {private$.appenders}
 
