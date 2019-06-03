@@ -28,8 +28,6 @@ test_that("logger_tree detects logger properties", {
     list(AppenderConsole$new(), AppenderConsole$new())
   )
 
-  res <- as.data.frame(logger_tree())
-
   expect_false(res$propagate[res$parent == "blubb"])
   expect_identical(res$n_appenders[res$parent == "blubb"], 2L)
 

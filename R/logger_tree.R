@@ -11,6 +11,7 @@ logger_tree <- function(
     children = I(list(unique(second_tier))),
     configured = TRUE,
     threshold = get_logger()$threshold,
+    threshold_inherited = FALSE,
     propagate = TRUE,
     n_appenders = length(get_logger()$appenders),
     stringsAsFactors = FALSE
@@ -33,6 +34,7 @@ logger_tree <- function(
 
       } else {
         logger_name <- paste(nodes[[i]][seq_len(j)], collapse = "/")
+        cur_logger <- get_logger(logger_name)
 
         res <- rbind(
           res,
@@ -41,8 +43,9 @@ logger_tree <- function(
             children = I(list(child_cur)),
             configured = !is_virgin_Logger(logger_name),
             threshold = get_logger(logger_name)$threshold,
-            propagate = get_logger(logger_name)$propagate,
-            n_appenders = length(get_logger(logger_name)$appenders)
+            threshold_inherited = is_threshold_inherited(cur_logger),
+            propagate = cur_logger$propagate,
+            n_appenders = length(cur_logger$appenders)
           )
         )
       }
@@ -64,10 +67,27 @@ logger_tree <- function(
 print.logger_tree <- function(x, ...){
   assert_namespace("cli")
 
+  label <- ifelse(x$configured, x$parent, style_subtle(x$parent))
+  label <- ifelse(
+    x$threshold_inherited,
+    label,
+    paste0(label, " [", label_levels(x$threshold), "]")
+  )
+  label <- ifelse(
+    x$n_appenders == 0,
+    label,
+    paste0(label, " -> ", x$n_appenders, " appenders")
+  )
+  label <- ifelse(
+    x$propagate,
+    label,
+    paste0(style_fatal("|"), label)
+  )
+
   x_print <- data.frame(
     parent = x$parent,
     children = x$children,
-    label = ifelse(x$configured, x$parent, style_subtle(x$parent))
+    label = label
   )
 
   print(cli::tree(x_print, root = "root"))

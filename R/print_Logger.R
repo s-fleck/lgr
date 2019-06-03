@@ -43,7 +43,7 @@ format.Logger = function(
 
   thr <- fmt_threshold(x$threshold, type = "character")
 
-  if (is.null(x[[".__enclos_env__"]][["private"]][[".threshold"]])){
+  if (is_threshold_inherited(x)){
     thr <- style_subtle(thr)
   }
 
@@ -189,4 +189,11 @@ format.ancestry <- function(
   sps[length(sps)] <- ""
 
   paste0(nms, sps, collapse = "")
+}
+
+
+
+
+is_threshold_inherited <- function(x){
+  is.null(x[[".__enclos_env__"]][["private"]][[".threshold"]])
 }
