@@ -9,6 +9,10 @@ logger_tree <- function(
   res <- data.frame(
     parent = "root",
     children = I(list(unique(second_tier))),
+    configured = TRUE,
+    threshold = get_logger()$threshold,
+    propagate = TRUE,
+    n_appenders = length(get_logger()$appenders),
     stringsAsFactors = FALSE
   )
 
@@ -28,9 +32,18 @@ logger_tree <- function(
         res$children[sel] <- I(list(unlist(unique(compact(c(res$children[sel], child_cur))))))
 
       } else {
+        logger_name <- paste(nodes[[i]][seq_len(j)], collapse = "/")
+
         res <- rbind(
           res,
-          data.frame(parent = parent_cur, children = I(list(child_cur)))
+          data.frame(
+            parent = parent_cur,
+            children = I(list(child_cur)),
+            configured = !is_virgin_Logger(logger_name),
+            threshold = get_logger(logger_name)$threshold,
+            propagate = get_logger(logger_name)$propagate,
+            n_appenders = length(get_logger(logger_name)$appenders)
+          )
         )
       }
     }
@@ -50,6 +63,13 @@ logger_tree <- function(
 
 print.logger_tree <- function(x, ...){
   assert_namespace("cli")
-  print(cli::tree(x))
+
+  x_print <- data.frame(
+    parent = x$parent,
+    children = x$children,
+    label = ifelse(x$configured, x$parent, style_subtle(x$parent))
+  )
+
+  print(cli::tree(x_print, root = "root"))
   x
 }
