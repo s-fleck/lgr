@@ -1,6 +1,7 @@
 # lgr (development version)
 
 ## new features
+  * added `logger_tree()` which provides an overview of all registered loggers
   * added `print()` and `format()` methods for Appenders
   * `AppenderMemory`: added `data` and `dt` active fields
 

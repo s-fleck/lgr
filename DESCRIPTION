@@ -1,7 +1,7 @@
 Type: Package
 Package: lgr
 Title: A Fully Featured Logging Framework
-Version: 0.3.0.9000
+Version: 0.3.0.9001
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -23,6 +23,7 @@ Depends:
 Imports: 
     R6 (>= 2.4.0)
 Suggests: 
+    cli,
     covr,
     crayon,
     data.table,

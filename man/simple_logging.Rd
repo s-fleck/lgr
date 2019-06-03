@@ -38,11 +38,16 @@ show_data(target = lgr::lgr)
 
 \item{level}{\code{integer} or \code{character} scalar: the desired log level}
 
+\item{target}{a \link{Logger} or \link{Appender} or the name of a Logger as \code{character}
+scalar}
+
 \item{appender}{an \code{Appender}}
 
 \item{name}{\code{character} scalar. An optional name for the new Appender.}
 
 \item{pos}{\code{integer} index or \code{character} names of the appenders to remove}
+
+\item{threshold}{\code{character} or \code{integer} scalar. The minimum \link[=log_levels]{log level} that should be processed by the root logger.}
 
 \item{n}{\code{integer} scalar. Show only the last \code{n} log entries that match
 \code{threshold}}

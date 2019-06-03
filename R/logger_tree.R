@@ -1,6 +1,6 @@
-#' Title
+#' Logger Tree
 #'
-#' @return
+#' @return `data.frame` with subclass `"logger_tree"`
 #' @export
 #'
 #' @examples
@@ -17,7 +17,9 @@
 #'
 #' get_logger("fancymodel/plumber")
 #'
-#' logger_tree()
+#' if (requireNamespace("cli")){
+#'   logger_tree()
+#' }
 logger_tree <- function(
 ){
   names <- ls(envir = loggers)
@@ -83,6 +85,12 @@ logger_tree <- function(
 
 
 
+#' Print Logger Trees
+#'
+#' @param x a [logger_tree][logger_tree()]
+#' @param ... pased on to [cli::tree]#'
+#' @return `x` (invisibly)
+#' @export
 print.logger_tree <- function(x, ...){
   assert_namespace("cli")
 
@@ -109,6 +117,6 @@ print.logger_tree <- function(x, ...){
     label = label
   )
 
-  print(cli::tree(x_print, root = "root"))
+  print(cli::tree(x_print, root = "root", ...))
   x
 }

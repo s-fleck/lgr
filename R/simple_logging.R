@@ -42,8 +42,10 @@ log_exception <- function(
 
 # managment ---------------------------------------------------------------
 
-#' @description
+#' @param target a [Logger] or [Appender] or the name of a Logger as `character`
+#'   scalar
 #'
+#' @description
 #'   `threshold()` sets or retrieves the threshold for an [Appender] or [Logger]
 #'   (the minimum level of log messages it processes). It's `target` defaults to
 #'   the root logger. (equivalent to `lgr::lgr$threshold` and
@@ -147,6 +149,8 @@ remove_appender <- function(
 #'
 #' @param n `integer` scalar. Show only the last `n` log entries that match
 #'   `threshold`
+#'
+#' @inheritParams basic_config
 #'
 #' @return `show_log()` prints to the console and returns whatever the target
 #'   Appender's `$show()` method returns, usually a `character` vector,
