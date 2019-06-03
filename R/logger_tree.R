@@ -1,5 +1,24 @@
+#' Title
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' get_logger("fancymodel")
+#' get_logger("fancymodel/shiny")$
+#'   set_propagate(FALSE)
+#'
+#' get_logger("fancymodel/shiny/ui")$
+#'   set_appenders(AppenderConsole$new())
+#'
+#' get_logger("fancymodel/shiny/server")$
+#'   set_appenders(list(AppenderConsole$new(), AppenderConsole$new()))$
+#'   set_threshold("trace")
+#'
+#' get_logger("fancymodel/plumber")
+#'
+#' logger_tree()
 logger_tree <- function(
-  x
 ){
   names <- ls(envir = loggers)
   nodes <- lapply(names, function(.x) unlist(strsplit(.x, "/")))
@@ -30,7 +49,7 @@ logger_tree <- function(
 
       if (parent_cur %in% res$parent){
         sel <- res$parent == parent_cur
-        res$children[sel] <- I(list(unlist(unique(compact(c(res$children[sel], child_cur))))))
+        res$children[sel] <- I(list(unique(unlist(compact(c(res$children[sel], child_cur))))))
 
       } else {
         logger_name <- paste(nodes[[i]][seq_len(j)], collapse = "/")
@@ -81,7 +100,7 @@ print.logger_tree <- function(x, ...){
   label <- ifelse(
     x$propagate,
     label,
-    paste0(style_fatal("|"), label)
+    paste0(style_fatal("#"), label)
   )
 
   x_print <- data.frame(
