@@ -2,6 +2,11 @@ loggers <- new.env()
 
 
 
+remove_all_loggers <- function(){
+  rm(list = setdiff(ls(envir = loggers), "root"), pos = loggers)
+}
+
+
 
 #' Get/Create a Logger
 #'
