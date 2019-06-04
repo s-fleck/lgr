@@ -34,7 +34,7 @@
 
 <meta property="og:title" content="Basic Setup for the Logging System — basic_config" />
 
-<meta property="og:description" content="Quick and easy way to configure the root logger for logging to a file." />
+<meta property="og:description" content="A quick and easy way to configure the root logger." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
       </span>
     </div>
 
@@ -109,7 +109,7 @@
 
     <div class="ref-description">
     
-    <p>Quick and easy way to configure the root logger for logging to a file.</p>
+    <p>A quick and easy way to configure the root logger.</p>
     
     </div>
 
@@ -173,6 +173,33 @@ that logs to a memory buffer, see also <code><a href='simple_logging.html'>show_
     <p>the <code>root</code> Logger (lgr)</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># log to a file</span>
+<span class='fu'>basic_config</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>())</div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [info] root
+#&gt; 
+#&gt; appenders:
+#&gt;   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/RtmpAOE60Y/file24cb2c8af0c2
+#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>lgr</span>$<span class='no'>appenders</span>$<span class='no'>file</span>$<span class='no'>file</span>)  <span class='co'># cleanup</span>
+
+<span class='fu'>basic_config</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>"jsonl"</span>))</div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [info] root
+#&gt; 
+#&gt; appenders:
+#&gt;   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/RtmpAOE60Y/file24cb6eac811bjsonl
+#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>lgr</span>$<span class='no'>appenders</span>$<span class='no'>file</span>$<span class='no'>file</span>)  <span class='co'># cleanup</span>
+
+<span class='co'># log debug messages to a memory buffer</span>
+<span class='fu'>basic_config</span>(<span class='kw'>threshold</span> <span class='kw'>=</span> <span class='st'>"all"</span>, <span class='kw'>memory</span> <span class='kw'>=</span> <span class='st'>"all"</span>, <span class='kw'>console</span> <span class='kw'>=</span> <span class='st'>"info"</span>)</div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [all] root
+#&gt; 
+#&gt; appenders:
+#&gt;   console: &lt;AppenderConsole&gt; [info] -&gt; console
+#&gt;   memory : &lt;AppenderBuffer&gt;  [ all] -&gt; 0 child Appenders</div><div class='input'><span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"an info message"</span>)</div><div class='output co'>#&gt; INFO  [07:05:07.242] an info message </div><div class='input'><span class='no'>lgr</span>$<span class='fu'><a href='https://rdrr.io/r/base/debug.html'>debug</a></span>(<span class='st'>"a hidden message"</span>)
+<span class='fu'><a href='simple_logging.html'>show_log</a></span>()</div><div class='output co'>#&gt; INFO  [07:05:07] an info message
+#&gt; <span style='color: #808080;'>DEBUG</span><span> [07:05:07] a hidden message</div><div class='input'>
+<span class='co'># reset to default config</span>
+<span class='fu'>basic_config</span>()</div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [info] root
+#&gt; 
+#&gt; appenders:
+#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -180,7 +207,9 @@ that logs to a memory buffer, see also <code><a href='simple_logging.html'>show_
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

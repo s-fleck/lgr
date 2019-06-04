@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Log to a JSON File — AppenderJson • lgr</title>
+<title>Log to a JSON file — AppenderJson • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,7 +32,7 @@
 
 
 
-<meta property="og:title" content="Log to a JSON File — AppenderJson" />
+<meta property="og:title" content="Log to a JSON file — AppenderJson" />
 
 <meta property="og:description" content="AppenderJson is a shortcut for AppenderFile with LayoutJson, but
 comes with an extra method show() and an extra active field data to
@@ -67,7 +67,7 @@ comfortably access the underlying file." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
       </span>
     </div>
 
@@ -104,7 +104,7 @@ comfortably access the underlying file." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Log to a JSON File</h1>
+    <h1>Log to a JSON file</h1>
     
     <div class="hidden name"><code>AppenderJson.Rd</code></div>
     </div>
@@ -126,6 +126,7 @@ x &lt;- AppenderFile$new(file, threshold = NA_integer_, layout =
     x$add_filter(filter, name = NULL)
 x$append(event)
 x$filter(event)
+x$format(color = FALSE, ...)
 x$remove_filter(pos)
 x$set_file(file)
 x$set_filters(filters)
@@ -238,10 +239,10 @@ was specified)</p></dd>
 <span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)
 <span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message %s strings"</span>, <span class='st'>"with format strings"</span>, <span class='kw'>and</span> <span class='kw'>=</span> <span class='st'>"custom_fields"</span>)
 
-<span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2019-05-30 12:47:32","logger":"test","caller":"eval","msg":"A test message"}
-#&gt; {"level":400,"timestamp":"2019-05-30 12:47:32","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp logger caller
-#&gt; 1   400 2019-05-30 12:47:32   test   eval
-#&gt; 2   400 2019-05-30 12:47:32   test   eval
+<span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2019-06-04 07:05:01","logger":"test","caller":"eval","msg":"A test message"}
+#&gt; {"level":400,"timestamp":"2019-06-04 07:05:01","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp logger caller
+#&gt; 1   400 2019-06-04 07:05:01   test   eval
+#&gt; 2   400 2019-06-04 07:05:01   test   eval
 #&gt;                                          msg           and
 #&gt; 1                             A test message          &lt;NA&gt;
 #&gt; 2 A test message with format strings strings custom_fields</div><div class='input'>

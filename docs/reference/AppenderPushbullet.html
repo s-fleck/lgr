@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Send Push-Notifications via RPushbullet — AppenderPushbullet • lgr</title>
+<title>Send push-notifications via RPushbullet — AppenderPushbullet • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,7 +32,7 @@
 
 
 
-<meta property="og:title" content="Send Push-Notifications via RPushbullet — AppenderPushbullet" />
+<meta property="og:title" content="Send push-notifications via RPushbullet — AppenderPushbullet" />
 
 <meta property="og:description" content="Send push notifications via pushbullet. This
 Appender keeps an in-memory buffer like AppenderBuffer. If the buffer is
@@ -70,7 +70,7 @@ events in case a fatal event is encountered." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
       </span>
     </div>
 
@@ -107,7 +107,7 @@ events in case a fatal event is encountered." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Send Push-Notifications via RPushbullet</h1>
+    <h1>Send push-notifications via RPushbullet</h1>
     
     <div class="hidden name"><code>AppenderPushbullet.Rd</code></div>
     </div>
@@ -136,6 +136,7 @@ x &lt;- AppenderPushbullet$new(threshold = NA_integer_, flush_threshold = "fatal
 x$append(event)
 x$filter(event)
 x$flush()
+x$format(color = FALSE, ...)
 x$remove_filter(pos)
 x$set_apikey(x)
 x$set_buffer_size(x)
@@ -155,10 +156,16 @@ x$buffer_df
 x$buffer_dt
 x$buffer_events
 x$buffer_size
+x$channel
+x$data
 x$destination
+x$devices
+x$dt
+x$email
 x$filters
 x$flush_threshold
 x$layout
+x$recipients
 x$should_flush
 x$subject_layout
 x$threshold

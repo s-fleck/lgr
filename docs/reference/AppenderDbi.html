@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Log to Databases via DBI — AppenderDbi • lgr</title>
+<title>Log to databases via DBI — AppenderDbi • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,7 +32,7 @@
 
 
 
-<meta property="og:title" content="Log to Databases via DBI — AppenderDbi" />
+<meta property="og:title" content="Log to databases via DBI — AppenderDbi" />
 
 <meta property="og:description" content="Log to a database table with any DBI compatible backend. Please be
 aware that AppenderDbi does not support case sensitive / quoted column
@@ -70,7 +70,7 @@ exists in the target table will be appended, all others are ignored." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
       </span>
     </div>
 
@@ -107,7 +107,7 @@ exists in the target table will be appended, all others are ignored." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Log to Databases via DBI</h1>
+    <h1>Log to databases via DBI</h1>
     
     <div class="hidden name"><code>AppenderDbi.Rd</code></div>
     </div>
@@ -147,6 +147,7 @@ x &lt;- AppenderDbi$new(conn, table, threshold = NA_integer_, layout =
 x$append(event)
 x$filter(event)
 x$flush()
+x$format(color = FALSE, ...)
 x$remove_filter(pos)
 x$set_buffer_size(x)
 x$set_close_on_exit(x)
@@ -169,6 +170,7 @@ x$col_types
 x$conn
 x$data
 x$destination
+x$dt
 x$filters
 x$flush_on_exit
 x$flush_on_rotate

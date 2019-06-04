@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Send Log Emails via sendmailR — AppenderSendmail • lgr</title>
+<title>Send emails via sendmailR — AppenderSendmail • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,7 +32,7 @@
 
 
 
-<meta property="og:title" content="Send Log Emails via sendmailR — AppenderSendmail" />
+<meta property="og:title" content="Send emails via sendmailR — AppenderSendmail" />
 
 <meta property="og:description" content="Send mails via sendmailR::sendmail(), which requires that you have access
 to an SMTP server that does not require authentication. This
@@ -70,7 +70,7 @@ is to push the last 30 log events in case a fatal event is encountered." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
       </span>
     </div>
 
@@ -107,7 +107,7 @@ is to push the last 30 log events in case a fatal event is encountered." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Send Log Emails via sendmailR</h1>
+    <h1>Send emails via sendmailR</h1>
     
     <div class="hidden name"><code>AppenderSendmail.Rd</code></div>
     </div>
@@ -141,6 +141,7 @@ x &lt;- AppenderSendmail$new(to, control, threshold = NA_integer_, flush_thresho
 x$append(event)
 x$filter(event)
 x$flush()
+x$format(color = FALSE, ...)
 x$remove_filter(pos)
 x$set_bcc(x)
 x$set_buffer_size(x)
@@ -164,7 +165,9 @@ x$buffer_events
 x$buffer_size
 x$cc
 x$control
+x$data
 x$destination
+x$dt
 x$filters
 x$flush_threshold
 x$from
