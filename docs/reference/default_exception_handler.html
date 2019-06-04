@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Demote an Exception to a Warning — default_exception_handler • lgr</title>
+<title>Demote an exception to a warning — default_exception_handler • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,7 +32,7 @@
 
 
 
-<meta property="og:title" content="Demote an Exception to a Warning — default_exception_handler" />
+<meta property="og:title" content="Demote an exception to a warning — default_exception_handler" />
 
 <meta property="og:description" content="Throws a timestamped warning instead of stopping the program. This is
 the default exception handler used by Loggers." />
@@ -66,7 +66,7 @@ the default exception handler used by Loggers." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
       </span>
     </div>
 
@@ -103,7 +103,7 @@ the default exception handler used by Loggers." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Demote an Exception to a Warning</h1>
+    <h1>Demote an exception to a warning</h1>
     
     <div class="hidden name"><code>default_exception_handler.Rd</code></div>
     </div>
@@ -122,8 +122,7 @@ the default exception handler used by <a href='Logger.html'>Loggers</a>.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>e</th>
-      <td><p>a <code>character</code> scalar, usually a <code>try-error</code> as thrown by
-<code><a href='https://rdrr.io/r/base/conditions.html'>base::tryCatch()</a></code></p></td>
+      <td><p>an <code>error condition</code> object</p></td>
     </tr>
     </table>
     
@@ -133,7 +132,7 @@ the default exception handler used by <a href='Logger.html'>Loggers</a>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span>(<span class='st'>"an error has occurred"</span>), <span class='kw'>error</span> <span class='kw'>=</span> <span class='no'>default_exception_handler</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: [2019-05-30 12:47:38.769] An error occurred during logging: Error in doTryCatch(return(expr), name, parentenv, handler): an error has occurred</span></div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span>(<span class='st'>"an error has occurred"</span>), <span class='kw'>error</span> <span class='kw'>=</span> <span class='no'>default_exception_handler</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: [2019-06-04 07:00:12.220] An error occurred during logging: Error in doTryCatch(return(expr), name, parentenv, handler): an error has occurred</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

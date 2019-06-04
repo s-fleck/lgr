@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Log to a File — AppenderFile • lgr</title>
+<title>Log to a file — AppenderFile • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,7 +32,7 @@
 
 
 
-<meta property="og:title" content="Log to a File — AppenderFile" />
+<meta property="og:title" content="Log to a file — AppenderFile" />
 
 <meta property="og:description" content="A simple Appender that outputs to a file in the file system. If you plan
 to log to text files, consider logging to JSON files and take a look at
@@ -68,7 +68,7 @@ LayoutJson and a few extra methods for convenience." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
       </span>
     </div>
 
@@ -105,7 +105,7 @@ LayoutJson and a few extra methods for convenience." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Log to a File</h1>
+    <h1>Log to a file</h1>
     
     <div class="hidden name"><code>AppenderFile.Rd</code></div>
     </div>
@@ -128,6 +128,7 @@ x &lt;- AppenderFile$new(file, threshold = NA_integer_, layout =
     x$add_filter(filter, name = NULL)
 x$append(event)
 x$filter(event)
+x$format(color = FALSE, ...)
 x$remove_filter(pos)
 x$set_file(file)
 x$set_filters(filters)
@@ -219,8 +220,8 @@ was specified)</p></dd>
   <span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>json</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()), <span class='st'>"json"</span>
 )
 
-<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; INFO  [12:47:31.937] A test message </div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>default</span>)</div><div class='output co'>#&gt; [1] "INFO  [2019-05-30 12:47:31.937] A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>fancy</span>)</div><div class='output co'>#&gt; [1] "[2019-05-30 12:47:31.937] eval(): INFO  A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>json</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2019-05-30 12:47:31\",\"logger\":\"test\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; INFO  [07:00:04.195] A test message </div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>default</span>)</div><div class='output co'>#&gt; [1] "INFO  [2019-06-04 07:00:04.195] A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>fancy</span>)</div><div class='output co'>#&gt; [1] "[2019-06-04 07:00:04.195] eval(): INFO  A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>json</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2019-06-04 07:00:04\",\"logger\":\"test\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div><div class='input'>
 <span class='co'># cleanup</span>
 <span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [<span style='color: #808080;'>info</span><span>] test
 #&gt; 

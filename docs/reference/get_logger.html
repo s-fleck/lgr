@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
       </span>
     </div>
 
@@ -134,7 +134,8 @@ are the only valid choices.</p></td>
       <th>reset</th>
       <td><p>a <code>logical</code> scalar. If <code>TRUE</code> the logger is reset to an
 unconfigured state. Unlike <code>$config(NULL)</code> this also replaces a
-<code>LoggerGlue</code> with vanilla <code>Logger</code>.</p></td>
+<code>LoggerGlue</code> with vanilla <code>Logger</code>. Please note that this will invalidate
+Logger references created before the reset call (see examples).</p></td>
     </tr>
     </table>
     
@@ -147,7 +148,7 @@ unconfigured state. Unlike <code>$config(NULL)</code> this also replaces a
     <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'>get_logger</span>(<span class='st'>"log/ger/test"</span>)
 <span class='co'># equivalent to</span>
 <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'>get_logger</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"log"</span>, <span class='st'>"ger"</span>, <span class='st'>"test"</span>))
-<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a %s message"</span>, <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [12:47:39.744] a warning message </div><div class='input'><span class='no'>lg</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] log/ger/test
+<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a %s message"</span>, <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [07:00:12.808] a warning message </div><div class='input'><span class='no'>lg</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] log/ger/test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='no'>lg</span>$<span class='no'>parent</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] log/ger
@@ -157,11 +158,16 @@ unconfigured state. Unlike <code>$config(NULL)</code> this also replaces a
 <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>'glue'</span>)){
   <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'>get_logger_glue</span>(<span class='st'>"log/ger"</span>)
 }
-<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a {.text} message"</span>, <span class='kw'>.text</span> <span class='kw'>=</span> <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [12:47:39.763] a warning message </div><div class='input'><span class='co'># completely reset 'glue' to an unconfigured vanilla Logger</span>
-<span class='fu'>get_logger</span>(<span class='st'>"glue"</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; &lt;LoggerGlue&gt; [</span><span style='color: #808080;'>info</span><span>] glue
+<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a {.text} message"</span>, <span class='kw'>.text</span> <span class='kw'>=</span> <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [07:00:12.854] a warning message </div><div class='input'>
+<span class='co'># completely reset 'glue' to an unconfigured vanilla Logger</span>
+<span class='fu'>get_logger</span>(<span class='st'>"log/ger"</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] log/ger
 #&gt; 
 #&gt; inherited appenders:
-#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div></span></pre>
+#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='co'># this invalidates references to the Logger</span>
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"lg has been invalidated an no longer works"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: [2019-06-04 07:00:12.869] An error occurred during logging: Error: Trying to log via a Logger reference that is no longer valid. Logger references become invalid when you reset a when you reset a Logger with `get_logger(reset = TRUE)`. Please re-create the Logger reference with with `get_logger(log/ger)`</span></div><div class='input'>
+<span class='co'># we have to recreate it</span>
+<span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'>get_logger</span>(<span class='st'>"log/ger"</span>)
+<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"now all is well again"</span>)</div><div class='output co'>#&gt; INFO  [07:00:12.874] now all is well again </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

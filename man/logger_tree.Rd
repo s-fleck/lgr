@@ -10,8 +10,22 @@ logger_tree()
 \code{data.frame} with subclass \code{"logger_tree"}
 }
 \description{
-Logger Tree
+Displays an tree structure of all registered Loggers.
 }
+\section{Symbology}{
+
+\itemize{
+\item unconfigured Loggers are displayed in gray (if your terminal supports
+colors and you have the package \strong{crayon} installed).
+\item If a logger's \code{threshold} is set, it is displayed in square brackets next
+to the logger name. If the threshold is not set, it inherits the threshold
+of the next logger up the logger tree.
+\item If a logger's \code{propagate} field is set to \code{FALSE} an red hash (\code{#}) sign
+is displayed in front of the logger name, to imply that it does not pass
+LogEvents up the tree.
+}
+}
+
 \examples{
 get_logger("fancymodel")
 get_logger("fancymodel/shiny")$
@@ -29,4 +43,6 @@ get_logger("fancymodel/plumber")
 if (requireNamespace("cli")){
   logger_tree()
 }
+
+"blah"
 }

@@ -71,7 +71,7 @@ section towards the end of this document a list of available Appenders." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
       </span>
     </div>
 
@@ -133,6 +133,7 @@ x &lt;- Appender$new(layout = Layout$new(), threshold = NA_integer_)
     x$add_filter(filter, name = NULL)
 x$append(event)
 x$filter(event)
+x$format(color = FALSE, ...)
 x$remove_filter(pos)
 x$set_filters(filters)
 x$set_layout(layout)

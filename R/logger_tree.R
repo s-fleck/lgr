@@ -1,5 +1,18 @@
 #' Logger Tree
 #'
+#' Displays an tree structure of all registered Loggers.
+#'
+#' @section Symbology:
+#'
+#' * unconfigured Loggers are displayed in gray (if your terminal supports
+#'   colors and you have the package **crayon** installed).
+#' * If a logger's `threshold` is set, it is displayed in square brackets next
+#'   to the logger name. If the threshold is not set, it inherits the threshold
+#'   of the next logger up the logger tree.
+#' * If a logger's `propagate` field is set to `FALSE` an red hash (`#`) sign
+#'   is displayed in front of the logger name, to imply that it does not pass
+#'   LogEvents up the tree.
+#'
 #' @return `data.frame` with subclass `"logger_tree"`
 #' @export
 #'
@@ -20,6 +33,8 @@
 #' if (requireNamespace("cli")){
 #'   logger_tree()
 #' }
+#'
+#' "blah"
 logger_tree <- function(
 ){
   names <- ls(envir = loggers)

@@ -67,7 +67,7 @@ the meanings of the extra arguments" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
       </span>
     </div>
 
@@ -136,6 +136,8 @@ x &lt;- AppenderFileRotating$new(file, threshold = NA_integer_, layout =
 x$append(event)
 x$clone(deep = FALSE)
 x$filter(event)
+x$format(color = false, ...)
+x$format(color = FALSE, ...)
 x$prune(max_backups = self$max_backups)
 x$remove_filter(pos)
 x$rotate(force = FALSE, now = Sys.time())
