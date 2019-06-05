@@ -46,6 +46,7 @@ it. If you are a package developer you can (and should) set up a new Logger for
 your package, but more on that later. For many use cases the root Logger will 
 suffice.
 
+
 ### Logging to the console
 ```{r}
 # the root logger is called "lgr"
@@ -115,6 +116,22 @@ and easy for machines to parse
 read_json_lines(tf)
 ```
 
+Many Appenders provide either a `$show()` method and a `$data` active
+binding convenience, and so you do not have to call `readLines()` & co manually. 
+
+```{r}
+# show is a method and takes some extra arguments, like maximum number of lines
+# to show
+lgr$appenders$json$show()
+
+# $data always returns a data.frame if available. It is an active binding 
+# rather than a method, so no extra arguments are possible
+lgr$appenders$json$data  
+```
+
+Please note that under the hood, `AppenderJson` is just an `AppenderFile` with 
+`LayoutJson`. The only difference is AppenderJson provides a `$data()` method 
+while AppenderFile does not.
 
 
 
