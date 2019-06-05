@@ -393,10 +393,25 @@ When you define Loggers for your package, you should *not* configure them
 package.
 
 If all this sounds confusing to you, take a look at the
-[examples](#examples-hierarchy). The common use cases are pretty easy to 
-understand and illustrate the *how* and *why* pretty well.
+[examples](#examples-hierarchy) and `?logger_tree`. The common use 
+cases are pretty easy to understand and illustrate the *how* and *why* pretty 
+well.
 
+Example hirarchy for the package **fancymodel** that provides a model along
+with a plumber API and a shiny web-interface to the package.
+``` r
+# prints a tree structure of all registered loggers
+logger_tree()
+```
 
+```
+root [info] -> 1 appenders
+└─fancymodel
+  ├─plumber
+  └─#shiny
+    ├─server [trace] -> 2 appenders
+    └─ui -> 1 appenders
+```
 
 ### Log flow
 
