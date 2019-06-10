@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Special logger subclass for the root logger. Currently exactly like a
-normal Logger, but prevents the threshold to be set to NULL — LoggerRoot • lgr</title>
+<title>Print an Appender object — print.Appender • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -23,8 +22,9 @@ normal Logger, but prevents the threshold to be set to NULL — LoggerRoot • l
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -32,11 +32,10 @@ normal Logger, but prevents the threshold to be set to NULL — LoggerRoot • l
 
 
 
-<meta property="og:title" content="Special logger subclass for the root logger. Currently exactly like a
-normal Logger, but prevents the threshold to be set to NULL — LoggerRoot" />
+<meta property="og:title" content="Print an Appender object — print.Appender" />
 
-<meta property="og:description" content="Special logger subclass for the root logger. Currently exactly like a
-normal Logger, but prevents the threshold to be set to NULL" />
+<meta property="og:description" content="The print() method for Loggers displays the most important aspects of
+the Appender." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -67,7 +66,7 @@ normal Logger, but prevents the threshold to be set to NULL" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
       </span>
     </div>
 
@@ -85,30 +84,13 @@ normal Logger, but prevents the threshold to be set to NULL" />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/lgr-simple.html">lgr-simple</a>
-    </li>
-  </ul>
-</li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/s-fleck/lgr">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -121,33 +103,58 @@ normal Logger, but prevents the threshold to be set to NULL" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Special logger subclass for the root logger. Currently exactly like a
-normal Logger, but prevents the threshold to be set to NULL</h1>
-    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/Logger.R'><code>R/Logger.R</code></a></small>
-    <div class="hidden name"><code>LoggerRoot.Rd</code></div>
+    <h1>Print an Appender object</h1>
+    
+    <div class="hidden name"><code>print.Appender.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Special logger subclass for the root logger. Currently exactly like a
-normal Logger, but prevents the threshold to be set to NULL</p>
+    <p>The <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code> method for Loggers displays the most important aspects of
+the Appender.</p>
     
     </div>
 
-    <pre class="usage"><span class='no'>LoggerRoot</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <pre class="usage"><span class='co'># S3 method for Appender</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"crayon"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span>
+  <span class='fl'>TRUE</span>), <span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>any <span style="R">R</span> Object</p></td>
+    </tr>
+    <tr>
+      <th>color</th>
+      <td><p><code>TRUE</code> or <code>FALSE</code>: Output with color? Requires the Package
+<strong>crayon</strong></p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>ignored</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <code>R6ClassGenerator</code> of length 24.</p>
+    <p><code><a href='https://rdrr.io/r/base/print.html'>print()</a></code> returns <code>x</code> (invisibly), <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code> returns a <code>character</code> vector.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># print most important details of logger</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>lgr</span>$<span class='no'>console</span>)</div><div class='output co'>#&gt; NULL</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#format">Format</a></li>
-          </ul>
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
@@ -158,7 +165,7 @@ normal Logger, but prevents the threshold to be set to NULL</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
 </div>
       </footer>
    </div>

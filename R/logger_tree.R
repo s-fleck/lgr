@@ -5,7 +5,7 @@
 #' @section Symbology:
 #'
 #' * unconfigured Loggers are displayed in gray (if your terminal supports
-#'   colors and you have the package **crayon** installed).
+#'   colors and you have the package \pkg{crayon} installed).
 #' * If a logger's `threshold` is set, it is displayed in square brackets next
 #'   to the logger name. If the threshold is not set, it inherits the threshold
 #'   of the next logger up the logger tree.
@@ -31,10 +31,9 @@
 #' get_logger("fancymodel/plumber")
 #'
 #' if (requireNamespace("cli")){
-#'   logger_tree()
+#'   print(logger_tree())
 #' }
 #'
-#' "blah"
 logger_tree <- function(
 ){
   names <- ls(envir = loggers)
@@ -103,11 +102,44 @@ logger_tree <- function(
 #' Print Logger Trees
 #'
 #' @param x a [logger_tree][logger_tree()]
-#' @param ... pased on to [cli::tree]#'
+#' @param color `logical` scalar. If `TRUE` terminal output is colorized via
+#'   the package \pkg{crayon}?
+#' @param ... pased on to [cli::tree()]
 #' @return `x` (invisibly)
 #' @export
-print.logger_tree <- function(x, ...){
+print.logger_tree <- function(
+  x,
+  color = requireNamespace("crayon", quietly = TRUE),
+  ...
+){
+  if (requireNamespace("cli", quietly = TRUE)){
+    cat(format(x, color = color, ...), sep = "\n")
+  } else {
+    warning(
+      "Console output of logger trees requires the package 'cli'. You can",
+      "install it with `install.packages(\"cli\")`."
+    )
+    print(as.data.frame(x))
+  }
+  invisible(x)
+}
+
+
+
+
+#' @rdname print.logger_tree
+#' @export
+format.logger_tree <- function(
+  x,
+  color = FALSE,
+  ...
+){
   assert_namespace("cli")
+
+  if (!color){
+    style_fatal <- identity
+    style_color <- identity
+  }
 
   label <- ifelse(x$configured, x$parent, style_subtle(x$parent))
   label <- ifelse(
@@ -132,6 +164,5 @@ print.logger_tree <- function(x, ...){
     label = label
   )
 
-  print(cli::tree(x_print, root = "root", ...))
-  x
+  format(cli::tree(x_print, root = "root", ...))
 }

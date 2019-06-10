@@ -2,14 +2,21 @@
 % Please edit documentation in R/logger_tree.R
 \name{print.logger_tree}
 \alias{print.logger_tree}
+\alias{format.logger_tree}
 \title{Print Logger Trees}
 \usage{
-\method{print}{logger_tree}(x, ...)
+\method{print}{logger_tree}(x, color = requireNamespace("crayon", quietly
+  = TRUE), ...)
+
+\method{format}{logger_tree}(x, color = FALSE, ...)
 }
 \arguments{
 \item{x}{a \link[=logger_tree]{logger_tree}}
 
-\item{...}{pased on to \link[cli:tree]{cli::tree}#'}
+\item{color}{\code{logical} scalar. If \code{TRUE} terminal output is colorized via
+the package \pkg{crayon}?}
+
+\item{...}{pased on to \code{\link[cli:tree]{cli::tree()}}}
 }
 \value{
 \code{x} (invisibly)

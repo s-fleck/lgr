@@ -16,7 +16,7 @@ Displays an tree structure of all registered Loggers.
 
 \itemize{
 \item unconfigured Loggers are displayed in gray (if your terminal supports
-colors and you have the package \strong{crayon} installed).
+colors and you have the package \pkg{crayon} installed).
 \item If a logger's \code{threshold} is set, it is displayed in square brackets next
 to the logger name. If the threshold is not set, it inherits the threshold
 of the next logger up the logger tree.
@@ -41,8 +41,7 @@ get_logger("fancymodel/shiny/server")$
 get_logger("fancymodel/plumber")
 
 if (requireNamespace("cli")){
-  logger_tree()
+  print(logger_tree())
 }
 
-"blah"
 }

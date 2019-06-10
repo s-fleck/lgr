@@ -5,6 +5,8 @@ reference:
   - Logger
   - print.Logger
   - print.ancestry
+  - logger_tree
+  - print.logger_tree
   - default_exception_handler
   - get_log_levels
   - simple_logging

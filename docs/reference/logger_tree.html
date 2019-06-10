@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Read a JSON logfile — read_json_lines • lgr</title>
+<title>Logger Tree — logger_tree • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,9 +32,9 @@
 
 
 
-<meta property="og:title" content="Read a JSON logfile — read_json_lines" />
+<meta property="og:title" content="Logger Tree — logger_tree" />
 
-<meta property="og:description" content="Read a JSON logfile" />
+<meta property="og:description" content="Displays an tree structure of all registered Loggers." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -102,47 +102,84 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Read a JSON logfile</h1>
+    <h1>Logger Tree</h1>
     
-    <div class="hidden name"><code>read_json_lines.Rd</code></div>
+    <div class="hidden name"><code>logger_tree.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Read a JSON logfile</p>
+    <p>Displays an tree structure of all registered Loggers.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>read_json_lines</span>(<span class='no'>file</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>file</th>
-      <td><p><code>character</code> scalar. path to a JSON logfile (one JSON object per line)</p></td>
-    </tr>
-    </table>
-    
+    <pre class="usage"><span class='fu'>logger_tree</span>()</pre>
+        
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a <code>data.frame</code></p>
+    <p><code>data.frame</code> with subclass <code>"logger_tree"</code></p>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="symbology"><a class="anchor" href="#symbology"></a>Symbology</h2>
 
-    <div class='dont-index'><p><a href='LayoutJson.html'>LayoutJson</a></p></div>
+    
+    <ul>
+<li><p>unconfigured Loggers are displayed in gray (if your terminal supports
+colors and you have the package <span class="pkg">crayon</span> installed).</p></li>
+<li><p>If a logger's <code>threshold</code> is set, it is displayed in square brackets next
+to the logger name. If the threshold is not set, it inherits the threshold
+of the next logger up the logger tree.</p></li>
+<li><p>If a logger's <code>propagate</code> field is set to <code>FALSE</code> an red hash (<code>#</code>) sign
+is displayed in front of the logger name, to imply that it does not pass
+LogEvents up the tree.</p></li>
+</ul>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"fancymodel"</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [<span style='color: #808080;'>info</span><span>] fancymodel
+#&gt; 
+#&gt; inherited appenders:
+#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"fancymodel/shiny"</span>)$
+  <span class='fu'>set_propagate</span>(<span class='fl'>FALSE</span>)
+
+<span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"fancymodel/shiny/ui"</span>)$
+  <span class='fu'>set_appenders</span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>())
+
+<span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"fancymodel/shiny/server"</span>)$
+  <span class='fu'>set_appenders</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(), <span class='no'>AppenderConsole</span>$<span class='fu'>new</span>()))$
+  <span class='fu'>set_threshold</span>(<span class='st'>"trace"</span>)
+
+<span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"fancymodel/plumber"</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] fancymodel/plumber
+#&gt; 
+#&gt; inherited appenders:
+#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'>
+<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"cli"</span>)){
+  <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'>logger_tree</span>())
+}</div><div class='output co'>#&gt; root [info] -&gt; 1 appenders                     
+#&gt; ├─</span><span style='color: #808080;'>fancymodel</span><span>             
+#&gt; │ ├─</span><span style='color: #808080;'>plumber</span><span>              
+#&gt; │ └─</span><span style='color: #D75F5F;font-weight: bold;'>#</span><span>shiny
+#&gt; │   ├─server [trace] -&gt; 2 appenders            
+#&gt; │   └─ui -&gt; 1 appenders                        
+#&gt; ├─</span><span style='color: #808080;'>glue</span><span>                   
+#&gt; ├─</span><span style='color: #808080;'>lg</span><span>                     
+#&gt; │ └─</span><span style='color: #808080;'>child</span><span>                
+#&gt; ├─</span><span style='color: #808080;'>log</span><span>                    
+#&gt; │ └─</span><span style='color: #808080;'>ger</span><span>                  
+#&gt; │   └─</span><span style='color: #808080;'>test</span><span>               
+#&gt; ├─</span><span style='color: #808080;'>mylogger</span><span>               
+#&gt; └─</span><span style='color: #808080;'>test</span><span>                   </div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#see-also">See also</a></li>
-          </ul>
+      <li><a href="#symbology">Symbology</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

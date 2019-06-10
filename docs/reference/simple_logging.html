@@ -34,29 +34,30 @@
 
 <meta property="og:title" content="Simple Logging — simple_logging" />
 
-<meta property="og:description" content="These functions provide a simple interface to the root logger. If you do not
-need any of the more advanced features of lgr, start here.
-lgr provides convenience functions to manage the root Logger. These
-are intended for interactive use, and for people who just need basic
-logging facilities and don't want to worry about hierarchical loggers and
-R6 classes.
+<meta property="og:description" content="lgr provides convenience functions managing the root Logger. These are
+designed chiefly for interactive use and are less verbose than their
+R6 method counterparts.
 threshold() sets or retrieves the threshold for an Appender or Logger
-(the minimum level of log messages it processes). It's target defaults
-to the root logger.
+(the minimum level of log messages it processes). It's target defaults to
+the root logger. (equivalent to lgr::lgr$threshold and
+lgr::lgr$set_threshold)
 console_threshold() is a shortcut to set the threshold of the root
 loggers AppenderConsole, which is usually the only Appender that manages
-console output for a given R session.
-add_appender() and remove_appender() add Appenders to Loggers and
-other Appenders.
-show_log() displays the last n log entries of target if target is
-an Appender with a show() method or a Logger with at least one such
-Appender attached. target defaults to the root logger. If you have
-configured the root logger with
-basic_config(memory = TRUE), it will have an
-AppenderBuffer that logs all log messages (including TRACE and DEBUG),
-even if they were not printed to the console before.
+console output for a given R session. (equivalent to
+lgr::lgr$appenders$console$threshold and
+lgr::lgr$appenders$console$set_threshold)
+add_appender() and remove_appender() add Appenders to Loggers and other
+Appenders. (equivalent to lgr::lgr$add_appender and
+lgr::lgr$remove_appender)
+show_log() displays the last n log entries of an Appender (or a Logger
+with such an Appender attached) with a $show() method. Most, but not all
+Appenders support this function (try AppenderFile or AppenderBuffer).
 show_data() and show_dt() work similar to show_log(), except that
-they return the log as data.frame or data.table respectively." />
+they return the log as data.frame or data.table respectively. Only
+Appenders that log to formats that can easily be converted to data.frames
+are supported (try AppenderJson or AppenderBuffer).
+The easiest way to try out this features is by adding an AppenderBuffer
+to the root logger with basic_config(memory = TRUE)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -87,7 +88,7 @@ they return the log as data.frame or data.table respectively." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
       </span>
     </div>
 
@@ -131,45 +132,34 @@ they return the log as data.frame or data.table respectively." />
 
     <div class="ref-description">
     
-    <p>These functions provide a simple interface to the root logger. If you do not
-need any of the more advanced features of lgr, start here.</p>
-<p>lgr provides convenience functions to manage the root Logger. These
-are intended for interactive use, and for people who just need basic
-logging facilities and don't want to worry about hierarchical loggers and
-R6 classes.</p>
+    <p>lgr provides convenience functions managing the root Logger. These are
+designed chiefly for interactive use and are less verbose than their
+R6 method counterparts.</p>
 <p><code>threshold()</code> sets or retrieves the threshold for an <a href='Appender.html'>Appender</a> or <a href='Logger.html'>Logger</a>
-(the minimum level of log messages it processes). It's <code>target</code> defaults
-to the root logger.</p>
+(the minimum level of log messages it processes). It's <code>target</code> defaults to
+the root logger. (equivalent to <code>lgr::lgr$threshold</code> and
+<code>lgr::lgr$set_threshold</code>)</p>
 <p><code>console_threshold()</code> is a shortcut to set the threshold of the root
 loggers <a href='AppenderConsole.html'>AppenderConsole</a>, which is usually the only Appender that manages
-console output for a given <span style="R">R</span> session.</p>
-<p><code>add_appender()</code> and <code>remove_appender()</code> add Appenders to Loggers and
-other Appenders.</p>
-<p><code>show_log()</code> displays the last <code>n</code> log entries of <code>target</code> if <code>target</code> is
-an Appender with a <code>show()</code> method or a Logger with at least one such
-Appender attached. <code>target</code> defaults to the root logger. If you have
-configured the root logger with
-<code><a href='basic_config.html'>basic_config(memory = TRUE)</a></code>, it will have an
-<a href='AppenderBuffer.html'>AppenderBuffer</a> that logs all log messages (including <code>TRACE</code> and <code>DEBUG</code>),
-even if they were not printed to the console before.</p>
+console output for a given <span style="R">R</span> session. (equivalent to
+<code>lgr::lgr$appenders$console$threshold</code> and
+<code>lgr::lgr$appenders$console$set_threshold</code>)</p>
+<p><code>add_appender()</code> and <code>remove_appender()</code> add Appenders to Loggers and other
+Appenders. (equivalent to <code>lgr::lgr$add_appender</code> and
+<code>lgr::lgr$remove_appender</code>)</p>
+<p><code>show_log()</code> displays the last <code>n</code> log entries of an Appender (or a Logger
+with such an Appender attached) with a <code>$show()</code> method. Most, but not all
+Appenders support this function (try <a href='AppenderFile.html'>AppenderFile</a> or <a href='AppenderBuffer.html'>AppenderBuffer</a>).</p>
 <p><code>show_data()</code> and <code>show_dt()</code> work similar to <code>show_log()</code>, except that
-they return the log as <code>data.frame</code> or <code>data.table</code> respectively.</p>
+they return the log as <code>data.frame</code> or <code>data.table</code> respectively. Only
+Appenders that log to formats that can easily be converted to <code>data.frames</code>
+are supported (try <a href='AppenderJson.html'>AppenderJson</a> or <a href='AppenderBuffer.html'>AppenderBuffer</a>).</p>
+<p>The easiest way to try out this features is by adding an AppenderBuffer
+to the root logger with <code><a href='basic_config.html'>basic_config(memory = TRUE)</a></code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>FATAL</span>(<span class='no'>msg</span>, <span class='no'>...</span>)
-
-<span class='fu'>ERROR</span>(<span class='no'>msg</span>, <span class='no'>...</span>)
-
-<span class='fu'>WARN</span>(<span class='no'>msg</span>, <span class='no'>...</span>)
-
-<span class='fu'>INFO</span>(<span class='no'>msg</span>, <span class='no'>...</span>)
-
-<span class='fu'>DEBUG</span>(<span class='no'>msg</span>, <span class='no'>...</span>)
-
-<span class='fu'>TRACE</span>(<span class='no'>msg</span>, <span class='no'>...</span>)
-
-<span class='fu'>log_exception</span>(<span class='no'>code</span>, <span class='kw'>logfun</span> <span class='kw'>=</span> <span class='no'>lgr</span>$<span class='no'>fatal</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>3</span>))
+    <pre class="usage"><span class='fu'>log_exception</span>(<span class='no'>code</span>, <span class='kw'>logfun</span> <span class='kw'>=</span> <span class='no'>lgr</span>$<span class='no'>fatal</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>3</span>))
 
 <span class='fu'>threshold</span>(<span class='no'>level</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='kw pkg'>lgr</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/lgr/man/lgr-package.html'>lgr</a></span>)
 
@@ -189,10 +179,6 @@ they return the log as <code>data.frame</code> or <code>data.table</code> respec
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>msg, ...</th>
-      <td><p>passed on to <code><a href='https://rdrr.io/r/base/sprintf.html'>base::sprintf()</a></code></p></td>
-    </tr>
-    <tr>
       <th>code</th>
       <td><p>Any <span style="R">R</span> code</p></td>
     </tr>
@@ -206,14 +192,13 @@ they return the log as <code>data.frame</code> or <code>data.table</code> respec
       <td><p>a <code>character</code> scalar. The name of the calling function</p></td>
     </tr>
     <tr>
-      <th>level, threshold</th>
-      <td><p>an <code>integer</code> or <code>character</code> scalar, see
-<code><a href='https://rdrr.io/r/base/options.html'>getOption("lgr.log_levels")</a></code> for possible values. For <code>threshold</code> <code>0</code>
-(<code>"off"</code>) and <code>NA</code> (<code>"all"</code>) are also valid.</p></td>
+      <th>level</th>
+      <td><p><code>integer</code> or <code>character</code> scalar: the desired log level</p></td>
     </tr>
     <tr>
       <th>target</th>
-      <td><p>a <a href='Logger.html'>Logger</a> or <a href='Appender.html'>Appender</a>. Defaults to the root logger.</p></td>
+      <td><p>a <a href='Logger.html'>Logger</a> or <a href='Appender.html'>Appender</a> or the name of a Logger as <code>character</code>
+scalar</p></td>
     </tr>
     <tr>
       <th>appender</th>
@@ -228,6 +213,10 @@ they return the log as <code>data.frame</code> or <code>data.table</code> respec
       <td><p><code>integer</code> index or <code>character</code> names of the appenders to remove</p></td>
     </tr>
     <tr>
+      <th>threshold</th>
+      <td><p><code>character</code> or <code>integer</code> scalar. The minimum <a href='get_log_levels.html'>log level</a> that should be processed by the root logger.</p></td>
+    </tr>
+    <tr>
       <th>n</th>
       <td><p><code>integer</code> scalar. Show only the last <code>n</code> log entries that match
 <code>threshold</code></p></td>
@@ -236,23 +225,35 @@ they return the log as <code>data.frame</code> or <code>data.table</code> respec
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>FATAL()</code> ... <code>TRACE()</code> and <code>log_exception()</code> return the log message
-as a <code>character</code> vector.</p>
-<p><code>threshold()</code> and <code>console_threshold()</code> return the <a href='get_log_levels.html'>log_level</a> of <code>target</code>
+    <p><code>threshold()</code> and <code>console_threshold()</code> return the <a href='get_log_levels.html'>log_level</a> of <code>target</code>
 as <code>integer</code> (invisibly)</p>
 <p><code>add_appender()</code> and <code>remove_appender()</code> return <code>target</code>.</p>
 <p><code>show_log()</code> prints to the console and returns whatever the target
-Appender's <code>$show()</code> method returns, usually a <code>data.frame</code> or <code>data.table</code>
-(invisibly).</p>
+Appender's <code>$show()</code> method returns, usually a <code>character</code> vector,
+<code>data.frame</code> or <code>data.table</code> (invisibly).</p>
 <p><code>show_data()</code> always returns a <code>data.frame</code> and <code>show_dt()</code> always returns
 a <code>data.table</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>add_appender</span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(), <span class='st'>"second_console_appender"</span>)
-<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"Multiple console appenders are a bad idea"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [12:47:41.811] Multiple console appenders are a bad idea 
-#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [12:47:41.811] Multiple console appenders are a bad idea </div><div class='input'><span class='fu'>remove_appender</span>(<span class='st'>"second_console_appender"</span>)
-<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Good that we defined an appender name, so it's easy to remove"</span>)</div><div class='output co'>#&gt; INFO  [12:47:41.815] Good that we defined an appender name, so it's easy to remove </div></span></pre>
+<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"Multiple console appenders are a bad idea"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [22:33:48.151] Multiple console appenders are a bad idea 
+#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [22:33:48.151] Multiple console appenders are a bad idea </div><div class='input'><span class='fu'>remove_appender</span>(<span class='st'>"second_console_appender"</span>)
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Good that we defined an appender name, so it's easy to remove"</span>)</div><div class='output co'>#&gt; INFO  [22:33:48.157] Good that we defined an appender name, so it's easy to remove </div><div class='input'>
+<span class='co'># Reconfigure the root logger</span>
+<span class='fu'><a href='basic_config.html'>basic_config</a></span>(<span class='kw'>memory</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [info] root
+#&gt; 
+#&gt; appenders:
+#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console
+#&gt;   memory : &lt;AppenderBuffer&gt;  [all] -&gt; 0 child Appenders</div><div class='input'>
+<span class='co'># log some messages</span>
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"a log message"</span>)</div><div class='output co'>#&gt; INFO  [22:33:48.166] a log message </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"another message with data"</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; INFO  [22:33:48.169] another message with data </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>data</span><span style='color: #808080;'>: [</span><span>1, 2, 3</span><span style='color: #808080;'>]}</span><span></div><div class='input'>
+<span class='fu'>show_log</span>()</div><div class='output co'>#&gt; INFO  [22:33:48] a log message
+#&gt; INFO  [22:33:48] another message with data</div><div class='input'><span class='fu'>show_data</span>()</div><div class='output co'>#&gt;   level           timestamp logger caller                       msg    data
+#&gt; 1   400 2019-06-10 22:33:48   root   eval             a log message    NULL
+#&gt; 2   400 2019-06-10 22:33:48   root   eval another message with data 1, 2, 3</div><div class='input'>
+
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

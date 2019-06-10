@@ -161,7 +161,7 @@ Logger/Appender from within a filter</p>
   <span class='no'>lg</span>$<span class='fu'><a href='https://rdrr.io/r/base/debug.html'>debug</a></span>(<span class='st'>"a debug message"</span>)
   <span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"an error"</span>)
 }
-<span class='fu'>analyse</span>()</div><div class='output co'>#&gt; INFO  [07:00:06.847] an error <span style='color: #808080;'>{</span><span style='color: #D75FAF;'>type</span><span style='color: #808080;'>: </span><span>analysis</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"an error"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [07:00:06.853] an error </div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)  <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] test
+<span class='fu'>analyse</span>()</div><div class='output co'>#&gt; INFO  [22:33:40.152] an error <span style='color: #808080;'>{</span><span style='color: #D75FAF;'>type</span><span style='color: #808080;'>: </span><span>analysis</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"an error"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [22:33:40.158] an error </div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)  <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'>
@@ -176,7 +176,7 @@ Logger/Appender from within a filter</p>
 <span class='no'>lg</span>$<span class='fu'>add_filter</span>(<span class='no'>f</span>)
 <span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"test"</span>)</div><div class='output co'>#&gt; via event$.logger: 400 
 #&gt; via .obj():       400 
-#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [07:00:06.864] test </div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] test
+#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [22:33:40.168] test </div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div></span></pre>

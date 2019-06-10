@@ -62,7 +62,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
       </span>
     </div>
 
@@ -105,7 +105,7 @@
 
     <div id="lgr-0-3-0" class="section level1">
 <h1 class="page-header">
-<a href="#lgr-0-3-0" class="anchor"></a>lgr 0.3.0<small> Unreleased </small>
+<a href="#lgr-0-3-0" class="anchor"></a>lgr 0.3.0<small> 2019-05-30 </small>
 </h1>
 <ul>
 <li>Added support for rotating log files via <code>AppenderFileRotating</code>, <code>AppenderFileRotatingDate</code> and <code>AppenderFileRotatingTime</code>. Requires the package <a href="https://github.com/s-fleck/rotor">rotor</a>.</li>
@@ -114,7 +114,6 @@
 <code>AppenderFile$new()</code> now creates an empty file, or fails if it can’t</li>
 <li>Improved support for RMariaDB and dropped support for RMySQL</li>
 <li>Improved support for RPostgres and dropped support for RPostgreSQL</li>
-<li>removed <code><a href="../reference/simple_logging.html">FATAL()</a></code>, <code><a href="../reference/simple_logging.html">ERROR()</a></code>. Use <code>lgr$fatal()</code>, <code>lgr$error()</code>, … instead.</li>
 <li>added <code>reset</code> argument to <code><a href="../reference/get_logger.html">get_logger()</a></code>. This completely resets the configuration of the logger and also replaces special loggers (such as <code>LoggerGlue</code>) with vanilla ones.</li>
 </ul>
 </div>
@@ -135,6 +134,7 @@
 <code><a href="../reference/with_log_level.html">with_log_level()</a></code> and <code><a href="../reference/with_log_level.html">with_log_value()</a></code> now accept logger names as well as Logger objects as the <code>logger</code> argument</li>
 <li>
 <code><a href="../reference/get_logger.html">get_logger_glue()</a></code> now works as intended</li>
+<li>Deprecated <code>FATAL()</code>, <code>ERROR()</code>. Use <code>lgr$fatal()</code>, <code>lgr$error()</code>, … instead.</li>
 </ul>
 </div>
     <div id="lgr-0-2-1" class="section level1">

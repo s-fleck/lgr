@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • lgr</title>
+<title>Print Logger Trees — print.logger_tree • lgr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,7 +32,10 @@
 
 
 
-<meta property="og:title" content="Articles" />
+<meta property="og:title" content="Print Logger Trees — print.logger_tree" />
+
+<meta property="og:description" content="Print Logger Trees" />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -49,7 +52,7 @@
   </head>
 
   <body>
-    <div class="container template-article-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -99,17 +102,56 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Articles</h1>
+    <h1>Print Logger Trees</h1>
+    
+    <div class="hidden name"><code>print.logger_tree.Rd</code></div>
     </div>
 
-    <div class="section ">
-      <h3>All vignettes</h3>
-      <p class="section-desc"></p>
-
-      <ul>
-        <li><a href="lgr.html">Yet Another Log4j Inspired Logging Framework</a></li>
-      </ul>
+    <div class="ref-description">
+    
+    <p>Print Logger Trees</p>
+    
     </div>
+
+    <pre class="usage"><span class='co'># S3 method for logger_tree</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"crayon"</span>, <span class='kw'>quietly</span>
+  <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='no'>...</span>)
+
+<span class='co'># S3 method for logger_tree</span>
+<span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span>(<span class='no'>x</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a <a href='logger_tree.html'>logger_tree</a></p></td>
+    </tr>
+    <tr>
+      <th>color</th>
+      <td><p><code>logical</code> scalar. If <code>TRUE</code> terminal output is colorized via
+the package <span class="pkg">crayon</span>?</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>pased on to <code><a href='https://rdrr.io/pkg/cli/man/tree.html'>cli::tree()</a></code></p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>x</code> (invisibly)</p>
+    
+
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
+
   </div>
 </div>
 
