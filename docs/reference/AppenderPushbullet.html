@@ -118,7 +118,7 @@ events in case a fatal event is encountered." />
 Appender keeps an in-memory buffer like <a href='AppenderBuffer.html'>AppenderBuffer</a>. If the buffer is
 flushed, usually because an event of specified magnitude is encountered, all
 buffered events are concatenated to a single message that is sent to
-<code><a href='https://rdrr.io/pkg/RPushbullet/man/pbPost.html'>RPushbullet::pbPost()</a></code>. The default behaviour is to push the last 7 log
+<code>RPushbullet::pbPost()</code>. The default behaviour is to push the last 7 log
 events in case a <code>fatal</code> event is encountered.</p>
     
     </div>
@@ -175,7 +175,7 @@ x$threshold
 
     
     <dl class='dl-horizontal'>
-<dt><code>apikey</code>, <code>recipients</code>, <code>email</code>, <code>channel</code>, <code>devices</code></dt><dd><p>See <code><a href='https://rdrr.io/pkg/RPushbullet/man/pbPost.html'>RPushbullet::pbPost()</a></code></p></dd>
+<dt><code>apikey</code>, <code>recipients</code>, <code>email</code>, <code>channel</code>, <code>devices</code></dt><dd><p>See <code>RPushbullet::pbPost()</code></p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>buffer_size, set_buffer_size(x)</code></dt><dd><p><code>integer</code> scalar <code>&gt;= 0</code> Number of

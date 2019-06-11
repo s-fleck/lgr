@@ -39,18 +39,19 @@ Appenders.
     can write to the console, a logfile, a database, etc… .
   - Allow for *custom fields* in log events. As opposed to many other
     logging packages for R a log event is not just a message with a
-    timestamp, but can contain arbitrary data fields. This is very
-    helpful if you want to produce logs that are machine readable and
-    easy to analyze.
+    timestamp, but an object that can contain arbitrary data fields.
+    This is useful for producing machine readable logs.
   - *Vectorized* logging (so `lgr$fatal(capture.output(iris))` works)
-  - Lightning fast *in-memory log* based in `data.table` included for
-    interactive use.
-  - Comes with a *wide range of appenders*, for example for:
-      - Appending to Databases (buffered or directly)
-      - Sending notifications via email or pushbullet
-      - writing JSON with arbitrary data fields
-      - In memory buffers
-      - colored console output
+  - Lightning fast *in-memory logs* for interactive use.
+  - Appenders that write logs to a wide range of destinations:
+      - databases (buffered or directly)
+      - email or pushbullet
+      - plaintext files (with a powerful formatting syntax)
+      - JSON files with arbitrary data fields
+      - Rotating files that are reset and backed-up after they reach a
+        certain file size or age
+      - memory buffers
+      - (colored) console output
   - Optional support to use [glue](https://glue.tidyverse.org/) instead
     of `sprintf()` for composing log messages.
 
@@ -64,13 +65,13 @@ vignette.
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [06:42:54.110] A critical error
+#> FATAL [08:25:07.182] A critical error
 lgr$error("A less severe error")
-#> ERROR [06:42:54.139] A less severe error
+#> ERROR [08:25:07.211] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [06:42:54.150] A potentially bad situation
+#> WARN  [08:25:07.221] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [06:42:54.152] iris has 150 rows
+#> INFO  [08:25:07.223] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
@@ -84,9 +85,9 @@ appender to log to a file with little effort.
 tf <- tempfile()
 lgr$add_appender(AppenderFile$new(tf, layout = LayoutJson$new()))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [06:42:54.168] cars has 50 rows
+#> INFO  [08:25:07.239] cars has 50 rows
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2019-05-23 06:42:54","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-06-11 08:25:07","logger":"root","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 By passing a named argument to `info()`, `warn()`, and co you can log
@@ -96,17 +97,17 @@ logfiles that are machine as well as (somewhat) human readable.
 
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [06:42:54.191] loading cars {rows: 50, cols: 2}
+#> INFO  [08:25:07.258] loading cars {rows: 50, cols: 2}
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2019-05-23 06:42:54","logger":"root","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2019-05-23 06:42:54","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
+#> {"level":400,"timestamp":"2019-06-11 08:25:07","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-06-11 08:25:07","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
 ```
 
 For more examples please see the package
 [vignette](https://s-fleck.github.io/lgr/articles/lgr.html) and
 [documentation](https://s-fleck.github.io/lgr/)
 
-## See lgr in Action
+## See lgr in action
 
 lgr is used to govern console output in my shiny based csv editor
 [shed](https://github.com/s-fleck/shed)
@@ -132,7 +133,7 @@ readLines(logfile)
 file.remove(logfile)
 ```
 
-## Development Status
+## Development status
 
 The api of lgr is stable and safe for use. The internal implementation
 of the database logging features still needs some refinement, and if you
@@ -146,29 +147,26 @@ encouraged.
 
 [R6](https://github.com/r-lib/R6): The R6 class system provides the
 framework on which lgr is built and the **only Package lgr will ever
-depend on**.
+depend on**. If you are a **package developer** and want to add logging
+to your package, this is the only transitive dependency you have to
+worry about, as configuring of the loggers should be left to the user of
+your package.
 
-### Optional Dependencies
+### Optional dependencies
 
 lgr comes with a long list of optional dependencies that make a wide
 range of appenders possible. You only need the dependencies for the
-appenders you actually want to use. If you are a developer and want to
-use lgr in one of your packages, you do not have to worry about these
-dependencies (configuring loggers should be left to the user of your
-package).
+Appenders you actually want to use. Care was taken to choose packages
+that are slim, stable, have minimal dependencies, and are well
+maintained :
 
-Care was taken to choose packages that are slim, stable, have minimal
-dependencies, and are well maintained :
+Extra appenders (and layouts):
 
-  - [crayon](https://github.com/r-lib/crayon) for colored console
-    output.
-  - [glue](https://glue.tidyverse.org/) for a more flexible formatting
-    syntax via LoggerGlue and LayoutGlue.
-  - [data.table](https://github.com/Rdatatable/) for fast in-memory
-    logging with `AppenderDt`, and also by all database / DBI Appenders.
   - [jsonlite](https://github.com/jeroen/jsonlite) for JSON logging via
     `LayoutJson`. JSON is a popular plaintext based file format that is
     easy to read for humans and machines alike.
+  - [rotor](https://github.com/s-fleck/rotor) for log rotation via
+    AppenderFileRotating and co.
   - [DBI](https://github.com/r-dbi/DBI) for logging to databases. lgr is
     confirmed to work with the following backends:
       - [RSQLite](https://github.com/r-dbi/RSQLite),
@@ -181,23 +179,33 @@ dependencies, and are well maintained :
     are using lgr with a database backend, please report your (positive
     and negative) experiences, as database support is still somewhat
     experimental.
+  - [data.table](https://github.com/Rdatatable/) for fast in-memory
+    logging with `AppenderDt`, and also by all database / DBI Appenders.
   - [gmailr](https://cran.r-project.org/package=gmailr) or
     [sendmailR](https://cran.r-project.org/package=sendmailR) for email
     notifications.
   - [RPushbullet](https://github.com/eddelbuettel/rpushbullet) for push
     notifications.
+  - [glue](https://glue.tidyverse.org/) for a more flexible formatting
+    syntax via LoggerGlue and LayoutGlue.
+
+Other extra features:
+
+  - [yaml](https://CRAN.R-project.org/package=yaml) for configuring
+    loggers via YAML files  
+  - [crayon](https://github.com/r-lib/crayon) for colored console
+    output.  
   - [whoami](https://github.com/r-lib/whoami/blob/master/DESCRIPTION)
     for guessing the user name from various sources. You can also set
     the user name manually if you want to use it for logging.
   - [desc](https://CRAN.R-project.org/package=desc) for the package
     development convenience function `use_logger()`
-  - [yaml](https://CRAN.R-project.org/package=yaml) for configuring
-    loggers via YAML files
-  - [rotor](https://github.com/s-fleck/rotor) for log rotation via
-    AppenderFileRotating and co.
+  - [cli](https://CRAN.R-project.org/package=cli) for printing the tree
+    structure of registered loggers with `logger_tree()`
 
-Other optional dependencies (future, future.apply) do not provide any
-extra functionality but had to be included as Suggests for some of the
+Other `Suggests` ([future](https://CRAN.R-project.org/package=future),
+[future.apply](https://CRAN.R-project.org/package=future.apply)) do not
+provide extra functionality but had to be included for some of the
 automated unit tests run by lgr.
 
 ## Installation

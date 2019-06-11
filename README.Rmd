@@ -117,7 +117,7 @@ package
 [documentation](https://s-fleck.github.io/lgr/)
 
 
-## See lgr in Action
+## See lgr in action
 
 lgr is used to govern console output in my shiny based csv editor 
 [shed](https://github.com/s-fleck/shed)
@@ -144,7 +144,7 @@ file.remove(logfile)
 ```
 
 
-## Development Status
+## Development status
 
 The api of lgr is stable and safe for use. The internal implementation of
 the database logging features still needs some refinement, and if you are
@@ -158,27 +158,27 @@ lgr is currently very actively developed, and feature requests are encouraged.
 ## Dependencies
 
 [R6](https://github.com/r-lib/R6): The R6 class system provides the framework
-on which lgr is built and the **only Package lgr will ever depend on**.
+on which lgr is built and the **only Package lgr will ever depend on**. If you 
+are a **package developer** and want to add logging to your package, this is the
+only transitive dependency you have to worry about, as configuring of the 
+loggers should be left to the user of your package.
 
-### Optional Dependencies
+
+### Optional dependencies
 
 lgr comes with a long list of optional dependencies that make a wide range of
-appenders possible. You only need the dependencies for the appenders you 
-actually want to use. If you are a developer and want to use lgr in one of your 
-packages, you do not have to worry about these dependencies (configuring loggers
-should be left to the user of your package). 
+appenders possible. You only need the dependencies for the Appenders you
+actually want to use. Care was taken to choose packages that are slim, stable, 
+have minimal dependencies, and are well maintained :
 
-Care was taken to choose packages that are slim, stable, have minimal 
-dependencies, and are well maintained :
-
-  - [crayon](https://github.com/r-lib/crayon) for colored console output.
-  - [glue](https://glue.tidyverse.org/) for a more flexible formatting syntax
-    via LoggerGlue and LayoutGlue.
-  - [data.table](https://github.com/Rdatatable/) for fast in-memory 
-    logging with `AppenderDt`, and also by all database / DBI Appenders. 
+  
+  Extra appenders (and layouts):
+  
   - [jsonlite](https://github.com/jeroen/jsonlite) for JSON logging via 
     `LayoutJson`. JSON is a popular plaintext based file format that is easy to 
     read for humans and machines alike.
+  - [rotor](https://github.com/s-fleck/rotor) for log rotation via 
+    AppenderFileRotating and co.
   - [DBI](https://github.com/r-dbi/DBI) for logging to databases. lgr is 
     confirmed to work with the following backends: 
     - [RSQLite](https://github.com/r-dbi/RSQLite), 
@@ -190,24 +190,35 @@ dependencies, and are well maintained :
     In theory all DBI compliant database packages should work. If you
     are using lgr with a database backend, please report your (positive and
     negative) experiences, as database support is still somewhat experimental.
+  - [data.table](https://github.com/Rdatatable/) for fast in-memory 
+    logging with `AppenderDt`, and also by all database / DBI Appenders. 
   - [gmailr](https://cran.r-project.org/package=gmailr) or
     [sendmailR](https://cran.r-project.org/package=sendmailR) for email 
     notifications.
   - [RPushbullet](https://github.com/eddelbuettel/rpushbullet) for push
     notifications.
+  - [glue](https://glue.tidyverse.org/) for a more flexible formatting syntax
+    via LoggerGlue and LayoutGlue.
+    
+    
+  Other extra features:
+  
+  - [yaml](https://CRAN.R-project.org/package=yaml) for configuring loggers 
+    via YAML files  
+  - [crayon](https://github.com/r-lib/crayon) for colored console output.  
   - [whoami](https://github.com/r-lib/whoami/blob/master/DESCRIPTION) for 
     guessing the user name from various sources. You can also set the user name 
     manually if you want to use it for logging.
   - [desc](https://CRAN.R-project.org/package=desc) for the package development
     convenience function `use_logger()`
-  - [yaml](https://CRAN.R-project.org/package=yaml) for configuring loggers 
-    via YAML files
-  - [rotor](https://github.com/s-fleck/rotor) for log rotation via 
-    AppenderFileRotating and co.
+  - [cli](https://CRAN.R-project.org/package=cli) for printing the tree 
+    structure of registered loggers with `logger_tree()`
     
-  Other optional dependencies (future, future.apply) do not provide any extra
-  functionality but had to be included as Suggests for some of the automated 
-  unit tests run by lgr.
+  Other `Suggests`
+  ([future](https://CRAN.R-project.org/package=future), 
+  [future.apply](https://CRAN.R-project.org/package=future.apply)) do not 
+  provide extra functionality but had to be included for some of 
+  the automated unit tests run by lgr.
     
 
 ## Installation
