@@ -3,7 +3,8 @@
 ## new features
   * added `logger_tree()` which provides an overview of all registered loggers
   * added `print()` and `format()` methods for Appenders
-  * `AppenderMemory`: added `data` and `dt` active fields
+  * `AppenderMemory`: added `data` and `dt` active fields (which return the
+    log as a data.frame or data.table)
 
 ## API changes
   * Removed deprecated functions `FATAL()`, `ERROR()`. Use `lgr$fatal()`, 
