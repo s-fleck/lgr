@@ -150,7 +150,7 @@ format.logger_tree <- function(
   label <- ifelse(
     x$n_appenders == 0,
     label,
-    paste0(label, " -> ", x$n_appenders, " appenders")
+    paste0(label, " -> ", x$n_appenders, " appender", ifelse(x$n_appenders > 1, "s", ""))
   )
   label <- ifelse(
     x$propagate,
