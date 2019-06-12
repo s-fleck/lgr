@@ -4,6 +4,16 @@ context("print_Appender")
 
 
 test_that("all Appenders print() without failure", {
+  if (
+    !requireNamespace("sendmailR") ||
+    !requireNamespace("RPushbullet") ||
+    !requireNamespace("rotor") ||
+    !requireNamespace("DBI") ||
+    !requireNamespace("RSQLite")
+  ){
+    skip("Required packages not installed")
+  }
+
   tf <- tempfile()
   on.exit(unlink(tf))
 

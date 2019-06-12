@@ -419,6 +419,8 @@ AppenderJson <- R6::R6Class(
       layout = LayoutJson$new(),
       filters = NULL
     ){
+      assert_namespace("jsonlite")
+
       self$set_file(file)
       self$set_threshold(threshold)
       self$set_layout(layout)
@@ -655,6 +657,7 @@ AppenderDt <- R6::R6Class(
       buffer_size = 1e5,
       filters = NULL
     ){
+      assert_namespace("data.table")
       assert(is_scalar_integerish(buffer_size))
       assert(
         data.table::is.data.table(prototype) && is.integer(prototype$.id),
@@ -1948,6 +1951,8 @@ AppenderPushbullet <- R6::R6Class(
       apikey = NULL,
       filters = NULL
     ){
+      assert_namespace("RPushbullet")
+
       private$initialize_buffer(buffer_size)
       self$set_flush_on_rotate(FALSE)
       self$set_flush_on_exit(FALSE)
