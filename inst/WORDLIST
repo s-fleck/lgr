@@ -91,3 +91,5 @@ unconfigured
 AppenderFileRotating
 LayoutJson
 kb
+cli
+fancymodel

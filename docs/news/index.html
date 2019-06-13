@@ -62,7 +62,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -103,6 +103,20 @@
       
     </div>
 
+    <div id="lgr-0-3-1" class="section level1">
+<h1 class="page-header">
+<a href="#lgr-0-3-1" class="anchor"></a>lgr 0.3.1<small> Unreleased </small>
+</h1>
+<ul>
+<li>Added <code><a href="../reference/logger_tree.html">logger_tree()</a></code> which provides an overview of all registered loggers</li>
+<li>Added <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/base/format.html">format()</a></code> methods for Appenders</li>
+<li>
+<code>AppenderMemory</code>: added <code>data</code> and <code>dt</code> active fields (which return the log as a data.frame or data.table)</li>
+<li>Removed deprecated functions <code>FATAL()</code>, <code>ERROR()</code>. Use <code>lgr$fatal()</code>, <code>lgr$error()</code>, … instead.</li>
+<li>
+<code>AppenderMemory</code>: <code>$buffer_dt()</code> and <code>$show()</code> now handle custom fields containing atomic vectors correctly</li>
+</ul>
+</div>
     <div id="lgr-0-3-0" class="section level1">
 <h1 class="page-header">
 <a href="#lgr-0-3-0" class="anchor"></a>lgr 0.3.0<small> 2019-05-30 </small>
@@ -177,6 +191,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#lgr-0-3-1">0.3.1</a></li>
         <li><a href="#lgr-0-3-0">0.3.0</a></li>
         <li><a href="#lgr-0-2-2">0.2.2</a></li>
         <li><a href="#lgr-0-2-1">0.2.1</a></li>

@@ -10,4 +10,5 @@
 
 0 errors | 0 warnings | 0 notes
 
-new features & bugfixes
+updates test suite for compatibility with the upcomming version of the package
+**rotor** (and also includes a few small fixes and improvements)

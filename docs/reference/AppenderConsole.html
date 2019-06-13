@@ -67,7 +67,7 @@ crayon installed log levels will be coloured by default
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -210,8 +210,8 @@ was specified)</p></dd>
   <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(<span class='st'>"[%t] %c(): [%n] %m"</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"lgr.colors"</span>))))
 
 <span class='co'># Will output the message twice because we attached two console appenders</span>
-<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [08:25:25.626] A test message 
-#&gt; [2019-06-11 08:25:25.626] eval(): [</span><span style='color: #FFD75F;'>300</span><span>] A test message</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>) <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #555555;'>info</span><span>] test
+<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [13:47:49.681] A test message 
+#&gt; [2019-06-13 13:47:49.681] eval(): [</span><span style='color: #FFD75F;'>300</span><span>] A test message</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>) <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #555555;'>info</span><span>] test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div></span></pre>

@@ -104,7 +104,7 @@ logger_tree <- function(
 #' @param x a [logger_tree][logger_tree()]
 #' @param color `logical` scalar. If `TRUE` terminal output is colorized via
 #'   the package \pkg{crayon}?
-#' @param ... pased on to [cli::tree()]
+#' @param ... passed on to [cli::tree()]
 #' @return `x` (invisibly)
 #' @export
 print.logger_tree <- function(

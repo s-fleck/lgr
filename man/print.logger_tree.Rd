@@ -16,7 +16,7 @@
 \item{color}{\code{logical} scalar. If \code{TRUE} terminal output is colorized via
 the package \pkg{crayon}?}
 
-\item{...}{pased on to \code{\link[cli:tree]{cli::tree()}}}
+\item{...}{passed on to \code{\link[cli:tree]{cli::tree()}}}
 }
 \value{
 \code{x} (invisibly)

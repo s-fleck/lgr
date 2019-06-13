@@ -68,7 +68,7 @@ LayoutJson and a few extra methods for convenience." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -220,8 +220,8 @@ was specified)</p></dd>
   <span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>json</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()), <span class='st'>"json"</span>
 )
 
-<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; INFO  [08:25:26.785] A test message </div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>default</span>)</div><div class='output co'>#&gt; [1] "INFO  [2019-06-11 08:25:26.785] A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>fancy</span>)</div><div class='output co'>#&gt; [1] "[2019-06-11 08:25:26.785] eval(): INFO  A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>json</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2019-06-11 08:25:26\",\"logger\":\"test\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; INFO  [13:47:51.051] A test message </div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>default</span>)</div><div class='output co'>#&gt; [1] "INFO  [2019-06-13 13:47:51.051] A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>fancy</span>)</div><div class='output co'>#&gt; [1] "[2019-06-13 13:47:51.051] eval(): INFO  A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>json</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2019-06-13 13:47:51\",\"logger\":\"test\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div><div class='input'>
 <span class='co'># cleanup</span>
 <span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [<span style='color: #555555;'>info</span><span>] test
 #&gt; 

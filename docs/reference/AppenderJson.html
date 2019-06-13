@@ -67,7 +67,7 @@ comfortably access the underlying file." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -239,10 +239,10 @@ was specified)</p></dd>
 <span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)
 <span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message %s strings"</span>, <span class='st'>"with format strings"</span>, <span class='kw'>and</span> <span class='kw'>=</span> <span class='st'>"custom_fields"</span>)
 
-<span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2019-06-11 08:25:27","logger":"test","caller":"eval","msg":"A test message"}
-#&gt; {"level":400,"timestamp":"2019-06-11 08:25:27","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp logger caller
-#&gt; 1   400 2019-06-11 08:25:27   test   eval
-#&gt; 2   400 2019-06-11 08:25:27   test   eval
+<span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2019-06-13 13:47:52","logger":"test","caller":"eval","msg":"A test message"}
+#&gt; {"level":400,"timestamp":"2019-06-13 13:47:52","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp logger caller
+#&gt; 1   400 2019-06-13 13:47:52   test   eval
+#&gt; 2   400 2019-06-13 13:47:52   test   eval
 #&gt;                                          msg           and
 #&gt; 1                             A test message          &lt;NA&gt;
 #&gt; 2 A test message with format strings strings custom_fields</div><div class='input'>

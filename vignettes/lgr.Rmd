@@ -414,7 +414,7 @@ If all this sounds confusing to you, take a look at the
 cases are pretty easy to understand and illustrate the *how* and *why* pretty 
 well.
 
-Example hirarchy for the package **fancymodel** that provides a model along
+Example hierarchy for the package **fancymodel** that provides a model along
 with a plumber API and a shiny web-interface to the package.
 ``` r
 # prints a tree structure of all registered loggers

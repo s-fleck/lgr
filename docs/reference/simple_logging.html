@@ -88,7 +88,7 @@ to the root logger with basic_config(memory = TRUE)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -237,9 +237,9 @@ a <code>data.table</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>add_appender</span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(), <span class='st'>"second_console_appender"</span>)
-<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"Multiple console appenders are a bad idea"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [08:25:34.716] Multiple console appenders are a bad idea 
-#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [08:25:34.716] Multiple console appenders are a bad idea </div><div class='input'><span class='fu'>remove_appender</span>(<span class='st'>"second_console_appender"</span>)
-<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Good that we defined an appender name, so it's easy to remove"</span>)</div><div class='output co'>#&gt; INFO  [08:25:34.720] Good that we defined an appender name, so it's easy to remove </div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"Multiple console appenders are a bad idea"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [13:48:00.531] Multiple console appenders are a bad idea 
+#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [13:48:00.531] Multiple console appenders are a bad idea </div><div class='input'><span class='fu'>remove_appender</span>(<span class='st'>"second_console_appender"</span>)
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Good that we defined an appender name, so it's easy to remove"</span>)</div><div class='output co'>#&gt; INFO  [13:48:00.535] Good that we defined an appender name, so it's easy to remove </div><div class='input'>
 <span class='co'># Reconfigure the root logger</span>
 <span class='fu'><a href='basic_config.html'>basic_config</a></span>(<span class='kw'>memory</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [info] root
 #&gt; 
@@ -247,11 +247,11 @@ a <code>data.table</code>.</p>
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console
 #&gt;   memory : &lt;AppenderBuffer&gt;  [all] -&gt; 0 child Appenders</div><div class='input'>
 <span class='co'># log some messages</span>
-<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"a log message"</span>)</div><div class='output co'>#&gt; INFO  [08:25:34.727] a log message </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"another message with data"</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; INFO  [08:25:34.729] another message with data </span><span style='color: #555555;'>{</span><span style='color: #D75FAF;'>data</span><span style='color: #555555;'>: [</span><span>1, 2, 3</span><span style='color: #555555;'>]}</span><span></div><div class='input'>
-<span class='fu'>show_log</span>()</div><div class='output co'>#&gt; INFO  [08:25:34] a log message
-#&gt; INFO  [08:25:34] another message with data</div><div class='input'><span class='fu'>show_data</span>()</div><div class='output co'>#&gt;   level           timestamp logger caller                       msg    data
-#&gt; 1   400 2019-06-11 08:25:34   root   eval             a log message    NULL
-#&gt; 2   400 2019-06-11 08:25:34   root   eval another message with data 1, 2, 3</div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"a log message"</span>)</div><div class='output co'>#&gt; INFO  [13:48:00.542] a log message </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"another message with data"</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; INFO  [13:48:00.544] another message with data </span><span style='color: #555555;'>{</span><span style='color: #D75FAF;'>data</span><span style='color: #555555;'>: [</span><span>1, 2, 3</span><span style='color: #555555;'>]}</span><span></div><div class='input'>
+<span class='fu'>show_log</span>()</div><div class='output co'>#&gt; INFO  [13:48:00] a log message
+#&gt; INFO  [13:48:00] another message with data</div><div class='input'><span class='fu'>show_data</span>()</div><div class='output co'>#&gt;   level           timestamp logger caller                       msg    data
+#&gt; 1   400 2019-06-13 13:48:00   root   eval             a log message    NULL
+#&gt; 2   400 2019-06-13 13:48:00   root   eval another message with data 1, 2, 3</div><div class='input'>
 
 </div></span></pre>
   </div>
