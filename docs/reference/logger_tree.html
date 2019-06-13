@@ -34,7 +34,7 @@
 
 <meta property="og:title" content="Logger Tree — logger_tree" />
 
-<meta property="og:description" content="Displays an tree structure of all registered Loggers." />
+<meta property="og:description" content="Displays a tree structure of all registered Loggers." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,7 +109,7 @@
 
     <div class="ref-description">
     
-    <p>Displays an tree structure of all registered Loggers.</p>
+    <p>Displays a tree structure of all registered Loggers.</p>
     
     </div>
 
@@ -126,8 +126,8 @@
 <li><p>unconfigured Loggers are displayed in gray (if your terminal supports
 colors and you have the package <span class="pkg">crayon</span> installed).</p></li>
 <li><p>If a logger's <code>threshold</code> is set, it is displayed in square brackets next
-to the logger name. If the threshold is not set, it inherits the threshold
-of the next logger up the logger tree.</p></li>
+to its name (reminder: if the threshold is not set, it is inherited from
+next logger up the logger tree).</p></li>
 <li><p>If a logger's <code>propagate</code> field is set to <code>FALSE</code> an red hash (<code>#</code>) sign
 is displayed in front of the logger name, to imply that it does not pass
 LogEvents up the tree.</p></li>

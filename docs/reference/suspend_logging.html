@@ -146,7 +146,7 @@ lgr until <code>unsuspend_logging()</code> is invoked, while <code>without_loggi
     <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)
 
 <span class='co'># temporarily disable logging</span>
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"foo"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [13:48:00.670] foo </div><div class='input'><span class='fu'>without_logging</span>({
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"foo"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [13:50:47.685] foo </div><div class='input'><span class='fu'>without_logging</span>({
   <span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"everything in this codeblock will be suppressed"</span>)
   <span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"bar"</span>)
 })
@@ -154,10 +154,10 @@ lgr until <code>unsuspend_logging()</code> is invoked, while <code>without_loggi
 <span class='co'># globally disable logging</span>
 <span class='fu'>suspend_logging</span>()
 <span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"bar"</span>)
-<span class='fu'>with_logging</span>(<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"foo"</span>))  <span class='co'># log anyways</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [13:48:00.678] foo </div><div class='input'>
+<span class='fu'>with_logging</span>(<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"foo"</span>))  <span class='co'># log anyways</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [13:50:47.694] foo </div><div class='input'>
 <span class='co'># globally enable logging again</span>
 <span class='fu'>unsuspend_logging</span>()
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"foo"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [13:48:00.683] foo </div></span></pre>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"foo"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [13:50:47.698] foo </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

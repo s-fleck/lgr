@@ -183,13 +183,13 @@ created this event, equivalent to <code>event$logger_user</code>)</p></dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)
-<span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"foo bar"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;'>ERROR</span><span> [13:47:55.378] foo bar </div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"foo bar"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;'>ERROR</span><span> [13:50:42.873] foo bar </div><div class='input'>
 <span class='co'># The last LogEvent produced by a Logger is stored in the last_event field</span>
-<span class='no'>lg</span>$<span class='no'>last_event</span>  <span class='co'># formatted by default</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [2019-06-13 13:47:55] foo bar  </div><div class='input'><span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>values</span>  <span class='co'># values stored in the event</span></div><div class='output co'>#&gt; $level
+<span class='no'>lg</span>$<span class='no'>last_event</span>  <span class='co'># formatted by default</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [2019-06-13 13:50:42] foo bar  </div><div class='input'><span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>values</span>  <span class='co'># values stored in the event</span></div><div class='output co'>#&gt; $level
 #&gt; [1] 200
 #&gt; 
 #&gt; $timestamp
-#&gt; [1] "2019-06-13 13:47:55 CEST"
+#&gt; [1] "2019-06-13 13:50:42 CEST"
 #&gt; 
 #&gt; $logger
 #&gt; [1] "test"

@@ -41,7 +41,9 @@ that logs to a memory buffer, see also \code{\link[=show_log]{show_log()}} and \
 the \code{root} Logger (lgr)
 }
 \description{
-A quick and easy way to configure the root logger.
+A quick and easy way to configure the root logger. This is less powerful
+then using \link[=Logger]{lgr$config() or lgr$set_*()}, but reduces the
+most common configrations to a single line of code.
 }
 \examples{
 # log to a file

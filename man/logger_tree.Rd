@@ -10,7 +10,7 @@ logger_tree()
 \code{data.frame} with subclass \code{"logger_tree"}
 }
 \description{
-Displays an tree structure of all registered Loggers.
+Displays a tree structure of all registered Loggers.
 }
 \section{Symbology}{
 
@@ -18,8 +18,8 @@ Displays an tree structure of all registered Loggers.
 \item unconfigured Loggers are displayed in gray (if your terminal supports
 colors and you have the package \pkg{crayon} installed).
 \item If a logger's \code{threshold} is set, it is displayed in square brackets next
-to the logger name. If the threshold is not set, it inherits the threshold
-of the next logger up the logger tree.
+to its name (reminder: if the threshold is not set, it is inherited from
+next logger up the logger tree).
 \item If a logger's \code{propagate} field is set to \code{FALSE} an red hash (\code{#}) sign
 is displayed in front of the logger name, to imply that it does not pass
 LogEvents up the tree.
