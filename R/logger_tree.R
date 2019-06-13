@@ -1,14 +1,14 @@
 #' Logger Tree
 #'
-#' Displays an tree structure of all registered Loggers.
+#' Displays a tree structure of all registered Loggers.
 #'
 #' @section Symbology:
 #'
 #' * unconfigured Loggers are displayed in gray (if your terminal supports
 #'   colors and you have the package \pkg{crayon} installed).
 #' * If a logger's `threshold` is set, it is displayed in square brackets next
-#'   to the logger name. If the threshold is not set, it inherits the threshold
-#'   of the next logger up the logger tree.
+#'   to its name (reminder: if the threshold is not set, it is inherited from
+#'   next logger up the logger tree).
 #' * If a logger's `propagate` field is set to `FALSE` an red hash (`#`) sign
 #'   is displayed in front of the logger name, to imply that it does not pass
 #'   LogEvents up the tree.
@@ -87,9 +87,7 @@ logger_tree <- function(
     }
   }
 
-
   assert(all_are_distinct(res$parent))
-
   structure(
     res,
     class = union("logger_tree", class(res))
