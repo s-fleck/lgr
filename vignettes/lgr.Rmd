@@ -232,19 +232,23 @@ ll <- data.frame(
   `Level` = c(0, seq(100, 600, by = 100), NA),
   `Name` = c("off", "fatal", "error", "warn", "info", "debug", "trace", "all"),
   `Description` = c(
-    "A log level of 0/off tells a Logger or Appender to suspend all logging",
+    "Tells a Logger or Appender to suspend all logging",
     "Critical error that leads to program abort. Should always indicate a `stop()` or similar",
     "A severe error that does not trigger program abort",
     "A potentially harmful situation, like `warning()`",
     "An informational message on the progress of the application",
     "Finer grained informational messages that are mostly useful for debugging",
-    "An even finer grained message than debug",
-    "A log level of NA/all tells a Logger or Appender to process all log events"
+    "An even finer grained message than debug ([more info](https://softwareengineering.stackexchange.com/questions/279690/why-does-the-trace-level-exist-and-when-should-i-use-it-rather-than-debug))",
+    "Tells a Logger or Appender to process all log events"
   )
 ) 
 
 knitr::kable(ll)
 ```
+
+`off` and `all` are valid thresholds for Appenders and Loggers,
+but not valid levels for LogEvents; e.g. `lgr$set_threshold(NA)` makes sense,
+but `lgr$log("all", "an example message")` does not.
 
 The list of named log levels is stored as a global option 
 (`getOption("lgr.log_levels")`) and you can use `add_log_levels()` and 
