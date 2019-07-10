@@ -42,6 +42,7 @@ Suggests:
     rprojroot,
     RPushbullet,
     RSQLite,
+    rsyslog,
     sendmailR,
     testthat,
     tibble,

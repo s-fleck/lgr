@@ -2887,9 +2887,100 @@ AppenderFileRotatingDate <- R6::R6Class(
 )
 
 
+# AppenderSyslog ----------------------------------------------------------
+
+#' Log to the POSIX System Log
+#'
+#' An Appender that writes to Syslog on supported POSIX platforms. Requires the
+#' \code{rsyslog} package.
+#'
+#' @eval r6_usage(AppenderSyslog)
+#'
+#' @inheritSection Appender Creating a New Appender
+#' @inheritSection Appender Fields
+#' @inheritSection Appender Methods
+#'
+#' @section Fields:
+#'
+#' \describe{
+#'   \item{`identifier`}{`character` scalar. A string identifying the process.}
+#'   \item{`...`}{Further arguments passed on to \code{\link[rsyslog]{open_syslog}}.}
+#'  }
+#'
+#' @export
+#' @seealso [LayoutFormat], [LayoutJson]
+#' @family Appenders
+#' @name AppenderSyslog
+#'
+#' @examples
+#' if (requireNamespace("rsyslog", quietly = TRUE)) {
+#'   lg <- get_logger("test")
+#'   lg$add_appender(AppenderSyslog$new("myapp"), "syslog")
+#'
+#'   lg$info("A test message")
+#'
+#'   lg$config(NULL)
+#' }
+NULL
 
 
+#' @export
+AppenderSyslog <- R6::R6Class(
+  "AppenderSyslog",
+  inherit = Appender,
+  cloneable = FALSE,
+  public = list(
+    initialize = function(
+      identifier,
+      threshold = NA_integer_,
+      layout = LayoutFormat$new(),
+      filters = NULL,
+      ...
+    ){
+      if (!requireNamespace("rsyslog", quietly = TRUE)) {
+        stop("The 'rsyslog' package is required for this appender.")
+      }
+      self$set_threshold(threshold)
+      self$set_layout(layout)
+      self$set_filters(filters)
+      private$.identifier <- identifier
 
+      rsyslog::open_syslog(identifier = identifier, ...)
+      # Handle the mask manually via the threshold.
+      rsyslog::set_syslog_mask("DEBUG")
+    },
+
+    append = function(event){
+      rsyslog::syslog(
+        private$.layout$format_event(event),
+        level = private$to_syslog_level(event$level)
+      )
+    }
+  ),
+
+  # +- active ---------------------------------------------------------------
+  active = list(
+    destination = function() sprintf("syslog [%s]", private$.identifier)
+  ),
+
+  private = list(
+    finalize = function(){
+      rsyslog::close_syslog()
+    },
+
+    to_syslog_level = function(level){
+      # Turn the level into a digit from 1-5, rounding down (and thus "up" in
+      # priority).
+      digit <- floor(as.integer(pmin(level, 500, na.rm = TRUE)) / 100.0)
+      switch(
+        as.character(digit), "1" = "CRITICAL", "2" = "ERR", "3" = "WARNING",
+        "4" = "INFO", "5" = "DEBUG"
+      )
+    },
+
+    .identifier = ""
+  )
+)
 
 
 # utils -------------------------------------------------------------------
