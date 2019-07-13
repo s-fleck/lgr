@@ -294,7 +294,7 @@ error_msg_log_levels <- function(varname, log_levels){
     paste(sprintf("%s (%s)", names(log_levels), log_levels), collapse = ", ")
 
   paste0(
-    "'", varname, "' must either the numeric or character representation",
+    "'", varname, "' must either the numeric or character representation ",
     "of one of the following log levels: ", ll_text
   )
 }

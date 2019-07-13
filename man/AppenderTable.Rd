@@ -85,7 +85,8 @@ Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderJson}},
   \code{\link{AppenderPushbullet}},
   \code{\link{AppenderRjdbc}},
-  \code{\link{AppenderSendmail}}, \code{\link{Appender}}
+  \code{\link{AppenderSendmail}},
+  \code{\link{AppenderSyslog}}, \code{\link{Appender}}
 }
 \concept{Appenders}
 \concept{abstract classes}

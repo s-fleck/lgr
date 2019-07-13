@@ -217,6 +217,7 @@ Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderJson}},
   \code{\link{AppenderPushbullet}},
   \code{\link{AppenderSendmail}},
+  \code{\link{AppenderSyslog}},
   \code{\link{AppenderTable}}, \code{\link{Appender}}
 }
 \concept{Appenders}

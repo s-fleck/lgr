@@ -54,6 +54,7 @@ events in case a fatal event is encountered." />
 <![endif]-->
 
 
+
   </head>
 
   <body>
@@ -70,7 +71,7 @@ events in case a fatal event is encountered." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1.9001</span>
       </span>
     </div>
 
@@ -102,6 +103,7 @@ events in case a fatal event is encountered." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -126,13 +128,15 @@ events in case a <code>fatal</code> event is encountered.</p>
         
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
-    <pre>
+    
+<pre>
 x &lt;- AppenderPushbullet$new(threshold = NA_integer_, flush_threshold = "fatal",
   layout = LayoutFormat$new(fmt = "%K %t&gt; %m %f", timestamp_fmt = "%H:%M:%S"),
   subject_layout = LayoutFormat$new(fmt = "[LGR] %L: %m"), buffer_size = 6,
   recipients = NULL, email = NULL, channel = NULL, devices = NULL, apikey =
   NULL, filters = NULL)
-    x$add_filter(filter, name = NULL)
+
+x$add_filter(filter, name = NULL)
 x$append(event)
 x$filter(event)
 x$flush()
@@ -151,7 +155,8 @@ x$set_should_flush(x)
 x$set_subject_layout(layout)
 x$set_threshold(level)
 x$show(threshold = NA_integer_, n = 20L)
-    x$apikey
+
+x$apikey
 x$buffer_df
 x$buffer_dt
 x$buffer_events
@@ -169,20 +174,29 @@ x$recipients
 x$should_flush
 x$subject_layout
 x$threshold
-    </pre>
+
+</pre>
+
     
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
-    <dl class='dl-horizontal'>
+
+
+<dl class='dl-horizontal'>
 <dt><code>apikey</code>, <code>recipients</code>, <code>email</code>, <code>channel</code>, <code>devices</code></dt><dd><p>See <code><a href='https://rdrr.io/pkg/RPushbullet/man/pbPost.html'>RPushbullet::pbPost()</a></code></p></dd>
 </dl>
-    <dl class='dl-horizontal'>
+
+
+
+<dl class='dl-horizontal'>
 <dt><code>buffer_size, set_buffer_size(x)</code></dt><dd><p><code>integer</code> scalar <code>&gt;= 0</code> Number of
 <a href='LogEvent.html'>LogEvents</a> to buffer.</p></dd>
-    <dt><code>buffer_events</code>, <code>buffer_df</code>, <code>buffer_dt</code></dt><dd><p>The contents of the buffer as a <code>list</code> of <a href='LogEvent.html'>LogEvents</a>, a
+
+<dt><code>buffer_events</code>, <code>buffer_df</code>, <code>buffer_dt</code></dt><dd><p>The contents of the buffer as a <code>list</code> of <a href='LogEvent.html'>LogEvents</a>, a
 <code>data.frame</code> or a <code>data.table</code>.</p></dd>
-    <dt><code>flush_threshold</code>, <code>set_flush_threshold()</code></dt><dd><p><code>integer</code> or <code>character</code>
+
+<dt><code>flush_threshold</code>, <code>set_flush_threshold()</code></dt><dd><p><code>integer</code> or <code>character</code>
 <a href='get_log_levels.html'>log level</a>. Minimum event level that will trigger flushing of
 the buffer. This behaviour is implemented through <code>should_flush()</code>,
 and you can modify that function for different behaviour.</p></dd>
@@ -191,14 +205,23 @@ If the function returns <code>TRUE</code>, flushing of the buffer
 is triggered. Defaults to flushing if an event of level <code>error</code>
 or higher is registered.</p></dd>
 </dl>
-    <dl class='dl-horizontal'>
+
+
+
+<dl class='dl-horizontal'>
 <dt><code>dt</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a <code>data.table</code>
 with a maximum of <code>buffer_size</code> rows</p></dd>
 </dl>
-    <dl class='dl-horizontal'>
+
+
+
+<dl class='dl-horizontal'>
 <dt><code>data</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a <code>data.frame</code></p></dd>
 </dl>
-    <dl class='dl-horizontal'>
+
+
+
+<dl class='dl-horizontal'>
 <dt><code>threshold</code>, <code>set_threshold(level)</code></dt><dd><p><code>character</code> or <code>integer</code> scalar.
 The minimum log level that triggers this logger. See <a href='get_log_levels.html'>log_levels</a></p></dd>
 <dt><code>layout</code>, <code>set_layout(layout)</code></dt><dd><p>a <code>Layout</code> that will be used for
@@ -206,7 +229,10 @@ formatting the <code>LogEvents</code> passed to this Appender</p></dd>
 <dt><code>destination</code></dt><dd><p>The output destination of the <code>Appender</code> in
 human-readable form (mainly for print output)</p></dd>
 </dl>
-    <dl class='dl-horizontal'>
+
+
+
+<dl class='dl-horizontal'>
 <dt><code>filters</code>, <code>set_filters(filters)</code></dt><dd><p>a <code>list</code> that may contain
 <code>functions</code> or any <span style="R">R</span> object with a <code><a href='https://rdrr.io/r/stats/filter.html'>filter()</a></code> method. These functions
 must have exactly one argument: <code>event</code> which will get passed the
@@ -216,24 +242,35 @@ Since LogEvents have reference semantics, filters can also be abused to
 modify them before they are passed on. Look at the source code of
 <code><a href='with_log_level.html'>with_log_level()</a></code> or <code><a href='with_log_level.html'>with_log_value()</a></code> for examples.</p></dd>
 </dl>
+
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-    <dl class='dl-horizontal'>
+
+
+
+
+<dl class='dl-horizontal'>
 <dt><code><a href='https://rdrr.io/r/base/connections.html'>flush()</a></code></dt><dd><p>Manually trigger flushing of the buffer</p></dd>
 </dl>
-    <dl class='dl-horizontal'>
+
+
+<dl class='dl-horizontal'>
 <dt><code>show(n, threshold)</code></dt><dd><p>Show the last <code>n</code> log entries with a log level
 bellow <code>threshold</code>. The log entries will be formatted for console output
 via this Appenders <a href='Layout.html'>Layout</a></p></dd>
 </dl>
-    <dl class='dl-horizontal'>
+
+
+<dl class='dl-horizontal'>
 <dt><code><a href='https://rdrr.io/r/base/append.html'>append(event)</a></code></dt><dd><p>Tell the Appender to process a <a href='LogEvent.html'>LogEvent</a> <code>event</code>.
 This method is usually not called by the user, but invoked by a
 <a href='Logger.html'>Logger</a></p></dd>
 </dl>
-    <dl class='dl-horizontal'>
+
+
+<dl class='dl-horizontal'>
 <dt><code><a href='https://rdrr.io/r/stats/filter.html'>filter(event)</a></code></dt><dd><p>Determine whether the LogEvent <code>x</code> should be passed
 on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the active binding
 <code>filters</code></p></dd>
@@ -241,6 +278,7 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 be specified. <code>remove_filter()</code> can remove by position or name (if one
 was specified)</p></dd>
 </dl>
+
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -251,6 +289,7 @@ was specified)</p></dd>
   <code><a href='AppenderFile.html'>AppenderFile</a></code>, <code><a href='AppenderGmail.html'>AppenderGmail</a></code>,
   <code><a href='AppenderJson.html'>AppenderJson</a></code>, <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>,
   <code><a href='AppenderSendmail.html'>AppenderSendmail</a></code>,
+  <code><a href='AppenderSyslog.html'>AppenderSyslog</a></code>,
   <code><a href='AppenderTable.html'>AppenderTable</a></code>, <code><a href='Appender.html'>Appender</a></code></p></div>
     
 
@@ -271,6 +310,7 @@ was specified)</p></dd>
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by Stefan Fleck.</p>
@@ -279,11 +319,14 @@ was specified)</p></dd>
 <div class="pkgdown">
   <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

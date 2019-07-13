@@ -51,6 +51,7 @@ the meanings of the extra arguments" />
 <![endif]-->
 
 
+
   </head>
 
   <body>
@@ -67,7 +68,7 @@ the meanings of the extra arguments" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1.9001</span>
       </span>
     </div>
 
@@ -99,6 +100,7 @@ the meanings of the extra arguments" />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -120,19 +122,23 @@ the meanings of the extra arguments</p>
         
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
-    <pre>
+    
+<pre>
 x &lt;- AppenderFileRotating$new(file, threshold = NA_integer_, layout =
   LayoutFormat$new(), filters = NULL, size = Inf, max_backups = Inf,
   compression = FALSE, backup_dir = dirname(file), create_file = TRUE)
-    x &lt;- AppenderFileRotatingDate$new(file, threshold = NA_integer_, layout =
+
+x &lt;- AppenderFileRotatingDate$new(file, threshold = NA_integer_, layout =
   LayoutFormat$new(), filters = NULL, age = Inf, size = -1, max_backups = Inf,
   compression = FALSE, backup_dir = dirname(file), fmt = "%Y-%m-%d", overwrite
   = FALSE, create_file = TRUE, cache_backups = TRUE)
-    x &lt;- AppenderFileRotatingTime$new(file, threshold = NA_integer_, layout =
+
+x &lt;- AppenderFileRotatingTime$new(file, threshold = NA_integer_, layout =
   LayoutFormat$new(), filters = NULL, age = Inf, size = -1, max_backups = Inf,
   compression = FALSE, backup_dir = dirname(file), fmt = "%Y-%m-%d--%H-%M-%S",
   overwrite = FALSE, create_file = TRUE, cache_backups = TRUE)
-    x$add_filter(filter, name = NULL)
+
+x$add_filter(filter, name = NULL)
 x$append(event)
 x$clone(deep = FALSE)
 x$filter(event)
@@ -156,7 +162,8 @@ x$set_overwrite(x)
 x$set_size(x)
 x$set_threshold(level)
 x$show(threshold = NA_integer_, n = 20L)
-    x$age
+
+x$age
 x$backup_dir
 x$backups
 x$cache_backups
@@ -171,28 +178,40 @@ x$max_backups
 x$overwrite
 x$size
 x$threshold
-    </pre>
+
+</pre>
+
     
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
-    <dl class='dl-horizontal'>
+
+
+<dl class='dl-horizontal'>
 <dt><code>age</code>, <code>size</code>, <code>max_backups</code>, <code>fmt</code>, <code>overwrite</code>, <code>compression</code>, <code>backup_dir</code></dt><dd><p>Please see <code><a href='https://rdrr.io/pkg/rotor/man/rotate.html'>rotor::rotate()</a></code> for the meaning of these arguments
 (<code>fmt</code> is passed on as <code>format</code>).</p></dd>
-    <dt><code>cache_backups</code>, <code>set_cache_backups(x)</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>. If <code>TRUE</code> (the default) the list of backups is cached,
+
+<dt><code>cache_backups</code>, <code>set_cache_backups(x)</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>. If <code>TRUE</code> (the default) the list of backups is cached,
 if <code>FALSE</code> it is read from disk every time this appender triggers.
 Caching brings a significant speedup for checking whether to rotate or
 not based on the <code>age</code> of the last backup, but is only safe if
 there are no other programs/functions (except this appender) interacting
 with the backups.</p></dd>
-    <dt><code>backups</code></dt><dd><p>A <code>data.frame</code> containing information on path, file size,
+
+<dt><code>backups</code></dt><dd><p>A <code>data.frame</code> containing information on path, file size,
 etc... on the available backups of <code>file</code>.</p></dd>
 </dl>
-    <dl class='dl-horizontal'>
+
+
+
+<dl class='dl-horizontal'>
 <dt><code>file</code>, <code>set_file(file)</code></dt><dd><p><code>character</code> scalar. Path to the desired log
 file. If the file does not exist it will be created.</p></dd>
 </dl>
-    <dl class='dl-horizontal'>
+
+
+
+<dl class='dl-horizontal'>
 <dt><code>threshold</code>, <code>set_threshold(level)</code></dt><dd><p><code>character</code> or <code>integer</code> scalar.
 The minimum log level that triggers this logger. See <a href='get_log_levels.html'>log_levels</a></p></dd>
 <dt><code>layout</code>, <code>set_layout(layout)</code></dt><dd><p>a <code>Layout</code> that will be used for
@@ -200,7 +219,10 @@ formatting the <code>LogEvents</code> passed to this Appender</p></dd>
 <dt><code>destination</code></dt><dd><p>The output destination of the <code>Appender</code> in
 human-readable form (mainly for print output)</p></dd>
 </dl>
-    <dl class='dl-horizontal'>
+
+
+
+<dl class='dl-horizontal'>
 <dt><code>filters</code>, <code>set_filters(filters)</code></dt><dd><p>a <code>list</code> that may contain
 <code>functions</code> or any <span style="R">R</span> object with a <code><a href='https://rdrr.io/r/stats/filter.html'>filter()</a></code> method. These functions
 must have exactly one argument: <code>event</code> which will get passed the
@@ -210,11 +232,14 @@ Since LogEvents have reference semantics, filters can also be abused to
 modify them before they are passed on. Look at the source code of
 <code><a href='with_log_level.html'>with_log_level()</a></code> or <code><a href='with_log_level.html'>with_log_value()</a></code> for examples.</p></dd>
 </dl>
+
     
     <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
 
     
-    <p>New Appenders are instantiated with <code>&lt;AppenderSubclass&gt;$new()</code>. For the
+
+
+<p>New Appenders are instantiated with <code>&lt;AppenderSubclass&gt;$new()</code>. For the
 arguments to <code>new()</code> please refer to the section <em>Fields</em>. You can also
 modify those fields after the Appender has been created with setters in the
 form of <code>appender$set_&lt;fieldname&gt;(value)</code></p>
@@ -222,12 +247,15 @@ form of <code>appender$set_&lt;fieldname&gt;(value)</code></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-    <dl class='dl-horizontal'>
+
+<dl class='dl-horizontal'>
 <dt><code><a href='https://rdrr.io/r/base/append.html'>append(event)</a></code></dt><dd><p>Tell the Appender to process a <a href='LogEvent.html'>LogEvent</a> <code>event</code>.
 This method is usually not called by the user, but invoked by a
 <a href='Logger.html'>Logger</a></p></dd>
 </dl>
-    <dl class='dl-horizontal'>
+
+
+<dl class='dl-horizontal'>
 <dt><code><a href='https://rdrr.io/r/stats/filter.html'>filter(event)</a></code></dt><dd><p>Determine whether the LogEvent <code>x</code> should be passed
 on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the active binding
 <code>filters</code></p></dd>
@@ -235,6 +263,7 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 be specified. <code>remove_filter()</code> can remove by position or name (if one
 was specified)</p></dd>
 </dl>
+
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -246,6 +275,7 @@ was specified)</p></dd>
   <code><a href='AppenderPushbullet.html'>AppenderPushbullet</a></code>,
   <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>,
   <code><a href='AppenderSendmail.html'>AppenderSendmail</a></code>,
+  <code><a href='AppenderSyslog.html'>AppenderSyslog</a></code>,
   <code><a href='AppenderTable.html'>AppenderTable</a></code>, <code><a href='Appender.html'>Appender</a></code></p></div>
     
 
@@ -268,6 +298,7 @@ was specified)</p></dd>
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by Stefan Fleck.</p>
@@ -276,11 +307,14 @@ was specified)</p></dd>
 <div class="pkgdown">
   <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

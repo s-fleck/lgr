@@ -102,7 +102,7 @@ Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderPushbullet}},
   \code{\link{AppenderRjdbc}},
   \code{\link{AppenderSendmail}},
-  \code{\link{AppenderTable}}
+  \code{\link{AppenderSyslog}}, \code{\link{AppenderTable}}
 }
 \concept{Appenders}
 \keyword{internal}

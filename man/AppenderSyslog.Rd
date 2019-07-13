@@ -5,12 +5,14 @@
 \title{Log to the POSIX System Log}
 \description{
 An Appender that writes to Syslog on supported POSIX platforms. Requires the
-\code{rsyslog} package.
+\pkg{rsyslog} package.
 }
 \section{Usage}{
 \preformatted{
-x <- AppenderSyslog$new(identifier, threshold = NA_integer_, layout =
-  LayoutFormat$new(), filters = NULL, ...)
+x <- AppenderSyslog$new(identifier = NULL, threshold = NA_integer_, layout =
+  LayoutFormat$new("\%m"), filters = NULL, syslog_levels = c(CRITICAL = "fatal",
+  ERR = "error", WARNING = "warn", INFO = "info", DEBUG = "debug", DEBUG =
+  "trace"), ...)
 
 x$add_filter(filter, name = NULL)
 x$append(event)
@@ -18,12 +20,16 @@ x$filter(event)
 x$format(color = FALSE, ...)
 x$remove_filter(pos)
 x$set_filters(filters)
+x$set_identifier(x)
 x$set_layout(layout)
+x$set_syslog_levels(x)
 x$set_threshold(level)
 
 x$destination
 x$filters
+x$identifier
 x$layout
+x$syslog_levels
 x$threshold
 
 }
@@ -33,8 +39,17 @@ x$threshold
 
 
 \describe{
-\item{\code{identifier}}{\code{character} scalar. A string identifying the process.}
-\item{\code{...}}{Further arguments passed on to \code{\link[rsyslog]{open_syslog}}.}
+\item{\code{identifier}}{\code{character} scalar. A string identifying the process;
+if \code{NULL} defaults to the logger name}
+\item{\code{syslog_levels}}{a named \code{character} vector or a \code{function} mapping
+lgr log levels to syslog log levels. If a \code{character} vector is supplied,
+its names must be valid levels as understood by \code{\link[rsyslog:syslog]{rsyslog::syslog()}}
+and its values must be \href{log_levels}{log levels} as understood by lgr
+(either \code{character} or \code{numeric}). You can also supply a \code{function} that
+transforms numeric lgr log levels into syslog levels.
+Please be aware that this function should be able to handle vectors of
+arbitrary length.}
+\item{\code{...}}{Further arguments passed on to \code{\link[rsyslog:open_syslog]{rsyslog::open_syslog()}}}
 }
 
 
@@ -96,12 +111,15 @@ was specified)
 
 \examples{
 if (requireNamespace("rsyslog", quietly = TRUE)) {
-  lg <- get_logger("test")
-  lg$add_appender(AppenderSyslog$new("myapp"), "syslog")
-
+  lg <- get_logger("rsyslog/test")
+  lg$add_appender(AppenderSyslog$new(), "syslog")
   lg$info("A test message")
 
-  lg$config(NULL)
+  if (Sys.info()[["sysname"]] == "Linux"){
+    system("journalctl -t 'rsyslog/test'")
+  }
+
+  invisible(lg$config(NULL))  # cleanup
 }
 }
 \seealso{

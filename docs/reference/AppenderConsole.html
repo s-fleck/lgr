@@ -51,6 +51,7 @@ crayon installed log levels will be coloured by default
 <![endif]-->
 
 
+
   </head>
 
   <body>
@@ -67,7 +68,7 @@ crayon installed log levels will be coloured by default
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1.9001</span>
       </span>
     </div>
 
@@ -99,6 +100,7 @@ crayon installed log levels will be coloured by default
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -120,11 +122,13 @@ crayon installed log levels will be coloured by default
         
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
-    <pre>
+    
+<pre>
 x &lt;- AppenderConsole$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt
   = "%L [%t] %m %f", timestamp_fmt = "%H:%M:%OS3", colors =
   getOption("lgr.colors", list())), filters = NULL)
-    x$add_filter(filter, name = NULL)
+
+x$add_filter(filter, name = NULL)
 x$append(event)
 x$filter(event)
 x$format(color = FALSE, ...)
@@ -132,16 +136,21 @@ x$remove_filter(pos)
 x$set_filters(filters)
 x$set_layout(layout)
 x$set_threshold(level)
-    x$destination
+
+x$destination
 x$filters
 x$layout
 x$threshold
-    </pre>
+
+</pre>
+
     
     <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
 
     
-    <p>New Appenders are instantiated with <code>&lt;AppenderSubclass&gt;$new()</code>. For the
+
+
+<p>New Appenders are instantiated with <code>&lt;AppenderSubclass&gt;$new()</code>. For the
 arguments to <code>new()</code> please refer to the section <em>Fields</em>. You can also
 modify those fields after the Appender has been created with setters in the
 form of <code>appender$set_&lt;fieldname&gt;(value)</code></p>
@@ -149,7 +158,9 @@ form of <code>appender$set_&lt;fieldname&gt;(value)</code></p>
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
-    <dl class='dl-horizontal'>
+
+
+<dl class='dl-horizontal'>
 <dt><code>threshold</code>, <code>set_threshold(level)</code></dt><dd><p><code>character</code> or <code>integer</code> scalar.
 The minimum log level that triggers this logger. See <a href='get_log_levels.html'>log_levels</a></p></dd>
 <dt><code>layout</code>, <code>set_layout(layout)</code></dt><dd><p>a <code>Layout</code> that will be used for
@@ -157,7 +168,10 @@ formatting the <code>LogEvents</code> passed to this Appender</p></dd>
 <dt><code>destination</code></dt><dd><p>The output destination of the <code>Appender</code> in
 human-readable form (mainly for print output)</p></dd>
 </dl>
-    <dl class='dl-horizontal'>
+
+
+
+<dl class='dl-horizontal'>
 <dt><code>filters</code>, <code>set_filters(filters)</code></dt><dd><p>a <code>list</code> that may contain
 <code>functions</code> or any <span style="R">R</span> object with a <code><a href='https://rdrr.io/r/stats/filter.html'>filter()</a></code> method. These functions
 must have exactly one argument: <code>event</code> which will get passed the
@@ -167,16 +181,20 @@ Since LogEvents have reference semantics, filters can also be abused to
 modify them before they are passed on. Look at the source code of
 <code><a href='with_log_level.html'>with_log_level()</a></code> or <code><a href='with_log_level.html'>with_log_value()</a></code> for examples.</p></dd>
 </dl>
+
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-    <dl class='dl-horizontal'>
+
+<dl class='dl-horizontal'>
 <dt><code><a href='https://rdrr.io/r/base/append.html'>append(event)</a></code></dt><dd><p>Tell the Appender to process a <a href='LogEvent.html'>LogEvent</a> <code>event</code>.
 This method is usually not called by the user, but invoked by a
 <a href='Logger.html'>Logger</a></p></dd>
 </dl>
-    <dl class='dl-horizontal'>
+
+
+<dl class='dl-horizontal'>
 <dt><code><a href='https://rdrr.io/r/stats/filter.html'>filter(event)</a></code></dt><dd><p>Determine whether the LogEvent <code>x</code> should be passed
 on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the active binding
 <code>filters</code></p></dd>
@@ -184,6 +202,7 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 be specified. <code>remove_filter()</code> can remove by position or name (if one
 was specified)</p></dd>
 </dl>
+
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -196,6 +215,7 @@ was specified)</p></dd>
   <code><a href='AppenderPushbullet.html'>AppenderPushbullet</a></code>,
   <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>,
   <code><a href='AppenderSendmail.html'>AppenderSendmail</a></code>,
+  <code><a href='AppenderSyslog.html'>AppenderSyslog</a></code>,
   <code><a href='AppenderTable.html'>AppenderTable</a></code>, <code><a href='Appender.html'>Appender</a></code></p></div>
     
 
@@ -210,8 +230,8 @@ was specified)</p></dd>
   <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(<span class='st'>"[%t] %c(): [%n] %m"</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"lgr.colors"</span>))))
 
 <span class='co'># Will output the message twice because we attached two console appenders</span>
-<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [11:27:04.597] A test message 
-#&gt; [2019-06-17 11:27:04.597] eval(): [</span><span style='color: #FFD75F;'>300</span><span>] A test message</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>) <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] test
+<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [12:58:13.237] A test message 
+#&gt; [2019-07-13 12:58:13.237] eval(): [</span><span style='color: #FFD75F;'>300</span><span>] A test message</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>) <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div></span></pre>
@@ -236,6 +256,7 @@ was specified)</p></dd>
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by Stefan Fleck.</p>
@@ -244,11 +265,14 @@ was specified)</p></dd>
 <div class="pkgdown">
   <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

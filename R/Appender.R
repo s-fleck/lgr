@@ -2892,7 +2892,7 @@ AppenderFileRotatingDate <- R6::R6Class(
 #' Log to the POSIX System Log
 #'
 #' An Appender that writes to Syslog on supported POSIX platforms. Requires the
-#' \code{rsyslog} package.
+#' \pkg{rsyslog} package.
 #'
 #' @eval r6_usage(AppenderSyslog)
 #'
@@ -2903,8 +2903,17 @@ AppenderFileRotatingDate <- R6::R6Class(
 #' @section Fields:
 #'
 #' \describe{
-#'   \item{`identifier`}{`character` scalar. A string identifying the process.}
-#'   \item{`...`}{Further arguments passed on to \code{\link[rsyslog]{open_syslog}}.}
+#'   \item{`identifier`}{`character` scalar. A string identifying the process;
+#'     if `NULL` defaults to the logger name}
+#'   \item{`syslog_levels`}{a named `character` vector or a `function` mapping
+#'     lgr log levels to syslog log levels. If a `character` vector is supplied,
+#'     its names must be valid levels as understood by [rsyslog::syslog()]
+#'     and its values must be [log levels](log_levels) as understood by lgr
+#'     (either `character` or `numeric`). You can also supply a `function` that
+#'     transforms numeric lgr log levels into syslog levels.
+#'     Please be aware that this function should be able to handle vectors of
+#'     arbitrary length.}
+#'   \item{`...`}{Further arguments passed on to [rsyslog::open_syslog()]}
 #'  }
 #'
 #' @export
@@ -2914,12 +2923,15 @@ AppenderFileRotatingDate <- R6::R6Class(
 #'
 #' @examples
 #' if (requireNamespace("rsyslog", quietly = TRUE)) {
-#'   lg <- get_logger("test")
-#'   lg$add_appender(AppenderSyslog$new("myapp"), "syslog")
-#'
+#'   lg <- get_logger("rsyslog/test")
+#'   lg$add_appender(AppenderSyslog$new(), "syslog")
 #'   lg$info("A test message")
 #'
-#'   lg$config(NULL)
+#'   if (Sys.info()[["sysname"]] == "Linux"){
+#'     system("journalctl -t 'rsyslog/test'")
+#'   }
+#'
+#'   invisible(lg$config(NULL))  # cleanup
 #' }
 NULL
 
@@ -2931,10 +2943,18 @@ AppenderSyslog <- R6::R6Class(
   cloneable = FALSE,
   public = list(
     initialize = function(
-      identifier,
+      identifier = NULL,
       threshold = NA_integer_,
-      layout = LayoutFormat$new(),
+      layout = LayoutFormat$new("%m"),
       filters = NULL,
+      syslog_levels = c(
+        "CRITICAL" = "fatal",
+        "ERR" = "error",
+        "WARNING" = "warn",
+        "INFO" = "info",
+        "DEBUG" = "debug",
+        "DEBUG" = "trace"
+      ),
       ...
     ){
       if (!requireNamespace("rsyslog", quietly = TRUE)) {
@@ -2943,24 +2963,57 @@ AppenderSyslog <- R6::R6Class(
       self$set_threshold(threshold)
       self$set_layout(layout)
       self$set_filters(filters)
-      private$.identifier <- identifier
 
-      rsyslog::open_syslog(identifier = identifier, ...)
-      # Handle the mask manually via the threshold.
-      rsyslog::set_syslog_mask("DEBUG")
+      private$.identifier <- identifier
+      self$set_syslog_levels(syslog_levels)
     },
 
+
     append = function(event){
+      identifier <- get(".identifier", private)
+      if (is.null(identifier)) identifier <- event$logger
+
+      rsyslog::open_syslog(identifier = identifier)
+      rsyslog::set_syslog_mask("DEBUG")
+      on.exit(rsyslog::close_syslog())
+
       rsyslog::syslog(
         private$.layout$format_event(event),
-        level = private$to_syslog_level(event$level)
+        level = private$to_syslog_levels(event$level)
       )
+    },
+
+
+    set_syslog_levels = function(x){
+      if (is.function(x)){
+        private$.syslog_levels <- x
+      } else {
+        assert(all_are_distinct(unname(x)))
+        assert(is_equal_length(x, names(x)))
+        private$.syslog_levels <- structure(
+          standardize_log_levels(unname(x)),
+          names = names(x)
+        )
+      }
+
+      self
+    },
+
+    set_identifier = function(x){
+      if (!is.null(x)){
+        assert(is_scalar_character(x))
+        private$.identifier <- x
+      }
+
+      self
     }
   ),
 
   # +- active ---------------------------------------------------------------
   active = list(
-    destination = function() sprintf("syslog [%s]", private$.identifier)
+    destination = function() sprintf("syslog [%s]", private$.identifier),
+    identifier = function() get("identifier", private),
+    syslog_levels = function() get("syslog_levels", private)
   ),
 
   private = list(
@@ -2968,17 +3021,23 @@ AppenderSyslog <- R6::R6Class(
       rsyslog::close_syslog()
     },
 
-    to_syslog_level = function(level){
-      # Turn the level into a digit from 1-5, rounding down (and thus "up" in
-      # priority).
-      digit <- floor(as.integer(pmin(level, 500, na.rm = TRUE)) / 100.0)
-      switch(
-        as.character(digit), "1" = "CRITICAL", "2" = "ERR", "3" = "WARNING",
-        "4" = "INFO", "5" = "DEBUG"
-      )
+    to_syslog_levels = function(
+      levels
+    ){
+      sl <- get(".syslog_levels", private)
+      levels <- standardize_log_levels(levels)
+
+      if (is.function(sl)){
+        res <- sl(levels)
+      } else {
+        res <- names(private$.syslog_levels)[match(levels, unname(private$.syslog_levels))]
+      }
+
+      toupper(res)
     },
 
-    .identifier = ""
+    .identifier = NULL,
+    .syslog_levels = NULL
   )
 )
 

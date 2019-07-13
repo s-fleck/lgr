@@ -215,6 +215,7 @@ Other Appenders: \code{\link{AppenderConsole}},
   \code{\link{AppenderPushbullet}},
   \code{\link{AppenderRjdbc}},
   \code{\link{AppenderSendmail}},
+  \code{\link{AppenderSyslog}},
   \code{\link{AppenderTable}}, \code{\link{Appender}}
 }
 \concept{Appenders}

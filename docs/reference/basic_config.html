@@ -51,6 +51,7 @@ most common configrations to a single line of code." />
 <![endif]-->
 
 
+
   </head>
 
   <body>
@@ -67,7 +68,7 @@ most common configrations to a single line of code." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1.9001</span>
       </span>
     </div>
 
@@ -99,6 +100,7 @@ most common configrations to a single line of code." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -182,13 +184,13 @@ that logs to a memory buffer, see also <code><a href='simple_logging.html'>show_
 <span class='fu'>basic_config</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>())</div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [info] root
 #&gt; 
 #&gt; appenders:
-#&gt;   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/RtmpDvgvFX/file1caa42084f56
+#&gt;   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/RtmpPGPwKU/file15e36a4a32bf
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>lgr</span>$<span class='no'>appenders</span>$<span class='no'>file</span>$<span class='no'>file</span>)  <span class='co'># cleanup</span>
 
 <span class='fu'>basic_config</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>"jsonl"</span>))</div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [info] root
 #&gt; 
 #&gt; appenders:
-#&gt;   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/RtmpDvgvFX/file1caa3cc50c19jsonl
+#&gt;   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/RtmpPGPwKU/file15e3216f95f1jsonl
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>lgr</span>$<span class='no'>appenders</span>$<span class='no'>file</span>$<span class='no'>file</span>)  <span class='co'># cleanup</span>
 
 <span class='co'># log debug messages to a memory buffer</span>
@@ -196,9 +198,9 @@ that logs to a memory buffer, see also <code><a href='simple_logging.html'>show_
 #&gt; 
 #&gt; appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [info] -&gt; console
-#&gt;   memory : &lt;AppenderBuffer&gt;  [ all] -&gt; 0 child Appenders</div><div class='input'><span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"an info message"</span>)</div><div class='output co'>#&gt; INFO  [11:27:14.783] an info message </div><div class='input'><span class='no'>lgr</span>$<span class='fu'><a href='https://rdrr.io/r/base/debug.html'>debug</a></span>(<span class='st'>"a hidden message"</span>)
-<span class='fu'><a href='simple_logging.html'>show_log</a></span>()</div><div class='output co'>#&gt; INFO  [11:27:14] an info message
-#&gt; <span style='color: #808080;'>DEBUG</span><span> [11:27:14] a hidden message</div><div class='input'>
+#&gt;   memory : &lt;AppenderBuffer&gt;  [ all] -&gt; 0 child Appenders</div><div class='input'><span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"an info message"</span>)</div><div class='output co'>#&gt; INFO  [12:58:21.506] an info message </div><div class='input'><span class='no'>lgr</span>$<span class='fu'><a href='https://rdrr.io/r/base/debug.html'>debug</a></span>(<span class='st'>"a hidden message"</span>)
+<span class='fu'><a href='simple_logging.html'>show_log</a></span>()</div><div class='output co'>#&gt; INFO  [12:58:21] an info message
+#&gt; <span style='color: #808080;'>DEBUG</span><span> [12:58:21] a hidden message</div><div class='input'>
 <span class='co'># reset to default config</span>
 <span class='fu'>basic_config</span>()</div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [info] root
 #&gt; 
@@ -218,6 +220,7 @@ that logs to a memory buffer, see also <code><a href='simple_logging.html'>show_
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by Stefan Fleck.</p>
@@ -226,11 +229,14 @@ that logs to a memory buffer, see also <code><a href='simple_logging.html'>show_
 <div class="pkgdown">
   <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

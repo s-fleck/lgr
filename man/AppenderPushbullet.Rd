@@ -179,6 +179,7 @@ Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderFile}}, \code{\link{AppenderGmail}},
   \code{\link{AppenderJson}}, \code{\link{AppenderRjdbc}},
   \code{\link{AppenderSendmail}},
+  \code{\link{AppenderSyslog}},
   \code{\link{AppenderTable}}, \code{\link{Appender}}
 }
 \concept{Appenders}

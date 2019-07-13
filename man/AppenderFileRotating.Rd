@@ -166,6 +166,7 @@ Other Appenders: \code{\link{AppenderBuffer}},
   \code{\link{AppenderPushbullet}},
   \code{\link{AppenderRjdbc}},
   \code{\link{AppenderSendmail}},
+  \code{\link{AppenderSyslog}},
   \code{\link{AppenderTable}}, \code{\link{Appender}}
 }
 \concept{Appenders}

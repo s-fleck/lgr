@@ -27,6 +27,7 @@ reference:
   - AppenderGmail
   - AppenderSendmail
   - AppenderPushbullet
+  - AppenderSyslog
 - title: Layouts
   desc: Format LogEvents before output
   contents:
