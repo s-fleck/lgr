@@ -555,6 +555,6 @@ test_that("AppenderSyslog: logging to syslog works", {
   lg$add_appender(AppenderSyslog$new(), "syslog")
   lg$info("A test message %s", msg)
 
-  log = system2("journalctl", "-t 'rsyslog/test'", stdout = TRUE)
+  log = system("cat /var/log/syslog | grep rsyslog/test", intern = TRUE)
   expect_true(any(grepl(msg, log), fixed = TRUE))
 })
