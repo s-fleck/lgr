@@ -1,4 +1,9 @@
-# lgr 0.3.1.9000
+# dev version
+
+* Improved performance of looking up the parent of a Logger.
+  
+
+# lgr 0.3.2
 
 * Added AppenderSyslog for logging to syslog via 
   [rsyslog](https://github.com/atheriel/rsyslog) (thanks to atheriel)
