@@ -139,7 +139,7 @@ LogEvents up the tree.</p></li>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"fancymodel"</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [<span style='color: #808080;'>info</span><span>] fancymodel
+    <pre class="examples"><div class='input'><span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"fancymodel"</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [<span style='color: #555555;'>info</span><span>] fancymodel
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"fancymodel/shiny"</span>)$
@@ -152,28 +152,28 @@ LogEvents up the tree.</p></li>
   <span class='fu'>set_appenders</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(), <span class='no'>AppenderConsole</span>$<span class='fu'>new</span>()))$
   <span class='fu'>set_threshold</span>(<span class='st'>"trace"</span>)
 
-<span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"fancymodel/plumber"</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] fancymodel/plumber
+<span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"fancymodel/plumber"</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #555555;'>info</span><span>] fancymodel/plumber
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'>
 <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"cli"</span>)){
   <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'>logger_tree</span>())
 }</div><div class='output co'>#&gt; root [info] -&gt; 1 appender                      
-#&gt; ├─</span><span style='color: #808080;'>fancymodel</span><span>             
-#&gt; │ ├─</span><span style='color: #808080;'>plumber</span><span>              
+#&gt; ├─</span><span style='color: #555555;'>fancymodel</span><span>                   
+#&gt; │ ├─</span><span style='color: #555555;'>plumber</span><span>                    
 #&gt; │ └─</span><span style='color: #D75F5F;font-weight: bold;'>#</span><span>shiny
 #&gt; │   ├─server [trace] -&gt; 2 appenders            
 #&gt; │   └─ui -&gt; 1 appender                         
-#&gt; ├─</span><span style='color: #808080;'>glue</span><span>                   
-#&gt; ├─</span><span style='color: #808080;'>lg</span><span>                     
-#&gt; │ └─</span><span style='color: #808080;'>child</span><span>                
-#&gt; ├─</span><span style='color: #808080;'>log</span><span>                    
-#&gt; │ └─</span><span style='color: #808080;'>ger</span><span>                  
-#&gt; │   └─</span><span style='color: #808080;'>test</span><span>               
-#&gt; ├─</span><span style='color: #808080;'>mylogger</span><span>               
-#&gt; ├─</span><span style='color: #808080;'>rsyslog</span><span>                
-#&gt; │ └─</span><span style='color: #808080;'>test</span><span>                 
-#&gt; └─</span><span style='color: #808080;'>test</span><span>                   </div><div class='input'>
+#&gt; ├─</span><span style='color: #555555;'>glue</span><span>                         
+#&gt; ├─</span><span style='color: #555555;'>lg</span><span>                           
+#&gt; │ └─</span><span style='color: #555555;'>child</span><span>                      
+#&gt; ├─</span><span style='color: #555555;'>log</span><span>                          
+#&gt; │ └─</span><span style='color: #555555;'>ger</span><span>                        
+#&gt; │   └─</span><span style='color: #555555;'>test</span><span>                     
+#&gt; ├─</span><span style='color: #555555;'>mylogger</span><span>                     
+#&gt; ├─</span><span style='color: #555555;'>rsyslog</span><span>                      
+#&gt; │ └─</span><span style='color: #555555;'>test</span><span>                       
+#&gt; └─</span><span style='color: #555555;'>test</span><span>                         </div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
