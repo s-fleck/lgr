@@ -527,6 +527,9 @@ test_that("AppenderBuffer: Custom $should_flush works", {
 
 
 
+
+# AppenderSyslog ---------------------------------------------------------
+
 test_that("AppenderSyslog: to_syslog_level works", {
   app <- AppenderSyslog$new("myapp")
 
