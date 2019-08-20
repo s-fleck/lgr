@@ -93,3 +93,7 @@ LayoutJson
 kb
 cli
 fancymodel
+AppenderSyslog
+atheriel
+rsyslog
+syslog

@@ -43,7 +43,7 @@ the \code{root} Logger (lgr)
 \description{
 A quick and easy way to configure the root logger. This is less powerful
 then using \link[=Logger]{lgr$config() or lgr$set_*()}, but reduces the
-most common configrations to a single line of code.
+most common configurations to a single line of code.
 }
 \examples{
 # log to a file

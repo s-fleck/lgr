@@ -230,8 +230,8 @@ was specified)</p></dd>
   <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(<span class='st'>"[%t] %c(): [%n] %m"</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"lgr.colors"</span>))))
 
 <span class='co'># Will output the message twice because we attached two console appenders</span>
-<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [10:58:20.791] A test message 
-#&gt; [2019-08-20 10:58:20.791] eval(): [</span><span style='color: #FFD75F;'>300</span><span>] A test message</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>) <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] test
+<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [15:05:22.475] A test message 
+#&gt; [2019-08-20 15:05:22.475] eval(): [</span><span style='color: #FFD75F;'>300</span><span>] A test message</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>) <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div></span></pre>
