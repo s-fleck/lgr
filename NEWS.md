@@ -1,4 +1,4 @@
-# lgr 0.3.1.9000
+# lgr 0.3.2
 
 * Added AppenderSyslog for logging to syslog via 
   [rsyslog](https://github.com/atheriel/rsyslog) (thanks to atheriel)

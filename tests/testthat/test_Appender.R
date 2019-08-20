@@ -527,7 +527,11 @@ test_that("AppenderBuffer: Custom $should_flush works", {
 
 
 
+
+# AppenderSyslog ----------------------------------------------------------
+
 test_that("AppenderSyslog: to_syslog_level works", {
+  skip_if_not_installed("rsyslog")
   app <- AppenderSyslog$new("myapp")
 
   expect_identical(
@@ -545,9 +549,7 @@ test_that("AppenderSyslog: to_syslog_level works", {
 
 
 test_that("AppenderSyslog: logging to syslog works", {
-  if (Sys.info()[["sysname"]] != "Linux"){
-    skip("only test on linux")
-  }
+  skip_if_not_installed("rsyslog")
   msg <- format(Sys.time())
 
   lg <- get_logger("rsyslog/test")$set_propagate(FALSE)
