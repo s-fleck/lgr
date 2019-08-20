@@ -111,13 +111,13 @@
 <a href="#usage" class="anchor"></a>Usage</h2>
 <p>To log an <em>event</em> with with lgr we call <code>lgr$&lt;logging function&gt;()</code>. Unnamed arguments to the logging function are interpreted by <code><a href="https://rdrr.io/r/base/sprintf.html">sprintf()</a></code>. For a way to create loggers that <a href="https://glue.tidyverse.org/">glue</a> instead please refer to the vignette.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">lgr<span class="op">$</span><span class="kw">fatal</span>(<span class="st">"A critical error"</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; FATAL [10:37:21.137] A critical error</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; FATAL [10:58:13.871] A critical error</span></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">lgr<span class="op">$</span><span class="kw">error</span>(<span class="st">"A less severe error"</span>)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; ERROR [10:37:21.178] A less severe error</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; ERROR [10:58:13.911] A less severe error</span></a>
 <a class="sourceLine" id="cb1-5" data-line-number="5">lgr<span class="op">$</span><span class="kw">warn</span>(<span class="st">"A potentially bad situation"</span>)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; WARN  [10:37:21.188] A potentially bad situation</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; WARN  [10:58:13.921] A potentially bad situation</span></a>
 <a class="sourceLine" id="cb1-7" data-line-number="7">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"iris has %s rows"</span>, <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(iris))</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; INFO  [10:37:21.190] iris has 150 rows</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; INFO  [10:58:13.923] iris has 150 rows</span></a>
 <a class="sourceLine" id="cb1-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co"># the following log levels are hidden by default</span></a>
 <a class="sourceLine" id="cb1-11" data-line-number="11">lgr<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/debug.html">debug</a></span>(<span class="st">"A debug message"</span>)</a>
@@ -126,15 +126,15 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">tf &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>()</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">lgr<span class="op">$</span><span class="kw"><a href="reference/simple_logging.html">add_appender</a></span>(AppenderFile<span class="op">$</span><span class="kw">new</span>(tf, <span class="dt">layout =</span> LayoutJson<span class="op">$</span><span class="kw">new</span>()))</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"cars has %s rows"</span>, <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(cars))</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; INFO  [10:37:21.209] cars has 50 rows</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; INFO  [10:58:13.940] cars has 50 rows</span></a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(tf))</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; {"level":400,"timestamp":"2019-08-20 10:37:21","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; {"level":400,"timestamp":"2019-08-20 10:58:13","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></a></code></pre></div>
 <p>By passing a named argument to <code>info()</code>, <code>warn()</code>, and co you can log not only text but arbitrary R objects. Not all appenders handle such <em>custom fields</em> perfectly, but JSON does. This way you can create logfiles that are machine as well as (somewhat) human readable.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"loading cars"</span>, <span class="st">"cars"</span>, <span class="dt">rows =</span> <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(cars), <span class="dt">cols =</span> <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span>(cars))</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; INFO  [10:37:21.235] loading cars {rows: 50, cols: 2}</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; INFO  [10:58:13.962] loading cars {rows: 50, cols: 2}</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(tf), <span class="dt">sep =</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; {"level":400,"timestamp":"2019-08-20 10:37:21","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; {"level":400,"timestamp":"2019-08-20 10:37:21","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; {"level":400,"timestamp":"2019-08-20 10:58:13","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; {"level":400,"timestamp":"2019-08-20 10:58:13","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}</span></a></code></pre></div>
 <p>For more examples please see the package <a href="https://s-fleck.github.io/lgr/articles/lgr.html">vignette</a> and <a href="https://s-fleck.github.io/lgr/">documentation</a></p>
 </div>
 <div id="see-lgr-in-action" class="section level2">

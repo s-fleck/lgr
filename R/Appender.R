@@ -2891,8 +2891,8 @@ AppenderFileRotatingDate <- R6::R6Class(
 
 #' Log to the POSIX System Log
 #'
-#' An Appender that writes to Syslog on supported POSIX platforms. Requires the
-#' \pkg{rsyslog} package.
+#' An Appender that writes to the syslog on supported POSIX platforms. Requires
+#' the \pkg{rsyslog} package.
 #'
 #' @eval r6_usage(AppenderSyslog)
 #'
@@ -2905,15 +2905,13 @@ AppenderFileRotatingDate <- R6::R6Class(
 #' \describe{
 #'   \item{`identifier`}{`character` scalar. A string identifying the process;
 #'     if `NULL` defaults to the logger name}
-#'   \item{`syslog_levels`}{a named `character` vector or a `function` mapping
-#'     lgr log levels to syslog log levels. If a `character` vector is supplied,
-#'     its names must be valid levels as understood by [rsyslog::syslog()]
-#'     and its values must be [log levels](log_levels) as understood by lgr
-#'     (either `character` or `numeric`). You can also supply a `function` that
-#'     transforms numeric lgr log levels into syslog levels.
-#'     Please be aware that this function should be able to handle vectors of
-#'     arbitrary length.}
-#'   \item{`...`}{Further arguments passed on to [rsyslog::open_syslog()]}
+#'   \item{`syslog_levels`}{
+#'  * a named `character` vector mapping whose names are log levels as
+#'    understood by [rsyslog::syslog()] and whose values are
+#'    [lgr log levels][log_levels] (either `character` or `numeric`)
+#'  * a `function` that takes a vector of lgr log levels as input and returns a
+#'    `character` vector of log levels for [rsyslog::syslog()].
+#'  }
 #'  }
 #'
 #' @export
@@ -2954,8 +2952,7 @@ AppenderSyslog <- R6::R6Class(
         "INFO" = "info",
         "DEBUG" = "debug",
         "DEBUG" = "trace"
-      ),
-      ...
+      )
     ){
       if (!requireNamespace("rsyslog", quietly = TRUE)) {
         stop("The 'rsyslog' package is required for this appender.")
@@ -2963,8 +2960,7 @@ AppenderSyslog <- R6::R6Class(
       self$set_threshold(threshold)
       self$set_layout(layout)
       self$set_filters(filters)
-
-      private$.identifier <- identifier
+      self$set_identifier(identifier)
       self$set_syslog_levels(syslog_levels)
     },
 
@@ -2999,21 +2995,19 @@ AppenderSyslog <- R6::R6Class(
       self
     },
 
-    set_identifier = function(x){
-      if (!is.null(x)){
-        assert(is_scalar_character(x))
-        private$.identifier <- x
-      }
 
+    set_identifier = function(x){
+      assert(is.null(x) || is_scalar_character(x))
+      private$.identifier <- x
       self
     }
   ),
 
   # +- active ---------------------------------------------------------------
   active = list(
-    destination = function() sprintf("syslog [%s]", private$.identifier),
-    identifier = function() get("identifier", private),
-    syslog_levels = function() get("syslog_levels", private)
+    destination   = function() sprintf("syslog [%s]", private$.identifier),
+    identifier    = function() get(".identifier", private),
+    syslog_levels = function() get(".syslog_levels", private)
   ),
 
   private = list(

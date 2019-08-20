@@ -4,15 +4,15 @@
 \alias{AppenderSyslog}
 \title{Log to the POSIX System Log}
 \description{
-An Appender that writes to Syslog on supported POSIX platforms. Requires the
-\pkg{rsyslog} package.
+An Appender that writes to the syslog on supported POSIX platforms. Requires
+the \pkg{rsyslog} package.
 }
 \section{Usage}{
 \preformatted{
 x <- AppenderSyslog$new(identifier = NULL, threshold = NA_integer_, layout =
   LayoutFormat$new("\%m"), filters = NULL, syslog_levels = c(CRITICAL = "fatal",
   ERR = "error", WARNING = "warn", INFO = "info", DEBUG = "debug", DEBUG =
-  "trace"), ...)
+  "trace"))
 
 x$add_filter(filter, name = NULL)
 x$append(event)
@@ -41,15 +41,15 @@ x$threshold
 \describe{
 \item{\code{identifier}}{\code{character} scalar. A string identifying the process;
 if \code{NULL} defaults to the logger name}
-\item{\code{syslog_levels}}{a named \code{character} vector or a \code{function} mapping
-lgr log levels to syslog log levels. If a \code{character} vector is supplied,
-its names must be valid levels as understood by \code{\link[rsyslog:syslog]{rsyslog::syslog()}}
-and its values must be \href{log_levels}{log levels} as understood by lgr
-(either \code{character} or \code{numeric}). You can also supply a \code{function} that
-transforms numeric lgr log levels into syslog levels.
-Please be aware that this function should be able to handle vectors of
-arbitrary length.}
-\item{\code{...}}{Further arguments passed on to \code{\link[rsyslog:open_syslog]{rsyslog::open_syslog()}}}
+\item{\code{syslog_levels}}{
+\itemize{
+\item a named \code{character} vector mapping whose names are log levels as
+understood by \code{\link[rsyslog:syslog]{rsyslog::syslog()}} and whose values are
+\link[=log_levels]{lgr log levels} (either \code{character} or \code{numeric})
+\item a \code{function} that takes a vector of lgr log levels as input and returns a
+\code{character} vector of log levels for \code{\link[rsyslog:syslog]{rsyslog::syslog()}}.
+}
+}
 }
 
 

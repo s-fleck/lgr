@@ -34,8 +34,8 @@
 
 <meta property="og:title" content="Log to the POSIX System Log — AppenderSyslog" />
 
-<meta property="og:description" content="An Appender that writes to Syslog on supported POSIX platforms. Requires the
-rsyslog package." />
+<meta property="og:description" content="An Appender that writes to the syslog on supported POSIX platforms. Requires
+the rsyslog package." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -112,8 +112,8 @@ rsyslog package." />
 
     <div class="ref-description">
     
-    <p>An Appender that writes to Syslog on supported POSIX platforms. Requires the
-<span class="pkg">rsyslog</span> package.</p>
+    <p>An Appender that writes to the syslog on supported POSIX platforms. Requires
+the <span class="pkg">rsyslog</span> package.</p>
     
     </div>
 
@@ -125,7 +125,7 @@ rsyslog package." />
 x &lt;- AppenderSyslog$new(identifier = NULL, threshold = NA_integer_, layout =
   LayoutFormat$new("%m"), filters = NULL, syslog_levels = c(CRITICAL = "fatal",
   ERR = "error", WARNING = "warn", INFO = "info", DEBUG = "debug", DEBUG =
-  "trace"), ...)
+  "trace"))
 
 x$add_filter(filter, name = NULL)
 x$append(event)
@@ -156,15 +156,13 @@ x$threshold
 <dl class='dl-horizontal'>
 <dt><code>identifier</code></dt><dd><p><code>character</code> scalar. A string identifying the process;
 if <code>NULL</code> defaults to the logger name</p></dd>
-<dt><code>syslog_levels</code></dt><dd><p>a named <code>character</code> vector or a <code>function</code> mapping
-lgr log levels to syslog log levels. If a <code>character</code> vector is supplied,
-its names must be valid levels as understood by <code><a href='https://rdrr.io/pkg/rsyslog/man/syslog.html'>rsyslog::syslog()</a></code>
-and its values must be <a href='log_levels'>log levels</a> as understood by lgr
-(either <code>character</code> or <code>numeric</code>). You can also supply a <code>function</code> that
-transforms numeric lgr log levels into syslog levels.
-Please be aware that this function should be able to handle vectors of
-arbitrary length.</p></dd>
-<dt><code>...</code></dt><dd><p>Further arguments passed on to <code><a href='https://rdrr.io/pkg/rsyslog/man/syslog.html'>rsyslog::open_syslog()</a></code></p></dd>
+<dt><code>syslog_levels</code></dt><dd><p><ul>
+<li><p>a named <code>character</code> vector mapping whose names are log levels as
+understood by <code><a href='https://rdrr.io/pkg/rsyslog/man/syslog.html'>rsyslog::syslog()</a></code> and whose values are
+<a href='get_log_levels.html'>lgr log levels</a> (either <code>character</code> or <code>numeric</code>)</p></li>
+<li><p>a <code>function</code> that takes a vector of lgr log levels as input and returns a
+<code>character</code> vector of log levels for <code><a href='https://rdrr.io/pkg/rsyslog/man/syslog.html'>rsyslog::syslog()</a></code>.</p></li>
+</ul></p></dd>
 </dl>
 
 
@@ -248,7 +246,7 @@ was specified)</p></dd>
   }
 
   <span class='fu'><a href='https://rdrr.io/r/base/invisible.html'>invisible</a></span>(<span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>))  <span class='co'># cleanup</span>
-}</div><div class='output co'>#&gt; INFO  [10:37:32.599] A test message </div></pre>
+}</div><div class='output co'>#&gt; INFO  [10:58:25.151] A test message </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
