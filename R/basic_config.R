@@ -2,7 +2,7 @@
 #'
 #' A quick and easy way to configure the root logger. This is less powerful
 #' then using [`lgr$config()` or `lgr$set_*()`][Logger], but reduces the
-#' most common configrations to a single line of code.
+#' most common configurations to a single line of code.
 #'
 #' @param file `character` scalar: If not `NULL` a [AppenderFile] will be
 #'   created that logs to this file. If the filename ends in `.jsonl`, the

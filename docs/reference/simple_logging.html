@@ -8,11 +8,13 @@
 
 <title>Simple Logging — simple_logging • lgr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,8 +34,8 @@
 
 
 
-<meta property="og:title" content="Simple Logging — simple_logging" />
 
+<meta property="og:title" content="Simple Logging — simple_logging" />
 <meta property="og:description" content="lgr provides convenience functions managing the root Logger. These are
 designed chiefly for interactive use and are less verbose than their
 R6 method counterparts.
@@ -59,6 +61,7 @@ are supported (try AppenderJson or AppenderBuffer).
 The easiest way to try out this features is by adding an AppenderBuffer
 to the root logger with basic_config(memory = TRUE)." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -89,7 +92,7 @@ to the root logger with basic_config(memory = TRUE)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.9001</span>
       </span>
     </div>
 
@@ -111,7 +114,6 @@ to the root logger with basic_config(memory = TRUE)." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -133,7 +135,6 @@ to the root logger with basic_config(memory = TRUE)." />
     </div>
 
     <div class="ref-description">
-    
     <p>lgr provides convenience functions managing the root Logger. These are
 designed chiefly for interactive use and are less verbose than their
 R6 method counterparts.</p>
@@ -158,7 +159,6 @@ Appenders that log to formats that can easily be converted to <code>data.frames<
 are supported (try <a href='AppenderJson.html'>AppenderJson</a> or <a href='AppenderBuffer.html'>AppenderBuffer</a>).</p>
 <p>The easiest way to try out this features is by adding an AppenderBuffer
 to the root logger with <code><a href='basic_config.html'>basic_config(memory = TRUE)</a></code>.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>log_exception</span>(<span class='no'>code</span>, <span class='kw'>logfun</span> <span class='kw'>=</span> <span class='no'>lgr</span>$<span class='no'>fatal</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>3</span>))
@@ -176,7 +176,7 @@ to the root logger with <code><a href='basic_config.html'>basic_config(memory = 
 <span class='fu'>show_dt</span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='kw pkg'>lgr</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/lgr/man/lgr-package.html'>lgr</a></span>)
 
 <span class='fu'>show_data</span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='kw pkg'>lgr</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/lgr/man/lgr-package.html'>lgr</a></span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -224,7 +224,7 @@ scalar</p></td>
 <code>threshold</code></p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>threshold()</code> and <code>console_threshold()</code> return the <a href='get_log_levels.html'>log_level</a> of <code>target</code>
@@ -235,13 +235,12 @@ Appender's <code>$show()</code> method returns, usually a <code>character</code>
 <code>data.frame</code> or <code>data.table</code> (invisibly).</p>
 <p><code>show_data()</code> always returns a <code>data.frame</code> and <code>show_dt()</code> always returns
 a <code>data.table</code>.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>add_appender</span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(), <span class='st'>"second_console_appender"</span>)
-<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"Multiple console appenders are a bad idea"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:54:04.240] Multiple console appenders are a bad idea 
-#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [09:54:04.240] Multiple console appenders are a bad idea </div><div class='input'><span class='fu'>remove_appender</span>(<span class='st'>"second_console_appender"</span>)
-<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Good that we defined an appender name, so it's easy to remove"</span>)</div><div class='output co'>#&gt; INFO  [09:54:04.244] Good that we defined an appender name, so it's easy to remove </div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"Multiple console appenders are a bad idea"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [12:25:56.670] Multiple console appenders are a bad idea 
+#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [12:25:56.670] Multiple console appenders are a bad idea </div><div class='input'><span class='fu'>remove_appender</span>(<span class='st'>"second_console_appender"</span>)
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Good that we defined an appender name, so it's easy to remove"</span>)</div><div class='output co'>#&gt; INFO  [12:25:56.673] Good that we defined an appender name, so it's easy to remove </div><div class='input'>
 <span class='co'># Reconfigure the root logger</span>
 <span class='fu'><a href='basic_config.html'>basic_config</a></span>(<span class='kw'>memory</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [info] root
 #&gt; 
@@ -249,11 +248,11 @@ a <code>data.table</code>.</p>
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console
 #&gt;   memory : &lt;AppenderBuffer&gt;  [all] -&gt; 0 child Appenders</div><div class='input'>
 <span class='co'># log some messages</span>
-<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"a log message"</span>)</div><div class='output co'>#&gt; INFO  [09:54:04.252] a log message </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"another message with data"</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; INFO  [09:54:04.254] another message with data </span><span style='color: #555555;'>{</span><span style='color: #D75FAF;'>data</span><span style='color: #555555;'>: [</span><span>1, 2, 3</span><span style='color: #555555;'>]}</span><span></div><div class='input'>
-<span class='fu'>show_log</span>()</div><div class='output co'>#&gt; INFO  [09:54:04] a log message
-#&gt; INFO  [09:54:04] another message with data</div><div class='input'><span class='fu'>show_data</span>()</div><div class='output co'>#&gt;   level           timestamp logger caller                       msg    data
-#&gt; 1   400 2019-07-31 09:54:04   root   eval             a log message    NULL
-#&gt; 2   400 2019-07-31 09:54:04   root   eval another message with data 1, 2, 3</div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"a log message"</span>)</div><div class='output co'>#&gt; INFO  [12:25:56.680] a log message </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"another message with data"</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; INFO  [12:25:56.682] another message with data </span><span style='color: #555555;'>{</span><span style='color: #D75FAF;'>data</span><span style='color: #555555;'>: [</span><span>1, 2, 3</span><span style='color: #555555;'>]}</span><span></div><div class='input'>
+<span class='fu'>show_log</span>()</div><div class='output co'>#&gt; INFO  [12:25:56] a log message
+#&gt; INFO  [12:25:56] another message with data</div><div class='input'><span class='fu'>show_data</span>()</div><div class='output co'>#&gt;   level           timestamp logger caller                       msg    data
+#&gt; 1   400 2019-09-11 12:25:56   root   eval             a log message    NULL
+#&gt; 2   400 2019-09-11 12:25:56   root   eval another message with data 1, 2, 3</div><div class='input'>
 
 </div></span></pre>
   </div>
@@ -261,9 +260,7 @@ a <code>data.table</code>.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -277,7 +274,7 @@ a <code>data.table</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
 </div>
 
       </footer>

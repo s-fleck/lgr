@@ -1,6 +1,7 @@
 # dev version
 
-* Improved performance of looking up the parent of a Logger.
+* Improved performance of looking up the parent of a Logger, and therefore also
+  of resolving inheritance of appenders or threshdolds.
   
 
 # lgr 0.3.2

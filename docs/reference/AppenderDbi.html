@@ -8,11 +8,13 @@
 
 <title>Log to databases via DBI — AppenderDbi • lgr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,8 +34,8 @@
 
 
 
-<meta property="og:title" content="Log to databases via DBI — AppenderDbi" />
 
+<meta property="og:title" content="Log to databases via DBI — AppenderDbi" />
 <meta property="og:description" content="Log to a database table with any DBI compatible backend. Please be
 aware that AppenderDbi does not support case sensitive / quoted column
 names, and you advised to only use all-lowercase names for
@@ -41,6 +43,7 @@ custom fields (see ... argument of LogEvent).
 When appending to a database table all LogEvent values for which a column
 exists in the target table will be appended, all others are ignored." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -71,7 +74,7 @@ exists in the target table will be appended, all others are ignored." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.9001</span>
       </span>
     </div>
 
@@ -93,7 +96,6 @@ exists in the target table will be appended, all others are ignored." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -115,17 +117,16 @@ exists in the target table will be appended, all others are ignored." />
     </div>
 
     <div class="ref-description">
-    
     <p>Log to a database table with any <strong>DBI</strong> compatible backend. Please be
 aware that AppenderDbi does <em>not</em> support case sensitive / quoted column
 names, and you advised to only use all-lowercase names for
 custom fields (see <code>...</code> argument of <a href='LogEvent.html'>LogEvent</a>).
 When appending to a database table all LogEvent values for which a column
 exists in the target table will be appended, all others are ignored.</p>
-    
     </div>
 
-        
+
+
     <h2 class="hasAnchor" id="buffered-logging"><a class="anchor" href="#buffered-logging"></a>Buffered Logging</h2>
 
     
@@ -139,7 +140,6 @@ whenever a LogEvent with a level of <code>fatal</code> or <code>error</code> is 
 (<code>flush_on_exit</code>), i.e. when you close the <span style="R">R</span> session or shortly after you
 remove the Appender object via <code><a href='https://rdrr.io/r/base/rm.html'>rm()</a></code>. If you want to disable buffering, just
 set <code>buffer_size</code> to <code>0</code>.</p>
-    
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
@@ -191,7 +191,6 @@ x$threshold
 
 </pre>
 
-    
     <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
 
     
@@ -209,7 +208,6 @@ statement as this is safer and more flexible. See also <a href='LayoutDbi.html'>
 arguments to <code>new()</code> please refer to the section <em>Fields</em>. You can also
 modify those fields after the Appender has been created with setters in the
 form of <code>appender$set_&lt;fieldname&gt;(value)</code></p>
-    
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
@@ -222,6 +220,7 @@ be slow for very large logs.</p>
 Database connection when the Logger is removed?</p></dd>
 <dt><code>conn</code>, <code>set_conn(conn)</code></dt><dd><p>a <a href='https://rdrr.io/pkg/DBI/man/dbConnect.html'>DBI connection</a></p></dd>
 <dt><code>table</code></dt><dd><p>Name of the target database table</p></dd>
+
 </dl>
 
 
@@ -241,6 +240,7 @@ and you can modify that function for different behaviour.</p></dd>
 If the function returns <code>TRUE</code>, flushing of the buffer
 is triggered. Defaults to flushing if an event of level <code>error</code>
 or higher is registered.</p></dd>
+
 </dl>
 
 
@@ -248,12 +248,14 @@ or higher is registered.</p></dd>
 <dl class='dl-horizontal'>
 <dt><code>dt</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a <code>data.table</code>
 with a maximum of <code>buffer_size</code> rows</p></dd>
+
 </dl>
 
 
 
 <dl class='dl-horizontal'>
 <dt><code>data</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a <code>data.frame</code></p></dd>
+
 </dl>
 
 
@@ -265,6 +267,7 @@ The minimum log level that triggers this logger. See <a href='get_log_levels.htm
 formatting the <code>LogEvents</code> passed to this Appender</p></dd>
 <dt><code>destination</code></dt><dd><p>The output destination of the <code>Appender</code> in
 human-readable form (mainly for print output)</p></dd>
+
 </dl>
 
 
@@ -278,9 +281,9 @@ If all of these functions evaluate to <code>TRUE</code> the LogEvent is passed o
 Since LogEvents have reference semantics, filters can also be abused to
 modify them before they are passed on. Look at the source code of
 <code><a href='with_log_level.html'>with_log_level()</a></code> or <code><a href='with_log_level.html'>with_log_value()</a></code> for examples.</p></dd>
+
 </dl>
 
-    
     <h2 class="hasAnchor" id="choosing-the-right-dbi-layout"><a class="anchor" href="#choosing-the-right-dbi-layout"></a>Choosing the Right DBI Layout</h2>
 
     
@@ -294,7 +297,6 @@ vary between database backends.</p>
 settings based on <code>conn</code> and - if it exists in the database already -
 <code>table</code>. If <code>table</code> does not exist in the database and you start logging, a
 new table will be created with the <code>col_types</code> from <code>layout</code>.</p>
-    
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
@@ -302,6 +304,7 @@ new table will be created with the <code>col_types</code> from <code>layout</cod
 
 <dl class='dl-horizontal'>
 <dt><code><a href='https://rdrr.io/r/base/connections.html'>flush()</a></code></dt><dd><p>Manually trigger flushing of the buffer</p></dd>
+
 </dl>
 
 
@@ -309,6 +312,7 @@ new table will be created with the <code>col_types</code> from <code>layout</cod
 <dt><code>show(n, threshold)</code></dt><dd><p>Show the last <code>n</code> log entries with a log level
 bellow <code>threshold</code>. The log entries will be formatted for console output
 via this Appenders <a href='Layout.html'>Layout</a></p></dd>
+
 </dl>
 
 
@@ -316,6 +320,7 @@ via this Appenders <a href='Layout.html'>Layout</a></p></dd>
 <dt><code><a href='https://rdrr.io/r/base/append.html'>append(event)</a></code></dt><dd><p>Tell the Appender to process a <a href='LogEvent.html'>LogEvent</a> <code>event</code>.
 This method is usually not called by the user, but invoked by a
 <a href='Logger.html'>Logger</a></p></dd>
+
 </dl>
 
 
@@ -326,9 +331,9 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 <dt><code>add_filter(filter, name = NULL)</code>, <code>remove_filter(pos)</code></dt><dd><p>Add or remove a filter. When adding a filter an optional <code>name</code> can
 be specified. <code>remove_filter()</code> can remove by position or name (if one
 was specified)</p></dd>
+
 </dl>
 
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Appenders: <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
@@ -341,27 +346,19 @@ was specified)</p></dd>
   <code><a href='AppenderSendmail.html'>AppenderSendmail</a></code>,
   <code><a href='AppenderSyslog.html'>AppenderSyslog</a></code>,
   <code><a href='AppenderTable.html'>AppenderTable</a></code>, <code><a href='Appender.html'>Appender</a></code></p></div>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
       <li><a href="#buffered-logging">Buffered Logging</a></li>
-
       <li><a href="#usage">Usage</a></li>
-
       <li><a href="#creating-a-new-appender">Creating a New Appender</a></li>
-
       <li><a href="#fields">Fields</a></li>
-
       <li><a href="#choosing-the-right-dbi-layout">Choosing the Right DBI Layout</a></li>
-
       <li><a href="#methods">Methods</a></li>
-
       <li><a href="#see-also">See also</a></li>
-          </ul>
+    </ul>
 
   </div>
 </div>
@@ -373,7 +370,7 @@ was specified)</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
 </div>
 
       </footer>

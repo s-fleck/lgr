@@ -8,11 +8,13 @@
 
 <title>Abstract class for digests — AppenderDigest • lgr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,14 +34,15 @@
 
 
 
-<meta property="og:title" content="Abstract class for digests — AppenderDigest" />
 
+<meta property="og:title" content="Abstract class for digests — AppenderDigest" />
 <meta property="og:description" content="Abstract classes are exported for package developers that want to extend
 them, they cannot be instantiated directly.
 Abstract class for Appenders that transmit digests of several log events
 at once, for example AppenderPushbullet, AppenderGmail and
 AppenderSendmail." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -70,7 +73,7 @@ AppenderSendmail." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.9001</span>
       </span>
     </div>
 
@@ -92,7 +95,6 @@ AppenderSendmail." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -114,16 +116,15 @@ AppenderSendmail." />
     </div>
 
     <div class="ref-description">
-    
     <p><strong>Abstract classes</strong> are exported for package developers that want to extend
 them, they cannot be instantiated directly.</p>
 <p>Abstract class for Appenders that transmit digests of several log events
 at once, for example <a href='AppenderPushbullet.html'>AppenderPushbullet</a>, <a href='AppenderGmail.html'>AppenderGmail</a> and
 <a href='AppenderSendmail.html'>AppenderSendmail</a>.</p>
-    
     </div>
 
-        
+
+
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
@@ -134,6 +135,7 @@ at once, for example <a href='AppenderPushbullet.html'>AppenderPushbullet</a>, <
 used to format the subject/title of the digest. While <code>layout</code> is applied
 to each LogEvent of the digest, <code>subject_layout</code> is only applied to
 the last one.</p></dd>
+
 </dl>
 
 
@@ -153,6 +155,7 @@ and you can modify that function for different behaviour.</p></dd>
 If the function returns <code>TRUE</code>, flushing of the buffer
 is triggered. Defaults to flushing if an event of level <code>error</code>
 or higher is registered.</p></dd>
+
 </dl>
 
 
@@ -160,12 +163,14 @@ or higher is registered.</p></dd>
 <dl class='dl-horizontal'>
 <dt><code>dt</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a <code>data.table</code>
 with a maximum of <code>buffer_size</code> rows</p></dd>
+
 </dl>
 
 
 
 <dl class='dl-horizontal'>
 <dt><code>data</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a <code>data.frame</code></p></dd>
+
 </dl>
 
 
@@ -177,6 +182,7 @@ The minimum log level that triggers this logger. See <a href='get_log_levels.htm
 formatting the <code>LogEvents</code> passed to this Appender</p></dd>
 <dt><code>destination</code></dt><dd><p>The output destination of the <code>Appender</code> in
 human-readable form (mainly for print output)</p></dd>
+
 </dl>
 
 
@@ -190,9 +196,9 @@ If all of these functions evaluate to <code>TRUE</code> the LogEvent is passed o
 Since LogEvents have reference semantics, filters can also be abused to
 modify them before they are passed on. Look at the source code of
 <code><a href='with_log_level.html'>with_log_level()</a></code> or <code><a href='with_log_level.html'>with_log_value()</a></code> for examples.</p></dd>
+
 </dl>
 
-    
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
@@ -202,6 +208,7 @@ modify them before they are passed on. Look at the source code of
 
 <dl class='dl-horizontal'>
 <dt><code><a href='https://rdrr.io/r/base/connections.html'>flush()</a></code></dt><dd><p>Manually trigger flushing of the buffer</p></dd>
+
 </dl>
 
 
@@ -209,6 +216,7 @@ modify them before they are passed on. Look at the source code of
 <dt><code>show(n, threshold)</code></dt><dd><p>Show the last <code>n</code> log entries with a log level
 bellow <code>threshold</code>. The log entries will be formatted for console output
 via this Appenders <a href='Layout.html'>Layout</a></p></dd>
+
 </dl>
 
 
@@ -216,6 +224,7 @@ via this Appenders <a href='Layout.html'>Layout</a></p></dd>
 <dt><code><a href='https://rdrr.io/r/base/append.html'>append(event)</a></code></dt><dd><p>Tell the Appender to process a <a href='LogEvent.html'>LogEvent</a> <code>event</code>.
 This method is usually not called by the user, but invoked by a
 <a href='Logger.html'>Logger</a></p></dd>
+
 </dl>
 
 
@@ -226,28 +235,24 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 <dt><code>add_filter(filter, name = NULL)</code>, <code>remove_filter(pos)</code></dt><dd><p>Add or remove a filter. When adding a filter an optional <code>name</code> can
 be specified. <code>remove_filter()</code> can remove by position or name (if one
 was specified)</p></dd>
+
 </dl>
 
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a>, <a href='LayoutGlue.html'>LayoutGlue</a></p>
 <p>Other abstract classes: <code><a href='AppenderMail.html'>AppenderMail</a></code>,
   <code><a href='AppenderMemory.html'>AppenderMemory</a></code>,
   <code><a href='AppenderTable.html'>AppenderTable</a></code>, <code><a href='Filterable.html'>Filterable</a></code></p></div>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
       <li><a href="#fields">Fields</a></li>
-
       <li><a href="#methods">Methods</a></li>
-
       <li><a href="#see-also">See also</a></li>
-          </ul>
+    </ul>
 
   </div>
 </div>
@@ -259,7 +264,7 @@ was specified)</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
 </div>
 
       </footer>

@@ -8,11 +8,13 @@
 
 <title>Get/Create a Logger — get_logger • lgr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,10 +34,11 @@
 
 
 
-<meta property="og:title" content="Get/Create a Logger — get_logger" />
 
+<meta property="og:title" content="Get/Create a Logger — get_logger" />
 <meta property="og:description" content="Get/Create a Logger" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -66,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.9001</span>
       </span>
     </div>
 
@@ -88,7 +91,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -110,15 +112,13 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Get/Create a Logger</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>get_logger</span>(<span class='no'>name</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='no'>Logger</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>get_logger_glue</span>(<span class='no'>name</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -140,17 +140,16 @@ unconfigured state. Unlike <code>$config(NULL)</code> this also replaces a
 Logger references created before the reset call (see examples).</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a <a href='Logger.html'>Logger</a></p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'>get_logger</span>(<span class='st'>"log/ger/test"</span>)
 <span class='co'># equivalent to</span>
 <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'>get_logger</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"log"</span>, <span class='st'>"ger"</span>, <span class='st'>"test"</span>))
-<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a %s message"</span>, <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [09:54:01.723] a warning message </div><div class='input'><span class='no'>lg</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #555555;'>info</span><span>] log/ger/test
+<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a %s message"</span>, <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [12:25:54.812] a warning message </div><div class='input'><span class='no'>lg</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #555555;'>info</span><span>] log/ger/test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='no'>lg</span>$<span class='no'>parent</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #555555;'>info</span><span>] log/ger
@@ -160,24 +159,22 @@ Logger references created before the reset call (see examples).</p></td>
 <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>'glue'</span>)){
   <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'>get_logger_glue</span>(<span class='st'>"log/ger"</span>)
 }
-<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a {.text} message"</span>, <span class='kw'>.text</span> <span class='kw'>=</span> <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [09:54:01.758] a warning message </div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a {.text} message"</span>, <span class='kw'>.text</span> <span class='kw'>=</span> <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; </span><span style='color: #FFD75F;'>WARN </span><span> [12:25:54.822] a warning message </div><div class='input'>
 <span class='co'># completely reset 'glue' to an unconfigured vanilla Logger</span>
 <span class='fu'>get_logger</span>(<span class='st'>"log/ger"</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #555555;'>info</span><span>] log/ger
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='co'># this invalidates references to the Logger</span>
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"lg has been invalidated an no longer works"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: [2019-07-31 09:54:01.772] An error occurred during logging: Error: Trying to log via a Logger reference that is no longer valid. Logger references become invalid when you reset a when you reset a Logger with `get_logger(reset = TRUE)`. Please re-create the Logger reference with with `get_logger(log/ger)`</span></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"lg has been invalidated an no longer works"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: [2019-09-11 12:25:54.829] An error occurred during logging: Error: Trying to log via a Logger reference that is no longer valid. Logger references become invalid when you reset a when you reset a Logger with `get_logger(reset = TRUE)`. Please re-create the Logger reference with with `get_logger(log/ger)`</span></div><div class='input'>
 <span class='co'># we have to recreate it</span>
 <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'>get_logger</span>(<span class='st'>"log/ger"</span>)
-<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"now all is well again"</span>)</div><div class='output co'>#&gt; INFO  [09:54:01.777] now all is well again </div></span></pre>
+<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"now all is well again"</span>)</div><div class='output co'>#&gt; INFO  [12:25:54.831] now all is well again </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -191,7 +188,7 @@ Logger references created before the reset call (see examples).</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
 </div>
 
       </footer>
