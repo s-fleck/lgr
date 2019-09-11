@@ -54,7 +54,6 @@ get_logger <- function(
 
   assert(is.character(name))
   assert(is_scalar_bool(reset))
-  assert(R6::is.R6Class(class), "`class` must be an R6ClassGenerator")
 
   nm_cur <- unlist(strsplit(name, "/", fixed = TRUE))
   name   <- paste(nm_cur, collapse = "/")
@@ -71,15 +70,12 @@ get_logger <- function(
   }
 
   if (is.null(res)){
+    assert(R6::is.R6Class(class), "`class` must be an R6ClassGenerator")
     assign(name, class$new(name), envir = loggers, inherits = FALSE)
     return(get_logger(name, class = class))
   }
 
-  if (class$classname %in% class(res)){
-    return(res)
-  } else {
-    stop(sprintf("'%s' is a %s but not a %s", name, class_fmt(res), fmt_class(class$classname)))
-  }
+  res
 }
 
 

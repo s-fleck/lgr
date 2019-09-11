@@ -632,6 +632,7 @@ Logger <- R6::R6Class(
     }
   ),
 
+
   # active bindings ---------------------------------------------------------
   active = list(
     name = function(){
@@ -676,7 +677,7 @@ Logger <- R6::R6Class(
     threshold = function() {
       res <- get(".threshold", envir = private)
       if (is.null(res)){
-        get("parent", envir = self)[["threshold"]]
+        get("threshold", envir = get("parent", envir = self))
       } else {
         res
       }
@@ -684,7 +685,7 @@ Logger <- R6::R6Class(
 
 
     inherited_appenders = function(){
-      if (self$propagate){
+      if (get(".propagate", envir = private)){
         c(
           get("parent", envir = self)$appenders,
           get("parent", envir = self)$inherited_appenders
@@ -694,11 +695,15 @@ Logger <- R6::R6Class(
       }
     },
 
-    exception_handler = function() {private$.exception_handler},
+
+    exception_handler = function() {
+      get(".exception_handler", envir = private)
+    },
 
 
-    appenders = function() {private$.appenders}
-
+    appenders = function() {
+      get(".appenders", envir = private)
+    }
   ),
 
 
