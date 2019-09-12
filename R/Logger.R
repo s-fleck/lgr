@@ -685,9 +685,13 @@ Logger <- R6::R6Class(
 
     inherited_appenders = function(){
       if (get(".propagate", envir = private)){
-        c(
-          get("parent", envir = self)$appenders,
-          get("parent", envir = self)$inherited_appenders
+        p <- get("parent", envir = self)
+        if (is.null(p))
+          return(NULL)
+
+        unlist(
+          mget(c("appenders", "inherited_appenders"), envir = p),
+          recursive = FALSE
         )
       } else {
         NULL
