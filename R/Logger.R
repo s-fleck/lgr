@@ -627,7 +627,7 @@ Logger <- R6::R6Class(
 
 
     spawn = function(name, ...){
-      get_logger(paste0(self$name, "/", name))
+      get_logger(c(private[[".name"]], name))
     }
   ),
 
@@ -908,6 +908,11 @@ LoggerGlue <- R6::R6Class(
       },
       error = get("handle_exception", envir = self)
       )
+    },
+
+
+    spawn = function(name, ...){
+      get_logger_glue(c(private[[".name"]], name))
     }
   )
 )
