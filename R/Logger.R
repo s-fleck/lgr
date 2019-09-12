@@ -267,7 +267,6 @@
 #'
 #' lg$config(cfg)
 #' lg$config(NULL)
-
 NULL
 
 
@@ -751,7 +750,8 @@ LoggerGlue <- R6::R6Class(
   public = list(
 
     fatal = function(..., caller = get_caller(-8L), .envir = parent.frame()){
-      if (isTRUE(get("threshold", envir = self) < 100L))  return(invisible())
+      if (identical(get("threshold", envir = self) < 100L, TRUE))
+        return(invisible())
 
       force(.envir)
       get("log", envir = self)(
@@ -764,7 +764,8 @@ LoggerGlue <- R6::R6Class(
     },
 
     error = function(..., caller = get_caller(-8L), .envir = parent.frame()){
-      if (isTRUE(get("threshold", envir = self) < 200L))  return(invisible())
+      if (identical(get("threshold", envir = self) < 200L, TRUE))
+        return(invisible())
 
       get("log", envir = self)(
         ...,
@@ -776,7 +777,8 @@ LoggerGlue <- R6::R6Class(
     },
 
     warn = function(..., caller = get_caller(-8L), .envir = parent.frame()){
-      if (isTRUE(get("threshold", envir = self) < 300L))  return(invisible())
+      if (identical(get("threshold", envir = self) < 300L, TRUE))
+        return(invisible())
 
       get("log", envir = self)(
         ...,
@@ -788,7 +790,8 @@ LoggerGlue <- R6::R6Class(
     },
 
     info = function(..., caller = get_caller(-8L), .envir = parent.frame()){
-      if (isTRUE(get("threshold", envir = self) < 400L))  return(invisible())
+      if (identical(get("threshold", envir = self) < 400L, TRUE))
+        return(invisible())
 
       get("log", envir = self)(
         ...,
@@ -800,7 +803,8 @@ LoggerGlue <- R6::R6Class(
     },
 
     debug = function(..., caller = get_caller(-8L), .envir = parent.frame()){
-      if (isTRUE(get("threshold", envir = self) < 500L))  return(invisible())
+      if (identical(get("threshold", envir = self) < 500L, TRUE))
+        return(invisible())
 
       force(.envir)
       get("log", envir = self)(
@@ -813,7 +817,8 @@ LoggerGlue <- R6::R6Class(
     },
 
     trace = function(..., caller = get_caller(-8L), .envir = parent.frame()){
-      if (isTRUE(get("threshold", envir = self) < 600L))  return(invisible())
+      if (identical(get("threshold", envir = self) < 600L, TRUE))
+        return(invisible())
 
       force(.envir)
       get("log", envir = self)(
@@ -832,7 +837,8 @@ LoggerGlue <- R6::R6Class(
       caller = get_caller(-7),
       .envir = parent.frame()
     ){
-      if (identical(get("threshold", envir = self), 0L))  return(invisible())
+      if (identical(get("threshold", envir = self), 0L))
+        return(invisible())
 
       force(.envir)
       tryCatch({
