@@ -8,13 +8,11 @@
 
 <title>Format Log Events as Text — LayoutFormat • lgr</title>
 
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -34,13 +32,12 @@
 
 
 
-
 <meta property="og:title" content="Format Log Events as Text — LayoutFormat" />
+
 <meta property="og:description" content="Format a LogEvent as human readable text using format.LogEvent(), which
 provides a quick and easy way to customize log messages. If you need
 more control and flexibility, consider using LayoutGlue instead." />
 <meta name="twitter:card" content="summary" />
-
 
 
 
@@ -52,7 +49,6 @@ more control and flexibility, consider using LayoutGlue instead." />
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-
 
 
   </head>
@@ -71,7 +67,7 @@ more control and flexibility, consider using LayoutGlue instead." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -93,6 +89,7 @@ more control and flexibility, consider using LayoutGlue instead." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
+      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -102,7 +99,6 @@ more control and flexibility, consider using LayoutGlue instead." />
 </div><!--/.navbar -->
 
       
-
       </header>
 
 <div class="row">
@@ -114,62 +110,54 @@ more control and flexibility, consider using LayoutGlue instead." />
     </div>
 
     <div class="ref-description">
+    
     <p>Format a <a href='LogEvent.html'>LogEvent</a> as human readable text using <code><a href='print.LogEvent.html'>format.LogEvent()</a></code>, which
 provides a quick and easy way to customize log messages. If you need
 more control and flexibility, consider using <a href='LayoutGlue.html'>LayoutGlue</a> instead.</p>
+    
     </div>
 
-
-
+        
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
-    
-<pre>
+    <pre>
 x &lt;- LayoutFormat$new(fmt = "%L [%t] %m", timestamp_fmt = "%Y-%m-%d
   %H:%M:%OS3", colors = NULL, pad_levels = "right")
-
-x$clone(deep = FALSE)
+    x$clone(deep = FALSE)
 x$format_event(event)
 x$set_colors(x)
 x$set_fmt(x)
 x$set_pad_levels(x)
 x$set_timestamp_fmt(x)
 x$toString()
-
-x$colors
+    x$colors
 x$fmt
 x$pad_levels
 x$timestamp_fmt
-
-</pre>
-
+    </pre>
+    
     <h2 class="hasAnchor" id="creating-a-new-layoutformat"><a class="anchor" href="#creating-a-new-layoutformat"></a>Creating a New LayoutFormat</h2>
 
     
-
-
-<p>A new LayoutFormat is instantiated with <code>LayoutFormat$new()</code>. For a
+    <p>A new LayoutFormat is instantiated with <code>LayoutFormat$new()</code>. For a
 description of the arguments to this function please refer to the Fields,
 and the documentation of <code><a href='print.LogEvent.html'>format.LogEvent()</a></code>.</p>
+    
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
-
-<dl class='dl-horizontal'>
+    <dl class='dl-horizontal'>
 <dt><code>fmt</code></dt><dd><p>a <code>character</code> scalar containing format tokens. See <code><a href='print.LogEvent.html'>format.LogEvent()</a></code>.</p></dd>
 <dt><code>timestamp_fmt</code></dt><dd><p>a <code>character</code> scalar. See <code><a href='https://rdrr.io/r/base/strptime.html'>base::format.POSIXct()</a></code></p></dd>
 <dt><code>colors</code></dt><dd><p>a named <code>list</code> of functions passed on on <code><a href='print.LogEvent.html'>format.LogEvent()</a></code></p></dd>
 <dt><code>pad_levels</code></dt><dd><p><code>right</code>, <code>left</code> or <code>NULL</code>. See <code><a href='print.LogEvent.html'>format.LogEvent()</a></code></p></dd>
-
 </dl>
-
+    
     <h2 class="hasAnchor" id="format-tokens"><a class="anchor" href="#format-tokens"></a>Format Tokens</h2>
 
     
-
-<p>This is the same list of format tokens as for <code><a href='print.LogEvent.html'>format.LogEvent()</a></code></p>
-
-<dl class='dl-horizontal'>
+    <p>This is the same list of format tokens as for <code><a href='print.LogEvent.html'>format.LogEvent()</a></code></p>
+    <dl class='dl-horizontal'>
 <dt><code>%t</code></dt><dd><p>The timestamp of the message, formatted according to
 <code>timestamp_fmt</code>)</p></dd>
 <dt><code>%l</code></dt><dd><p>the log level, lowercase <code>character</code> representation</p></dd>
@@ -186,24 +174,21 @@ optimized for human readability and console output</p></dd>
 <dt><code>%j</code></dt><dd><p>all custom fields of <code>x</code> in proper JSON. This requires that you
 have <strong>jsonlite</strong> installed and does not support colors as opposed to
 <code>%f</code></p></dd>
-
 </dl>
-
+    
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-
-
-<dl class='dl-horizontal'>
+    <dl class='dl-horizontal'>
 <dt><code>format_event(event)</code></dt><dd><p>format a <a href='LogEvent.html'>LogEvent</a></p></dd>
-
 </dl>
-
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Layouts: <code><a href='LayoutDbi.html'>LayoutDbi</a></code>,
   <code><a href='LayoutGlue.html'>LayoutGlue</a></code>, <code><a href='LayoutJson.html'>LayoutJson</a></code>,
   <code><a href='Layout.html'>Layout</a></code></p></div>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># setup a dummy LogEvent</span>
@@ -215,24 +200,30 @@ have <strong>jsonlite</strong> installed and does not support colors as opposed 
   <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"a test message"</span>
 )
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>()
-<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; [1] "ERROR [2019-09-11 12:25:41.848] a test message"</div><div class='input'>
+<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; [1] "ERROR [2019-09-26 19:13:13.003] a test message"</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      
       <li><a href="#usage">Usage</a></li>
+
       <li><a href="#creating-a-new-layoutformat">Creating a New LayoutFormat</a></li>
+
       <li><a href="#fields">Fields</a></li>
+
       <li><a href="#format-tokens">Format Tokens</a></li>
+
       <li><a href="#methods">Methods</a></li>
+
       <li><a href="#see-also">See also</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
-
 
       <footer>
       <div class="copyright">
@@ -240,16 +231,13 @@ have <strong>jsonlite</strong> installed and does not support colors as opposed 
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
 </div>
-
       </footer>
    </div>
 
   
 
-
   </body>
 </html>
-
 

@@ -8,13 +8,11 @@
 
 <title>Format Log Events as Text via glue — LayoutGlue • lgr</title>
 
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -34,14 +32,13 @@
 
 
 
-
 <meta property="og:title" content="Format Log Events as Text via glue — LayoutGlue" />
+
 <meta property="og:description" content="Format a LogEvent as human readable text using glue::glue. The function
 is evaluated in an environment in which it has access to all elements of
 the LogEvent (see examples). This is more flexible than LayoutFormat,
 but also more complex and slightly less performant." />
 <meta name="twitter:card" content="summary" />
-
 
 
 
@@ -53,7 +50,6 @@ but also more complex and slightly less performant." />
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-
 
 
   </head>
@@ -72,7 +68,7 @@ but also more complex and slightly less performant." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -94,6 +90,7 @@ but also more complex and slightly less performant." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
+      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -103,7 +100,6 @@ but also more complex and slightly less performant." />
 </div><!--/.navbar -->
 
       
-
       </header>
 
 <div class="row">
@@ -115,58 +111,48 @@ but also more complex and slightly less performant." />
     </div>
 
     <div class="ref-description">
+    
     <p>Format a <a href='LogEvent.html'>LogEvent</a> as human readable text using <a href='https://rdrr.io/pkg/glue/man/glue.html'>glue::glue</a>. The function
 is evaluated in an environment in which it has access to all elements of
 the <a href='LogEvent.html'>LogEvent</a> (see examples). This is more flexible than <a href='LayoutFormat.html'>LayoutFormat</a>,
 but also more complex and slightly less performant.</p>
+    
     </div>
 
-
-
+        
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
-    
-<pre>
+    <pre>
 x &lt;- LayoutGlue$new(fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)}
   [{timestamp}] msg")
-
-x$clone(deep = FALSE)
+    x$clone(deep = FALSE)
 x$format_event(event)
 x$set_colors(x)
 x$set_fmt(x)
 x$toString()
-
-x$fmt
-
-</pre>
-
+    x$fmt
+    </pre>
+    
     <h2 class="hasAnchor" id="creating-a-new-layoutglue"><a class="anchor" href="#creating-a-new-layoutglue"></a>Creating a New LayoutGlue</h2>
 
     
-
-
-<p>A new <code>LayoutGlue</code> is instantiated with <code>LayoutGlue$new()</code>. It takes a single
+    <p>A new <code>LayoutGlue</code> is instantiated with <code>LayoutGlue$new()</code>. It takes a single
 argument <code>fmt</code> that is passed on to <code><a href='https://rdrr.io/pkg/glue/man/glue.html'>glue::glue()</a></code> for each LogEvent.</p>
+    
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
-
-
-<dl class='dl-horizontal'>
+    <dl class='dl-horizontal'>
 <dt><code>fmt</code></dt><dd><p>see <code><a href='https://rdrr.io/pkg/glue/man/glue.html'>glue::glue()</a></code></p></dd>
-
 </dl>
-
+    
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-
-
-<dl class='dl-horizontal'>
+    <dl class='dl-horizontal'>
 <dt><code>format_event(event)</code></dt><dd><p>format a <a href='LogEvent.html'>LogEvent</a></p></dd>
-
 </dl>
-
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>lgr exports a number of formatting utility functions that are
@@ -174,6 +160,7 @@ useful for layout glue: <code><a href='colorize_levels.html'>colorize_levels()</
 <p>Other Layouts: <code><a href='LayoutDbi.html'>LayoutDbi</a></code>,
   <code><a href='LayoutFormat.html'>LayoutFormat</a></code>, <code><a href='LayoutJson.html'>LayoutJson</a></code>,
   <code><a href='Layout.html'>Layout</a></code></p></div>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)$
@@ -181,32 +168,37 @@ useful for layout glue: <code><a href='colorize_levels.html'>colorize_levels()</
   <span class='fu'>set_propagate</span>(<span class='fl'>FALSE</span>)
 
 <span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>set_layout</span>(<span class='no'>LayoutGlue</span>$<span class='fu'>new</span>())
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"test"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [2019-09-11 12:25:42] msg</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"test"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [2019-09-26 19:13:13] msg</div><div class='input'>
 
 <span class='co'># All fields of the LogEvent are available, even custom ones</span>
 <span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>layout</span>$<span class='fu'>set_fmt</span>(
   <span class='st'>"{logger$name} {level_name}({level}) {caller}: {toupper(msg)} {{custom: {custom}}}"</span>
 )
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"test"</span>, <span class='kw'>custom</span> <span class='kw'>=</span> <span class='st'>"foobar"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: [2019-09-11 12:25:42.181] An error occurred during logging: Error in logger$name: $ operator is invalid for atomic vectors</span></div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)  <span class='co'># reset logger config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #555555;'>info</span><span>] test
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"test"</span>, <span class='kw'>custom</span> <span class='kw'>=</span> <span class='st'>"foobar"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: [2019-09-26 19:13:13.434] An error occurred during logging: Error in logger$name: $ operator is invalid for atomic vectors</span></div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)  <span class='co'># reset logger config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] test
 #&gt; 
 #&gt; inherited appenders:
-#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'>
+#&gt;   appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      
       <li><a href="#usage">Usage</a></li>
+
       <li><a href="#creating-a-new-layoutglue">Creating a New LayoutGlue</a></li>
+
       <li><a href="#fields">Fields</a></li>
+
       <li><a href="#methods">Methods</a></li>
+
       <li><a href="#see-also">See also</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
-
 
       <footer>
       <div class="copyright">
@@ -214,16 +206,13 @@ useful for layout glue: <code><a href='colorize_levels.html'>colorize_levels()</
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
 </div>
-
       </footer>
    </div>
 
   
 
-
   </body>
 </html>
-
 

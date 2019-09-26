@@ -10,8 +10,4 @@
 
 0 errors | 0 warnings | 0 notes
 
-Adds appender that can write to syslog. This introduces an optional dependency 
-on the linux-only rsyslog package, so checks fail on windows if suggests are 
-forced. Running the tests/examples of this package will write a few lines to
-the syslog on linux systems, if this is an undesired side effect I can disable 
-the tests.
+fixes a significant performance regression
