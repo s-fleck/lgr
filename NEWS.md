@@ -1,3 +1,5 @@
+# lgr (development version)
+
 # lgr 0.3.3
 
 * Fixed a performance regression when looking up the parent of a Logger. This
