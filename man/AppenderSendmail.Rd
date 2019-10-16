@@ -199,6 +199,17 @@ was specified)
 }
 }
 
+\examples{
+\dontrun{
+lgr::AppenderSendmail$new(
+  to = "user@ecorp.com",
+  control = list(smtpServer = "mail.ecorp.com"),
+  from = "lgr_user@yourmail.com"
+)
+}
+
+
+}
 \seealso{
 \link{LayoutFormat}, \link{LayoutGlue}
 

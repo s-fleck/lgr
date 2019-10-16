@@ -2209,6 +2209,16 @@ AppenderMail <- R6::R6Class(
 #' @section Methods:
 #'
 #'
+#' @examples
+#' \dontrun{
+#' lgr::AppenderSendmail$new(
+#'   to = "user@ecorp.com",
+#'   control = list(smtpServer = "mail.ecorp.com"),
+#'   from = "lgr_user@yourmail.com"
+#' )
+#' }
+#'
+#'
 #' @export
 #' @seealso [LayoutFormat], [LayoutGlue]
 #' @family Appenders
