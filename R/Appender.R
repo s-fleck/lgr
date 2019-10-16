@@ -2228,17 +2228,17 @@ AppenderSendmail <- R6::R6Class(
   public = list(
     initialize = function(
       to,
-      from = get_user(),
+      control,
       threshold = NA_integer_,
       flush_threshold = "fatal",
       layout = LayoutFormat$new(fmt = "   %L [%t] %m %f", timestamp_fmt = "%H:%M:%S"),
       subject_layout = LayoutFormat$new(fmt = "[LGR] %L: %m"),
       buffer_size = 29,
+      from = get_user(),
       cc = NULL,
       bcc = NULL,
       html = FALSE,
       headers = NULL,
-      control = list(),
       filters = NULL
     ){
       assert_namespace("sendmailR")
