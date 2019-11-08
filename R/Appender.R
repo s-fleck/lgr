@@ -1421,7 +1421,7 @@ AppenderDbi <- R6::R6Class(
       should_flush = default_should_flush,
       filters = NULL
     ){
-      assert_namespace("DBI", "data.table")
+      assert_namespace("DBI", "data.table", "jsonlite")
 
       # appender
       self$set_threshold(threshold)
@@ -1526,6 +1526,19 @@ AppenderDbi <- R6::R6Class(
         if (!is.null(cn)){
           sel <- which(toupper(names(dd)) %in% toupper(cn))
           dd <- dd[, sel, with = FALSE]
+        }
+
+        for (nm in names(which(vapply(dd, Negate(is.atomic), logical(1))))){
+          data.table::set(
+            dd,
+            i = NULL,
+            j = nm,
+            value = vapply(
+              dd[[nm]],
+              function(.) if (is.null(.)) NA_character_ else jsonlite::toJSON(., auto_unbox = TRUE),
+              character(1L)
+            )
+          )
         }
 
         DBI::dbWriteTable(

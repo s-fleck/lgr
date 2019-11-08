@@ -1,5 +1,8 @@
 # lgr (development version)
 
+* AppenderDBI now serializes list columns to JSON before inserting them into
+  a database
+
 # lgr 0.3.3
 
 * Fixed a performance regression when looking up the parent of a Logger. This
