@@ -878,6 +878,10 @@ inside your package. You do not have to define any appenders, since all log
 events will get redirected to the root Logger (see [Inheritance](#hierarchy)). 
 
 
+## Creating a Layout that mimics NodeJS Winston logstash
+
+see https://github.com/s-fleck/lgr/issues/29
+
 
 
 
