@@ -1,7 +1,8 @@
 # lgr (development version)
 
-* AppenderDBI now serializes list columns to JSON before inserting them into
-  a database
+* Moved Database and Email Appenders to the [lgr.app](https://github.com/s-fleck/lgr.app)
+  package
+  
 
 # lgr 0.3.3
 

@@ -26,6 +26,7 @@ cat(colorize_levels(c(100, 200)))
 cat(colorize_levels(c("trace", "warn ", "DEBUG")))
 }
 \seealso{
-Other formatting utils: \code{\link{label_levels}}
+Other formatting utils: 
+\code{\link{label_levels}()}
 }
 \concept{formatting utils}

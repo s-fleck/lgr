@@ -8,11 +8,13 @@
 
 <title>Appenders — Appender • lgr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,16 +34,18 @@
 
 
 
-<meta property="og:title" content="Appenders — Appender" />
 
+<meta property="og:title" content="Appenders — Appender" />
 <meta property="og:description" content="Appenders are assigned to Loggers and manage the output of the LogEvents
 to a destination (such as the console or a text file). An Appender has a
 single Layout that tells it how to format the LogEvent. For details
 please refer to the documentations of the specific Appenders.
 The Appender class itself is not designed for direct usage, but it is the
 basis on which all other Appenders are built. Please see the see also
-section towards the end of this document a list of available Appenders." />
+section towards the end of this document a list of available Appenders.
+More appenders can be found in the package lgr.app" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -71,7 +75,7 @@ section towards the end of this document a list of available Appenders." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9001</span>
       </span>
     </div>
 
@@ -93,7 +97,6 @@ section towards the end of this document a list of available Appenders." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -114,7 +117,6 @@ section towards the end of this document a list of available Appenders." />
     </div>
 
     <div class="ref-description">
-    
     <p>Appenders are assigned to <a href='Logger.html'>Loggers</a> and manage the output of the <a href='LogEvent.html'>LogEvents</a>
 to a destination (such as the console or a text file). An Appender has a
 single <a href='Layout.html'>Layout</a> that tells it how to format the LogEvent. For details
@@ -122,10 +124,11 @@ please refer to the documentations of the specific Appenders.</p>
 <p>The Appender class itself <strong>is not designed for direct usage</strong>, but it is the
 basis on which all other Appenders are built. Please see the <strong>see also</strong>
 section towards the end of this document a list of available Appenders.</p>
-    
+<p>More appenders can be found in the package <a href='https://github.com/s-fleck/lgr.app'>lgr.app</a></p>
     </div>
 
-        
+
+
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre>
@@ -143,7 +146,6 @@ x$filters
 x$layout
 x$threshold
     </pre>
-    
     <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
 
     
@@ -151,7 +153,6 @@ x$threshold
 arguments to <code>new()</code> please refer to the section <em>Fields</em>. You can also
 modify those fields after the Appender has been created with setters in the
 form of <code>appender$set_&lt;fieldname&gt;(value)</code></p>
-    
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
@@ -173,7 +174,6 @@ Since LogEvents have reference semantics, filters can also be abused to
 modify them before they are passed on. Look at the source code of
 <code><a href='with_log_level.html'>with_log_level()</a></code> or <code><a href='with_log_level.html'>with_log_value()</a></code> for examples.</p></dd>
 </dl>
-    
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
@@ -190,35 +190,27 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 be specified. <code>remove_filter()</code> can remove by position or name (if one
 was specified)</p></dd>
 </dl>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Appenders: <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
-  <code><a href='AppenderConsole.html'>AppenderConsole</a></code>, <code><a href='AppenderDbi.html'>AppenderDbi</a></code>,
-  <code><a href='AppenderFileRotating.html'>AppenderFileRotating</a></code>,
-  <code><a href='AppenderFile.html'>AppenderFile</a></code>, <code><a href='AppenderGmail.html'>AppenderGmail</a></code>,
-  <code><a href='AppenderJson.html'>AppenderJson</a></code>,
-  <code><a href='AppenderPushbullet.html'>AppenderPushbullet</a></code>,
-  <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>,
-  <code><a href='AppenderSendmail.html'>AppenderSendmail</a></code>,
-  <code><a href='AppenderSyslog.html'>AppenderSyslog</a></code>, <code><a href='AppenderTable.html'>AppenderTable</a></code></p></div>
-    
+    <div class='dont-index'><p>Other Appenders: 
+<code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
+<code><a href='AppenderConsole.html'>AppenderConsole</a></code>,
+<code><a href='AppenderFileRotating.html'>AppenderFileRotating</a></code>,
+<code><a href='AppenderFile.html'>AppenderFile</a></code>,
+<code><a href='AppenderJson.html'>AppenderJson</a></code>,
+<code><a href='AppenderSyslog.html'>AppenderSyslog</a></code>,
+<code><a href='AppenderTable.html'>AppenderTable</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
       <li><a href="#usage">Usage</a></li>
-
       <li><a href="#creating-a-new-appender">Creating a New Appender</a></li>
-
       <li><a href="#fields">Fields</a></li>
-
       <li><a href="#methods">Methods</a></li>
-
       <li><a href="#see-also">See also</a></li>
-          </ul>
+    </ul>
 
   </div>
 </div>

@@ -7,13 +7,11 @@
 \alias{format.ancestry}
 \title{Print a Logger Object}
 \usage{
-\method{print}{Logger}(x, color = requireNamespace("crayon", quietly =
-  TRUE), ...)
+\method{print}{Logger}(x, color = requireNamespace("crayon", quietly = TRUE), ...)
 
 \method{format}{Logger}(x, color = FALSE, ...)
 
-\method{print}{ancestry}(x, color = requireNamespace("crayon", quietly =
-  TRUE), ...)
+\method{print}{ancestry}(x, color = requireNamespace("crayon", quietly = TRUE), ...)
 
 \method{format}{ancestry}(x, color = FALSE, ...)
 }

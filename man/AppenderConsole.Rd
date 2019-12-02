@@ -34,10 +34,10 @@ x$threshold
 \section{Creating a New Appender}{
 
 
-New Appenders are instantiated with \code{<AppenderSubclass>$new()}. For the
+New Appenders are instantiated with \verb{<AppenderSubclass>$new()}. For the
 arguments to \code{new()} please refer to the section \emph{Fields}. You can also
 modify those fields after the Appender has been created with setters in the
-form of \code{appender$set_<fieldname>(value)}
+form of \verb{appender$set_<fieldname>(value)}
 }
 
 \section{Fields}{
@@ -106,15 +106,13 @@ lg$config(NULL) # reset config
 \seealso{
 \link{LayoutFormat}
 
-Other Appenders: \code{\link{AppenderBuffer}},
-  \code{\link{AppenderDbi}},
-  \code{\link{AppenderFileRotating}},
-  \code{\link{AppenderFile}}, \code{\link{AppenderGmail}},
-  \code{\link{AppenderJson}},
-  \code{\link{AppenderPushbullet}},
-  \code{\link{AppenderRjdbc}},
-  \code{\link{AppenderSendmail}},
-  \code{\link{AppenderSyslog}},
-  \code{\link{AppenderTable}}, \code{\link{Appender}}
+Other Appenders: 
+\code{\link{AppenderBuffer}},
+\code{\link{AppenderFileRotating}},
+\code{\link{AppenderFile}},
+\code{\link{AppenderJson}},
+\code{\link{AppenderSyslog}},
+\code{\link{AppenderTable}},
+\code{\link{Appender}}
 }
 \concept{Appenders}

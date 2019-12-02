@@ -60,7 +60,7 @@ a \code{buffer_size} and a \code{prototype}. These determine the structure of th
 modified anymore after the instantiation of the appender.
 
 The \link{Layout} for this Appender is used only to format console output of
-its \code{$show()} method.
+its \verb{$show()} method.
 
 \describe{
 \item{buffer_size}{\code{integer} scalar. Number of rows of the in-memory

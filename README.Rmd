@@ -146,12 +146,13 @@ file.remove(logfile)
 
 ## Development status
 
-The api of lgr is stable and safe for use. The internal implementation of
-the database logging features still needs some refinement, and if you are
-using lgr with a database, I would be grateful for any kind of 
-feedback.^[The only database logging I can currently test extensively is DB2 via RJDBC. I do not recommend this setup if you have other options.]
+lgr in general is stable and safe for use, but some Appenders are still 
+experimental. This especially concerns database appenders which are currently 
+beeing moved into to their own package 
+[lgr.app](https://github.com/s-fleck/lgr.app).
 
-lgr is currently very actively developed, and feature requests are encouraged.
+The documentation needs a rewrite and will be ported to roxygen 7.x.x soon. 
+If you have questions please file an issue.
 
 
 
@@ -172,13 +173,23 @@ actually want to use. Care was taken to choose packages that are slim, stable,
 have minimal dependencies, and are well maintained :
 
   
-  Extra appenders (and layouts):
+  Extra appenders (in the main package):
   
   - [jsonlite](https://github.com/jeroen/jsonlite) for JSON logging via 
     `LayoutJson`. JSON is a popular plaintext based file format that is easy to 
     read for humans and machines alike.
+    
   - [rotor](https://github.com/s-fleck/rotor) for log rotation via 
     AppenderFileRotating and co.
+    
+  - [data.table](https://github.com/Rdatatable/) for fast in-memory 
+    logging with `AppenderDt`, and also by all database / DBI Appenders. 
+
+  - [glue](https://glue.tidyverse.org/) for a more flexible formatting syntax
+    via LoggerGlue and LayoutGlue.
+    
+  Extra appenders via [lgr.app](https://github.com/s-fleck/lgr.app):
+  
   - [DBI](https://github.com/r-dbi/DBI) for logging to databases. lgr is 
     confirmed to work with the following backends: 
     - [RSQLite](https://github.com/r-dbi/RSQLite), 
@@ -190,17 +201,15 @@ have minimal dependencies, and are well maintained :
     In theory all DBI compliant database packages should work. If you
     are using lgr with a database backend, please report your (positive and
     negative) experiences, as database support is still somewhat experimental.
-  - [data.table](https://github.com/Rdatatable/) for fast in-memory 
-    logging with `AppenderDt`, and also by all database / DBI Appenders. 
+  
   - [gmailr](https://cran.r-project.org/package=gmailr) or
-    [sendmailR](https://cran.r-project.org/package=sendmailR) for email 
-    notifications.
+  
+  - [sendmailR](https://cran.r-project.org/package=sendmailR) for email 
+      notifications.
+      
   - [RPushbullet](https://github.com/eddelbuettel/rpushbullet) for push
     notifications.
-  - [glue](https://glue.tidyverse.org/) for a more flexible formatting syntax
-    via LoggerGlue and LayoutGlue.
-    
-    
+  
   Other extra features:
   
   - [yaml](https://CRAN.R-project.org/package=yaml) for configuring loggers 

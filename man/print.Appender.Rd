@@ -4,8 +4,7 @@
 \alias{print.Appender}
 \title{Print an Appender object}
 \usage{
-\method{print}{Appender}(x, color = requireNamespace("crayon", quietly =
-  TRUE), ...)
+\method{print}{Appender}(x, color = requireNamespace("crayon", quietly = TRUE), ...)
 }
 \arguments{
 \item{x}{any \R Object}

@@ -4,11 +4,17 @@
 \alias{basic_config}
 \title{Basic Setup for the Logging System}
 \usage{
-basic_config(file = NULL, fmt = "\%L [\%t] \%m",
-  timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3", threshold = "info",
-  appenders = NULL, console = if (is.null(appenders)) "all" else FALSE,
+basic_config(
+  file = NULL,
+  fmt = "\%L [\%t] \%m",
+  timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3",
+  threshold = "info",
+  appenders = NULL,
+  console = if (is.null(appenders)) "all" else FALSE,
   console_fmt = "\%L [\%t] \%m \%f",
-  console_timestamp_fmt = "\%H:\%M:\%OS3", memory = FALSE)
+  console_timestamp_fmt = "\%H:\%M:\%OS3",
+  memory = FALSE
+)
 }
 \arguments{
 \item{file}{\code{character} scalar: If not \code{NULL} a \link{AppenderFile} will be
@@ -42,7 +48,7 @@ the \code{root} Logger (lgr)
 }
 \description{
 A quick and easy way to configure the root logger. This is less powerful
-then using \link[=Logger]{lgr$config() or lgr$set_*()}, but reduces the
+then using \link[=Logger]{\code{lgr$config()} or \verb{lgr$set_*()}}, but reduces the
 most common configurations to a single line of code.
 }
 \examples{

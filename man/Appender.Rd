@@ -13,6 +13,8 @@ please refer to the documentations of the specific Appenders.
 The Appender class itself \strong{is not designed for direct usage}, but it is the
 basis on which all other Appenders are built. Please see the \strong{see also}
 section towards the end of this document a list of available Appenders.
+
+More appenders can be found in the package \href{https://github.com/s-fleck/lgr.app}{lgr.app}
 }
 \section{Usage}{
 \preformatted{
@@ -38,10 +40,10 @@ x$threshold
 \section{Creating a New Appender}{
 
 
-New Appenders are instantiated with \code{<AppenderSubclass>$new()}. For the
+New Appenders are instantiated with \verb{<AppenderSubclass>$new()}. For the
 arguments to \code{new()} please refer to the section \emph{Fields}. You can also
 modify those fields after the Appender has been created with setters in the
-form of \code{appender$set_<fieldname>(value)}
+form of \verb{appender$set_<fieldname>(value)}
 }
 
 \section{Fields}{
@@ -94,15 +96,14 @@ was specified)
 }
 
 \seealso{
-Other Appenders: \code{\link{AppenderBuffer}},
-  \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderFileRotating}},
-  \code{\link{AppenderFile}}, \code{\link{AppenderGmail}},
-  \code{\link{AppenderJson}},
-  \code{\link{AppenderPushbullet}},
-  \code{\link{AppenderRjdbc}},
-  \code{\link{AppenderSendmail}},
-  \code{\link{AppenderSyslog}}, \code{\link{AppenderTable}}
+Other Appenders: 
+\code{\link{AppenderBuffer}},
+\code{\link{AppenderConsole}},
+\code{\link{AppenderFileRotating}},
+\code{\link{AppenderFile}},
+\code{\link{AppenderJson}},
+\code{\link{AppenderSyslog}},
+\code{\link{AppenderTable}}
 }
 \concept{Appenders}
 \keyword{internal}

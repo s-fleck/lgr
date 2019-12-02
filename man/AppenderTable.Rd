@@ -74,19 +74,18 @@ was specified)
 }
 
 \seealso{
-Other abstract classes: \code{\link{AppenderDigest}},
-  \code{\link{AppenderMail}}, \code{\link{AppenderMemory}},
-  \code{\link{Filterable}}
+Other abstract classes: 
+\code{\link{AppenderMemory}},
+\code{\link{Filterable}}
 
-Other Appenders: \code{\link{AppenderBuffer}},
-  \code{\link{AppenderConsole}}, \code{\link{AppenderDbi}},
-  \code{\link{AppenderFileRotating}},
-  \code{\link{AppenderFile}}, \code{\link{AppenderGmail}},
-  \code{\link{AppenderJson}},
-  \code{\link{AppenderPushbullet}},
-  \code{\link{AppenderRjdbc}},
-  \code{\link{AppenderSendmail}},
-  \code{\link{AppenderSyslog}}, \code{\link{Appender}}
+Other Appenders: 
+\code{\link{AppenderBuffer}},
+\code{\link{AppenderConsole}},
+\code{\link{AppenderFileRotating}},
+\code{\link{AppenderFile}},
+\code{\link{AppenderJson}},
+\code{\link{AppenderSyslog}},
+\code{\link{Appender}}
 }
 \concept{Appenders}
 \concept{abstract classes}

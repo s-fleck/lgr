@@ -6,8 +6,13 @@
 \alias{as_tibble.LogEvent}
 \title{Coerce LogEvents to Data Frames}
 \usage{
-\method{as.data.frame}{LogEvent}(x, row.names = NULL, optional = FALSE,
-  stringsAsFactors = FALSE, ...)
+\method{as.data.frame}{LogEvent}(
+  x,
+  row.names = NULL,
+  optional = FALSE,
+  stringsAsFactors = FALSE,
+  ...
+)
 
 as.data.table.LogEvent(x, ...)
 

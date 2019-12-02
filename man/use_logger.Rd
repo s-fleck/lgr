@@ -4,8 +4,9 @@
 \alias{use_logger}
 \title{Setup a Simple Logger for a Package}
 \usage{
-use_logger(pkg = desc::desc_get("Package",
-  rprojroot::find_package_root_file("DESCRIPTION"))[[1]])
+use_logger(
+  pkg = desc::desc_get("Package", rprojroot::find_package_root_file("DESCRIPTION"))[[1]]
+)
 }
 \arguments{
 \item{pkg}{\code{character} scalar. Name of the package. The default is to try to

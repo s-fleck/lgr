@@ -8,11 +8,13 @@
 
 <title>Log to a memory buffer — AppenderBuffer • lgr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,11 +34,12 @@
 
 
 
-<meta property="og:title" content="Log to a memory buffer — AppenderBuffer" />
 
+<meta property="og:title" content="Log to a memory buffer — AppenderBuffer" />
 <meta property="og:description" content="An Appender that Buffers LogEvents in-memory and and redirects them to other
 Appenders once certain conditions are met." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -66,7 +69,7 @@ Appenders once certain conditions are met." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9001</span>
       </span>
     </div>
 
@@ -88,7 +91,6 @@ Appenders once certain conditions are met." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -109,13 +111,12 @@ Appenders once certain conditions are met." />
     </div>
 
     <div class="ref-description">
-    
     <p>An Appender that Buffers LogEvents in-memory and and redirects them to other
 Appenders once certain conditions are met.</p>
-    
     </div>
 
-        
+
+
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre>
@@ -159,13 +160,11 @@ x$layout
 x$should_flush
 x$threshold
     </pre>
-    
     <h2 class="hasAnchor" id="creating-a-buffer-appender"><a class="anchor" href="#creating-a-buffer-appender"></a>Creating a Buffer Appender</h2>
 
     
     <p>The <a href='Layout.html'>Layout</a> for this Appender is used only to format console output of
 its <code>$show()</code> method.</p>
-    
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
@@ -218,7 +217,6 @@ Since LogEvents have reference semantics, filters can also be abused to
 modify them before they are passed on. Look at the source code of
 <code><a href='with_log_level.html'>with_log_level()</a></code> or <code><a href='with_log_level.html'>with_log_value()</a></code> for examples.</p></dd>
 </dl>
-    
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
@@ -251,7 +249,6 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 be specified. <code>remove_filter()</code> can remove by position or name (if one
 was specified)</p></dd>
 </dl>
-    
     <h2 class="hasAnchor" id="comparison-appenderbuffer-and-appenderdt"><a class="anchor" href="#comparison-appenderbuffer-and-appenderdt"></a>Comparison AppenderBuffer and AppenderDt</h2>
 
     
@@ -265,39 +262,29 @@ calls and small loops, AppenderBuffer is more performant. This is related to
 how memory pre-allocation is handled by the appenders.</p>
 <p>In short: Use AppenderDt if you want an in-memory log for interactive use,
 and AppenderBuffer if you actually want to buffer events</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a></p>
-<p>Other Appenders: <code><a href='AppenderConsole.html'>AppenderConsole</a></code>,
-  <code><a href='AppenderDbi.html'>AppenderDbi</a></code>,
-  <code><a href='AppenderFileRotating.html'>AppenderFileRotating</a></code>,
-  <code><a href='AppenderFile.html'>AppenderFile</a></code>, <code><a href='AppenderGmail.html'>AppenderGmail</a></code>,
-  <code><a href='AppenderJson.html'>AppenderJson</a></code>,
-  <code><a href='AppenderPushbullet.html'>AppenderPushbullet</a></code>,
-  <code><a href='AppenderRjdbc.html'>AppenderRjdbc</a></code>,
-  <code><a href='AppenderSendmail.html'>AppenderSendmail</a></code>,
-  <code><a href='AppenderSyslog.html'>AppenderSyslog</a></code>,
-  <code><a href='AppenderTable.html'>AppenderTable</a></code>, <code><a href='Appender.html'>Appender</a></code></p></div>
-    
+<p>Other Appenders: 
+<code><a href='AppenderConsole.html'>AppenderConsole</a></code>,
+<code><a href='AppenderFileRotating.html'>AppenderFileRotating</a></code>,
+<code><a href='AppenderFile.html'>AppenderFile</a></code>,
+<code><a href='AppenderJson.html'>AppenderJson</a></code>,
+<code><a href='AppenderSyslog.html'>AppenderSyslog</a></code>,
+<code><a href='AppenderTable.html'>AppenderTable</a></code>,
+<code><a href='Appender.html'>Appender</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
       <li><a href="#usage">Usage</a></li>
-
       <li><a href="#creating-a-buffer-appender">Creating a Buffer Appender</a></li>
-
       <li><a href="#fields">Fields</a></li>
-
       <li><a href="#methods">Methods</a></li>
-
       <li><a href="#comparison-appenderbuffer-and-appenderdt">Comparison AppenderBuffer and AppenderDt</a></li>
-
       <li><a href="#see-also">See also</a></li>
-          </ul>
+    </ul>
 
   </div>
 </div>

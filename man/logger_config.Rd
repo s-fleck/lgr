@@ -7,8 +7,13 @@
 \alias{as_logger_config.character}
 \title{Logger Configuration Objects}
 \usage{
-logger_config(appenders = NULL, threshold = NULL, filters = NULL,
-  exception_handler = NULL, propagate = TRUE)
+logger_config(
+  appenders = NULL,
+  threshold = NULL,
+  filters = NULL,
+  exception_handler = NULL,
+  propagate = TRUE
+)
 
 as_logger_config(x)
 
@@ -44,7 +49,7 @@ a logger_config object
 }
 \description{
 \code{logger_config()} is an S3 constructor for \code{logger_config} objects
-that can be passed to the \code{$config} method of a \link{Logger}. You
+that can be passed to the \verb{$config} method of a \link{Logger}. You
 can just pass a normal \code{list} instead, but using this constructor is
 a more formal way that includes additional argument checking.
 }

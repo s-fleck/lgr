@@ -52,7 +52,7 @@ x$threshold
 
 
 \describe{
-\item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar \code{>= 0} Number of
+\item{\verb{buffer_size, set_buffer_size(x)}}{\code{integer} scalar \verb{>= 0} Number of
 \link{LogEvents} to buffer.
 }
 
@@ -150,8 +150,8 @@ was specified)
 \seealso{
 \link{LayoutFormat}
 
-Other abstract classes: \code{\link{AppenderDigest}},
-  \code{\link{AppenderMail}}, \code{\link{AppenderTable}},
-  \code{\link{Filterable}}
+Other abstract classes: 
+\code{\link{AppenderTable}},
+\code{\link{Filterable}}
 }
 \concept{abstract classes}

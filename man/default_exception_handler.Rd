@@ -7,7 +7,7 @@
 default_exception_handler(e)
 }
 \arguments{
-\item{e}{an \code{error condition} object}
+\item{e}{an \verb{error condition} object}
 }
 \value{
 The warning as \code{character} vector

@@ -58,7 +58,7 @@ x$threshold
 
 
 The \link{Layout} for this Appender is used only to format console output of
-its \code{$show()} method.
+its \verb{$show()} method.
 }
 
 \section{Fields}{
@@ -67,10 +67,10 @@ its \code{$show()} method.
 \describe{
 \item{\code{appenders}, \code{set_appenders()}}{Like for a \link{Logger}. Buffered events
 will be passed on to these Appenders once a flush is triggered}
-\item{\code{flush_on_exit, set_flush_on_exit(x)}}{\code{TRUE} or \code{FALSE}: Whether the
+\item{\verb{flush_on_exit, set_flush_on_exit(x)}}{\code{TRUE} or \code{FALSE}: Whether the
 buffer should be flushed when the Appender is garbage collected (f.e when
 you close \R)}
-\item{\code{flush_on_rotate, set_flush_on_rotate}}{\code{TRUE} or \code{FALSE}: Whether
+\item{\verb{flush_on_rotate, set_flush_on_rotate}}{\code{TRUE} or \code{FALSE}: Whether
 the buffer should be flushed when the Buffer is full (f.e when you close
 \R). Setting this to off can have slightly negative performance impacts.}
 }
@@ -78,7 +78,7 @@ the buffer should be flushed when the Buffer is full (f.e when you close
 
 
 \describe{
-\item{\code{buffer_size, set_buffer_size(x)}}{\code{integer} scalar \code{>= 0} Number of
+\item{\verb{buffer_size, set_buffer_size(x)}}{\code{integer} scalar \verb{>= 0} Number of
 \link{LogEvents} to buffer.
 }
 
@@ -207,15 +207,13 @@ and AppenderBuffer if you actually want to buffer events
 \seealso{
 \link{LayoutFormat}
 
-Other Appenders: \code{\link{AppenderConsole}},
-  \code{\link{AppenderDbi}},
-  \code{\link{AppenderFileRotating}},
-  \code{\link{AppenderFile}}, \code{\link{AppenderGmail}},
-  \code{\link{AppenderJson}},
-  \code{\link{AppenderPushbullet}},
-  \code{\link{AppenderRjdbc}},
-  \code{\link{AppenderSendmail}},
-  \code{\link{AppenderSyslog}},
-  \code{\link{AppenderTable}}, \code{\link{Appender}}
+Other Appenders: 
+\code{\link{AppenderConsole}},
+\code{\link{AppenderFileRotating}},
+\code{\link{AppenderFile}},
+\code{\link{AppenderJson}},
+\code{\link{AppenderSyslog}},
+\code{\link{AppenderTable}},
+\code{\link{Appender}}
 }
 \concept{Appenders}

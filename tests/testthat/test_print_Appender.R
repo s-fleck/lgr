@@ -4,13 +4,7 @@ context("print_Appender")
 
 
 test_that("all Appenders print() without failure", {
-  if (
-    !requireNamespace("sendmailR") ||
-    !requireNamespace("RPushbullet") ||
-    !requireNamespace("rotor") ||
-    !requireNamespace("DBI") ||
-    !requireNamespace("RSQLite")
-  ){
+  if (!requireNamespace("rotor")){
     skip("Required packages not installed")
   }
 
@@ -21,16 +15,12 @@ test_that("all Appenders print() without failure", {
     print(Appender$new())
     print(AppenderConsole$new())
     print(AppenderConsole$new(layout = LayoutGlue$new()))
-    print(AppenderDbi$new(RSQLite::dbConnect(RSQLite::SQLite()), "blubb"))
     print(AppenderMemory$new())
-    print(AppenderMail$new())
-    print(AppenderSendmail$new("test@blah.com", control = list()))
     print(AppenderTable$new())
     print(AppenderBuffer$new(appenders = list(
       AppenderConsole$new(),
       blah = AppenderBuffer$new()
     )))
-    print(AppenderPushbullet$new(recipients = "blubb"))
     print(AppenderFileRotating$new(tf))
     print(AppenderFileRotating$new(tf, size = "1kb"))
     app <- AppenderFileRotatingDate$new(tf, layout = LayoutJson$new())

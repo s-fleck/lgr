@@ -27,23 +27,16 @@ Suggests:
     covr,
     crayon,
     data.table,
-    DBI,
     desc,
     future,
     future.apply,
     glue,
-    gmailr,
     jsonlite,
     knitr,
-    RMariaDB,
     rmarkdown,
     rotor (>= 0.2.2),
-    RPostgres,
     rprojroot,
-    RPushbullet,
-    RSQLite,
     rsyslog,
-    sendmailR,
     testthat,
     tibble,
     tools,
@@ -55,7 +48,7 @@ VignetteBuilder:
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.1.9000
 Collate: 
     'Filterable.R'
     'utils-sfmisc.R'

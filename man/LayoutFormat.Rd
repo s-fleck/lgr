@@ -55,22 +55,22 @@ This is the same list of format tokens as for \code{\link[=format.LogEvent]{form
 
 
 \describe{
-\item{\code{\%t}}{The timestamp of the message, formatted according to
+\item{\verb{\%t}}{The timestamp of the message, formatted according to
 \code{timestamp_fmt})}
-\item{\code{\%l}}{the log level, lowercase \code{character} representation}
-\item{\code{\%L}}{the log level, uppercase \code{character} representation}
-\item{\code{\%k}}{the log level, first letter of lowercase \code{character} representation}
-\item{\code{\%K}}{the log level, first letter of uppercase \code{character} representation}
-\item{\code{\%n}}{the log level, \code{integer} representation}
-\item{\code{\%p}}{the PID (process ID). Useful when logging code that uses
+\item{\verb{\%l}}{the log level, lowercase \code{character} representation}
+\item{\verb{\%L}}{the log level, uppercase \code{character} representation}
+\item{\verb{\%k}}{the log level, first letter of lowercase \code{character} representation}
+\item{\verb{\%K}}{the log level, first letter of uppercase \code{character} representation}
+\item{\verb{\%n}}{the log level, \code{integer} representation}
+\item{\verb{\%p}}{the PID (process ID). Useful when logging code that uses
 multiple threads.}
-\item{\code{\%c}}{the calling function}
-\item{\code{\%m}}{the log message}
-\item{\code{\%f}}{all custom fields of \code{x} in a pseudo-JSON like format that is
+\item{\verb{\%c}}{the calling function}
+\item{\verb{\%m}}{the log message}
+\item{\verb{\%f}}{all custom fields of \code{x} in a pseudo-JSON like format that is
 optimized for human readability and console output}
-\item{\code{\%j}}{all custom fields of \code{x} in proper JSON. This requires that you
+\item{\verb{\%j}}{all custom fields of \code{x} in proper JSON. This requires that you
 have \strong{jsonlite} installed and does not support colors as opposed to
-\code{\%f}
+\verb{\%f}
 }
 }
 }
@@ -97,8 +97,9 @@ lo$format_event(event)
 
 }
 \seealso{
-Other Layouts: \code{\link{LayoutDbi}},
-  \code{\link{LayoutGlue}}, \code{\link{LayoutJson}},
-  \code{\link{Layout}}
+Other Layouts: 
+\code{\link{LayoutGlue}},
+\code{\link{LayoutJson}},
+\code{\link{Layout}}
 }
 \concept{Layouts}

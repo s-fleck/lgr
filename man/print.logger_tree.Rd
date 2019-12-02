@@ -5,8 +5,7 @@
 \alias{format.logger_tree}
 \title{Print Logger Trees}
 \usage{
-\method{print}{logger_tree}(x, color = requireNamespace("crayon", quietly
-  = TRUE), ...)
+\method{print}{logger_tree}(x, color = requireNamespace("crayon", quietly = TRUE), ...)
 
 \method{format}{logger_tree}(x, color = FALSE, ...)
 }

@@ -59,7 +59,7 @@ as \code{integer} (invisibly)
 \code{add_appender()} and \code{remove_appender()} return \code{target}.
 
 \code{show_log()} prints to the console and returns whatever the target
-Appender's \code{$show()} method returns, usually a \code{character} vector,
+Appender's \verb{$show()} method returns, usually a \code{character} vector,
 \code{data.frame} or \code{data.table} (invisibly).
 
 \code{show_data()} always returns a \code{data.frame} and \code{show_dt()} always returns
@@ -86,7 +86,7 @@ Appenders. (equivalent to \code{lgr::lgr$add_appender} and
 \code{lgr::lgr$remove_appender})
 
 \code{show_log()} displays the last \code{n} log entries of an Appender (or a Logger
-with such an Appender attached) with a \code{$show()} method. Most, but not all
+with such an Appender attached) with a \verb{$show()} method. Most, but not all
 Appenders support this function (try \link{AppenderFile} or \link{AppenderBuffer}).
 
 \code{show_data()} and \code{show_dt()} work similar to \code{show_log()}, except that

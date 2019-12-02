@@ -10,7 +10,7 @@ A Logger produces a \link{LogEvent} that contains the log message along with
 metadata (timestamp, calling function) and dispatches it to one or several
 \link{Appenders} which are responsible for the output (console, file, ...) of the
 event. \strong{lgr} comes with a single pre-configured Logger called the
-\code{root Logger} that can be accessed via \code{lgr$<...>}. Instantiation of new
+\verb{root Logger} that can be accessed via \verb{lgr$<...>}. Instantiation of new
 Loggers is only necessary if you want to take advantage of hierarchical
 logging as outlined in \code{vignette("lgr", package = "lgr")}.
 }
@@ -89,8 +89,8 @@ a new \link{Appender}, not a new Logger.
 
 
 You can modify the fields of an existing Logger with
-\code{logger$set_<fieldname>(value)} (see examples). Another way to configure
-loggers is via its \code{$config()} method.
+\verb{logger$set_<fieldname>(value)} (see examples). Another way to configure
+loggers is via its \verb{$config()} method.
 
 \describe{
 \item{\code{appenders}, \code{set_appenders(x)}}{A single \link{Appender} or a \code{list}
@@ -190,7 +190,7 @@ to the relevant \link{Appenders} and checked against their thresholds and
 filters.
 }
 
-\item{\code{config(cfg, file, text, list}}{Load a Logger
+\item{\verb{config(cfg, file, text, list}}{Load a Logger
 configuration. \code{cfg} can be either
 \itemize{
 \item a special list object with any or all of the the following elements:
@@ -279,8 +279,8 @@ print(child$name)
 tf2 <- tempfile()
 lg$add_appender(AppenderFile$new(tf2, layout = LayoutJson$new()))
 lg$info("Not all \%s support custom fields", "appenders", type = "test")
-cat(readLines(tf), sep = "\\n")
-cat(readLines(tf2), sep = "\\n")
+cat(readLines(tf), sep = "\n")
+cat(readLines(tf2), sep = "\n")
 
 # cleanup
 unlink(c(tf, tf2))

@@ -7,7 +7,7 @@
 \alias{FilterForceLevel}
 \title{Event Filters}
 \description{
-Filters can be used for the \code{$set_filter()} and \code{$add_filter()} methods of
+Filters can be used for the \verb{$set_filter()} and \verb{$add_filter()} methods of
 Appenders and Loggers. You normally do not need to construct a formal
 \code{EventFilter} object, you can just use any \code{function} that has the single
 argument \code{event} or any object that has a \code{filter} method.
@@ -64,8 +64,8 @@ lg$config(NULL)  # reset config
 # using .obj()
 lg <- get_logger("test")
 f <- function(event) {
-  cat("via event$.logger:", event$.logger$threshold, "\\n")  #  works for loggers only
-  cat("via .obj():      ",.obj()$threshold, "\\n") # works for loggers and appenders
+  cat("via event$.logger:", event$.logger$threshold, "\n")  #  works for loggers only
+  cat("via .obj():      ",.obj()$threshold, "\n") # works for loggers and appenders
   TRUE
 }
 lg$add_filter(f)

@@ -25,7 +25,7 @@ x$toJSON_args
 
 
 
-Layouts are instantiated with \code{<LayoutSubclass>$new()}. For a description of
+Layouts are instantiated with \verb{<LayoutSubclass>$new()}. For a description of
 the arguments to this function please refer to the Fields section.
 }
 
@@ -68,8 +68,9 @@ lo$format_event(event)
 \seealso{
 \code{\link[=read_json_lines]{read_json_lines()}}, \url{http://jsonlines.org/}
 
-Other Layouts: \code{\link{LayoutDbi}},
-  \code{\link{LayoutFormat}}, \code{\link{LayoutGlue}},
-  \code{\link{Layout}}
+Other Layouts: 
+\code{\link{LayoutFormat}},
+\code{\link{LayoutGlue}},
+\code{\link{Layout}}
 }
 \concept{Layouts}

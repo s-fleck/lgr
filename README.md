@@ -65,13 +65,13 @@ vignette.
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [08:25:07.182] A critical error
+#> FATAL [19:30:12.300] A critical error
 lgr$error("A less severe error")
-#> ERROR [08:25:07.211] A less severe error
+#> ERROR [19:30:12.344] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [08:25:07.221] A potentially bad situation
+#> WARN  [19:30:12.359] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [08:25:07.223] iris has 150 rows
+#> INFO  [19:30:12.362] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
@@ -85,9 +85,9 @@ appender to log to a file with little effort.
 tf <- tempfile()
 lgr$add_appender(AppenderFile$new(tf, layout = LayoutJson$new()))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [08:25:07.239] cars has 50 rows
+#> INFO  [19:30:12.390] cars has 50 rows
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2019-06-11 08:25:07","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-12-02 19:30:12","logger":"root","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 By passing a named argument to `info()`, `warn()`, and co you can log
@@ -97,10 +97,10 @@ logfiles that are machine as well as (somewhat) human readable.
 
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [08:25:07.258] loading cars {rows: 50, cols: 2}
+#> INFO  [19:30:12.416] loading cars {rows: 50, cols: 2}
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2019-06-11 08:25:07","logger":"root","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2019-06-11 08:25:07","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
+#> {"level":400,"timestamp":"2019-12-02 19:30:12","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-12-02 19:30:12","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
 ```
 
 For more examples please see the package
@@ -135,13 +135,13 @@ file.remove(logfile)
 
 ## Development status
 
-The api of lgr is stable and safe for use. The internal implementation
-of the database logging features still needs some refinement, and if you
-are using lgr with a database, I would be grateful for any kind of
-feedback.\[1\]
+lgr in general is stable and safe for use, but some Appenders are still
+experimental. This especially concerns database appenders which are
+currently beeing moved into to their own package
+[lgr.app](https://github.com/s-fleck/lgr.app).
 
-lgr is currently very actively developed, and feature requests are
-encouraged.
+The documentation needs a rewrite and will be ported to roxygen 7.x.x
+soon. If you have questions please file an issue.
 
 ## Dependencies
 
@@ -160,34 +160,45 @@ Appenders you actually want to use. Care was taken to choose packages
 that are slim, stable, have minimal dependencies, and are well
 maintained :
 
-Extra appenders (and layouts):
+Extra appenders (in the main package):
 
   - [jsonlite](https://github.com/jeroen/jsonlite) for JSON logging via
     `LayoutJson`. JSON is a popular plaintext based file format that is
     easy to read for humans and machines alike.
+
   - [rotor](https://github.com/s-fleck/rotor) for log rotation via
     AppenderFileRotating and co.
+
+  - [data.table](https://github.com/Rdatatable/) for fast in-memory
+    logging with `AppenderDt`, and also by all database / DBI Appenders.
+
+  - [glue](https://glue.tidyverse.org/) for a more flexible formatting
+    syntax via LoggerGlue and LayoutGlue.
+
+Extra appenders via [lgr.app](https://github.com/s-fleck/lgr.app):
+
   - [DBI](https://github.com/r-dbi/DBI) for logging to databases. lgr is
     confirmed to work with the following backends:
+    
       - [RSQLite](https://github.com/r-dbi/RSQLite),
       - [RMariaDB](https://github.com/r-dbi/RMariaDB) for MariaDB and
         MySQL,
       - [RPostgres](https://cran.r-project.org/package=RPostgres),
       - [RJDBC](https://github.com/s-u/RJDBC) for DB2, and
       - [odbc](https://github.com/r-dbi/odbc) also for DB2.
+    
     In theory all DBI compliant database packages should work. If you
     are using lgr with a database backend, please report your (positive
     and negative) experiences, as database support is still somewhat
     experimental.
-  - [data.table](https://github.com/Rdatatable/) for fast in-memory
-    logging with `AppenderDt`, and also by all database / DBI Appenders.
+
   - [gmailr](https://cran.r-project.org/package=gmailr) or
-    [sendmailR](https://cran.r-project.org/package=sendmailR) for email
+
+  - [sendmailR](https://cran.r-project.org/package=sendmailR) for email
     notifications.
+
   - [RPushbullet](https://github.com/eddelbuettel/rpushbullet) for push
     notifications.
-  - [glue](https://glue.tidyverse.org/) for a more flexible formatting
-    syntax via LoggerGlue and LayoutGlue.
 
 Other extra features:
 
@@ -234,8 +245,3 @@ to post a feature request on the issue tracker.
 
   - [Inkscape](https://inkscape.org/) for the hex sticker
   - [draw.io](https://draw.io/) for the flow chart in the vignette
-
-<!-- end list -->
-
-1.  The only database logging I can currently test extensively is DB2
-    via RJDBC. I do not recommend this setup if you have other options.

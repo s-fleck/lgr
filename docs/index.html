@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9001</span>
       </span>
     </div>
 
@@ -110,13 +110,13 @@
 <a href="#usage" class="anchor"></a>Usage</h2>
 <p>To log an <em>event</em> with with lgr we call <code>lgr$&lt;logging function&gt;()</code>. Unnamed arguments to the logging function are interpreted by <code><a href="https://rdrr.io/r/base/sprintf.html">sprintf()</a></code>. For a way to create loggers that <a href="https://glue.tidyverse.org/">glue</a> instead please refer to the vignette.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">lgr<span class="op">$</span><span class="kw">fatal</span>(<span class="st">"A critical error"</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; FATAL [19:12:58.124] A critical error</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; FATAL [19:33:17.672] A critical error</span></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">lgr<span class="op">$</span><span class="kw">error</span>(<span class="st">"A less severe error"</span>)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; ERROR [19:12:58.220] A less severe error</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; ERROR [19:33:17.723] A less severe error</span></a>
 <a class="sourceLine" id="cb1-5" data-line-number="5">lgr<span class="op">$</span><span class="kw">warn</span>(<span class="st">"A potentially bad situation"</span>)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; WARN  [19:12:58.254] A potentially bad situation</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; WARN  [19:33:17.732] A potentially bad situation</span></a>
 <a class="sourceLine" id="cb1-7" data-line-number="7">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"iris has %s rows"</span>, <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(iris))</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; INFO  [19:12:58.257] iris has 150 rows</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; INFO  [19:33:17.734] iris has 150 rows</span></a>
 <a class="sourceLine" id="cb1-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co"># the following log levels are hidden by default</span></a>
 <a class="sourceLine" id="cb1-11" data-line-number="11">lgr<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/debug.html">debug</a></span>(<span class="st">"A debug message"</span>)</a>
@@ -125,15 +125,15 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">tf &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>()</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">lgr<span class="op">$</span><span class="kw"><a href="reference/simple_logging.html">add_appender</a></span>(AppenderFile<span class="op">$</span><span class="kw">new</span>(tf, <span class="dt">layout =</span> LayoutJson<span class="op">$</span><span class="kw">new</span>()))</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"cars has %s rows"</span>, <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(cars))</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; INFO  [19:12:58.281] cars has 50 rows</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; INFO  [19:33:17.754] cars has 50 rows</span></a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(tf))</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; {"level":400,"timestamp":"2019-09-26 19:12:58","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; {"level":400,"timestamp":"2019-12-02 19:33:17","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></a></code></pre></div>
 <p>By passing a named argument to <code>info()</code>, <code>warn()</code>, and co you can log not only text but arbitrary R objects. Not all appenders handle such <em>custom fields</em> perfectly, but JSON does. This way you can create logfiles that are machine as well as (somewhat) human readable.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"loading cars"</span>, <span class="st">"cars"</span>, <span class="dt">rows =</span> <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(cars), <span class="dt">cols =</span> <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span>(cars))</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; INFO  [19:12:58.320] loading cars {rows: 50, cols: 2}</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; INFO  [19:33:17.775] loading cars {rows: 50, cols: 2}</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(tf), <span class="dt">sep =</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; {"level":400,"timestamp":"2019-09-26 19:12:58","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; {"level":400,"timestamp":"2019-09-26 19:12:58","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; {"level":400,"timestamp":"2019-12-02 19:33:17","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; {"level":400,"timestamp":"2019-12-02 19:33:17","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}</span></a></code></pre></div>
 <p>For more examples please see the package <a href="https://s-fleck.github.io/lgr/articles/lgr.html">vignette</a> and <a href="https://s-fleck.github.io/lgr/">documentation</a></p>
 </div>
 <div id="see-lgr-in-action" class="section level2">
@@ -162,8 +162,8 @@
 <div id="development-status" class="section level2">
 <h2 class="hasAnchor">
 <a href="#development-status" class="anchor"></a>Development status</h2>
-<p>The api of lgr is stable and safe for use. The internal implementation of the database logging features still needs some refinement, and if you are using lgr with a database, I would be grateful for any kind of feedback.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
-<p>lgr is currently very actively developed, and feature requests are encouraged.</p>
+<p>lgr in general is stable and safe for use, but some Appenders are still experimental. This especially concerns database appenders which are currently beeing moved into to their own package <a href="https://github.com/s-fleck/lgr.app">lgr.app</a>.</p>
+<p>The documentation needs a rewrite and will be ported to roxygen 7.x.x soon. If you have questions please file an issue.</p>
 </div>
 <div id="dependencies" class="section level2">
 <h2 class="hasAnchor">
@@ -173,12 +173,15 @@
 <h3 class="hasAnchor">
 <a href="#optional-dependencies" class="anchor"></a>Optional dependencies</h3>
 <p>lgr comes with a long list of optional dependencies that make a wide range of appenders possible. You only need the dependencies for the Appenders you actually want to use. Care was taken to choose packages that are slim, stable, have minimal dependencies, and are well maintained :</p>
-<p>Extra appenders (and layouts):</p>
+<p>Extra appenders (in the main package):</p>
 <ul>
-<li>
-<a href="https://github.com/jeroen/jsonlite">jsonlite</a> for JSON logging via <code>LayoutJson</code>. JSON is a popular plaintext based file format that is easy to read for humans and machines alike.</li>
-<li>
-<a href="https://github.com/s-fleck/rotor">rotor</a> for log rotation via AppenderFileRotating and co.</li>
+<li><p><a href="https://github.com/jeroen/jsonlite">jsonlite</a> for JSON logging via <code>LayoutJson</code>. JSON is a popular plaintext based file format that is easy to read for humans and machines alike.</p></li>
+<li><p><a href="https://github.com/s-fleck/rotor">rotor</a> for log rotation via AppenderFileRotating and co.</p></li>
+<li><p><a href="https://github.com/Rdatatable/">data.table</a> for fast in-memory logging with <code>AppenderDt</code>, and also by all database / DBI Appenders.</p></li>
+<li><p><a href="https://glue.tidyverse.org/">glue</a> for a more flexible formatting syntax via LoggerGlue and LayoutGlue.</p></li>
+</ul>
+<p>Extra appenders via <a href="https://github.com/s-fleck/lgr.app">lgr.app</a>:</p>
+<ul>
 <li>
 <a href="https://github.com/r-dbi/DBI">DBI</a> for logging to databases. lgr is confirmed to work with the following backends:
 <ul>
@@ -193,15 +196,11 @@
 <li>
 <a href="https://github.com/r-dbi/odbc">odbc</a> also for DB2.</li>
 </ul>
-In theory all DBI compliant database packages should work. If you are using lgr with a database backend, please report your (positive and negative) experiences, as database support is still somewhat experimental.</li>
-<li>
-<a href="https://github.com/Rdatatable/">data.table</a> for fast in-memory logging with <code>AppenderDt</code>, and also by all database / DBI Appenders.</li>
-<li>
-<a href="https://cran.r-project.org/package=gmailr">gmailr</a> or <a href="https://cran.r-project.org/package=sendmailR">sendmailR</a> for email notifications.</li>
-<li>
-<a href="https://github.com/eddelbuettel/rpushbullet">RPushbullet</a> for push notifications.</li>
-<li>
-<a href="https://glue.tidyverse.org/">glue</a> for a more flexible formatting syntax via LoggerGlue and LayoutGlue.</li>
+<p>In theory all DBI compliant database packages should work. If you are using lgr with a database backend, please report your (positive and negative) experiences, as database support is still somewhat experimental.</p>
+</li>
+<li><p><a href="https://cran.r-project.org/package=gmailr">gmailr</a> or</p></li>
+<li><p><a href="https://cran.r-project.org/package=sendmailR">sendmailR</a> for email notifications.</p></li>
+<li><p><a href="https://github.com/eddelbuettel/rpushbullet">RPushbullet</a> for push notifications.</p></li>
 </ul>
 <p>Other extra features:</p>
 <ul>
@@ -248,12 +247,6 @@ In theory all DBI compliant database packages should work. If you are using lgr 
 </ul>
 </div>
 </div>
-<div class="footnotes">
-<hr>
-<ol>
-<li id="fn1"><p>The only database logging I can currently test extensively is DB2 via RJDBC. I do not recommend this setup if you have other options.<a href="#fnref1" class="footnote-back">↩</a></p></li>
-</ol>
-</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -279,6 +272,7 @@ In theory all DBI compliant database packages should work. If you are using lgr 
 <li>Stefan Fleck <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-3344-9851" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
 </ul>
 </div>
+
 
       <div class="dev-status">
 <h2>Dev status</h2>

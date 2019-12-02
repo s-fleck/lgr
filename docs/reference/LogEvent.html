@@ -8,11 +8,13 @@
 
 <title>Events - The Atomic Unit of Logging — LogEvent • lgr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,11 +34,12 @@
 
 
 
-<meta property="og:title" content="Events - The Atomic Unit of Logging — LogEvent" />
 
+<meta property="og:title" content="Events - The Atomic Unit of Logging — LogEvent" />
 <meta property="og:description" content="A LogEvent is a single unit of data that should be logged. LogEvents are
 usually created by a Logger, and then processed by Appenders." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -66,7 +69,7 @@ usually created by a Logger, and then processed by Appenders." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9001</span>
       </span>
     </div>
 
@@ -88,7 +91,6 @@ usually created by a Logger, and then processed by Appenders." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -109,13 +111,12 @@ usually created by a Logger, and then processed by Appenders." />
     </div>
 
     <div class="ref-description">
-    
     <p>A <code>LogEvent</code> is a single unit of data that should be logged. <code>LogEvents</code> are
 usually created by a <a href='Logger.html'>Logger</a>, and then processed by <a href='Appender.html'>Appenders</a>.</p>
-    
     </div>
 
-        
+
+
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre>
@@ -131,7 +132,6 @@ x$msg
 x$timestamp
 x$values
     </pre>
-    
     <h2 class="hasAnchor" id="creating-logevents-fields"><a class="anchor" href="#creating-logevents-fields"></a>Creating LogEvents / Fields</h2>
 
     
@@ -159,7 +159,6 @@ an Appender that supports custom fields quite naturally.</p></dd>
 can also be vectors if they are all of the same length (or scalars that will
 be recycled). In this case the event will be treated by the <a href='Appender.html'>Appenders</a> and
 <a href='Layout.html'>Layouts</a> as if several separate events.</p>
-    
     <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active Bindings</h2>
 
     
@@ -175,21 +174,19 @@ created this event, equivalent to <code>event$logger$name</code>)</p></dd>
 <dt><code>logger_user</code></dt><dd><p><code>character</code> scalar: The user of the Logger that
 created this event, equivalent to <code>event$logger_user</code>)</p></dd>
 </dl>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='as.data.frame.LogEvent.html'>as.data.frame.LogEvent()</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)
-<span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"foo bar"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;'>ERROR</span><span> [19:13:15.061] foo bar </div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"foo bar"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;'>ERROR</span><span> [19:33:29.351] foo bar </div><div class='input'>
 <span class='co'># The last LogEvent produced by a Logger is stored in the last_event field</span>
-<span class='no'>lg</span>$<span class='no'>last_event</span>  <span class='co'># formatted by default</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [2019-09-26 19:13:15] foo bar  </div><div class='input'><span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>values</span>  <span class='co'># values stored in the event</span></div><div class='output co'>#&gt; $level
+<span class='no'>lg</span>$<span class='no'>last_event</span>  <span class='co'># formatted by default</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [2019-12-02 19:33:29] foo bar  </div><div class='input'><span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>values</span>  <span class='co'># values stored in the event</span></div><div class='output co'>#&gt; $level
 #&gt; [1] 200
 #&gt; 
 #&gt; $timestamp
-#&gt; [1] "2019-09-26 19:13:15 CEST"
+#&gt; [1] "2019-12-02 19:33:29 CET"
 #&gt; 
 #&gt; $logger
 #&gt; [1] "test"
@@ -213,15 +210,10 @@ created this event, equivalent to <code>event$logger_user</code>)</p></dd>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
       <li><a href="#usage">Usage</a></li>
-
       <li><a href="#creating-logevents-fields">Creating LogEvents / Fields</a></li>
-
       <li><a href="#active-bindings">Active Bindings</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

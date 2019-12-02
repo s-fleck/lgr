@@ -17,7 +17,7 @@ as a hierarchical value.}
 are the only valid choices.}
 
 \item{reset}{a \code{logical} scalar. If \code{TRUE} the logger is reset to an
-unconfigured state. Unlike \code{$config(NULL)} this also replaces a
+unconfigured state. Unlike \verb{$config(NULL)} this also replaces a
 \code{LoggerGlue} with vanilla \code{Logger}. Please note that this will invalidate
 Logger references created before the reset call (see examples).}
 }

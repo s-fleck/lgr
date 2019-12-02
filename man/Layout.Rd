@@ -14,7 +14,7 @@ usually formatted into a single character line.
 \section{Creating a New Layout}{
 
 
-Layouts are instantiated with \code{<LayoutSubclass>$new()}. For a description of
+Layouts are instantiated with \verb{<LayoutSubclass>$new()}. For a description of
 the arguments to this function please refer to the Fields section.
 }
 
@@ -27,9 +27,10 @@ the arguments to this function please refer to the Fields section.
 }
 
 \seealso{
-Other Layouts: \code{\link{LayoutDbi}},
-  \code{\link{LayoutFormat}}, \code{\link{LayoutGlue}},
-  \code{\link{LayoutJson}}
+Other Layouts: 
+\code{\link{LayoutFormat}},
+\code{\link{LayoutGlue}},
+\code{\link{LayoutJson}}
 }
 \concept{Layouts}
 \keyword{internal}

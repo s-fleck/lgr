@@ -8,11 +8,13 @@
 
 <title>Abstract Class for Filterables — Filterable • lgr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,14 +34,15 @@
 
 
 
-<meta property="og:title" content="Abstract Class for Filterables — Filterable" />
 
+<meta property="og:title" content="Abstract Class for Filterables — Filterable" />
 <meta property="og:description" content="Abstract classes are exported for package developers that want to extend
 them, they cannot be instantiated directly.
 Superclass for classes that have a filter() method such as Appenders and
 Loggers. This class is only exported for package developers that want to
 extend it." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -69,7 +72,7 @@ extend it." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9001</span>
       </span>
     </div>
 
@@ -91,7 +94,6 @@ extend it." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -112,23 +114,16 @@ extend it." />
     </div>
 
     <div class="ref-description">
-    
     <p><strong>Abstract classes</strong> are exported for package developers that want to extend
 them, they cannot be instantiated directly.</p>
 <p>Superclass for classes that have a <code><a href='https://rdrr.io/r/stats/filter.html'>filter()</a></code> method such as <a href='Appender.html'>Appenders</a> and
 <a href='Logger.html'>Loggers</a>. This class is only exported for package developers that want to
 extend it.</p>
-    
     </div>
 
-    <pre class="usage"><span class='no'>Filterable</span>
+    <pre class="usage"><span class='fu'>.obj</span>()</pre>
 
-<span class='fu'>.obj</span>()</pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>An object of class <code>R6ClassGenerator</code> of length 24.</p>
-    
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
@@ -142,7 +137,6 @@ Since LogEvents have reference semantics, filters can also be abused to
 modify them before they are passed on. Look at the source code of
 <code><a href='with_log_level.html'>with_log_level()</a></code> or <code><a href='with_log_level.html'>with_log_value()</a></code> for examples.</p></dd>
 </dl>
-    
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
@@ -154,27 +148,46 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 be specified. <code>remove_filter()</code> can remove by position or name (if one
 was specified)</p></dd>
 </dl>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other abstract classes: <code><a href='AppenderDigest.html'>AppenderDigest</a></code>,
-  <code><a href='AppenderMail.html'>AppenderMail</a></code>, <code><a href='AppenderMemory.html'>AppenderMemory</a></code>,
-  <code><a href='AppenderTable.html'>AppenderTable</a></code></p></div>
-    
+    <div class='dont-index'><p>Other abstract classes: 
+<code><a href='AppenderMemory.html'>AppenderMemory</a></code>,
+<code><a href='AppenderTable.html'>AppenderTable</a></code></p></div>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    <h3>Public methods</h3>
+    <ul>
+<li><p><a href='#method-filter'><code>Filterable$filter()</code></a></p></li>
+<li><p><a href='#method-add_filter'><code>Filterable$add_filter()</code></a></p></li>
+<li><p><a href='#method-remove_filter'><code>Filterable$remove_filter()</code></a></p></li>
+<li><p><a href='#method-set_filters'><code>Filterable$set_filters()</code></a></p></li>
+</ul>
+<p><hr>
+<a id="method-filter"></a></p><h3>Method <code><a href='https://rdrr.io/r/stats/filter.html'>filter()</a></code></h3>
+    <h3>Usage</h3>
+    <div class="r"><pre>Filterable$filter(event)</pre></div>
+    <p><hr>
+<a id="method-add_filter"></a></p><h3>Method <code>add_filter()</code></h3>
+    <h3>Usage</h3>
+    <div class="r"><pre>Filterable$add_filter(filter, name = NULL)</pre></div>
+    <p><hr>
+<a id="method-remove_filter"></a></p><h3>Method <code>remove_filter()</code></h3>
+    <h3>Usage</h3>
+    <div class="r"><pre>Filterable$remove_filter(pos)</pre></div>
+    <p><hr>
+<a id="method-set_filters"></a></p><h3>Method <code>set_filters()</code></h3>
+    <h3>Usage</h3>
+    <div class="r"><pre>Filterable$set_filters(filters)</pre></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#format">Format</a></li>
-
       <li><a href="#fields">Fields</a></li>
-
       <li><a href="#methods">Methods</a></li>
-
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      <li><a href="#methods">Methods</a></li>
+    </ul>
 
   </div>
 </div>

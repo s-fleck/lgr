@@ -8,11 +8,13 @@
 
 <title>Function reference • lgr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,7 +34,9 @@
 
 
 
+
 <meta property="og:title" content="Function reference" />
+
 
 
 
@@ -62,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9001</span>
       </span>
     </div>
 
@@ -84,7 +88,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -200,9 +203,59 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="AppenderDbi.html">AppenderDbi</a></code> </p>
+          <p><code><a href="AppenderFile.html">AppenderFile</a></code> </p>
         </td>
-        <td><p>Log to databases via DBI</p></td>
+        <td><p>Log to a file</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="AppenderFileRotating.html">AppenderFileRotating</a></code> </p>
+        </td>
+        <td><p>Log to a rotating file</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="AppenderJson.html">AppenderJson</a></code> </p>
+        </td>
+        <td><p>Log to a JSON file</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="AppenderBuffer.html">AppenderBuffer</a></code> </p>
+        </td>
+        <td><p>Log to a memory buffer</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="AppenderSyslog.html">AppenderSyslog</a></code> </p>
+        </td>
+        <td><p>Log to the POSIX System Log</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-layouts" class="hasAnchor"><a href="#section-layouts" class="anchor"></a>Layouts</h2>
+          <p class="section-desc"><p>Format LogEvents before output</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="AppenderBuffer.html">AppenderBuffer</a></code> </p>
+        </td>
+        <td><p>Log to a memory buffer</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="AppenderConsole.html">AppenderConsole</a></code> </p>
+        </td>
+        <td><p>Log to the console</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="AppenderDt.html">AppenderDt</a></code> </p>
+        </td>
+        <td><p>Log to an in-memory data.table</p></td>
       </tr><tr>
         
         <td>
@@ -224,53 +277,27 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="AppenderRjdbc.html">AppenderRjdbc</a></code> </p>
+          <p><code><a href="AppenderMemory.html">AppenderMemory</a></code> </p>
         </td>
-        <td><p>Log to databases via RJDBC</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="AppenderBuffer.html">AppenderBuffer</a></code> </p>
-        </td>
-        <td><p>Log to a memory buffer</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="AppenderGmail.html">AppenderGmail</a></code> </p>
-        </td>
-        <td><p>Send emails via gmailr</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="AppenderSendmail.html">AppenderSendmail</a></code> </p>
-        </td>
-        <td><p>Send emails via sendmailR</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="AppenderPushbullet.html">AppenderPushbullet</a></code> </p>
-        </td>
-        <td><p>Send push-notifications via RPushbullet</p></td>
+        <td><p>Abstract class for logging to memory buffers</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="AppenderSyslog.html">AppenderSyslog</a></code> </p>
         </td>
         <td><p>Log to the POSIX System Log</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-layouts" class="hasAnchor"><a href="#section-layouts" class="anchor"></a>Layouts</h2>
-          <p class="section-desc"><p>Format LogEvents before output</p></p>
-        </th>
-      </tr>
-      <tr>
+      </tr><tr>
         
         <td>
-          <p><code><a href="LayoutDbi.html">LayoutDbi</a></code> </p>
+          <p><code><a href="AppenderTable.html">AppenderTable</a></code> </p>
         </td>
-        <td><p>Format Log Events for Output to Databases</p></td>
+        <td><p>Abstract class for logging to tabular structures</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="EventFilter.html">EventFilter</a></code> </p>
+        </td>
+        <td><p>Event Filters</p></td>
       </tr><tr>
         
         <td>
@@ -289,6 +316,150 @@
           <p><code><a href="LayoutJson.html">LayoutJson</a></code> </p>
         </td>
         <td><p>Format LogEvents as JSON</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="LogEvent.html">LogEvent</a></code> </p>
+        </td>
+        <td><p>Events - The Atomic Unit of Logging</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Logger.html">Logger</a></code> </p>
+        </td>
+        <td><p>Loggers</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="as.data.frame.LogEvent.html">as.data.frame(<i>&lt;LogEvent&gt;</i>)</a></code> <code><a href="as.data.frame.LogEvent.html">as.data.table.LogEvent()</a></code> <code><a href="as.data.frame.LogEvent.html">as_tibble.LogEvent()</a></code> </p>
+        </td>
+        <td><p>Coerce LogEvents to Data Frames</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="basic_config.html">basic_config()</a></code> </p>
+        </td>
+        <td><p>Basic Setup for the Logging System</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="colorize_levels.html">colorize_levels()</a></code> </p>
+        </td>
+        <td><p>Colorize Levels</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="default_exception_handler.html">default_exception_handler()</a></code> </p>
+        </td>
+        <td><p>Demote an exception to a warning</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="default_should_flush.html">default_should_flush()</a></code> </p>
+        </td>
+        <td><p>Default should_flush function</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_log_levels.html">get_log_levels()</a></code> <code><a href="get_log_levels.html">add_log_levels()</a></code> <code><a href="get_log_levels.html">remove_log_levels()</a></code> </p>
+        </td>
+        <td><p>Manage Log Levels</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_logger.html">get_logger()</a></code> <code><a href="get_logger.html">get_logger_glue()</a></code> </p>
+        </td>
+        <td><p>Get/Create a Logger</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is_filter.html">is_filter()</a></code> </p>
+        </td>
+        <td><p>Check if an R Object is a Filter</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="label_levels.html">label_levels()</a></code> <code><a href="label_levels.html">unlabel_levels()</a></code> </p>
+        </td>
+        <td><p>Label/Unlabel Log Levels</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="logger_config.html">logger_config()</a></code> <code><a href="logger_config.html">as_logger_config()</a></code> </p>
+        </td>
+        <td><p>Logger Configuration Objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="logger_tree.html">logger_tree()</a></code> </p>
+        </td>
+        <td><p>Logger Tree</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pad_right.html">pad_right</a></code> </p>
+        </td>
+        <td><p>Pad Character Vectors</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="print.Appender.html">print(<i>&lt;Appender&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Print an Appender object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="print.LogEvent.html">print(<i>&lt;LogEvent&gt;</i>)</a></code> <code><a href="print.LogEvent.html">format(<i>&lt;LogEvent&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Print or Format Logging Data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="print.Logger.html">print(<i>&lt;Logger&gt;</i>)</a></code> <code><a href="print.Logger.html">format(<i>&lt;Logger&gt;</i>)</a></code> <code><a href="print.Logger.html">print(<i>&lt;ancestry&gt;</i>)</a></code> <code><a href="print.Logger.html">format(<i>&lt;ancestry&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Print a Logger Object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="print.logger_tree.html">print(<i>&lt;logger_tree&gt;</i>)</a></code> <code><a href="print.logger_tree.html">format(<i>&lt;logger_tree&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Print Logger Trees</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="read_json_lines.html">read_json_lines()</a></code> </p>
+        </td>
+        <td><p>Read a JSON logfile</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="simple_logging.html">log_exception()</a></code> <code><a href="simple_logging.html">threshold()</a></code> <code><a href="simple_logging.html">console_threshold()</a></code> <code><a href="simple_logging.html">add_appender()</a></code> <code><a href="simple_logging.html">remove_appender()</a></code> <code><a href="simple_logging.html">show_log()</a></code> <code><a href="simple_logging.html">show_dt()</a></code> <code><a href="simple_logging.html">show_data()</a></code> </p>
+        </td>
+        <td><p>Simple Logging</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="suspend_logging.html">suspend_logging()</a></code> <code><a href="suspend_logging.html">unsuspend_logging()</a></code> <code><a href="suspend_logging.html">without_logging()</a></code> <code><a href="suspend_logging.html">with_logging()</a></code> </p>
+        </td>
+        <td><p>Suspend All Logging</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="system_infos.html">get_caller()</a></code> <code><a href="system_infos.html">get_user()</a></code> </p>
+        </td>
+        <td><p>Information About the System</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="use_logger.html">use_logger()</a></code> </p>
+        </td>
+        <td><p>Setup a Simple Logger for a Package</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="with_log_level.html">with_log_level()</a></code> <code><a href="with_log_level.html">with_log_value()</a></code> </p>
+        </td>
+        <td><p>Inject Values into Logging Calls</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -391,12 +562,6 @@
           <p><code><a href="pad_right.html">pad_right</a></code> </p>
         </td>
         <td><p>Pad Character Vectors</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="select_dbi_layout.html">select_dbi_layout()</a></code> </p>
-        </td>
-        <td><p>Select Appropriate Database Table Layout</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -420,7 +585,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="Filterable.html">Filterable</a></code> <code><a href="Filterable.html">.obj()</a></code> </p>
+          <p><code><a href="Filterable.html">.obj()</a></code> </p>
         </td>
         <td><p>Abstract Class for Filterables</p></td>
       </tr><tr>
@@ -435,12 +600,6 @@
           <p><code><a href="AppenderMemory.html">AppenderMemory</a></code> </p>
         </td>
         <td><p>Abstract class for logging to memory buffers</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="AppenderDigest.html">AppenderDigest</a></code> </p>
-        </td>
-        <td><p>Abstract class for digests</p></td>
       </tr>
     </tbody>
     </table>

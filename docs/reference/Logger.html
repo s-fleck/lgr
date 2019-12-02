@@ -8,11 +8,13 @@
 
 <title>Loggers — Logger • lgr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,8 +34,8 @@
 
 
 
-<meta property="og:title" content="Loggers — Logger" />
 
+<meta property="og:title" content="Loggers — Logger" />
 <meta property="og:description" content="A Logger produces a LogEvent that contains the log message along with
 metadata (timestamp, calling function) and dispatches it to one or several
 Appenders which are responsible for the output (console, file, ...) of the
@@ -42,6 +44,7 @@ root Logger that can be accessed via lgr$&amp;lt;...&amp;gt;. Instantiation of n
 Loggers is only necessary if you want to take advantage of hierarchical
 logging as outlined in vignette(&quot;lgr&quot;, package = &quot;lgr&quot;)." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -71,7 +74,7 @@ logging as outlined in vignette(&quot;lgr&quot;, package = &quot;lgr&quot;)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9001</span>
       </span>
     </div>
 
@@ -93,7 +96,6 @@ logging as outlined in vignette(&quot;lgr&quot;, package = &quot;lgr&quot;)." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -114,7 +116,6 @@ logging as outlined in vignette(&quot;lgr&quot;, package = &quot;lgr&quot;)." />
     </div>
 
     <div class="ref-description">
-    
     <p>A Logger produces a <a href='LogEvent.html'>LogEvent</a> that contains the log message along with
 metadata (timestamp, calling function) and dispatches it to one or several
 <a href='Appender.html'>Appenders</a> which are responsible for the output (console, file, ...) of the
@@ -122,10 +123,10 @@ event. <strong>lgr</strong> comes with a single pre-configured Logger called the
 <code>root Logger</code> that can be accessed via <code>lgr$&lt;...&gt;</code>. Instantiation of new
 Loggers is only necessary if you want to take advantage of hierarchical
 logging as outlined in <code><a href='../articles/lgr.html'>vignette("lgr", package = "lgr")</a></code>.</p>
-    
     </div>
 
-        
+
+
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     <pre># Cannonical way to initialize a new Logger (see "Creating Loggers")
@@ -166,7 +167,6 @@ lg$parent
 lg$propagate
 lg$threshold
     </pre>
-    
     <h2 class="hasAnchor" id="creating-loggers"><a class="anchor" href="#creating-loggers"></a>Creating Loggers</h2>
 
     
@@ -187,7 +187,6 @@ instance. This means that Logger instances never need to be passed between
 different parts of an application.</p>
 <p>If you just want to log to an additional output (like a log file), you want
 a new <a href='Appender.html'>Appender</a>, not a new Logger.</p>
-    
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
@@ -218,7 +217,6 @@ Since LogEvents have reference semantics, filters can also be abused to
 modify them before they are passed on. Look at the source code of
 <code><a href='with_log_level.html'>with_log_level()</a></code> or <code><a href='with_log_level.html'>with_log_value()</a></code> for examples.</p></dd>
 </dl>
-    
     <h2 class="hasAnchor" id="read-only-bindings"><a class="anchor" href="#read-only-bindings"></a>Read-Only Bindings</h2>
 
     
@@ -238,7 +236,6 @@ vector use <code><a href='https://rdrr.io/r/base/class.html'>unclass(lg$ancestry
 appenders from ancestral Loggers of the current Logger</p></dd>
     <dt><code>last_event</code></dt><dd><p>The last LogEvent produced by the current Logger</p></dd>
 </dl>
-    
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
@@ -299,7 +296,6 @@ on to Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the ac
 be specified. <code>remove_filter()</code> can remove by position or name (if one
 was specified)</p></dd>
 </dl>
-    
     <h2 class="hasAnchor" id="loggerglue"><a class="anchor" href="#loggerglue"></a>LoggerGlue</h2>
 
     
@@ -313,19 +309,17 @@ As with the normal Logger, these named arguments get turned into custom
 fields; however, you can suppress this behaviour by making named argument
 start with a <code>"."</code>. Please refer to <code><a href='../articles/lgr.html'>vignette("lgr", package = "lgr")</a></code> for
 examples.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='https://glue.tidyverse.org/'>glue</a></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># lgr::lgr is the root logger that is always available</span>
-<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is a good day"</span>)</div><div class='output co'>#&gt; INFO  [19:13:15.390] Today is a good day </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"This is a serious error"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [19:13:15.395] This is a serious error </div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is a good day"</span>)</div><div class='output co'>#&gt; INFO  [19:33:29.529] Today is a good day </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"This is a serious error"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [19:33:29.532] This is a serious error </div><div class='input'>
 <span class='co'># Loggers use sprintf() for string formatting by default</span>
-<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is %s"</span>, <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span>() )</div><div class='output co'>#&gt; INFO  [19:13:15.399] Today is 2019-09-26 </div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is %s"</span>, <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span>() )</div><div class='output co'>#&gt; INFO  [19:33:29.534] Today is 2019-12-02 </div><div class='input'>
 <span class='co'># If no unnamed `...` are present, msg is not passed through sprintf()</span>
-<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"100% bad"</span>)  <span class='co'># so this works</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [19:13:15.403] 100% bad </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"%s%% bad"</span>, <span class='fl'>100</span>)  <span class='co'># if you use unnamed arguments, you must escape %</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [19:13:15.407] 100% bad </div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"100% bad"</span>)  <span class='co'># so this works</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [19:33:29.538] 100% bad </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"%s%% bad"</span>, <span class='fl'>100</span>)  <span class='co'># if you use unnamed arguments, you must escape %</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [19:33:29.541] 100% bad </div><div class='input'>
 <span class='co'># You can create new loggers with get_logger()</span>
 <span class='no'>tf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>()
 <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"mylogger"</span>)$<span class='fu'>set_appenders</span>(<span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>tf</span>))
@@ -333,7 +327,7 @@ examples.</p>
 <span class='co'># The new logger passes the log message on to the appenders of its parent</span>
 <span class='co'># logger, which is by default the root logger. This is why the following</span>
 <span class='co'># writes not only the file 'tf', but also to the console.</span>
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blubb"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [19:13:15.419] blubb </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2019-09-26 19:13:15.419] blubb"</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blubb"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [19:33:29.546] blubb </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2019-12-02 19:33:29.546] blubb"</div><div class='input'>
 <span class='co'># This logger's print() method depicts this relationship.</span>
 <span class='no'>child</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"lg/child"</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>child</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] lg/child
@@ -343,8 +337,8 @@ examples.</p>
 <span class='co'># use formatting strings and custom fields</span>
 <span class='no'>tf2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>()
 <span class='no'>lg</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>tf2</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()))
-<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"Not all %s support custom fields"</span>, <span class='st'>"appenders"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"test"</span>)</div><div class='output co'>#&gt; INFO  [19:13:15.454] Not all appenders support custom fields </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>type</span><span style='color: #808080;'>: </span><span>test</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>tf</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; FATAL [2019-09-26 19:13:15.419] blubb
-#&gt; INFO  [2019-09-26 19:13:15.454] Not all appenders support custom fields</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>tf2</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; {"level":400,"timestamp":"2019-09-26 19:13:15","logger":"mylogger","caller":"eval","msg":"Not all appenders support custom fields","type":"test"}</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"Not all %s support custom fields"</span>, <span class='st'>"appenders"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"test"</span>)</div><div class='output co'>#&gt; INFO  [19:33:29.576] Not all appenders support custom fields </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>type</span><span style='color: #808080;'>: </span><span>test</span><span style='color: #808080;'>}</span><span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>tf</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; FATAL [2019-12-02 19:33:29.546] blubb
+#&gt; INFO  [2019-12-02 19:33:29.576] Not all appenders support custom fields</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>tf2</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; {"level":400,"timestamp":"2019-12-02 19:33:29","logger":"mylogger","caller":"eval","msg":"Not all appenders support custom fields","type":"test"}</div><div class='input'>
 <span class='co'># cleanup</span>
 <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>tf</span>, <span class='no'>tf2</span>))
 <span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)  <span class='co'># reset logger config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] mylogger
@@ -365,8 +359,8 @@ examples.</p>
   <span class='co'>#' # completely reset 'glue' to an unconfigured vanilla Logger</span>
   <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"glue"</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-}</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [19:13:15.483] blah fizz is set to: buzz </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>foo</span><span style='color: #808080;'>: </span><span>bar</span><span style='color: #808080;'>, </span><span style='color: #D75FAF;'>fizz</span><span style='color: #808080;'>: </span><span>buzz</span><span style='color: #808080;'>}</span><span>
-#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [19:13:15.540] blah fizz is set to: buzz </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>foo</span><span style='color: #808080;'>: </span><span>bar</span><span style='color: #808080;'>}</span><span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] glue
+}</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [19:33:29.589] blah fizz is set to: buzz </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>foo</span><span style='color: #808080;'>: </span><span>bar</span><span style='color: #808080;'>, </span><span style='color: #D75FAF;'>fizz</span><span style='color: #808080;'>: </span><span>buzz</span><span style='color: #808080;'>}</span><span>
+#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [19:33:29.616] blah fizz is set to: buzz </span><span style='color: #808080;'>{</span><span style='color: #D75FAF;'>foo</span><span style='color: #808080;'>: </span><span>bar</span><span style='color: #808080;'>}</span><span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] glue
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'>
@@ -421,21 +415,13 @@ Logger:
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
       <li><a href="#usage">Usage</a></li>
-
       <li><a href="#creating-loggers">Creating Loggers</a></li>
-
       <li><a href="#fields">Fields</a></li>
-
       <li><a href="#read-only-bindings">Read-Only Bindings</a></li>
-
       <li><a href="#methods">Methods</a></li>
-
       <li><a href="#loggerglue">LoggerGlue</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

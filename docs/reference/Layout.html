@@ -8,11 +8,13 @@
 
 <title>Abstract Class for Layouts — Layout • lgr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,14 +34,15 @@
 
 
 
-<meta property="og:title" content="Abstract Class for Layouts — Layout" />
 
+<meta property="og:title" content="Abstract Class for Layouts — Layout" />
 <meta property="og:description" content="Abstract classes are exported for developers that want to extend them, they
 are not useful to casual users.  Layouts get a LogEvent passed down from an
 Appender, and format them for output. How this formatting works exactly
 varies widely. For example for file or console output the log event is
 usually formatted into a single character line." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -69,7 +72,7 @@ usually formatted into a single character line." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9001</span>
       </span>
     </div>
 
@@ -91,7 +94,6 @@ usually formatted into a single character line." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -112,47 +114,41 @@ usually formatted into a single character line." />
     </div>
 
     <div class="ref-description">
-    
     <p>Abstract classes are exported for developers that want to extend them, they
 are not useful to casual users.  Layouts get a <a href='LogEvent.html'>LogEvent</a> passed down from an
 <a href='Appender.html'>Appender</a>, and format them for output. How this formatting works exactly
 varies widely. For example for file or console output the log event is
 usually formatted into a single character line.</p>
-    
     </div>
 
-        
+
+
     <h2 class="hasAnchor" id="creating-a-new-layout"><a class="anchor" href="#creating-a-new-layout"></a>Creating a New Layout</h2>
 
     
     <p>Layouts are instantiated with <code>&lt;LayoutSubclass&gt;$new()</code>. For a description of
 the arguments to this function please refer to the Fields section.</p>
-    
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
     <dl class='dl-horizontal'>
 <dt><code>format_event(event)</code></dt><dd><p>format a <a href='LogEvent.html'>LogEvent</a></p></dd>
 </dl>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Layouts: <code><a href='LayoutDbi.html'>LayoutDbi</a></code>,
-  <code><a href='LayoutFormat.html'>LayoutFormat</a></code>, <code><a href='LayoutGlue.html'>LayoutGlue</a></code>,
-  <code><a href='LayoutJson.html'>LayoutJson</a></code></p></div>
-    
+    <div class='dont-index'><p>Other Layouts: 
+<code><a href='LayoutFormat.html'>LayoutFormat</a></code>,
+<code><a href='LayoutGlue.html'>LayoutGlue</a></code>,
+<code><a href='LayoutJson.html'>LayoutJson</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
       <li><a href="#creating-a-new-layout">Creating a New Layout</a></li>
-
       <li><a href="#methods">Methods</a></li>
-
       <li><a href="#see-also">See also</a></li>
-          </ul>
+    </ul>
 
   </div>
 </div>

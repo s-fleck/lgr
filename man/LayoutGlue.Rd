@@ -11,8 +11,8 @@ but also more complex and slightly less performant.
 }
 \section{Usage}{
 \preformatted{
-x <- LayoutGlue$new(fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)}
-  [{timestamp}] msg")
+x <- LayoutGlue$new(fmt = "\{pad_right(colorize_levels(toupper(level_name)), 5)\}
+  [\{timestamp\}] msg")
 
 x$clone(deep = FALSE)
 x$format_event(event)
@@ -69,8 +69,9 @@ lg$config(NULL)  # reset logger config
 lgr exports a number of formatting utility functions that are
 useful for layout glue: \code{\link[=colorize_levels]{colorize_levels()}}, \code{\link[=pad_left]{pad_left()}}, \code{\link[=pad_right]{pad_right()}}.
 
-Other Layouts: \code{\link{LayoutDbi}},
-  \code{\link{LayoutFormat}}, \code{\link{LayoutJson}},
-  \code{\link{Layout}}
+Other Layouts: 
+\code{\link{LayoutFormat}},
+\code{\link{LayoutJson}},
+\code{\link{Layout}}
 }
 \concept{Layouts}
