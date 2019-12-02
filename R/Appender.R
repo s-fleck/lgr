@@ -797,7 +797,7 @@ AppenderDt <- R6::R6Class(
       # guranteed to work with LayoutFormat, other layouts might run into
       # issues
       walk(
-        as_LogEvent_list.data.frame(res),
+        as_LogEventList.data.frame(res),
         function(.x){
           cat(self$layout$format_event(.x), "\n", sep = "")
         }

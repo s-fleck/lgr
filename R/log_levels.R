@@ -193,8 +193,7 @@ colorize_levels <- function(
 #' @param log_levels A named character vector of valid log levels
 #'
 #' @return An unnamed `integer` vector
-#'
-#' @noRd
+#' @export
 standardize_threshold <- function(
   x,
   log_levels = c(getOption("lgr.log_levels"), c("all" = NA_integer_, "off" = 0L)),
