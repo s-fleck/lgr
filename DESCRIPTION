@@ -13,7 +13,7 @@ Description: A flexible, feature-rich yet light-weight logging
     framework based on 'R6' classes. It supports hierarchical loggers,
     custom log levels, arbitrary data fields in log events, logging to
     plaintext, 'JSON', (rotating) files, memory buffers. For extra appenders
-    that support logging to databases as well as email and push notifications
+    that support logging to databases, email and push notifications
     see the the package lgr.app.
 License: MIT + file LICENSE
 URL: https://s-fleck.github.io/lgr
