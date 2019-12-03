@@ -180,11 +180,12 @@ as.data.frame.LogEvent <- function(
   row.names = NULL,
   optional = FALSE,
   stringsAsFactors = FALSE,
-  ...
+  ...,
+  needs_boxing = Negate(is_atomic)
 ){
   values <- x$values
-  needs_boxing <- !vapply(values, is.atomic, logical(1))
-  values[needs_boxing] <- lapply(values[needs_boxing], function(.x) I(list(.x)))
+  nb <- vapply(values, needs_boxing, logical(1))
+  values[nb] <- lapply(values[nb], function(.x) I(list(.x)))
 
   do.call(
     data.frame,
@@ -201,11 +202,12 @@ as.data.frame.LogEvent <- function(
 #' @rdname as.data.frame.LogEvent
 as.data.table.LogEvent <- function(
   x,
-  ...
+  ...,
+  needs_boxing = Negate(is_atomic)
 ){
   values <- x$values
-  needs_boxing <- !vapply(values, is.atomic, logical(1))
-  values[needs_boxing] <- lapply(values[needs_boxing], function(.x) list(.x))
+  nb <- vapply(values, needs_boxing, logical(1))
+  values[nb] <- lapply(values[nb], function(.x) list(.x))
   data.table::as.data.table(values)
 }
 
@@ -215,12 +217,38 @@ as.data.table.LogEvent <- function(
 #' @rdname as.data.frame.LogEvent
 as_tibble.LogEvent <- function(
   x,
-  ...
+  ...,
+  needs_boxing = Negate(is_atomic)
 ){
   values <- x$values
-  needs_boxing <- !vapply(values, is.atomic, logical(1))
-  values[needs_boxing] <- lapply(values[needs_boxing], function(.x) list(.x))
+  nb <- !vapply(values, needs_boxing, logical(1))
+  values[nb] <- lapply(values[nb], function(.x) list(.x))
   tibble::as_tibble(values)
+}
+
+
+
+
+
+
+#' @export
+as.data.table.LogEventList <- function(x, na.rm = TRUE){
+  data.table::rbindlist(
+    lapply(
+      x,
+      data.table::as.data.table,
+      needs_boxing = Negate(is_scalar_atomic)
+  ),
+  fill = TRUE,
+  use.names = TRUE)
+}
+
+
+
+
+#' @export
+as.data.frame.LogEventList <- function(x, na.rm = TRUE){
+  as.data.frame(as.data.table(x))
 }
 
 
