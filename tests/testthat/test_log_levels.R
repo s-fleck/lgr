@@ -91,3 +91,22 @@ test_that("named_union() works as expected", {
     setNames(c("blubb", "buzz", "bar"), c("foo", "fizz", "blah2"))
   )
 })
+
+
+
+
+test_that("standardize_* doc examples", {
+
+  expect_identical(standardize_threshold("info"), 400L)
+  expect_true(is.na(standardize_threshold("all")))
+
+  expect_identical(standardize_log_level("info"), 400L)
+  expect_error(is.na(standardize_log_level("all")))
+
+  expect_error(standardize_log_level(c("info", "fatal")))
+  expect_identical(standardize_log_levels(c("info", "fatal")), c(400L, 100L))
+
+
+
+
+})

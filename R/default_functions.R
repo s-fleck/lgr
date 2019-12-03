@@ -35,5 +35,10 @@ default_exception_handler <- function(e){
 #' @return `TRUE` or `FALSE`
 #' @export
 default_should_flush <- function(event){
-  is.na(.obj()[["flush_threshold"]]) || all(event[["level"]] <= .obj()[["flush_threshold"]])
+  thr <- get("flush_threshold", .obj())
+
+  if (is.null(thr))
+    FALSE
+  else
+    is.na(thr) || all(event[["level"]] <= thr)
 }

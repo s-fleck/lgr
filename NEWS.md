@@ -1,7 +1,12 @@
 # lgr (development version)
 
-* Moved Database and Email Appenders to the [lgr.app](https://github.com/s-fleck/lgr.app)
-  package
+* Moved more complex Appenders to package 
+  [lgr.app](https://github.com/s-fleck/lgr.app). This includes database 
+  Appenders, email and push notifications and AppenderDt (in-memory 
+  `data.tables`).
+  
+* AppenderBuffer now defaults to `flush_threshold = NULL` 
+  (never flush because of the log level of an event)
   
 
 # lgr 0.3.3

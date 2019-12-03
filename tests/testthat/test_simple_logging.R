@@ -1,7 +1,7 @@
 context("simple_logging")
 
 setup({
-  lgr$add_appender(AppenderDt$new(), "memory")
+  lgr$add_appender(AppenderBuffer$new(threshold = NA), "memory")
   get_logger("test")$config(NULL)
 })
 
@@ -40,10 +40,10 @@ test_that("threshold(), console_threshold() and log_exception() work as expected
 
 
 test_that("show_log()", {
-  expect_output(expect_true(is.data.frame(show_log())))
-  expect_output(expect_true(nrow(show_log()) > 2))
+  expect_output(show_log())
+  expect_true(nrow(show_data()) > 2)
   expect_output(
-    expect_identical(show_log(), show_log(target = lgr$appenders$memory))
+    expect_equal(show_log(), show_log(target = lgr$appenders$memory))
   )
   expect_error(show_log(target = lgr$appenders$console), "no method")
 

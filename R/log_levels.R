@@ -188,12 +188,37 @@ colorize_levels <- function(
 
 #' Standardize User-Input Log Levels to Their Integer Representation
 #'
+#' These are helper functions for verifying log levels and converting them from
+#' their character to their integer representations. This is primarily useful
+#' if you want to build your own [Loggers], [Appenders] or [Layouts] and need
+#' to handle log levels in a way that is consistent with \pkg{lgr} .
+#'
 #' @param x a `character` or `integer` scalar, or vector for
 #'   standardize_log_levels
 #' @param log_levels A named character vector of valid log levels
 #'
 #' @return An unnamed `integer` vector
+#' @family extending logger
 #' @export
+#' @examples
+#'
+#' expect_identical(standardize_threshold("info"), 400L)
+#' expect_true(is.na(standardize_threshold("all")))
+#' is_threshold("all")
+#' is_threshold("foobar")
+#'
+#' standardize_log_level("info")
+#' # all is a valid threshold, but not a valid log level
+#' try(is.na(standardize_log_level("all")))
+#' is_log_level("all")
+#'
+#' # standardized_log_level intentionally only works with scalars, because many
+#' # functions require scalar log level inputs
+#' try(standardize_log_level(c("info", "fatal")))
+#'
+#' # You can still use standardize_log_levels() (plural) to work with vectors
+#' standardize_log_levels(c("info", "fatal"))
+#'
 standardize_threshold <- function(
   x,
   log_levels = c(getOption("lgr.log_levels"), c("all" = NA_integer_, "off" = 0L)),
@@ -219,6 +244,8 @@ standardize_threshold <- function(
 
 
 
+#' @rdname standardize_threshold
+#' @export
 is_threshold <- function(x){
   tryCatch(
     {standardize_threshold(x); TRUE},
@@ -229,6 +256,9 @@ is_threshold <- function(x){
 
 
 
+#' @param log_levels
+#' @rdname standardize_threshold
+#' @export
 standardize_log_level <- function(
   x,
   log_levels = getOption("lgr.log_levels")
@@ -249,6 +279,8 @@ standardize_log_level <- function(
 
 
 
+#' @rdname standardize_threshold
+#' @export
 is_log_level <- function(x){
   tryCatch(
     {standardize_log_level(x); TRUE},
@@ -259,6 +291,8 @@ is_log_level <- function(x){
 
 
 
+#' @rdname standardize_threshold
+#' @export
 standardize_log_levels <- function(
   x,
   log_levels = getOption("lgr.log_levels")
@@ -278,6 +312,8 @@ standardize_log_levels <- function(
 
 
 
+#' @rdname standardize_threshold
+#' @export
 is_log_levels <- function(x){
   tryCatch(
     {standardize_log_levels(x); TRUE},

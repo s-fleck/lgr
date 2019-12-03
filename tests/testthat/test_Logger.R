@@ -19,7 +19,7 @@ test_that("set_threshold()", {
 
 
 test_that("$log() & co work", {
-  ml <- Logger$new("test_logger", appenders = list(memory = AppenderDt$new()))
+  ml <- Logger$new("test_logger", appenders = list(memory = AppenderBuffer$new()))
   ts <- structure(1540486764.41946, class = c("POSIXct", "POSIXt"))
 
   testfun <- function(){
@@ -130,7 +130,7 @@ test_that("add_appenders()/remove_appenders()", {
   # add
   ml$add_appender(app1)
   ml$add_appender(app2, "blah")
-  ml$add_appender(AppenderDt$new(), "blubb")
+  ml$add_appender(AppenderBuffer$new(), "blubb")
   expect_identical(ml$appenders[[2]], app1)
   expect_identical(ml$appenders$blah, app2)
 

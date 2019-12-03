@@ -2,6 +2,11 @@
 % Please edit documentation in R/log_levels.R
 \name{standardize_threshold}
 \alias{standardize_threshold}
+\alias{is_threshold}
+\alias{standardize_log_level}
+\alias{is_log_level}
+\alias{standardize_log_levels}
+\alias{is_log_levels}
 \title{Standardize User-Input Log Levels to Their Integer Representation}
 \usage{
 standardize_threshold(
@@ -9,6 +14,16 @@ standardize_threshold(
   log_levels = c(getOption("lgr.log_levels"), c(all = NA_integer_, off = 0L)),
   allow_null = FALSE
 )
+
+is_threshold(x)
+
+standardize_log_level(x, log_levels = getOption("lgr.log_levels"))
+
+is_log_level(x)
+
+standardize_log_levels(x, log_levels = getOption("lgr.log_levels"))
+
+is_log_levels(x)
 }
 \arguments{
 \item{x}{a \code{character} or \code{integer} scalar, or vector for
@@ -20,5 +35,29 @@ standardize_log_levels}
 An unnamed \code{integer} vector
 }
 \description{
-Standardize User-Input Log Levels to Their Integer Representation
+These are helper functions for verifying log levels and converting them from
+their character to their integer representations. This is primarily useful
+if you want to build your own \link{Loggers}, \link{Appenders} or \link{Layouts} and need
+to handle log levels in a way that is consistent with \pkg{lgr} .
 }
+\examples{
+
+expect_identical(standardize_threshold("info"), 400L)
+expect_true(is.na(standardize_threshold("all")))
+is_threshold("all")
+is_threshold("foobar")
+
+standardize_log_level("info")
+# all is a valid threshold, but not a valid log level
+try(is.na(standardize_log_level("all")))
+is_log_level("all")
+
+# standardized_log_level intentionally only works with scalars, because many
+# functions require scalar log level inputs
+try(standardize_log_level(c("info", "fatal")))
+
+# You can still use standardize_log_levels() (plural) to work with vectors
+standardize_log_levels(c("info", "fatal"))
+
+}
+\concept{extending logger}

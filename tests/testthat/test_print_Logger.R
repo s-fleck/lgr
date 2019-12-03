@@ -15,9 +15,8 @@ test_that("print.Logger() works as expected", {
       AppenderFile$new(file = tf1),
       AppenderConsole$new(),
       AppenderFile$new(threshold = 100, file = tf_long),
-      AppenderDt$new(),
       AppenderBuffer$new(
-        appenders = list(AppenderDt$new(), AppenderFile$new(file = tf2))
+        appenders = list(AppenderBuffer$new(), AppenderFile$new(file = tf2))
       )
     )
   )
