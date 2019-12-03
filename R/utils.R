@@ -109,68 +109,6 @@ ptrunc_col <- function(
 
 
 
-# embedded from tabde
-#' Generate SQL CREATE TABLE statements
-#'
-#' Creates SQL CREATE TABLE statements from a vector of column names and
-#' a vector of column types
-#'
-#' @param tname `character` scalar. Name of target sql table
-#' @param col_names `character` vector. Column names of target sql table
-#' @param col_types `character` scalar. Column types of target sql table.
-#'   Columns of type `NA` will be skipped
-#' @param sql_opts column options of target sql table (for example `NOT NULL`)
-#'
-#' @return a `CREATE TABLE` statement as a `character` scalar
-#' @noRd
-#'
-#' @examples
-#' sql_create_table(
-#'   "example.table",
-#'   c("numbers", "animals"),
-#'   c("integer", "varchar(8)"),
-#'   c("NOT NULL", "")
-#' )
-sql_create_table <- function(
-  tname,
-  col_names,
-  col_types,
-  sql_opts = rep("", length(col_names))
-){
-  # preconditions
-  stopifnot(
-    is_scalar_character(tname),
-    is.character(col_names),
-    is.character(col_types),
-    is_equal_length(col_names, col_types, sql_opts)
-  )
-
-  assert(
-    !anyNA(col_names) && all_are_distinct(col_names),
-    "All `col_names` must be unique and non-`NA`"
-  )
-
-  sql_opts[is.na(sql_opts)] <- ""
-  col_types  <- toupper(col_types)
-
-  # process input
-  if (anyNA(col_types)){
-    message(sprintf(
-      "Skipping %s columns where `col_type` equals `NA`", sum(is.na(col_types))
-    ))
-    col_names <- col_names[!is.na(col_types)]
-    col_types <- col_types[!is.na(col_types)]
-    sql_opts  <- sql_opts[!is.na(col_types)]
-  }
-
-  cols <- paste0(
-    trimws(paste0(col_names, " ", col_types, " ", sql_opts)),
-    collapse = ", "
-  )
-
-  sprintf("CREATE TABLE %s (%s)", tname, cols)
-}
-
 
 
 
@@ -265,4 +203,26 @@ fmt_bytes <- function(
 
   vapply(x, readablifiy, character(1))
 }
+
+
+
+#' Title
+#'
+#' @param class
+#'
+#' @return
+#' @export
+#' @family developer tools
+#'
+#' @examples
+CannotInitializeAbstractClassError <- function(
+  class = parent.frame(2)[["classes"]]
+){
+  errorCondition(
+    paste(fmt_class(class), "is an abstract class and cannot be initlized"),
+    class = c("CannotInitializeAbstractClassError", "NotImplementedError"),
+    call = NULL
+  )
+}
+
 # nocov end

@@ -494,6 +494,11 @@ AppenderTable <- R6::R6Class(
   cloneable = FALSE,
 
   public = list(
+    initialize = function(...){
+      stop(CannotInitializeAbstractClassError())
+    },
+
+
     show = function(threshold = NA_integer_, n = 20L) NULL,
 
     format = function(
@@ -585,10 +590,7 @@ AppenderMemory <- R6::R6Class(
   cloneable = FALSE,
   public = list(
     initialize = function(...){
-      stop(
-        "AppenderMemory is not designed to be initilized directly",
-        "Please use AppenderBuffer instead"
-      )
+      stop(CannotInitializeAbstractClassError())
     },
 
     append = function(event){
@@ -1592,14 +1594,3 @@ AppenderSyslog <- R6::R6Class(
     .syslog_levels = NULL
   )
 )
-
-
-# utils -------------------------------------------------------------------
-
-# trim multi-valued events from vectorized inserts to the buffer size
-trim_to_buffer_size <- function(x, buffer_size){
-  if (length(x) <= buffer_size)
-    x
-  else
-    x[seq.int(length(x) - buffer_size + 1L, length(x))]
-}
