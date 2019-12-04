@@ -229,31 +229,6 @@ as_tibble.LogEvent <- function(
 
 
 
-
-
-#' @export
-as.data.table.event_list <- function(x, na.rm = TRUE){
-  data.table::rbindlist(
-    lapply(
-      x,
-      data.table::as.data.table,
-      needs_boxing = Negate(is_scalar_atomic)
-  ),
-  fill = TRUE,
-  use.names = TRUE)
-}
-
-
-
-
-#' @export
-as.data.frame.event_list <- function(x, na.rm = TRUE){
-  as.data.frame(as.data.table(x))
-}
-
-
-
-
 # global variables --------------------------------------------------------
 
 DEFAULT_FIELDS <- c("level", "timestamp", "logger", "caller", "msg")
