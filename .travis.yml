@@ -5,6 +5,8 @@ r:
   - oldrel
   - release
   - devel
+r_github_packages:
+  - s-fleck/lgr.app
 sudo: false
 after_success:
   - Rscript -e 'covr::codecov()'

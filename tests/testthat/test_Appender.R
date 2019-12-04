@@ -388,13 +388,16 @@ test_that("AppenderSyslog: to_syslog_level works", {
 
 test_that("AppenderSyslog: logging to syslog works", {
   skip_if_not_installed("rsyslog")
+  if (!file_is_readable("/var/log/syslog"))
+    skip("'/var/log/syslog' is not readable")
+
   msg <- format(Sys.time())
 
   lg <- get_logger("rsyslog/test")$set_propagate(FALSE)
   on.exit(lg$config(NULL))
   lg$add_appender(AppenderSyslog$new(), "syslog")
-  lg$info("A test message %s", msg)
+  lg$info("A test message from R package lgr %s", msg)
 
-  log = system("cat /var/log/syslog | grep rsyslog/test", intern = TRUE)
+  log <- suppressMessages(suppressWarnings( system("cat /var/log/syslog | grep rsyslog/test", intern = TRUE)))
   expect_true(any(grepl(msg, log), fixed = TRUE))
 })

@@ -76,3 +76,4 @@ Collate:
     'utils-logging.R'
     'utils-rd.R'
     'utils-rotor.R'
+    'utils-tests.R'
