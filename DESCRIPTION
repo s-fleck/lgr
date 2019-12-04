@@ -1,7 +1,7 @@
 Type: Package
 Package: lgr
 Title: A Fully Featured Logging Framework
-Version: 0.3.3.9002
+Version: 0.3.3.9003
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -19,7 +19,7 @@ License: MIT + file LICENSE
 URL: https://s-fleck.github.io/lgr
 BugReports: https://github.com/s-fleck/lgr/issues
 Depends:
-    R (>= 3.6.0)
+    R (>= 3.5.0)
 Imports: 
     R6 (>= 2.4.0)
 Suggests: 
@@ -59,10 +59,10 @@ Collate:
     'print_LogEvent.R'
     'Layout.R'
     'LogEvent.R'
-    'LogEventList.R'
     'Logger.R'
     'basic_config.R'
     'default_functions.R'
+    'event_list.R'
     'get_logger.R'
     'lgr-package.R'
     'logger_config.R'

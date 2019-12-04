@@ -15,7 +15,6 @@ test_that("all Appenders print() without failure", {
     print(Appender$new())
     print(AppenderConsole$new())
     print(AppenderConsole$new(layout = LayoutGlue$new()))
-    print(AppenderTable$new())
     print(AppenderBuffer$new(appenders = list(
       AppenderConsole$new(),
       blah = AppenderBuffer$new()

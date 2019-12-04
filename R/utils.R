@@ -218,11 +218,12 @@ fmt_bytes <- function(
 CannotInitializeAbstractClassError <- function(
   class = parent.frame(2)[["classes"]]
 ){
-  errorCondition(
+  error(
     paste(fmt_class(class), "is an abstract class and cannot be initlized"),
     class = c("CannotInitializeAbstractClassError", "NotImplementedError"),
     call = NULL
   )
 }
+
 
 # nocov end

@@ -221,7 +221,7 @@ as_tibble.LogEvent <- function(
   needs_boxing = Negate(is.atomic)
 ){
   values <- x$values
-  nb <- !vapply(values, needs_boxing, logical(1))
+  nb <- vapply(values, needs_boxing, logical(1))
   values[nb] <- lapply(values[nb], function(.x) list(.x))
   tibble::as_tibble(values)
 }

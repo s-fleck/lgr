@@ -19,8 +19,8 @@ basic_config(
 \arguments{
 \item{file}{\code{character} scalar: If not \code{NULL} a \link{AppenderFile} will be
 created that logs to this file. If the filename ends in \code{.jsonl}, the
-Appender will be set up to use the \href{http://jsonlines.org/}{JSON Lines} format instead of plain text (see
-\link{AppenderFile} and \link{AppenderJson}).}
+Appender will be set up to use the \href{http://jsonlines.org/}{JSON Lines}
+format instead of plain text (see \link{AppenderFile} and \link{AppenderJson}).}
 
 \item{fmt}{\code{character} scalar: Format to use if \code{file} is supplied and not a
 \code{.jsonl} file. If \code{NULL} it defaults to \code{"\%L [\%t] \%m"} (see
@@ -48,7 +48,7 @@ the \code{root} Logger (lgr)
 }
 \description{
 A quick and easy way to configure the root logger. This is less powerful
-then using \link[=Logger]{\code{lgr$config()} or \verb{lgr$set_*()}}, but reduces the
+then using \code{lgr$config()} or \verb{lgr$set_*()} (see \link{Logger}), but reduces the
 most common configurations to a single line of code.
 }
 \examples{

@@ -1,14 +1,13 @@
 #' Basic Setup for the Logging System
 #'
 #' A quick and easy way to configure the root logger. This is less powerful
-#' then using [`lgr$config()` or `lgr$set_*()`][Logger], but reduces the
+#' then using `lgr$config()` or `lgr$set_*()` (see [Logger]), but reduces the
 #' most common configurations to a single line of code.
 #'
 #' @param file `character` scalar: If not `NULL` a [AppenderFile] will be
 #'   created that logs to this file. If the filename ends in `.jsonl`, the
-#'   Appender will be set up to use the [JSON
-#'   Lines](http://jsonlines.org/) format instead of plain text (see
-#'   [AppenderFile] and [AppenderJson]).
+#'   Appender will be set up to use the [JSON Lines](http://jsonlines.org/)
+#'   format instead of plain text (see [AppenderFile] and [AppenderJson]).
 #' @param fmt `character` scalar: Format to use if `file` is supplied and not a
 #'   `.jsonl` file. If `NULL` it defaults to `"%L [%t] %m"` (see
 #'   [format.LogEvent])

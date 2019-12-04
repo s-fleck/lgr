@@ -85,5 +85,5 @@ as.data.table.event_list <- function(x, na.rm = TRUE){
 
 #' @export
 as.data.frame.event_list <- function(x, na.rm = TRUE){
-  as.data.frame(as.data.table(x))
+  as.data.frame(as.data.table.event_list(x))
 }

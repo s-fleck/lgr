@@ -52,6 +52,7 @@ NULL
 
   # dyn s3 methods ------------------------------------------------------
   dyn_register_s3_method("data.table", "as.data.table", "LogEvent")
+  dyn_register_s3_method("data.table", "as.data.table", "event_list")
   dyn_register_s3_method("tibble", "as_tibble", "LogEvent")
 
 

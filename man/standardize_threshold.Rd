@@ -42,8 +42,8 @@ to handle log levels in a way that is consistent with \pkg{lgr} .
 }
 \examples{
 
-expect_identical(standardize_threshold("info"), 400L)
-expect_true(is.na(standardize_threshold("all")))
+standardize_threshold("info")
+standardize_threshold("all")
 is_threshold("all")
 is_threshold("foobar")
 
