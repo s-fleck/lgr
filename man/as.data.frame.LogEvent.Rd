@@ -11,12 +11,13 @@
   row.names = NULL,
   optional = FALSE,
   stringsAsFactors = FALSE,
-  ...
+  ...,
+  needs_boxing = Negate(is.atomic)
 )
 
-as.data.table.LogEvent(x, ...)
+as.data.table.LogEvent(x, ..., needs_boxing = Negate(is.atomic))
 
-as_tibble.LogEvent(x, ...)
+as_tibble.LogEvent(x, ..., needs_boxing = Negate(is.atomic))
 }
 \arguments{
 \item{x}{any \R object.}

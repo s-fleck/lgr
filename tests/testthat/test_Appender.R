@@ -156,7 +156,7 @@ test_that("AppenderBuffer: FATAL log level triggers flush", {
 
   # FATAL triggers flush with default filters
   l$fatal(letters[1:3])
-  expect_identical(l$appenders$buffer$buffer_events, list())
+  expect_identical(l$appenders$buffer$buffer_events, event_list())
   expect_match(
     paste(readLines(buffer_log), collapse = "#"),
     "INFO.*A#INFO.*B#INFO.*C#INFO.*D#INFO.*E#INFO.*F#INFO.*G#FATAL.*a#FATAL.*b#FATAL.*c"
@@ -165,7 +165,7 @@ test_that("AppenderBuffer: FATAL log level triggers flush", {
   # Does the next flush flush the correct event?
   l$fatal("x")
   expect_identical(length(readLines(buffer_log)), 11L)
-  expect_identical(l$appenders$buffer$buffer_events, list())
+  expect_identical(l$appenders$buffer$buffer_events, event_list())
   expect_match(paste(readLines(buffer_log), collapse = "#"), ".*A#.*B#.*C#.*a#.*b#.*c#.*x")
 })
 
@@ -177,7 +177,7 @@ test_that("AppenderBuffer: buffer cycling triggers flush", {
   expect_identical(length(l$appenders$buffer$buffer_events), 10L)
   l$info(c("y", "y", "y"))
   expect_identical(length(readLines(buffer_log)), 24L)
-  expect_identical(l$appenders$buffer$buffer_events, list())
+  expect_identical(l$appenders$buffer$buffer_events, event_list())
   expect_match(
     paste(readLines(buffer_log), collapse = "#"),
     ".*A#.*B#.*C#.*a#.*b#.*c#.*x(.*z.*){10}(.*y.*){3}"

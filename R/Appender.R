@@ -729,7 +729,7 @@ AppenderMemory <- R6::R6Class(
       res <- get(".buffer_events", envir = private)[ord]
       structure(
         res[!vapply(res, is.null, FALSE)],
-        class = c("LogEventList", "list")
+        class = c("event_list", "list")
       )
     },
 

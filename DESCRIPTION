@@ -59,6 +59,7 @@ Collate:
     'print_LogEvent.R'
     'Layout.R'
     'LogEvent.R'
+    'LogEventList.R'
     'Logger.R'
     'basic_config.R'
     'default_functions.R'

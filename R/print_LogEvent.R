@@ -248,14 +248,14 @@ tokenize_format <- function(
 #' @export
 #'
 #' @examples
-as_LogEventList <- function(x, na.rm = TRUE){
-  UseMethod("as_LogEventList")
+as_event_list <- function(x, na.rm = TRUE){
+  UseMethod("as_event_list")
 }
 
 
 
 #' @export
-as_LogEventList.data.frame <- function(x, na.rm = TRUE){
+as_event_list.data.frame <- function(x, na.rm = TRUE){
   structure(lapply(
     seq_len(nrow(x)),
 
@@ -271,6 +271,6 @@ as_LogEventList.data.frame <- function(x, na.rm = TRUE){
       r
     }
   ),
-    class = c("LogEventList", "list")
+    class = c("event_list", "list")
   )
 }

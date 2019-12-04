@@ -181,7 +181,7 @@ as.data.frame.LogEvent <- function(
   optional = FALSE,
   stringsAsFactors = FALSE,
   ...,
-  needs_boxing = Negate(is_atomic)
+  needs_boxing = Negate(is.atomic)
 ){
   values <- x$values
   nb <- vapply(values, needs_boxing, logical(1))
@@ -203,7 +203,7 @@ as.data.frame.LogEvent <- function(
 as.data.table.LogEvent <- function(
   x,
   ...,
-  needs_boxing = Negate(is_atomic)
+  needs_boxing = Negate(is.atomic)
 ){
   values <- x$values
   nb <- vapply(values, needs_boxing, logical(1))
@@ -218,7 +218,7 @@ as.data.table.LogEvent <- function(
 as_tibble.LogEvent <- function(
   x,
   ...,
-  needs_boxing = Negate(is_atomic)
+  needs_boxing = Negate(is.atomic)
 ){
   values <- x$values
   nb <- !vapply(values, needs_boxing, logical(1))
@@ -232,7 +232,7 @@ as_tibble.LogEvent <- function(
 
 
 #' @export
-as.data.table.LogEventList <- function(x, na.rm = TRUE){
+as.data.table.event_list <- function(x, na.rm = TRUE){
   data.table::rbindlist(
     lapply(
       x,
@@ -247,7 +247,7 @@ as.data.table.LogEventList <- function(x, na.rm = TRUE){
 
 
 #' @export
-as.data.frame.LogEventList <- function(x, na.rm = TRUE){
+as.data.frame.event_list <- function(x, na.rm = TRUE){
   as.data.frame(as.data.table(x))
 }
 
