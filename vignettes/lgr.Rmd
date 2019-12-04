@@ -757,16 +757,17 @@ Logging to databases is simple, though a few aspects can be tricky to
 configure based on the backend used. For performance reasons database inserts
 are buffered by default. This works exactly identical as described above for
 AppenderBuffer. If you want to write each LogEvent directly to the database,
-just set the buffer size to `0`.
+just set the buffer size to `0`. As of lgr 0.4.0, database appenders are
+part of the lgr.app package that has to be installed sepparetely.
 
-```{r}
+```{r, eval = FALSE}
 # install.packages("RSQLite")
 lg <- get_logger("db_logger")
 lg$
   set_propagate(FALSE)$
   add_appender(
     name = "db", 
-    AppenderDbi$new(
+    lgr.app::AppenderDbi$new(
       conn = DBI::dbConnect(RSQLite::SQLite()),
       table = "log",
       buffer_size = 2L
