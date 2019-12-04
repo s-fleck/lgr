@@ -21,15 +21,7 @@
 #'   \item{`msg`}{`character`. A message}
 #'
 #'   \item{`logger`}{`character` scalar. Name of the Logger that created the
-#'     event (`.logger$full_name`)
-#'   }
-#'
-#'   \item{`user`}{`character` scalar. User as set for the Logger
-#'     that created this event (`.logger$user`)
-#'   }
-#'
-#'   \item{`.logger`}{a `Logger`. A reference to the Logger that created the
-#'     event
+#'     event.
 #'   }
 #'
 #'   \item{`...`}{All named arguments in `...` will be added to the LogEvent
@@ -54,11 +46,12 @@
 #'   \item{`level_name`}{`character`: the [log_level] / priority of the
 #'     LogEvent labelled according to `getOption("lgr.log_levels")`}
 #'   \item{`values`}{`list`: All values stored in the LogEvent (including
-#'     all *custom fields*, but not including `event$logger`)}
-#'   \item{`logger_name`}{`character` scalar: The name of the Logger that
-#'     created this event, equivalent to `event$logger$name`)}
-#'   \item{`logger_user`}{`character` scalar: The user of the Logger that
-#'     created this event, equivalent to `event$logger_user`)}
+#'     all *custom fields*, but not including `event$.logger`)}
+#'   \item{`logger`}{`character` scalar: The name of the Logger that
+#'     created this event, equivalent to `event$.logger$name`)}
+#'   \item{`.logger`}{a `Logger`. A reference to the Logger that created the
+#'     event (equivalent to `get_logger(event$logger)`)
+#'   }
 #' }
 #'
 #' @name LogEvent
@@ -164,6 +157,9 @@ LogEvent <- R6::R6Class(
 #'   [base::as.data.frame()]) and is only included for compatibility.
 #' @param ... passed on to `data.frame()`
 #' @param optional currently ignored and only included for compatibility.
+#' @param needs_boxing a `function` that returns `TRUE` or `FALSE` to determine
+#'   wich values are to be boxed (i.e. placed as single elements in a list
+#'   column). See example
 #' @export
 #' @seealso [data.table::data.table], [tibble::tibble]
 #'
@@ -175,6 +171,18 @@ LogEvent <- R6::R6Class(
 #' lg$info("LogEvents can store any custom log values", df = iris)
 #' as.data.frame(lg$last_event)
 #' head(as.data.frame(lg$last_event)$df[[1]])
+#'
+#' # how boxing works
+#'
+#' # by default only recursive structures (such as lists) are boxed
+#' lg$info("letters", letters = as.list(letters))
+#' as.data.frame(lg$last_event)
+#' # but vectors are not
+#' lg$info("letters", letters = letters)
+#' as.data.frame(lg$last_event)
+#' # this behaviour can be modified by supplying a custom boxing function
+#' as.data.frame(lg$last_event, needs_boxing = function(.) length(.) > 1)
+#'
 as.data.frame.LogEvent <- function(
   x,
   row.names = NULL,

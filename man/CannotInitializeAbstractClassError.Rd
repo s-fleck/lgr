@@ -2,17 +2,20 @@
 % Please edit documentation in R/utils.R
 \name{CannotInitializeAbstractClassError}
 \alias{CannotInitializeAbstractClassError}
-\title{Title}
+\title{Logger Error Conditions}
 \usage{
 CannotInitializeAbstractClassError(class = parent.frame(2)[["classes"]])
 }
 \arguments{
-\item{class}{}
+\item{class}{\code{character} scalar. The abstract class that was mistakenly
+tried to initilize. The default is to discover the class name
+automatically if called inside \verb{$initilize()\{...\}} in an \link[R6:R6]{R6::R6} class
+defintion.}
 }
 \value{
-
+a condition object
 }
 \description{
-Title
+Logger Error Conditions
 }
 \concept{developer tools}

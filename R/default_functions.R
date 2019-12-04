@@ -26,7 +26,7 @@ default_exception_handler <- function(e){
 #' Default should_flush function
 #'
 #' This is the default "`should_flush()`" trigger function for Appenders that
-#' support such a mechanism, such as [AppenderBuffer] and [AppenderDbi]. It
+#' support such a mechanism, such as [AppenderBuffer] and [lgr.app::AppenderDbi]. It
 #' returns `TRUE` if the event's `level` meets or exceeds the Appender's
 #' `flush_threshold`.
 #'

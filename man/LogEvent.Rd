@@ -44,15 +44,7 @@ LogEvent was created}
 \item{\code{msg}}{\code{character}. A message}
 
 \item{\code{logger}}{\code{character} scalar. Name of the Logger that created the
-event (\code{.logger$full_name})
-}
-
-\item{\code{user}}{\code{character} scalar. User as set for the Logger
-that created this event (\code{.logger$user})
-}
-
-\item{\code{.logger}}{a \code{Logger}. A reference to the Logger that created the
-event
+event.
 }
 
 \item{\code{...}}{All named arguments in \code{...} will be added to the LogEvent
@@ -78,11 +70,12 @@ commonly used values.
 \item{\code{level_name}}{\code{character}: the \link{log_level} / priority of the
 LogEvent labelled according to \code{getOption("lgr.log_levels")}}
 \item{\code{values}}{\code{list}: All values stored in the LogEvent (including
-all \emph{custom fields}, but not including \code{event$logger})}
-\item{\code{logger_name}}{\code{character} scalar: The name of the Logger that
-created this event, equivalent to \code{event$logger$name})}
-\item{\code{logger_user}}{\code{character} scalar: The user of the Logger that
-created this event, equivalent to \code{event$logger_user})}
+all \emph{custom fields}, but not including \code{event$.logger})}
+\item{\code{logger}}{\code{character} scalar: The name of the Logger that
+created this event, equivalent to \code{event$.logger$name})}
+\item{\code{.logger}}{a \code{Logger}. A reference to the Logger that created the
+event (equivalent to \code{get_logger(event$logger)})
+}
 }
 }
 

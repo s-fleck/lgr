@@ -55,7 +55,6 @@ Layout <- R6::R6Class(
 #' provides a quick and easy way to customize log messages. If you need
 #' more control and flexibility, consider using [LayoutGlue] instead.
 #'
-#' @inheritParams format.LogEvent
 #' @inheritSection Layout Methods
 #' @inheritSection print.LogEvent Format Tokens
 #'
@@ -226,7 +225,7 @@ LayoutFormat <- R6::R6Class(
 #'
 #' # All fields of the LogEvent are available, even custom ones
 #' lg$appenders[[1]]$layout$set_fmt(
-#'   "{logger$name} {level_name}({level}) {caller}: {toupper(msg)} {{custom: {custom}}}"
+#'   "{logger} {level_name}({level}) {caller}: {toupper(msg)} {{custom: {custom}}}"
 #' )
 #' lg$fatal("test", custom = "foobar")
 #' lg$config(NULL)  # reset logger config

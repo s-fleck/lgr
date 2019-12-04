@@ -206,15 +206,16 @@ fmt_bytes <- function(
 
 
 
-#' Title
+#' Logger Error Conditions
 #'
-#' @param class
+#' @param class `character` scalar. The abstract class that was mistakenly
+#'   tried to initilize. The default is to discover the class name
+#'   automatically if called inside `$initilize(){...}` in an [R6::R6] class
+#'   defintion.
 #'
-#' @return
+#' @return a condition object
 #' @export
 #' @family developer tools
-#'
-#' @examples
 CannotInitializeAbstractClassError <- function(
   class = parent.frame(2)[["classes"]]
 ){

@@ -9,7 +9,7 @@ them, they cannot be instantiated directly.
 
 AppenderTable is extended by Appenders that write to a data source that
 can be interpreted as tables, (usually a \code{data.frame}). Examples are
-\link{AppenderDbi}, \link{AppenderRjdbc} and \link{AppenderDt}.
+\link[lgr.app:AppenderDbi]{lgr.app::AppenderDbi}, \link[lgr.app:AppenderRjdbc]{lgr.app::AppenderRjdbc} and \link[lgr.app:AppenderDt]{lgr.app::AppenderDt}.
 }
 \section{Fields}{
 

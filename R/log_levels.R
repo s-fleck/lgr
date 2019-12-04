@@ -195,7 +195,7 @@ colorize_levels <- function(
 #'
 #' @param x a `character` or `integer` scalar, or vector for
 #'   standardize_log_levels
-#' @param log_levels A named character vector of valid log levels
+#' @param log_levels named `integer` vector of valid log levels
 #'
 #' @return An unnamed `integer` vector
 #' @family extending logger
@@ -221,8 +221,7 @@ colorize_levels <- function(
 #'
 standardize_threshold <- function(
   x,
-  log_levels = c(getOption("lgr.log_levels"), c("all" = NA_integer_, "off" = 0L)),
-  allow_null = FALSE
+  log_levels = c(getOption("lgr.log_levels"), c("all" = NA_integer_, "off" = 0L))
 ){
   assert(is_scalar(x), "A threshold must be a scalar (a vector of length 1)" )
 
@@ -256,7 +255,6 @@ is_threshold <- function(x){
 
 
 
-#' @param log_levels
 #' @rdname standardize_threshold
 #' @export
 standardize_log_level <- function(
@@ -345,8 +343,7 @@ error_msg_log_levels <- function(varname, log_levels){
 #' @param labels a `character` vector of log level labels. Please note that
 #'   log levels are lowercase by default, even if many appenders print them
 #'   in uppercase.
-#' @param log_levels a named `integer` vector, should usually not be set
-#'   manually.
+#' @inheritParams standardize_threshold
 #'
 #' @return a `character` vector for `label_levels()` and an integer vector for
 #'   `unlabel_levels`
@@ -358,7 +355,6 @@ error_msg_log_levels <- function(varname, log_levels){
 #' x <- label_levels(c(seq(0, 600, by = 100), NA))
 #' print(x)
 #' unlabel_levels(x)
-
 label_levels <- function(
   levels,
   log_levels = getOption("lgr.log_levels")

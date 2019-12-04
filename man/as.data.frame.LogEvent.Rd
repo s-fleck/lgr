@@ -32,6 +32,10 @@ converted to factors? Defaults to \code{FALSE} (as opposed to
 \code{\link[base:as.data.frame]{base::as.data.frame()}}) and is only included for compatibility.}
 
 \item{...}{passed on to \code{data.frame()}}
+
+\item{needs_boxing}{a \code{function} that returns \code{TRUE} or \code{FALSE} to determine
+wich values are to be boxed (i.e. placed as single elements in a list
+column). See example}
 }
 \description{
 Coerce LogEvents to \code{data.frames}, \code{\link[data.table:data.table]{data.tables}},
@@ -45,6 +49,18 @@ as.data.frame(lg$last_event)
 lg$info("LogEvents can store any custom log values", df = iris)
 as.data.frame(lg$last_event)
 head(as.data.frame(lg$last_event)$df[[1]])
+
+# how boxing works
+
+# by default only recursive structures (such as lists) are boxed
+lg$info("letters", letters = as.list(letters))
+as.data.frame(lg$last_event)
+# but vectors are not
+lg$info("letters", letters = letters)
+as.data.frame(lg$last_event)
+# this behaviour can be modified by supplying a custom boxing function
+as.data.frame(lg$last_event, needs_boxing = function(.) length(.) > 1)
+
 }
 \seealso{
 \link[data.table:data.table]{data.table::data.table}, \link[tibble:tibble]{tibble::tibble}

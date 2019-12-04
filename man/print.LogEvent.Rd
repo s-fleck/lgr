@@ -26,7 +26,7 @@
 )
 }
 \arguments{
-\item{x}{a \link{LogEvent} or \link{lgr_data} Object}
+\item{x}{a \link{LogEvent}}
 
 \item{fmt}{A \code{character} scalar that may contain any of the tokens listed
 bellow in the section Format Tokens.}
@@ -36,7 +36,7 @@ bellow in the section Format Tokens.}
 \item{colors}{A \code{list} of \code{functions} that will be used to color the
 log levels (likely from \link[crayon:crayon]{crayon::crayon}).}
 
-\item{log_levels}{a named \code{integer} vector of log levels.}
+\item{log_levels}{named \code{integer} vector of valid log levels}
 
 \item{pad_levels}{\code{right}, \code{left} or \code{NULL}. Whether or not to pad the log
 level names to the same width on the left or right side, or not at all.}

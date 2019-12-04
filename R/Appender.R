@@ -460,7 +460,7 @@ AppenderJson <- R6::R6Class(
 #' @description
 #' AppenderTable is extended by Appenders that write to a data source that
 #' can be interpreted as tables, (usually a `data.frame`). Examples are
-#' [AppenderDbi], [AppenderRjdbc] and [AppenderDt].
+#' [lgr.app::AppenderDbi], [lgr.app::AppenderRjdbc] and [lgr.app::AppenderDt].
 #'
 #' @inheritSection Appender Fields
 #' @inheritSection Appender Methods
@@ -537,12 +537,10 @@ AppenderTable <- R6::R6Class(
 #'
 #' @description
 #' AppenderMemory is extended by Appenders that retain an in-memory event
-#' buffer, such as [AppenderBuffer] and [AppenderPushbullet].
+#' buffer, such as [AppenderBuffer] and [lgr.app::AppenderPushbullet].
 #'
 #' @eval r6_usage(AppenderMemory)
 #'
-#' @inheritSection AppenderDt Methods
-#' @inheritSection AppenderDt Fields
 #'
 #' @section Fields:
 #'
@@ -832,8 +830,6 @@ AppenderMemory <- R6::R6Class(
 #'    }
 #'
 #' }
-#'
-#' @inheritSection AppenderDt Comparison AppenderBuffer and AppenderDt
 #'
 #' @export
 #' @seealso [LayoutFormat]

@@ -11,8 +11,7 @@
 \usage{
 standardize_threshold(
   x,
-  log_levels = c(getOption("lgr.log_levels"), c(all = NA_integer_, off = 0L)),
-  allow_null = FALSE
+  log_levels = c(getOption("lgr.log_levels"), c(all = NA_integer_, off = 0L))
 )
 
 is_threshold(x)
@@ -29,7 +28,7 @@ is_log_levels(x)
 \item{x}{a \code{character} or \code{integer} scalar, or vector for
 standardize_log_levels}
 
-\item{log_levels}{A named character vector of valid log levels}
+\item{log_levels}{named \code{integer} vector of valid log levels}
 }
 \value{
 An unnamed \code{integer} vector
