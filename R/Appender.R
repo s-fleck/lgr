@@ -10,7 +10,7 @@
 #' basis on which all other Appenders are built. Please see the **see also**
 #' section towards the end of this document a list of available Appenders.
 #'
-#' More appenders can be found in the package [lgr.app](https://github.com/s-fleck/lgr.app)
+#' More appenders can be found in the package [lgrExtra](https://github.com/s-fleck/lgrExtra)
 #'
 #' @eval r6_usage(Appender)
 #'
@@ -460,7 +460,7 @@ AppenderJson <- R6::R6Class(
 #' @description
 #' AppenderTable is extended by Appenders that write to a data source that
 #' can be interpreted as tables, (usually a `data.frame`). Examples are
-#' [lgr.app::AppenderDbi], [lgr.app::AppenderRjdbc] and [lgr.app::AppenderDt].
+#' [lgrExtra::AppenderDbi], [lgrExtra::AppenderRjdbc] and [lgrExtra::AppenderDt].
 #'
 #' @inheritSection Appender Fields
 #' @inheritSection Appender Methods
@@ -537,7 +537,7 @@ AppenderTable <- R6::R6Class(
 #'
 #' @description
 #' AppenderMemory is extended by Appenders that retain an in-memory event
-#' buffer, such as [AppenderBuffer] and [lgr.app::AppenderPushbullet].
+#' buffer, such as [AppenderBuffer] and [lgrExtra::AppenderPushbullet].
 #'
 #' @eval r6_usage(AppenderMemory)
 #'

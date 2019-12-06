@@ -65,13 +65,13 @@ vignette.
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [08:40:52.465] A critical error
+#> FATAL [15:25:50.750] A critical error
 lgr$error("A less severe error")
-#> ERROR [08:40:52.494] A less severe error
+#> ERROR [15:25:50.781] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [08:40:52.505] A potentially bad situation
+#> WARN  [15:25:50.792] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [08:40:52.507] iris has 150 rows
+#> INFO  [15:25:50.795] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
@@ -85,9 +85,9 @@ appender to log to a file with little effort.
 tf <- tempfile()
 lgr$add_appender(AppenderFile$new(tf, layout = LayoutJson$new()))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [08:40:52.523] cars has 50 rows
+#> INFO  [15:25:50.812] cars has 50 rows
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2019-12-03 08:40:52","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-12-06 15:25:50","logger":"root","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 By passing a named argument to `info()`, `warn()`, and co you can log
@@ -97,10 +97,10 @@ logfiles that are machine as well as (somewhat) human readable.
 
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [08:40:52.547] loading cars {rows: 50, cols: 2}
+#> INFO  [15:25:50.843] loading cars {rows: 50, cols: 2}
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2019-12-03 08:40:52","logger":"root","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2019-12-03 08:40:52","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
+#> {"level":400,"timestamp":"2019-12-06 15:25:50","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2019-12-06 15:25:50","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
 ```
 
 For more examples please see the package
@@ -138,7 +138,7 @@ file.remove(logfile)
 lgr in general is stable and safe for use, but some Appenders are still
 experimental. This especially concerns database appenders which are
 currently beeing moved into to their own package
-[lgr.app](https://github.com/s-fleck/lgr.app). **Please install the
+[lgrExtra](https://github.com/s-fleck/lgrExtra). **Please install the
 stable version from CRAN if you want to try out lgr**
 
 The documentation needs a rewrite and will be ported to roxygen 7.x.x
@@ -176,7 +176,7 @@ Extra appenders (in the main package):
   - [glue](https://glue.tidyverse.org/) for a more flexible formatting
     syntax via LoggerGlue and LayoutGlue.
 
-Extra appenders via [lgr.app](https://github.com/s-fleck/lgr.app):
+Extra appenders via [lgrExtra](https://github.com/s-fleck/lgrExtra):
 
   - [DBI](https://github.com/r-dbi/DBI) for logging to databases. lgr is
     confirmed to work with the following backends:

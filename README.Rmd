@@ -149,7 +149,7 @@ file.remove(logfile)
 lgr in general is stable and safe for use, but some Appenders are still 
 experimental. This especially concerns database appenders which are currently 
 beeing moved into to their own package 
-[lgr.app](https://github.com/s-fleck/lgr.app). 
+[lgrExtra](https://github.com/s-fleck/lgrExtra). 
 **Please install the stable version from CRAN if you want to try out lgr**
 
 The documentation needs a rewrite and will be ported to roxygen 7.x.x soon. 
@@ -189,7 +189,7 @@ have minimal dependencies, and are well maintained :
   - [glue](https://glue.tidyverse.org/) for a more flexible formatting syntax
     via LoggerGlue and LayoutGlue.
     
-  Extra appenders via [lgr.app](https://github.com/s-fleck/lgr.app):
+  Extra appenders via [lgrExtra](https://github.com/s-fleck/lgrExtra):
   
   - [DBI](https://github.com/r-dbi/DBI) for logging to databases. lgr is 
     confirmed to work with the following backends: 

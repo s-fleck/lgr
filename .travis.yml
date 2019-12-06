@@ -6,7 +6,7 @@ r:
   - release
   - devel
 r_github_packages:
-  - s-fleck/lgr.app
+  - s-fleck/lgrExtra
 sudo: false
 after_success:
   - Rscript -e 'covr::codecov()'
