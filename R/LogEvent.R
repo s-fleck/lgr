@@ -189,10 +189,12 @@ as.data.frame.LogEvent <- function(
   optional = FALSE,
   stringsAsFactors = FALSE,
   ...,
-  needs_boxing = Negate(is.atomic)
+  needs_boxing = Negate(is.atomic),
+  never_box    = "msg"
 ){
   values <- x$values
-  nb <- vapply(values, needs_boxing, logical(1))
+  nb <- vapply(values, needs_boxing, logical(1), USE.NAMES = FALSE)
+  nb[names(values) %in% never_box] <- FALSE
   values[nb] <- lapply(values[nb], function(.x) I(list(.x)))
 
   do.call(
@@ -211,10 +213,13 @@ as.data.frame.LogEvent <- function(
 as.data.table.LogEvent <- function(
   x,
   ...,
-  needs_boxing = Negate(is.atomic)
+  needs_boxing = Negate(is.atomic),
+  never_box    = "msg"
 ){
   values <- x$values
-  nb <- vapply(values, needs_boxing, logical(1))
+  nb <- vapply(values, needs_boxing, logical(1), USE.NAMES = FALSE)
+  nb[names(values) %in% never_box] <- FALSE
+
   values[nb] <- lapply(values[nb], function(.x) list(.x))
   data.table::as.data.table(values)
 }
@@ -226,10 +231,13 @@ as.data.table.LogEvent <- function(
 as_tibble.LogEvent <- function(
   x,
   ...,
-  needs_boxing = Negate(is.atomic)
+  needs_boxing = Negate(is.atomic),
+  never_box    = "msg"
 ){
   values <- x$values
   nb <- vapply(values, needs_boxing, logical(1))
+  nb[names(values) %in% never_box] <- FALSE
+
   values[nb] <- lapply(values[nb], function(.x) list(.x))
   tibble::as_tibble(values)
 }
