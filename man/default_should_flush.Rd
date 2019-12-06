@@ -14,7 +14,7 @@ default_should_flush(event)
 }
 \description{
 This is the default "\code{should_flush()}" trigger function for Appenders that
-support such a mechanism, such as \link{AppenderBuffer} and \link[lgr.app:AppenderDbi]{lgr.app::AppenderDbi}. It
+support such a mechanism, such as \link{AppenderBuffer} and \link[lgrExtra:AppenderDbi]{lgrExtra::AppenderDbi}. It
 returns \code{TRUE} if the event's \code{level} meets or exceeds the Appender's
 \code{flush_threshold}.
 }

@@ -744,18 +744,7 @@ AppenderMemory <- R6::R6Class(
 
     buffer_dt = function(){
       assert_namespace("data.table")
-      dd <- lapply(
-        get("buffer_events", self),
-        function(.x){
-          vals <- .x$values
-          list_cols <- !vapply(vals, is_scalar_atomic, TRUE)
-          list_cols[["msg"]] <- FALSE
-          vals[list_cols] <- lapply(vals[list_cols], list)
-          data.table::as.data.table(vals)
-        }
-      )
-
-      data.table::rbindlist(dd, fill = TRUE, use.names = TRUE)
+      as.data.table.event_list(get("buffer_events", self))
     }
   ),
 

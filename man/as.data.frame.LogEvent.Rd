@@ -12,12 +12,18 @@
   optional = FALSE,
   stringsAsFactors = FALSE,
   ...,
-  needs_boxing = Negate(is.atomic)
+  needs_boxing = Negate(is.atomic),
+  never_box = "msg"
 )
 
-as.data.table.LogEvent(x, ..., needs_boxing = Negate(is.atomic))
+as.data.table.LogEvent(
+  x,
+  ...,
+  needs_boxing = Negate(is.atomic),
+  never_box = "msg"
+)
 
-as_tibble.LogEvent(x, ..., needs_boxing = Negate(is.atomic))
+as_tibble.LogEvent(x, ..., needs_boxing = Negate(is.atomic), never_box = "msg")
 }
 \arguments{
 \item{x}{any \R object.}

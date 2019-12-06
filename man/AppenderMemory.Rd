@@ -8,7 +8,7 @@
 them, they cannot be instantiated directly.
 
 AppenderMemory is extended by Appenders that retain an in-memory event
-buffer, such as \link{AppenderBuffer} and \link[lgr.app:AppenderPushbullet]{lgr.app::AppenderPushbullet}.
+buffer, such as \link{AppenderBuffer} and \link[lgrExtra:AppenderPushbullet]{lgrExtra::AppenderPushbullet}.
 }
 \section{Usage}{
 \preformatted{

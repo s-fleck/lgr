@@ -14,7 +14,7 @@ The Appender class itself \strong{is not designed for direct usage}, but it is t
 basis on which all other Appenders are built. Please see the \strong{see also}
 section towards the end of this document a list of available Appenders.
 
-More appenders can be found in the package \href{https://github.com/s-fleck/lgr.app}{lgr.app}
+More appenders can be found in the package \href{https://github.com/s-fleck/lgrExtra}{lgrExtra}
 }
 \section{Usage}{
 \preformatted{
