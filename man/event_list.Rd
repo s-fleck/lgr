@@ -7,7 +7,7 @@
 \alias{as_event_list.data.frame}
 \alias{as.data.table.event_list}
 \alias{as.data.frame.event_list}
-\title{#' A List of LogEvents}
+\title{A List of LogEvents}
 \usage{
 event_list(...)
 
@@ -57,13 +57,14 @@ An event_list is a class for \code{list()}s whose only elements are \link{LogEve
 This structure is occasionally used internally in lgr (for example by
 \link{AppenderBuffer}) and can be useful for developers that want to write
 their own Appenders.
-
-An event_list is a class for \code{list()}s whose only elements are \link{LogEvents}.
-This structure is occasionally used internally in lgr (for example by
-\link{AppenderBuffer}) and can be useful for developers that want to write
-their own Appenders.
 }
 \details{
 For convenience, \code{as.data.frame()} and \code{as.data.table()} methods
 exist for event lists.
 }
+\seealso{
+Other docs relevant for extending lgr: 
+\code{\link{LogEvent}},
+\code{\link{standardize_threshold}()}
+}
+\concept{docs relevant for extending lgr}

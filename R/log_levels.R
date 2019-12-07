@@ -198,7 +198,7 @@ colorize_levels <- function(
 #' @param log_levels named `integer` vector of valid log levels
 #'
 #' @return An unnamed `integer` vector
-#' @family extending logger
+#' @family docs relevant for extending lgr
 #' @export
 #' @examples
 #'
@@ -218,7 +218,6 @@ colorize_levels <- function(
 #'
 #' # You can still use standardize_log_levels() (plural) to work with vectors
 #' standardize_log_levels(c("info", "fatal"))
-#'
 standardize_threshold <- function(
   x,
   log_levels = c(getOption("lgr.log_levels"), c("all" = NA_integer_, "off" = 0L))

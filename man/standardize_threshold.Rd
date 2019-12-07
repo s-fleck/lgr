@@ -57,6 +57,10 @@ try(standardize_log_level(c("info", "fatal")))
 
 # You can still use standardize_log_levels() (plural) to work with vectors
 standardize_log_levels(c("info", "fatal"))
-
 }
-\concept{extending logger}
+\seealso{
+Other docs relevant for extending lgr: 
+\code{\link{LogEvent}},
+\code{\link{event_list}()}
+}
+\concept{docs relevant for extending lgr}

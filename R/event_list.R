@@ -1,4 +1,4 @@
-#' #' A List of LogEvents
+#' A List of LogEvents
 #'
 #' An event_list is a class for `list()`s whose only elements are [LogEvents].
 #' This structure is occasionally used internally in lgr (for example by
@@ -12,7 +12,7 @@
 #' @param ... for `event` elements to be added to the list, for the `as_*()`
 #'   functions paramters passed on to methods.
 #'
-#' @rdname event_list
+#' @family docs relevant for extending lgr
 #' @export
 event_list <- function(...){
   as_event_list(list(...))
@@ -21,13 +21,6 @@ event_list <- function(...){
 
 
 
-#' A List of LogEvents
-#'
-#' An event_list is a class for `list()`s whose only elements are [LogEvents].
-#' This structure is occasionally used internally in lgr (for example by
-#' [AppenderBuffer]) and can be useful for developers that want to write
-#' their own Appenders.
-#'
 #' @rdname event_list
 #' @return
 #'   an `event_list()` and `as_event_list()` return a `list` of subclass

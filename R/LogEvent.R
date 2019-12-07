@@ -1,68 +1,21 @@
-#' Events - The Atomic Unit of Logging
+#' LogEvents - The Atomic Unit of Logging
 #'
+#' @description
 #' A `LogEvent` is a single unit of data that should be logged. `LogEvents` are
-#' usually created by a [Logger], and then processed by [Appenders].
+#' usually created by a [Logger], and then processed by one more [Appenders].
+#' They do not need to be instantiated manually except for testing and
+#' experimentation; however, if you plan on writing your own Appenders or
+#' Layouts you need to understand LogEvents.
 #'
-#' @eval r6_usage(LogEvent)
-#'
-#' @section Creating LogEvents / Fields:
-#'
-#' The arguments to `LogEvent$new()` directly translate to the fields stored in
-#' the LogEvent:
-#'
-#' \describe{
-#'   \item{`level`}{`integer`: the [log_level] / priority of the LogEvent}
-#'
-#'   \item{`timestamp`}{[`POSIXct`][base::POSIXct] the time when then the
-#'   LogEvent was created}
-#'
-#'   \item{`caller`}{`character`. The name of the calling function}
-#'
-#'   \item{`msg`}{`character`. A message}
-#'
-#'   \item{`logger`}{`character` scalar. Name of the Logger that created the
-#'     event.
-#'   }
-#'
-#'   \item{`...`}{All named arguments in `...` will be added to the LogEvent
-#'   as **custom fields**. You can store arbitrary \R objects in LogEvents
-#'   this way, but not all Appenders will support them.
-#'   See [AppenderJson] for
-#'   an Appender that supports custom fields quite naturally.}
-#' }
-#'
-#'
-#' Usually the above values will be scalars, but (except for `"logger"`) they
-#' can also be vectors if they are all of the same length (or scalars that will
-#' be recycled). In this case the event will be treated by the [Appenders] and
-#' [Layouts] as if several separate events.
-#'
-#' @section Active Bindings:
-#'
-#' LogEvents contain some some active bindings that make it easier to retrieve
-#' commonly used values.
-#'
-#' \describe{
-#'   \item{`level_name`}{`character`: the [log_level] / priority of the
-#'     LogEvent labelled according to `getOption("lgr.log_levels")`}
-#'   \item{`values`}{`list`: All values stored in the LogEvent (including
-#'     all *custom fields*, but not including `event$.logger`)}
-#'   \item{`logger`}{`character` scalar: The name of the Logger that
-#'     created this event, equivalent to `event$.logger$name`)}
-#'   \item{`.logger`}{a `Logger`. A reference to the Logger that created the
-#'     event (equivalent to `get_logger(event$logger)`)
-#'   }
-#' }
-#'
-#' @name LogEvent
 #' @seealso [as.data.frame.LogEvent()]
+#' @family docs relevant for extending lgr
 #' @aliases LogEvents
 #' @examples
 #' lg <- get_logger("test")
 #' lg$error("foo bar")
 #'
-#' # The last LogEvent produced by a Logger is stored in the last_event field
-#' lg$last_event  # formatted by default
+#' # The last LogEvent produced by a Logger is stored in its `last_event` field
+#' lg$last_event  # formatted console output
 #' lg$last_event$values  # values stored in the event
 #'
 #' # Also contains the Logger that created it as .logger
@@ -75,16 +28,23 @@
 #' lg$last_event$.logger$last_event$msg
 #' identical(lg, lg$last_event$.logger)
 #' lg$config(NULL)  # reset logger config
-NULL
-
-
-
-
 #' @export
 LogEvent <- R6::R6Class(
   "LogEvent",
   lock_objects = FALSE,
   public = list(
+
+  #' @description
+  #' The arguments to `LogEvent$new()` directly translate to the fields stored
+  #' in the `LogEvent`. Usually these values will be scalars, but (except for
+  #' `"logger"`) they can also be vectors if they are all of the same length (or
+  #' scalars that will be recycled). In this case the event will be treated by
+  #' the [Appenders] and [Layouts] as if several separate events.
+  #'
+  #' @param ...  All named arguments in `...` will be added to the LogEvent
+  #'   as **custom fields**. You can store arbitrary \R objects in LogEvents
+  #'   this way, but not all Appenders will support them. See [AppenderJson] for
+  #' @param logger,level,timestamp,caller,msg see **Public fields**.
     initialize = function(
       logger,
       level = 400,
@@ -114,14 +74,31 @@ LogEvent <- R6::R6Class(
         }
       }
     },
+
+    #' @field level `integer`. The [log_level] / priority of the LogEvent. Use the
+    #' active binding `level_name` to get the `character` representation
+    #' instead.
     level = NULL,
+
+    #' @field timestamp [`POSIXct`][base::POSIXct]. The time when then the
+    #'   LogEvent was created.
     timestamp = NULL,
+
+    #' @field caller `character`. The name of the calling function.
     caller = NULL,
+
+    #' @field msg `character`. The log message.
     msg = NULL,
+
+    #' @field .logger [Logger]. A reference to the Logger that created the
+    #' event (equivalent to `get_logger(event$logger)`).
     .logger = NULL
   ),
 
   active = list(
+
+    #' @field values `list`. All values stored in the `LogEvent`, including
+    #' all *custom fields*, but not including `event$.logger`.
     values = function(){
       fixed_vals   <- c("level", "timestamp", "logger", "caller", "msg")
       custom_vals <- setdiff(
@@ -133,10 +110,14 @@ LogEvent <- R6::R6Class(
       mget(valnames, envir = self)
     },
 
+    #' @field level_name `character`. The [log_level] / priority of the LogEvent labelled
+    #' according to `getOption("lgr.log_levels")`
     level_name = function(){
       label_levels(get("level", envir = self))
     },
 
+    #' @field logger `character` scalar. The name of the Logger that
+    #' created this event, equivalent to `event$.logger$name`)
     logger = function(){
       get("name", envir = get(".logger", envir = self))
     }

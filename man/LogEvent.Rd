@@ -3,88 +3,20 @@
 \name{LogEvent}
 \alias{LogEvent}
 \alias{LogEvents}
-\title{Events - The Atomic Unit of Logging}
+\title{LogEvents - The Atomic Unit of Logging}
 \description{
 A \code{LogEvent} is a single unit of data that should be logged. \code{LogEvents} are
-usually created by a \link{Logger}, and then processed by \link{Appenders}.
+usually created by a \link{Logger}, and then processed by one more \link{Appenders}.
+They do not need to be instantiated manually except for testing and
+experimentation; however, if you plan on writing your own Appenders or
+Layouts you need to understand LogEvents.
 }
-\section{Usage}{
-\preformatted{
-x <- LogEvent$new(logger, level = 400, timestamp = Sys.time(), caller = NA, msg
-  = NA, ...)
-
-x$clone(deep = FALSE)
-
-x$.logger
-x$caller
-x$level
-x$level_name
-x$logger
-x$msg
-x$timestamp
-x$values
-
-}
-}
-
-\section{Creating LogEvents / Fields}{
-
-
-The arguments to \code{LogEvent$new()} directly translate to the fields stored in
-the LogEvent:
-
-\describe{
-\item{\code{level}}{\code{integer}: the \link{log_level} / priority of the LogEvent}
-
-\item{\code{timestamp}}{\code{\link[base:POSIXct]{POSIXct}} the time when then the
-LogEvent was created}
-
-\item{\code{caller}}{\code{character}. The name of the calling function}
-
-\item{\code{msg}}{\code{character}. A message}
-
-\item{\code{logger}}{\code{character} scalar. Name of the Logger that created the
-event.
-}
-
-\item{\code{...}}{All named arguments in \code{...} will be added to the LogEvent
-as \strong{custom fields}. You can store arbitrary \R objects in LogEvents
-this way, but not all Appenders will support them.
-See \link{AppenderJson} for
-an Appender that supports custom fields quite naturally.}
-}
-
-Usually the above values will be scalars, but (except for \code{"logger"}) they
-can also be vectors if they are all of the same length (or scalars that will
-be recycled). In this case the event will be treated by the \link{Appenders} and
-\link{Layouts} as if several separate events.
-}
-
-\section{Active Bindings}{
-
-
-LogEvents contain some some active bindings that make it easier to retrieve
-commonly used values.
-
-\describe{
-\item{\code{level_name}}{\code{character}: the \link{log_level} / priority of the
-LogEvent labelled according to \code{getOption("lgr.log_levels")}}
-\item{\code{values}}{\code{list}: All values stored in the LogEvent (including
-all \emph{custom fields}, but not including \code{event$.logger})}
-\item{\code{logger}}{\code{character} scalar: The name of the Logger that
-created this event, equivalent to \code{event$.logger$name})}
-\item{\code{.logger}}{a \code{Logger}. A reference to the Logger that created the
-event (equivalent to \code{get_logger(event$logger)})
-}
-}
-}
-
 \examples{
 lg <- get_logger("test")
 lg$error("foo bar")
 
-# The last LogEvent produced by a Logger is stored in the last_event field
-lg$last_event  # formatted by default
+# The last LogEvent produced by a Logger is stored in its `last_event` field
+lg$last_event  # formatted console output
 lg$last_event$values  # values stored in the event
 
 # Also contains the Logger that created it as .logger
@@ -100,4 +32,97 @@ lg$config(NULL)  # reset logger config
 }
 \seealso{
 \code{\link[=as.data.frame.LogEvent]{as.data.frame.LogEvent()}}
+
+Other docs relevant for extending lgr: 
+\code{\link{event_list}()},
+\code{\link{standardize_threshold}()}
+}
+\concept{docs relevant for extending lgr}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{level}}{\code{integer}. The \link{log_level} / priority of the LogEvent. Use the
+active binding \code{level_name} to get the \code{character} representation
+instead.}
+
+\item{\code{timestamp}}{\code{\link[base:POSIXct]{POSIXct}}. The time when then the
+LogEvent was created.}
+
+\item{\code{caller}}{\code{character}. The name of the calling function.}
+
+\item{\code{msg}}{\code{character}. The log message.}
+
+\item{\code{.logger}}{\link{Logger}. A reference to the Logger that created the
+event (equivalent to \code{get_logger(event$logger)}).}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{values}}{\code{list}. All values stored in the \code{LogEvent}, including
+all \emph{custom fields}, but not including \code{event$.logger}.}
+
+\item{\code{level_name}}{\code{character}. The \link{log_level} / priority of the LogEvent labelled
+according to \code{getOption("lgr.log_levels")}}
+
+\item{\code{logger}}{\code{character} scalar. The name of the Logger that
+created this event, equivalent to \code{event$.logger$name})}
+}
+\if{html}{\out{</div>}}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{LogEvent$new()}}
+\item \href{#method-clone}{\code{LogEvent$clone()}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+The arguments to \code{LogEvent$new()} directly translate to the fields stored
+in the \code{LogEvent}. Usually these values will be scalars, but (except for
+\code{"logger"}) they can also be vectors if they are all of the same length (or
+scalars that will be recycled). In this case the event will be treated by
+the \link{Appenders} and \link{Layouts} as if several separate events.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LogEvent$new(
+  logger,
+  level = 400,
+  timestamp = Sys.time(),
+  caller = NA,
+  msg = NA,
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{logger, level, timestamp, caller, msg}}{see \strong{Public fields}.}
+
+\item{\code{...}}{All named arguments in \code{...} will be added to the LogEvent
+as \strong{custom fields}. You can store arbitrary \R objects in LogEvents
+this way, but not all Appenders will support them. See \link{AppenderJson} for}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LogEvent$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
 }
