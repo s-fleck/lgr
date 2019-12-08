@@ -4,6 +4,7 @@
 \alias{event_list}
 \alias{as_event_list}
 \alias{as_event_list.list}
+\alias{as_event_list.LogEvent}
 \alias{as_event_list.data.frame}
 \alias{as.data.table.event_list}
 \alias{as.data.frame.event_list}
@@ -13,7 +14,9 @@ event_list(...)
 
 as_event_list(x, ...)
 
-\method{as_event_list}{list}(x, ...)
+\method{as_event_list}{list}(x, ..., scalarize = FALSE)
+
+\method{as_event_list}{LogEvent}(x, ..., scalarize = FALSE)
 
 \method{as_event_list}{data.frame}(x, na.rm = TRUE, ...)
 
@@ -34,6 +37,9 @@ functions paramters passed on to methods.}
 
 \item{x}{any \code{R} object}
 
+\item{scalarize}{\code{logical} scalar. Turn \link{LogEvents} with non-scalar \code{msg}
+field into sepparate log events}
+
 \item{na.rm}{remove \code{NA} values before coercing a data.frame to an \code{event_list()}.}
 
 \item{row.names}{\code{NULL} or a character vector giving the row
@@ -46,8 +52,8 @@ converted to factors? Defaults to \code{FALSE} (as opposed to
 \code{\link[base:as.data.frame]{base::as.data.frame()}}) and is only included for compatibility.}
 }
 \value{
-an \code{event_list()} and \code{as_event_list()} return a \code{list} of subclass
-\code{event_list}
+an \code{event_list()} and \code{as_event_list()} return a flat \code{list}
+of \link{LogEvents}. Nested lists get automatically flattened.
 
 \code{as.data.frame} and \code{as.data.table} return a \code{data.frame} or \code{data.table}
 respectively
@@ -61,6 +67,19 @@ their own Appenders.
 \details{
 For convenience, \code{as.data.frame()} and \code{as.data.table()} methods
 exist for event lists.
+}
+\examples{
+e <- LogEvent$new(level = 300, msg = "a", logger = lgr)
+as_event_list(e)
+as_event_list(c(e, e))
+# nested lists get automatically unnested
+as_event_list(c(e, list(nested_event = e)))
+
+# scalarize = TRUE "unpacks" events with vector log messages
+e <- LogEvent$new(level = 300, msg = c("A", "B"), logger = lgr)
+as_event_list(e, scalarize = FALSE)
+as_event_list(e, scalarize = TRUE)
+
 }
 \seealso{
 Other docs relevant for extending lgr: 

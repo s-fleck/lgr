@@ -5,8 +5,8 @@
   Appenders, email and push notifications and AppenderDt (in-memory 
   `data.tables`).
   
-* Export more utility functions that are useful for creating custom Appenders 
-  (such as `standardize_threshold()`)
+* Export more utility functions that are useful for creating custom Appenders; 
+  such as `standardize_threshold()` and `event_list()`.
   
 * AppenderBuffer now defaults to `flush_threshold = NULL` 
   (never flush because of the log level of an event)
