@@ -32,13 +32,45 @@ test_that("LogEvents preserves field order", {
 
 
 
-test_that("as.data.table.LogEvent() and as.data.frame.LogEvent() work with list columns", {
+
+
+# as.data.frame/table/tibble ---------------------------------------------
+
+as_funs <- list(
+  as.data.frame = as.data.frame.LogEvent,
+  as.data.table = as.data.table.LogEvent,
+  as_tibble = as_tibble.LogEvent
+)
+
+# nm <- "as.data.table"
+
+for (nm in names(as_funs)){
+
   l  <- Logger$new("l", propagate = FALSE)
-  l$fatal("test", df = iris)
-  dte <- data.table::as.data.table(l$last_event)
-  dfe <- as.data.frame(l$last_event)
-  dtb <- tibble::as_tibble(l$last_event)
-  expect_true(is.data.frame(dte$df[[1]]))
-  expect_true(is.data.frame(dfe$df[[1]]))
-  expect_true(is.data.frame(dtb$df[[1]]))
-})
+
+  test_that(paste0(nm, "() works as expected"), {
+    l$fatal("test", df = iris, root_logger = lgr)
+    res <- as_funs[[nm]](l$last_event)
+
+    expect_identical(nrow(res), 1L)
+    expect_true(is.data.frame(res$df[[1]]))
+    expect_identical(res$root_logger[[1]], lgr)
+    expect_identical(nrow(res$df[[1]]), 150L)
+  })
+
+
+  test_that(paste0(nm, "() vectorizes over msg"), {
+    l  <- Logger$new("l", propagate = FALSE)
+    l$fatal(c("test", "test2"), letters = letters, df = iris, root_logger = lgr)
+
+    res <- as_funs[[nm]](l$last_event)
+
+    expect_identical(nrow(res), 2L)
+    expect_true(is.data.frame(res$df[[1]]))
+    expect_true(is.data.frame(res$df[[2]]))
+    expect_true(is.character(res$letters[[1]]))
+    expect_true(is.character(res$letters[[2]]))
+    expect_identical(nrow(res$df[[1]]), 150L)
+    expect_identical(nrow(res$df[[2]]), 150L)
+  })
+}

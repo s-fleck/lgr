@@ -12,18 +12,23 @@
   optional = FALSE,
   stringsAsFactors = FALSE,
   ...,
-  needs_boxing = Negate(is.atomic),
-  never_box = "msg"
+  box_if = function(.) !(is.atomic(.) && identical(length(.), 1L)),
+  cols_expand = "msg"
 )
 
 as.data.table.LogEvent(
   x,
   ...,
-  needs_boxing = Negate(is.atomic),
-  never_box = "msg"
+  box_if = function(.) !(is.atomic(.) && identical(length(.), 1L)),
+  cols_expand = "msg"
 )
 
-as_tibble.LogEvent(x, ..., needs_boxing = Negate(is.atomic), never_box = "msg")
+as_tibble.LogEvent(
+  x,
+  ...,
+  box_if = function(.) !(is.atomic(.) && identical(length(.), 1L)),
+  cols_expand = "msg"
+)
 }
 \arguments{
 \item{x}{any \R object.}

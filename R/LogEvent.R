@@ -170,13 +170,21 @@ as.data.frame.LogEvent <- function(
   optional = FALSE,
   stringsAsFactors = FALSE,
   ...,
-  needs_boxing = Negate(is.atomic),
-  never_box    = "msg"
+  box_if = function(.) !(is.atomic(.) && identical(length(.), 1L)),
+  cols_expand  = "msg"
 ){
-  values <- x$values
-  nb <- vapply(values, needs_boxing, logical(1), USE.NAMES = FALSE)
-  nb[names(values) %in% never_box] <- FALSE
-  values[nb] <- lapply(values[nb], function(.x) I(list(.x)))
+  boxer <- function(.) I(list(.))
+  values <- do_box_if(x$values, box_if, except = cols_expand, boxer = boxer)
+  msg_len <- length(x[["msg"]])
+  # as.data.frame requires manual recycling
+
+  if (msg_len > 1){
+    for (i in seq_along(values)){
+      if (identical(length(values[[i]]), 1L))
+        values[[i]] <- rep(values[[i]], msg_len)
+    }
+    values <- do_box_if(values, box_if, except = cols_expand, boxer = I)
+  }
 
   do.call(
     data.frame,
@@ -194,14 +202,10 @@ as.data.frame.LogEvent <- function(
 as.data.table.LogEvent <- function(
   x,
   ...,
-  needs_boxing = Negate(is.atomic),
-  never_box    = "msg"
+  box_if = function(.) !(is.atomic(.) && identical(length(.), 1L)),
+  cols_expand  = "msg"
 ){
-  values <- x$values
-  nb <- vapply(values, needs_boxing, logical(1), USE.NAMES = FALSE)
-  nb[names(values) %in% never_box] <- FALSE
-
-  values[nb] <- lapply(values[nb], function(.x) list(.x))
+  values <- do_box_if(x$values, box_if, cols_expand)
   data.table::as.data.table(values)
 }
 
@@ -212,17 +216,30 @@ as.data.table.LogEvent <- function(
 as_tibble.LogEvent <- function(
   x,
   ...,
-  needs_boxing = Negate(is.atomic),
-  never_box    = "msg"
+  box_if = function(.) !(is.atomic(.) && identical(length(.), 1L)),
+  cols_expand  = "msg"
 ){
-  values <- x$values
-  nb <- vapply(values, needs_boxing, logical(1))
-  nb[names(values) %in% never_box] <- FALSE
-
-  values[nb] <- lapply(values[nb], function(.x) list(.x))
+  values <- do_box_if(x$values, box_if, cols_expand)
   tibble::as_tibble(values)
 }
 
+
+
+
+do_box_if <- function(x, predicate, except, boxer = list){
+  sel <-
+    vapply(x, predicate, TRUE, USE.NAMES = FALSE)
+
+  if (length(except)){
+    sel[(names(x) %in% except)] <- FALSE
+  }
+
+  for (i in seq_along(x))
+    if (sel[[i]])
+      x[[i]] <- boxer(x[[i]])
+
+  x
+}
 
 
 
