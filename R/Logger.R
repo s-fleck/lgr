@@ -489,6 +489,23 @@ Logger <- R6::R6Class(
     },
 
 
+    #' @description
+    #' `list_log()` is a shortcut for do.call(Logger$log).
+    #' See \url{https://github.com/s-fleck/joblog} for an R package that
+    #' leverages this feature to create custom log event types for tracking
+    #' the status of cron jobs.
+    #'
+    #' @param x a named `list` that must at least contain the named elements
+    #'   `level` and `timestamp`
+    #'
+    #' @example
+    #' lg <- get_logger("test")
+    #' lg$list_log(list(level = 400, msg = "example"))
+    list_log = function(x){
+      do.call(self$log, x)
+    },
+
+
     config = function(
       cfg,
       file,

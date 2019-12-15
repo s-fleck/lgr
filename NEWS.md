@@ -4,6 +4,10 @@
   [lgr.app](https://github.com/s-fleck/lgr.app). This includes database 
   Appenders, email and push notifications and AppenderDt (in-memory 
   `data.tables`).
+
+* Loggers gain a `list_log()` method. See https://github.com/s-fleck/joblog  for 
+  an R package that leverages this feature to create custom log event types for 
+  tracking the status of cron jobs. 
   
 * Export more utility functions that are useful for creating custom Appenders; 
   such as `standardize_threshold()` and `event_list()`.
@@ -12,6 +16,7 @@
   (never flush because of the log level of an event)
   
 * `basic_config()` now works as documented for .jsonl files
+
 
 # lgr 0.3.3
 
