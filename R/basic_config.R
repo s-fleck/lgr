@@ -55,9 +55,11 @@ basic_config <- function(
   console_timestamp_fmt = "%H:%M:%OS3",
   memory  = FALSE
 ){
+  default_fmt = "%L [%t] %m"  # only relevant for triggering warning when logging to json
+
   stopifnot(
     is.null(file) || is_scalar_character(file),
-    is_scalar_character(fmt),
+    is.null(fmt) || is_scalar_character(fmt),
     is_scalar_character(console_fmt),
     is_scalar_character(timestamp_fmt),
     is_threshold(threshold),
@@ -102,10 +104,12 @@ basic_config <- function(
       )
 
     } else if (identical(tolower(ext), "jsonl")){
-      assert (is.null(fmt), "`fmt` must be null if `file` is a '.jsonl' file")
+      if (!is.null(fmt) && !identical(fmt, default_fmt))
+        warning("`fmt` is ignored if `file` is a '.jsonl' file")
+
       l$add_appender(
         name = "file",
-        AppenderJson$new(threshold = NA)
+        AppenderJson$new(file = file, threshold = NA)
       )
 
     } else {

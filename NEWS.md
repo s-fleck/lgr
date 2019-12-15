@@ -11,6 +11,7 @@
 * AppenderBuffer now defaults to `flush_threshold = NULL` 
   (never flush because of the log level of an event)
   
+* `basic_config()` now works as documented for .jsonl files
 
 # lgr 0.3.3
 
