@@ -880,7 +880,7 @@ LoggerGlue <- R6::R6Class(
 
         # init
         # the do.call is so that `...` gets evaluated in the correct environment
-        msg <- glue::glue( ..., .envir = .envir)
+        msg <- glue::glue(..., .envir = .envir)
         force(caller)
 
         if (missing(...)){
@@ -929,6 +929,13 @@ LoggerGlue <- R6::R6Class(
       },
       error = get("handle_exception", envir = self)
       )
+    },
+
+
+    list_log = function(x){
+       # TODO: Workaround until we have a better implementation of list_log
+      names(x)[names(x) == "msg"] <- ""
+      do.call(self$log, x)
     },
 
 
