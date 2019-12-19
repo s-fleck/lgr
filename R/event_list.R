@@ -133,7 +133,7 @@ as.data.table.event_list <- function(x, na.rm = TRUE){
     lapply(
       x,
       data.table::as.data.table,
-      needs_boxing = Negate(is_scalar_atomic)
+      box_if = Negate(is_scalar_atomic)
   ),
   fill = TRUE,
   use.names = TRUE)

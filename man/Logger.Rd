@@ -33,6 +33,7 @@ lg$fatal(msg, ..., caller = get_caller(-8L))
 lg$filter(event)
 lg$handle_exception(...)
 lg$info(msg, ..., caller = get_caller(-8L))
+lg$list_log(x)
 lg$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
 lg$remove_appender(pos)
 lg$remove_filter(pos)
@@ -339,4 +340,204 @@ lg$config(NULL)
 }
 \seealso{
 \href{https://glue.tidyverse.org/}{glue}
+}
+\section{Super class}{
+\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{Logger}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{Logger$new()}}
+\item \href{#method-log}{\code{Logger$log()}}
+\item \href{#method-fatal}{\code{Logger$fatal()}}
+\item \href{#method-error}{\code{Logger$error()}}
+\item \href{#method-warn}{\code{Logger$warn()}}
+\item \href{#method-info}{\code{Logger$info()}}
+\item \href{#method-debug}{\code{Logger$debug()}}
+\item \href{#method-trace}{\code{Logger$trace()}}
+\item \href{#method-list_log}{\code{Logger$list_log()}}
+\item \href{#method-config}{\code{Logger$config()}}
+\item \href{#method-add_appender}{\code{Logger$add_appender()}}
+\item \href{#method-remove_appender}{\code{Logger$remove_appender()}}
+\item \href{#method-handle_exception}{\code{Logger$handle_exception()}}
+\item \href{#method-set_exception_handler}{\code{Logger$set_exception_handler()}}
+\item \href{#method-set_propagate}{\code{Logger$set_propagate()}}
+\item \href{#method-set_threshold}{\code{Logger$set_threshold()}}
+\item \href{#method-set_appenders}{\code{Logger$set_appenders()}}
+\item \href{#method-spawn}{\code{Logger$spawn()}}
+}
+}
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter">}\href{../../lgr/html/Filterable.html#method-add_filter}{\code{lgr::Filterable$add_filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter">}\href{../../lgr/html/Filterable.html#method-filter}{\code{lgr::Filterable$filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter">}\href{../../lgr/html/Filterable.html#method-remove_filter}{\code{lgr::Filterable$remove_filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters">}\href{../../lgr/html/Filterable.html#method-set_filters}{\code{lgr::Filterable$set_filters()}}\out{</span>}
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$new(
+  name = "(unnamed logger)",
+  appenders = list(),
+  threshold = NULL,
+  filters = list(),
+  exception_handler = default_exception_handler,
+  propagate = TRUE
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-log"></a>}}
+\subsection{Method \code{log()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-fatal"></a>}}
+\subsection{Method \code{fatal()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$fatal(msg, ..., caller = get_caller(-8L))}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-error"></a>}}
+\subsection{Method \code{error()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$error(msg, ..., caller = get_caller(-8L))}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-warn"></a>}}
+\subsection{Method \code{warn()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$warn(msg, ..., caller = get_caller(-8L))}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-info"></a>}}
+\subsection{Method \code{info()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$info(msg, ..., caller = get_caller(-8L))}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-debug"></a>}}
+\subsection{Method \code{debug()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$debug(msg, ..., caller = get_caller(-8L))}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-trace"></a>}}
+\subsection{Method \code{trace()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$trace(msg, ..., caller = get_caller(-8L))}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-list_log"></a>}}
+\subsection{Method \code{list_log()}}{
+\code{list_log()} is a shortcut for do.call(Logger$log).
+See \url{https://github.com/s-fleck/joblog} for an R package that
+leverages this feature to create custom log event types for tracking
+the status of cron jobs.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$list_log(x)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{a named \code{list} that must at least contain the named elements
+\code{level} and \code{timestamp}}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-config"></a>}}
+\subsection{Method \code{config()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$config(cfg, file, text, list)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-add_appender"></a>}}
+\subsection{Method \code{add_appender()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$add_appender(appender, name = NULL)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-remove_appender"></a>}}
+\subsection{Method \code{remove_appender()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$remove_appender(pos)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-handle_exception"></a>}}
+\subsection{Method \code{handle_exception()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$handle_exception(...)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_exception_handler"></a>}}
+\subsection{Method \code{set_exception_handler()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$set_exception_handler(fun)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_propagate"></a>}}
+\subsection{Method \code{set_propagate()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$set_propagate(x)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_threshold"></a>}}
+\subsection{Method \code{set_threshold()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$set_threshold(level)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_appenders"></a>}}
+\subsection{Method \code{set_appenders()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$set_appenders(x)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-spawn"></a>}}
+\subsection{Method \code{spawn()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$spawn(name, ...)}\if{html}{\out{</div>}}
+}
+
+}
 }

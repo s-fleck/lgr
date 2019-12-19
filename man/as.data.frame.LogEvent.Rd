@@ -70,7 +70,7 @@ as.data.frame(lg$last_event)
 lg$info("letters", letters = letters)
 as.data.frame(lg$last_event)
 # this behaviour can be modified by supplying a custom boxing function
-as.data.frame(lg$last_event, needs_boxing = function(.) length(.) > 1)
+as.data.frame(lg$last_event, box_if = function(.) length(.) > 1)
 
 }
 \seealso{

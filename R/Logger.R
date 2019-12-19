@@ -498,7 +498,7 @@ Logger <- R6::R6Class(
     #' @param x a named `list` that must at least contain the named elements
     #'   `level` and `timestamp`
     #'
-    #' @example
+    #' @examples
     #' lg <- get_logger("test")
     #' lg$list_log(list(level = 400, msg = "example"))
     list_log = function(x){
