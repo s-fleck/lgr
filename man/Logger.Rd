@@ -337,6 +337,13 @@ Logger:
 
 lg$config(cfg)
 lg$config(NULL)
+
+## ------------------------------------------------
+## Method `Logger$list_log`
+## ------------------------------------------------
+
+lg <- get_logger("test")
+lg$list_log(list(level = 400, msg = "example"))
 }
 \seealso{
 \href{https://glue.tidyverse.org/}{glue}
@@ -467,6 +474,15 @@ the status of cron jobs.
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{lg <- get_logger("test")
+lg$list_log(list(level = 400, msg = "example"))
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-config"></a>}}

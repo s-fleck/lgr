@@ -13,7 +13,7 @@
   stringsAsFactors = FALSE,
   ...,
   box_if = function(.) !(is.atomic(.) && identical(length(.), 1L)),
-  cols_expand = "msg"
+  cols_expand = NULL
 )
 
 as.data.table.LogEvent(
@@ -44,9 +44,14 @@ converted to factors? Defaults to \code{FALSE} (as opposed to
 
 \item{...}{passed on to \code{data.frame()}}
 
-\item{needs_boxing}{a \code{function} that returns \code{TRUE} or \code{FALSE} to determine
+\item{box_if}{a \code{function} that returns \code{TRUE} or \code{FALSE} to determine
 wich values are to be boxed (i.e. placed as single elements in a list
 column). See example}
+
+\item{cols_expand}{\code{character} vector. Columns to \emph{not} box (even if
+\code{box_if()} returns \code{TRUE}). Vectors in these columns will result in multiple
+rows in the result (rahter than a signle list-column row). This defaults to
+\code{"msg"} for vectorized logging over the log message.}
 }
 \description{
 Coerce LogEvents to \code{data.frames}, \code{\link[data.table:data.table]{data.tables}},
@@ -63,15 +68,19 @@ head(as.data.frame(lg$last_event)$df[[1]])
 
 # how boxing works
 
-# by default only recursive structures (such as lists) are boxed
-lg$info("letters", letters = as.list(letters))
-as.data.frame(lg$last_event)
-# but vectors are not
+# by default non-scalars are boxed
 lg$info("letters", letters = letters)
 as.data.frame(lg$last_event)
-# this behaviour can be modified by supplying a custom boxing function
-as.data.frame(lg$last_event, box_if = function(.) length(.) > 1)
 
+# this behaviour can be modified by supplying a custom boxing function
+as.data.frame(lg$last_event, box_if = function(.) FALSE)
+as.data.frame(lg$last_event, cols_expand = "letters")
+
+# The `msg` argument of a log event is always vectorized
+lg$info(c("a vectorized", "log message"))
+as.data.frame(lg$last_event)
+
+lg$config(NULL)
 }
 \seealso{
 \link[data.table:data.table]{data.table::data.table}, \link[tibble:tibble]{tibble::tibble}

@@ -9,7 +9,7 @@ read_json_lines(file, ...)
 \arguments{
 \item{file}{\code{character} scalar. path to a JSON logfile (one JSON object per line)}
 
-\item{...}{passed on to \code{\link[jsonlite:steam_in]{jsonlite::steam_in()}}}
+\item{...}{passed on to \code{\link[jsonlite:stream_in]{jsonlite::stream_in()}}}
 }
 \value{
 a \code{data.frame}

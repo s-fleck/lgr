@@ -138,9 +138,13 @@ LogEvent <- R6::R6Class(
 #'   [base::as.data.frame()]) and is only included for compatibility.
 #' @param ... passed on to `data.frame()`
 #' @param optional currently ignored and only included for compatibility.
-#' @param needs_boxing a `function` that returns `TRUE` or `FALSE` to determine
+#' @param box_if a `function` that returns `TRUE` or `FALSE` to determine
 #'   wich values are to be boxed (i.e. placed as single elements in a list
 #'   column). See example
+#' @param cols_expand `character` vector. Columns to *not* box (even if
+#'   `box_if()` returns `TRUE`). Vectors in these columns will result in multiple
+#'   rows in the result (rahter than a signle list-column row). This defaults to
+#'   `"msg"` for vectorized logging over the log message.
 #' @export
 #' @seealso [data.table::data.table], [tibble::tibble]
 #'
@@ -155,15 +159,19 @@ LogEvent <- R6::R6Class(
 #'
 #' # how boxing works
 #'
-#' # by default only recursive structures (such as lists) are boxed
-#' lg$info("letters", letters = as.list(letters))
-#' as.data.frame(lg$last_event)
-#' # but vectors are not
+#' # by default non-scalars are boxed
 #' lg$info("letters", letters = letters)
 #' as.data.frame(lg$last_event)
-#' # this behaviour can be modified by supplying a custom boxing function
-#' as.data.frame(lg$last_event, box_if = function(.) length(.) > 1)
 #'
+#' # this behaviour can be modified by supplying a custom boxing function
+#' as.data.frame(lg$last_event, box_if = function(.) FALSE)
+#' as.data.frame(lg$last_event, cols_expand = "letters")
+#'
+#' # The `msg` argument of a log event is always vectorized
+#' lg$info(c("a vectorized", "log message"))
+#' as.data.frame(lg$last_event)
+#'
+#' lg$config(NULL)
 as.data.frame.LogEvent <- function(
   x,
   row.names = NULL,
@@ -171,11 +179,13 @@ as.data.frame.LogEvent <- function(
   stringsAsFactors = FALSE,
   ...,
   box_if = function(.) !(is.atomic(.) && identical(length(.), 1L)),
-  cols_expand  = "msg"
+  cols_expand  = NULL
 ){
+  assert(is.null(cols_expand) || is.character(cols_expand))
   boxer <- function(.) I(list(.))
   values <- do_box_if(x$values, box_if, except = cols_expand, boxer = boxer)
   msg_len <- length(x[["msg"]])
+  cols_expand <- c("msg", cols_expand)
   # as.data.frame requires manual recycling
 
   if (msg_len > 1){

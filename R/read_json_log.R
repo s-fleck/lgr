@@ -1,7 +1,7 @@
 #' Read a JSON logfile
 #'
 #' @param file `character` scalar. path to a JSON logfile (one JSON object per line)
-#' @param ... passed on to [jsonlite::steam_in()]
+#' @param ... passed on to [jsonlite::stream_in()]
 #' @return a `data.frame`
 #' @seealso [LayoutJson]
 #' @export
