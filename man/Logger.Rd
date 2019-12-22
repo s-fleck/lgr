@@ -3,7 +3,6 @@
 \name{Logger}
 \alias{Logger}
 \alias{Loggers}
-\alias{LoggerGlue}
 \title{Loggers}
 \description{
 A Logger produces a \link{LogEvent} that contains the log message along with
@@ -14,147 +13,7 @@ event. \strong{lgr} comes with a single pre-configured Logger called the
 Loggers is only necessary if you want to take advantage of hierarchical
 logging as outlined in \code{vignette("lgr", package = "lgr")}.
 }
-\section{Usage}{
-\preformatted{# Cannonical way to initialize a new Logger (see "Creating Loggers")
-lg <- get_logger("logger")
-}
-
-\preformatted{# R6 constructor (not recommended for productive use)
-lg <- Logger$new(name = "(unnamed logger)", appenders = list(), threshold =
-  NULL, filters = list(), exception_handler = default_exception_handler,
-  propagate = TRUE)
-
-lg$add_appender(appender, name = NULL)
-lg$add_filter(filter, name = NULL)
-lg$config(cfg, file, text, list)
-lg$debug(msg, ..., caller = get_caller(-8L))
-lg$error(msg, ..., caller = get_caller(-8L))
-lg$fatal(msg, ..., caller = get_caller(-8L))
-lg$filter(event)
-lg$handle_exception(...)
-lg$info(msg, ..., caller = get_caller(-8L))
-lg$list_log(x)
-lg$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))
-lg$remove_appender(pos)
-lg$remove_filter(pos)
-lg$set_appenders(x)
-lg$set_exception_handler(fun)
-lg$set_filters(filters)
-lg$set_propagate(x)
-lg$set_threshold(level)
-lg$spawn(name, ...)
-lg$trace(msg, ..., caller = get_caller(-8L))
-lg$warn(msg, ..., caller = get_caller(-8L))
-
-lg$ancestry
-lg$appenders
-lg$exception_handler
-lg$filters
-lg$inherited_appenders
-lg$last_event
-lg$name
-lg$parent
-lg$propagate
-lg$threshold
-
-}
-}
-
-\section{Creating Loggers}{
-
-
-If you are a package developer you should define a new Logger for each
-package, but you do not need to configure it. Usually only the root logger
-needs to be configured (new Appenders added/removed, Layouts modified,
-etc...).
-
-Loggers should never be instantiated directly with \code{Logger$new()} but rather
-via \code{get_logger("name")}. If \code{"name"} does not exist, a new
-Logger with that name will be created, otherwise the function returns a
-Reference to the existing Logger.
-
-The \code{name} is potentially a \code{/} separated hierarchical value like
-\code{foo/bar/baz}. Loggers further down the hierarchy are children of the loggers
-above. (This mechanism does not work of the Logger is initialized with
-\code{Logger$new()})
-
-All calls to \code{get_logger()} with the same name return the same Logger
-instance. This means that Logger instances never need to be passed between
-different parts of an application.
-
-If you just want to log to an additional output (like a log file), you want
-a new \link{Appender}, not a new Logger.
-}
-
-\section{Fields}{
-
-
-You can modify the fields of an existing Logger with
-\verb{logger$set_<fieldname>(value)} (see examples). Another way to configure
-loggers is via its \verb{$config()} method.
-
-\describe{
-\item{\code{appenders}, \code{set_appenders(x)}}{A single \link{Appender} or a \code{list}
-thereof. Appenders control the output of a Logger. Be aware that a Logger
-also inherits the Appenders of its ancestors
-(see \code{vignette("lgr", package = "lgr")} for more info about Logger
-inheritance structures).}
-
-\item{\code{threshold}, \code{set_threshold(level)}}{\code{character} or \code{integer} scalar.
-The minimum \link[=log_levels]{log level} that triggers this Logger}
-
-\item{\code{exception_handler}, \code{set_exception_handler()}}{a \code{function} that
-takes a single argument \code{e}. The function used to handle errors that occur
-during logging. Defaults to demoting errors to \link{warnings}.}
-
-\item{\code{propagate}, \code{set_propagate()}}{\code{TRUE} or \code{FALSE}. Should LogEvents
-be passed on to the appenders of the ancestral Loggers?}
-}
-
-
-
-\describe{
-\item{\code{filters}, \code{set_filters(filters)}}{a \code{list} that may contain
-\code{functions} or any \R object with a \code{filter()} method. These functions
-must have exactly one argument: \code{event} which will get passed the
-LogEvent when the Filterable's \code{filter()} method is invoked.
-If all of these functions evaluate to \code{TRUE} the LogEvent is passed on.
-Since LogEvents have reference semantics, filters can also be abused to
-modify them before they are passed on. Look at the source code of
-\code{\link[=with_log_level]{with_log_level()}} or \code{\link[=with_log_value]{with_log_value()}} for examples.
-}
-}
-}
-
-\section{Read-Only Bindings}{
-
-
-In addition to the active bindings used to access the fields described above,
-Loggers also have the following additional read-only bindings:
-
-\describe{
-\item{\code{name}}{\code{character} scalar. A hierarchical value
-(separated by `"/"``) that indicates the loggers name and its ancestors.
-If a logger is created with \code{\link[=get_logger]{get_logger()}} uniqueness of the name is
-enforced.
-}
-
-\item{\code{ancestry}}{A named \code{logical} vector of containing
-the propagate value of each Logger upper the inheritance tree. The names
-are the names of the appenders. \code{ancestry} is an S3 class with a custom
-\code{format()}/\code{print()} method, so if you want to use the plain logical
-vector use \code{unclass(lg$ancestry)}}
-
-\item{\code{inherited_appenders}}{A \code{list} of all inherited
-appenders from ancestral Loggers of the current Logger}
-
-\item{\code{last_event}}{The last LogEvent produced by the current Logger}
-}
-}
-
-\section{Methods}{
-
-
+\details{
 \describe{
 \item{\code{fatal(msg, ..., caller = get_caller(-8L))}}{Logs a message with
 level \code{fatal} on this logger. If there are \emph{unnamed} arguments in \code{...},
@@ -213,42 +72,14 @@ recommended. After adding an Appender with
 refer to it via \code{logger$appenders$console}. \code{remove_appender()} can
 remove an Appender by position or name.
 }
-
-\item{\code{spawn(...)}}{Spawn a child Logger.
-\code{get_logger("foo/bar")$spawn("baz")} is equivalent to
-\code{get_logger("foo/bar/baz")}, but can be convenient for programmatic use
-when the name of the parent Logger is not known.}
-}
-
-
-\describe{
-\item{\code{filter(event)}}{Determine whether the LogEvent \code{x} should be passed
-on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
-\code{filters}}
-\item{\code{add_filter(filter, name = NULL)}, \code{remove_filter(pos)}}{
-Add or remove a filter. When adding a filter an optional \code{name} can
-be specified. \code{remove_filter()} can remove by position or name (if one
-was specified)
 }
 }
+\note{
+If you are a package developer you should define a new Logger for each
+package, but you do not need to configure it. The user of the package
+should decide how and where to output logging, usually by configuring the
+root Logger (new Appenders added/removed, Layouts modified, etc...).
 }
-
-\section{LoggerGlue}{
-
-
-\code{LoggerGlue} uses \code{\link[glue:glue]{glue::glue()}} instead of \code{\link[base:sprintf]{base::sprintf()}} to construct
-log messages. \strong{glue} is a very well designed package for
-string interpolation. It makes composing log messages
-more flexible and comfortable at the price of an additional dependency and
-slightly less performance than \code{sprintf()}.
-
-\code{glue()} lets you define temporary named variables inside the call.
-As with the normal Logger, these named arguments get turned into custom
-fields; however, you can suppress this behaviour by making named argument
-start with a \code{"."}. Please refer to \code{vignette("lgr", package = "lgr")} for
-examples.
-}
-
 \examples{
 # lgr::lgr is the root logger that is always available
 lgr$info("Today is a good day")
@@ -347,9 +178,39 @@ lg$list_log(list(level = 400, msg = "example"))
 }
 \seealso{
 \href{https://glue.tidyverse.org/}{glue}
+
+\code{\link[=get_logger]{get_logger()}}
 }
 \section{Super class}{
 \code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{Logger}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{name}}{A \code{character} scalar. The unique name of each logger,
+which also includes the names of its ancestors (sepparated by \code{/}).}
+
+\item{\code{propagate}}{A \code{TRUE} or \code{FALSE}. The unique name of each logger,
+which also includes the names of its ancestors (sepparated by \code{/}).}
+
+\item{\code{last_event}}{The last LogEvent produced by the current Logger}
+
+\item{\code{ancestry}}{A named \code{logical} vector of containing the propagate value
+of each Logger upper the inheritance tree. The names are the names of
+the appenders. \code{ancestry} is an S3 class with a custom
+\code{format()}/\code{print()} method, so if you want to use the plain logical
+vector use \code{unclass(lg$ancestry)}}
+
+\item{\code{parent}}{a \code{Logger}. The direct ancestor of the \code{Logger}.}
+
+\item{\code{threshold}}{\code{integer} scalar. The threshold of the \code{Logger}, or if it
+\code{NULL} the threshold it inherits from its closest ancestor with a
+non-\code{NULL} threshold}
+
+\item{\code{inherited_appenders}}{A \code{list} of all appenders that the Logger inherits from
+its ancestors}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -387,6 +248,17 @@ lg$list_log(list(level = 400, msg = "example"))
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
 \subsection{Method \code{new()}}{
+\strong{Loggers should never be instantiated directly with \code{Logger$new()}} but
+rather via \code{\link[=get_logger]{get_logger("name")}}. This way new Loggers are
+registered in a global namespace which ensures uniqueness and
+facillitates inheritance between Loggers. If \code{"name"} does not exist, a
+new Logger with that name will be created, otherwise the function returns
+a Reference to the existing Logger.
+
+\code{name} is potentially a \code{"/"} separated hierarchical value like
+\code{foo/bar/baz}. Loggers further down the hierarchy are descendents of the
+loggers above and (by default) inherit \code{threshold} and \code{Appenders} from
+their ancestors.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Logger$new(
   name = "(unnamed logger)",
@@ -531,6 +403,14 @@ lg$list_log(list(level = 400, msg = "example"))
 \if{html}{\out{<div class="r">}}\preformatted{Logger$set_propagate(x)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{\code{TRUE} or \code{FALSE}. Should \link{LogEvents} be passed on to the appenders
+of the ancestral Loggers?}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_threshold"></a>}}
@@ -551,9 +431,20 @@ lg$list_log(list(level = 400, msg = "example"))
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-spawn"></a>}}
 \subsection{Method \code{spawn()}}{
+Spawn a child Logger. This is very similar to using \code{\link[=get_logger]{get_logger()}}, but
+can be useful in some cases where Loggers are created programmatically
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$spawn(name, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Logger$spawn(name)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{`name`}}{\code{character} vector. Name of the child logger
+\code{get_logger("foo/bar")$spawn("baz")} is equivalent
+to \code{get_logger("foo/bar/baz")}}
+}
+\if{html}{\out{</div>}}
+}
 }
 }
