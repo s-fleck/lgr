@@ -127,7 +127,7 @@ examples.
 \if{html}{\out{<a id="method-spawn"></a>}}
 \subsection{Method \code{spawn()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$spawn(name, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$spawn(name)}\if{html}{\out{</div>}}
 }
 
 }
