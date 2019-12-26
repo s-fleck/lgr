@@ -21,9 +21,6 @@
 #' modify those fields after the Appender has been created with setters in the
 #' form of `appender$set_<fieldname>(value)`
 #'
-#' @inheritSection Filterable Fields
-#' @inheritSection Filterable Methods
-#'
 #' @section Fields:
 #'
 #' \describe{

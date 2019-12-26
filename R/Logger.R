@@ -711,7 +711,7 @@ Logger <- R6::R6Class(
       invisible(self)
     },
 
-    #' @describe
+    #' @description
     #' Ensure all Appenders attached to a Logger are destroyed before the
     #' Logger, so that the Appender's finalize method can access the logger if
     #' it wants to

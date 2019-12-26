@@ -4,8 +4,8 @@
 \alias{AppenderTable}
 \title{Abstract class for logging to tabular structures}
 \description{
-\strong{Abstract classes} are exported for package developers that want to extend
-them, they cannot be instantiated directly.
+This is an \strong{abstract class} and as such cannot be instantiated directly.
+It is exported for package developers that want to extend it
 
 AppenderTable is extended by Appenders that write to a data source that
 can be interpreted as tables, (usually a \code{data.frame}). Examples are
@@ -28,20 +28,6 @@ formatting the \code{LogEvents} passed to this Appender}
 \item{\code{destination}}{The output destination of the \code{Appender} in
 human-readable form (mainly for print output)}
 }
-
-
-
-\describe{
-\item{\code{filters}, \code{set_filters(filters)}}{a \code{list} that may contain
-\code{functions} or any \R object with a \code{filter()} method. These functions
-must have exactly one argument: \code{event} which will get passed the
-LogEvent when the Filterable's \code{filter()} method is invoked.
-If all of these functions evaluate to \code{TRUE} the LogEvent is passed on.
-Since LogEvents have reference semantics, filters can also be abused to
-modify them before they are passed on. Look at the source code of
-\code{\link[=with_log_level]{with_log_level()}} or \code{\link[=with_log_value]{with_log_value()}} for examples.
-}
-}
 }
 
 \section{Methods}{
@@ -57,18 +43,6 @@ log level bellow \code{threshold}.}
 \item{\code{append(event)}}{Tell the Appender to process a \link{LogEvent} \code{event}.
 This method is usually not called by the user, but invoked by a
 \link{Logger}
-}
-}
-
-
-\describe{
-\item{\code{filter(event)}}{Determine whether the LogEvent \code{x} should be passed
-on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
-\code{filters}}
-\item{\code{add_filter(filter, name = NULL)}, \code{remove_filter(pos)}}{
-Add or remove a filter. When adding a filter an optional \code{name} can
-be specified. \code{remove_filter()} can remove by position or name (if one
-was specified)
 }
 }
 }

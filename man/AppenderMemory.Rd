@@ -4,8 +4,8 @@
 \alias{AppenderMemory}
 \title{Abstract class for logging to memory buffers}
 \description{
-\strong{Abstract classes} are exported for package developers that want to extend
-them, they cannot be instantiated directly.
+This is an \strong{abstract class} and as such cannot be instantiated directly.
+It is exported for package developers that want to extend it
 
 AppenderMemory is extended by Appenders that retain an in-memory event
 buffer, such as \link{AppenderBuffer} and \link[lgrExtra:AppenderPushbullet]{lgrExtra::AppenderPushbullet}.

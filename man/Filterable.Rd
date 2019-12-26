@@ -8,50 +8,20 @@
 .obj()
 }
 \description{
-\strong{Abstract classes} are exported for package developers that want to extend
-them, they cannot be instantiated directly.
+This is an \strong{abstract class} and as such cannot be instantiated directly.
+It is exported for package developers that want to extend it
 
-Superclass for classes that have a \code{filter()} method such as \link{Appenders} and
-\link{Loggers}. This class is only exported for package developers that want to
-extend it.
-}
-\section{Fields}{
+Superclass for classes that have a \verb{$filter()} method such as \link{Appenders} and
+\link{Loggers}. See \link{EventFilter} for Details.
 
-
-\describe{
-\item{\code{filters}, \code{set_filters(filters)}}{a \code{list} that may contain
-\code{functions} or any \R object with a \code{filter()} method. These functions
-must have exactly one argument: \code{event} which will get passed the
-LogEvent when the Filterable's \code{filter()} method is invoked.
-If all of these functions evaluate to \code{TRUE} the LogEvent is passed on.
-Since LogEvents have reference semantics, filters can also be abused to
-modify them before they are passed on. Look at the source code of
-\code{\link[=with_log_level]{with_log_level()}} or \code{\link[=with_log_value]{with_log_value()}} for examples.
+@export
 }
-}
-}
-
-\section{Methods}{
-
-\describe{
-\item{\code{filter(event)}}{Determine whether the LogEvent \code{x} should be passed
-on to Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
-\code{filters}}
-\item{\code{add_filter(filter, name = NULL)}, \code{remove_filter(pos)}}{
-Add or remove a filter. When adding a filter an optional \code{name} can
-be specified. \code{remove_filter()} can remove by position or name (if one
-was specified)
-}
-}
-}
-
 \seealso{
 Other abstract classes: 
 \code{\link{AppenderMemory}},
 \code{\link{AppenderTable}}
 }
 \concept{abstract classes}
-\keyword{internal}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -64,33 +34,83 @@ Other abstract classes:
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-filter"></a>}}
 \subsection{Method \code{filter()}}{
+Determine whether the LogEvent \code{x} should be passed on to
+Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
+\code{filters}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Filterable$filter(event)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{event}}{a \link{LogEvent}}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-add_filter"></a>}}
 \subsection{Method \code{add_filter()}}{
+Add a Filter. When adding a filter an optional \code{name}
+can be specified. \code{remove_filter()} can remove by position or name (if
+one was specified)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Filterable$add_filter(filter, name = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{filter}}{a function that returns \code{TRUE} or \code{FALSE}, a
+\link[=EventFilter]{Filter} or any \R object with a \verb{$filter()} method.}
+
+\item{\code{name}}{\code{character} scalar or \code{NULL}. A filter can have an optional
+name which makes it easier to access (or remove) the filter}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-remove_filter"></a>}}
 \subsection{Method \code{remove_filter()}}{
+Remove a filter
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Filterable$remove_filter(pos)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{pos}}{\code{character} or \code{integer} scalar. The name or index of the
+Filter to be removed.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_filters"></a>}}
 \subsection{Method \code{set_filters()}}{
+Replace all filters with a list of either \code{functions} or
+arbitrary \R object with a \verb{$filter()} method (preferably a \link{Filter} R6
+object). These functions/methods must have exactly one argument:
+\code{event} which will get passed the LogEvent when the Filterable's
+\verb{$filter()} method is invoked. If all of these functions evaluate to
+\code{TRUE} the LogEvent is passed on. Since LogEvents have reference
+semantics, filters can also be abused to modify them before they are
+passed on. Look at the source code of \code{\link[=with_log_level]{with_log_level()}} or
+\code{\link[=with_log_value]{with_log_value()}} for examples.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Filterable$set_filters(filters)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{filters}}{a \code{list} (named or unnamed) of \link[=Filters]{Filter} or
+predicate functions.}
+}
+\if{html}{\out{</div>}}
+}
 }
 }
