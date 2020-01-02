@@ -264,7 +264,7 @@ to be escaped), otherwise \code{msg} is left as-is.}
 
 \item{\code{...}}{\emph{unnamed} arguments in \code{...} must be \code{character} scalars and
 are passed to \code{\link[base:sprintf]{base::sprintf()}}. \emph{Named} arguments must have unique names
-but can be arbitrary \R objects that are passed to \code{\link[=LogEvent$new]{LogEvent$new()}} and
+but can be arbitrary \R objects that are passed to \code{\link[=LogEvent]{LogEvent$new()}} and
 will be turned into custom fields.}
 
 \item{\code{timestamp}}{\link{POSIXct}. Timestamp of the event.}

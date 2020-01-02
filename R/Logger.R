@@ -187,7 +187,7 @@ Logger <- R6::R6Class(
     #'
     #' @param ... *unnamed* arguments in `...` must be `character` scalars and
     #' are passed to [base::sprintf()]. *Named* arguments must have unique names
-    #' but can be arbitrary \R objects that are passed to [LogEvent$new()] and
+    #' but can be arbitrary \R objects that are passed to [`LogEvent$new()`][LogEvent] and
     #' will be turned into custom fields.
     #'
     #' @param timestamp [POSIXct]. Timestamp of the event.

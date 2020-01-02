@@ -91,6 +91,8 @@ Filterable <- R6::R6Class(
   ),
 
   active = list(
+    #' @field filters a `list` of all attached filters (either [Filter] R6
+    #' objects or `functions`).
     filters = function(){
       get(".filters", private)
     }

@@ -3,72 +3,68 @@
 \name{EventFilter}
 \alias{EventFilter}
 \alias{Filter}
-\alias{FilterInject}
-\alias{FilterForceLevel}
 \title{Event Filters}
 \description{
 Filters can be used for the \verb{$set_filter()} and \verb{$add_filter()} methods of
 Appenders and Loggers. You normally do not need to construct a formal
 \code{EventFilter} object, you can just use any \code{function} that has the single
-argument \code{event} or any object that has a \code{filter} method.
+argument \code{event}, or any object that has a \code{filter} method.
+
+NOTE: You can use the special function \code{\link[=.obj]{.obj()}} to access the calling
+Logger/Appender from within a filter
 }
-\note{
+\section{Modifying LogEvents with Filters}{
+
+
+Since LogEvents are R6 objects with reference semantics, Filters can
+be abused to modify log events before passing them on. lgr comes with a few
+preset filters that use this property: \link{FilterInject}
+(similar to \code{\link[=wtih_log_level]{wtih_log_level()}}) and \link{FilterForceLevel} (similar to \code{\link[=with_log_value]{with_log_value()}}).
+
 The base class for Filters is called \code{EventFilter} so that it doesn't
 conflict with \code{\link[base:Filter]{base::Filter()}}. The recommended convention for Filter
 subclasses is to call them \code{FilterSomething} and leave out the
 \code{Event} prefix.
 }
-\section{Modifying LogEvents with Filters}{
 
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{EventFilter$new()}}
+\item \href{#method-clone}{\code{EventFilter$clone()}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+Initilize a new EventFilter
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{EventFilter$new(fun = function(event) TRUE)}\if{html}{\out{</div>}}
+}
 
-Since LogEvents are R6 objects with reference semantics, Filters can also
-be abused to modify log events before passing them on. lgr comes with a few
-preset filters that use this property:
-
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
 \describe{
-
-\item{\code{FilterInject$new(..., .list)}}{\code{...} and \code{.list} can take any number
-of named R6 objects that will be injected as custom fields into all
-LogEvents processed by the  Appender/Logger that this filter is attached
-to. See also \code{\link[=with_log_value]{with_log_value()}}}
-
-\item{\code{FilterForceLevel$new(level)}}{Sets the level of all LogEvents
-processed by the Appender/Logger that this filter is attached to to
-\code{level}. See also \code{\link[=with_log_value]{with_log_value()}}}
+\item{\code{fun}}{a \code{function} with a single argument \code{event} that must return
+either \code{TRUE} or \code{FALSE.}}
+}
+\if{html}{\out{</div>}}
 }
 }
-
-\section{Accessing Appenders and Loggers from Filters}{
-
-
-You can use the special function \code{.obj()} to access the calling
-Logger/Appender from within a filter
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{EventFilter$clone(deep = FALSE)}\if{html}{\out{</div>}}
 }
 
-\examples{
-# using filters to modify log events
-lg <- get_logger("test")
-
-analyse <- function(){
-  lg$add_filter(FilterForceLevel$new("info"), "force")
-  lg$add_filter(FilterInject$new(type = "analysis"), "inject")
-  on.exit(lg$remove_filter(c("force", "inject")))
-  lg$debug("a debug message")
-  lg$error("an error")
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
 }
-analyse()
-lg$error("an error")
-lg$config(NULL)  # reset config
-
-
-# using .obj()
-lg <- get_logger("test")
-f <- function(event) {
-  cat("via event$.logger:", event$.logger$threshold, "\n")  #  works for loggers only
-  cat("via .obj():      ",.obj()$threshold, "\n") # works for loggers and appenders
-  TRUE
+\if{html}{\out{</div>}}
 }
-lg$add_filter(f)
-lg$fatal("test")
-lg$config(NULL)
+}
 }

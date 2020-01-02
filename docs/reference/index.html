@@ -18,8 +18,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/all.min.css" integrity="sha256-PbSmjxuVAzJ6FPvNYsrXygfGhNJYyZ2GktDbkMBqQZg=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/v4-shims.min.css" integrity="sha256-A6jcAdwFD48VMjlI3GDxUd+eCQa7/KWy6G9oe/ovaPA=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -50,6 +50,7 @@
 <![endif]-->
 
 
+
   </head>
 
   <body>
@@ -66,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9009</span>
       </span>
     </div>
 
@@ -97,6 +98,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -197,12 +199,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="AppenderDt.html">AppenderDt</a></code> </p>
-        </td>
-        <td><p>Log to an in-memory data.table</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="AppenderFile.html">AppenderFile</a></code> </p>
         </td>
         <td><p>Log to a file</p></td>
@@ -253,12 +249,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="AppenderDt.html">AppenderDt</a></code> </p>
-        </td>
-        <td><p>Log to an in-memory data.table</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="AppenderFile.html">AppenderFile</a></code> </p>
         </td>
         <td><p>Log to a file</p></td>
@@ -295,9 +285,33 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="CannotInitializeAbstractClassError.html">CannotInitializeAbstractClassError()</a></code> </p>
+        </td>
+        <td><p>Logger Error Conditions</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="EventFilter.html">EventFilter</a></code> </p>
         </td>
         <td><p>Event Filters</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="FilterForceLevel.html">FilterForceLevel</a></code> </p>
+        </td>
+        <td><p>Override the log level of all events processed by a Logger/Appender</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="FilterInject.html">FilterInject</a></code> </p>
+        </td>
+        <td><p>Inject values into all events processed by a Logger/Appender</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Filterable.html">Filterable</a></code> </p>
+        </td>
+        <td><p>Abstract Class for Filterables</p></td>
       </tr><tr>
         
         <td>
@@ -321,13 +335,19 @@
         <td>
           <p><code><a href="LogEvent.html">LogEvent</a></code> </p>
         </td>
-        <td><p>Events - The Atomic Unit of Logging</p></td>
+        <td><p>LogEvents - The Atomic Unit of Logging</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="Logger.html">Logger</a></code> </p>
         </td>
         <td><p>Loggers</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="LoggerGlue.html">LoggerGlue</a></code> </p>
+        </td>
+        <td><p>LoggerGlue</p></td>
       </tr><tr>
         
         <td>
@@ -358,6 +378,18 @@
           <p><code><a href="default_should_flush.html">default_should_flush()</a></code> </p>
         </td>
         <td><p>Default should_flush function</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="dot-obj.html">.obj()</a></code> </p>
+        </td>
+        <td><p>Retrieve the Parent object of a Filter</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="event_list.html">event_list()</a></code> <code><a href="event_list.html">as_event_list()</a></code> <code><a href="event_list.html">as.data.table.event_list()</a></code> <code><a href="event_list.html">as.data.frame(<i>&lt;event_list&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>A List of LogEvents</p></td>
       </tr><tr>
         
         <td>
@@ -439,6 +471,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="standardize_threshold.html">standardize_threshold()</a></code> <code><a href="standardize_threshold.html">is_threshold()</a></code> <code><a href="standardize_threshold.html">standardize_log_level()</a></code> <code><a href="standardize_threshold.html">is_log_level()</a></code> <code><a href="standardize_threshold.html">standardize_log_levels()</a></code> <code><a href="standardize_threshold.html">is_log_levels()</a></code> </p>
+        </td>
+        <td><p>Standardize User-Input Log Levels to Their Integer Representation</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="suspend_logging.html">suspend_logging()</a></code> <code><a href="suspend_logging.html">unsuspend_logging()</a></code> <code><a href="suspend_logging.html">without_logging()</a></code> <code><a href="suspend_logging.html">with_logging()</a></code> </p>
         </td>
         <td><p>Suspend All Logging</p></td>
@@ -473,7 +511,7 @@
         <td>
           <p><code><a href="LogEvent.html">LogEvent</a></code> </p>
         </td>
-        <td><p>Events - The Atomic Unit of Logging</p></td>
+        <td><p>LogEvents - The Atomic Unit of Logging</p></td>
       </tr><tr>
         
         <td>
@@ -585,7 +623,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="Filterable.html">.obj()</a></code> </p>
+          <p><code><a href="Filterable.html">Filterable</a></code> </p>
         </td>
         <td><p>Abstract Class for Filterables</p></td>
       </tr><tr>
@@ -605,7 +643,7 @@
     </table>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#section-logger">Logger</a></li>
@@ -619,19 +657,23 @@
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by Stefan Fleck.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 
