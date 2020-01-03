@@ -98,6 +98,36 @@ The easiest way to try out this features is by adding an AppenderBuffer
 to the root logger with \code{\link[=basic_config]{basic_config(memory = TRUE)}}.
 }
 \examples{
+# Get and set the threshold of the root logger
+threshold("error")
+threshold()
+lgr$info("this will be supressed")
+lgr$error("an important error message")
+
+# you can also specify a target to modify other loggers
+lg <- get_logger("test")
+threshold("fatal", target = lg)
+threshold(target = lg)
+
+# If a Logger's threshold is not set, the threshold is inherited from
+# its parent, in this case the root logger (that we set to error/200 before)
+threshold(NULL, target = lg)
+threshold(target = lg)
+
+# Alternative R6 API for getting/setting thresholds
+lg$set_threshold("info")
+lg$threshold
+lg$set_threshold(300)
+lg$threshold
+lg$set_threshold(NULL)
+lg$threshold
+
+# cleanup
+lgr$config(NULL)
+lg$config(NULL)
+
+
+# add Appenders to a Logger
 add_appender(AppenderConsole$new(), "second_console_appender")
 lgr$fatal("Multiple console appenders are a bad idea")
 remove_appender("second_console_appender")
@@ -113,5 +143,6 @@ lgr$info("another message with data", data = 1:3)
 show_log()
 show_data()
 
-
+# cleanup
+lgr$config(NULL)
 }

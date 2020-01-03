@@ -24,8 +24,6 @@
 #' @section Fields:
 #'
 #' \describe{
-#'   \item{`threshold`, `set_threshold(level)`}{`character` or `integer` scalar.
-#'     The minimum log level that triggers this logger. See [log_levels]}
 #'   \item{`layout`, `set_layout(layout)`}{a `Layout` that will be used for
 #'     formatting the `LogEvents` passed to this Appender}
 #'   \item{`destination`}{The output destination of the `Appender` in
@@ -74,6 +72,9 @@ Appender <- R6::R6Class(
       private$.layout$format_event(event)
     },
 
+    #' @description Set the minimum log level that triggers this Appender. See
+    #' [threshold()] for examples
+    #' @param level `character` or `integer` scalar log level. See [log_levels].
     set_threshold = function(level){
       level <- standardize_threshold(level)
       private$.threshold <- as.integer(level)

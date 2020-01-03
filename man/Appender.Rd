@@ -50,8 +50,6 @@ form of \verb{appender$set_<fieldname>(value)}
 
 
 \describe{
-\item{\code{threshold}, \code{set_threshold(level)}}{\code{character} or \code{integer} scalar.
-The minimum log level that triggers this logger. See \link{log_levels}}
 \item{\code{layout}, \code{set_layout(layout)}}{a \code{Layout} that will be used for
 formatting the \code{LogEvents} passed to this Appender}
 \item{\code{destination}}{The output destination of the \code{Appender} in
@@ -81,3 +79,76 @@ Other Appenders:
 }
 \concept{Appenders}
 \keyword{internal}
+\section{Super class}{
+\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{Appender}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{Appender$new()}}
+\item \href{#method-append}{\code{Appender$append()}}
+\item \href{#method-set_threshold}{\code{Appender$set_threshold()}}
+\item \href{#method-set_layout}{\code{Appender$set_layout()}}
+\item \href{#method-format}{\code{Appender$format()}}
+}
+}
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter">}\href{../../lgr/html/Filterable.html#method-add_filter}{\code{lgr::Filterable$add_filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter">}\href{../../lgr/html/Filterable.html#method-filter}{\code{lgr::Filterable$filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter">}\href{../../lgr/html/Filterable.html#method-remove_filter}{\code{lgr::Filterable$remove_filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters">}\href{../../lgr/html/Filterable.html#method-set_filters}{\code{lgr::Filterable$set_filters()}}\out{</span>}
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Appender$new(layout = Layout$new(), threshold = NA_integer_)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-append"></a>}}
+\subsection{Method \code{append()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Appender$append(event)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_threshold"></a>}}
+\subsection{Method \code{set_threshold()}}{
+Set the minimum log level that triggers this Appender. See
+\code{\link[=threshold]{threshold()}} for examples
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Appender$set_threshold(level)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{level}}{\code{character} or \code{integer} scalar log level. See \link{log_levels}.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_layout"></a>}}
+\subsection{Method \code{set_layout()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Appender$set_layout(layout)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-format"></a>}}
+\subsection{Method \code{format()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Appender$format(color = FALSE, ...)}\if{html}{\out{</div>}}
+}
+
+}
+}

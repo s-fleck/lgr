@@ -21,8 +21,6 @@ can be interpreted as tables, (usually a \code{data.frame}). Examples are
 
 
 \describe{
-\item{\code{threshold}, \code{set_threshold(level)}}{\code{character} or \code{integer} scalar.
-The minimum log level that triggers this logger. See \link{log_levels}}
 \item{\code{layout}, \code{set_layout(layout)}}{a \code{Layout} that will be used for
 formatting the \code{LogEvents} passed to this Appender}
 \item{\code{destination}}{The output destination of the \code{Appender} in
