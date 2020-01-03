@@ -14,7 +14,7 @@
 #' Since LogEvents are R6 objects with reference semantics, Filters can
 #' be abused to modify log events before passing them on. lgr comes with a few
 #' preset filters that use this property: [FilterInject]
-#' (similar to [wtih_log_level()]) and [FilterForceLevel] (similar to [with_log_value()]).
+#' (similar to [with_log_level()]) and [FilterForceLevel] (similar to [with_log_value()]).
 #'
 #' The base class for Filters is called `EventFilter` so that it doesn't
 #' conflict with [base::Filter()]. The recommended convention for Filter

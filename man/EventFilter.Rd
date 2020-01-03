@@ -19,7 +19,7 @@ Logger/Appender from within a filter
 Since LogEvents are R6 objects with reference semantics, Filters can
 be abused to modify log events before passing them on. lgr comes with a few
 preset filters that use this property: \link{FilterInject}
-(similar to \code{\link[=wtih_log_level]{wtih_log_level()}}) and \link{FilterForceLevel} (similar to \code{\link[=with_log_value]{with_log_value()}}).
+(similar to \code{\link[=with_log_level]{with_log_level()}}) and \link{FilterForceLevel} (similar to \code{\link[=with_log_value]{with_log_value()}}).
 
 The base class for Filters is called \code{EventFilter} so that it doesn't
 conflict with \code{\link[base:Filter]{base::Filter()}}. The recommended convention for Filter
