@@ -68,12 +68,7 @@ Layout <- R6::R6Class(
 #'
 #' @section Fields:
 #' \describe{
-#'   \item{`fmt`}{
-#'     a `character` scalar containing format tokens. See [format.LogEvent()].}
-#'   \item{`timestamp_fmt`}{
-#'     a `character` scalar. See [base::format.POSIXct()]}
-#'   \item{`colors`}{a named `list` of functions passed on on [format.LogEvent()]}
-#'   \item{`pad_levels`}{`right`, `left` or `NULL`. See [format.LogEvent()]}
+
 #'  }
 #'
 #' @section Format Tokens:
@@ -118,6 +113,8 @@ LayoutFormat <- R6::R6Class(
       self$set_pad_levels(pad_levels)
     },
 
+    #' @details Format a LogEvent
+    #' @param event a [LogEvent]
     format_event = function(
       event
     ){
@@ -130,18 +127,21 @@ LayoutFormat <- R6::R6Class(
       )
     },
 
+    #' @details see Fields
     set_fmt = function(x){
       assert(is_scalar_character(x))
       private$.fmt <- x
       invisible(self)
     },
 
+    #' @details see Fields
     set_timestamp_fmt = function(x){
       assert(is_scalar_character(x))
       private$.timestamp_fmt <- x
       invisible(self)
     },
 
+    #' @details see Fields
     set_colors = function(x){
       assert(
         is.null(x) || is.list(x),
@@ -152,12 +152,15 @@ LayoutFormat <- R6::R6Class(
       invisible(self)
     },
 
+    #' @details see Fields
     set_pad_levels = function(x){
       assert(is_scalar_character(x))
       private$.pad_levels <- x
       invisible(self)
     },
 
+    #' @details see Fields
+    #' Convert Layout to a Character String
     toString = function(){
       paste(fmt_class(class(self)[[1]]), self$fmt)
     }
@@ -165,12 +168,17 @@ LayoutFormat <- R6::R6Class(
 
 
   active = list(
+    #' @field fmt a `character` scalar containing format tokens. See [format.LogEvent()].
     fmt = function()  private$.fmt,
 
+    #' @field timestamp_fmt a `character` scalar. See [base::format.POSIXct()].
     timestamp_fmt = function() private$.timestamp_fmt,
 
+    #' @field colors a named `list` of functions (like the ones provided by
+    #' the package [crayon]) passed on on [format.LogEvent()].
     colors = function() private$.colors,
 
+    #' @field pad_levels `"right"`, `"left"` or `NULL`. See [format.LogEvent()].
     pad_levels = function() private$.pad_levels
   ),
 

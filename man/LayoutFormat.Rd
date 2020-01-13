@@ -40,12 +40,6 @@ and the documentation of \code{\link[=format.LogEvent]{format.LogEvent()}}.
 \section{Fields}{
 
 \describe{
-\item{\code{fmt}}{
-a \code{character} scalar containing format tokens. See \code{\link[=format.LogEvent]{format.LogEvent()}}.}
-\item{\code{timestamp_fmt}}{
-a \code{character} scalar. See \code{\link[base:format.POSIXct]{base::format.POSIXct()}}}
-\item{\code{colors}}{a named \code{list} of functions passed on on \code{\link[=format.LogEvent]{format.LogEvent()}}}
-\item{\code{pad_levels}}{\code{right}, \code{left} or \code{NULL}. See \code{\link[=format.LogEvent]{format.LogEvent()}}}
 }
 }
 
@@ -103,3 +97,149 @@ Other Layouts:
 \code{\link{Layout}}
 }
 \concept{Layouts}
+\section{Super class}{
+\code{\link[lgr:Layout]{lgr::Layout}} -> \code{LayoutFormat}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{fmt}}{a \code{character} scalar containing format tokens. See \code{\link[=format.LogEvent]{format.LogEvent()}}.}
+
+\item{\code{timestamp_fmt}}{a \code{character} scalar. See \code{\link[base:format.POSIXct]{base::format.POSIXct()}}.}
+
+\item{\code{colors}}{a named \code{list} of functions (like the ones provided by
+the package \link{crayon}) passed on on \code{\link[=format.LogEvent]{format.LogEvent()}}.}
+
+\item{\code{pad_levels}}{\code{"right"}, \code{"left"} or \code{NULL}. See \code{\link[=format.LogEvent]{format.LogEvent()}}.}
+}
+\if{html}{\out{</div>}}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{LayoutFormat$new()}}
+\item \href{#method-format_event}{\code{LayoutFormat$format_event()}}
+\item \href{#method-set_fmt}{\code{LayoutFormat$set_fmt()}}
+\item \href{#method-set_timestamp_fmt}{\code{LayoutFormat$set_timestamp_fmt()}}
+\item \href{#method-set_colors}{\code{LayoutFormat$set_colors()}}
+\item \href{#method-set_pad_levels}{\code{LayoutFormat$set_pad_levels()}}
+\item \href{#method-toString}{\code{LayoutFormat$toString()}}
+\item \href{#method-clone}{\code{LayoutFormat$clone()}}
+}
+}
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$new(
+  fmt = "\%L [\%t] \%m",
+  timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3",
+  colors = NULL,
+  pad_levels = "right"
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-format_event"></a>}}
+\subsection{Method \code{format_event()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$format_event(event)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{event}}{a \link{LogEvent}}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+Format a LogEvent
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_fmt"></a>}}
+\subsection{Method \code{set_fmt()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_fmt(x)}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+see Fields
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_timestamp_fmt"></a>}}
+\subsection{Method \code{set_timestamp_fmt()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_timestamp_fmt(x)}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+see Fields
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_colors"></a>}}
+\subsection{Method \code{set_colors()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_colors(x)}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+see Fields
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_pad_levels"></a>}}
+\subsection{Method \code{set_pad_levels()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_pad_levels(x)}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+see Fields
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-toString"></a>}}
+\subsection{Method \code{toString()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$toString()}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+see Fields
+Convert Layout to a Character String
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}
