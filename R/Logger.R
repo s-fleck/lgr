@@ -176,7 +176,7 @@ Logger <- R6::R6Class(
     #'
     #' If `level` passes the Logger's `threshold` a new [LogEvent] with `level`,
     #' `msg`, `timestamp` and `caller` is created.  If the new LogEvent also
-    #' passes the Loggers [Filters][Filters], it is be dispatched to the
+    #' passes the Loggers [Filters][Filter], it is be dispatched to the
     #' relevant [Appenders].
     #'
     #' @param level a `character` or `integer` scalar. See [log_levels].
