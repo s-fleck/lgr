@@ -175,7 +175,7 @@ LayoutFormat <- R6::R6Class(
     timestamp_fmt = function() private$.timestamp_fmt,
 
     #' @field colors a named `list` of functions (like the ones provided by
-    #' the package [crayon]) passed on on [format.LogEvent()].
+    #' the package \pkg{crayon}) passed on on [format.LogEvent()].
     colors = function() private$.colors,
 
     #' @field pad_levels `"right"`, `"left"` or `NULL`. See [format.LogEvent()].

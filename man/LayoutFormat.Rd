@@ -108,7 +108,7 @@ Other Layouts:
 \item{\code{timestamp_fmt}}{a \code{character} scalar. See \code{\link[base:format.POSIXct]{base::format.POSIXct()}}.}
 
 \item{\code{colors}}{a named \code{list} of functions (like the ones provided by
-the package \link{crayon}) passed on on \code{\link[=format.LogEvent]{format.LogEvent()}}.}
+the package \pkg{crayon}) passed on on \code{\link[=format.LogEvent]{format.LogEvent()}}.}
 
 \item{\code{pad_levels}}{\code{"right"}, \code{"left"} or \code{NULL}. See \code{\link[=format.LogEvent]{format.LogEvent()}}.}
 }
