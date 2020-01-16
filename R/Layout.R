@@ -1,44 +1,29 @@
 #' Abstract Class for Layouts
 #'
-#' Abstract classes are exported for developers that want to extend them, they
-#' are not useful to casual users.  Layouts get a [LogEvent] passed down from an
-#' [Appender], and format them for output. How this formatting works exactly
-#' varies widely. For example for file or console output the log event is
-#' usually formatted into a single character line.
+#' [Appenders] pass [LogEvents][LogEvent] to a Layout which formats it for
+#' output. For the Layouts included in lgr that means turning the LogEvent
+#' into a `character` string.
 #'
-#' @section Creating a New Layout:
+#' For each Appender exist one more more possible Layouts, but not every Layout
+#' will work with every Appender. See the package \pkg{lgrExtra} for examples
+#' for Layouts that return different data types (such as `data.frames`) and
+#' Appenders that can handle them.
 #'
-#' Layouts are instantiated with `<LayoutSubclass>$new()`. For a description of
-#' the arguments to this function please refer to the Fields section.
-#'
-#' @section Methods:
-#'
-#' \describe{
-#'   \item{`format_event(event)`}{format a [LogEvent]}
-#' }
-#'
-#'
-#'
-#' @name Layout
-#' @aliases Layouts
 #' @family Layouts
 #' @include print_LogEvent.R
 #' @include utils.R
 #' @include utils-sfmisc.R
 #' @include Filterable.R
-#' @keywords internal
-NULL
-
-
-
-
-# Layout ------------------------------------------------------------------
-
+#' @include log_levels.R
+#'
 #' @export
 Layout <- R6::R6Class(
   "Layout",
 
   public = list(
+
+    #' @description  Format a log event
+    #' @param event a [LogEvent]
     format_event = function(event) paste(capture.output(print(event$values)), collapse = " "),
     toString = function() "<empty>"
   )
@@ -55,27 +40,13 @@ Layout <- R6::R6Class(
 #' provides a quick and easy way to customize log messages. If you need
 #' more control and flexibility, consider using [LayoutGlue] instead.
 #'
-#' @inheritSection Layout Methods
 #' @inheritSection print.LogEvent Format Tokens
-#'
-#' @eval r6_usage(LayoutFormat)
-#'
-#' @section Creating a New LayoutFormat:
-#'
-#' A new LayoutFormat is instantiated with `LayoutFormat$new()`. For a
-#' description of the arguments to this function please refer to the Fields,
-#' and the documentation of [format.LogEvent()].
-#'
-#' @section Fields:
-#' \describe{
-
-#'  }
 #'
 #' @section Format Tokens:
 #' This is the same list of format tokens as for [format.LogEvent()]
 #'
 #'
-#' @name LayoutFormat
+#' @export
 #' @family Layouts
 #' @include Filterable.R
 #' @include log_levels.R
@@ -90,13 +61,6 @@ Layout <- R6::R6Class(
 #' )
 #' lo <- LayoutFormat$new()
 #' lo$format_event(event)
-#'
-NULL
-
-
-
-
-#' @export
 LayoutFormat <- R6::R6Class(
   "LayoutFormat",
   inherit = Layout,
@@ -113,7 +77,7 @@ LayoutFormat <- R6::R6Class(
       self$set_pad_levels(pad_levels)
     },
 
-    #' @details Format a LogEvent
+    #' @description Format a LogEvent
     #' @param event a [LogEvent]
     format_event = function(
       event
@@ -202,24 +166,8 @@ LayoutFormat <- R6::R6Class(
 #' the [LogEvent] (see examples). This is more flexible than [LayoutFormat],
 #' but also more complex and slightly less performant.
 #'
-#' @eval r6_usage(LayoutGlue)
-#'
-#' @section Creating a New LayoutGlue:
-#'
-#' A new `LayoutGlue` is instantiated with `LayoutGlue$new()`. It takes a single
-#' argument `fmt` that is passed on to `glue::glue()` for each LogEvent.
-#'
-#' @inheritSection Layout Methods
-#' @section Fields:
-#'
-#' \describe{
-#'   \item{`fmt`}{see [glue::glue()]}
-#'  }
-#'
-#' @name LayoutGlue
+#' @export
 #' @family Layouts
-#' @include Filterable.R
-#' @include log_levels.R
 #' @seealso lgr exports a number of formatting utility functions that are
 #'   useful for layout glue: [colorize_levels()], [pad_left()], [pad_right()].
 #' @examples
@@ -237,12 +185,6 @@ LayoutFormat <- R6::R6Class(
 #' )
 #' lg$fatal("test", custom = "foobar")
 #' lg$config(NULL)  # reset logger config
-#'
-NULL
-
-
-
-#' @export
 LayoutGlue <- R6::R6Class(
   "LayoutGlue",
   inherit = Layout,
@@ -290,6 +232,7 @@ LayoutGlue <- R6::R6Class(
 
 
   active = list(
+    #' @field A string that will be interpreted by [glue::glue()]
     fmt = function()  private$.fmt
   ),
 
@@ -305,29 +248,9 @@ LayoutGlue <- R6::R6Class(
 
 #' Format LogEvents as JSON
 #'
-#' Format a LogEvent as JSON
-#'
-#' @eval r6_usage(LayoutJson)
-#'
-#' @inheritSection Layout Creating a New Layout
-#' @inheritSection Layout Methods
-#'
-#' @section Creating a New Layout:
-#'
-#' @section Fields:
-#' \describe{
-#'   \item{`toJSON_args`, `set_toJSON_args()`}{a list of values passed on to
-#'     [jsonlite::toJSON()]
-#'    }
-#' }
-#'
-#' @section Methods:
-#'
-#' @name LayoutJson
 #' @family Layouts
-#' @include Filterable.R
-#' @include log_levels.R
 #' @seealso [read_json_lines()], [http://jsonlines.org/](http://jsonlines.org/)
+#' @export
 #' @examples
 #' # setup a dummy LogEvent
 #'
@@ -343,13 +266,6 @@ LayoutGlue <- R6::R6Class(
 #' # Default settings show all event fals
 #' lo <- LayoutJson$new()
 #' lo$format_event(event)
-#'
-NULL
-
-
-
-
-#' @export
 LayoutJson <- R6::R6Class(
   "LayoutJson",
   inherit = Layout,
@@ -381,6 +297,7 @@ LayoutJson <- R6::R6Class(
   ),
 
   active = list(
+    #' @field a list of values passed on to [jsonlite::toJSON()]
     toJSON_args = function() private$.toJSON_args
   ),
 
@@ -388,5 +305,3 @@ LayoutJson <- R6::R6Class(
     .toJSON_args = NULL
   )
 )
-
-

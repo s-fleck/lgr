@@ -4,50 +4,10 @@
 \alias{LayoutJson}
 \title{Format LogEvents as JSON}
 \description{
-Format a LogEvent as JSON
+Format LogEvents as JSON
+
+Format LogEvents as JSON
 }
-\section{Usage}{
-\preformatted{
-x <- LayoutJson$new(toJSON_args = list(auto_unbox = TRUE))
-
-x$clone(deep = FALSE)
-x$format_event(event)
-x$set_toJSON_args(x)
-x$toString()
-
-x$toJSON_args
-
-}
-}
-
-\section{Creating a New Layout}{
-
-
-
-
-Layouts are instantiated with \verb{<LayoutSubclass>$new()}. For a description of
-the arguments to this function please refer to the Fields section.
-}
-
-\section{Fields}{
-
-\describe{
-\item{\code{toJSON_args}, \code{set_toJSON_args()}}{a list of values passed on to
-\code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}
-}
-}
-}
-
-\section{Methods}{
-
-
-
-
-\describe{
-\item{\code{format_event(event)}}{format a \link{LogEvent}}
-}
-}
-
 \examples{
 # setup a dummy LogEvent
 
@@ -63,7 +23,6 @@ event <- LogEvent$new(
 # Default settings show all event fals
 lo <- LayoutJson$new()
 lo$format_event(event)
-
 }
 \seealso{
 \code{\link[=read_json_lines]{read_json_lines()}}, \url{http://jsonlines.org/}
@@ -74,3 +33,85 @@ Other Layouts:
 \code{\link{Layout}}
 }
 \concept{Layouts}
+\section{Super class}{
+\code{\link[lgr:Layout]{lgr::Layout}} -> \code{LayoutJson}
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{a}}{list of values passed on to \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{a}}{list of values passed on to \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}}
+}
+\if{html}{\out{</div>}}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{LayoutJson$new()}}
+\item \href{#method-format_event}{\code{LayoutJson$format_event()}}
+\item \href{#method-set_toJSON_args}{\code{LayoutJson$set_toJSON_args()}}
+\item \href{#method-toString}{\code{LayoutJson$toString()}}
+\item \href{#method-clone}{\code{LayoutJson$clone()}}
+}
+}
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$new(toJSON_args = list(auto_unbox = TRUE))}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-format_event"></a>}}
+\subsection{Method \code{format_event()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$format_event(event)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_toJSON_args"></a>}}
+\subsection{Method \code{set_toJSON_args()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$set_toJSON_args(x)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-toString"></a>}}
+\subsection{Method \code{toString()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$toString()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}

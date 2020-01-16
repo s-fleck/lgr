@@ -4,45 +4,26 @@
 \alias{LayoutFormat}
 \title{Format Log Events as Text}
 \description{
+Format Log Events as Text
+
+Format Log Events as Text
+}
+\details{
 Format a \link{LogEvent} as human readable text using \code{\link[=format.LogEvent]{format.LogEvent()}}, which
 provides a quick and easy way to customize log messages. If you need
 more control and flexibility, consider using \link{LayoutGlue} instead.
+
+see Fields
+
+see Fields
+
+see Fields
+
+see Fields
+
+see Fields
+Convert Layout to a Character String
 }
-\section{Usage}{
-\preformatted{
-x <- LayoutFormat$new(fmt = "\%L [\%t] \%m", timestamp_fmt = "\%Y-\%m-\%d
-  \%H:\%M:\%OS3", colors = NULL, pad_levels = "right")
-
-x$clone(deep = FALSE)
-x$format_event(event)
-x$set_colors(x)
-x$set_fmt(x)
-x$set_pad_levels(x)
-x$set_timestamp_fmt(x)
-x$toString()
-
-x$colors
-x$fmt
-x$pad_levels
-x$timestamp_fmt
-
-}
-}
-
-\section{Creating a New LayoutFormat}{
-
-
-A new LayoutFormat is instantiated with \code{LayoutFormat$new()}. For a
-description of the arguments to this function please refer to the Fields,
-and the documentation of \code{\link[=format.LogEvent]{format.LogEvent()}}.
-}
-
-\section{Fields}{
-
-\describe{
-}
-}
-
 \section{Format Tokens}{
 
 This is the same list of format tokens as for \code{\link[=format.LogEvent]{format.LogEvent()}}
@@ -69,14 +50,6 @@ have \strong{jsonlite} installed and does not support colors as opposed to
 }
 }
 
-\section{Methods}{
-
-
-\describe{
-\item{\code{format_event(event)}}{format a \link{LogEvent}}
-}
-}
-
 \examples{
 # setup a dummy LogEvent
 event <- LogEvent$new(
@@ -88,7 +61,6 @@ event <- LogEvent$new(
 )
 lo <- LayoutFormat$new()
 lo$format_event(event)
-
 }
 \seealso{
 Other Layouts: 
@@ -149,6 +121,7 @@ the package \pkg{crayon}) passed on on \code{\link[=format.LogEvent]{format.LogE
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-format_event"></a>}}
 \subsection{Method \code{format_event()}}{
+Format a LogEvent
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$format_event(event)}\if{html}{\out{</div>}}
 }
@@ -160,20 +133,12 @@ the package \pkg{crayon}) passed on on \code{\link[=format.LogEvent]{format.LogE
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Details}{
-Format a LogEvent
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_fmt"></a>}}
 \subsection{Method \code{set_fmt()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_fmt(x)}\if{html}{\out{</div>}}
-}
-
-\subsection{Details}{
-see Fields
 }
 
 }
@@ -184,20 +149,12 @@ see Fields
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_timestamp_fmt(x)}\if{html}{\out{</div>}}
 }
 
-\subsection{Details}{
-see Fields
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_colors"></a>}}
 \subsection{Method \code{set_colors()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_colors(x)}\if{html}{\out{</div>}}
-}
-
-\subsection{Details}{
-see Fields
 }
 
 }
@@ -208,21 +165,12 @@ see Fields
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_pad_levels(x)}\if{html}{\out{</div>}}
 }
 
-\subsection{Details}{
-see Fields
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-toString"></a>}}
 \subsection{Method \code{toString()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$toString()}\if{html}{\out{</div>}}
-}
-
-\subsection{Details}{
-see Fields
-Convert Layout to a Character String
 }
 
 }

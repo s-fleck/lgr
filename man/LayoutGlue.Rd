@@ -9,45 +9,6 @@ is evaluated in an environment in which it has access to all elements of
 the \link{LogEvent} (see examples). This is more flexible than \link{LayoutFormat},
 but also more complex and slightly less performant.
 }
-\section{Usage}{
-\preformatted{
-x <- LayoutGlue$new(fmt = "\{pad_right(colorize_levels(toupper(level_name)), 5)\}
-  [\{timestamp\}] msg")
-
-x$clone(deep = FALSE)
-x$format_event(event)
-x$set_colors(x)
-x$set_fmt(x)
-x$toString()
-
-x$fmt
-
-}
-}
-
-\section{Creating a New LayoutGlue}{
-
-
-A new \code{LayoutGlue} is instantiated with \code{LayoutGlue$new()}. It takes a single
-argument \code{fmt} that is passed on to \code{glue::glue()} for each LogEvent.
-}
-
-\section{Fields}{
-
-
-\describe{
-\item{\code{fmt}}{see \code{\link[glue:glue]{glue::glue()}}}
-}
-}
-
-\section{Methods}{
-
-
-\describe{
-\item{\code{format_event(event)}}{format a \link{LogEvent}}
-}
-}
-
 \examples{
 lg <- get_logger("test")$
   set_appenders(AppenderConsole$new())$
@@ -63,7 +24,6 @@ lg$appenders[[1]]$layout$set_fmt(
 )
 lg$fatal("test", custom = "foobar")
 lg$config(NULL)  # reset logger config
-
 }
 \seealso{
 lgr exports a number of formatting utility functions that are
@@ -75,3 +35,96 @@ Other Layouts:
 \code{\link{Layout}}
 }
 \concept{Layouts}
+\section{Super class}{
+\code{\link[lgr:Layout]{lgr::Layout}} -> \code{LayoutGlue}
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{A}}{string that will be interpreted by \code{\link[glue:glue]{glue::glue()}}}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{A}}{string that will be interpreted by \code{\link[glue:glue]{glue::glue()}}}
+}
+\if{html}{\out{</div>}}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{LayoutGlue$new()}}
+\item \href{#method-format_event}{\code{LayoutGlue$format_event()}}
+\item \href{#method-set_fmt}{\code{LayoutGlue$set_fmt()}}
+\item \href{#method-set_colors}{\code{LayoutGlue$set_colors()}}
+\item \href{#method-toString}{\code{LayoutGlue$toString()}}
+\item \href{#method-clone}{\code{LayoutGlue$clone()}}
+}
+}
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutGlue$new(
+  fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)} [{timestamp}] msg"
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-format_event"></a>}}
+\subsection{Method \code{format_event()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutGlue$format_event(event)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_fmt"></a>}}
+\subsection{Method \code{set_fmt()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutGlue$set_fmt(x)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_colors"></a>}}
+\subsection{Method \code{set_colors()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutGlue$set_colors(x)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-toString"></a>}}
+\subsection{Method \code{toString()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutGlue$toString()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutGlue$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}
