@@ -227,4 +227,11 @@ CannotInitializeAbstractClassError <- function(
 }
 
 
+
+
+# stricter version & support for R < 3.5
+isFALSE <- function(x){
+  identical(x, FALSE)
+}
+
 # nocov end
