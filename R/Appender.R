@@ -537,8 +537,6 @@ AppenderTable <- R6::R6Class(
 #' AppenderMemory is extended by Appenders that retain an in-memory event
 #' buffer, such as [AppenderBuffer] and [lgrExtra::AppenderPushbullet].
 #'
-#' @eval r6_usage(AppenderMemory)
-#'
 #'
 #' @section Fields:
 #'
@@ -565,20 +563,10 @@ AppenderTable <- R6::R6Class(
 #'     or higher is registered.}
 #' }
 #'
-#' @section Methods:
-#'
-#' \describe{
-#'   \item{`flush()`}{Manually trigger flushing of the buffer}
-#' }
 #'
 #' @export
 #' @seealso [LayoutFormat]
-#' @name AppenderMemory
-NULL
-
-
-
-
+#'
 #' @export
 AppenderMemory <- R6::R6Class(
   "AppenderMemory",
@@ -622,7 +610,14 @@ AppenderMemory <- R6::R6Class(
       NULL
     },
 
-    flush = function(){},
+
+    #' @description  Sends the buffer's contents to all attached Appenders and
+    #'   then clears the Buffer
+    flush = function(){self},
+
+
+    #' @description Clears the buffer, discarding all buffered Events
+    clear = function(self){},
 
 
     set_buffer_size = function(x){
@@ -780,15 +775,7 @@ AppenderMemory <- R6::R6Class(
 #' An Appender that Buffers LogEvents in-memory and and redirects them to other
 #' Appenders once certain conditions are met.
 #'
-#' @eval r6_usage(AppenderBuffer)
 #'
-#' @section Creating a Buffer Appender:
-#'
-#' The [Layout] for this Appender is used only to format console output of
-#' its `$show()` method.
-#'
-#' @inheritSection AppenderMemory Methods
-#' @inheritSection AppenderMemory Fields
 #'
 #' @section Fields:
 #'
@@ -821,18 +808,16 @@ AppenderMemory <- R6::R6Class(
 #' @export
 #' @seealso [LayoutFormat]
 #' @family Appenders
-#' @name AppenderBuffer
-NULL
-
-
-
-
 #' @export
 AppenderBuffer <- R6::R6Class(
   "AppenderBuffer",
   inherit = AppenderMemory,
   cloneable = FALSE,
   public = list(
+
+    #' @description
+    #' The [Layout] for this Appender is used only to format console output of
+    #' its `$show()` method.
     initialize = function(
       threshold = NA_integer_,
       layout = LayoutFormat$new(
@@ -864,6 +849,9 @@ AppenderBuffer <- R6::R6Class(
       invisible(self)
     },
 
+
+    #' @description  Sends the buffer's contents to all attached Appenders and
+    #'   then clears the Buffer
     flush = function(){
       for (event in get("buffer_events", envir = self)){
         for (app in self$appenders) {
@@ -871,11 +859,16 @@ AppenderBuffer <- R6::R6Class(
         }
       }
 
+      self$clear()
+    },
+
+
+    #' @description Clears the buffer, discarding all buffered Events
+    clear = function(){
       assign("insert_pos", 0L, envir = private)
       private$.buffer_events <- list()
       invisible(self)
     },
-
 
 
     set_appenders = function(x){

@@ -17,6 +17,9 @@
   
 * `basic_config()` now works as documented for .jsonl files
 
+* AppenderMemory gains a `$clear()` method that clears the buffer without 
+  sending the events to it's attached appenders
+
 
 # lgr 0.3.3
 

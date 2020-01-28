@@ -10,44 +10,6 @@ It is exported for package developers that want to extend it
 AppenderMemory is extended by Appenders that retain an in-memory event
 buffer, such as \link{AppenderBuffer} and \link[lgrExtra:AppenderPushbullet]{lgrExtra::AppenderPushbullet}.
 }
-\section{Usage}{
-\preformatted{
-x <- AppenderMemory$new(...)
-
-x$add_filter(filter, name = NULL)
-x$append(event)
-x$filter(event)
-x$flush()
-x$format(color = FALSE, ...)
-x$remove_filter(pos)
-x$set_buffer_size(x)
-x$set_filters(filters)
-x$set_flush_on_exit(x)
-x$set_flush_on_rotate(x)
-x$set_flush_threshold(level)
-x$set_layout(layout)
-x$set_should_flush(x)
-x$set_threshold(level)
-x$show(threshold = NA_integer_, n = 20L)
-
-x$buffer_df
-x$buffer_dt
-x$buffer_events
-x$buffer_size
-x$data
-x$destination
-x$dt
-x$filters
-x$flush_on_exit
-x$flush_on_rotate
-x$flush_threshold
-x$layout
-x$should_flush
-x$threshold
-
-}
-}
-
 \section{Fields}{
 
 
@@ -75,14 +37,6 @@ or higher is registered.}
 }
 }
 
-\section{Methods}{
-
-
-\describe{
-\item{\code{flush()}}{Manually trigger flushing of the buffer}
-}
-}
-
 \seealso{
 \link{LayoutFormat}
 
@@ -91,3 +45,126 @@ Other abstract classes:
 \code{\link{Filterable}}
 }
 \concept{abstract classes}
+\section{Super classes}{
+\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{AppenderMemory}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{AppenderMemory$new()}}
+\item \href{#method-append}{\code{AppenderMemory$append()}}
+\item \href{#method-flush}{\code{AppenderMemory$flush()}}
+\item \href{#method-clear}{\code{AppenderMemory$clear()}}
+\item \href{#method-set_buffer_size}{\code{AppenderMemory$set_buffer_size()}}
+\item \href{#method-set_should_flush}{\code{AppenderMemory$set_should_flush()}}
+\item \href{#method-set_flush_on_exit}{\code{AppenderMemory$set_flush_on_exit()}}
+\item \href{#method-set_flush_on_rotate}{\code{AppenderMemory$set_flush_on_rotate()}}
+\item \href{#method-set_flush_threshold}{\code{AppenderMemory$set_flush_threshold()}}
+\item \href{#method-show}{\code{AppenderMemory$show()}}
+\item \href{#method-format}{\code{AppenderMemory$format()}}
+}
+}
+\if{html}{
+\out{<details ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter">}\href{../../lgr/html/Filterable.html#method-add_filter}{\code{lgr::Filterable$add_filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter">}\href{../../lgr/html/Filterable.html#method-filter}{\code{lgr::Filterable$filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter">}\href{../../lgr/html/Filterable.html#method-remove_filter}{\code{lgr::Filterable$remove_filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters">}\href{../../lgr/html/Filterable.html#method-set_filters}{\code{lgr::Filterable$set_filters()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout">}\href{../../lgr/html/Appender.html#method-set_layout}{\code{lgr::Appender$set_layout()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold">}\href{../../lgr/html/Appender.html#method-set_threshold}{\code{lgr::Appender$set_threshold()}}\out{</span>}
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$new(...)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-append"></a>}}
+\subsection{Method \code{append()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$append(event)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-flush"></a>}}
+\subsection{Method \code{flush()}}{
+Sends the buffer's contents to all attached Appenders and
+then clears the Buffer
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$flush()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clear"></a>}}
+\subsection{Method \code{clear()}}{
+Clears the buffer, discarding all buffered Events
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$clear(self)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_buffer_size"></a>}}
+\subsection{Method \code{set_buffer_size()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$set_buffer_size(x)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_should_flush"></a>}}
+\subsection{Method \code{set_should_flush()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$set_should_flush(x)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_flush_on_exit"></a>}}
+\subsection{Method \code{set_flush_on_exit()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$set_flush_on_exit(x)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_flush_on_rotate"></a>}}
+\subsection{Method \code{set_flush_on_rotate()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$set_flush_on_rotate(x)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_flush_threshold"></a>}}
+\subsection{Method \code{set_flush_threshold()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$set_flush_threshold(level)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-show"></a>}}
+\subsection{Method \code{show()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$show(threshold = NA_integer_, n = 20L)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-format"></a>}}
+\subsection{Method \code{format()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$format(color = FALSE, ...)}\if{html}{\out{</div>}}
+}
+
+}
+}

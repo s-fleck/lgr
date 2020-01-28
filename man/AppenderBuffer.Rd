@@ -4,63 +4,14 @@
 \alias{AppenderBuffer}
 \title{Log to a memory buffer}
 \description{
+Log to a memory buffer
+
+Log to a memory buffer
+}
+\details{
 An Appender that Buffers LogEvents in-memory and and redirects them to other
 Appenders once certain conditions are met.
 }
-\section{Usage}{
-\preformatted{
-x <- AppenderBuffer$new(threshold = NA_integer_, layout = LayoutFormat$new(fmt
-  = "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S", colors =
-  getOption("lgr.colors")), appenders = NULL, buffer_size = 1000,
-  flush_threshold = NULL, flush_on_exit = TRUE, flush_on_rotate = TRUE,
-  should_flush = default_should_flush, filters = NULL)
-
-x$add_appender(appender, name = NULL)
-x$add_filter(filter, name = NULL)
-x$append(event)
-x$filter(event)
-x$flush()
-x$format(...)
-x$format(color = FALSE, ...)
-x$remove_appender(pos)
-x$remove_filter(pos)
-x$set_appenders(x)
-x$set_buffer_size(x)
-x$set_filters(filters)
-x$set_flush_on_exit(x)
-x$set_flush_on_rotate(x)
-x$set_flush_threshold(level)
-x$set_layout(layout)
-x$set_should_flush(x)
-x$set_threshold(level)
-x$show(threshold = NA_integer_, n = 20L)
-
-x$appenders
-x$buffer_df
-x$buffer_dt
-x$buffer_events
-x$buffer_size
-x$data
-x$destination
-x$dt
-x$filters
-x$flush_on_exit
-x$flush_on_rotate
-x$flush_threshold
-x$layout
-x$should_flush
-x$threshold
-
-}
-}
-
-\section{Creating a Buffer Appender}{
-
-
-The \link{Layout} for this Appender is used only to format console output of
-its \verb{$show()} method.
-}
-
 \section{Fields}{
 
 
@@ -73,31 +24,6 @@ you close \R)}
 \item{\verb{flush_on_rotate, set_flush_on_rotate}}{\code{TRUE} or \code{FALSE}: Whether
 the buffer should be flushed when the Buffer is full (f.e when you close
 \R). Setting this to off can have slightly negative performance impacts.}
-}
-
-
-
-\describe{
-\item{\verb{buffer_size, set_buffer_size(x)}}{\code{integer} scalar \verb{>= 0} Number of
-\link{LogEvents} to buffer.
-}
-
-\item{\code{buffer_events}, \code{buffer_df}, \code{buffer_dt}}{
-The contents of the buffer as a \code{list} of \link[=LogEvent]{LogEvents}, a
-\code{data.frame} or a \code{data.table}.
-}
-
-\item{\code{flush_threshold}, \code{set_flush_threshold()}}{\code{integer} or \code{character}
-\link[=log_level]{log level}. Minimum event level that will trigger flushing of
-the buffer (set \code{NULL} for no flushing). This behaviour is implemented
-through \code{should_flush()}, and you can modify that function for different
-behaviour.
-}
-\item{\code{should_flush(event)}, \code{set_should_flush(x)}}{
-A function with exactly one arguments: \code{event}.
-If the function returns \code{TRUE}, flushing of the buffer
-is triggered. Defaults to flushing if an event of level \code{error}
-or higher is registered.}
 }
 }
 
@@ -116,12 +42,6 @@ remove an Appender by position or name.
 }
 
 }
-
-
-
-\describe{
-\item{\code{flush()}}{Manually trigger flushing of the buffer}
-}
 }
 
 \seealso{
@@ -137,3 +57,110 @@ Other Appenders:
 \code{\link{Appender}}
 }
 \concept{Appenders}
+\section{Super classes}{
+\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{\link[lgr:AppenderMemory]{lgr::AppenderMemory}} -> \code{AppenderBuffer}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{AppenderBuffer$new()}}
+\item \href{#method-flush}{\code{AppenderBuffer$flush()}}
+\item \href{#method-clear}{\code{AppenderBuffer$clear()}}
+\item \href{#method-set_appenders}{\code{AppenderBuffer$set_appenders()}}
+\item \href{#method-add_appender}{\code{AppenderBuffer$add_appender()}}
+\item \href{#method-remove_appender}{\code{AppenderBuffer$remove_appender()}}
+\item \href{#method-format}{\code{AppenderBuffer$format()}}
+}
+}
+\if{html}{
+\out{<details ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter">}\href{../../lgr/html/Filterable.html#method-add_filter}{\code{lgr::Filterable$add_filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter">}\href{../../lgr/html/Filterable.html#method-filter}{\code{lgr::Filterable$filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter">}\href{../../lgr/html/Filterable.html#method-remove_filter}{\code{lgr::Filterable$remove_filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters">}\href{../../lgr/html/Filterable.html#method-set_filters}{\code{lgr::Filterable$set_filters()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout">}\href{../../lgr/html/Appender.html#method-set_layout}{\code{lgr::Appender$set_layout()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold">}\href{../../lgr/html/Appender.html#method-set_threshold}{\code{lgr::Appender$set_threshold()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="append">}\href{../../lgr/html/AppenderMemory.html#method-append}{\code{lgr::AppenderMemory$append()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="set_buffer_size">}\href{../../lgr/html/AppenderMemory.html#method-set_buffer_size}{\code{lgr::AppenderMemory$set_buffer_size()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="set_flush_on_exit">}\href{../../lgr/html/AppenderMemory.html#method-set_flush_on_exit}{\code{lgr::AppenderMemory$set_flush_on_exit()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="set_flush_on_rotate">}\href{../../lgr/html/AppenderMemory.html#method-set_flush_on_rotate}{\code{lgr::AppenderMemory$set_flush_on_rotate()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="set_flush_threshold">}\href{../../lgr/html/AppenderMemory.html#method-set_flush_threshold}{\code{lgr::AppenderMemory$set_flush_threshold()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="set_should_flush">}\href{../../lgr/html/AppenderMemory.html#method-set_should_flush}{\code{lgr::AppenderMemory$set_should_flush()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="show">}\href{../../lgr/html/AppenderMemory.html#method-show}{\code{lgr::AppenderMemory$show()}}\out{</span>}
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+The \link{Layout} for this Appender is used only to format console output of
+its \verb{$show()} method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderBuffer$new(
+  threshold = NA_integer_,
+  layout = LayoutFormat$new(fmt = "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S", colors
+    = getOption("lgr.colors")),
+  appenders = NULL,
+  buffer_size = 1000,
+  flush_threshold = NULL,
+  flush_on_exit = TRUE,
+  flush_on_rotate = TRUE,
+  should_flush = default_should_flush,
+  filters = NULL
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-flush"></a>}}
+\subsection{Method \code{flush()}}{
+Sends the buffer's contents to all attached Appenders and
+then clears the Buffer
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderBuffer$flush()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clear"></a>}}
+\subsection{Method \code{clear()}}{
+Clears the buffer, discarding all buffered Events
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderBuffer$clear()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_appenders"></a>}}
+\subsection{Method \code{set_appenders()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderBuffer$set_appenders(x)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-add_appender"></a>}}
+\subsection{Method \code{add_appender()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderBuffer$add_appender(appender, name = NULL)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-remove_appender"></a>}}
+\subsection{Method \code{remove_appender()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderBuffer$remove_appender(pos)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-format"></a>}}
+\subsection{Method \code{format()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderBuffer$format(...)}\if{html}{\out{</div>}}
+}
+
+}
+}
