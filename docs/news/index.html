@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9010</span>
       </span>
     </div>
 
@@ -118,6 +118,7 @@
 <li><p>Export more utility functions that are useful for creating custom Appenders; such as <code><a href="../reference/standardize_threshold.html">standardize_threshold()</a></code> and <code><a href="../reference/event_list.html">event_list()</a></code>.</p></li>
 <li><p>AppenderBuffer now defaults to <code>flush_threshold = NULL</code> (never flush because of the log level of an event)</p></li>
 <li><p><code><a href="../reference/basic_config.html">basic_config()</a></code> now works as documented for .jsonl files</p></li>
+<li><p>AppenderMemory gains a <code>$clear()</code> method that clears the buffer without sending the events to it’s attached appenders</p></li>
 </ul>
 </div>
     <div id="lgr-0-3-3" class="section level1">

@@ -72,7 +72,7 @@ buffer, such as AppenderBuffer and lgrExtra::AppenderPushbullet." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9010</span>
       </span>
     </div>
 
@@ -123,45 +123,6 @@ buffer, such as <a href='AppenderBuffer.html'>AppenderBuffer</a> and <a href='ht
 
 
 
-    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
-
-    
-<pre>
-x &lt;- AppenderMemory$new(...)
-
-x$add_filter(filter, name = NULL)
-x$append(event)
-x$filter(event)
-x$flush()
-x$format(color = FALSE, ...)
-x$remove_filter(pos)
-x$set_buffer_size(x)
-x$set_filters(filters)
-x$set_flush_on_exit(x)
-x$set_flush_on_rotate(x)
-x$set_flush_threshold(level)
-x$set_layout(layout)
-x$set_should_flush(x)
-x$set_threshold(level)
-x$show(threshold = NA_integer_, n = 20L)
-
-x$buffer_df
-x$buffer_dt
-x$buffer_events
-x$buffer_size
-x$data
-x$destination
-x$dt
-x$filters
-x$flush_on_exit
-x$flush_on_rotate
-x$flush_threshold
-x$layout
-x$should_flush
-x$threshold
-
-</pre>
-
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
@@ -186,31 +147,120 @@ or higher is registered.</p></dd>
 
 </dl>
 
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-
-
-<dl class='dl-horizontal'>
-<dt><code><a href='https://rdrr.io/r/base/connections.html'>flush()</a></code></dt><dd><p>Manually trigger flushing of the buffer</p></dd>
-
-</dl>
-
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a></p>
 <p>Other abstract classes: 
 <code><a href='AppenderTable.html'>AppenderTable</a></code>,
 <code><a href='Filterable.html'>Filterable</a></code></p></div>
+    <h2 class="hasAnchor" id="super-classes"><a class="anchor" href="#super-classes"></a>Super classes</h2>
+
+    <p><code><a href='Filterable.html'>lgr::Filterable</a></code> -&gt; <code><a href='Appender.html'>lgr::Appender</a></code> -&gt; <code>AppenderMemory</code></p>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+<h3>Public methods</h3>
+
+<ul>
+<li><p><a href='#method-new'><code>AppenderMemory$new()</code></a></p></li>
+<li><p><a href='#method-append'><code>AppenderMemory$append()</code></a></p></li>
+<li><p><a href='#method-flush'><code>AppenderMemory$flush()</code></a></p></li>
+<li><p><a href='#method-clear'><code>AppenderMemory$clear()</code></a></p></li>
+<li><p><a href='#method-set_buffer_size'><code>AppenderMemory$set_buffer_size()</code></a></p></li>
+<li><p><a href='#method-set_should_flush'><code>AppenderMemory$set_should_flush()</code></a></p></li>
+<li><p><a href='#method-set_flush_on_exit'><code>AppenderMemory$set_flush_on_exit()</code></a></p></li>
+<li><p><a href='#method-set_flush_on_rotate'><code>AppenderMemory$set_flush_on_rotate()</code></a></p></li>
+<li><p><a href='#method-set_flush_threshold'><code>AppenderMemory$set_flush_threshold()</code></a></p></li>
+<li><p><a href='#method-show'><code>AppenderMemory$show()</code></a></p></li>
+<li><p><a href='#method-format'><code>AppenderMemory$format()</code></a></p></li>
+</ul>
+<p><details ><summary>Inherited methods</summary>
+<ul>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-filter'><code>lgr::Filterable$filter()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-set_layout'><code>lgr::Appender$set_layout()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-set_threshold'><code>lgr::Appender$set_threshold()</code></a></span></p></li>
+</ul>
+</details>
+
+<hr>
+<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderMemory$new(...)</pre><p></div></p>
+
+<p><hr>
+<a id="method-append"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/append.html'>append()</a></code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderMemory$append(event)</pre><p></div></p>
+
+<p><hr>
+<a id="method-flush"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/connections.html'>flush()</a></code></h3>
+<p>Sends the buffer's contents to all attached Appenders and
+then clears the Buffer</p><h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderMemory$flush()</pre><p></div></p>
+
+<p><hr>
+<a id="method-clear"></a></p><h3>Method <code>clear()</code></h3>
+<p>Clears the buffer, discarding all buffered Events</p><h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderMemory$clear(self)</pre><p></div></p>
+
+<p><hr>
+<a id="method-set_buffer_size"></a></p><h3>Method <code>set_buffer_size()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderMemory$set_buffer_size(x)</pre><p></div></p>
+
+<p><hr>
+<a id="method-set_should_flush"></a></p><h3>Method <code>set_should_flush()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderMemory$set_should_flush(x)</pre><p></div></p>
+
+<p><hr>
+<a id="method-set_flush_on_exit"></a></p><h3>Method <code>set_flush_on_exit()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderMemory$set_flush_on_exit(x)</pre><p></div></p>
+
+<p><hr>
+<a id="method-set_flush_on_rotate"></a></p><h3>Method <code>set_flush_on_rotate()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderMemory$set_flush_on_rotate(x)</pre><p></div></p>
+
+<p><hr>
+<a id="method-set_flush_threshold"></a></p><h3>Method <code>set_flush_threshold()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderMemory$set_flush_threshold(level)</pre><p></div></p>
+
+<p><hr>
+<a id="method-show"></a></p><h3>Method <code>show()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderMemory$show(threshold = NA_integer_, n = 20L)</pre><p></div></p>
+
+<p><hr>
+<a id="method-format"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderMemory$format(color = FALSE, ...)</pre><p></div></p>
+
+
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#usage">Usage</a></li>
       <li><a href="#fields">Fields</a></li>
-      <li><a href="#methods">Methods</a></li>
       <li><a href="#see-also">See also</a></li>
+      <li><a href="#super-classes">Super classes</a></li>
+      <li><a href="#methods">Methods</a></li>
     </ul>
 
   </div>

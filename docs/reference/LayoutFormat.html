@@ -36,9 +36,8 @@
 
 
 <meta property="og:title" content="Format Log Events as Text — LayoutFormat" />
-<meta property="og:description" content="Format a LogEvent as human readable text using format.LogEvent(), which
-provides a quick and easy way to customize log messages. If you need
-more control and flexibility, consider using LayoutGlue instead." />
+<meta property="og:description" content="Format Log Events as Text
+Format Log Events as Text" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -71,7 +70,7 @@ more control and flexibility, consider using LayoutGlue instead." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9010</span>
       </span>
     </div>
 
@@ -114,55 +113,23 @@ more control and flexibility, consider using LayoutGlue instead." />
     </div>
 
     <div class="ref-description">
-    <p>Format a <a href='LogEvent.html'>LogEvent</a> as human readable text using <code><a href='print.LogEvent.html'>format.LogEvent()</a></code>, which
-provides a quick and easy way to customize log messages. If you need
-more control and flexibility, consider using <a href='LayoutGlue.html'>LayoutGlue</a> instead.</p>
+    <p>Format Log Events as Text</p>
+<p>Format Log Events as Text</p>
     </div>
 
 
 
-    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    
-<pre>
-x &lt;- LayoutFormat$new(fmt = "%L [%t] %m", timestamp_fmt = "%Y-%m-%d
-  %H:%M:%OS3", colors = NULL, pad_levels = "right")
-
-x$clone(deep = FALSE)
-x$format_event(event)
-x$set_colors(x)
-x$set_fmt(x)
-x$set_pad_levels(x)
-x$set_timestamp_fmt(x)
-x$toString()
-
-x$colors
-x$fmt
-x$pad_levels
-x$timestamp_fmt
-
-</pre>
-
-    <h2 class="hasAnchor" id="creating-a-new-layoutformat"><a class="anchor" href="#creating-a-new-layoutformat"></a>Creating a New LayoutFormat</h2>
-
-    
-
-
-<p>A new LayoutFormat is instantiated with <code>LayoutFormat$new()</code>. For a
-description of the arguments to this function please refer to the Fields,
-and the documentation of <code><a href='print.LogEvent.html'>format.LogEvent()</a></code>.</p>
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
-
-    
-
-<dl class='dl-horizontal'>
-<dt><code>fmt</code></dt><dd><p>a <code>character</code> scalar containing format tokens. See <code><a href='print.LogEvent.html'>format.LogEvent()</a></code>.</p></dd>
-<dt><code>timestamp_fmt</code></dt><dd><p>a <code>character</code> scalar. See <code><a href='https://rdrr.io/r/base/strptime.html'>base::format.POSIXct()</a></code></p></dd>
-<dt><code>colors</code></dt><dd><p>a named <code>list</code> of functions passed on on <code><a href='print.LogEvent.html'>format.LogEvent()</a></code></p></dd>
-<dt><code>pad_levels</code></dt><dd><p><code>right</code>, <code>left</code> or <code>NULL</code>. See <code><a href='print.LogEvent.html'>format.LogEvent()</a></code></p></dd>
-
-</dl>
-
+    <p>Format a <a href='LogEvent.html'>LogEvent</a> as human readable text using <code><a href='print.LogEvent.html'>format.LogEvent()</a></code>, which
+provides a quick and easy way to customize log messages. If you need
+more control and flexibility, consider using <a href='LayoutGlue.html'>LayoutGlue</a> instead.</p>
+<p>see Fields</p>
+<p>see Fields</p>
+<p>see Fields</p>
+<p>see Fields</p>
+<p>see Fields
+Convert Layout to a Character String</p>
     <h2 class="hasAnchor" id="format-tokens"><a class="anchor" href="#format-tokens"></a>Format Tokens</h2>
 
     
@@ -189,22 +156,111 @@ have <strong>jsonlite</strong> installed and does not support colors as opposed 
 
 </dl>
 
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-
-
-<dl class='dl-horizontal'>
-<dt><code>format_event(event)</code></dt><dd><p>format a <a href='LogEvent.html'>LogEvent</a></p></dd>
-
-</dl>
-
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Layouts: 
 <code><a href='LayoutGlue.html'>LayoutGlue</a></code>,
 <code><a href='LayoutJson.html'>LayoutJson</a></code>,
 <code><a href='Layout.html'>Layout</a></code></p></div>
+    <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
+
+    <p><code><a href='Layout.html'>lgr::Layout</a></code> -&gt; <code>LayoutFormat</code></p>
+    <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
+
+    <p><div class="r6-active-bindings"></p><dl class='dl-horizontal'>
+<dt><code>fmt</code></dt><dd><p>a <code>character</code> scalar containing format tokens. See <code><a href='print.LogEvent.html'>format.LogEvent()</a></code>.</p></dd>
+
+<dt><code>timestamp_fmt</code></dt><dd><p>a <code>character</code> scalar. See <code><a href='https://rdrr.io/r/base/strptime.html'>base::format.POSIXct()</a></code>.</p></dd>
+
+<dt><code>colors</code></dt><dd><p>a named <code>list</code> of functions (like the ones provided by
+the package <span class="pkg">crayon</span>) passed on on <code><a href='print.LogEvent.html'>format.LogEvent()</a></code>.</p></dd>
+
+<dt><code>pad_levels</code></dt><dd><p><code>"right"</code>, <code>"left"</code> or <code>NULL</code>. See <code><a href='print.LogEvent.html'>format.LogEvent()</a></code>.</p></dd>
+
+</dl><p></div></p>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+<h3>Public methods</h3>
+
+<ul>
+<li><p><a href='#method-new'><code>LayoutFormat$new()</code></a></p></li>
+<li><p><a href='#method-format_event'><code>LayoutFormat$format_event()</code></a></p></li>
+<li><p><a href='#method-set_fmt'><code>LayoutFormat$set_fmt()</code></a></p></li>
+<li><p><a href='#method-set_timestamp_fmt'><code>LayoutFormat$set_timestamp_fmt()</code></a></p></li>
+<li><p><a href='#method-set_colors'><code>LayoutFormat$set_colors()</code></a></p></li>
+<li><p><a href='#method-set_pad_levels'><code>LayoutFormat$set_pad_levels()</code></a></p></li>
+<li><p><a href='#method-toString'><code>LayoutFormat$toString()</code></a></p></li>
+<li><p><a href='#method-clone'><code>LayoutFormat$clone()</code></a></p></li>
+</ul>
+<p><details open ><summary>Inherited methods</summary>
+<ul>
+</ul>
+</details>
+
+<hr>
+<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>LayoutFormat$new(
+  fmt = "%L [%t] %m",
+  timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
+  colors = NULL,
+  pad_levels = "right"
+)</pre><p></div></p>
+
+<p><hr>
+<a id="method-format_event"></a></p><h3>Method <code>format_event()</code></h3>
+<p>Format a LogEvent</p><h3>Usage</h3>
+<p><div class="r"></p><pre>LayoutFormat$format_event(event)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl class='dl-horizontal'>
+<dt><code>event</code></dt><dd><p>a <a href='LogEvent.html'>LogEvent</a></p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-set_fmt"></a></p><h3>Method <code>set_fmt()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>LayoutFormat$set_fmt(x)</pre><p></div></p>
+
+<p><hr>
+<a id="method-set_timestamp_fmt"></a></p><h3>Method <code>set_timestamp_fmt()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>LayoutFormat$set_timestamp_fmt(x)</pre><p></div></p>
+
+<p><hr>
+<a id="method-set_colors"></a></p><h3>Method <code>set_colors()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>LayoutFormat$set_colors(x)</pre><p></div></p>
+
+<p><hr>
+<a id="method-set_pad_levels"></a></p><h3>Method <code>set_pad_levels()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>LayoutFormat$set_pad_levels(x)</pre><p></div></p>
+
+<p><hr>
+<a id="method-toString"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/toString.html'>toString()</a></code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>LayoutFormat$toString()</pre><p></div></p>
+
+<p><hr>
+<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
+<p><div class="r"></p><pre>LayoutFormat$clone(deep = FALSE)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl class='dl-horizontal'>
+<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
+
+</dl><p></div></p>
+
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># setup a dummy LogEvent</span>
@@ -216,18 +272,17 @@ have <strong>jsonlite</strong> installed and does not support colors as opposed 
   <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"a test message"</span>
 )
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>()
-<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; [1] "ERROR [2020-01-02 15:23:12.267] a test message"</div><div class='input'>
-</div></pre>
+<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; [1] "ERROR [2020-01-28 08:15:13.033] a test message"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#usage">Usage</a></li>
-      <li><a href="#creating-a-new-layoutformat">Creating a New LayoutFormat</a></li>
-      <li><a href="#fields">Fields</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#format-tokens">Format Tokens</a></li>
-      <li><a href="#methods">Methods</a></li>
       <li><a href="#see-also">See also</a></li>
+      <li><a href="#super-class">Super class</a></li>
+      <li><a href="#active-bindings">Active bindings</a></li>
+      <li><a href="#methods">Methods</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

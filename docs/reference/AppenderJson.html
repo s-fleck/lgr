@@ -71,7 +71,7 @@ comfortably access the underlying file." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9010</span>
       </span>
     </div>
 
@@ -121,104 +121,13 @@ comfortably access the underlying file.</p>
 
 
 
-    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     
-<pre>
-x &lt;- AppenderFile$new(file, threshold = NA_integer_, layout =
-  LayoutFormat$new(), filters = NULL)
-
-x$add_filter(filter, name = NULL)
-x$append(event)
-x$filter(event)
-x$format(color = FALSE, ...)
-x$remove_filter(pos)
-x$set_file(file)
-x$set_filters(filters)
-x$set_layout(layout)
-x$set_threshold(level)
-x$show(threshold = NA_integer_, n = 20L)
-
-x$destination
-x$file
-x$filters
-x$layout
-x$threshold
-
-</pre>
-
-    <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
-
-    
-
-
-
-
-<p>New Appenders are instantiated with <code>&lt;AppenderSubclass&gt;$new()</code>. For the
-arguments to <code>new()</code> please refer to the section <em>Fields</em>. You can also
-modify those fields after the Appender has been created with setters in the
-form of <code>appender$set_&lt;fieldname&gt;(value)</code></p>
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
-
-    
-
-
-
-
-<dl class='dl-horizontal'>
-<dt><code>file</code>, <code>set_file(file)</code></dt><dd><p><code>character</code> scalar. Path to the desired log
-file. If the file does not exist it will be created.</p></dd>
-
-</dl>
-
-
-
-<dl class='dl-horizontal'>
-<dt><code>threshold</code>, <code>set_threshold(level)</code></dt><dd><p><code>character</code> or <code>integer</code> scalar.
-The minimum log level that triggers this logger. See <a href='get_log_levels.html'>log_levels</a></p></dd>
-<dt><code>layout</code>, <code>set_layout(layout)</code></dt><dd><p>a <code>Layout</code> that will be used for
-formatting the <code>LogEvents</code> passed to this Appender</p></dd>
-<dt><code>destination</code></dt><dd><p>The output destination of the <code>Appender</code> in
-human-readable form (mainly for print output)</p></dd>
-
-</dl>
-
-
-
-<dl class='dl-horizontal'>
-<dt><code>data</code></dt><dd><p>Get the log recorded by this <code>Appender</code> as a <code>data.frame</code></p></dd>
-
-</dl>
-
-
-
-<dl class='dl-horizontal'>
-<dt><code>threshold</code>, <code>set_threshold(level)</code></dt><dd><p><code>character</code> or <code>integer</code> scalar.
-The minimum log level that triggers this logger. See <a href='get_log_levels.html'>log_levels</a></p></dd>
-<dt><code>layout</code>, <code>set_layout(layout)</code></dt><dd><p>a <code>Layout</code> that will be used for
-formatting the <code>LogEvents</code> passed to this Appender</p></dd>
-<dt><code>destination</code></dt><dd><p>The output destination of the <code>Appender</code> in
-human-readable form (mainly for print output)</p></dd>
-
-</dl>
-
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-
-
 <dl class='dl-horizontal'>
 <dt><code>show(n, threshold)</code></dt><dd><p>Show the last <code>n</code> log entries with a log level
 bellow <code>threshold</code>. The log entries will be formatted as in the source
 JSON file</p></dd>
-
-</dl>
-
-
-<dl class='dl-horizontal'>
-<dt><code><a href='https://rdrr.io/r/base/append.html'>append(event)</a></code></dt><dd><p>Tell the Appender to process a <a href='LogEvent.html'>LogEvent</a> <code>event</code>.
-This method is usually not called by the user, but invoked by a
-<a href='Logger.html'>Logger</a></p></dd>
 
 </dl>
 
@@ -228,11 +137,49 @@ This method is usually not called by the user, but invoked by a
 <p>Other Appenders: 
 <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
 <code><a href='AppenderConsole.html'>AppenderConsole</a></code>,
-<code><a href='AppenderFileRotating.html'>AppenderFileRotating</a></code>,
 <code><a href='AppenderFile.html'>AppenderFile</a></code>,
 <code><a href='AppenderSyslog.html'>AppenderSyslog</a></code>,
 <code><a href='AppenderTable.html'>AppenderTable</a></code>,
 <code><a href='Appender.html'>Appender</a></code></p></div>
+    <h2 class="hasAnchor" id="super-classes"><a class="anchor" href="#super-classes"></a>Super classes</h2>
+
+    <p><code><a href='Filterable.html'>lgr::Filterable</a></code> -&gt; <code><a href='Appender.html'>lgr::Appender</a></code> -&gt; <code><a href='AppenderFile.html'>lgr::AppenderFile</a></code> -&gt; <code>AppenderJson</code></p>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+<h3>Public methods</h3>
+
+<ul>
+<li><p><a href='#method-new'><code>AppenderJson$new()</code></a></p></li>
+</ul>
+<p><details ><summary>Inherited methods</summary>
+<ul>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-filter'><code>lgr::Filterable$filter()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="format"><a href='../../lgr/html/Appender.html#method-format'><code>lgr::Appender$format()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-set_layout'><code>lgr::Appender$set_layout()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-set_threshold'><code>lgr::Appender$set_threshold()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="append"><a href='../../lgr/html/AppenderFile.html#method-append'><code>lgr::AppenderFile$append()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="set_file"><a href='../../lgr/html/AppenderFile.html#method-set_file'><code>lgr::AppenderFile$set_file()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="show"><a href='../../lgr/html/AppenderFile.html#method-show'><code>lgr::AppenderFile$show()</code></a></span></p></li>
+</ul>
+</details>
+
+<hr>
+<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderJson$new(
+  file,
+  threshold = NA_integer_,
+  layout = LayoutJson$new(),
+  filters = NULL
+)</pre><p></div></p>
+
+
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>tf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>()
@@ -243,10 +190,10 @@ This method is usually not called by the user, but invoked by a
 <span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)
 <span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message %s strings"</span>, <span class='st'>"with format strings"</span>, <span class='kw'>and</span> <span class='kw'>=</span> <span class='st'>"custom_fields"</span>)
 
-<span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2020-01-02 15:23:10","logger":"test","caller":"eval","msg":"A test message"}
-#&gt; {"level":400,"timestamp":"2020-01-02 15:23:10","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp logger caller
-#&gt; 1   400 2020-01-02 15:23:10   test   eval
-#&gt; 2   400 2020-01-02 15:23:10   test   eval
+<span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2020-01-28 08:15:09","logger":"test","caller":"eval","msg":"A test message"}
+#&gt; {"level":400,"timestamp":"2020-01-28 08:15:09","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp logger caller
+#&gt; 1   400 2020-01-28 08:15:09   test   eval
+#&gt; 2   400 2020-01-28 08:15:09   test   eval
 #&gt;                                          msg           and
 #&gt; 1                             A test message          &lt;NA&gt;
 #&gt; 2 A test message with format strings strings custom_fields</div><div class='input'>
@@ -259,11 +206,10 @@ This method is usually not called by the user, but invoked by a
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#usage">Usage</a></li>
-      <li><a href="#creating-a-new-appender">Creating a New Appender</a></li>
-      <li><a href="#fields">Fields</a></li>
-      <li><a href="#methods">Methods</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#see-also">See also</a></li>
+      <li><a href="#super-classes">Super classes</a></li>
+      <li><a href="#methods">Methods</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

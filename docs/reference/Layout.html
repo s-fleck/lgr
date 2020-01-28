@@ -36,11 +36,8 @@
 
 
 <meta property="og:title" content="Abstract Class for Layouts — Layout" />
-<meta property="og:description" content="Abstract classes are exported for developers that want to extend them, they
-are not useful to casual users.  Layouts get a LogEvent passed down from an
-Appender, and format them for output. How this formatting works exactly
-varies widely. For example for file or console output the log event is
-usually formatted into a single character line." />
+<meta property="og:description" content="Abstract Class for Layouts
+Abstract Class for Layouts" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -73,7 +70,7 @@ usually formatted into a single character line." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9010</span>
       </span>
     </div>
 
@@ -116,46 +113,73 @@ usually formatted into a single character line." />
     </div>
 
     <div class="ref-description">
-    <p>Abstract classes are exported for developers that want to extend them, they
-are not useful to casual users.  Layouts get a <a href='LogEvent.html'>LogEvent</a> passed down from an
-<a href='Appender.html'>Appender</a>, and format them for output. How this formatting works exactly
-varies widely. For example for file or console output the log event is
-usually formatted into a single character line.</p>
+    <p>Abstract Class for Layouts</p>
+<p>Abstract Class for Layouts</p>
     </div>
 
 
 
-    <h2 class="hasAnchor" id="creating-a-new-layout"><a class="anchor" href="#creating-a-new-layout"></a>Creating a New Layout</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    
-
-
-<p>Layouts are instantiated with <code>&lt;LayoutSubclass&gt;$new()</code>. For a description of
-the arguments to this function please refer to the Fields section.</p>
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-
-
-<dl class='dl-horizontal'>
-<dt><code>format_event(event)</code></dt><dd><p>format a <a href='LogEvent.html'>LogEvent</a></p></dd>
-
-</dl>
-
+    <p><a href='Appender.html'>Appenders</a> pass <a href='LogEvent.html'>LogEvents</a> to a Layout which formats it for
+output. For the Layouts included in lgr that means turning the LogEvent
+into a <code>character</code> string.</p>
+<p>For each Appender exist one more more possible Layouts, but not every Layout
+will work with every Appender. See the package <span class="pkg">lgrExtra</span> for examples
+for Layouts that return different data types (such as <code>data.frames</code>) and
+Appenders that can handle them.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Layouts: 
 <code><a href='LayoutFormat.html'>LayoutFormat</a></code>,
 <code><a href='LayoutGlue.html'>LayoutGlue</a></code>,
 <code><a href='LayoutJson.html'>LayoutJson</a></code></p></div>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+<h3>Public methods</h3>
+
+<ul>
+<li><p><a href='#method-format_event'><code>Layout$format_event()</code></a></p></li>
+<li><p><a href='#method-toString'><code>Layout$toString()</code></a></p></li>
+<li><p><a href='#method-clone'><code>Layout$clone()</code></a></p></li>
+</ul>
+<p><hr>
+<a id="method-format_event"></a></p><h3>Method <code>format_event()</code></h3>
+<p>Format a log event</p><h3>Usage</h3>
+<p><div class="r"></p><pre>Layout$format_event(event)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl class='dl-horizontal'>
+<dt><code>event</code></dt><dd><p>a <a href='LogEvent.html'>LogEvent</a></p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-toString"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/toString.html'>toString()</a></code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>Layout$toString()</pre><p></div></p>
+
+<p><hr>
+<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
+<p><div class="r"></p><pre>Layout$clone(deep = FALSE)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl class='dl-horizontal'>
+<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
+
+</dl><p></div></p>
+
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#creating-a-new-layout">Creating a New Layout</a></li>
-      <li><a href="#methods">Methods</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#see-also">See also</a></li>
+      <li><a href="#methods">Methods</a></li>
     </ul>
 
   </div>

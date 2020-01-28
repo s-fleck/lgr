@@ -92,7 +92,7 @@ to the root logger with basic_config(memory = TRUE)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9010</span>
       </span>
     </div>
 
@@ -237,10 +237,31 @@ Appender's <code>$show()</code> method returns, usually a <code>character</code>
 a <code>data.table</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>add_appender</span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(), <span class='st'>"second_console_appender"</span>)
-<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"Multiple console appenders are a bad idea"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [15:23:20.357] Multiple console appenders are a bad idea 
-#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [15:23:20.357] Multiple console appenders are a bad idea </div><div class='input'><span class='fu'>remove_appender</span>(<span class='st'>"second_console_appender"</span>)
-<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Good that we defined an appender name, so it's easy to remove"</span>)</div><div class='output co'>#&gt; INFO  [15:23:20.361] Good that we defined an appender name, so it's easy to remove </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='co'># Get and set the threshold of the root logger</span>
+<span class='fu'>threshold</span>(<span class='st'>"error"</span>)
+<span class='fu'>threshold</span>()</div><div class='output co'>#&gt; [1] 200</div><div class='input'><span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"this will be supressed"</span>)
+<span class='no'>lgr</span>$<span class='fu'>error</span>(<span class='st'>"an important error message"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;'>ERROR</span><span> [08:15:23.428] an important error message </div><div class='input'>
+<span class='co'># you can also specify a target to modify other loggers</span>
+<span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)
+<span class='fu'>threshold</span>(<span class='st'>"fatal"</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)
+<span class='fu'>threshold</span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)</div><div class='output co'>#&gt; [1] 100</div><div class='input'>
+<span class='co'># If a Logger's threshold is not set, the threshold is inherited from</span>
+<span class='co'># its parent, in this case the root logger (that we set to error/200 before)</span>
+<span class='fu'>threshold</span>(<span class='kw'>NULL</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)
+<span class='fu'>threshold</span>(<span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)</div><div class='output co'>#&gt; [1] 200</div><div class='input'>
+<span class='co'># Alternative R6 API for getting/setting thresholds</span>
+<span class='no'>lg</span>$<span class='fu'>set_threshold</span>(<span class='st'>"info"</span>)
+<span class='no'>lg</span>$<span class='no'>threshold</span></div><div class='output co'>#&gt; [1] 400</div><div class='input'><span class='no'>lg</span>$<span class='fu'>set_threshold</span>(<span class='fl'>300</span>)
+<span class='no'>lg</span>$<span class='no'>threshold</span></div><div class='output co'>#&gt; [1] 300</div><div class='input'><span class='no'>lg</span>$<span class='fu'>set_threshold</span>(<span class='kw'>NULL</span>)
+<span class='no'>lg</span>$<span class='no'>threshold</span></div><div class='output co'>#&gt; [1] 200</div><div class='input'>
+<span class='co'># cleanup</span>
+<span class='no'>lgr</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)</div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [info] root</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #555555;'>info</span><span>] test</div><div class='input'>
+
+<span class='co'># add Appenders to a Logger</span>
+<span class='fu'>add_appender</span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(), <span class='st'>"second_console_appender"</span>)
+<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"Multiple console appenders are a bad idea"</span>)</div><div class='output co'>#&gt; </span><span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [08:15:23.445] Multiple console appenders are a bad idea </div><div class='input'><span class='fu'>remove_appender</span>(<span class='st'>"second_console_appender"</span>)
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Good that we defined an appender name, so it's easy to remove"</span>)
+
 <span class='co'># Reconfigure the root logger</span>
 <span class='fu'><a href='basic_config.html'>basic_config</a></span>(<span class='kw'>memory</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [info] root
 #&gt; 
@@ -248,13 +269,13 @@ a <code>data.table</code>.</p>
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console
 #&gt;   memory : &lt;AppenderBuffer&gt;  [all] -&gt; 0 child Appenders</div><div class='input'>
 <span class='co'># log some messages</span>
-<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"a log message"</span>)</div><div class='output co'>#&gt; INFO  [15:23:20.368] a log message </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"another message with data"</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; INFO  [15:23:20.370] another message with data </span><span style='color: #555555;'>{</span><span style='color: #D75FAF;'>data</span><span style='color: #555555;'>: [</span><span>1, 2, 3</span><span style='color: #555555;'>]}</span><span></div><div class='input'>
-<span class='fu'>show_log</span>()</div><div class='output co'>#&gt; INFO  [15:23:20] a log message
-#&gt; INFO  [15:23:20] another message with data</div><div class='input'><span class='fu'>show_data</span>()</div><div class='output co'>#&gt;   level           timestamp logger caller                       msg    data
-#&gt; 1   400 2020-01-02 15:23:20   root   eval             a log message    NULL
-#&gt; 2   400 2020-01-02 15:23:20   root   eval another message with data 1, 2, 3</div><div class='input'>
-
-</div></span></pre>
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"a log message"</span>)</div><div class='output co'>#&gt; INFO  [08:15:23.456] a log message </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"another message with data"</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; INFO  [08:15:23.458] another message with data </span><span style='color: #555555;'>{</span><span style='color: #D75FAF;'>data</span><span style='color: #555555;'>: [</span><span>1, 2, 3</span><span style='color: #555555;'>]}</span><span></div><div class='input'>
+<span class='fu'>show_log</span>()</div><div class='output co'>#&gt; INFO  [08:15:23] a log message
+#&gt; INFO  [08:15:23] another message with data</div><div class='input'><span class='fu'>show_data</span>()</div><div class='output co'>#&gt;   level           timestamp logger caller                       msg    data
+#&gt; 1   400 2020-01-28 08:15:23   root   eval             a log message    NULL
+#&gt; 2   400 2020-01-28 08:15:23   root   eval another message with data 1, 2, 3</div><div class='input'>
+<span class='co'># cleanup</span>
+<span class='no'>lgr</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)</div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [info] root</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <h2>Contents</h2>

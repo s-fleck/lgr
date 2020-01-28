@@ -73,7 +73,7 @@ Layouts you need to understand LogEvents." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9010</span>
       </span>
     </div>
 
@@ -177,7 +177,7 @@ created this event, equivalent to <code>event$.logger$name</code>)</p></dd>
 in the <code>LogEvent</code>. Usually these values will be scalars, but (except for
 <code>"logger"</code>) they can also be vectors if they are all of the same length (or
 scalars that will be recycled). In this case the event will be treated by
-the <a href='Appender.html'>Appenders</a> and <a href='Layout.html'>Layouts</a> as if several separate events.</p><h3>Usage</h3>
+the <a href='Appender.html'>Appenders</a> and Layouts as if several separate events.</p><h3>Usage</h3>
 <p><div class="r"></p><pre>LogEvent$new(
   logger,
   level = 400,
@@ -211,13 +211,13 @@ this way, but not all Appenders will support them. See <a href='AppenderJson.htm
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)
-<span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"foo bar"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;'>ERROR</span><span> [15:23:14.435] foo bar </div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"foo bar"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;'>ERROR</span><span> [08:15:16.074] foo bar </div><div class='input'>
 <span class='co'># The last LogEvent produced by a Logger is stored in its `last_event` field</span>
-<span class='no'>lg</span>$<span class='no'>last_event</span>  <span class='co'># formatted console output</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [2020-01-02 15:23:14] foo bar  </div><div class='input'><span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>values</span>  <span class='co'># values stored in the event</span></div><div class='output co'>#&gt; $level
+<span class='no'>lg</span>$<span class='no'>last_event</span>  <span class='co'># formatted console output</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [2020-01-28 08:15:16] foo bar  </div><div class='input'><span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>values</span>  <span class='co'># values stored in the event</span></div><div class='output co'>#&gt; $level
 #&gt; [1] 200
 #&gt; 
 #&gt; $timestamp
-#&gt; [1] "2020-01-02 15:23:14 CET"
+#&gt; [1] "2020-01-28 08:15:16 CET"
 #&gt; 
 #&gt; $logger
 #&gt; [1] "test"

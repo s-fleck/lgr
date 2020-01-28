@@ -17,15 +17,6 @@ can be interpreted as tables, (usually a \code{data.frame}). Examples are
 \describe{
 \item{\code{data}}{Get the log recorded by this \code{Appender} as a \code{data.frame}}
 }
-
-
-
-\describe{
-\item{\code{layout}, \code{set_layout(layout)}}{a \code{Layout} that will be used for
-formatting the \code{LogEvents} passed to this Appender}
-\item{\code{destination}}{The output destination of the \code{Appender} in
-human-readable form (mainly for print output)}
-}
 }
 
 \section{Methods}{
@@ -34,14 +25,6 @@ human-readable form (mainly for print output)}
 \describe{
 \item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a
 log level bellow \code{threshold}.}
-}
-
-
-\describe{
-\item{\code{append(event)}}{Tell the Appender to process a \link{LogEvent} \code{event}.
-This method is usually not called by the user, but invoked by a
-\link{Logger}
-}
 }
 }
 
@@ -53,7 +36,6 @@ Other abstract classes:
 Other Appenders: 
 \code{\link{AppenderBuffer}},
 \code{\link{AppenderConsole}},
-\code{\link{AppenderFileRotating}},
 \code{\link{AppenderFile}},
 \code{\link{AppenderJson}},
 \code{\link{AppenderSyslog}},
@@ -61,3 +43,52 @@ Other Appenders:
 }
 \concept{Appenders}
 \concept{abstract classes}
+\section{Super classes}{
+\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{AppenderTable}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{AppenderTable$new()}}
+\item \href{#method-show}{\code{AppenderTable$show()}}
+\item \href{#method-format}{\code{AppenderTable$format()}}
+}
+}
+\if{html}{
+\out{<details ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter">}\href{../../lgr/html/Filterable.html#method-add_filter}{\code{lgr::Filterable$add_filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter">}\href{../../lgr/html/Filterable.html#method-filter}{\code{lgr::Filterable$filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter">}\href{../../lgr/html/Filterable.html#method-remove_filter}{\code{lgr::Filterable$remove_filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters">}\href{../../lgr/html/Filterable.html#method-set_filters}{\code{lgr::Filterable$set_filters()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="append">}\href{../../lgr/html/Appender.html#method-append}{\code{lgr::Appender$append()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout">}\href{../../lgr/html/Appender.html#method-set_layout}{\code{lgr::Appender$set_layout()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold">}\href{../../lgr/html/Appender.html#method-set_threshold}{\code{lgr::Appender$set_threshold()}}\out{</span>}
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderTable$new(...)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-show"></a>}}
+\subsection{Method \code{show()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderTable$show(threshold = NA_integer_, n = 20L)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-format"></a>}}
+\subsection{Method \code{format()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderTable$format(color = FALSE, ...)}\if{html}{\out{</div>}}
+}
+
+}
+}

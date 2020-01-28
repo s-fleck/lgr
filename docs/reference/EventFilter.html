@@ -74,7 +74,7 @@ Logger/Appender from within a filter" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9010</span>
       </span>
     </div>
 
@@ -135,7 +135,7 @@ Logger/Appender from within a filter</p>
 <p>Since LogEvents are R6 objects with reference semantics, Filters can
 be abused to modify log events before passing them on. lgr comes with a few
 preset filters that use this property: <a href='FilterInject.html'>FilterInject</a>
-(similar to <code>wtih_log_level()</code>) and <a href='FilterForceLevel.html'>FilterForceLevel</a> (similar to <code><a href='with_log_level.html'>with_log_value()</a></code>).</p>
+(similar to <code><a href='with_log_level.html'>with_log_level()</a></code>) and <a href='FilterForceLevel.html'>FilterForceLevel</a> (similar to <code><a href='with_log_level.html'>with_log_value()</a></code>).</p>
 <p>The base class for Filters is called <code>EventFilter</code> so that it doesn't
 conflict with <code><a href='https://rdrr.io/r/base/funprog.html'>base::Filter()</a></code>. The recommended convention for Filter
 subclasses is to call them <code>FilterSomething</code> and leave out the

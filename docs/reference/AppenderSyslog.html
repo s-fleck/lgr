@@ -70,7 +70,7 @@ the rsyslog package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9010</span>
       </span>
     </div>
 
@@ -119,35 +119,6 @@ the <span class="pkg">rsyslog</span> package.</p>
 
 
 
-    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
-
-    
-<pre>
-x &lt;- AppenderSyslog$new(identifier = NULL, threshold = NA_integer_, layout =
-  LayoutFormat$new("%m"), filters = NULL, syslog_levels = c(CRITICAL = "fatal",
-  ERR = "error", WARNING = "warn", INFO = "info", DEBUG = "debug", DEBUG =
-  "trace"))
-
-x$add_filter(filter, name = NULL)
-x$append(event)
-x$filter(event)
-x$format(color = FALSE, ...)
-x$remove_filter(pos)
-x$set_filters(filters)
-x$set_identifier(x)
-x$set_layout(layout)
-x$set_syslog_levels(x)
-x$set_threshold(level)
-
-x$destination
-x$filters
-x$identifier
-x$layout
-x$syslog_levels
-x$threshold
-
-</pre>
-
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
@@ -166,49 +137,75 @@ understood by <code><a href='https://rdrr.io/pkg/rsyslog/man/syslog.html'>rsyslo
 
 </dl>
 
-
-
-<dl class='dl-horizontal'>
-<dt><code>threshold</code>, <code>set_threshold(level)</code></dt><dd><p><code>character</code> or <code>integer</code> scalar.
-The minimum log level that triggers this logger. See <a href='get_log_levels.html'>log_levels</a></p></dd>
-<dt><code>layout</code>, <code>set_layout(layout)</code></dt><dd><p>a <code>Layout</code> that will be used for
-formatting the <code>LogEvents</code> passed to this Appender</p></dd>
-<dt><code>destination</code></dt><dd><p>The output destination of the <code>Appender</code> in
-human-readable form (mainly for print output)</p></dd>
-
-</dl>
-
-    <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
-
-    
-
-
-<p>New Appenders are instantiated with <code>&lt;AppenderSubclass&gt;$new()</code>. For the
-arguments to <code>new()</code> please refer to the section <em>Fields</em>. You can also
-modify those fields after the Appender has been created with setters in the
-form of <code>appender$set_&lt;fieldname&gt;(value)</code></p>
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-
-<dl class='dl-horizontal'>
-<dt><code><a href='https://rdrr.io/r/base/append.html'>append(event)</a></code></dt><dd><p>Tell the Appender to process a <a href='LogEvent.html'>LogEvent</a> <code>event</code>.
-This method is usually not called by the user, but invoked by a
-<a href='Logger.html'>Logger</a></p></dd>
-
-</dl>
-
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a>, <a href='LayoutJson.html'>LayoutJson</a></p>
 <p>Other Appenders: 
 <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
 <code><a href='AppenderConsole.html'>AppenderConsole</a></code>,
-<code><a href='AppenderFileRotating.html'>AppenderFileRotating</a></code>,
 <code><a href='AppenderFile.html'>AppenderFile</a></code>,
 <code><a href='AppenderJson.html'>AppenderJson</a></code>,
 <code><a href='AppenderTable.html'>AppenderTable</a></code>,
 <code><a href='Appender.html'>Appender</a></code></p></div>
+    <h2 class="hasAnchor" id="super-classes"><a class="anchor" href="#super-classes"></a>Super classes</h2>
+
+    <p><code><a href='Filterable.html'>lgr::Filterable</a></code> -&gt; <code><a href='Appender.html'>lgr::Appender</a></code> -&gt; <code>AppenderSyslog</code></p>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+<h3>Public methods</h3>
+
+<ul>
+<li><p><a href='#method-new'><code>AppenderSyslog$new()</code></a></p></li>
+<li><p><a href='#method-append'><code>AppenderSyslog$append()</code></a></p></li>
+<li><p><a href='#method-set_syslog_levels'><code>AppenderSyslog$set_syslog_levels()</code></a></p></li>
+<li><p><a href='#method-set_identifier'><code>AppenderSyslog$set_identifier()</code></a></p></li>
+</ul>
+<p><details ><summary>Inherited methods</summary>
+<ul>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-filter'><code>lgr::Filterable$filter()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="format"><a href='../../lgr/html/Appender.html#method-format'><code>lgr::Appender$format()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-set_layout'><code>lgr::Appender$set_layout()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-set_threshold'><code>lgr::Appender$set_threshold()</code></a></span></p></li>
+</ul>
+</details>
+
+<hr>
+<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderSyslog$new(
+  identifier = NULL,
+  threshold = NA_integer_,
+  layout = LayoutFormat$new("%m"),
+  filters = NULL,
+  syslog_levels = c(CRITICAL = "fatal", ERR = "error", WARNING = "warn", INFO = "info",
+    DEBUG = "debug", DEBUG = "trace")
+)</pre><p></div></p>
+
+<p><hr>
+<a id="method-append"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/append.html'>append()</a></code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderSyslog$append(event)</pre><p></div></p>
+
+<p><hr>
+<a id="method-set_syslog_levels"></a></p><h3>Method <code>set_syslog_levels()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderSyslog$set_syslog_levels(x)</pre><p></div></p>
+
+<p><hr>
+<a id="method-set_identifier"></a></p><h3>Method <code>set_identifier()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderSyslog$set_identifier(x)</pre><p></div></p>
+
+
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"rsyslog"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
@@ -221,16 +218,15 @@ This method is usually not called by the user, but invoked by a
   }
 
   <span class='fu'><a href='https://rdrr.io/r/base/invisible.html'>invisible</a></span>(<span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>))  <span class='co'># cleanup</span>
-}</div><div class='output co'>#&gt; INFO  [15:23:10.854] A test message </div></pre>
+}</div><div class='output co'>#&gt; INFO  [08:15:10.694] A test message </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#usage">Usage</a></li>
       <li><a href="#fields">Fields</a></li>
-      <li><a href="#creating-a-new-appender">Creating a New Appender</a></li>
-      <li><a href="#methods">Methods</a></li>
       <li><a href="#see-also">See also</a></li>
+      <li><a href="#super-classes">Super classes</a></li>
+      <li><a href="#methods">Methods</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

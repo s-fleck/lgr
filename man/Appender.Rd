@@ -5,6 +5,11 @@
 \alias{Appenders}
 \title{Appenders}
 \description{
+Appenders
+
+Appenders
+}
+\details{
 Appenders are assigned to \link{Loggers} and manage the output of the \link{LogEvents}
 to a destination (such as the console or a text file). An Appender has a
 single \link{Layout} that tells it how to format the LogEvent. For details
@@ -16,62 +21,10 @@ section towards the end of this document a list of available Appenders.
 
 More appenders can be found in the package \href{https://github.com/s-fleck/lgrExtra}{lgrExtra}
 }
-\section{Usage}{
-\preformatted{
-x <- Appender$new(layout = Layout$new(), threshold = NA_integer_)
-
-x$add_filter(filter, name = NULL)
-x$append(event)
-x$filter(event)
-x$format(color = FALSE, ...)
-x$remove_filter(pos)
-x$set_filters(filters)
-x$set_layout(layout)
-x$set_threshold(level)
-
-x$destination
-x$filters
-x$layout
-x$threshold
-
-}
-}
-
-\section{Creating a New Appender}{
-
-
-New Appenders are instantiated with \verb{<AppenderSubclass>$new()}. For the
-arguments to \code{new()} please refer to the section \emph{Fields}. You can also
-modify those fields after the Appender has been created with setters in the
-form of \verb{appender$set_<fieldname>(value)}
-}
-
-\section{Fields}{
-
-
-\describe{
-\item{\code{layout}, \code{set_layout(layout)}}{a \code{Layout} that will be used for
-formatting the \code{LogEvents} passed to this Appender}
-\item{\code{destination}}{The output destination of the \code{Appender} in
-human-readable form (mainly for print output)}
-}
-}
-
-\section{Methods}{
-
-\describe{
-\item{\code{append(event)}}{Tell the Appender to process a \link{LogEvent} \code{event}.
-This method is usually not called by the user, but invoked by a
-\link{Logger}
-}
-}
-}
-
 \seealso{
 Other Appenders: 
 \code{\link{AppenderBuffer}},
 \code{\link{AppenderConsole}},
-\code{\link{AppenderFileRotating}},
 \code{\link{AppenderFile}},
 \code{\link{AppenderJson}},
 \code{\link{AppenderSyslog}},
@@ -81,6 +34,14 @@ Other Appenders:
 \keyword{internal}
 \section{Super class}{
 \code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{Appender}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{destination}}{The output destination of the \code{Appender} in human-readable form. This
+is mainly used when printing information about the Appender itself.}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -113,6 +74,8 @@ Other Appenders:
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-append"></a>}}
 \subsection{Method \code{append()}}{
+Process a \link{LogEvent} \code{event}. This method is usually not
+called by the user, but invoked by a \link{Logger}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Appender$append(event)}\if{html}{\out{</div>}}
 }
@@ -138,6 +101,8 @@ Set the minimum log level that triggers this Appender. See
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_layout"></a>}}
 \subsection{Method \code{set_layout()}}{
+Set the \code{Layout} that this Appender will use for formatting
+\code{LogEvents}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Appender$set_layout(layout)}\if{html}{\out{</div>}}
 }

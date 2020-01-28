@@ -9,65 +9,12 @@ to log to text files, consider logging to JSON files and take a look at
 \link{AppenderJson}, which is more or less a shortcut for \code{AppenderFile} with
 \code{\link{LayoutJson}} and a few extra methods for convenience.
 }
-\section{Usage}{
-\preformatted{
-x <- AppenderFile$new(file, threshold = NA_integer_, layout =
-  LayoutFormat$new(), filters = NULL)
-
-x$add_filter(filter, name = NULL)
-x$append(event)
-x$filter(event)
-x$format(color = FALSE, ...)
-x$remove_filter(pos)
-x$set_file(file)
-x$set_filters(filters)
-x$set_layout(layout)
-x$set_threshold(level)
-x$show(threshold = NA_integer_, n = 20L)
-
-x$destination
-x$file
-x$filters
-x$layout
-x$threshold
-
-}
-}
-
 \section{Fields}{
 
 
 \describe{
 \item{\code{file}, \code{set_file(file)}}{\code{character} scalar. Path to the desired log
 file. If the file does not exist it will be created.}
-}
-
-
-
-\describe{
-\item{\code{layout}, \code{set_layout(layout)}}{a \code{Layout} that will be used for
-formatting the \code{LogEvents} passed to this Appender}
-\item{\code{destination}}{The output destination of the \code{Appender} in
-human-readable form (mainly for print output)}
-}
-}
-
-\section{Creating a New Appender}{
-
-
-New Appenders are instantiated with \verb{<AppenderSubclass>$new()}. For the
-arguments to \code{new()} please refer to the section \emph{Fields}. You can also
-modify those fields after the Appender has been created with setters in the
-form of \verb{appender$set_<fieldname>(value)}
-}
-
-\section{Methods}{
-
-\describe{
-\item{\code{append(event)}}{Tell the Appender to process a \link{LogEvent} \code{event}.
-This method is usually not called by the user, but invoked by a
-\link{Logger}
-}
 }
 }
 
@@ -103,10 +50,72 @@ unlink(json)
 Other Appenders: 
 \code{\link{AppenderBuffer}},
 \code{\link{AppenderConsole}},
-\code{\link{AppenderFileRotating}},
 \code{\link{AppenderJson}},
 \code{\link{AppenderSyslog}},
 \code{\link{AppenderTable}},
 \code{\link{Appender}}
 }
 \concept{Appenders}
+\section{Super classes}{
+\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{AppenderFile}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{AppenderFile$new()}}
+\item \href{#method-append}{\code{AppenderFile$append()}}
+\item \href{#method-set_file}{\code{AppenderFile$set_file()}}
+\item \href{#method-show}{\code{AppenderFile$show()}}
+}
+}
+\if{html}{
+\out{<details ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter">}\href{../../lgr/html/Filterable.html#method-add_filter}{\code{lgr::Filterable$add_filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter">}\href{../../lgr/html/Filterable.html#method-filter}{\code{lgr::Filterable$filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter">}\href{../../lgr/html/Filterable.html#method-remove_filter}{\code{lgr::Filterable$remove_filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters">}\href{../../lgr/html/Filterable.html#method-set_filters}{\code{lgr::Filterable$set_filters()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="format">}\href{../../lgr/html/Appender.html#method-format}{\code{lgr::Appender$format()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout">}\href{../../lgr/html/Appender.html#method-set_layout}{\code{lgr::Appender$set_layout()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold">}\href{../../lgr/html/Appender.html#method-set_threshold}{\code{lgr::Appender$set_threshold()}}\out{</span>}
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderFile$new(
+  file,
+  threshold = NA_integer_,
+  layout = LayoutFormat$new(),
+  filters = NULL
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-append"></a>}}
+\subsection{Method \code{append()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderFile$append(event)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_file"></a>}}
+\subsection{Method \code{set_file()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderFile$set_file(file)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-show"></a>}}
+\subsection{Method \code{show()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderFile$show(threshold = NA_integer_, n = 20L)}\if{html}{\out{</div>}}
+}
+
+}
+}

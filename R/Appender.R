@@ -1,6 +1,8 @@
+# Appender ----------------------------------------------------------------
+
+
 #' Appenders
 #'
-#' @description
 #' Appenders are assigned to [Loggers] and manage the output of the [LogEvents]
 #' to a destination (such as the console or a text file). An Appender has a
 #' single [Layout] that tells it how to format the LogEvent. For details
@@ -12,46 +14,13 @@
 #'
 #' More appenders can be found in the package [lgrExtra](https://github.com/s-fleck/lgrExtra)
 #'
-#' @eval r6_usage(Appender)
 #'
-#' @section Creating a New Appender:
-#'
-#' New Appenders are instantiated with `<AppenderSubclass>$new()`. For the
-#' arguments to `new()` please refer to the section *Fields*. You can also
-#' modify those fields after the Appender has been created with setters in the
-#' form of `appender$set_<fieldname>(value)`
-#'
-#' @section Fields:
-#'
-#' \describe{
-#'   \item{`layout`, `set_layout(layout)`}{a `Layout` that will be used for
-#'     formatting the `LogEvents` passed to this Appender}
-#'   \item{`destination`}{The output destination of the `Appender` in
-#'     human-readable form (mainly for print output)}
-#'  }
-#'
-#' @section Methods:
-#'  \describe{
-#'     \item{`append(event)`}{Tell the Appender to process a [LogEvent] `event`.
-#'       This method is usually not called by the user, but invoked by a
-#'       [Logger]
-#'     }
-#'  }
-#'
-#' @name Appender
 #' @aliases Appenders
 #' @family Appenders
 #' @include utils.R
 #' @include utils-sfmisc.R
 #' @include Filterable.R
 #' @keywords internal
-NULL
-
-
-
-
-# Appender ----------------------------------------------------------------
-
 #' @export
 Appender <- R6::R6Class(
   "Appender",
@@ -60,6 +29,7 @@ Appender <- R6::R6Class(
 
   # +- public --------------------------------------------------------------
   public = list(
+
     initialize = function(
       layout = Layout$new(),
       threshold = NA_integer_
@@ -68,9 +38,12 @@ Appender <- R6::R6Class(
       self$set_threshold(threshold)
     },
 
+    #' @description Process a [LogEvent] `event`. This method is usually not
+    #' called by the user, but invoked by a [Logger]
     append = function(event){
       private$.layout$format_event(event)
     },
+
 
     #' @description Set the minimum log level that triggers this Appender. See
     #' [threshold()] for examples
@@ -81,6 +54,9 @@ Appender <- R6::R6Class(
       invisible(self)
     },
 
+
+    #' @description Set the `Layout` that this Appender will use for formatting
+    #' `LogEvents`
     set_layout = function(layout){
       if (is_scalar_list(layout)){
         # set_layout also accepts a list of length 1 containing a single Layout
@@ -142,6 +118,9 @@ Appender <- R6::R6Class(
 
     layout = function() private$.layout,
 
+    #' @field destination
+    #' The output destination of the `Appender` in human-readable form. This
+    #' is mainly used when printing information about the Appender itself.
     destination = function() ""
   ),
 
@@ -162,16 +141,9 @@ Appender <- R6::R6Class(
 #' **crayon** installed log levels will be coloured by default
 #' (but you can modify this behaviour by passing a custom [Layout]).
 #'
-#' @eval r6_usage(AppenderConsole)
-#'
-#' @inheritSection Appender Creating a New Appender
-#' @inheritSection Appender Fields
-#' @inheritSection Appender Methods
-#'
 #' @family Appenders
-#' @name AppenderConsole
-#' @export
 #' @seealso [LayoutFormat]
+#' @export
 #'
 #' @examples
 #' # create a new logger with propagate = FALSE to prevent routing to the root
@@ -186,12 +158,6 @@ Appender <- R6::R6Class(
 #' # Will output the message twice because we attached two console appenders
 #' lg$warn("A test message")
 #' lg$config(NULL) # reset config
-NULL
-
-
-
-
-#' @export
 AppenderConsole <- R6::R6Class(
   "AppenderConsole",
   inherit = Appender,
@@ -233,11 +199,6 @@ AppenderConsole <- R6::R6Class(
 #' [AppenderJson], which is more or less a shortcut for `AppenderFile` with
 #' [`LayoutJson`] and a few extra methods for convenience.
 #'
-#' @eval r6_usage(AppenderFile)
-#'
-#' @inheritSection Appender Creating a New Appender
-#' @inheritSection Appender Fields
-#' @inheritSection Appender Methods
 #'
 #' @section Fields:
 #'
@@ -277,12 +238,6 @@ AppenderConsole <- R6::R6Class(
 #' unlink(default)
 #' unlink(fancy)
 #' unlink(json)
-NULL
-
-
-
-
-#' @export
 AppenderFile <- R6::R6Class(
   "AppenderFile",
   inherit = Appender,
@@ -370,18 +325,8 @@ AppenderFile <- R6::R6Class(
 #' comes with an extra method `show()` and an extra active field `data` to
 #' comfortably access the underlying file.
 #'
-#' @eval r6_usage(AppenderFile)
 #'
-#' @inheritSection AppenderFile Creating a New Appender
-#' @section Creating a New Appender:
 #'
-#' @inheritSection AppenderFile Fields
-#' @inheritSection AppenderTable Fields
-#' @inheritSection AppenderFile Methods
-#'
-#' @section Fields:
-#'
-#' @section Methods:
 #'
 #' \describe{
 #'   \item{`show(n, threshold)`}{Show the last `n` log entries with a log level
@@ -390,7 +335,6 @@ AppenderFile <- R6::R6Class(
 #' }
 #'
 #' @family Appenders
-#' @name AppenderJson
 #' @export
 #' @seealso [LayoutFormat], [LayoutJson]
 #' @examples
@@ -408,12 +352,6 @@ AppenderFile <- R6::R6Class(
 #' # cleanup
 #' lg$config(NULL)
 #' unlink(tf)
-NULL
-
-
-
-
-#' @export
 AppenderJson <- R6::R6Class(
   "AppenderJson",
   inherit = AppenderFile,
@@ -450,6 +388,7 @@ AppenderJson <- R6::R6Class(
 
 
 # AppenderTable -----------------------------------------------------------
+# nocov start
 
 #' Abstract class for logging to tabular structures
 #'
@@ -460,8 +399,6 @@ AppenderJson <- R6::R6Class(
 #' can be interpreted as tables, (usually a `data.frame`). Examples are
 #' [lgrExtra::AppenderDbi], [lgrExtra::AppenderRjdbc] and [lgrExtra::AppenderDt].
 #'
-#' @inheritSection Appender Fields
-#' @inheritSection Appender Methods
 #'
 #' @section Fields:
 #'
@@ -477,14 +414,6 @@ AppenderJson <- R6::R6Class(
 #' }
 #'
 #' @family Appenders
-#' @name AppenderTable
-NULL
-
-
-
-
-# exclude from coverage because AppenderTable is just a metaclass
-# nocov start
 #' @export
 AppenderTable <- R6::R6Class(
   "AppenderTable",
@@ -1008,15 +937,6 @@ AppenderBuffer <- R6::R6Class(
 #' conditions. Please refer to the documentation of [rotor::rotate()] for
 #' the meanings of the extra arguments
 #'
-#' @eval r6_usage(list(
-#'   AppenderFileRotating,
-#'   AppenderFileRotatingDate,
-#'   AppenderFileRotatingTime
-#' ))
-#'
-#' @inheritSection AppenderFile Creating a New Appender
-#' @inheritSection AppenderFile Fields
-#' @inheritSection AppenderFile Methods
 #'
 #' @section Fields:
 #'
@@ -1041,15 +961,9 @@ AppenderBuffer <- R6::R6Class(
 #'
 #'
 #' @export
-#' @seealso [LayoutFormat], [LayoutJson], [rotor::rotate()]
-#' @family Appenders
+#' @seealso [AppenderFileRotatingDate], [AppenderFileRotatingTime], [rotor::rotate()]
+#' @family Appenders, Rotating Appenders
 #' @name AppenderFileRotating
-#' @aliases AppenderFileRotatingDate AppenderFileRotatingTime
-NULL
-
-
-
-
 #' @export
 AppenderFileRotating <- R6::R6Class(
   "AppenderFileRotating",
@@ -1224,6 +1138,7 @@ AppenderFileRotating <- R6::R6Class(
 
 # AppenderFileRotatingTime ------------------------------------------------
 
+#' @seealso [AppenderFileRotatingDate], [AppenderFileRotating], [rotor::rotate()]
 #' @export
 AppenderFileRotatingTime <- R6::R6Class(
   "AppenderFileRotating",
@@ -1374,6 +1289,7 @@ AppenderFileRotatingTime <- R6::R6Class(
 
 # AppenderFileRotatingDate ----------------------------------------------------
 
+#' @seealso [AppenderFileRotatingTime], [AppenderFileRotating], [rotor::rotate()]
 #' @export
 AppenderFileRotatingDate <- R6::R6Class(
   "AppenderFileRotatingDate",
@@ -1432,11 +1348,6 @@ AppenderFileRotatingDate <- R6::R6Class(
 #' An Appender that writes to the syslog on supported POSIX platforms. Requires
 #' the \pkg{rsyslog} package.
 #'
-#' @eval r6_usage(AppenderSyslog)
-#'
-#' @inheritSection Appender Creating a New Appender
-#' @inheritSection Appender Fields
-#' @inheritSection Appender Methods
 #'
 #' @section Fields:
 #'
@@ -1469,10 +1380,6 @@ AppenderFileRotatingDate <- R6::R6Class(
 #'
 #'   invisible(lg$config(NULL))  # cleanup
 #' }
-NULL
-
-
-#' @export
 AppenderSyslog <- R6::R6Class(
   "AppenderSyslog",
   inherit = Appender,

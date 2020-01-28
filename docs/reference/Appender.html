@@ -36,14 +36,8 @@
 
 
 <meta property="og:title" content="Appenders — Appender" />
-<meta property="og:description" content="Appenders are assigned to Loggers and manage the output of the LogEvents
-to a destination (such as the console or a text file). An Appender has a
-single Layout that tells it how to format the LogEvent. For details
-please refer to the documentations of the specific Appenders.
-The Appender class itself is not designed for direct usage, but it is the
-basis on which all other Appenders are built. Please see the see also
-section towards the end of this document a list of available Appenders.
-More appenders can be found in the package lgrExtra" />
+<meta property="og:description" content="Appenders
+Appenders" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -76,7 +70,7 @@ More appenders can be found in the package lgrExtra" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9010</span>
       </span>
     </div>
 
@@ -119,6 +113,14 @@ More appenders can be found in the package lgrExtra" />
     </div>
 
     <div class="ref-description">
+    <p>Appenders</p>
+<p>Appenders</p>
+    </div>
+
+
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
     <p>Appenders are assigned to <a href='Logger.html'>Loggers</a> and manage the output of the <a href='LogEvent.html'>LogEvents</a>
 to a destination (such as the console or a text file). An Appender has a
 single <a href='Layout.html'>Layout</a> that tells it how to format the LogEvent. For details
@@ -127,87 +129,93 @@ please refer to the documentations of the specific Appenders.</p>
 basis on which all other Appenders are built. Please see the <strong>see also</strong>
 section towards the end of this document a list of available Appenders.</p>
 <p>More appenders can be found in the package <a href='https://github.com/s-fleck/lgrExtra'>lgrExtra</a></p>
-    </div>
-
-
-
-    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
-
-    
-<pre>
-x &lt;- Appender$new(layout = Layout$new(), threshold = NA_integer_)
-
-x$add_filter(filter, name = NULL)
-x$append(event)
-x$filter(event)
-x$format(color = FALSE, ...)
-x$remove_filter(pos)
-x$set_filters(filters)
-x$set_layout(layout)
-x$set_threshold(level)
-
-x$destination
-x$filters
-x$layout
-x$threshold
-
-</pre>
-
-    <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
-
-    
-
-
-<p>New Appenders are instantiated with <code>&lt;AppenderSubclass&gt;$new()</code>. For the
-arguments to <code>new()</code> please refer to the section <em>Fields</em>. You can also
-modify those fields after the Appender has been created with setters in the
-form of <code>appender$set_&lt;fieldname&gt;(value)</code></p>
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
-
-    
-
-
-<dl class='dl-horizontal'>
-<dt><code>threshold</code>, <code>set_threshold(level)</code></dt><dd><p><code>character</code> or <code>integer</code> scalar.
-The minimum log level that triggers this logger. See <a href='get_log_levels.html'>log_levels</a></p></dd>
-<dt><code>layout</code>, <code>set_layout(layout)</code></dt><dd><p>a <code>Layout</code> that will be used for
-formatting the <code>LogEvents</code> passed to this Appender</p></dd>
-<dt><code>destination</code></dt><dd><p>The output destination of the <code>Appender</code> in
-human-readable form (mainly for print output)</p></dd>
-
-</dl>
-
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-
-<dl class='dl-horizontal'>
-<dt><code><a href='https://rdrr.io/r/base/append.html'>append(event)</a></code></dt><dd><p>Tell the Appender to process a <a href='LogEvent.html'>LogEvent</a> <code>event</code>.
-This method is usually not called by the user, but invoked by a
-<a href='Logger.html'>Logger</a></p></dd>
-
-</dl>
-
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Appenders: 
 <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
 <code><a href='AppenderConsole.html'>AppenderConsole</a></code>,
-<code><a href='AppenderFileRotating.html'>AppenderFileRotating</a></code>,
 <code><a href='AppenderFile.html'>AppenderFile</a></code>,
 <code><a href='AppenderJson.html'>AppenderJson</a></code>,
 <code><a href='AppenderSyslog.html'>AppenderSyslog</a></code>,
 <code><a href='AppenderTable.html'>AppenderTable</a></code></p></div>
+    <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
+
+    <p><code><a href='Filterable.html'>lgr::Filterable</a></code> -&gt; <code>Appender</code></p>
+    <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
+
+    <p><div class="r6-active-bindings"></p><dl class='dl-horizontal'>
+<dt><code>destination</code></dt><dd><p>The output destination of the <code>Appender</code> in human-readable form. This
+is mainly used when printing information about the Appender itself.</p></dd>
+
+</dl><p></div></p>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+<h3>Public methods</h3>
+
+<ul>
+<li><p><a href='#method-new'><code>Appender$new()</code></a></p></li>
+<li><p><a href='#method-append'><code>Appender$append()</code></a></p></li>
+<li><p><a href='#method-set_threshold'><code>Appender$set_threshold()</code></a></p></li>
+<li><p><a href='#method-set_layout'><code>Appender$set_layout()</code></a></p></li>
+<li><p><a href='#method-format'><code>Appender$format()</code></a></p></li>
+</ul>
+<p><details open ><summary>Inherited methods</summary>
+<ul>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-filter'><code>lgr::Filterable$filter()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></p></li>
+</ul>
+</details>
+
+<hr>
+<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>Appender$new(layout = Layout$new(), threshold = NA_integer_)</pre><p></div></p>
+
+<p><hr>
+<a id="method-append"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/append.html'>append()</a></code></h3>
+<p>Process a <a href='LogEvent.html'>LogEvent</a> <code>event</code>. This method is usually not
+called by the user, but invoked by a <a href='Logger.html'>Logger</a></p><h3>Usage</h3>
+<p><div class="r"></p><pre>Appender$append(event)</pre><p></div></p>
+
+<p><hr>
+<a id="method-set_threshold"></a></p><h3>Method <code>set_threshold()</code></h3>
+<p>Set the minimum log level that triggers this Appender. See
+<code><a href='simple_logging.html'>threshold()</a></code> for examples</p><h3>Usage</h3>
+<p><div class="r"></p><pre>Appender$set_threshold(level)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl class='dl-horizontal'>
+<dt><code>level</code></dt><dd><p><code>character</code> or <code>integer</code> scalar log level. See <a href='get_log_levels.html'>log_levels</a>.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-set_layout"></a></p><h3>Method <code>set_layout()</code></h3>
+<p>Set the <code>Layout</code> that this Appender will use for formatting
+<code>LogEvents</code></p><h3>Usage</h3>
+<p><div class="r"></p><pre>Appender$set_layout(layout)</pre><p></div></p>
+
+<p><hr>
+<a id="method-format"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>Appender$format(color = FALSE, ...)</pre><p></div></p>
+
+
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#usage">Usage</a></li>
-      <li><a href="#creating-a-new-appender">Creating a New Appender</a></li>
-      <li><a href="#fields">Fields</a></li>
-      <li><a href="#methods">Methods</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#see-also">See also</a></li>
+      <li><a href="#super-class">Super class</a></li>
+      <li><a href="#active-bindings">Active bindings</a></li>
+      <li><a href="#methods">Methods</a></li>
     </ul>
 
   </div>

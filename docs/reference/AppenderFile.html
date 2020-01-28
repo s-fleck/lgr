@@ -72,7 +72,7 @@ LayoutJson and a few extra methods for convenience." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9010</span>
       </span>
     </div>
 
@@ -123,32 +123,6 @@ to log to text files, consider logging to JSON files and take a look at
 
 
 
-    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
-
-    
-<pre>
-x &lt;- AppenderFile$new(file, threshold = NA_integer_, layout =
-  LayoutFormat$new(), filters = NULL)
-
-x$add_filter(filter, name = NULL)
-x$append(event)
-x$filter(event)
-x$format(color = FALSE, ...)
-x$remove_filter(pos)
-x$set_file(file)
-x$set_filters(filters)
-x$set_layout(layout)
-x$set_threshold(level)
-x$show(threshold = NA_integer_, n = 20L)
-
-x$destination
-x$file
-x$filters
-x$layout
-x$threshold
-
-</pre>
-
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
@@ -160,49 +134,73 @@ file. If the file does not exist it will be created.</p></dd>
 
 </dl>
 
-
-
-<dl class='dl-horizontal'>
-<dt><code>threshold</code>, <code>set_threshold(level)</code></dt><dd><p><code>character</code> or <code>integer</code> scalar.
-The minimum log level that triggers this logger. See <a href='get_log_levels.html'>log_levels</a></p></dd>
-<dt><code>layout</code>, <code>set_layout(layout)</code></dt><dd><p>a <code>Layout</code> that will be used for
-formatting the <code>LogEvents</code> passed to this Appender</p></dd>
-<dt><code>destination</code></dt><dd><p>The output destination of the <code>Appender</code> in
-human-readable form (mainly for print output)</p></dd>
-
-</dl>
-
-    <h2 class="hasAnchor" id="creating-a-new-appender"><a class="anchor" href="#creating-a-new-appender"></a>Creating a New Appender</h2>
-
-    
-
-
-<p>New Appenders are instantiated with <code>&lt;AppenderSubclass&gt;$new()</code>. For the
-arguments to <code>new()</code> please refer to the section <em>Fields</em>. You can also
-modify those fields after the Appender has been created with setters in the
-form of <code>appender$set_&lt;fieldname&gt;(value)</code></p>
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-
-<dl class='dl-horizontal'>
-<dt><code><a href='https://rdrr.io/r/base/append.html'>append(event)</a></code></dt><dd><p>Tell the Appender to process a <a href='LogEvent.html'>LogEvent</a> <code>event</code>.
-This method is usually not called by the user, but invoked by a
-<a href='Logger.html'>Logger</a></p></dd>
-
-</dl>
-
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a>, <a href='LayoutJson.html'>LayoutJson</a></p>
 <p>Other Appenders: 
 <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
 <code><a href='AppenderConsole.html'>AppenderConsole</a></code>,
-<code><a href='AppenderFileRotating.html'>AppenderFileRotating</a></code>,
 <code><a href='AppenderJson.html'>AppenderJson</a></code>,
 <code><a href='AppenderSyslog.html'>AppenderSyslog</a></code>,
 <code><a href='AppenderTable.html'>AppenderTable</a></code>,
 <code><a href='Appender.html'>Appender</a></code></p></div>
+    <h2 class="hasAnchor" id="super-classes"><a class="anchor" href="#super-classes"></a>Super classes</h2>
+
+    <p><code><a href='Filterable.html'>lgr::Filterable</a></code> -&gt; <code><a href='Appender.html'>lgr::Appender</a></code> -&gt; <code>AppenderFile</code></p>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+<h3>Public methods</h3>
+
+<ul>
+<li><p><a href='#method-new'><code>AppenderFile$new()</code></a></p></li>
+<li><p><a href='#method-append'><code>AppenderFile$append()</code></a></p></li>
+<li><p><a href='#method-set_file'><code>AppenderFile$set_file()</code></a></p></li>
+<li><p><a href='#method-show'><code>AppenderFile$show()</code></a></p></li>
+</ul>
+<p><details ><summary>Inherited methods</summary>
+<ul>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-filter'><code>lgr::Filterable$filter()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="format"><a href='../../lgr/html/Appender.html#method-format'><code>lgr::Appender$format()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-set_layout'><code>lgr::Appender$set_layout()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-set_threshold'><code>lgr::Appender$set_threshold()</code></a></span></p></li>
+</ul>
+</details>
+
+<hr>
+<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderFile$new(
+  file,
+  threshold = NA_integer_,
+  layout = LayoutFormat$new(),
+  filters = NULL
+)</pre><p></div></p>
+
+<p><hr>
+<a id="method-append"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/append.html'>append()</a></code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderFile$append(event)</pre><p></div></p>
+
+<p><hr>
+<a id="method-set_file"></a></p><h3>Method <code>set_file()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderFile$set_file(file)</pre><p></div></p>
+
+<p><hr>
+<a id="method-show"></a></p><h3>Method <code>show()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>AppenderFile$show(threshold = NA_integer_, n = 20L)</pre><p></div></p>
+
+
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)
@@ -218,8 +216,8 @@ This method is usually not called by the user, but invoked by a
   <span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>json</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()), <span class='st'>"json"</span>
 )
 
-<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; INFO  [15:23:09.851] A test message </div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>default</span>)</div><div class='output co'>#&gt; [1] "INFO  [2020-01-02 15:23:09.851] A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>fancy</span>)</div><div class='output co'>#&gt; [1] "[2020-01-02 15:23:09.851] eval(): INFO  A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>json</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2020-01-02 15:23:09\",\"logger\":\"test\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; INFO  [08:15:09.235] A test message </div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>default</span>)</div><div class='output co'>#&gt; [1] "INFO  [2020-01-28 08:15:09.235] A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>fancy</span>)</div><div class='output co'>#&gt; [1] "[2020-01-28 08:15:09.235] eval(): INFO  A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>json</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2020-01-28 08:15:09\",\"logger\":\"test\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div><div class='input'>
 <span class='co'># cleanup</span>
 <span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [<span style='color: #555555;'>info</span><span>] test
 #&gt; 
@@ -231,11 +229,10 @@ This method is usually not called by the user, but invoked by a
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#usage">Usage</a></li>
       <li><a href="#fields">Fields</a></li>
-      <li><a href="#creating-a-new-appender">Creating a New Appender</a></li>
-      <li><a href="#methods">Methods</a></li>
       <li><a href="#see-also">See also</a></li>
+      <li><a href="#super-classes">Super classes</a></li>
+      <li><a href="#methods">Methods</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

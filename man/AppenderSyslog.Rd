@@ -7,34 +7,6 @@
 An Appender that writes to the syslog on supported POSIX platforms. Requires
 the \pkg{rsyslog} package.
 }
-\section{Usage}{
-\preformatted{
-x <- AppenderSyslog$new(identifier = NULL, threshold = NA_integer_, layout =
-  LayoutFormat$new("\%m"), filters = NULL, syslog_levels = c(CRITICAL = "fatal",
-  ERR = "error", WARNING = "warn", INFO = "info", DEBUG = "debug", DEBUG =
-  "trace"))
-
-x$add_filter(filter, name = NULL)
-x$append(event)
-x$filter(event)
-x$format(color = FALSE, ...)
-x$remove_filter(pos)
-x$set_filters(filters)
-x$set_identifier(x)
-x$set_layout(layout)
-x$set_syslog_levels(x)
-x$set_threshold(level)
-
-x$destination
-x$filters
-x$identifier
-x$layout
-x$syslog_levels
-x$threshold
-
-}
-}
-
 \section{Fields}{
 
 
@@ -49,34 +21,6 @@ understood by \code{\link[rsyslog:syslog]{rsyslog::syslog()}} and whose values a
 \item a \code{function} that takes a vector of lgr log levels as input and returns a
 \code{character} vector of log levels for \code{\link[rsyslog:syslog]{rsyslog::syslog()}}.
 }
-}
-}
-
-
-
-\describe{
-\item{\code{layout}, \code{set_layout(layout)}}{a \code{Layout} that will be used for
-formatting the \code{LogEvents} passed to this Appender}
-\item{\code{destination}}{The output destination of the \code{Appender} in
-human-readable form (mainly for print output)}
-}
-}
-
-\section{Creating a New Appender}{
-
-
-New Appenders are instantiated with \verb{<AppenderSubclass>$new()}. For the
-arguments to \code{new()} please refer to the section \emph{Fields}. You can also
-modify those fields after the Appender has been created with setters in the
-form of \verb{appender$set_<fieldname>(value)}
-}
-
-\section{Methods}{
-
-\describe{
-\item{\code{append(event)}}{Tell the Appender to process a \link{LogEvent} \code{event}.
-This method is usually not called by the user, but invoked by a
-\link{Logger}
 }
 }
 }
@@ -100,10 +44,74 @@ if (requireNamespace("rsyslog", quietly = TRUE)) {
 Other Appenders: 
 \code{\link{AppenderBuffer}},
 \code{\link{AppenderConsole}},
-\code{\link{AppenderFileRotating}},
 \code{\link{AppenderFile}},
 \code{\link{AppenderJson}},
 \code{\link{AppenderTable}},
 \code{\link{Appender}}
 }
 \concept{Appenders}
+\section{Super classes}{
+\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{AppenderSyslog}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{AppenderSyslog$new()}}
+\item \href{#method-append}{\code{AppenderSyslog$append()}}
+\item \href{#method-set_syslog_levels}{\code{AppenderSyslog$set_syslog_levels()}}
+\item \href{#method-set_identifier}{\code{AppenderSyslog$set_identifier()}}
+}
+}
+\if{html}{
+\out{<details ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter">}\href{../../lgr/html/Filterable.html#method-add_filter}{\code{lgr::Filterable$add_filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter">}\href{../../lgr/html/Filterable.html#method-filter}{\code{lgr::Filterable$filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter">}\href{../../lgr/html/Filterable.html#method-remove_filter}{\code{lgr::Filterable$remove_filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters">}\href{../../lgr/html/Filterable.html#method-set_filters}{\code{lgr::Filterable$set_filters()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="format">}\href{../../lgr/html/Appender.html#method-format}{\code{lgr::Appender$format()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout">}\href{../../lgr/html/Appender.html#method-set_layout}{\code{lgr::Appender$set_layout()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold">}\href{../../lgr/html/Appender.html#method-set_threshold}{\code{lgr::Appender$set_threshold()}}\out{</span>}
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderSyslog$new(
+  identifier = NULL,
+  threshold = NA_integer_,
+  layout = LayoutFormat$new("\%m"),
+  filters = NULL,
+  syslog_levels = c(CRITICAL = "fatal", ERR = "error", WARNING = "warn", INFO = "info",
+    DEBUG = "debug", DEBUG = "trace")
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-append"></a>}}
+\subsection{Method \code{append()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderSyslog$append(event)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_syslog_levels"></a>}}
+\subsection{Method \code{set_syslog_levels()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderSyslog$set_syslog_levels(x)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_identifier"></a>}}
+\subsection{Method \code{set_identifier()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderSyslog$set_identifier(x)}\if{html}{\out{</div>}}
+}
+
+}
+}
