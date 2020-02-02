@@ -4,6 +4,15 @@
   [lgr.app](https://github.com/s-fleck/lgr.app). This includes database 
   Appenders, email and push notifications and AppenderDt (in-memory 
   `data.tables`).
+  
+* `AppenderFile$show()` can now filter log files formatted by LayoutFormat 
+  by log level. Be aware that this just `greps` through the file and therefore
+  will return false positives on lines where the log message contains strings 
+  that can be interpreted as log levels.
+  
+* `AppenderFile$show()` and `AppenderFile$data` now dispatches to 
+  `Layout$read()` and `Layout$parse()`. This makes it possible to tie 
+  reading/parsing of log files to Layouts.
 
 * Loggers gain a `list_log()` method. See https://github.com/s-fleck/joblog  for 
   an R package that leverages this feature to create custom log event types for 

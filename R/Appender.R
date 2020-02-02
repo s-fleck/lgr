@@ -284,6 +284,13 @@ AppenderFile <- R6::R6Class(
       invisible(self)
     },
 
+
+    #' @description Display the contents of the log file.
+    #'
+    #' @param threshold `character` or `integer` scalar. The minimum log level
+    #'   that should be displayed.
+    #' @param n `integer` scalar. Show only the last `n` log entries that match
+    #'   `threshold`.
     show = function(
       threshold = NA_integer_,
       n = 20L
@@ -291,21 +298,42 @@ AppenderFile <- R6::R6Class(
       assert(is_scalar_integerish(n))
       threshold <- standardize_threshold(threshold)
 
-      if (!is.na(threshold)){
-        sel <- self$data$level <= threshold
+      reader <- self$layout$read
+
+      if (!is.null(reader)){
+        dd <- reader(self$file, threshold = threshold, n = n)
       } else {
-        sel <- TRUE
+        dd <- readLines(self$file)
+        if (!is.na(threshold)){
+          warning(
+            "A threshold was supplied to AppenderFile$show(), but the ",
+            "Appenders' Layout does not support filtering by log level"
+          )
+        }
+        dd <- tail(dd, n)
       }
-      dd <- tail(readLines(self$file)[sel], n)
-      cat(dd, sep = "\n")
-      invisible(dd)
-    }
-  ),
+
+    cat(dd, sep = "\n")
+    invisible(dd)
+  }),
 
 
   # +- active ---------------------------------------------------------------
   active = list(
     file = function() private$.file,
+    data = function(){
+      parser <- self$layout$parse
+      if (is.null(parser)){
+        stop("The current layout does not support parsing logfiles", call. = FALSE)
+      } else {
+        parser(self$file)
+      }
+    },
+
+    dt = function(){
+      data.table::as.data.table(self$data)
+    },
+
     destination = function() self$file
   ),
 
@@ -321,20 +349,11 @@ AppenderFile <- R6::R6Class(
 
 #' Log to a JSON file
 #'
-#' `AppenderJson` is a shortcut for `AppenderFile` with [`LayoutJson`], but
-#' comes with an extra method `show()` and an extra active field `data` to
-#' comfortably access the underlying file.
-#'
-#'
-#'
-#'
-#' \describe{
-#'   \item{`show(n, threshold)`}{Show the last `n` log entries with a log level
-#'   bellow `threshold`. The log entries will be formatted as in the source
-#'   JSON file}
-#' }
+#' `AppenderJson` is just a shortcut for `AppenderFile` preconfigured with
+#' [`LayoutJson`].
 #'
 #' @family Appenders
+#' @rdname AppenderFile
 #' @export
 #' @seealso [LayoutFormat], [LayoutJson]
 #' @examples
@@ -369,17 +388,6 @@ AppenderJson <- R6::R6Class(
       self$set_threshold(threshold)
       self$set_layout(layout)
       self$set_filters(filters)
-    }
-  ),
-
-
-  active = list(
-    data = function(){
-      read_json_lines(self$file)
-    },
-
-    dt = function(){
-      data.table::as.data.table(self$data)
     }
   )
 )

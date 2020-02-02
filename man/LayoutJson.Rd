@@ -36,17 +36,10 @@ Other Layouts:
 \section{Super class}{
 \code{\link[lgr:Layout]{lgr::Layout}} -> \code{LayoutJson}
 }
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{a}}{list of values passed on to \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}}
-}
-\if{html}{\out{</div>}}
-}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{a}}{list of values passed on to \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}}
+\item{\code{toJSON_args}}{a list of values passed on to \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}}
 }
 \if{html}{\out{</div>}}
 }
@@ -57,6 +50,8 @@ Other Layouts:
 \item \href{#method-format_event}{\code{LayoutJson$format_event()}}
 \item \href{#method-set_toJSON_args}{\code{LayoutJson$set_toJSON_args()}}
 \item \href{#method-toString}{\code{LayoutJson$toString()}}
+\item \href{#method-parse}{\code{LayoutJson$parse()}}
+\item \href{#method-read}{\code{LayoutJson$read()}}
 \item \href{#method-clone}{\code{LayoutJson$clone()}}
 }
 }
@@ -95,6 +90,22 @@ Other Layouts:
 \subsection{Method \code{toString()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$toString()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-parse"></a>}}
+\subsection{Method \code{parse()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$parse(file)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-read"></a>}}
+\subsection{Method \code{read()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$read(file, threshold = NA_integer_, n = 20L)}\if{html}{\out{</div>}}
 }
 
 }

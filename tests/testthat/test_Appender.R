@@ -83,6 +83,40 @@ test_that("AppenderFile: creates empty log file on init", {
 
 
 
+test_that("AppenderFile: $show() works", {
+  tf <- tempfile()
+  on.exit(unlink(tf))
+
+  tf2 <- tempfile()
+  on.exit(unlink(tf2), add = TRUE)
+
+  lg <- get_logger("test")$
+    set_propagate(FALSE)$
+    set_threshold(NA)$
+    set_appenders(list(
+      char = AppenderFile$new(file = tf),
+      num  = AppenderFile$new(file = tf2, layout = LayoutFormat$new("%n %m"))
+    ))
+
+  on.exit(get_logger("test", reset = TRUE), add = TRUE)
+
+  lg$info("foo bar")
+  lg$info("blah blubb")
+  lg$warn("warnwarn")
+  lg$debug("bugbug")
+
+  expect_output({
+    expect_length(lg$appenders$char$show("warn"), 1)
+    expect_length(lg$appenders$char$show("info"), 3)
+    expect_length(lg$appenders$char$show("debug"), 4)
+
+    expect_length(lg$appenders$num$show("warn"), 1)
+    expect_length(lg$appenders$num$show("info"), 3)
+    expect_length(lg$appenders$num$show("debug"), 4)
+  })
+})
+
+
 
 # AppenderJson ------------------------------------------------------------
 

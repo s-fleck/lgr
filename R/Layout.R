@@ -9,6 +9,12 @@
 #' for Layouts that return different data types (such as `data.frames`) and
 #' Appenders that can handle them.
 #'
+#' @section Notes for developers:
+#' Layouts may have an additonal `$read(file, threshold, n)` method that returns
+#' a `character` vector, and/or an `$parse(file)` method that
+#' returns a `data.frame`. These can be used by Appenders to `$show()` methods
+#' and `$data` active bdinings respectively (see source code of [AppenderFile]).
+#'
 #' @family Layouts
 #' @include print_LogEvent.R
 #' @include utils.R
@@ -127,6 +133,46 @@ LayoutFormat <- R6::R6Class(
     #' Convert Layout to a Character String
     toString = function(){
       paste(fmt_class(class(self)[[1]]), self$fmt)
+    },
+
+    #' Read a log file written using LayoutFormat
+    #' @param threshold a `character` or `integer` threshold
+    #' @param n number of log entries to display
+    read = function(
+      file,
+      threshold = NA_integer_,
+      n = 20L
+    ){
+      assert(is_scalar_integerish(n))
+      threshold_ori <- threshold
+      threshold <- standardize_threshold(threshold)
+
+      dd <- readLines(file)
+      sel <- TRUE
+
+      if (!is.na(threshold)){
+        lvls_keep <- get_log_levels()[get_log_levels() <= threshold]
+
+        if (grepl("%L", self$fmt, ignore.case = TRUE)){
+          sel <- grep(
+            paste0("(", names(lvls_keep), ")", collapse = "|"),
+            dd,
+            ignore.case = TRUE
+          )
+
+        } else if (grepl("%n", self$fmt)){
+          sel <- grep(paste0("(", lvls_keep, ")", collapse = "|"), dd)
+
+        } else {
+          warning(sprintf(paste(
+            "A threshold of `%s` was but the Layout's format specification",
+            "('%s') does not support filtering by log level."
+          )), threshold_ori, self$fmt )
+        }
+      }
+
+      dd <- tail(dd[sel], n)
+      dd
     }
   ),
 
@@ -232,7 +278,7 @@ LayoutGlue <- R6::R6Class(
 
 
   active = list(
-    #' @field A string that will be interpreted by [glue::glue()]
+    #' @field fmt A string that will be interpreted by [glue::glue()]
     fmt = function()  private$.fmt
   ),
 
@@ -273,7 +319,6 @@ LayoutJson <- R6::R6Class(
     initialize = function(
       toJSON_args = list(auto_unbox = TRUE)
     ){
-      # init
       self$set_toJSON_args(toJSON_args)
     },
 
@@ -293,11 +338,37 @@ LayoutJson <- R6::R6Class(
 
     toString = function() {
       fmt_class(class(self)[[1]])
+    },
+
+    parse = function(
+      file
+    ){
+      read_json_lines(file)
+    },
+
+    read = function(
+      file,
+      threshold = NA_integer_,
+      n = 20L
+    ){
+      assert(is_scalar_integerish(n))
+      threshold <- standardize_threshold(threshold)
+
+      dd <- readLines(file)
+      if (!is.na(threshold)){
+        sel <- self$parse(file)$level <= threshold
+      } else {
+        sel <- TRUE
+      }
+
+      dd <- tail(dd[sel], n)
+      dd
     }
+
   ),
 
   active = list(
-    #' @field a list of values passed on to [jsonlite::toJSON()]
+    #' @field toJSON_args a list of values passed on to [jsonlite::toJSON()]
     toJSON_args = function() private$.toJSON_args
   ),
 

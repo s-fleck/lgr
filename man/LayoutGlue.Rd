@@ -38,17 +38,10 @@ Other Layouts:
 \section{Super class}{
 \code{\link[lgr:Layout]{lgr::Layout}} -> \code{LayoutGlue}
 }
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{A}}{string that will be interpreted by \code{\link[glue:glue]{glue::glue()}}}
-}
-\if{html}{\out{</div>}}
-}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{A}}{string that will be interpreted by \code{\link[glue:glue]{glue::glue()}}}
+\item{\code{fmt}}{A string that will be interpreted by \code{\link[glue:glue]{glue::glue()}}}
 }
 \if{html}{\out{</div>}}
 }

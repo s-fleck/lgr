@@ -2,8 +2,13 @@
 % Please edit documentation in R/Appender.R
 \name{AppenderFile}
 \alias{AppenderFile}
+\alias{AppenderJson}
 \title{Log to a file}
 \description{
+\code{AppenderJson} is just a shortcut for \code{AppenderFile} preconfigured with
+\code{\link{LayoutJson}}.
+}
+\details{
 A simple Appender that outputs to a file in the file system. If you plan
 to log to text files, consider logging to JSON files and take a look at
 \link{AppenderJson}, which is more or less a shortcut for \code{AppenderFile} with
@@ -43,14 +48,36 @@ lg$config(NULL)
 unlink(default)
 unlink(fancy)
 unlink(json)
+tf <- tempfile()
+lg <- get_logger("test")$
+  set_appenders(AppenderJson$new(tf))$
+  set_propagate(FALSE)
+
+lg$info("A test message")
+lg$info("A test message \%s strings", "with format strings", and = "custom_fields")
+
+lg$appenders[[1]]$show()
+lg$appenders[[1]]$data
+
+# cleanup
+lg$config(NULL)
+unlink(tf)
 }
 \seealso{
+\link{LayoutFormat}, \link{LayoutJson}
+
 \link{LayoutFormat}, \link{LayoutJson}
 
 Other Appenders: 
 \code{\link{AppenderBuffer}},
 \code{\link{AppenderConsole}},
-\code{\link{AppenderJson}},
+\code{\link{AppenderSyslog}},
+\code{\link{AppenderTable}},
+\code{\link{Appender}}
+
+Other Appenders: 
+\code{\link{AppenderBuffer}},
+\code{\link{AppenderConsole}},
 \code{\link{AppenderSyslog}},
 \code{\link{AppenderTable}},
 \code{\link{Appender}}
@@ -113,8 +140,59 @@ Other Appenders:
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-show"></a>}}
 \subsection{Method \code{show()}}{
+Display the contents of the log file.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFile$show(threshold = NA_integer_, n = 20L)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
+that should be displayed.}
+
+\item{\code{n}}{\code{integer} scalar. Show only the last \code{n} log entries that match
+\code{threshold}.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}
+\section{Super classes}{
+\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{\link[lgr:AppenderFile]{lgr::AppenderFile}} -> \code{AppenderJson}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{AppenderJson$new()}}
+}
+}
+\if{html}{
+\out{<details ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter">}\href{../../lgr/html/Filterable.html#method-add_filter}{\code{lgr::Filterable$add_filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter">}\href{../../lgr/html/Filterable.html#method-filter}{\code{lgr::Filterable$filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter">}\href{../../lgr/html/Filterable.html#method-remove_filter}{\code{lgr::Filterable$remove_filter()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters">}\href{../../lgr/html/Filterable.html#method-set_filters}{\code{lgr::Filterable$set_filters()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="format">}\href{../../lgr/html/Appender.html#method-format}{\code{lgr::Appender$format()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout">}\href{../../lgr/html/Appender.html#method-set_layout}{\code{lgr::Appender$set_layout()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold">}\href{../../lgr/html/Appender.html#method-set_threshold}{\code{lgr::Appender$set_threshold()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="append">}\href{../../lgr/html/AppenderFile.html#method-append}{\code{lgr::AppenderFile$append()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="set_file">}\href{../../lgr/html/AppenderFile.html#method-set_file}{\code{lgr::AppenderFile$set_file()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="show">}\href{../../lgr/html/AppenderFile.html#method-show}{\code{lgr::AppenderFile$show()}}\out{</span>}
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderJson$new(
+  file,
+  threshold = NA_integer_,
+  layout = LayoutJson$new(),
+  filters = NULL
+)}\if{html}{\out{</div>}}
 }
 
 }

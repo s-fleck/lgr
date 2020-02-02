@@ -18,6 +18,14 @@ will work with every Appender. See the package \pkg{lgrExtra} for examples
 for Layouts that return different data types (such as \code{data.frames}) and
 Appenders that can handle them.
 }
+\section{Notes for developers}{
+
+Layouts may have an additonal \verb{$read(file, threshold, n)} method that returns
+a \code{character} vector, and/or an \verb{$parse(file)} method that
+returns a \code{data.frame}. These can be used by Appenders to \verb{$show()} methods
+and \verb{$data} active bdinings respectively (see source code of \link{AppenderFile}).
+}
+
 \seealso{
 Other Layouts: 
 \code{\link{LayoutFormat}},

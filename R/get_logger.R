@@ -37,10 +37,9 @@ remove_all_loggers <- function(){
 #'
 #' # completely reset 'glue' to an unconfigured vanilla Logger
 #' get_logger("log/ger", reset = TRUE)
-#' # this invalidates references to the Logger
+#' # WARNING: this invalidates existing references to the Logger
 #' try(lg$info("lg has been invalidated an no longer works"))
 #'
-#' # we have to recreate it
 #' lg <- get_logger("log/ger")
 #' lg$info("now all is well again")
 get_logger <- function(

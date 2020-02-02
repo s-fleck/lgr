@@ -45,7 +45,6 @@ Other Appenders:
 \code{\link{AppenderBuffer}},
 \code{\link{AppenderConsole}},
 \code{\link{AppenderFile}},
-\code{\link{AppenderJson}},
 \code{\link{AppenderTable}},
 \code{\link{Appender}}
 }

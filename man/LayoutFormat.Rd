@@ -23,6 +23,7 @@ see Fields
 
 see Fields
 Convert Layout to a Character String
+Read a log file written using LayoutFormat
 }
 \section{Format Tokens}{
 
@@ -96,6 +97,7 @@ the package \pkg{crayon}) passed on on \code{\link[=format.LogEvent]{format.LogE
 \item \href{#method-set_colors}{\code{LayoutFormat$set_colors()}}
 \item \href{#method-set_pad_levels}{\code{LayoutFormat$set_pad_levels()}}
 \item \href{#method-toString}{\code{LayoutFormat$toString()}}
+\item \href{#method-read}{\code{LayoutFormat$read()}}
 \item \href{#method-clone}{\code{LayoutFormat$clone()}}
 }
 }
@@ -173,6 +175,23 @@ Format a LogEvent
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$toString()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-read"></a>}}
+\subsection{Method \code{read()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$read(file, threshold = NA_integer_, n = 20L)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{threshold}}{a \code{character} or \code{integer} threshold}
+
+\item{\code{n}}{number of log entries to display}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

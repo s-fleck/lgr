@@ -26,7 +26,6 @@ Other Appenders:
 \code{\link{AppenderBuffer}},
 \code{\link{AppenderConsole}},
 \code{\link{AppenderFile}},
-\code{\link{AppenderJson}},
 \code{\link{AppenderSyslog}},
 \code{\link{AppenderTable}}
 }

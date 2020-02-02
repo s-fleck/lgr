@@ -50,7 +50,6 @@ remove an Appender by position or name.
 Other Appenders: 
 \code{\link{AppenderConsole}},
 \code{\link{AppenderFile}},
-\code{\link{AppenderJson}},
 \code{\link{AppenderSyslog}},
 \code{\link{AppenderTable}},
 \code{\link{Appender}}
