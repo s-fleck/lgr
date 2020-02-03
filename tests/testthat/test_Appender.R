@@ -118,6 +118,24 @@ test_that("AppenderFile: $show() works", {
 
 
 
+test_that("AppenderFile$data throws an error", {
+  tf <- tempfile()
+  on.exit(unlink(tf))
+
+  lg <- get_logger("test")$
+    set_propagate(FALSE)$
+    set_threshold(NA)$
+    set_appenders(list(file = AppenderFile$new(file = tf)))
+
+  on.exit(get_logger("test", reset = TRUE), add = TRUE)
+
+  lg$info("foo bar")
+  lg$info("blah blubb")
+
+  expect_error(lg$appenders$file$data)
+})
+
+
 # AppenderJson ------------------------------------------------------------
 
 test_that("AppenderJson: $show() works", {
@@ -434,4 +452,21 @@ test_that("AppenderSyslog: logging to syslog works", {
 
   log <- suppressMessages(suppressWarnings( system("cat /var/log/syslog | grep rsyslog/test", intern = TRUE)))
   expect_true(any(grepl(msg, log), fixed = TRUE))
+})
+
+
+
+# utils -------------------------------------------------------------------
+
+test_that("default_file_reader() works", {
+  tf <- tempfile()
+  on.exit(unlink(tf))
+
+  expect_error(expect_warning(default_file_reader(tf, threshold = NA, n = 0)))
+
+  writeLines(LETTERS, tf)
+  expect_identical(default_file_reader(tf, threshold = NA, n = 3), c("X", "Y", "Z"))
+
+  writeLines(LETTERS, tf)
+  expect_warning(default_file_reader(tf, threshold = 4, n = 3))
 })

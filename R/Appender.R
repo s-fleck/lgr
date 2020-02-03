@@ -297,25 +297,14 @@ AppenderFile <- R6::R6Class(
     ){
       assert(is_scalar_integerish(n))
       threshold <- standardize_threshold(threshold)
+      reader <- self$layout$read %||% default_file_reader
 
-      reader <- self$layout$read
+      dd <- reader(self$file, threshold = threshold, n = n)
 
-      if (!is.null(reader)){
-        dd <- reader(self$file, threshold = threshold, n = n)
-      } else {
-        dd <- readLines(self$file)
-        if (!is.na(threshold)){
-          warning(
-            "A threshold was supplied to AppenderFile$show(), but the ",
-            "Appenders' Layout does not support filtering by log level"
-          )
-        }
-        dd <- tail(dd, n)
-      }
-
-    cat(dd, sep = "\n")
-    invisible(dd)
-  }),
+      cat(dd, sep = "\n")
+      invisible(dd)
+    }
+  ),
 
 
   # +- active ---------------------------------------------------------------
@@ -323,11 +312,15 @@ AppenderFile <- R6::R6Class(
     file = function() private$.file,
     data = function(){
       parser <- self$layout$parse
-      if (is.null(parser)){
-        stop("The current layout does not support parsing logfiles", call. = FALSE)
-      } else {
-        parser(self$file)
-      }
+
+      assert(
+        !is.null(parser),
+        "Neither ", fmt_class(class(self)[[1]]), " nor ", fmt_class(class(self$layout)[[1]]),
+        " support parsing log files to data.frames. Consider using <LayoutJson> ",
+        "instead."
+      )
+
+      parser(self$file)
     },
 
     dt = function(){
@@ -1487,3 +1480,35 @@ AppenderSyslog <- R6::R6Class(
     .syslog_levels = NULL
   )
 )
+
+
+
+
+# helpers -----------------------------------------------------------------
+
+#' Default reader for files created with AppenderFile
+#'
+#' @param file a `character` scalar: path to a file
+#' @param threshold only `NA` is supported for the default reader, other
+#'   values cause a warning. See `LayoutFormat$read()` for an example where
+#'   that supports thresholds.
+#' @param n an `integer` scalar > 0
+#'
+#' @return
+#' @noRd
+default_file_reader <- function(file, threshold, n){
+  assert(
+    is_scalar_character(file),
+    "`file` must be the path to a file, not ", preview_object(file)
+  )
+  assert(
+    is_n0(n),
+    "`n` must be a postive integer >= 0, not ", preview_object(n)
+  )
+  if (isFALSE(is.na(threshold))){
+    warning("A threshold was supplied to AppenderFile$show(), but the ",
+    "Appenders' Layout does not support filtering by log level")
+  }
+
+  tail(readLines(file), n)
+}
