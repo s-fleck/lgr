@@ -1,3 +1,8 @@
+# lgr 0.3.4
+
+* Hotfix for compat with R < 3.6.0
+
+
 # lgr 0.3.3
 
 * Fixed a performance regression when looking up the parent of a Logger. This

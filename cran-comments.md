@@ -10,4 +10,4 @@
 
 0 errors | 0 warnings | 0 notes
 
-fixes a significant performance regression
+hotfix for compat with 3.6.0 (requested by downstream package)
