@@ -2,6 +2,12 @@
 
 language: R
 sudo: false
+r:
+  - 3.4
+  - 3.5
+  - oldrel
+  - release
+  - devel
 cache: packages
 r_binary_packages:
   - devtools
