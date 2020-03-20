@@ -70,7 +70,7 @@ Format LogEvents as JSON" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9011</span>
       </span>
     </div>
 
@@ -129,16 +129,12 @@ Format LogEvents as JSON" />
     <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
 
     <p><code><a href='Layout.html'>lgr::Layout</a></code> -&gt; <code>LayoutJson</code></p>
-    <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
-
-    <p><div class="r6-fields"></p><dl class='dl-horizontal'>
-<dt><code>a</code></dt><dd><p>list of values passed on to <code><a href='https://rdrr.io/pkg/jsonlite/man/fromJSON.html'>jsonlite::toJSON()</a></code></p></dd>
-
-</dl><p></div></p>
     <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
 
     <p><div class="r6-active-bindings"></p><dl class='dl-horizontal'>
-<dt><code>a</code></dt><dd><p>list of values passed on to <code><a href='https://rdrr.io/pkg/jsonlite/man/fromJSON.html'>jsonlite::toJSON()</a></code></p></dd>
+<dt><code>toJSON_args</code></dt><dd><p>a list of values passed on to <code><a href='https://rdrr.io/pkg/jsonlite/man/fromJSON.html'>jsonlite::toJSON()</a></code></p></dd>
+
+<dt><code>timestamp_fmt</code></dt><dd><p>Used by  <code>$format_event()</code> to format timestamps.</p></dd>
 
 </dl><p></div></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
@@ -150,7 +146,10 @@ Format LogEvents as JSON" />
 <li><p><a href='#method-new'><code>LayoutJson$new()</code></a></p></li>
 <li><p><a href='#method-format_event'><code>LayoutJson$format_event()</code></a></p></li>
 <li><p><a href='#method-set_toJSON_args'><code>LayoutJson$set_toJSON_args()</code></a></p></li>
+<li><p><a href='#method-set_timestamp_fmt'><code>LayoutJson$set_timestamp_fmt()</code></a></p></li>
 <li><p><a href='#method-toString'><code>LayoutJson$toString()</code></a></p></li>
+<li><p><a href='#method-parse'><code>LayoutJson$parse()</code></a></p></li>
+<li><p><a href='#method-read'><code>LayoutJson$read()</code></a></p></li>
 <li><p><a href='#method-clone'><code>LayoutJson$clone()</code></a></p></li>
 </ul>
 <p><details open ><summary>Inherited methods</summary>
@@ -162,7 +161,7 @@ Format LogEvents as JSON" />
 <a id="method-new"></a></p><h3>Method <code>new()</code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>LayoutJson$new(toJSON_args = list(auto_unbox = TRUE))</pre><p></div></p>
+<p><div class="r"></p><pre>LayoutJson$new(toJSON_args = list(auto_unbox = TRUE), timestamp_fmt = NULL)</pre><p></div></p>
 
 <p><hr>
 <a id="method-format_event"></a></p><h3>Method <code>format_event()</code></h3>
@@ -172,15 +171,40 @@ Format LogEvents as JSON" />
 
 <p><hr>
 <a id="method-set_toJSON_args"></a></p><h3>Method <code>set_toJSON_args()</code></h3>
-
-<h3>Usage</h3>
+<p>Set a <code>format</code> that this Layout will apply to timstamps.
+can be a <code>character</code> scalar as for <code><a href='https://rdrr.io/r/base/strptime.html'>format.POSIXct()</a></code> or a function.</p><h3>Usage</h3>
 <p><div class="r"></p><pre>LayoutJson$set_toJSON_args(x)</pre><p></div></p>
 
+<p><hr>
+<a id="method-set_timestamp_fmt"></a></p><h3>Method <code>set_timestamp_fmt()</code></h3>
+<p>Set a format that this Layout will apply to timstamps.</p><h3>Usage</h3>
+<p><div class="r"></p><pre>LayoutJson$set_timestamp_fmt(x)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl class='dl-horizontal'>
+<dt><code>x</code></dt><dd><p>a <code>character</code> scalar as for <code><a href='https://rdrr.io/r/base/strptime.html'>format.POSIXct()</a></code> or a <code>function</code>.
+If <code>x</code> is a <code>function</code> that function must return a vector of the
+same length as its input. The returned vector can be of any type
+supported by <code><a href='https://rdrr.io/pkg/jsonlite/man/fromJSON.html'>jsonlite::toJSON()</a></code>, but usually it should be <code>character</code>.</p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-toString"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/toString.html'>toString()</a></code></h3>
 
 <h3>Usage</h3>
 <p><div class="r"></p><pre>LayoutJson$toString()</pre><p></div></p>
+
+<p><hr>
+<a id="method-parse"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/parse.html'>parse()</a></code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>LayoutJson$parse(file)</pre><p></div></p>
+
+<p><hr>
+<a id="method-read"></a></p><h3>Method <code>read()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>LayoutJson$read(file, threshold = NA_integer_, n = 20L)</pre><p></div></p>
 
 <p><hr>
 <a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
@@ -209,14 +233,13 @@ Format LogEvents as JSON" />
 
 <span class='co'># Default settings show all event fals</span>
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()
-<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; {"level":200,"timestamp":"2020-01-28 08:15:13","logger":"dummy logger","caller":null,"msg":"a test message","custom_field":"LayoutJson can handle arbitrary fields"} </div></pre>
+<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; {"level":200,"timestamp":"2020-03-20 20:50:50","logger":"dummy logger","caller":null,"msg":"a test message","custom_field":"LayoutJson can handle arbitrary fields"} </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#see-also">See also</a></li>
       <li><a href="#super-class">Super class</a></li>
-      <li><a href="#public-fields">Public fields</a></li>
       <li><a href="#active-bindings">Active bindings</a></li>
       <li><a href="#methods">Methods</a></li>
       <li><a href="#examples">Examples</a></li>

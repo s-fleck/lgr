@@ -75,3 +75,20 @@ test_that("LayoutJson works as expected", {
   expect_equal(as.POSIXct(tres[["timestamp"]]), eres[["timestamp"]], tolerance = 1)
   expect_equal(tres[["foo"]], "bar")
 })
+
+
+
+
+test_that("formatting timestamps with LayoutJson works", {
+  lo <- LayoutJson$new()
+  x <- tevent$clone()
+
+  eres <- x$values
+  json <- lo$format_event(x)
+
+  lo$set_timestamp_fmt(function(x) "fmt timestamp with function")
+  expect_match(lo$format_event(x), "fmt timestamp with function")
+
+  lo$set_timestamp_fmt("%H:%M:%S..%OS")
+  expect_match(lo$format_event(x), format(x$timestamp, "%H:%M:%S..%OS"))
+})

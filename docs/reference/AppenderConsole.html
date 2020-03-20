@@ -71,7 +71,7 @@ crayon installed log levels will be coloured by default
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9011</span>
       </span>
     </div>
 
@@ -127,7 +127,6 @@ crayon installed log levels will be coloured by default
 <p>Other Appenders: 
 <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
 <code><a href='AppenderFile.html'>AppenderFile</a></code>,
-<code><a href='AppenderJson.html'>AppenderJson</a></code>,
 <code><a href='AppenderSyslog.html'>AppenderSyslog</a></code>,
 <code><a href='AppenderTable.html'>AppenderTable</a></code>,
 <code><a href='Appender.html'>Appender</a></code></p></div>
@@ -186,8 +185,8 @@ crayon installed log levels will be coloured by default
   <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(<span class='st'>"[%t] %c(): [%n] %m"</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"lgr.colors"</span>))))
 
 <span class='co'># Will output the message twice because we attached two console appenders</span>
-<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [08:15:08.896] A test message 
-#&gt; [2020-01-28 08:15:08.896] eval(): [</span><span style='color: #FFD75F;'>300</span><span>] A test message</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>) <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #555555;'>info</span><span>] test
+<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; <span style='color: #FFD75F;'>WARN </span><span> [20:50:44.036] A test message 
+#&gt; [2020-03-20 20:50:44.036] eval(): [</span><span style='color: #FFD75F;'>300</span><span>] A test message</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>) <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div></span></pre>

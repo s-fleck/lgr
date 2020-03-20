@@ -70,7 +70,7 @@ Format Log Events as Text" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9011</span>
       </span>
     </div>
 
@@ -129,7 +129,8 @@ more control and flexibility, consider using <a href='LayoutGlue.html'>LayoutGlu
 <p>see Fields</p>
 <p>see Fields</p>
 <p>see Fields
-Convert Layout to a Character String</p>
+Convert Layout to a Character String
+Read a log file written using LayoutFormat</p>
     <h2 class="hasAnchor" id="format-tokens"><a class="anchor" href="#format-tokens"></a>Format Tokens</h2>
 
     
@@ -191,6 +192,7 @@ the package <span class="pkg">crayon</span>) passed on on <code><a href='print.L
 <li><p><a href='#method-set_colors'><code>LayoutFormat$set_colors()</code></a></p></li>
 <li><p><a href='#method-set_pad_levels'><code>LayoutFormat$set_pad_levels()</code></a></p></li>
 <li><p><a href='#method-toString'><code>LayoutFormat$toString()</code></a></p></li>
+<li><p><a href='#method-read'><code>LayoutFormat$read()</code></a></p></li>
 <li><p><a href='#method-clone'><code>LayoutFormat$clone()</code></a></p></li>
 </ul>
 <p><details open ><summary>Inherited methods</summary>
@@ -250,6 +252,19 @@ the package <span class="pkg">crayon</span>) passed on on <code><a href='print.L
 <p><div class="r"></p><pre>LayoutFormat$toString()</pre><p></div></p>
 
 <p><hr>
+<a id="method-read"></a></p><h3>Method <code>read()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>LayoutFormat$read(file, threshold = NA_integer_, n = 20L)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl class='dl-horizontal'>
+<dt><code>threshold</code></dt><dd><p>a <code>character</code> or <code>integer</code> threshold</p></dd>
+
+<dt><code>n</code></dt><dd><p>number of log entries to display</p></dd>
+
+</dl><p></div></p>
+<p><hr>
 <a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
 <p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
 <p><div class="r"></p><pre>LayoutFormat$clone(deep = FALSE)</pre><p></div></p>
@@ -272,7 +287,7 @@ the package <span class="pkg">crayon</span>) passed on on <code><a href='print.L
   <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"a test message"</span>
 )
 <span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>()
-<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; [1] "ERROR [2020-01-28 08:15:13.033] a test message"</div></pre>
+<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; [1] "ERROR [2020-03-20 20:50:48.898] a test message"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <h2>Contents</h2>

@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9011</span>
       </span>
     </div>
 
@@ -114,11 +114,21 @@
 </h1>
 <ul>
 <li><p>Moved more complex Appenders to package <a href="https://github.com/s-fleck/lgr.app">lgr.app</a>. This includes database Appenders, email and push notifications and AppenderDt (in-memory <code>data.tables</code>).</p></li>
+<li><p><code>AppenderFile$show()</code> can now filter log files formatted by LayoutFormat by log level. Be aware that this just <code>greps</code> through the file and therefore will return false positives on lines where the log message contains strings that can be interpreted as log levels.</p></li>
+<li><p><code>AppenderFile$show()</code> and <code>AppenderFile$data</code> now dispatches to <code>Layout$read()</code> and <code>Layout$parse()</code>. This makes it possible to tie reading/parsing of log files to Layouts.</p></li>
 <li><p>Loggers gain a <code>list_log()</code> method. See <a href="https://github.com/s-fleck/joblog" class="uri">https://github.com/s-fleck/joblog</a> for an R package that leverages this feature to create custom log event types for tracking the status of cron jobs.</p></li>
 <li><p>Export more utility functions that are useful for creating custom Appenders; such as <code><a href="../reference/standardize_threshold.html">standardize_threshold()</a></code> and <code><a href="../reference/event_list.html">event_list()</a></code>.</p></li>
 <li><p>AppenderBuffer now defaults to <code>flush_threshold = NULL</code> (never flush because of the log level of an event)</p></li>
 <li><p><code><a href="../reference/basic_config.html">basic_config()</a></code> now works as documented for .jsonl files</p></li>
 <li><p>AppenderMemory gains a <code>$clear()</code> method that clears the buffer without sending the events to it’s attached appenders</p></li>
+</ul>
+</div>
+    <div id="lgr-0-3-4" class="section level1">
+<h1 class="page-header">
+<a href="#lgr-0-3-4" class="anchor"></a>lgr 0.3.4<small> 2020-03-20 </small>
+</h1>
+<ul>
+<li>Hotfix for compat with R &lt; 3.6.0 (#32)</li>
 </ul>
 </div>
     <div id="lgr-0-3-3" class="section level1">
@@ -226,6 +236,7 @@
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
         <li><a href="#lgr-development-version">development version</a></li>
+        <li><a href="#lgr-0-3-4">0.3.4</a></li>
         <li><a href="#lgr-0-3-3">0.3.3</a></li>
         <li><a href="#lgr-0-3-2">0.3.2</a></li>
         <li><a href="#lgr-0-3-1">0.3.1</a></li>

@@ -70,7 +70,7 @@ Abstract Class for Layouts" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9011</span>
       </span>
     </div>
 
@@ -128,6 +128,14 @@ into a <code>character</code> string.</p>
 will work with every Appender. See the package <span class="pkg">lgrExtra</span> for examples
 for Layouts that return different data types (such as <code>data.frames</code>) and
 Appenders that can handle them.</p>
+    <h2 class="hasAnchor" id="notes-for-developers"><a class="anchor" href="#notes-for-developers"></a>Notes for developers</h2>
+
+    
+
+<p>Layouts may have an additonal <code>$read(file, threshold, n)</code> method that returns
+a <code>character</code> vector, and/or an <code>$parse(file)</code> method that
+returns a <code>data.frame</code>. These can be used by Appenders to <code>$show()</code> methods
+and <code>$data</code> active bdinings respectively (see source code of <a href='AppenderFile.html'>AppenderFile</a>).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Layouts: 
@@ -178,6 +186,7 @@ Appenders that can handle them.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#details">Details</a></li>
+      <li><a href="#notes-for-developers">Notes for developers</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#methods">Methods</a></li>
     </ul>

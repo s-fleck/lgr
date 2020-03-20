@@ -72,7 +72,7 @@ but also more complex and slightly less performant." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9011</span>
       </span>
     </div>
 
@@ -134,16 +134,10 @@ useful for layout glue: <code><a href='colorize_levels.html'>colorize_levels()</
     <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
 
     <p><code><a href='Layout.html'>lgr::Layout</a></code> -&gt; <code>LayoutGlue</code></p>
-    <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
-
-    <p><div class="r6-fields"></p><dl class='dl-horizontal'>
-<dt><code>A</code></dt><dd><p>string that will be interpreted by <code><a href='https://rdrr.io/pkg/glue/man/glue.html'>glue::glue()</a></code></p></dd>
-
-</dl><p></div></p>
     <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
 
     <p><div class="r6-active-bindings"></p><dl class='dl-horizontal'>
-<dt><code>A</code></dt><dd><p>string that will be interpreted by <code><a href='https://rdrr.io/pkg/glue/man/glue.html'>glue::glue()</a></code></p></dd>
+<dt><code>fmt</code></dt><dd><p>A string that will be interpreted by <code><a href='https://rdrr.io/pkg/glue/man/glue.html'>glue::glue()</a></code></p></dd>
 
 </dl><p></div></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
@@ -215,13 +209,13 @@ useful for layout glue: <code><a href='colorize_levels.html'>colorize_levels()</
   <span class='fu'>set_propagate</span>(<span class='fl'>FALSE</span>)
 
 <span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>set_layout</span>(<span class='no'>LayoutGlue</span>$<span class='fu'>new</span>())
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"test"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [2020-01-28 08:15:13] msg</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"test"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;font-weight: bold;'>FATAL</span><span> [2020-03-20 20:50:50] msg</div><div class='input'>
 
 <span class='co'># All fields of the LogEvent are available, even custom ones</span>
 <span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>layout</span>$<span class='fu'>set_fmt</span>(
   <span class='st'>"{logger} {level_name}({level}) {caller}: {toupper(msg)} {{custom: {custom}}}"</span>
 )
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"test"</span>, <span class='kw'>custom</span> <span class='kw'>=</span> <span class='st'>"foobar"</span>)</div><div class='output co'>#&gt; test fatal(100) eval: TEST {custom: foobar}</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)  <span class='co'># reset logger config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #555555;'>info</span><span>] test
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"test"</span>, <span class='kw'>custom</span> <span class='kw'>=</span> <span class='st'>"foobar"</span>)</div><div class='output co'>#&gt; test fatal(100) eval: TEST {custom: foobar}</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)  <span class='co'># reset logger config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [</span><span style='color: #808080;'>info</span><span>] test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div></span></pre>
@@ -231,7 +225,6 @@ useful for layout glue: <code><a href='colorize_levels.html'>colorize_levels()</
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#see-also">See also</a></li>
       <li><a href="#super-class">Super class</a></li>
-      <li><a href="#public-fields">Public fields</a></li>
       <li><a href="#active-bindings">Active bindings</a></li>
       <li><a href="#methods">Methods</a></li>
       <li><a href="#examples">Examples</a></li>

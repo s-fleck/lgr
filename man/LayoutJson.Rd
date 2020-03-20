@@ -40,6 +40,8 @@ Other Layouts:
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
 \item{\code{toJSON_args}}{a list of values passed on to \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}}
+
+\item{\code{timestamp_fmt}}{Used by  \verb{$format_event()} to format timestamps.}
 }
 \if{html}{\out{</div>}}
 }
@@ -49,6 +51,7 @@ Other Layouts:
 \item \href{#method-new}{\code{LayoutJson$new()}}
 \item \href{#method-format_event}{\code{LayoutJson$format_event()}}
 \item \href{#method-set_toJSON_args}{\code{LayoutJson$set_toJSON_args()}}
+\item \href{#method-set_timestamp_fmt}{\code{LayoutJson$set_timestamp_fmt()}}
 \item \href{#method-toString}{\code{LayoutJson$toString()}}
 \item \href{#method-parse}{\code{LayoutJson$parse()}}
 \item \href{#method-read}{\code{LayoutJson$read()}}
@@ -65,7 +68,7 @@ Other Layouts:
 \if{html}{\out{<a id="method-new"></a>}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$new(toJSON_args = list(auto_unbox = TRUE))}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$new(toJSON_args = list(auto_unbox = TRUE), timestamp_fmt = NULL)}\if{html}{\out{</div>}}
 }
 
 }
@@ -80,10 +83,31 @@ Other Layouts:
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_toJSON_args"></a>}}
 \subsection{Method \code{set_toJSON_args()}}{
+Set a \code{format} that this Layout will apply to timstamps.
+can be a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSIXct()}} or a function.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$set_toJSON_args(x)}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_timestamp_fmt"></a>}}
+\subsection{Method \code{set_timestamp_fmt()}}{
+Set a format that this Layout will apply to timstamps.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$set_timestamp_fmt(x)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSIXct()}} or a \code{function}.
+If \code{x} is a \code{function} that function must return a vector of the
+same length as its input. The returned vector can be of any type
+supported by \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}, but usually it should be \code{character}.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-toString"></a>}}

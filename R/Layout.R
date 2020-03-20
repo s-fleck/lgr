@@ -317,22 +317,45 @@ LayoutJson <- R6::R6Class(
   inherit = Layout,
   public = list(
     initialize = function(
-      toJSON_args = list(auto_unbox = TRUE)
+      toJSON_args = list(auto_unbox = TRUE),
+      timestamp_fmt = NULL
     ){
       self$set_toJSON_args(toJSON_args)
+      self$set_timestamp_fmt(timestamp_fmt)
     },
 
     format_event = function(event) {
+      vals <- get("values", event)
+      fmt  <- get("timestamp_fmt", self)
+
+      if (!is.null(fmt)){
+        vals[["timestamp"]] <- fmt_timestamp(vals[["timestamp"]], fmt)
+      }
+
       do.call(
         jsonlite::toJSON,
-        args = c(list(x = event$values), get(".toJSON_args", private))
+        args = c(list(x = vals), get(".toJSON_args", private))
       )
     },
 
+    #' @description Set a `format` that this Layout will apply to timstamps.
+    #' can be a `character` scalar as for [format.POSIXct()] or a function.
     set_toJSON_args = function(x){
       assert(is.list(x))
       assert(identical(length(names(x)), length(x)))
       private$.toJSON_args <- x
+      invisible(self)
+    },
+
+    #' @description Set a format that this Layout will apply to timstamps.
+    #'
+    #' @param x a `character` scalar as for [format.POSIXct()] or a `function`.
+    #' If `x` is a `function` that function must return a vector of the
+    #' same length as its input. The returned vector can be of any type
+    #' supported by [jsonlite::toJSON()], but usually it should be `character`.
+    set_timestamp_fmt = function(x){
+      assert(is.null(x) || is_scalar_character(x) || is.function(x))
+      private[[".timestamp_fmt"]] <- x
       invisible(self)
     },
 
@@ -369,10 +392,25 @@ LayoutJson <- R6::R6Class(
 
   active = list(
     #' @field toJSON_args a list of values passed on to [jsonlite::toJSON()]
-    toJSON_args = function() private$.toJSON_args
+    toJSON_args   = function() get(".toJSON_args", private),
+
+    #' @field timestamp_fmt Used by  `$format_event()` to format timestamps.
+    timestamp_fmt = function() get(".timestamp_fmt", private)
   ),
 
   private = list(
-    .toJSON_args = NULL
+    .toJSON_args = NULL,
+    .timestamp_fmt = NULL
   )
 )
+
+
+
+
+fmt_timestamp = function(x, fmt){
+  if (is.character(fmt)){
+    format(x, fmt)
+  } else if (is.function(fmt)){
+    fmt(x)
+  }
+}
