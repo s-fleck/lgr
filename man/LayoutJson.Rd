@@ -101,10 +101,14 @@ Set a format that this Layout will apply to timstamps.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSIXct()}} or a \code{function}.
-If \code{x} is a \code{function} that function must return a vector of the
+\item{\code{x}}{\itemize{
+\item \code{NULL} (the default): formatting of the timestamp is left to
+\code{\link[jsonlite:toJSON]{jsonlite::toJSON()}},
+\item a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSIXct()}}, or
+\item a \code{function} that must return a vector of the
 same length as its input. The returned vector can be of any type
-supported by \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}, but usually it should be \code{character}.}
+supported by \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}, but usually it should be \code{character}.
+}}
 }
 \if{html}{\out{</div>}}
 }

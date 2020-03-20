@@ -29,6 +29,9 @@
 * AppenderMemory gains a `$clear()` method that clears the buffer without 
   sending the events to it's attached appenders
 
+* LayoutJson gains a `timestamp_fmt` field that can be used for custom 
+  timestamp formats (#34)
+  
 
 # lgr 0.3.4
 

@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9011</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9001</span>
       </span>
     </div>
 
@@ -121,6 +121,7 @@
 <li><p>AppenderBuffer now defaults to <code>flush_threshold = NULL</code> (never flush because of the log level of an event)</p></li>
 <li><p><code><a href="../reference/basic_config.html">basic_config()</a></code> now works as documented for .jsonl files</p></li>
 <li><p>AppenderMemory gains a <code>$clear()</code> method that clears the buffer without sending the events to it’s attached appenders</p></li>
+<li><p>LayoutJson gains a <code>timestamp_fmt</code> field that can be used for custom timestamp formats (#34)</p></li>
 </ul>
 </div>
     <div id="lgr-0-3-4" class="section level1">

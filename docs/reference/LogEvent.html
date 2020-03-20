@@ -73,7 +73,7 @@ Layouts you need to understand LogEvents." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9011</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9001</span>
       </span>
     </div>
 
@@ -211,13 +211,13 @@ this way, but not all Appenders will support them. See <a href='AppenderFile.htm
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)
-<span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"foo bar"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;'>ERROR</span><span> [20:50:52.554] foo bar </div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"foo bar"</span>)</div><div class='output co'>#&gt; <span style='color: #D75F5F;'>ERROR</span><span> [21:08:36.990] foo bar </div><div class='input'>
 <span class='co'># The last LogEvent produced by a Logger is stored in its `last_event` field</span>
-<span class='no'>lg</span>$<span class='no'>last_event</span>  <span class='co'># formatted console output</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [2020-03-20 20:50:52] foo bar  </div><div class='input'><span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>values</span>  <span class='co'># values stored in the event</span></div><div class='output co'>#&gt; $level
+<span class='no'>lg</span>$<span class='no'>last_event</span>  <span class='co'># formatted console output</span></div><div class='output co'>#&gt; </span><span style='color: #D75F5F;'>ERROR</span><span> [2020-03-20 21:08:36] foo bar  </div><div class='input'><span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>values</span>  <span class='co'># values stored in the event</span></div><div class='output co'>#&gt; $level
 #&gt; [1] 200
 #&gt; 
 #&gt; $timestamp
-#&gt; [1] "2020-03-20 20:50:52 CET"
+#&gt; [1] "2020-03-20 21:08:36 CET"
 #&gt; 
 #&gt; $logger
 #&gt; [1] "test"

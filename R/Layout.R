@@ -349,8 +349,11 @@ LayoutJson <- R6::R6Class(
 
     #' @description Set a format that this Layout will apply to timstamps.
     #'
-    #' @param x a `character` scalar as for [format.POSIXct()] or a `function`.
-    #' If `x` is a `function` that function must return a vector of the
+    #' @param x
+    #' * `NULL` (the default): formatting of the timestamp is left to
+    #' [jsonlite::toJSON()],
+    #' * a `character` scalar as for [format.POSIXct()], or
+    #' * a `function` that must return a vector of the
     #' same length as its input. The returned vector can be of any type
     #' supported by [jsonlite::toJSON()], but usually it should be `character`.
     set_timestamp_fmt = function(x){
