@@ -265,4 +265,7 @@ fmt_bytes <- function(
 
   vapply(x, readablifiy, character(1))
 }
+
+
+isFALSE <- function(x) identical(x, FALSE)
 # nocov end
