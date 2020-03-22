@@ -15,6 +15,7 @@
 #' returns a `data.frame`. These can be used by Appenders to `$show()` methods
 #' and `$data` active bdinings respectively (see source code of [AppenderFile]).
 #'
+#' @aliases Layouts
 #' @family Layouts
 #' @include print_LogEvent.R
 #' @include utils.R
@@ -316,6 +317,9 @@ LayoutJson <- R6::R6Class(
   "LayoutJson",
   inherit = Layout,
   public = list(
+
+    #' @description Set a `format` that this Layout will apply to timstamps.
+    #' can be a `character` scalar as for [format.POSIXct()] or a function.
     initialize = function(
       toJSON_args = list(auto_unbox = TRUE),
       timestamp_fmt = NULL

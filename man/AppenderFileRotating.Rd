@@ -4,6 +4,11 @@
 \alias{AppenderFileRotating}
 \title{Log to a rotating file}
 \description{
+Log to a rotating file
+
+Log to a rotating file
+}
+\details{
 An extension of \link{AppenderFile} that rotates logfiles based on certain
 conditions. Please refer to the documentation of \code{\link[rotor:rotate]{rotor::rotate()}} for
 the meanings of the extra arguments
@@ -12,19 +17,6 @@ the meanings of the extra arguments
 
 
 \describe{
-\item{\code{age}, \code{size}, \code{max_backups}, \code{fmt}, \code{overwrite}, \code{compression}, \code{backup_dir}}{
-Please see \code{\link[rotor:rotate]{rotor::rotate()}} for the meaning of these arguments
-(\code{fmt} is passed on as \code{format}).
-}
-
-\item{\code{cache_backups}, \code{set_cache_backups(x)}}{
-\code{TRUE} or \code{FALSE}. If \code{TRUE} (the default) the list of backups is cached,
-if \code{FALSE} it is read from disk every time this appender triggers.
-Caching brings a significant speedup for checking whether to rotate or
-not based on the \code{age} of the last backup, but is only safe if
-there are no other programs/functions (except this appender) interacting
-with the backups.
-}
 
 \item{\code{backups}}{A \code{data.frame} containing information on path, file size,
 etc... on the available backups of \code{file}.}
@@ -85,6 +77,13 @@ etc... on the available backups of \code{file}.}
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{age, size, max_backups, fmt, overwrite, compression, backup_dir}}{Please see \code{\link[rotor:rotate]{rotor::rotate()}} for the meaning of these arguments}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-append"></a>}}

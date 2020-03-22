@@ -942,19 +942,7 @@ AppenderBuffer <- R6::R6Class(
 #' @section Fields:
 #'
 #' \describe{
-#'   \item{`age`, `size`, `max_backups`, `fmt`, `overwrite`, `compression`, `backup_dir`}{
-#'     Please see [rotor::rotate()] for the meaning of these arguments
-#'     (`fmt` is passed on as `format`).
-#'   }
 #'
-#'   \item{`cache_backups`, `set_cache_backups(x)`}{
-#'     `TRUE` or `FALSE`. If `TRUE` (the default) the list of backups is cached,
-#'     if `FALSE` it is read from disk every time this appender triggers.
-#'     Caching brings a significant speedup for checking whether to rotate or
-#'     not based on the `age` of the last backup, but is only safe if
-#'     there are no other programs/functions (except this appender) interacting
-#'     with the backups.
-#'   }
 #'
 #'   \item{`backups`}{A `data.frame` containing information on path, file size,
 #'     etc... on the available backups of `file`.}
@@ -970,6 +958,11 @@ AppenderFileRotating <- R6::R6Class(
   "AppenderFileRotating",
   inherit = AppenderFile,
   public = list(
+
+    #' @description
+    #' @param age,size,max_backups,fmt,overwrite,compression,backup_dir
+    #' Please see [rotor::rotate()] for the meaning of these arguments
+    #  (`fmt` is passed on as `format`).
     initialize = function(
       file,
       threshold = NA_integer_,
@@ -1139,6 +1132,8 @@ AppenderFileRotating <- R6::R6Class(
 
 # AppenderFileRotatingTime ------------------------------------------------
 
+#' Log to a time-stamped rotating file
+#'
 #' @seealso [AppenderFileRotatingDate], [AppenderFileRotating], [rotor::rotate()]
 #' @export
 AppenderFileRotatingTime <- R6::R6Class(
@@ -1242,6 +1237,8 @@ AppenderFileRotatingTime <- R6::R6Class(
     },
 
 
+    #' @description set the `cache_backups` flag.
+    #' @param x a `logical` scalar
     set_cache_backups = function(
       x
     ){
@@ -1276,6 +1273,14 @@ AppenderFileRotatingTime <- R6::R6Class(
     age = function() get(".age", private),
     overwrite = function() get(".overwrite", private),
     fmt = function() get("bq", private)$fmt,
+
+    #' @field cache_backups
+    #'   `TRUE` or `FALSE`. If `TRUE` (the default) the list of backups is cached,
+    #'   if `FALSE` it is read from disk every time this appender triggers.
+    #'   Caching brings a significant speedup for checking whether to rotate or
+    #'   not based on the `age` of the last backup, but is only safe if
+    #'   there are no other programs/functions (except this appender) interacting
+    #'   with the backups.
     cache_backups = function() get("bq", private)$cache_backups
   ),
 
@@ -1290,12 +1295,18 @@ AppenderFileRotatingTime <- R6::R6Class(
 
 # AppenderFileRotatingDate ----------------------------------------------------
 
+#' Log to a date-stamped rotating file
+#'
+#' This is a simpler version of AppenderFileRotatingTime when the timestamps
+#' do not need to inclue sub-day accuracy.
+#'
 #' @seealso [AppenderFileRotatingTime], [AppenderFileRotating], [rotor::rotate()]
 #' @export
 AppenderFileRotatingDate <- R6::R6Class(
   "AppenderFileRotatingDate",
   inherit = AppenderFileRotatingTime,
   public = list(
+
     initialize = function(
       file,
       threshold = NA_integer_,
@@ -1501,14 +1512,11 @@ default_file_reader <- function(file, threshold, n){
     is_scalar_character(file),
     "`file` must be the path to a file, not ", preview_object(file)
   )
-  assert(
-    is_n0(n),
-    "`n` must be a postive integer >= 0, not ", preview_object(n)
-  )
+
   if (isFALSE(is.na(threshold))){
     warning("A threshold was supplied to AppenderFile$show(), but the ",
     "Appenders' Layout does not support filtering by log level")
   }
 
-  tail(readLines(file), n)
+  last_n(readLines(file), n)
 }

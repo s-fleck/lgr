@@ -229,9 +229,22 @@ CannotInitializeAbstractClassError <- function(
 
 
 
-# stricter version & support for R < 3.5
+# stricter & faster thant base R version & support for R < 3.5
 isFALSE <- function(x){
   identical(x, FALSE)
 }
 
+
+
+# like utils::tail.default, but saves you from importing utils.
+last_n <- function(x, n){
+  assert(
+    is_n0(n),
+    "`n` must be a postive integer >= 0, not ", preview_object(n)
+  )
+
+  len <- length(x)
+  n   <- min(n, len)
+  x[seq.int(to = len, length.out = n)]
+}
 # nocov end

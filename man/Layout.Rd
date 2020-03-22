@@ -2,6 +2,7 @@
 % Please edit documentation in R/Layout.R
 \name{Layout}
 \alias{Layout}
+\alias{Layouts}
 \title{Abstract Class for Layouts}
 \description{
 Abstract Class for Layouts
