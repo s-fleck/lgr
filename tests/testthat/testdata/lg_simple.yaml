@@ -1,9 +1,0 @@
-Logger:
-  threshold: info
-  propagate: false
-  appenders:
-    AppenderConsole:
-      threshold: error
-      layout:
-        LayoutFormat:
-          fmt: "%L %t - %m"

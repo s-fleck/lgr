@@ -1,8 +1,0 @@
-Logger:
-  threshold: all
-  appenders:
-    AppenderConsole:
-      threshold: info
-    AppenderBuffer:
-      threshold: all
-
