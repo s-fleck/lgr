@@ -64,6 +64,7 @@ is mainly used when printing information about the Appender itself.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Appender$new(layout = Layout$new(), threshold = NA_integer_)}\if{html}{\out{</div>}}
@@ -72,6 +73,7 @@ is mainly used when printing information about the Appender itself.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-append"></a>}}
+\if{latex}{\out{\hypertarget{method-append}{}}}
 \subsection{Method \code{append()}}{
 Process a \link{LogEvent} \code{event}. This method is usually not
 called by the user, but invoked by a \link{Logger}
@@ -82,6 +84,7 @@ called by the user, but invoked by a \link{Logger}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_threshold"></a>}}
+\if{latex}{\out{\hypertarget{method-set_threshold}{}}}
 \subsection{Method \code{set_threshold()}}{
 Set the minimum log level that triggers this Appender. See
 \code{\link[=threshold]{threshold()}} for examples
@@ -99,6 +102,7 @@ Set the minimum log level that triggers this Appender. See
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_layout"></a>}}
+\if{latex}{\out{\hypertarget{method-set_layout}{}}}
 \subsection{Method \code{set_layout()}}{
 Set the \code{Layout} that this Appender will use for formatting
 \code{LogEvents}
@@ -109,6 +113,7 @@ Set the \code{Layout} that this Appender will use for formatting
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-format"></a>}}
+\if{latex}{\out{\hypertarget{method-format}{}}}
 \subsection{Method \code{format()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Appender$format(color = FALSE, ...)}\if{html}{\out{</div>}}

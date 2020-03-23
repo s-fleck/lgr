@@ -109,6 +109,7 @@ the package \pkg{crayon}) passed on on \code{\link[=format.LogEvent]{format.LogE
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$new(
@@ -122,6 +123,7 @@ the package \pkg{crayon}) passed on on \code{\link[=format.LogEvent]{format.LogE
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-format_event"></a>}}
+\if{latex}{\out{\hypertarget{method-format_event}{}}}
 \subsection{Method \code{format_event()}}{
 Format a LogEvent
 \subsection{Usage}{
@@ -138,6 +140,7 @@ Format a LogEvent
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_fmt"></a>}}
+\if{latex}{\out{\hypertarget{method-set_fmt}{}}}
 \subsection{Method \code{set_fmt()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_fmt(x)}\if{html}{\out{</div>}}
@@ -146,6 +149,7 @@ Format a LogEvent
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_timestamp_fmt"></a>}}
+\if{latex}{\out{\hypertarget{method-set_timestamp_fmt}{}}}
 \subsection{Method \code{set_timestamp_fmt()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_timestamp_fmt(x)}\if{html}{\out{</div>}}
@@ -154,6 +158,7 @@ Format a LogEvent
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_colors"></a>}}
+\if{latex}{\out{\hypertarget{method-set_colors}{}}}
 \subsection{Method \code{set_colors()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_colors(x)}\if{html}{\out{</div>}}
@@ -162,6 +167,7 @@ Format a LogEvent
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_pad_levels"></a>}}
+\if{latex}{\out{\hypertarget{method-set_pad_levels}{}}}
 \subsection{Method \code{set_pad_levels()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_pad_levels(x)}\if{html}{\out{</div>}}
@@ -170,6 +176,7 @@ Format a LogEvent
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-toString"></a>}}
+\if{latex}{\out{\hypertarget{method-toString}{}}}
 \subsection{Method \code{toString()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$toString()}\if{html}{\out{</div>}}
@@ -178,6 +185,7 @@ Format a LogEvent
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-read"></a>}}
+\if{latex}{\out{\hypertarget{method-read}{}}}
 \subsection{Method \code{read()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$read(file, threshold = NA_integer_, n = 20L)}\if{html}{\out{</div>}}
@@ -195,6 +203,7 @@ Format a LogEvent
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

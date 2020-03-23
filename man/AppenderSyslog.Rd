@@ -76,6 +76,7 @@ Other Appenders:
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderSyslog$new(
@@ -91,6 +92,7 @@ Other Appenders:
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-append"></a>}}
+\if{latex}{\out{\hypertarget{method-append}{}}}
 \subsection{Method \code{append()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderSyslog$append(event)}\if{html}{\out{</div>}}
@@ -99,6 +101,7 @@ Other Appenders:
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_syslog_levels"></a>}}
+\if{latex}{\out{\hypertarget{method-set_syslog_levels}{}}}
 \subsection{Method \code{set_syslog_levels()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderSyslog$set_syslog_levels(x)}\if{html}{\out{</div>}}
@@ -107,6 +110,7 @@ Other Appenders:
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_identifier"></a>}}
+\if{latex}{\out{\hypertarget{method-set_identifier}{}}}
 \subsection{Method \code{set_identifier()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderSyslog$set_identifier(x)}\if{html}{\out{</div>}}

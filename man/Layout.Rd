@@ -44,8 +44,12 @@ Other Layouts:
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-format_event"></a>}}
+\if{latex}{\out{\hypertarget{method-format_event}{}}}
 \subsection{Method \code{format_event()}}{
 Format a log event
+
+Function that the Layout uses to transofr a \link{LogEvent} into something
+that an \link{Appender} can write to an output destination.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Layout$format_event(event)}\if{html}{\out{</div>}}
 }
@@ -60,6 +64,7 @@ Format a log event
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-toString"></a>}}
+\if{latex}{\out{\hypertarget{method-toString}{}}}
 \subsection{Method \code{toString()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Layout$toString()}\if{html}{\out{</div>}}
@@ -68,6 +73,7 @@ Format a log event
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

@@ -78,6 +78,7 @@ Other abstract classes:
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$new(...)}\if{html}{\out{</div>}}
@@ -86,6 +87,7 @@ Other abstract classes:
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-append"></a>}}
+\if{latex}{\out{\hypertarget{method-append}{}}}
 \subsection{Method \code{append()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$append(event)}\if{html}{\out{</div>}}
@@ -94,6 +96,7 @@ Other abstract classes:
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-flush"></a>}}
+\if{latex}{\out{\hypertarget{method-flush}{}}}
 \subsection{Method \code{flush()}}{
 Sends the buffer's contents to all attached Appenders and
 then clears the Buffer
@@ -104,6 +107,7 @@ then clears the Buffer
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clear"></a>}}
+\if{latex}{\out{\hypertarget{method-clear}{}}}
 \subsection{Method \code{clear()}}{
 Clears the buffer, discarding all buffered Events
 \subsection{Usage}{
@@ -113,6 +117,7 @@ Clears the buffer, discarding all buffered Events
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_buffer_size"></a>}}
+\if{latex}{\out{\hypertarget{method-set_buffer_size}{}}}
 \subsection{Method \code{set_buffer_size()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$set_buffer_size(x)}\if{html}{\out{</div>}}
@@ -121,6 +126,7 @@ Clears the buffer, discarding all buffered Events
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_should_flush"></a>}}
+\if{latex}{\out{\hypertarget{method-set_should_flush}{}}}
 \subsection{Method \code{set_should_flush()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$set_should_flush(x)}\if{html}{\out{</div>}}
@@ -129,6 +135,7 @@ Clears the buffer, discarding all buffered Events
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_flush_on_exit"></a>}}
+\if{latex}{\out{\hypertarget{method-set_flush_on_exit}{}}}
 \subsection{Method \code{set_flush_on_exit()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$set_flush_on_exit(x)}\if{html}{\out{</div>}}
@@ -137,6 +144,7 @@ Clears the buffer, discarding all buffered Events
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_flush_on_rotate"></a>}}
+\if{latex}{\out{\hypertarget{method-set_flush_on_rotate}{}}}
 \subsection{Method \code{set_flush_on_rotate()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$set_flush_on_rotate(x)}\if{html}{\out{</div>}}
@@ -145,6 +153,7 @@ Clears the buffer, discarding all buffered Events
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_flush_threshold"></a>}}
+\if{latex}{\out{\hypertarget{method-set_flush_threshold}{}}}
 \subsection{Method \code{set_flush_threshold()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$set_flush_threshold(level)}\if{html}{\out{</div>}}
@@ -153,6 +162,7 @@ Clears the buffer, discarding all buffered Events
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-show"></a>}}
+\if{latex}{\out{\hypertarget{method-show}{}}}
 \subsection{Method \code{show()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$show(threshold = NA_integer_, n = 20L)}\if{html}{\out{</div>}}
@@ -161,6 +171,7 @@ Clears the buffer, discarding all buffered Events
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-format"></a>}}
+\if{latex}{\out{\hypertarget{method-format}{}}}
 \subsection{Method \code{format()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$format(color = FALSE, ...)}\if{html}{\out{</div>}}

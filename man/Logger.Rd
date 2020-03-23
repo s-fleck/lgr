@@ -209,6 +209,7 @@ inherits from its ancestors}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \strong{Loggers should never be instantiated directly with \code{Logger$new()}} but
 rather via \code{\link[=get_logger]{get_logger("name")}}. This way new Loggers are
@@ -242,6 +243,7 @@ their ancestors.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-log"></a>}}
+\if{latex}{\out{\hypertarget{method-log}{}}}
 \subsection{Method \code{log()}}{
 Log an event.
 
@@ -276,6 +278,7 @@ will be turned into custom fields.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-fatal"></a>}}
+\if{latex}{\out{\hypertarget{method-fatal}{}}}
 \subsection{Method \code{fatal()}}{
 Log an Event fatal priority
 \subsection{Usage}{
@@ -292,6 +295,7 @@ Log an Event fatal priority
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-error"></a>}}
+\if{latex}{\out{\hypertarget{method-error}{}}}
 \subsection{Method \code{error()}}{
 Log an Event error priority
 \subsection{Usage}{
@@ -308,6 +312,7 @@ Log an Event error priority
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-warn"></a>}}
+\if{latex}{\out{\hypertarget{method-warn}{}}}
 \subsection{Method \code{warn()}}{
 Log an Event warn priority
 \subsection{Usage}{
@@ -324,6 +329,7 @@ Log an Event warn priority
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-info"></a>}}
+\if{latex}{\out{\hypertarget{method-info}{}}}
 \subsection{Method \code{info()}}{
 Log an Event info priority
 \subsection{Usage}{
@@ -340,6 +346,7 @@ Log an Event info priority
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-debug"></a>}}
+\if{latex}{\out{\hypertarget{method-debug}{}}}
 \subsection{Method \code{debug()}}{
 Log an Event debug priority
 \subsection{Usage}{
@@ -356,6 +363,7 @@ Log an Event debug priority
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-trace"></a>}}
+\if{latex}{\out{\hypertarget{method-trace}{}}}
 \subsection{Method \code{trace()}}{
 Log an Event trace priority
 \subsection{Usage}{
@@ -372,6 +380,7 @@ Log an Event trace priority
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-list_log"></a>}}
+\if{latex}{\out{\hypertarget{method-list_log}{}}}
 \subsection{Method \code{list_log()}}{
 \code{list_log()} is a shortcut for \code{do.call(Logger$log, x)}.
 See \url{https://github.com/s-fleck/joblog} for an R package that
@@ -401,6 +410,7 @@ lg$list_log(list(level = 400, msg = "example"))
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-config"></a>}}
+\if{latex}{\out{\hypertarget{method-config}{}}}
 \subsection{Method \code{config()}}{
 Load a Logger configuration.
 \subsection{Usage}{
@@ -427,6 +437,7 @@ type. See \link{logger_config} for details.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-add_appender"></a>}}
+\if{latex}{\out{\hypertarget{method-add_appender}{}}}
 \subsection{Method \code{add_appender()}}{
 Add an Appender to the Logger
 \subsection{Usage}{
@@ -458,6 +469,7 @@ lg$config(NULL)  # reset config
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-remove_appender"></a>}}
+\if{latex}{\out{\hypertarget{method-remove_appender}{}}}
 \subsection{Method \code{remove_appender()}}{
 remove an appender
 \subsection{Usage}{
@@ -475,6 +487,7 @@ remove}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-handle_exception"></a>}}
+\if{latex}{\out{\hypertarget{method-handle_exception}{}}}
 \subsection{Method \code{handle_exception()}}{
 To prevent errors in the logging logic from crashing the whole script,
 Loggers pass errors they encounter to an exception handler. The default
@@ -494,6 +507,7 @@ behaviour is to demote errors to \link{warnings}. See also
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_exception_handler"></a>}}
+\if{latex}{\out{\hypertarget{method-set_exception_handler}{}}}
 \subsection{Method \code{set_exception_handler()}}{
 Set the exception handler of a logger
 \subsection{Usage}{
@@ -518,6 +532,7 @@ Set the exception handler of a logger
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_propagate"></a>}}
+\if{latex}{\out{\hypertarget{method-set_propagate}{}}}
 \subsection{Method \code{set_propagate()}}{
 Should a Logger propagate events to the Appenders of its ancestors?
 \subsection{Usage}{
@@ -535,6 +550,7 @@ of the ancestral Loggers?}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_threshold"></a>}}
+\if{latex}{\out{\hypertarget{method-set_threshold}{}}}
 \subsection{Method \code{set_threshold()}}{
 Set the minimum log level of events that a Logger should process
 \subsection{Usage}{
@@ -552,6 +568,7 @@ Set the minimum log level of events that a Logger should process
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_appenders"></a>}}
+\if{latex}{\out{\hypertarget{method-set_appenders}{}}}
 \subsection{Method \code{set_appenders()}}{
 Set the Logger's Appenders
 \subsection{Usage}{
@@ -571,6 +588,7 @@ about Logger inheritance).}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-spawn"></a>}}
+\if{latex}{\out{\hypertarget{method-spawn}{}}}
 \subsection{Method \code{spawn()}}{
 Spawn a child Logger.
 This is very similar to using \code{\link[=get_logger]{get_logger()}}, but

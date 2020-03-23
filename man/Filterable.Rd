@@ -35,6 +35,7 @@ objects or \code{functions}).}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-filter"></a>}}
+\if{latex}{\out{\hypertarget{method-filter}{}}}
 \subsection{Method \code{filter()}}{
 Determine whether the LogEvent \code{x} should be passed on to
 Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
@@ -53,6 +54,7 @@ Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-add_filter"></a>}}
+\if{latex}{\out{\hypertarget{method-add_filter}{}}}
 \subsection{Method \code{add_filter()}}{
 Add a Filter. When adding a filter an optional \code{name}
 can be specified. \code{remove_filter()} can remove by position or name (if
@@ -75,6 +77,7 @@ name which makes it easier to access (or remove) the filter}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-remove_filter"></a>}}
+\if{latex}{\out{\hypertarget{method-remove_filter}{}}}
 \subsection{Method \code{remove_filter()}}{
 Remove a filter
 \subsection{Usage}{
@@ -92,6 +95,7 @@ Filter to be removed.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_filters"></a>}}
+\if{latex}{\out{\hypertarget{method-set_filters}{}}}
 \subsection{Method \code{set_filters()}}{
 Replace all filters with a list of either \code{functions} or
 arbitrary \R object with a \verb{$filter()} method (preferably a \link{Filter} R6

@@ -110,6 +110,7 @@ Other Appenders:
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFile$new(
@@ -123,6 +124,7 @@ Other Appenders:
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-append"></a>}}
+\if{latex}{\out{\hypertarget{method-append}{}}}
 \subsection{Method \code{append()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFile$append(event)}\if{html}{\out{</div>}}
@@ -131,6 +133,7 @@ Other Appenders:
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_file"></a>}}
+\if{latex}{\out{\hypertarget{method-set_file}{}}}
 \subsection{Method \code{set_file()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFile$set_file(file)}\if{html}{\out{</div>}}
@@ -139,6 +142,7 @@ Other Appenders:
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-show"></a>}}
+\if{latex}{\out{\hypertarget{method-show}{}}}
 \subsection{Method \code{show()}}{
 Display the contents of the log file.
 \subsection{Usage}{
@@ -185,6 +189,7 @@ that should be displayed.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderJson$new(

@@ -62,6 +62,7 @@ etc... on the available backups of \code{file}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$new(
@@ -87,6 +88,7 @@ etc... on the available backups of \code{file}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-append"></a>}}
+\if{latex}{\out{\hypertarget{method-append}{}}}
 \subsection{Method \code{append()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$append(event)}\if{html}{\out{</div>}}
@@ -95,6 +97,7 @@ etc... on the available backups of \code{file}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-rotate"></a>}}
+\if{latex}{\out{\hypertarget{method-rotate}{}}}
 \subsection{Method \code{rotate()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$rotate(force = FALSE)}\if{html}{\out{</div>}}
@@ -103,6 +106,7 @@ etc... on the available backups of \code{file}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-prune"></a>}}
+\if{latex}{\out{\hypertarget{method-prune}{}}}
 \subsection{Method \code{prune()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$prune(max_backups = self$max_backups)}\if{html}{\out{</div>}}
@@ -111,6 +115,7 @@ etc... on the available backups of \code{file}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_file"></a>}}
+\if{latex}{\out{\hypertarget{method-set_file}{}}}
 \subsection{Method \code{set_file()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$set_file(file)}\if{html}{\out{</div>}}
@@ -119,6 +124,7 @@ etc... on the available backups of \code{file}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_size"></a>}}
+\if{latex}{\out{\hypertarget{method-set_size}{}}}
 \subsection{Method \code{set_size()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$set_size(x)}\if{html}{\out{</div>}}
@@ -127,6 +133,7 @@ etc... on the available backups of \code{file}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_max_backups"></a>}}
+\if{latex}{\out{\hypertarget{method-set_max_backups}{}}}
 \subsection{Method \code{set_max_backups()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$set_max_backups(x)}\if{html}{\out{</div>}}
@@ -135,6 +142,7 @@ etc... on the available backups of \code{file}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_compression"></a>}}
+\if{latex}{\out{\hypertarget{method-set_compression}{}}}
 \subsection{Method \code{set_compression()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$set_compression(x)}\if{html}{\out{</div>}}
@@ -143,6 +151,7 @@ etc... on the available backups of \code{file}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_create_file"></a>}}
+\if{latex}{\out{\hypertarget{method-set_create_file}{}}}
 \subsection{Method \code{set_create_file()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$set_create_file(x)}\if{html}{\out{</div>}}
@@ -151,6 +160,7 @@ etc... on the available backups of \code{file}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_backup_dir"></a>}}
+\if{latex}{\out{\hypertarget{method-set_backup_dir}{}}}
 \subsection{Method \code{set_backup_dir()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$set_backup_dir(x)}\if{html}{\out{</div>}}
@@ -159,6 +169,7 @@ etc... on the available backups of \code{file}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-format"></a>}}
+\if{latex}{\out{\hypertarget{method-format}{}}}
 \subsection{Method \code{format()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$format(color = false, ...)}\if{html}{\out{</div>}}
@@ -167,6 +178,7 @@ etc... on the available backups of \code{file}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

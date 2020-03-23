@@ -62,6 +62,7 @@ with the backups.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$new(
@@ -84,6 +85,7 @@ with the backups.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-rotate"></a>}}
+\if{latex}{\out{\hypertarget{method-rotate}{}}}
 \subsection{Method \code{rotate()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$rotate(force = FALSE, now = Sys.time())}\if{html}{\out{</div>}}
@@ -92,6 +94,7 @@ with the backups.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_age"></a>}}
+\if{latex}{\out{\hypertarget{method-set_age}{}}}
 \subsection{Method \code{set_age()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$set_age(x)}\if{html}{\out{</div>}}
@@ -100,6 +103,7 @@ with the backups.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_fmt"></a>}}
+\if{latex}{\out{\hypertarget{method-set_fmt}{}}}
 \subsection{Method \code{set_fmt()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$set_fmt(x)}\if{html}{\out{</div>}}
@@ -108,6 +112,7 @@ with the backups.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_overwrite"></a>}}
+\if{latex}{\out{\hypertarget{method-set_overwrite}{}}}
 \subsection{Method \code{set_overwrite()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$set_overwrite(x)}\if{html}{\out{</div>}}
@@ -116,6 +121,7 @@ with the backups.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_cache_backups"></a>}}
+\if{latex}{\out{\hypertarget{method-set_cache_backups}{}}}
 \subsection{Method \code{set_cache_backups()}}{
 set the \code{cache_backups} flag.
 \subsection{Usage}{
@@ -132,6 +138,7 @@ set the \code{cache_backups} flag.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-format"></a>}}
+\if{latex}{\out{\hypertarget{method-format}{}}}
 \subsection{Method \code{format()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$format(color = FALSE, ...)}\if{html}{\out{</div>}}
@@ -140,6 +147,7 @@ set the \code{cache_backups} flag.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

@@ -66,6 +66,7 @@ Other Layouts:
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 Set a \code{format} that this Layout will apply to timstamps.
 can be a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSIXct()}} or a function.
@@ -76,6 +77,7 @@ can be a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSI
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-format_event"></a>}}
+\if{latex}{\out{\hypertarget{method-format_event}{}}}
 \subsection{Method \code{format_event()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$format_event(event)}\if{html}{\out{</div>}}
@@ -84,6 +86,7 @@ can be a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSI
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_toJSON_args"></a>}}
+\if{latex}{\out{\hypertarget{method-set_toJSON_args}{}}}
 \subsection{Method \code{set_toJSON_args()}}{
 Set a \code{format} that this Layout will apply to timstamps.
 can be a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSIXct()}} or a function.
@@ -94,6 +97,7 @@ can be a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSI
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_timestamp_fmt"></a>}}
+\if{latex}{\out{\hypertarget{method-set_timestamp_fmt}{}}}
 \subsection{Method \code{set_timestamp_fmt()}}{
 Set a format that this Layout will apply to timstamps.
 \subsection{Usage}{
@@ -107,9 +111,9 @@ Set a format that this Layout will apply to timstamps.
 \item \code{NULL} (the default): formatting of the timestamp is left to
 \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}},
 \item a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSIXct()}}, or
-\item a \code{function} that must return a vector of the
-same length as its input. The returned vector can be of any type
-supported by \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}, but usually it should be \code{character}.
+\item a \code{function} that returns a vector of the same length as its
+(\link{POSIXct}) input. The returned vector can be of any type
+supported by \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}, but should usually be \code{character}.
 }}
 }
 \if{html}{\out{</div>}}
@@ -117,6 +121,7 @@ supported by \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}, but usually it s
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-toString"></a>}}
+\if{latex}{\out{\hypertarget{method-toString}{}}}
 \subsection{Method \code{toString()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$toString()}\if{html}{\out{</div>}}
@@ -125,6 +130,7 @@ supported by \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}, but usually it s
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-parse"></a>}}
+\if{latex}{\out{\hypertarget{method-parse}{}}}
 \subsection{Method \code{parse()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$parse(file)}\if{html}{\out{</div>}}
@@ -133,6 +139,7 @@ supported by \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}, but usually it s
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-read"></a>}}
+\if{latex}{\out{\hypertarget{method-read}{}}}
 \subsection{Method \code{read()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$read(file, threshold = NA_integer_, n = 20L)}\if{html}{\out{</div>}}
@@ -141,6 +148,7 @@ supported by \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}, but usually it s
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

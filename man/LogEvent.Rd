@@ -80,6 +80,7 @@ created this event, equivalent to \code{event$.logger$name})}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 The arguments to \code{LogEvent$new()} directly translate to the fields stored
 in the \code{LogEvent}. Usually these values will be scalars, but (except for
@@ -111,6 +112,7 @@ this way, but not all Appenders will support them. See \link{AppenderJson} for}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

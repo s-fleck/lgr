@@ -232,3 +232,22 @@ tokenize_format <- function(
 
   res
 }
+
+
+
+
+#' Convert a LogEvent to a character string
+#'
+#' @param x a [LogEvent]
+#'
+#' @return a `character` scalar
+#' @export
+#'
+#' @examples
+#' toString(LogEvent$new(logger = lgr::lgr))
+toString.LogEvent <- function(x){
+  paste(
+    paste0("$", names(x$values), ": ", vapply(x$values, function(.) preview_object(.), character(1))),
+    collapse = ", "
+  )
+}

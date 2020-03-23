@@ -29,9 +29,16 @@ Layout <- R6::R6Class(
 
   public = list(
 
-    #' @description  Format a log event
+    #' @description Format a log event
+    #'
+    #' Function that the Layout uses to transofr a [LogEvent] into something
+    #' that an [Appender] can write to an output destination.
+    #'
     #' @param event a [LogEvent]
-    format_event = function(event) paste(capture.output(print(event$values)), collapse = " "),
+    format_event = function(event){
+      toString(event)
+    },
+
     toString = function() "<empty>"
   )
 )
@@ -357,9 +364,9 @@ LayoutJson <- R6::R6Class(
     #' * `NULL` (the default): formatting of the timestamp is left to
     #' [jsonlite::toJSON()],
     #' * a `character` scalar as for [format.POSIXct()], or
-    #' * a `function` that must return a vector of the
-    #' same length as its input. The returned vector can be of any type
-    #' supported by [jsonlite::toJSON()], but usually it should be `character`.
+    #' * a `function` that returns a vector of the same length as its
+    #'   ([POSIXct]) input. The returned vector can be of any type
+    #'   supported by [jsonlite::toJSON()], but should usually be `character`.
     set_timestamp_fmt = function(x){
       assert(is.null(x) || is_scalar_character(x) || is.function(x))
       private[[".timestamp_fmt"]] <- x

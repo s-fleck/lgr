@@ -55,6 +55,7 @@ examples.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-fatal"></a>}}
+\if{latex}{\out{\hypertarget{method-fatal}{}}}
 \subsection{Method \code{fatal()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$fatal(..., caller = get_caller(-8L), .envir = parent.frame())}\if{html}{\out{</div>}}
@@ -63,6 +64,7 @@ examples.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-error"></a>}}
+\if{latex}{\out{\hypertarget{method-error}{}}}
 \subsection{Method \code{error()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$error(..., caller = get_caller(-8L), .envir = parent.frame())}\if{html}{\out{</div>}}
@@ -71,6 +73,7 @@ examples.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-warn"></a>}}
+\if{latex}{\out{\hypertarget{method-warn}{}}}
 \subsection{Method \code{warn()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$warn(..., caller = get_caller(-8L), .envir = parent.frame())}\if{html}{\out{</div>}}
@@ -79,6 +82,7 @@ examples.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-info"></a>}}
+\if{latex}{\out{\hypertarget{method-info}{}}}
 \subsection{Method \code{info()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$info(..., caller = get_caller(-8L), .envir = parent.frame())}\if{html}{\out{</div>}}
@@ -87,6 +91,7 @@ examples.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-debug"></a>}}
+\if{latex}{\out{\hypertarget{method-debug}{}}}
 \subsection{Method \code{debug()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$debug(..., caller = get_caller(-8L), .envir = parent.frame())}\if{html}{\out{</div>}}
@@ -95,6 +100,7 @@ examples.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-trace"></a>}}
+\if{latex}{\out{\hypertarget{method-trace}{}}}
 \subsection{Method \code{trace()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$trace(..., caller = get_caller(-8L), .envir = parent.frame())}\if{html}{\out{</div>}}
@@ -103,6 +109,7 @@ examples.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-log"></a>}}
+\if{latex}{\out{\hypertarget{method-log}{}}}
 \subsection{Method \code{log()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$log(
@@ -117,6 +124,7 @@ examples.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-list_log"></a>}}
+\if{latex}{\out{\hypertarget{method-list_log}{}}}
 \subsection{Method \code{list_log()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$list_log(x)}\if{html}{\out{</div>}}
@@ -125,6 +133,7 @@ examples.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-spawn"></a>}}
+\if{latex}{\out{\hypertarget{method-spawn}{}}}
 \subsection{Method \code{spawn()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$spawn(name)}\if{html}{\out{</div>}}

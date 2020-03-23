@@ -1,7 +1,7 @@
 # lgr (development version)
 
 * Moved more complex Appenders to package 
-  [lgr.app](https://github.com/s-fleck/lgr.app). This includes database 
+  [lgrExtra](https://github.com/s-fleck/lgrExtra). This includes database 
   Appenders, email and push notifications and AppenderDt (in-memory 
   `data.tables`).
   
@@ -32,6 +32,7 @@
 * LayoutJson gains a `timestamp_fmt` field that can be used for custom 
   timestamp formats (#34)
   
+* added `toString.LogEvent()` for compact representations of LogEvents
 
 # lgr 0.3.4
 

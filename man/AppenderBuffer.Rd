@@ -91,14 +91,15 @@ Other Appenders:
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 The \link{Layout} for this Appender is used only to format console output of
 its \verb{$show()} method.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderBuffer$new(
   threshold = NA_integer_,
-  layout = LayoutFormat$new(fmt = "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S", colors
-    = getOption("lgr.colors")),
+  layout = LayoutFormat$new(fmt = "\%L [\%t] \%m", timestamp_fmt = "\%H:\%M:\%S",
+    colors = getOption("lgr.colors")),
   appenders = NULL,
   buffer_size = 1000,
   flush_threshold = NULL,
@@ -112,6 +113,7 @@ its \verb{$show()} method.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-flush"></a>}}
+\if{latex}{\out{\hypertarget{method-flush}{}}}
 \subsection{Method \code{flush()}}{
 Sends the buffer's contents to all attached Appenders and
 then clears the Buffer
@@ -122,6 +124,7 @@ then clears the Buffer
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clear"></a>}}
+\if{latex}{\out{\hypertarget{method-clear}{}}}
 \subsection{Method \code{clear()}}{
 Clears the buffer, discarding all buffered Events
 \subsection{Usage}{
@@ -131,6 +134,7 @@ Clears the buffer, discarding all buffered Events
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_appenders"></a>}}
+\if{latex}{\out{\hypertarget{method-set_appenders}{}}}
 \subsection{Method \code{set_appenders()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderBuffer$set_appenders(x)}\if{html}{\out{</div>}}
@@ -139,6 +143,7 @@ Clears the buffer, discarding all buffered Events
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-add_appender"></a>}}
+\if{latex}{\out{\hypertarget{method-add_appender}{}}}
 \subsection{Method \code{add_appender()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderBuffer$add_appender(appender, name = NULL)}\if{html}{\out{</div>}}
@@ -147,6 +152,7 @@ Clears the buffer, discarding all buffered Events
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-remove_appender"></a>}}
+\if{latex}{\out{\hypertarget{method-remove_appender}{}}}
 \subsection{Method \code{remove_appender()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderBuffer$remove_appender(pos)}\if{html}{\out{</div>}}
@@ -155,6 +161,7 @@ Clears the buffer, discarding all buffered Events
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-format"></a>}}
+\if{latex}{\out{\hypertarget{method-format}{}}}
 \subsection{Method \code{format()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderBuffer$format(...)}\if{html}{\out{</div>}}
