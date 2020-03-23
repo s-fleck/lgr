@@ -3,7 +3,6 @@
 language: R
 r:
   - release
-  - devel
 r_github_packages:
   - s-fleck/lgrExtra
 sudo: false
