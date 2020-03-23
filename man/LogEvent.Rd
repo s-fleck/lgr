@@ -3,7 +3,7 @@
 \name{LogEvent}
 \alias{LogEvent}
 \alias{LogEvents}
-\title{LogEvents - The Atomic Unit of Logging}
+\title{LogEvents - The atomic unit of logging}
 \description{
 A \code{LogEvent} is a single unit of data that should be logged. \code{LogEvents} are
 usually created by a \link{Logger}, and then processed by one more \link{Appenders}.

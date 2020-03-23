@@ -17,7 +17,7 @@
 #'
 #' @aliases Layouts
 #' @family Layouts
-#' @include print_LogEvent.R
+#' @include LogEvent.R
 #' @include utils.R
 #' @include utils-sfmisc.R
 #' @include Filterable.R
