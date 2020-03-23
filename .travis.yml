@@ -15,3 +15,9 @@ sudo: false
 after_success:
   - Rscript -e 'covr::codecov()'
   - Rscript -e 'devtools::install();devtools::test()'
+
+before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
+deploy:
+  provider: script
+  script: Rscript -e 'pkgdown::deploy_site_github(ssh_id = Sys.getenv("TRAVIS_DEPLOY_KEY", ""))'
+  skip_cleanup: true
