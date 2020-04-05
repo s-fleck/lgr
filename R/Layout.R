@@ -13,7 +13,7 @@
 #' Layouts may have an additonal `$read(file, threshold, n)` method that returns
 #' a `character` vector, and/or an `$parse(file)` method that
 #' returns a `data.frame`. These can be used by Appenders to `$show()` methods
-#' and `$data` active bdinings respectively (see source code of [AppenderFile]).
+#' and `$data` active bindings respectively (see source code of [AppenderFile]).
 #'
 #' @aliases Layouts
 #' @family Layouts
