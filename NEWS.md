@@ -34,6 +34,7 @@
   
 * added `toString.LogEvent()` for compact representations of LogEvents
 
+
 # lgr 0.3.4
 
 * Hotfix for compat with R < 3.6.0 (#32)

@@ -102,17 +102,3 @@ Filterable <- R6::R6Class(
     .filters = list()
   )
 )
-
-
-
-
-assert_filter <- function(x){
-  if (is_filter(x))
-    TRUE
-  else
-    stop(
-      "`", deparse(substitute(x)), "`", "
-      must be a function with the argument `event` or a formal EventFilter object. See ?is_filter",
-      call. = FALSE
-    )
-}

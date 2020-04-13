@@ -1,8 +1,10 @@
+# EventFilter -------------------------------------------------------------
+
 #' Event Filters
 #'
 #' @description
-#' Filters screen whether or not an object should be processed by a [Logger]
-#' or [Appender]. They are attached to a Logger or Appender via their
+#' Filters screen whether or not an object should be processed by a [Logger] or
+#' [Appender]. They are attached to a Logger or Appender via their
 #' `$set_filter()` and `$add_filter()` methods. Usually you do not need to
 #' instantiate a formal `EventFilter` object as you can just use any `function`
 #' that has the single argument `event` instead; however, for complex filter
@@ -10,17 +12,18 @@
 #'
 #' @section Modifying LogEvents with Filters:
 #'
-#' Since LogEvents are R6 objects with reference semantics, Filters can
-#' be abused to modify log events before passing them on. lgr comes with a few
-#' preset filters that use this property: [FilterInject]
-#' (similar to [with_log_level()]) and [FilterForceLevel] (similar to [with_log_value()]).
+#'   Since LogEvents are R6 objects with reference semantics, Filters can be
+#'   abused to modify log events before passing them on. lgr comes with a few
+#'   preset filters that use this property: [FilterInject] (similar to
+#'   [with_log_level()]) and [FilterForceLevel] (similar to [with_log_value()]).
 #'
-#' **NOTE:** The base class for Filters is called `EventFilter` so that it doesn't
-#' conflict with [base::Filter()]. The recommended convention for Filter
-#' subclasses is to call them `FilterSomething` and leave out the
-#' `Event` prefix.
+#'   **NOTE:** The base class for Filters is called `EventFilter` so that it
+#'   doesn't conflict with [base::Filter()]. The recommended convention for
+#'   Filter subclasses is to call them `FilterSomething` and leave out the
+#'   `Event` prefix.
 #'
 #' @aliases Filter
+#' @seealso [is_filter()]
 #' @export
 EventFilter <- R6::R6Class(
   "EventFilter",
@@ -43,6 +46,8 @@ EventFilter <- R6::R6Class(
 
 
 
+
+# FilterInject ------------------------------------------------------------
 
 #' Inject values into all events processed by a Logger/Appender
 #'
@@ -102,6 +107,8 @@ FilterInject <- R6::R6Class(
 
 
 
+# FilterForceLevel --------------------------------------------------------
+
 #' Override the log level of all events processed by a Logger/Appender
 #'
 #'
@@ -147,32 +154,8 @@ FilterForceLevel <- R6::R6Class(
 
 
 
-#' Check if an R Object is a Filter
-#'
-#' Any function that has a single argument `event` or any object with a
-#' `$filter()` method are recognized as `Filters` by lgr.
-#'
-#' @param x any \R Object
-#' @seealso [EventFilter]
-#' @return `TRUE` if object can be used as a filter for [Loggers], [Appenders]
-#' or other [Filterables][Filterable], `FALSE` otherwise.
-#'
-#' @export
-is_filter <- function(
-  x
-){
-  if (is.function(x)){
-    identical(names(formals(x)), c("event"))
-  } else {
-    # the extra is.function is to prevent infinite recursions
-    "filter" %in% names(x) &&
-    is.function(x[["filter"]]) &&
-    identical(names(formals(x[["filter"]])), c("event"))
-  }
-}
 
-
-
+# utils -------------------------------------------------------------------
 
 #' @description
 #' `.obj()` is a special function that can only be used within the `$filter()`
@@ -195,3 +178,58 @@ is_filter <- function(
   get("self", parent.env(parent.frame(2)))
 }
 
+
+
+
+#' Check if an R Object is a Filter
+#'
+#'
+#' @description
+#' Returns `TRUE` for any \R object that can be used as a Filter for
+#' [Loggers] or, [Appenders]:
+#'  * a `function` with the single argument `event`;
+#'  * an [EventFilter] [R6::R6] object; or
+#'  * any object with a `$filter(event)` method.
+#'
+#' **Note:** A Filter **must** return a scalar `TRUE` or `FALSE`, but
+#' this property cannot be checked by [is_filter()].
+#'
+#' @param x any \R Object
+#' @seealso [EventFilter], [Filterable]
+#' @return `TRUE` or `FALSE`
+#'
+#' @export
+is_filter <- function(
+  x
+){
+  if (is.function(x)){
+    identical(names(formals(x)), c("event"))
+  } else {
+    # the extra is.function is to prevent infinite recursions
+    "filter" %in% names(x) &&
+    is.function(x[["filter"]]) &&
+    identical(names(formals(x[["filter"]])), c("event"))
+  }
+}
+
+
+
+
+assert_filter <- function(x){
+  if (is_filter(x))
+    TRUE
+  else
+    stop(ObjectIsNoFilterError(paste0(
+      "`", deparse(substitute(x)), "` ",
+      "is not a function with the single argument `event` or an EventFilter, ",
+      "but ", preview_object(x), ". See ?is_filter."
+    )
+  ))
+}
+
+
+
+
+ObjectIsNoFilterError <- function(message = "Object is not an EventFilter. See ?is_filter."){
+  error(message, "ObjectIsNoFilterError")
+}
