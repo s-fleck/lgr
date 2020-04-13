@@ -10,7 +10,8 @@ test_that("is_filter() works", {
   assert_filter(fil)
   expect_error(
     assert_filter(mean),
-    "mean"
+    regexp = "mean",
+    class = "ObjectIsNoFilterError"
   )
 })
 
