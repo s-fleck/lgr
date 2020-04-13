@@ -290,10 +290,12 @@ standardize_filters_list <- function(x){
     return(list(x))
 
   assert(
-    is.list(x) && all(vapply(x, is_filter, logical(1))),
-    "'filters' must be a list Filters or of functions with the single argument",
-    "'event'"
+    is.list(x),
+    "'filters' must be a list Filters or a single Filter (see ?is_filter)"
   )
+
+  for (f in x)
+    assert_filter(x)
 
   x
 }
