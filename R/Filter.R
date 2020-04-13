@@ -1,13 +1,12 @@
 #' Event Filters
 #'
 #' @description
-#' Filters can be used for the `$set_filter()` and `$add_filter()` methods of
-#' Appenders and Loggers. You normally do not need to construct a formal
-#' `EventFilter` object, you can just use any `function` that has the single
-#' argument `event`, or any object that has a `filter` method.
-#'
-#' NOTE: You can use the special function [.obj()] to access the calling
-#' Logger/Appender from within a filter
+#' Filters screen whether or not an object should be processed by a [Logger]
+#' or [Appender]. They are attached to a Logger or Appender via their
+#' `$set_filter()` and `$add_filter()` methods. Usually you do not need to
+#' instantiate a formal `EventFilter` object as you can just use any `function`
+#' that has the single argument `event` instead; however, for complex filter
+#' logic a more formal approach might be desirable.
 #'
 #' @section Modifying LogEvents with Filters:
 #'
@@ -16,7 +15,7 @@
 #' preset filters that use this property: [FilterInject]
 #' (similar to [with_log_level()]) and [FilterForceLevel] (similar to [with_log_value()]).
 #'
-#' The base class for Filters is called `EventFilter` so that it doesn't
+#' **NOTE:** The base class for Filters is called `EventFilter` so that it doesn't
 #' conflict with [base::Filter()]. The recommended convention for Filter
 #' subclasses is to call them `FilterSomething` and leave out the
 #' `Event` prefix.
@@ -150,8 +149,13 @@ FilterForceLevel <- R6::R6Class(
 
 #' Check if an R Object is a Filter
 #'
+#' Any function that has a single argument `event` or any object with a
+#' `$filter()` method are recognized as `Filters` by lgr.
+#'
 #' @param x any \R Object
 #' @seealso [EventFilter]
+#' @return `TRUE` if object can be used as a filter for [Loggers], [Appenders]
+#' or other [Filterables][Filterable], `FALSE` otherwise.
 #'
 #' @export
 is_filter <- function(
@@ -170,10 +174,12 @@ is_filter <- function(
 
 
 
-#' Retrieve the Parent object of a Filter
+#' @description
+#' `.obj()` is a special function that can only be used within the `$filter()`
+#' methods of [EventFilters][EventFilter]. It returns the [Logger] or [Appender]
+#' that the EventFilter is attached to.
 #'
-#' Only for use within `$filter()` methods of [EventFilters][EventFilter]
-#'
+#' @rdname EventFilter
 #' @export
 #' @examples
 #' lg <- get_logger("test")

@@ -1,10 +1,10 @@
 #' Abstract Class for Filterables
 #'
-#' @template abstract_class
-#'
 #' @description
 #' Superclass for classes that have a `$filter()` method such as [Appenders] and
 #' [Loggers]. See [EventFilter] for Details.
+#'
+#' @template abstract_class
 #'
 #' @export
 Filterable <- R6::R6Class(
@@ -112,7 +112,7 @@ assert_filter <- function(x){
   else
     stop(
       "`", deparse(substitute(x)), "`", "
-      must be a function with the argument `event`",
+      must be a function with the argument `event` or a formal EventFilter object. See ?is_filter",
       call. = FALSE
     )
 }
