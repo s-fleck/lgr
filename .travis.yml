@@ -2,14 +2,18 @@
 
 language: R
 r:
+  - devel
   - release
+  - 3.2
+  - 3.3
+  - 3.4
+  - 3.5
 r_github_packages:
   - s-fleck/lgrExtra
 sudo: false
 after_success:
   - Rscript -e 'covr::codecov()'
   - Rscript -e 'devtools::install();devtools::test()'
-
 before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
 deploy:
   provider: script
