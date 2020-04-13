@@ -2,10 +2,15 @@
 
 #' Event Filters
 #'
-#' @description
-#' Filters screen whether or not an object should be processed by a [Logger] or
-#' [Appender]. They are attached to a Logger or Appender via their
-#' `$set_filter()` and `$add_filter()` methods. Usually you do not need to
+#' @description Filters screen whether or not an object should be processed by a
+#' [Logger] or [Appender]. They are attached to a Logger or Appender via their
+#' `$set_filter()` and `$add_filter()` methods. If all Filters evaluate to
+#' `TRUE` for a given [LogEvent], that event is passed on. Since LogEvents have
+#' reference semantics, filters can also be abused to modify them before they
+#' are passed on. Look at the source code of [with_log_level()] or
+#' [with_log_value()] for examples.
+#'
+#' Usually you do not need to
 #' instantiate a formal `EventFilter` object as you can just use any `function`
 #' that has the single argument `event` instead; however, for complex filter
 #' logic a more formal approach might be desirable.
@@ -31,7 +36,8 @@ EventFilter <- R6::R6Class(
 
     #' @description Initilize a new EventFilter
     #' @param fun a `function` with a single argument `event` that must return
-    #'   either `TRUE` or `FALSE.`
+    #'   either `TRUE` or `FALSE`. Any  non-`FALSE` will be interpeted as `TRUE`
+    #'   (= no filtering takes place) and a warning will be thrown.
     initialize = function(fun = function(event) TRUE){
       self$filter <- fun
     },
