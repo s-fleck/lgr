@@ -247,4 +247,26 @@ last_n <- function(x, n){
   n   <- min(n, len)
   x[seq.int(to = len, length.out = n)]
 }
+
+
+
+
+# conditions --------------------------------------------------------------
+
+condition <- function(message, class, call = NULL, ...) {
+  structure(
+    class = union(class, "condition"),
+    list(message = message, call = call, ...)
+  )
+}
+
+
+
+
+error <- function(message, class, call = NULL, ...) {
+  structure(
+    class = union(class, c("error", "condition")),
+    list(message = message, call = call, ...)
+  )
+}
 # nocov end
