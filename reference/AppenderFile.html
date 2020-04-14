@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -38,7 +42,6 @@
 <meta property="og:title" content="Log to a file — AppenderFile" />
 <meta property="og:description" content="AppenderJson is just a shortcut for AppenderFile preconfigured with
 LayoutJson." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -56,7 +59,7 @@ LayoutJson." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -70,7 +73,7 @@ LayoutJson." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9003</span>
       </span>
     </div>
 
@@ -93,7 +96,12 @@ LayoutJson." />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/s-fleck/lgr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -108,7 +116,7 @@ LayoutJson." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Log to a file</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/Appender.R'><code>R/Appender.R</code></a></small>
     <div class="hidden name"><code>AppenderFile.Rd</code></div>
     </div>
 
@@ -130,7 +138,7 @@ AppenderJson, which is more or less a shortcut for <code>AppenderFile</code> wit
     
 
 
-<dl class='dl-horizontal'>
+<dl'>
 <dt><code>file</code>, <code>set_file(file)</code></dt><dd><p><code>character</code> scalar. Path to the desired log
 file. If the file does not exist it will be created.</p></dd>
 
@@ -182,32 +190,32 @@ file. If the file does not exist it will be created.</p></dd>
 <a id="method-new"></a></p><h3>Method <code>new()</code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>AppenderFile$new(
-  file,
-  threshold = NA_integer_,
-  layout = LayoutFormat$new(),
-  filters = NULL
+<p><div class="r"></p><pre><span class='no'>AppenderFile</span>$<span class='fu'>new</span>(
+  <span class='no'>file</span>,
+  <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>,
+  <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(),
+  <span class='kw'>filters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre><p></div></p>
 
 <p><hr>
 <a id="method-append"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/append.html'>append()</a></code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>AppenderFile$append(event)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>AppenderFile</span>$<span class='fu'><a href='https://rdrr.io/r/base/append.html'>append</a></span>(<span class='no'>event</span>)</pre><p></div></p>
 
 <p><hr>
 <a id="method-set_file"></a></p><h3>Method <code>set_file()</code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>AppenderFile$set_file(file)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>AppenderFile</span>$<span class='fu'>set_file</span>(<span class='no'>file</span>)</pre><p></div></p>
 
 <p><hr>
 <a id="method-show"></a></p><h3>Method <code>show()</code></h3>
 <p>Display the contents of the log file.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>AppenderFile$show(threshold = NA_integer_, n = 20L)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>AppenderFile</span>$<span class='fu'>show</span>(<span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>20L</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>threshold</code></dt><dd><p><code>character</code> or <code>integer</code> scalar. The minimum log level
 that should be displayed.</p></dd>
 
@@ -247,11 +255,11 @@ that should be displayed.</p></dd>
 <a id="method-new"></a></p><h3>Method <code>new()</code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>AppenderJson$new(
-  file,
-  threshold = NA_integer_,
-  layout = LayoutJson$new(),
-  filters = NULL
+<p><div class="r"></p><pre><span class='no'>AppenderJson</span>$<span class='fu'>new</span>(
+  <span class='no'>file</span>,
+  <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>,
+  <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>(),
+  <span class='kw'>filters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre><p></div></p>
 
 
@@ -271,8 +279,8 @@ that should be displayed.</p></dd>
   <span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>json</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()), <span class='st'>"json"</span>
 )
 
-<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; INFO  [10:24:45.476] A test message </div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>default</span>)</div><div class='output co'>#&gt; [1] "INFO  [2020-03-23 10:24:45.476] A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>fancy</span>)</div><div class='output co'>#&gt; [1] "[2020-03-23 10:24:45.476] eval(): INFO  A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>json</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2020-03-23 10:24:45\",\"logger\":\"test\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; INFO  [05:56:18.351] A test message </div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>default</span>)</div><div class='output co'>#&gt; [1] "INFO  [2020-04-14 05:56:18.351] A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>fancy</span>)</div><div class='output co'>#&gt; [1] "[2020-04-14 05:56:18.351] eval(): INFO  A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>json</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2020-04-14 05:56:18\",\"logger\":\"test\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div><div class='input'>
 <span class='co'># cleanup</span>
 <span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
 #&gt; 
@@ -288,10 +296,10 @@ that should be displayed.</p></dd>
 <span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)
 <span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message %s strings"</span>, <span class='st'>"with format strings"</span>, <span class='kw'>and</span> <span class='kw'>=</span> <span class='st'>"custom_fields"</span>)
 
-<span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2020-03-23 10:24:45","logger":"test","caller":"eval","msg":"A test message"}
-#&gt; {"level":400,"timestamp":"2020-03-23 10:24:45","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp logger caller
-#&gt; 1   400 2020-03-23 10:24:45   test   eval
-#&gt; 2   400 2020-03-23 10:24:45   test   eval
+<span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2020-04-14 05:56:18","logger":"test","caller":"eval","msg":"A test message"}
+#&gt; {"level":400,"timestamp":"2020-04-14 05:56:18","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp logger caller
+#&gt; 1   400 2020-04-14 05:56:18   test   eval
+#&gt; 2   400 2020-04-14 05:56:18   test   eval
 #&gt;                                          msg           and
 #&gt; 1                             A test message          &lt;NA&gt;
 #&gt; 2 A test message with format strings strings custom_fields</div><div class='input'>
@@ -301,19 +309,10 @@ that should be displayed.</p></dd>
 #&gt; inherited appenders:
 #&gt;   appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>tf</span>)</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#details">Details</a></li>
-      <li><a href="#fields">Fields</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#super-classes">Super classes</a></li>
-      <li><a href="#methods">Methods</a></li>
-      <li><a href="#super-classes">Super classes</a></li>
-      <li><a href="#methods">Methods</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -324,7 +323,7 @@ that should be displayed.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

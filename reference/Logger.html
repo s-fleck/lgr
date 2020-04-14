@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -44,7 +48,6 @@ root Logger that can be accessed via lgr$&amp;lt;...&amp;gt;. Instantiation of n
 Loggers is done with get_logger(). It is advisable to instantiate a
 sepparate Logger with a descriptive name for each package/script in which
 you use lgr." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -62,7 +65,7 @@ you use lgr." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -76,7 +79,7 @@ you use lgr." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9003</span>
       </span>
     </div>
 
@@ -99,7 +102,12 @@ you use lgr." />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/s-fleck/lgr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -114,7 +122,7 @@ you use lgr." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Loggers</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/Logger.R'><code>R/Logger.R</code></a></small>
     <div class="hidden name"><code>Logger.Rd</code></div>
     </div>
 
@@ -146,7 +154,7 @@ root Logger (new Appenders added/removed, Layouts modified, etc...).</p>
     <p><code><a href='Filterable.html'>lgr::Filterable</a></code> -&gt; <code>Logger</code></p>
     <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
 
-    <p><div class="r6-active-bindings"></p><dl class='dl-horizontal'>
+    <p><div class="r6-active-bindings"></p><dl'>
 <dt><code>name</code></dt><dd><p>A <code>character</code> scalar. The unique name of each logger,
 which also includes the names of its ancestors (sepparated by <code>/</code>).</p></dd>
 
@@ -222,17 +230,17 @@ a Reference to the existing Logger.</p>
 <code>foo/bar/baz</code>. Loggers further down the hierarchy are descendents of the
 loggers above and (by default) inherit <code>threshold</code> and <code>Appenders</code> from
 their ancestors.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Logger$new(
-  name = "(unnamed logger)",
-  appenders = list(),
-  threshold = NULL,
-  filters = list(),
-  exception_handler = default_exception_handler,
-  propagate = TRUE
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>new</span>(
+  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"(unnamed logger)"</span>,
+  <span class='kw'>appenders</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>filters</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>exception_handler</span> <span class='kw'>=</span> <span class='no'>default_exception_handler</span>,
+  <span class='kw'>propagate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>name, appenders, threshold, filters, exception_handler, propagate</code></dt><dd><p>See section Active bindings.</p></dd>
 
 </dl><p></div></p>
@@ -243,10 +251,10 @@ their ancestors.</p><h3>Usage</h3>
 <code>msg</code>, <code>timestamp</code> and <code>caller</code> is created.  If the new LogEvent also
 passes the Loggers <a href='EventFilter.html'>Filters</a>, it is be dispatched to the
 relevant <a href='Appender.html'>Appenders</a>.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Logger$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>level</span>, <span class='no'>msg</span>, <span class='no'>...</span>, <span class='kw'>timestamp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(), <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>7</span>))</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>level</code></dt><dd><p>a <code>character</code> or <code>integer</code> scalar. See <a href='get_log_levels.html'>log_levels</a>.</p></dd>
 
 <dt><code>msg</code></dt><dd><p><code>character</code>. A log message. If unnamed arguments are supplied
@@ -266,60 +274,60 @@ will be turned into custom fields.</p></dd>
 <p><hr>
 <a id="method-fatal"></a></p><h3>Method <code>fatal()</code></h3>
 <p>Log an Event fatal priority</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Logger$fatal(msg, ..., caller = get_caller(-8L))</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>fatal</span>(<span class='no'>msg</span>, <span class='no'>...</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>8L</span>))</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>msg, ..., caller</code></dt><dd><p>see <code>$log()</code></p></dd>
 
 </dl><p></div></p>
 <p><hr>
 <a id="method-error"></a></p><h3>Method <code>error()</code></h3>
 <p>Log an Event error priority</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Logger$error(msg, ..., caller = get_caller(-8L))</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>error</span>(<span class='no'>msg</span>, <span class='no'>...</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>8L</span>))</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>msg, ..., caller</code></dt><dd><p>see <code>$log()</code></p></dd>
 
 </dl><p></div></p>
 <p><hr>
 <a id="method-warn"></a></p><h3>Method <code>warn()</code></h3>
 <p>Log an Event warn priority</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Logger$warn(msg, ..., caller = get_caller(-8L))</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>warn</span>(<span class='no'>msg</span>, <span class='no'>...</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>8L</span>))</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>msg, ..., caller</code></dt><dd><p>see <code>$log()</code></p></dd>
 
 </dl><p></div></p>
 <p><hr>
 <a id="method-info"></a></p><h3>Method <code>info()</code></h3>
 <p>Log an Event info priority</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Logger$info(msg, ..., caller = get_caller(-8L))</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>info</span>(<span class='no'>msg</span>, <span class='no'>...</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>8L</span>))</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>msg, ..., caller</code></dt><dd><p>see <code>$log()</code></p></dd>
 
 </dl><p></div></p>
 <p><hr>
 <a id="method-debug"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/debug.html'>debug()</a></code></h3>
 <p>Log an Event debug priority</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Logger$debug(msg, ..., caller = get_caller(-8L))</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'><a href='https://rdrr.io/r/base/debug.html'>debug</a></span>(<span class='no'>msg</span>, <span class='no'>...</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>8L</span>))</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>msg, ..., caller</code></dt><dd><p>see <code>$log()</code></p></dd>
 
 </dl><p></div></p>
 <p><hr>
 <a id="method-trace"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/trace.html'>trace()</a></code></h3>
 <p>Log an Event trace priority</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Logger$trace(msg, ..., caller = get_caller(-8L))</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'><a href='https://rdrr.io/r/base/trace.html'>trace</a></span>(<span class='no'>msg</span>, <span class='no'>...</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>8L</span>))</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>msg, ..., caller</code></dt><dd><p>see <code>$log()</code></p></dd>
 
 </dl><p></div></p>
@@ -329,26 +337,25 @@ will be turned into custom fields.</p></dd>
 See <a href='https://github.com/s-fleck/joblog'>https://github.com/s-fleck/joblog</a> for an R package that
 leverages this feature to create custom log event types for tracking
 the status of cron jobs.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Logger$list_log(x)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>list_log</span>(<span class='no'>x</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>x</code></dt><dd><p>a named <code>list</code> that must at least contain the named elements
 <code>level</code> and <code>timestamp</code></p></dd>
 
 </dl><p></div></p>
 <h3>Examples</h3>
-<p><div class="r example copy"></p><pre>lg &lt;- get_logger("test")
-lg$list_log(list(level = 400, msg = "example"))
-</pre><p></div></p>
+<p><div class="r example copy"></p><pre><span class='no'>lg</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)
+<span class='no'>lg</span>$<span class='fu'>list_log</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>400</span>, <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"example"</span>))</pre><p></div></p>
 
 <p><hr>
 <a id="method-config"></a></p><h3>Method <code>config()</code></h3>
 <p>Load a Logger configuration.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Logger$config(cfg, file, text, list)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>config</span>(<span class='no'>cfg</span>, <span class='no'>file</span>, <span class='no'>text</span>, <span class='no'>list</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>cfg</code></dt><dd><p><ul>
 <li><p>a special <code>list</code> object with any or all of the the following elements:
 <code>appenders</code>, <code>threshold</code>, <code>filters</code>, <code>propagate</code>, <code>exception_handler</code>,</p></li>
@@ -365,31 +372,30 @@ type. See <a href='logger_config.html'>logger_config</a> for details.</p></dd>
 <p><hr>
 <a id="method-add_appender"></a></p><h3>Method <code><a href='simple_logging.html'>add_appender()</a></code></h3>
 <p>Add an Appender to the Logger</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Logger$add_appender(appender, name = NULL)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>appender</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>appender</code></dt><dd><p>a single <a href='Appender.html'>Appender</a></p></dd>
 
 <dt><code>name</code></dt><dd><p>a <code>character</code> scalar. Optional but recommended.</p></dd>
 
 </dl><p></div></p>
 <h3>Examples</h3>
-<p><div class="r example copy"></p><pre>lg &lt;- get_logger("test")
-lg$add_appender(AppenderConsole$new(), name = "myconsole")
-lg$appenders[[1]]
-lg$appenders$myconsole
-lg$remove_appender("myconsole")
-lg$config(NULL)  # reset config
-</pre><p></div></p>
+<p><div class="r example copy"></p><pre><span class='no'>lg</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)
+<span class='no'>lg</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(), <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"myconsole"</span>)
+<span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]
+<span class='no'>lg</span>$<span class='no'>appenders</span>$<span class='no'>myconsole</span>
+<span class='no'>lg</span>$<span class='fu'><a href='simple_logging.html'>remove_appender</a></span>(<span class='st'>"myconsole"</span>)
+<span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)  <span class='co'># reset config</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-remove_appender"></a></p><h3>Method <code><a href='simple_logging.html'>remove_appender()</a></code></h3>
 <p>remove an appender</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Logger$remove_appender(pos)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'><a href='simple_logging.html'>remove_appender</a></span>(<span class='no'>pos</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>pos</code></dt><dd><p><code>integer</code> index or <code>character</code> name of the Appender(s) to
 remove</p></dd>
 
@@ -400,34 +406,33 @@ remove</p></dd>
 Loggers pass errors they encounter to an exception handler. The default
 behaviour is to demote errors to <a href='https://rdrr.io/r/base/warnings.html'>warnings</a>. See also
 <code>set_exception_handler()</code>.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Logger$handle_exception(expr)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>handle_exception</span>(<span class='no'>expr</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>expr</code></dt><dd><p>expression to be evaluated.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
 <a id="method-set_exception_handler"></a></p><h3>Method <code>set_exception_handler()</code></h3>
 <p>Set the exception handler of a logger</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Logger$set_exception_handler(fun)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>set_exception_handler</span>(<span class='no'>fun</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>fun</code></dt><dd><p>a <code>function</code> with the single argument <code>e</code> (an error <a href='https://rdrr.io/r/base/conditions.html'>condition</a>)</p></dd>
 
 </dl><p></div></p>
 <h3>Examples</h3>
-<p><div class="r example copy"></p><pre>lgr$info(stop("this produces a warning instead of an error"))
-</pre><p></div></p>
+<p><div class="r example copy"></p><pre><span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='fu'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span>(<span class='st'>"this produces a warning instead of an error"</span>))</pre><p></div></p>
 
 <p><hr>
 <a id="method-set_propagate"></a></p><h3>Method <code>set_propagate()</code></h3>
 <p>Should a Logger propagate events to the Appenders of its ancestors?</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Logger$set_propagate(x)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>set_propagate</span>(<span class='no'>x</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>x</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>. Should <a href='LogEvent.html'>LogEvents</a> be passed on to the appenders
 of the ancestral Loggers?</p></dd>
 
@@ -435,10 +440,10 @@ of the ancestral Loggers?</p></dd>
 <p><hr>
 <a id="method-set_threshold"></a></p><h3>Method <code>set_threshold()</code></h3>
 <p>Set the minimum log level of events that a Logger should process</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Logger$set_threshold(level)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>set_threshold</span>(<span class='no'>level</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>level</code></dt><dd><p><code>character</code> or <code>integer</code> scalar. The minimum
 <a href='get_log_levels.html'>log level</a> that triggers this Logger</p></dd>
 
@@ -446,10 +451,10 @@ of the ancestral Loggers?</p></dd>
 <p><hr>
 <a id="method-set_appenders"></a></p><h3>Method <code>set_appenders()</code></h3>
 <p>Set the Logger's Appenders</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Logger$set_appenders(x)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>set_appenders</span>(<span class='no'>x</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>x</code></dt><dd><p>single <a href='Appender.html'>Appender</a> or a <code>list</code> thereof. Appenders control the
 output of a Logger. Be aware that a Logger also inherits the Appenders
 of its ancestors (see <code><a href='../articles/lgr.html'>vignette("lgr", package = "lgr")</a></code> for more info
@@ -461,10 +466,10 @@ about Logger inheritance).</p></dd>
 <p>Spawn a child Logger.
 This is very similar to using <code><a href='get_logger.html'>get_logger()</a></code>, but
 can be useful in some cases where Loggers are created programmatically</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Logger$spawn(name)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>spawn</span>(<span class='no'>name</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>name</code></dt><dd><p><code>character</code> vector. Name of the child logger
 <code>get_logger("foo/bar")$spawn("baz")</code> is equivalent
 to <code><a href='get_logger.html'>get_logger("foo/bar/baz")</a></code></p></dd>
@@ -475,11 +480,11 @@ to <code><a href='get_logger.html'>get_logger("foo/bar/baz")</a></code></p></dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># lgr::lgr is the root logger that is always available</span>
-<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is a good day"</span>)</div><div class='output co'>#&gt; INFO  [10:24:48.941] Today is a good day </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"This is a serious error"</span>)</div><div class='output co'>#&gt; FATAL [10:24:48.943] This is a serious error </div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is a good day"</span>)</div><div class='output co'>#&gt; INFO  [05:56:22.685] Today is a good day </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"This is a serious error"</span>)</div><div class='output co'>#&gt; FATAL [05:56:22.686] This is a serious error </div><div class='input'>
 <span class='co'># Loggers use sprintf() for string formatting by default</span>
-<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is %s"</span>, <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span>() )</div><div class='output co'>#&gt; INFO  [10:24:48.945] Today is 2020-03-23 </div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Today is %s"</span>, <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span>() )</div><div class='output co'>#&gt; INFO  [05:56:22.688] Today is 2020-04-14 </div><div class='input'>
 <span class='co'># If no unnamed `...` are present, msg is not passed through sprintf()</span>
-<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"100% bad"</span>)  <span class='co'># so this works</span></div><div class='output co'>#&gt; FATAL [10:24:48.946] 100% bad </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"%s%% bad"</span>, <span class='fl'>100</span>)  <span class='co'># if you use unnamed arguments, you must escape %</span></div><div class='output co'>#&gt; FATAL [10:24:48.947] 100% bad </div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"100% bad"</span>)  <span class='co'># so this works</span></div><div class='output co'>#&gt; FATAL [05:56:22.689] 100% bad </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"%s%% bad"</span>, <span class='fl'>100</span>)  <span class='co'># if you use unnamed arguments, you must escape %</span></div><div class='output co'>#&gt; FATAL [05:56:22.690] 100% bad </div><div class='input'>
 <span class='co'># You can create new loggers with get_logger()</span>
 <span class='no'>tf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>()
 <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"mylogger"</span>)$<span class='fu'>set_appenders</span>(<span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>tf</span>))
@@ -487,7 +492,7 @@ to <code><a href='get_logger.html'>get_logger("foo/bar/baz")</a></code></p></dd>
 <span class='co'># The new logger passes the log message on to the appenders of its parent</span>
 <span class='co'># logger, which is by default the root logger. This is why the following</span>
 <span class='co'># writes not only the file 'tf', but also to the console.</span>
-<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blubb"</span>)</div><div class='output co'>#&gt; FATAL [10:24:48.951] blubb </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2020-03-23 10:24:48.951] blubb"</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"blubb"</span>)</div><div class='output co'>#&gt; FATAL [05:56:22.695] blubb </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "FATAL [2020-04-14 05:56:22.695] blubb"</div><div class='input'>
 <span class='co'># This logger's print() method depicts this relationship.</span>
 <span class='no'>child</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"lg/child"</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>child</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [info] lg/child
@@ -497,8 +502,8 @@ to <code><a href='get_logger.html'>get_logger("foo/bar/baz")</a></code></p></dd>
 <span class='co'># use formatting strings and custom fields</span>
 <span class='no'>tf2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>()
 <span class='no'>lg</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>tf2</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()))
-<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"Not all %s support custom fields"</span>, <span class='st'>"appenders"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"test"</span>)</div><div class='output co'>#&gt; INFO  [10:24:48.961] Not all appenders support custom fields {type: test}</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>tf</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; FATAL [2020-03-23 10:24:48.951] blubb
-#&gt; INFO  [2020-03-23 10:24:48.961] Not all appenders support custom fields</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>tf2</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; {"level":400,"timestamp":"2020-03-23 10:24:48","logger":"mylogger","caller":"eval","msg":"Not all appenders support custom fields","type":"test"}</div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"Not all %s support custom fields"</span>, <span class='st'>"appenders"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"test"</span>)</div><div class='output co'>#&gt; INFO  [05:56:22.704] Not all appenders support custom fields {type: test}</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>tf</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; FATAL [2020-04-14 05:56:22.695] blubb
+#&gt; INFO  [2020-04-14 05:56:22.704] Not all appenders support custom fields</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>tf2</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; {"level":400,"timestamp":"2020-04-14 05:56:22","logger":"mylogger","caller":"eval","msg":"Not all appenders support custom fields","type":"test"}</div><div class='input'>
 <span class='co'># cleanup</span>
 <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>tf</span>, <span class='no'>tf2</span>))
 <span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)  <span class='co'># reset logger config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] mylogger
@@ -519,8 +524,8 @@ to <code><a href='get_logger.html'>get_logger("foo/bar/baz")</a></code></p></dd>
   <span class='co'>#' # completely reset 'glue' to an unconfigured vanilla Logger</span>
   <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"glue"</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-}</div><div class='output co'>#&gt; FATAL [10:24:48.977] blah fizz is set to: buzz {foo: bar, fizz: buzz}
-#&gt; FATAL [10:24:48.996] blah fizz is set to: buzz {foo: bar}</div><div class='output co'>#&gt; &lt;Logger&gt; [info] glue
+}</div><div class='output co'>#&gt; FATAL [05:56:22.714] blah fizz is set to: buzz {foo: bar, fizz: buzz}
+#&gt; FATAL [05:56:22.740] blah fizz is set to: buzz {foo: bar}</div><div class='output co'>#&gt; &lt;Logger&gt; [info] glue
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'>
@@ -576,7 +581,7 @@ Logger:
 <span class='co'>## ------------------------------------------------</span>
 
 <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)
-<span class='no'>lg</span>$<span class='fu'>list_log</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>400</span>, <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"example"</span>))</div><div class='output co'>#&gt; INFO  [10:24:49.023] example </div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>list_log</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>400</span>, <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"example"</span>))</div><div class='output co'>#&gt; INFO  [05:56:22.762] example </div><div class='input'>
 <span class='co'>## ------------------------------------------------</span>
 <span class='co'>## Method `Logger$add_appender`</span>
 <span class='co'>## ------------------------------------------------</span>
@@ -596,19 +601,12 @@ Logger:
 <span class='co'>## Method `Logger$set_exception_handler`</span>
 <span class='co'>## ------------------------------------------------</span>
 
-<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='fu'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span>(<span class='st'>"this produces a warning instead of an error"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: [2020-03-23 10:24:49.042] An error occurred during logging: Error in doTryCatch(return(expr), name, parentenv, handler): this produces a warning instead of an error</span></div></pre>
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='fu'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span>(<span class='st'>"this produces a warning instead of an error"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: [2020-04-14 05:56:22.786] An error occurred during logging: Error in doTryCatch(return(expr), name, parentenv, handler): this produces a warning instead of an error</span></div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#note">Note</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#super-class">Super class</a></li>
-      <li><a href="#active-bindings">Active bindings</a></li>
-      <li><a href="#methods">Methods</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -619,7 +617,7 @@ Logger:
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

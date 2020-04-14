@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -38,7 +42,6 @@
 <meta property="og:title" content="Log to a time-stamped rotating file — AppenderFileRotatingTime" />
 <meta property="og:description" content="Log to a time-stamped rotating file
 Log to a time-stamped rotating file" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -56,7 +59,7 @@ Log to a time-stamped rotating file" />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -70,7 +73,7 @@ Log to a time-stamped rotating file" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9003</span>
       </span>
     </div>
 
@@ -93,7 +96,12 @@ Log to a time-stamped rotating file" />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/s-fleck/lgr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -108,7 +116,7 @@ Log to a time-stamped rotating file" />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Log to a time-stamped rotating file</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/Appender.R'><code>R/Appender.R</code></a></small>
     <div class="hidden name"><code>AppenderFileRotatingTime.Rd</code></div>
     </div>
 
@@ -127,7 +135,7 @@ Log to a time-stamped rotating file" />
     <p><code><a href='Filterable.html'>lgr::Filterable</a></code> -&gt; <code><a href='Appender.html'>lgr::Appender</a></code> -&gt; <code><a href='AppenderFile.html'>lgr::AppenderFile</a></code> -&gt; <code><a href='AppenderFileRotating.html'>lgr::AppenderFileRotating</a></code> -&gt; <code>AppenderFileRotating</code></p>
     <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
 
-    <p><div class="r6-active-bindings"></p><dl class='dl-horizontal'>
+    <p><div class="r6-active-bindings"></p><dl'>
 <dt><code>cache_backups</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>. If <code>TRUE</code> (the default) the list of backups is cached,
 if <code>FALSE</code> it is read from disk every time this appender triggers.
 Caching brings a significant speedup for checking whether to rotate or
@@ -175,53 +183,53 @@ with the backups.</p></dd>
 <a id="method-new"></a></p><h3>Method <code>new()</code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>AppenderFileRotatingTime$new(
-  file,
-  threshold = NA_integer_,
-  layout = LayoutFormat$new(),
-  filters = NULL,
-  age = Inf,
-  size = -1,
-  max_backups = Inf,
-  compression = FALSE,
-  backup_dir = dirname(file),
-  fmt = "%Y-%m-%d--%H-%M-%S",
-  overwrite = FALSE,
-  create_file = TRUE,
-  cache_backups = TRUE
+<p><div class="r"></p><pre><span class='no'>AppenderFileRotatingTime</span>$<span class='fu'>new</span>(
+  <span class='no'>file</span>,
+  <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>,
+  <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(),
+  <span class='kw'>filters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>age</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> -<span class='fl'>1</span>,
+  <span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
+  <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>),
+  <span class='kw'>fmt</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d--%H-%M-%S"</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>create_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>cache_backups</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</pre><p></div></p>
 
 <p><hr>
 <a id="method-rotate"></a></p><h3>Method <code>rotate()</code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>AppenderFileRotatingTime$rotate(force = FALSE, now = Sys.time())</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>AppenderFileRotatingTime</span>$<span class='fu'>rotate</span>(<span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>())</pre><p></div></p>
 
 <p><hr>
 <a id="method-set_age"></a></p><h3>Method <code>set_age()</code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>AppenderFileRotatingTime$set_age(x)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>AppenderFileRotatingTime</span>$<span class='fu'>set_age</span>(<span class='no'>x</span>)</pre><p></div></p>
 
 <p><hr>
 <a id="method-set_fmt"></a></p><h3>Method <code>set_fmt()</code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>AppenderFileRotatingTime$set_fmt(x)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>AppenderFileRotatingTime</span>$<span class='fu'>set_fmt</span>(<span class='no'>x</span>)</pre><p></div></p>
 
 <p><hr>
 <a id="method-set_overwrite"></a></p><h3>Method <code>set_overwrite()</code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>AppenderFileRotatingTime$set_overwrite(x)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>AppenderFileRotatingTime</span>$<span class='fu'>set_overwrite</span>(<span class='no'>x</span>)</pre><p></div></p>
 
 <p><hr>
 <a id="method-set_cache_backups"></a></p><h3>Method <code>set_cache_backups()</code></h3>
 <p>set the <code>cache_backups</code> flag.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>AppenderFileRotatingTime$set_cache_backups(x)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>AppenderFileRotatingTime</span>$<span class='fu'>set_cache_backups</span>(<span class='no'>x</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>x</code></dt><dd><p>a <code>logical</code> scalar</p></dd>
 
 </dl><p></div></p>
@@ -229,15 +237,15 @@ with the backups.</p></dd>
 <a id="method-format"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>AppenderFileRotatingTime$format(color = FALSE, ...)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>AppenderFileRotatingTime</span>$<span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre><p></div></p>
 
 <p><hr>
 <a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
 <p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>AppenderFileRotatingTime$clone(deep = FALSE)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>AppenderFileRotatingTime</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
 
 </dl><p></div></p>
@@ -245,15 +253,10 @@ with the backups.</p></dd>
 
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#super-classes">Super classes</a></li>
-      <li><a href="#active-bindings">Active bindings</a></li>
-      <li><a href="#methods">Methods</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -264,7 +267,7 @@ with the backups.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

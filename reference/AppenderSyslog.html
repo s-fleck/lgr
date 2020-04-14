@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -38,7 +42,6 @@
 <meta property="og:title" content="Log to the POSIX System Log — AppenderSyslog" />
 <meta property="og:description" content="An Appender that writes to the syslog on supported POSIX platforms. Requires
 the rsyslog package." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -56,7 +59,7 @@ the rsyslog package." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -70,7 +73,7 @@ the rsyslog package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9003</span>
       </span>
     </div>
 
@@ -93,7 +96,12 @@ the rsyslog package." />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/s-fleck/lgr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -108,7 +116,7 @@ the rsyslog package." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Log to the POSIX System Log</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/Appender.R'><code>R/Appender.R</code></a></small>
     <div class="hidden name"><code>AppenderSyslog.Rd</code></div>
     </div>
 
@@ -124,7 +132,7 @@ the <span class="pkg">rsyslog</span> package.</p>
     
 
 
-<dl class='dl-horizontal'>
+<dl'>
 <dt><code>identifier</code></dt><dd><p><code>character</code> scalar. A string identifying the process;
 if <code>NULL</code> defaults to the logger name</p></dd>
 <dt><code>syslog_levels</code></dt><dd><p><ul>
@@ -176,32 +184,32 @@ understood by <code><a href='https://rdrr.io/pkg/rsyslog/man/syslog.html'>rsyslo
 <a id="method-new"></a></p><h3>Method <code>new()</code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>AppenderSyslog$new(
-  identifier = NULL,
-  threshold = NA_integer_,
-  layout = LayoutFormat$new("%m"),
-  filters = NULL,
-  syslog_levels = c(CRITICAL = "fatal", ERR = "error", WARNING = "warn", INFO = "info",
-    DEBUG = "debug", DEBUG = "trace")
+<p><div class="r"></p><pre><span class='no'>AppenderSyslog</span>$<span class='fu'>new</span>(
+  <span class='kw'>identifier</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>,
+  <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(<span class='st'>"%m"</span>),
+  <span class='kw'>filters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>syslog_levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CRITICAL</span> <span class='kw'>=</span> <span class='st'>"fatal"</span>, <span class='kw'>ERR</span> <span class='kw'>=</span> <span class='st'>"error"</span>, <span class='kw'>WARNING</span> <span class='kw'>=</span> <span class='st'>"warn"</span>, <span class='kw'>INFO</span> <span class='kw'>=</span> <span class='st'>"info"</span>,
+    <span class='kw'>DEBUG</span> <span class='kw'>=</span> <span class='st'>"debug"</span>, <span class='kw'>DEBUG</span> <span class='kw'>=</span> <span class='st'>"trace"</span>)
 )</pre><p></div></p>
 
 <p><hr>
 <a id="method-append"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/append.html'>append()</a></code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>AppenderSyslog$append(event)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>AppenderSyslog</span>$<span class='fu'><a href='https://rdrr.io/r/base/append.html'>append</a></span>(<span class='no'>event</span>)</pre><p></div></p>
 
 <p><hr>
 <a id="method-set_syslog_levels"></a></p><h3>Method <code>set_syslog_levels()</code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>AppenderSyslog$set_syslog_levels(x)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>AppenderSyslog</span>$<span class='fu'>set_syslog_levels</span>(<span class='no'>x</span>)</pre><p></div></p>
 
 <p><hr>
 <a id="method-set_identifier"></a></p><h3>Method <code>set_identifier()</code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>AppenderSyslog$set_identifier(x)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>AppenderSyslog</span>$<span class='fu'>set_identifier</span>(<span class='no'>x</span>)</pre><p></div></p>
 
 
 
@@ -217,18 +225,12 @@ understood by <code><a href='https://rdrr.io/pkg/rsyslog/man/syslog.html'>rsyslo
   }
 
   <span class='fu'><a href='https://rdrr.io/r/base/invisible.html'>invisible</a></span>(<span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>))  <span class='co'># cleanup</span>
-}</div><div class='output co'>#&gt; INFO  [10:24:46.551] A test message </div></pre>
+}</div><div class='output co'>#&gt; INFO  [05:56:19.661] A test message </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#fields">Fields</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#super-classes">Super classes</a></li>
-      <li><a href="#methods">Methods</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -239,7 +241,7 @@ understood by <code><a href='https://rdrr.io/pkg/rsyslog/man/syslog.html'>rsyslo
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

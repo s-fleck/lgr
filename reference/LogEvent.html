@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -41,7 +45,6 @@ usually created by a Logger, and then processed by one more Appenders.
 They do not need to be instantiated manually except for testing and
 experimentation; however, if you plan on writing your own Appenders or
 Layouts you need to understand LogEvents." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -59,7 +62,7 @@ Layouts you need to understand LogEvents." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -73,7 +76,7 @@ Layouts you need to understand LogEvents." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9003</span>
       </span>
     </div>
 
@@ -96,7 +99,12 @@ Layouts you need to understand LogEvents." />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/s-fleck/lgr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -111,7 +119,7 @@ Layouts you need to understand LogEvents." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>LogEvents - The atomic unit of logging</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/LogEvent.R'><code>R/LogEvent.R</code></a></small>
     <div class="hidden name"><code>LogEvent.Rd</code></div>
     </div>
 
@@ -133,7 +141,7 @@ Layouts you need to understand LogEvents.</p>
 <code><a href='standardize_threshold.html'>standardize_threshold</a>()</code></p></div>
     <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
 
-    <p><div class="r6-fields"></p><dl class='dl-horizontal'>
+    <p><div class="r6-fields"></p><dl'>
 <dt><code>level</code></dt><dd><p><code>integer</code>. The <a href='get_log_levels.html'>log_level</a> / priority of the LogEvent. Use the
 active binding <code>level_name</code> to get the <code>character</code> representation
 instead.</p></dd>
@@ -151,7 +159,7 @@ event (equivalent to <code><a href='get_logger.html'>get_logger(event$logger)</a
 </dl><p></div></p>
     <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
 
-    <p><div class="r6-active-bindings"></p><dl class='dl-horizontal'>
+    <p><div class="r6-active-bindings"></p><dl'>
 <dt><code>values</code></dt><dd><p><code>list</code>. All values stored in the <code>LogEvent</code>, including
 all <em>custom fields</em>, but not including <code>event$.logger</code>.</p></dd>
 
@@ -178,17 +186,17 @@ in the <code>LogEvent</code>. Usually these values will be scalars, but (except 
 <code>"logger"</code>) they can also be vectors if they are all of the same length (or
 scalars that will be recycled). In this case the event will be treated by
 the <a href='Appender.html'>Appenders</a> and <a href='Layout.html'>Layouts</a> as if several separate events.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>LogEvent$new(
-  logger,
-  level = 400,
-  timestamp = Sys.time(),
-  caller = NA,
-  msg = NA,
-  ...
+<p><div class="r"></p><pre><span class='no'>LogEvent</span>$<span class='fu'>new</span>(
+  <span class='no'>logger</span>,
+  <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>400</span>,
+  <span class='kw'>timestamp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(),
+  <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>msg</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='no'>...</span>
 )</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>logger, level, timestamp, caller, msg</code></dt><dd><p>see <strong>Public fields</strong>.</p></dd>
 
 <dt><code>...</code></dt><dd><p>All named arguments in <code>...</code> will be added to the LogEvent
@@ -199,10 +207,10 @@ this way, but not all Appenders will support them. See <a href='AppenderFile.htm
 <p><hr>
 <a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
 <p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>LogEvent$clone(deep = FALSE)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>LogEvent</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<p><div class="arguments"></p><dl'>
 <dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
 
 </dl><p></div></p>
@@ -211,13 +219,13 @@ this way, but not all Appenders will support them. See <a href='AppenderFile.htm
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)
-<span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"foo bar"</span>)</div><div class='output co'>#&gt; ERROR [10:24:48.780] foo bar </div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"foo bar"</span>)</div><div class='output co'>#&gt; ERROR [05:56:22.501] foo bar </div><div class='input'>
 <span class='co'># The last LogEvent produced by a Logger is stored in its `last_event` field</span>
-<span class='no'>lg</span>$<span class='no'>last_event</span>  <span class='co'># formatted console output</span></div><div class='output co'>#&gt; ERROR [2020-03-23 10:24:48] foo bar  </div><div class='input'><span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>values</span>  <span class='co'># values stored in the event</span></div><div class='output co'>#&gt; $level
+<span class='no'>lg</span>$<span class='no'>last_event</span>  <span class='co'># formatted console output</span></div><div class='output co'>#&gt; ERROR [2020-04-14 05:56:22] foo bar  </div><div class='input'><span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>values</span>  <span class='co'># values stored in the event</span></div><div class='output co'>#&gt; $level
 #&gt; [1] 200
 #&gt; 
 #&gt; $timestamp
-#&gt; [1] "2020-03-23 10:24:48 UTC"
+#&gt; [1] "2020-04-14 05:56:22 UTC"
 #&gt; 
 #&gt; $logger
 #&gt; [1] "test"
@@ -238,16 +246,10 @@ this way, but not all Appenders will support them. See <a href='AppenderFile.htm
 #&gt; inherited appenders:
 #&gt;   appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#public-fields">Public fields</a></li>
-      <li><a href="#active-bindings">Active bindings</a></li>
-      <li><a href="#methods">Methods</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -258,7 +260,7 @@ this way, but not all Appenders will support them. See <a href='AppenderFile.htm
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

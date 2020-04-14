@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -41,7 +45,6 @@ log messages. glue is a very well designed package for
 string interpolation. It makes composing log messages
 more flexible and comfortable at the price of an additional dependency and
 slightly less performance than sprintf()." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -59,7 +62,7 @@ slightly less performance than sprintf()." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -73,7 +76,7 @@ slightly less performance than sprintf()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9003</span>
       </span>
     </div>
 
@@ -96,7 +99,12 @@ slightly less performance than sprintf()." />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/s-fleck/lgr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -111,7 +119,7 @@ slightly less performance than sprintf()." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>LoggerGlue</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/lgr/blob/master/R/Logger.R'><code>R/Logger.R</code></a></small>
     <div class="hidden name"><code>LoggerGlue.Rd</code></div>
     </div>
 
@@ -173,74 +181,70 @@ examples.</p>
 <a id="method-fatal"></a></p><h3>Method <code>fatal()</code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>LoggerGlue$fatal(..., caller = get_caller(-8L), .envir = parent.frame())</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>LoggerGlue</span>$<span class='fu'>fatal</span>(<span class='no'>...</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>8L</span>), <span class='kw'>.envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())</pre><p></div></p>
 
 <p><hr>
 <a id="method-error"></a></p><h3>Method <code>error()</code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>LoggerGlue$error(..., caller = get_caller(-8L), .envir = parent.frame())</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>LoggerGlue</span>$<span class='fu'>error</span>(<span class='no'>...</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>8L</span>), <span class='kw'>.envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())</pre><p></div></p>
 
 <p><hr>
 <a id="method-warn"></a></p><h3>Method <code>warn()</code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>LoggerGlue$warn(..., caller = get_caller(-8L), .envir = parent.frame())</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>LoggerGlue</span>$<span class='fu'>warn</span>(<span class='no'>...</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>8L</span>), <span class='kw'>.envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())</pre><p></div></p>
 
 <p><hr>
 <a id="method-info"></a></p><h3>Method <code>info()</code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>LoggerGlue$info(..., caller = get_caller(-8L), .envir = parent.frame())</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>LoggerGlue</span>$<span class='fu'>info</span>(<span class='no'>...</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>8L</span>), <span class='kw'>.envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())</pre><p></div></p>
 
 <p><hr>
 <a id="method-debug"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/debug.html'>debug()</a></code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>LoggerGlue$debug(..., caller = get_caller(-8L), .envir = parent.frame())</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>LoggerGlue</span>$<span class='fu'><a href='https://rdrr.io/r/base/debug.html'>debug</a></span>(<span class='no'>...</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>8L</span>), <span class='kw'>.envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())</pre><p></div></p>
 
 <p><hr>
 <a id="method-trace"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/trace.html'>trace()</a></code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>LoggerGlue$trace(..., caller = get_caller(-8L), .envir = parent.frame())</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>LoggerGlue</span>$<span class='fu'><a href='https://rdrr.io/r/base/trace.html'>trace</a></span>(<span class='no'>...</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>8L</span>), <span class='kw'>.envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())</pre><p></div></p>
 
 <p><hr>
 <a id="method-log"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/Log.html'>log()</a></code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>LoggerGlue$log(
-  level,
-  ...,
-  timestamp = Sys.time(),
-  caller = get_caller(-7),
-  .envir = parent.frame()
+<p><div class="r"></p><pre><span class='no'>LoggerGlue</span>$<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(
+  <span class='no'>level</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>timestamp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(),
+  <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>7</span>),
+  <span class='kw'>.envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>()
 )</pre><p></div></p>
 
 <p><hr>
 <a id="method-list_log"></a></p><h3>Method <code>list_log()</code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>LoggerGlue$list_log(x)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>LoggerGlue</span>$<span class='fu'>list_log</span>(<span class='no'>x</span>)</pre><p></div></p>
 
 <p><hr>
 <a id="method-spawn"></a></p><h3>Method <code>spawn()</code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>LoggerGlue$spawn(name)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>LoggerGlue</span>$<span class='fu'>spawn</span>(<span class='no'>name</span>)</pre><p></div></p>
 
 
 
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#details">Details</a></li>
-      <li><a href="#super-classes">Super classes</a></li>
-      <li><a href="#methods">Methods</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -251,7 +255,7 @@ examples.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
