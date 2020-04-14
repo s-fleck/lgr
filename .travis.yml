@@ -1,5 +1,5 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
-
+# https://gist.github.com/gaborcsardi/68960fb01bec74d89611bb9c2b0b7e5a
 language: R
 matrix:
   include:
