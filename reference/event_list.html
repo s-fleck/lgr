@@ -211,37 +211,37 @@ exist for event lists.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>e</span> <span class='kw'>&lt;-</span> <span class='no'>LogEvent</span>$<span class='fu'>new</span>(<span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>300</span>, <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"a"</span>, <span class='kw'>logger</span> <span class='kw'>=</span> <span class='no'>lgr</span>)
 <span class='fu'>as_event_list</span>(<span class='no'>e</span>)</div><div class='output co'>#&gt; [[1]]
-#&gt; WARN  [2020-04-14 06:25:19] a  
+#&gt; WARN  [2020-04-14 06:31:43] a  
 #&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "event_list" "list"      </div><div class='input'><span class='fu'>as_event_list</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>e</span>, <span class='no'>e</span>))</div><div class='output co'>#&gt; [[1]]
-#&gt; WARN  [2020-04-14 06:25:19] a  
+#&gt; WARN  [2020-04-14 06:31:43] a  
 #&gt; 
 #&gt; [[2]]
-#&gt; WARN  [2020-04-14 06:25:19] a  
+#&gt; WARN  [2020-04-14 06:31:43] a  
 #&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "event_list" "list"      </div><div class='input'><span class='co'># nested lists get automatically unnested</span>
 <span class='fu'>as_event_list</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>e</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>nested_event</span> <span class='kw'>=</span> <span class='no'>e</span>)))</div><div class='output co'>#&gt; [[1]]
-#&gt; WARN  [2020-04-14 06:25:19] a  
+#&gt; WARN  [2020-04-14 06:31:43] a  
 #&gt; 
 #&gt; $nested_event
-#&gt; WARN  [2020-04-14 06:25:19] a  
+#&gt; WARN  [2020-04-14 06:31:43] a  
 #&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "event_list" "list"      </div><div class='input'>
 <span class='co'># scalarize = TRUE "unpacks" events with vector log messages</span>
 <span class='no'>e</span> <span class='kw'>&lt;-</span> <span class='no'>LogEvent</span>$<span class='fu'>new</span>(<span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>300</span>, <span class='kw'>msg</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>), <span class='kw'>logger</span> <span class='kw'>=</span> <span class='no'>lgr</span>)
 <span class='fu'>as_event_list</span>(<span class='no'>e</span>, <span class='kw'>scalarize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [[1]]
-#&gt; WARN  [2020-04-14 06:25:19] A  
-#&gt; WARN  [2020-04-14 06:25:19] B  
+#&gt; WARN  [2020-04-14 06:31:43] A  
+#&gt; WARN  [2020-04-14 06:31:43] B  
 #&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "event_list" "list"      </div><div class='input'><span class='fu'>as_event_list</span>(<span class='no'>e</span>, <span class='kw'>scalarize</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [[1]]
-#&gt; WARN  [2020-04-14 06:25:19] A  
+#&gt; WARN  [2020-04-14 06:31:43] A  
 #&gt; 
 #&gt; [[2]]
-#&gt; WARN  [2020-04-14 06:25:19] B  
+#&gt; WARN  [2020-04-14 06:31:43] B  
 #&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "event_list" "list"      </div><div class='input'>

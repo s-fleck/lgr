@@ -157,7 +157,7 @@ Logger references created before the reset call (see examples).</p></td>
     <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'>get_logger</span>(<span class='st'>"log/ger/test"</span>)
 <span class='co'># equivalent to</span>
 <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'>get_logger</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"log"</span>, <span class='st'>"ger"</span>, <span class='st'>"test"</span>))
-<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a %s message"</span>, <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; WARN  [06:25:19.586] a warning message </div><div class='input'><span class='no'>lg</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] log/ger/test
+<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a %s message"</span>, <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; WARN  [06:31:43.511] a warning message </div><div class='input'><span class='no'>lg</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] log/ger/test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   inherited_appenders.inherited_appenders.appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='no'>lg</span>$<span class='no'>parent</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] log/ger
@@ -167,15 +167,15 @@ Logger references created before the reset call (see examples).</p></td>
 <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>'glue'</span>)){
   <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'>get_logger_glue</span>(<span class='st'>"log/ger"</span>)
 }
-<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a {.text} message"</span>, <span class='kw'>.text</span> <span class='kw'>=</span> <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; WARN  [06:25:19.593] a warning message </div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"a {.text} message"</span>, <span class='kw'>.text</span> <span class='kw'>=</span> <span class='st'>"warning"</span>)</div><div class='output co'>#&gt; WARN  [06:31:43.519] a warning message </div><div class='input'>
 <span class='co'># completely reset 'glue' to an unconfigured vanilla Logger</span>
 <span class='fu'>get_logger</span>(<span class='st'>"log/ger"</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [info] log/ger
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   inherited_appenders.appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='co'># WARNING: this invalidates existing references to the Logger</span>
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"lg has been invalidated an no longer works"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: [2020-04-14 06:25:19.597] An error occurred during logging: Error: Trying to log via a Logger reference that is no longer valid. Logger references become invalid when you reset a when you reset a Logger with `get_logger(reset = TRUE)`. Please re-create the Logger reference with with `get_logger(log/ger)`</span></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"lg has been invalidated an no longer works"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: [2020-04-14 06:31:43.523] An error occurred during logging: Error: Trying to log via a Logger reference that is no longer valid. Logger references become invalid when you reset a when you reset a Logger with `get_logger(reset = TRUE)`. Please re-create the Logger reference with with `get_logger(log/ger)`</span></div><div class='input'>
 <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'>get_logger</span>(<span class='st'>"log/ger"</span>)
-<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"now all is well again"</span>)</div><div class='output co'>#&gt; INFO  [06:25:19.599] now all is well again </div></pre>
+<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"now all is well again"</span>)</div><div class='output co'>#&gt; INFO  [06:31:43.525] now all is well again </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

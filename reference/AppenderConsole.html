@@ -193,8 +193,8 @@ crayon installed log levels will be coloured by default
   <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(<span class='st'>"[%t] %c(): [%n] %m"</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"lgr.colors"</span>))))
 
 <span class='co'># Will output the message twice because we attached two console appenders</span>
-<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; WARN  [06:25:13.024] A test message 
-#&gt; [2020-04-14 06:25:13.024] eval(): [300] A test message</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>) <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
+<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; WARN  [06:31:36.899] A test message 
+#&gt; [2020-04-14 06:31:36.899] eval(): [300] A test message</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>) <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div></pre>
