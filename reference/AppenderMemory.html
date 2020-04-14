@@ -40,8 +40,11 @@
 
 
 <meta property="og:title" content="Abstract class for logging to memory buffers — AppenderMemory" />
-<meta property="og:description" content="This is an abstract class and as such cannot be instantiated directly.
-It is exported for package developers that want to extend it
+<meta property="og:description" content="NOTE: This is an abstract class. Abstract classes cannot be instantiated
+directly, but are exported for package developers that want to extend lgr -
+for example by creating their own Appenders or Layouts.
+Plese refer to the see also section for actual implementations of this
+class.
 AppenderMemory is extended by Appenders that retain an in-memory event
 buffer, such as AppenderBuffer and lgrExtra::AppenderPushbullet." />
 
@@ -123,8 +126,11 @@ buffer, such as AppenderBuffer and lgrExtra::AppenderPushbullet." />
     </div>
 
     <div class="ref-description">
-    <p>This is an <strong>abstract class</strong> and as such cannot be instantiated directly.
-It is exported for package developers that want to extend it</p>
+    <p><strong>NOTE</strong>: This is an <em>abstract class</em>. Abstract classes cannot be instantiated
+directly, but are exported for package developers that want to extend lgr -
+for example by creating their own <a href='Appender.html'>Appenders</a> or <a href='Layout.html'>Layouts</a>.
+Plese refer to the <em>see also</em> section for actual implementations of this
+class.</p>
 <p>AppenderMemory is extended by Appenders that retain an in-memory event
 buffer, such as <a href='AppenderBuffer.html'>AppenderBuffer</a> and <a href='https://rdrr.io/pkg/lgrExtra/man/AppenderPushbullet.html'>lgrExtra::AppenderPushbullet</a>.</p>
     </div>
@@ -160,6 +166,7 @@ or higher is registered.</p></dd>
     <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a></p>
 <p>Other abstract classes: 
 <code><a href='AppenderTable.html'>AppenderTable</a></code>,
+<code><a href='Appender.html'>Appender</a></code>,
 <code><a href='Filterable.html'>Filterable</a></code></p></div>
     <h2 class="hasAnchor" id="super-classes"><a class="anchor" href="#super-classes"></a>Super classes</h2>
 

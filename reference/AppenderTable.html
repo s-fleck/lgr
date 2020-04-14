@@ -40,8 +40,11 @@
 
 
 <meta property="og:title" content="Abstract class for logging to tabular structures — AppenderTable" />
-<meta property="og:description" content="This is an abstract class and as such cannot be instantiated directly.
-It is exported for package developers that want to extend it
+<meta property="og:description" content="NOTE: This is an abstract class. Abstract classes cannot be instantiated
+directly, but are exported for package developers that want to extend lgr -
+for example by creating their own Appenders or Layouts.
+Plese refer to the see also section for actual implementations of this
+class.
 AppenderTable is extended by Appenders that write to a data source that
 can be interpreted as tables, (usually a data.frame). Examples are
 lgrExtra::AppenderDbi, lgrExtra::AppenderRjdbc and lgrExtra::AppenderDt." />
@@ -124,8 +127,11 @@ lgrExtra::AppenderDbi, lgrExtra::AppenderRjdbc and lgrExtra::AppenderDt." />
     </div>
 
     <div class="ref-description">
-    <p>This is an <strong>abstract class</strong> and as such cannot be instantiated directly.
-It is exported for package developers that want to extend it</p>
+    <p><strong>NOTE</strong>: This is an <em>abstract class</em>. Abstract classes cannot be instantiated
+directly, but are exported for package developers that want to extend lgr -
+for example by creating their own <a href='Appender.html'>Appenders</a> or <a href='Layout.html'>Layouts</a>.
+Plese refer to the <em>see also</em> section for actual implementations of this
+class.</p>
 <p>AppenderTable is extended by Appenders that write to a data source that
 can be interpreted as tables, (usually a <code>data.frame</code>). Examples are
 <a href='https://rdrr.io/pkg/lgrExtra/man/AppenderDbi.html'>lgrExtra::AppenderDbi</a>, <a href='https://rdrr.io/pkg/lgrExtra/man/AppenderRjdbc.html'>lgrExtra::AppenderRjdbc</a> and <a href='https://rdrr.io/pkg/lgrExtra/man/AppenderDt.html'>lgrExtra::AppenderDt</a>.</p>
@@ -158,6 +164,7 @@ log level bellow <code>threshold</code>.</p></dd>
 
     <div class='dont-index'><p>Other abstract classes: 
 <code><a href='AppenderMemory.html'>AppenderMemory</a></code>,
+<code><a href='Appender.html'>Appender</a></code>,
 <code><a href='Filterable.html'>Filterable</a></code></p>
 <p>Other Appenders: 
 <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,

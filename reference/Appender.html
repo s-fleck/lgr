@@ -40,8 +40,16 @@
 
 
 <meta property="og:title" content="Appenders — Appender" />
-<meta property="og:description" content="Appenders
-Appenders" />
+<meta property="og:description" content="Appenders are assigned to Loggers and manage the output of the LogEvents
+to a destination (such as the console or a text file). An Appender has a
+single Layout that tells it how to format the LogEvent. For details
+please refer to the documentations of the specific Appenders.
+More appenders can be found in the package lgrExtra
+NOTE: This is an abstract class. Abstract classes cannot be instantiated
+directly, but are exported for package developers that want to extend lgr -
+for example by creating their own Appenders or Layouts.
+Plese refer to the see also section for actual implementations of this
+class." />
 
 
 
@@ -121,25 +129,27 @@ Appenders" />
     </div>
 
     <div class="ref-description">
-    <p>Appenders</p>
-<p>Appenders</p>
-    </div>
-
-
-
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
     <p>Appenders are assigned to <a href='Logger.html'>Loggers</a> and manage the output of the <a href='LogEvent.html'>LogEvents</a>
 to a destination (such as the console or a text file). An Appender has a
 single <a href='Layout.html'>Layout</a> that tells it how to format the LogEvent. For details
 please refer to the documentations of the specific Appenders.</p>
-<p>The Appender class itself <strong>is not designed for direct usage</strong>, but it is the
-basis on which all other Appenders are built. Please see the <strong>see also</strong>
-section towards the end of this document a list of available Appenders.</p>
 <p>More appenders can be found in the package <a href='https://github.com/s-fleck/lgrExtra'>lgrExtra</a></p>
+<p><strong>NOTE</strong>: This is an <em>abstract class</em>. Abstract classes cannot be instantiated
+directly, but are exported for package developers that want to extend lgr -
+for example by creating their own Appenders or <a href='Layout.html'>Layouts</a>.
+Plese refer to the <em>see also</em> section for actual implementations of this
+class.</p>
+    </div>
+
+
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Appenders: 
+    <div class='dont-index'><p>Other abstract classes: 
+<code><a href='AppenderMemory.html'>AppenderMemory</a></code>,
+<code><a href='AppenderTable.html'>AppenderTable</a></code>,
+<code><a href='Filterable.html'>Filterable</a></code></p>
+<p>Other Appenders: 
 <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
 <code><a href='AppenderConsole.html'>AppenderConsole</a></code>,
 <code><a href='AppenderFile.html'>AppenderFile</a></code>,

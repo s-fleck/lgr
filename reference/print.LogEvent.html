@@ -214,7 +214,7 @@ have <strong>jsonlite</strong> installed and does not support colors as opposed 
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>LogEvent</span>$<span class='fu'>new</span>(
   <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>300</span>, <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"a test event"</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='st'>"testfun()"</span>, <span class='kw'>logger</span> <span class='kw'>=</span> <span class='no'>lgr</span>
 )
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; WARN  [2020-04-14 06:47:10] a test event  </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='kw'>fmt</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"%t (%p) %c: %n - %m"</span>))</div><div class='output co'>#&gt; 2020-04-14 06:47:10 (24161) testfun(): 300 - a test event</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; WARN  [2020-04-14 06:47:10] a test event  </div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; WARN  [2020-04-14 07:13:52] a test event  </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='kw'>fmt</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"%t (%p) %c: %n - %m"</span>))</div><div class='output co'>#&gt; 2020-04-14 07:13:52 (24122) testfun(): 300 - a test event</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; WARN  [2020-04-14 07:13:52] a test event  </div><div class='input'>
 <span class='co'># custom values</span>
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>LogEvent</span>$<span class='fu'>new</span>(
   <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>300</span>, <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"a gps track"</span>, <span class='kw'>logger</span> <span class='kw'>=</span> <span class='no'>lgr</span>,
@@ -222,11 +222,11 @@ have <strong>jsonlite</strong> installed and does not support colors as opposed 
 )
 
 <span class='co'># default output with %f</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; WARN  [2020-04-14 06:47:10] a gps track  {waypoints: 10, location: Austria}</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; WARN  [2020-04-14 07:13:52] a gps track  {waypoints: 10, location: Austria}</div><div class='input'>
 <span class='co'># proper JSON output with %j</span>
 <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"jsonlite"</span>)){
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>y</span>, <span class='kw'>fmt</span> <span class='kw'>=</span> <span class='st'>"%L [%t] %m  %j"</span>)
-}</div><div class='output co'>#&gt; WARN  [2020-04-14 06:47:10] a gps track  {"waypoints":10,"location":"Austria"}</div><div class='input'>
+}</div><div class='output co'>#&gt; WARN  [2020-04-14 07:13:52] a gps track  {"waypoints":10,"location":"Austria"}</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
