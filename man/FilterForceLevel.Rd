@@ -49,7 +49,7 @@ levels of each \link{LogEvent} processed by this filter.}
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
-Initilize a new FilterForceLevel
+Initialize a new FilterForceLevel
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{FilterForceLevel$new(level)}\if{html}{\out{</div>}}
 }

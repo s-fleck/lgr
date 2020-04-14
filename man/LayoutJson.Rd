@@ -68,7 +68,7 @@ Other Layouts:
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
-Set a \code{format} that this Layout will apply to timstamps.
+Set a \code{format} that this Layout will apply to timestamps.
 can be a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSIXct()}} or a function.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$new(toJSON_args = list(auto_unbox = TRUE), timestamp_fmt = NULL)}\if{html}{\out{</div>}}
@@ -88,7 +88,7 @@ can be a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSI
 \if{html}{\out{<a id="method-set_toJSON_args"></a>}}
 \if{latex}{\out{\hypertarget{method-set_toJSON_args}{}}}
 \subsection{Method \code{set_toJSON_args()}}{
-Set a \code{format} that this Layout will apply to timstamps.
+Set a \code{format} that this Layout will apply to timestamps.
 can be a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSIXct()}} or a function.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$set_toJSON_args(x)}\if{html}{\out{</div>}}
@@ -99,7 +99,7 @@ can be a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSI
 \if{html}{\out{<a id="method-set_timestamp_fmt"></a>}}
 \if{latex}{\out{\hypertarget{method-set_timestamp_fmt}{}}}
 \subsection{Method \code{set_timestamp_fmt()}}{
-Set a format that this Layout will apply to timstamps.
+Set a format that this Layout will apply to timestamps.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$set_timestamp_fmt(x)}\if{html}{\out{</div>}}
 }

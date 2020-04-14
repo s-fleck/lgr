@@ -8,9 +8,9 @@ CannotInitializeAbstractClassError(class = parent.frame(2)[["classes"]])
 }
 \arguments{
 \item{class}{\code{character} scalar. The abstract class that was mistakenly
-tried to initilize. The default is to discover the class name
-automatically if called inside \verb{$initilize()\{...\}} in an \link[R6:R6]{R6::R6} class
-defintion.}
+tried to initialize. The default is to discover the class name
+automatically if called inside \verb{$initialize()\{...\}} in an \link[R6:R6]{R6::R6} class
+definition}
 }
 \value{
 a condition object

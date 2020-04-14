@@ -1295,7 +1295,7 @@ AppenderFileRotatingTime <- R6::R6Class(
 #' Log to a date-stamped rotating file
 #'
 #' This is a simpler version of AppenderFileRotatingTime when the timestamps
-#' do not need to inclue sub-day accuracy.
+#' do not need to include sub-day accuracy.
 #'
 #' @seealso [AppenderFileRotatingTime], [AppenderFileRotating], [rotor::rotate()]
 #' @export

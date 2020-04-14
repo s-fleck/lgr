@@ -10,7 +10,7 @@ Superclass for classes that have a \verb{$filter()} method such as \link{Appende
 \strong{NOTE}: This is an \emph{abstract class}. Abstract classes cannot be instantiated
 directly, but are exported for package developers that want to extend lgr -
 for example by creating their own \link[=Appender]{Appenders} or \link[=Layout]{Layouts}.
-Plese refer to the \emph{see also} section for actual implementations of this
+Please refer to the \emph{see also} section for actual implementations of this
 class.
 }
 \seealso{
@@ -75,7 +75,7 @@ one was specified)
 \item any \R object with a \verb{$filter()} method.
 }
 
-If a Filter returns a non-\code{FALSE} value, will be interpeted as \code{TRUE}
+If a Filter returns a non-\code{FALSE} value, will be interpreted as \code{TRUE}
 (= no filtering takes place) and a warning will be thrown.}
 
 \item{\code{name}}{\code{character} scalar or \code{NULL}. A filter can have an optional

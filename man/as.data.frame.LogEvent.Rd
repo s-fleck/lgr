@@ -45,12 +45,12 @@ converted to factors? Defaults to \code{FALSE} (as opposed to
 \item{...}{passed on to \code{data.frame()}}
 
 \item{box_if}{a \code{function} that returns \code{TRUE} or \code{FALSE} to determine
-wich values are to be boxed (i.e. placed as single elements in a list
+which values are to be boxed (i.e. placed as single elements in a list
 column). See example}
 
 \item{cols_expand}{\code{character} vector. Columns to \emph{not} box (even if
 \code{box_if()} returns \code{TRUE}). Vectors in these columns will result in multiple
-rows in the result (rahter than a signle list-column row). This defaults to
+rows in the result (rather than a single list-column row). This defaults to
 \code{"msg"} for vectorized logging over the log message.}
 }
 \description{

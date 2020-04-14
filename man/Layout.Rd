@@ -21,7 +21,7 @@ Appenders that can handle them.
 }
 \section{Notes for developers}{
 
-Layouts may have an additonal \verb{$read(file, threshold, n)} method that returns
+Layouts may have an additional \verb{$read(file, threshold, n)} method that returns
 a \code{character} vector, and/or an \verb{$parse(file)} method that
 returns a \code{data.frame}. These can be used by Appenders to \verb{$show()} methods
 and \verb{$data} active bindings respectively (see source code of \link{AppenderFile}).
@@ -48,7 +48,7 @@ Other Layouts:
 \subsection{Method \code{format_event()}}{
 Format a log event
 
-Function that the Layout uses to transofr a \link{LogEvent} into something
+Function that the Layout uses to transform a \link{LogEvent} into something
 that an \link{Appender} can write to an output destination.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Layout$format_event(event)}\if{html}{\out{</div>}}

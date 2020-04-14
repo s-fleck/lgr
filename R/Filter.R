@@ -34,9 +34,9 @@ EventFilter <- R6::R6Class(
   "EventFilter",
   public = list(
 
-    #' @description Initilize a new EventFilter
+    #' @description Initialize a new EventFilter
     #' @param fun a `function` with a single argument `event` that must return
-    #'   either `TRUE` or `FALSE`. Any  non-`FALSE` will be interpeted as `TRUE`
+    #'   either `TRUE` or `FALSE`. Any  non-`FALSE` will be interpreted as `TRUE`
     #'   (= no filtering takes place) and a warning will be thrown.
     initialize = function(fun = function(event) TRUE){
       self$filter <- fun
@@ -80,7 +80,7 @@ FilterInject <- R6::R6Class(
   inherit = EventFilter,
   public = list(
 
-    #' @description Initilize a new FilterInject
+    #' @description Initialize a new FilterInject
     #' @param ...,.list any number of named \R objects that will be injected as
     #'   custom fields into all [LogEvents][LogEvent] processed by the
     #'   Appender/Logger that this filter is attached to.
@@ -141,7 +141,7 @@ FilterForceLevel <- R6::R6Class(
   inherit = EventFilter,
   public = list(
 
-    #' @description Initilize a new FilterForceLevel
+    #' @description Initialize a new FilterForceLevel
     #' @param level an `integer` or `character` [log level][log_level]
     initialize = function(level){
       self[["level"]] <- standardize_log_level(level)

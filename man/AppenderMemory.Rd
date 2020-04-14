@@ -7,7 +7,7 @@
 \strong{NOTE}: This is an \emph{abstract class}. Abstract classes cannot be instantiated
 directly, but are exported for package developers that want to extend lgr -
 for example by creating their own \link[=Appender]{Appenders} or \link[=Layout]{Layouts}.
-Plese refer to the \emph{see also} section for actual implementations of this
+Please refer to the \emph{see also} section for actual implementations of this
 class.
 
 AppenderMemory is extended by Appenders that retain an in-memory event

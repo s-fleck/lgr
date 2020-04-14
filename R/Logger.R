@@ -6,7 +6,7 @@
 #' of the event. **lgr** comes with a single pre-configured Logger called the
 #' `root Logger` that can be accessed via `lgr$<...>`. Instantiation of new
 #' Loggers is done with [get_logger()]. It is advisable to instantiate a
-#' sepparate Logger with a descriptive name for each package/script in which
+#' separate Logger with a descriptive name for each package/script in which
 #' you use \pkg{lgr}.
 #'
 #' @name Logger
@@ -122,12 +122,12 @@ Logger <- R6::R6Class(
     #' **Loggers should never be instantiated directly with `Logger$new()`** but
     #' rather via [`get_logger("name")`][get_logger]. This way new Loggers are
     #' registered in a global namespace which ensures uniqueness and
-    #' facillitates inheritance between Loggers. If `"name"` does not exist, a
+    #' facilitates inheritance between Loggers. If `"name"` does not exist, a
     #' new Logger with that name will be created, otherwise the function returns
     #' a Reference to the existing Logger.
     #'
     #' `name` is potentially a `"/"` separated hierarchical value like
-    #' `foo/bar/baz`. Loggers further down the hierarchy are descendents of the
+    #' `foo/bar/baz`. Loggers further down the hierarchy are descendants of the
     #' loggers above and (by default) inherit `threshold` and `Appenders` from
     #' their ancestors.
     #'
@@ -607,7 +607,7 @@ Logger <- R6::R6Class(
   active = list(
 
     #' @field name A `character` scalar. The unique name of each logger,
-    #' which also includes the names of its ancestors (sepparated by `/`).
+    #' which also includes the names of its ancestors (separated by `/`).
     name = function(){
       paste(get(".name", envir = private), collapse = "/")
     },
@@ -627,7 +627,7 @@ Logger <- R6::R6Class(
 
 
     #' @field propagate A `TRUE` or `FALSE`. The unique name of each logger,
-    #' which also includes the names of its ancestors (sepparated by `/`).
+    #' which also includes the names of its ancestors (separated by `/`).
     propagate = function(){
       get(".propagate", envir = private)
     },

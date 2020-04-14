@@ -52,7 +52,7 @@ Filterable <- R6::R6Class(
     #' * an [EventFilter] [R6::R6] object; or
     #' * any \R object with a `$filter()` method.
     #'
-    #'  If a Filter returns a non-`FALSE` value, will be interpeted as `TRUE`
+    #'  If a Filter returns a non-`FALSE` value, will be interpreted as `TRUE`
     #'  (= no filtering takes place) and a warning will be thrown.
     #'
     #' @param name `character` scalar or `NULL`. A filter can have an optional

@@ -148,7 +148,7 @@ file.remove(logfile)
 
 lgr in general is stable and safe for use, but some Appenders are still 
 experimental. This especially concerns database appenders which are currently 
-beeing moved into to their own package 
+being moved into to their own package 
 [lgrExtra](https://github.com/s-fleck/lgrExtra). 
 **Please install the stable version from CRAN if you want to try out lgr**
 

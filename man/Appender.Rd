@@ -15,7 +15,7 @@ More appenders can be found in the package \href{https://github.com/s-fleck/lgrE
 \strong{NOTE}: This is an \emph{abstract class}. Abstract classes cannot be instantiated
 directly, but are exported for package developers that want to extend lgr -
 for example by creating their own \link[=Appender]{Appenders} or \link[=Layout]{Layouts}.
-Plese refer to the \emph{see also} section for actual implementations of this
+Please refer to the \emph{see also} section for actual implementations of this
 class.
 }
 \seealso{

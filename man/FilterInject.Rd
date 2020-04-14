@@ -49,7 +49,7 @@ processed by this filter}
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
-Initilize a new FilterInject
+Initialize a new FilterInject
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{FilterInject$new(..., .list = list())}\if{html}{\out{</div>}}
 }

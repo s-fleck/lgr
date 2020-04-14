@@ -10,7 +10,7 @@
 #' Appenders that can handle them.
 #'
 #' @section Notes for developers:
-#' Layouts may have an additonal `$read(file, threshold, n)` method that returns
+#' Layouts may have an additional `$read(file, threshold, n)` method that returns
 #' a `character` vector, and/or an `$parse(file)` method that
 #' returns a `data.frame`. These can be used by Appenders to `$show()` methods
 #' and `$data` active bindings respectively (see source code of [AppenderFile]).
@@ -31,7 +31,7 @@ Layout <- R6::R6Class(
 
     #' @description Format a log event
     #'
-    #' Function that the Layout uses to transofr a [LogEvent] into something
+    #' Function that the Layout uses to transform a [LogEvent] into something
     #' that an [Appender] can write to an output destination.
     #'
     #' @param event a [LogEvent]
@@ -325,7 +325,7 @@ LayoutJson <- R6::R6Class(
   inherit = Layout,
   public = list(
 
-    #' @description Set a `format` that this Layout will apply to timstamps.
+    #' @description Set a `format` that this Layout will apply to timestamps.
     #' can be a `character` scalar as for [format.POSIXct()] or a function.
     initialize = function(
       toJSON_args = list(auto_unbox = TRUE),
@@ -349,7 +349,7 @@ LayoutJson <- R6::R6Class(
       )
     },
 
-    #' @description Set a `format` that this Layout will apply to timstamps.
+    #' @description Set a `format` that this Layout will apply to timestamps.
     #' can be a `character` scalar as for [format.POSIXct()] or a function.
     set_toJSON_args = function(x){
       assert(is.list(x))
@@ -358,7 +358,7 @@ LayoutJson <- R6::R6Class(
       invisible(self)
     },
 
-    #' @description Set a format that this Layout will apply to timstamps.
+    #' @description Set a format that this Layout will apply to timestamps.
     #'
     #' @param x
     #' * `NULL` (the default): formatting of the timestamp is left to

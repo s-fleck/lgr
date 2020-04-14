@@ -143,11 +143,11 @@ LogEvent <- R6::R6Class(
 #' @param ... passed on to `data.frame()`
 #' @param optional currently ignored and only included for compatibility.
 #' @param box_if a `function` that returns `TRUE` or `FALSE` to determine
-#'   wich values are to be boxed (i.e. placed as single elements in a list
+#'   which values are to be boxed (i.e. placed as single elements in a list
 #'   column). See example
 #' @param cols_expand `character` vector. Columns to *not* box (even if
 #'   `box_if()` returns `TRUE`). Vectors in these columns will result in multiple
-#'   rows in the result (rahter than a signle list-column row). This defaults to
+#'   rows in the result (rather than a single list-column row). This defaults to
 #'   `"msg"` for vectorized logging over the log message.
 #' @export
 #' @seealso [data.table::data.table], [tibble::tibble]

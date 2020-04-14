@@ -65,7 +65,7 @@ lg$config(NULL)
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
-Initilize a new EventFilter
+Initialize a new EventFilter
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EventFilter$new(fun = function(event) TRUE)}\if{html}{\out{</div>}}
 }
@@ -74,7 +74,7 @@ Initilize a new EventFilter
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{fun}}{a \code{function} with a single argument \code{event} that must return
-either \code{TRUE} or \code{FALSE}. Any  non-\code{FALSE} will be interpeted as \code{TRUE}
+either \code{TRUE} or \code{FALSE}. Any  non-\code{FALSE} will be interpreted as \code{TRUE}
 (= no filtering takes place) and a warning will be thrown.}
 }
 \if{html}{\out{</div>}}
