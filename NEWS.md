@@ -34,7 +34,7 @@
   
 * added `toString.LogEvent()` for compact representations of LogEvents
 
-* lgr is now automatically tested for all major R version >= 3.0.0
+* lgr is now automatically tested for all major R version >= 3.2.0
 
 
 # lgr 0.3.4
