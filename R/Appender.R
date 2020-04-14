@@ -1590,4 +1590,3 @@ appender_summary <- function(x){
     )
   )
 }
-
