@@ -81,7 +81,7 @@ Filterable <- R6::R6Class(
     #' @description Set or replace (all) Filters of parent object. See
     #' [EventFilter] for how Filters work.
     #'
-    #' @param filters a `list` (named or unnamed) of [EventFilters] or
+    #' @param filters a `list` (named or unnamed) of [EventFilters][EventFilter] or
     #' predicate functions. See [is_filter()].
     set_filters = function(filters){
       filters <- standardize_filters_list(filters)

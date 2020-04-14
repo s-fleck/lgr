@@ -115,7 +115,7 @@ Set or replace (all) Filters of parent object. See
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{filters}}{a \code{list} (named or unnamed) of \link{EventFilters} or
+\item{\code{filters}}{a \code{list} (named or unnamed) of \link[=EventFilter]{EventFilters} or
 predicate functions. See \code{\link[=is_filter]{is_filter()}}.}
 }
 \if{html}{\out{</div>}}
