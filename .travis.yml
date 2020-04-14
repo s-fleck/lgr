@@ -18,11 +18,9 @@ matrix:
   - r: 3.3
   - r: 3.2
   - r: 3.1
-    before_cache:
-      - Rscript -e 'remotes::install_cran("curl")'
   - r: 3.0
-      before_cache:
-      - Rscript -e 'remotes::install_cran("curl")'
+r_packages:
+  - curl  # only for installing lgrExtra on R <= 3.2
 r_github_packages:
   - s-fleck/lgrExtra
 sudo: false
