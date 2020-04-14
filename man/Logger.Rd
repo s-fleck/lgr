@@ -249,7 +249,7 @@ Log an event.
 
 If \code{level} passes the Logger's \code{threshold} a new \link{LogEvent} with \code{level},
 \code{msg}, \code{timestamp} and \code{caller} is created.  If the new LogEvent also
-passes the Loggers \link[=Filter]{Filters}, it is be dispatched to the
+passes the Loggers \link[=EventFilter]{Filters}, it is be dispatched to the
 relevant \link{Appenders}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Logger$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))}\if{html}{\out{</div>}}

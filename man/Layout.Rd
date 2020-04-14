@@ -24,7 +24,7 @@ Appenders that can handle them.
 Layouts may have an additonal \verb{$read(file, threshold, n)} method that returns
 a \code{character} vector, and/or an \verb{$parse(file)} method that
 returns a \code{data.frame}. These can be used by Appenders to \verb{$show()} methods
-and \verb{$data} active bdinings respectively (see source code of \link{AppenderFile}).
+and \verb{$data} active bindings respectively (see source code of \link{AppenderFile}).
 }
 
 \seealso{

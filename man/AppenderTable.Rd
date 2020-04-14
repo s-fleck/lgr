@@ -4,8 +4,11 @@
 \alias{AppenderTable}
 \title{Abstract class for logging to tabular structures}
 \description{
-This is an \strong{abstract class} and as such cannot be instantiated directly.
-It is exported for package developers that want to extend it
+\strong{NOTE}: This is an \emph{abstract class}. Abstract classes cannot be instantiated
+directly, but are exported for package developers that want to extend lgr -
+for example by creating their own \link[=Appender]{Appenders} or \link[=Layout]{Layouts}.
+Plese refer to the \emph{see also} section for actual implementations of this
+class.
 
 AppenderTable is extended by Appenders that write to a data source that
 can be interpreted as tables, (usually a \code{data.frame}). Examples are
@@ -31,6 +34,7 @@ log level bellow \code{threshold}.}
 \seealso{
 Other abstract classes: 
 \code{\link{AppenderMemory}},
+\code{\link{Appender}},
 \code{\link{Filterable}}
 
 Other Appenders: 

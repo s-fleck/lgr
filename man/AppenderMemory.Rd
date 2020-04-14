@@ -4,8 +4,11 @@
 \alias{AppenderMemory}
 \title{Abstract class for logging to memory buffers}
 \description{
-This is an \strong{abstract class} and as such cannot be instantiated directly.
-It is exported for package developers that want to extend it
+\strong{NOTE}: This is an \emph{abstract class}. Abstract classes cannot be instantiated
+directly, but are exported for package developers that want to extend lgr -
+for example by creating their own \link[=Appender]{Appenders} or \link[=Layout]{Layouts}.
+Plese refer to the \emph{see also} section for actual implementations of this
+class.
 
 AppenderMemory is extended by Appenders that retain an in-memory event
 buffer, such as \link{AppenderBuffer} and \link[lgrExtra:AppenderPushbullet]{lgrExtra::AppenderPushbullet}.
@@ -42,6 +45,7 @@ or higher is registered.}
 
 Other abstract classes: 
 \code{\link{AppenderTable}},
+\code{\link{Appender}},
 \code{\link{Filterable}}
 }
 \concept{abstract classes}

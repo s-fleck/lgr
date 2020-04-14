@@ -3,30 +3,57 @@
 \name{EventFilter}
 \alias{EventFilter}
 \alias{Filter}
+\alias{.obj}
 \title{Event Filters}
+\usage{
+.obj()
+}
 \description{
-Filters can be used for the \verb{$set_filter()} and \verb{$add_filter()} methods of
-Appenders and Loggers. You normally do not need to construct a formal
-\code{EventFilter} object, you can just use any \code{function} that has the single
-argument \code{event}, or any object that has a \code{filter} method.
+Filters screen whether or not an object should be processed by a
+\link{Logger} or \link{Appender}. They are attached to a Logger or Appender via their
+\verb{$set_filter()} and \verb{$add_filter()} methods. If all Filters evaluate to
+\code{TRUE} for a given \link{LogEvent}, that event is passed on. Since LogEvents have
+reference semantics, filters can also be abused to modify them before they
+are passed on. Look at the source code of \code{\link[=with_log_level]{with_log_level()}} or
+\code{\link[=with_log_value]{with_log_value()}} for examples.
 
-NOTE: You can use the special function \code{\link[=.obj]{.obj()}} to access the calling
-Logger/Appender from within a filter
+Usually you do not need to
+instantiate a formal \code{EventFilter} object as you can just use any \code{function}
+that has the single argument \code{event} instead; however, for complex filter
+logic a more formal approach might be desirable.
+
+\code{.obj()} is a special function that can only be used within the \verb{$filter()}
+methods of \link[=EventFilter]{EventFilters}. It returns the \link{Logger} or \link{Appender}
+that the EventFilter is attached to.
 }
 \section{Modifying LogEvents with Filters}{
 
 
-Since LogEvents are R6 objects with reference semantics, Filters can
-be abused to modify log events before passing them on. lgr comes with a few
-preset filters that use this property: \link{FilterInject}
-(similar to \code{\link[=with_log_level]{with_log_level()}}) and \link{FilterForceLevel} (similar to \code{\link[=with_log_value]{with_log_value()}}).
+Since LogEvents are R6 objects with reference semantics, Filters can be
+abused to modify log events before passing them on. lgr comes with a few
+preset filters that use this property: \link{FilterInject} (similar to
+\code{\link[=with_log_level]{with_log_level()}}) and \link{FilterForceLevel} (similar to \code{\link[=with_log_value]{with_log_value()}}).
 
-The base class for Filters is called \code{EventFilter} so that it doesn't
-conflict with \code{\link[base:Filter]{base::Filter()}}. The recommended convention for Filter
-subclasses is to call them \code{FilterSomething} and leave out the
+\strong{NOTE:} The base class for Filters is called \code{EventFilter} so that it
+doesn't conflict with \code{\link[base:Filter]{base::Filter()}}. The recommended convention for
+Filter subclasses is to call them \code{FilterSomething} and leave out the
 \code{Event} prefix.
 }
 
+\examples{
+lg <- get_logger("test")
+f <- function(event) {
+  cat("via event$.logger:", event$.logger$threshold, "\n")  #  works for loggers only
+  cat("via .obj():      ",.obj()$threshold, "\n") # works for loggers and appenders
+  TRUE
+}
+lg$add_filter(f)
+lg$fatal("test")
+lg$config(NULL)
+}
+\seealso{
+\code{\link[=is_filter]{is_filter()}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -47,7 +74,8 @@ Initilize a new EventFilter
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{fun}}{a \code{function} with a single argument \code{event} that must return
-either \code{TRUE} or \code{FALSE.}}
+either \code{TRUE} or \code{FALSE}. Any  non-\code{FALSE} will be interpeted as \code{TRUE}
+(= no filtering takes place) and a warning will be thrown.}
 }
 \if{html}{\out{</div>}}
 }

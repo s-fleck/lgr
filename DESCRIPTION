@@ -19,7 +19,7 @@ License: MIT + file LICENSE
 URL: https://s-fleck.github.io/lgr
 BugReports: https://github.com/s-fleck/lgr/issues
 Depends:
-    R (>= 3.5.0)
+    R (>= 3.0.0)
 Imports: 
     R6 (>= 2.4.0)
 Suggests: 
