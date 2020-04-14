@@ -179,13 +179,13 @@ Filter subclasses is to call them <code>FilterSomething</code> and leave out the
 </ul>
 <p><hr>
 <a id="method-new"></a></p><h3>Method <code>new()</code></h3>
-<p>Initilize a new EventFilter</p><h3>Usage</h3>
+<p>Initialize a new EventFilter</p><h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>EventFilter</span>$<span class='fu'>new</span>(<span class='kw'>fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>event</span>) <span class='fl'>TRUE</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
 <p><div class="arguments"></p><dl'>
 <dt><code>fun</code></dt><dd><p>a <code>function</code> with a single argument <code>event</code> that must return
-either <code>TRUE</code> or <code>FALSE</code>. Any  non-<code>FALSE</code> will be interpeted as <code>TRUE</code>
+either <code>TRUE</code> or <code>FALSE</code>. Any  non-<code>FALSE</code> will be interpreted as <code>TRUE</code>
 (= no filtering takes place) and a warning will be thrown.</p></dd>
 
 </dl><p></div></p>
@@ -212,7 +212,7 @@ either <code>TRUE</code> or <code>FALSE</code>. Any  non-<code>FALSE</code> will
 <span class='no'>lg</span>$<span class='fu'>add_filter</span>(<span class='no'>f</span>)
 <span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"test"</span>)</div><div class='output co'>#&gt; via event$.logger: 400 
 #&gt; via .obj():       400 
-#&gt; FATAL [07:13:46.999] test </div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
+#&gt; FATAL [07:46:11.041] test </div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div></pre>

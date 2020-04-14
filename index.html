@@ -113,13 +113,13 @@
 <a href="#usage" class="anchor"></a>Usage</h2>
 <p>To log an <em>event</em> with with lgr we call <code>lgr$&lt;logging function&gt;()</code>. Unnamed arguments to the logging function are interpreted by <code><a href="https://rdrr.io/r/base/sprintf.html">sprintf()</a></code>. For a way to create loggers that <a href="https://glue.tidyverse.org/">glue</a> instead please refer to the vignette.</p>
 <div class="sourceCode" id="cb1"><pre class="r"><span class="no">lgr</span>$<span class="fu">fatal</span>(<span class="st">"A critical error"</span>)
-<span class="co">#&gt; FATAL [15:25:50.750] A critical error</span>
+<span class="co">#&gt; FATAL [09:33:26.760] A critical error</span>
 <span class="no">lgr</span>$<span class="fu">error</span>(<span class="st">"A less severe error"</span>)
-<span class="co">#&gt; ERROR [15:25:50.781] A less severe error</span>
+<span class="co">#&gt; ERROR [09:33:26.801] A less severe error</span>
 <span class="no">lgr</span>$<span class="fu">warn</span>(<span class="st">"A potentially bad situation"</span>)
-<span class="co">#&gt; WARN  [15:25:50.792] A potentially bad situation</span>
+<span class="co">#&gt; WARN  [09:33:26.815] A potentially bad situation</span>
 <span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"iris has %s rows"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">iris</span>))
-<span class="co">#&gt; INFO  [15:25:50.795] iris has 150 rows</span>
+<span class="co">#&gt; INFO  [09:33:26.817] iris has 150 rows</span>
 
 <span class="co"># the following log levels are hidden by default</span>
 <span class="no">lgr</span>$<span class="fu"><a href="https://rdrr.io/r/base/debug.html">debug</a></span>(<span class="st">"A debug message"</span>)
@@ -128,15 +128,15 @@
 <div class="sourceCode" id="cb2"><pre class="r"><span class="no">tf</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>()
 <span class="no">lgr</span>$<span class="fu"><a href="reference/simple_logging.html">add_appender</a></span>(<span class="no">AppenderFile</span>$<span class="fu">new</span>(<span class="no">tf</span>, <span class="kw">layout</span> <span class="kw">=</span> <span class="no">LayoutJson</span>$<span class="fu">new</span>()))
 <span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"cars has %s rows"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">cars</span>))
-<span class="co">#&gt; INFO  [15:25:50.812] cars has 50 rows</span>
+<span class="co">#&gt; INFO  [09:33:26.836] cars has 50 rows</span>
 <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">tf</span>))
-<span class="co">#&gt; {"level":400,"timestamp":"2019-12-06 15:25:50","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></pre></div>
+<span class="co">#&gt; {"level":400,"timestamp":"2020-04-14 09:33:26","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></pre></div>
 <p>By passing a named argument to <code>info()</code>, <code>warn()</code>, and co you can log not only text but arbitrary R objects. Not all appenders handle such <em>custom fields</em> perfectly, but JSON does. This way you can create logfiles that are machine as well as (somewhat) human readable.</p>
 <div class="sourceCode" id="cb3"><pre class="r"><span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"loading cars"</span>, <span class="st">"cars"</span>, <span class="kw">rows</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">cars</span>), <span class="kw">cols</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span>(<span class="no">cars</span>))
-<span class="co">#&gt; INFO  [15:25:50.843] loading cars {rows: 50, cols: 2}</span>
+<span class="co">#&gt; INFO  [09:33:26.866] loading cars {rows: 50, cols: 2}</span>
 <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">tf</span>), <span class="kw">sep</span> <span class="kw">=</span> <span class="st">"\n"</span>)
-<span class="co">#&gt; {"level":400,"timestamp":"2019-12-06 15:25:50","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span>
-<span class="co">#&gt; {"level":400,"timestamp":"2019-12-06 15:25:50","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}</span></pre></div>
+<span class="co">#&gt; {"level":400,"timestamp":"2020-04-14 09:33:26","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span>
+<span class="co">#&gt; {"level":400,"timestamp":"2020-04-14 09:33:26","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}</span></pre></div>
 <p>For more examples please see the package <a href="https://s-fleck.github.io/lgr/articles/lgr.html">vignette</a> and <a href="https://s-fleck.github.io/lgr/">documentation</a></p>
 </div>
 <div id="see-lgr-in-action" class="section level2">
@@ -165,7 +165,7 @@
 <div id="development-status" class="section level2">
 <h2 class="hasAnchor">
 <a href="#development-status" class="anchor"></a>Development status</h2>
-<p>lgr in general is stable and safe for use, but some Appenders are still experimental. This especially concerns database appenders which are currently beeing moved into to their own package <a href="https://github.com/s-fleck/lgrExtra">lgrExtra</a>. <strong>Please install the stable version from CRAN if you want to try out lgr</strong></p>
+<p>lgr in general is stable and safe for use, but some Appenders are still experimental. This especially concerns database appenders which are currently being moved into to their own package <a href="https://github.com/s-fleck/lgrExtra">lgrExtra</a>. <strong>Please install the stable version from CRAN if you want to try out lgr</strong></p>
 <p>The documentation needs a rewrite and will be ported to roxygen 7.x.x soon. If you have questions please file an issue.</p>
 </div>
 <div id="dependencies" class="section level2">

@@ -140,7 +140,7 @@ Appenders that can handle them.</p>
 
     
 
-<p>Layouts may have an additonal <code>$read(file, threshold, n)</code> method that returns
+<p>Layouts may have an additional <code>$read(file, threshold, n)</code> method that returns
 a <code>character</code> vector, and/or an <code>$parse(file)</code> method that
 returns a <code>data.frame</code>. These can be used by Appenders to <code>$show()</code> methods
 and <code>$data</code> active bindings respectively (see source code of <a href='AppenderFile.html'>AppenderFile</a>).</p>
@@ -163,7 +163,7 @@ and <code>$data</code> active bindings respectively (see source code of <a href=
 <p><hr>
 <a id="method-format_event"></a></p><h3>Method <code>format_event()</code></h3>
 <p>Format a log event</p>
-<p>Function that the Layout uses to transofr a <a href='LogEvent.html'>LogEvent</a> into something
+<p>Function that the Layout uses to transform a <a href='LogEvent.html'>LogEvent</a> into something
 that an <a href='Appender.html'>Appender</a> can write to an output destination.</p><h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>Layout</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</pre><p></div></p>
 

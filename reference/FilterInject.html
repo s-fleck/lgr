@@ -155,7 +155,7 @@ processed by this filter</p></dd>
 
 <hr>
 <a id="method-new"></a></p><h3>Method <code>new()</code></h3>
-<p>Initilize a new FilterInject</p><h3>Usage</h3>
+<p>Initialize a new FilterInject</p><h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>FilterInject</span>$<span class='fu'>new</span>(<span class='no'>...</span>, <span class='kw'>.list</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</pre><p></div></p>
 
 <h3>Arguments</h3>
@@ -188,7 +188,7 @@ See also <code><a href='with_log_level.html'>with_log_value()</a></code>.</p></d
   <span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"an error with forced custom 'type'-field"</span>)
 }
 
-<span class='fu'>analyse</span>()</div><div class='output co'>#&gt; ERROR [07:13:47.245] an error with forced custom 'type'-field {type: analysis}</div><div class='input'><span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"an normal error"</span>)</div><div class='output co'>#&gt; ERROR [07:13:47.249] an normal error </div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)  <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
+<span class='fu'>analyse</span>()</div><div class='output co'>#&gt; ERROR [07:46:11.282] an error with forced custom 'type'-field {type: analysis}</div><div class='input'><span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"an normal error"</span>)</div><div class='output co'>#&gt; ERROR [07:46:11.287] an normal error </div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)  <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div></pre>

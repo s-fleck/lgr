@@ -155,7 +155,7 @@ levels of each <a href='LogEvent.html'>LogEvent</a> processed by this filter.</p
 
 <hr>
 <a id="method-new"></a></p><h3>Method <code>new()</code></h3>
-<p>Initilize a new FilterForceLevel</p><h3>Usage</h3>
+<p>Initialize a new FilterForceLevel</p><h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>FilterForceLevel</span>$<span class='fu'>new</span>(<span class='no'>level</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
@@ -185,7 +185,7 @@ levels of each <a href='LogEvent.html'>LogEvent</a> processed by this filter.</p
   <span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"an error with forced log level INFO"</span>)
 }
 
-<span class='fu'>analyse</span>()</div><div class='output co'>#&gt; INFO  [07:13:47.122] an error with forced log level INFO </div><div class='input'><span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"an normal error"</span>)</div><div class='output co'>#&gt; ERROR [07:13:47.123] an normal error </div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)  <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
+<span class='fu'>analyse</span>()</div><div class='output co'>#&gt; INFO  [07:46:11.158] an error with forced log level INFO </div><div class='input'><span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"an normal error"</span>)</div><div class='output co'>#&gt; ERROR [07:46:11.160] an normal error </div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)  <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div></pre>
