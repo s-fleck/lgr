@@ -248,7 +248,7 @@ a <code>data.table</code>.</p>
     <pre class="examples"><div class='input'><span class='co'># Get and set the threshold of the root logger</span>
 <span class='fu'>threshold</span>(<span class='st'>"error"</span>)
 <span class='fu'>threshold</span>()</div><div class='output co'>#&gt; [1] 200</div><div class='input'><span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"this will be supressed"</span>)
-<span class='no'>lgr</span>$<span class='fu'>error</span>(<span class='st'>"an important error message"</span>)</div><div class='output co'>#&gt; ERROR [06:31:44.944] an important error message </div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>error</span>(<span class='st'>"an important error message"</span>)</div><div class='output co'>#&gt; ERROR [06:47:11.019] an important error message </div><div class='input'>
 <span class='co'># you can also specify a target to modify other loggers</span>
 <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)
 <span class='fu'>threshold</span>(<span class='st'>"fatal"</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='no'>lg</span>)
@@ -267,7 +267,7 @@ a <code>data.table</code>.</p>
 
 <span class='co'># add Appenders to a Logger</span>
 <span class='fu'>add_appender</span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(), <span class='st'>"second_console_appender"</span>)
-<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"Multiple console appenders are a bad idea"</span>)</div><div class='output co'>#&gt; FATAL [06:31:44.957] Multiple console appenders are a bad idea </div><div class='input'><span class='fu'>remove_appender</span>(<span class='st'>"second_console_appender"</span>)
+<span class='no'>lgr</span>$<span class='fu'>fatal</span>(<span class='st'>"Multiple console appenders are a bad idea"</span>)</div><div class='output co'>#&gt; FATAL [06:47:11.032] Multiple console appenders are a bad idea </div><div class='input'><span class='fu'>remove_appender</span>(<span class='st'>"second_console_appender"</span>)
 <span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"Good that we defined an appender name, so it's easy to remove"</span>)
 
 <span class='co'># Reconfigure the root logger</span>
@@ -277,11 +277,11 @@ a <code>data.table</code>.</p>
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console
 #&gt;   memory : &lt;AppenderBuffer&gt;  [all] -&gt; 0 child Appenders</div><div class='input'>
 <span class='co'># log some messages</span>
-<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"a log message"</span>)</div><div class='output co'>#&gt; INFO  [06:31:44.963] a log message </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"another message with data"</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; INFO  [06:31:44.965] another message with data {data: [1, 2, 3]}</div><div class='input'>
-<span class='fu'>show_log</span>()</div><div class='output co'>#&gt; INFO  [06:31:44] a log message
-#&gt; INFO  [06:31:44] another message with data</div><div class='input'><span class='fu'>show_data</span>()</div><div class='output co'>#&gt;   level           timestamp logger caller                       msg    data
-#&gt; 1   400 2020-04-14 06:31:44   root   eval             a log message    NULL
-#&gt; 2   400 2020-04-14 06:31:44   root   eval another message with data 1, 2, 3</div><div class='input'>
+<span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"a log message"</span>)</div><div class='output co'>#&gt; INFO  [06:47:11.039] a log message </div><div class='input'><span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"another message with data"</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; INFO  [06:47:11.040] another message with data {data: [1, 2, 3]}</div><div class='input'>
+<span class='fu'>show_log</span>()</div><div class='output co'>#&gt; INFO  [06:47:11] a log message
+#&gt; INFO  [06:47:11] another message with data</div><div class='input'><span class='fu'>show_data</span>()</div><div class='output co'>#&gt;   level           timestamp logger caller                       msg    data
+#&gt; 1   400 2020-04-14 06:47:11   root   eval             a log message    NULL
+#&gt; 2   400 2020-04-14 06:47:11   root   eval another message with data 1, 2, 3</div><div class='input'>
 <span class='co'># cleanup</span>
 <span class='no'>lgr</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)</div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [info] root</div></pre>
   </div>

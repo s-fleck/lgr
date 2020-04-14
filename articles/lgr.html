@@ -99,10 +99,10 @@
 <a href="#logging-to-the-console" class="anchor"></a>Logging to the console</h3>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="co"># the root logger is called "lgr"</span>
 <span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"Vampire stories are generally located in Styria."</span>)
-<span class="co">#&gt; INFO  [06:31:47.664] Vampire stories are generally located in Styria.</span></pre></body></html></div>
+<span class="co">#&gt; INFO  [06:47:13.840] Vampire stories are generally located in Styria.</span></pre></body></html></div>
 <p>You can use formatting strings that are passed on to <code><a href="https://rdrr.io/r/base/sprintf.html">sprintf()</a></code> in lgr.</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">lgr</span>$<span class="fu">error</span>(<span class="st">"Vampires generally arrive in carriages drawn by %i black horses."</span>, <span class="fl">2</span>)
-<span class="co">#&gt; ERROR [06:31:47.691] Vampires generally arrive in carriages drawn by 2 black horses.</span></pre></body></html></div>
+<span class="co">#&gt; ERROR [06:47:13.867] Vampires generally arrive in carriages drawn by 2 black horses.</span></pre></body></html></div>
 </div>
 <div id="logging-to-plaintext-files" class="section level3">
 <h3 class="hasAnchor">
@@ -111,17 +111,17 @@
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">tf</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>(<span class="kw">fileext</span> <span class="kw">=</span> <span class="st">".info"</span>)
 <span class="no">lgr</span>$<span class="fu"><a href="../reference/simple_logging.html">add_appender</a></span>(<span class="no">AppenderFile</span>$<span class="fu">new</span>(<span class="no">tf</span>), <span class="kw">name</span> <span class="kw">=</span> <span class="st">"file"</span>)
 <span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"You must think I am joking"</span>)
-<span class="co">#&gt; INFO  [06:31:47.708] You must think I am joking</span>
+<span class="co">#&gt; INFO  [06:47:13.885] You must think I am joking</span>
 <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">tf</span>)
-<span class="co">#&gt; [1] "INFO  [2020-04-14 06:31:47.708] You must think I am joking"</span></pre></body></html></div>
+<span class="co">#&gt; [1] "INFO  [2020-04-14 06:47:13.885] You must think I am joking"</span></pre></body></html></div>
 <p>The various Appenders available in lgr are R6 classes. To instantiate an object of that class (i.e. create a new appender) you have to use the <code>$new()</code> function as in the example above. Whenever you see something in lgr that <code>IsNamedLikeThis</code>, you can be sure that it is such an R6 class.</p>
 <p>If you look at the output, you see that the timestamp format of the file appender is slightly different to the timestamp format of the console Appender. Formatting is handled by <strong>Layouts</strong>, and each Appender has exactly one:</p>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">lgr</span>$<span class="no">appenders</span>$<span class="no">file</span>$<span class="fu">set_layout</span>(<span class="no">LayoutFormat</span>$<span class="fu">new</span>(<span class="kw">timestamp_fmt</span> <span class="kw">=</span> <span class="st">"%B %d %T"</span>))
 <span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"No, I am quite serious"</span>)
-<span class="co">#&gt; INFO  [06:31:47.726] No, I am quite serious</span>
+<span class="co">#&gt; INFO  [06:47:13.904] No, I am quite serious</span>
 <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">tf</span>)
-<span class="co">#&gt; [1] "INFO  [2020-04-14 06:31:47.708] You must think I am joking"</span>
-<span class="co">#&gt; [2] "INFO  [April 14 06:31:47] No, I am quite serious"</span>
+<span class="co">#&gt; [1] "INFO  [2020-04-14 06:47:13.885] You must think I am joking"</span>
+<span class="co">#&gt; [2] "INFO  [April 14 06:47:13] No, I am quite serious"</span>
 
 <span class="co">#cleanup</span>
 <span class="fu"><a href="https://rdrr.io/r/base/unlink.html">unlink</a></span>(<span class="no">tf</span>)</pre></body></html></div>
@@ -137,25 +137,25 @@
 <span class="co"># setup a JSON appender</span>
 <span class="no">lgr</span>$<span class="fu"><a href="../reference/simple_logging.html">add_appender</a></span>(<span class="no">AppenderJson</span>$<span class="fu">new</span>(<span class="no">tf</span>), <span class="kw">name</span> <span class="kw">=</span> <span class="st">"json"</span>)
 <span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"We lived in Styria"</span>)
-<span class="co">#&gt; INFO  [06:31:47.751] We lived in Styria</span></pre></body></html></div>
+<span class="co">#&gt; INFO  [06:47:13.931] We lived in Styria</span></pre></body></html></div>
 <p>JSON is still somewhat human readable</p>
 <div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">tf</span>))
-<span class="co">#&gt; {"level":400,"timestamp":"2020-04-14 06:31:47","logger":"root","caller":"eval","msg":"We lived in Styria"}</span></pre></body></html></div>
+<span class="co">#&gt; {"level":400,"timestamp":"2020-04-14 06:47:13","logger":"root","caller":"eval","msg":"We lived in Styria"}</span></pre></body></html></div>
 <p>and easy for machines to parse</p>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="../reference/read_json_lines.html">read_json_lines</a></span>(<span class="no">tf</span>)
 <span class="co">#&gt;   level           timestamp logger caller                msg</span>
-<span class="co">#&gt; 1   400 2020-04-14 06:31:47   root   eval We lived in Styria</span></pre></body></html></div>
+<span class="co">#&gt; 1   400 2020-04-14 06:47:13   root   eval We lived in Styria</span></pre></body></html></div>
 <p>Many Appenders provide either a <code>$show()</code> method and a <code>$data</code> active binding convenience, and so you do not have to call <code><a href="https://rdrr.io/r/base/readLines.html">readLines()</a></code> &amp; co manually.</p>
 <div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="co"># show is a method and takes some extra arguments, like maximum number of lines</span>
 <span class="co"># to show</span>
 <span class="no">lgr</span>$<span class="no">appenders</span>$<span class="no">json</span>$<span class="fu">show</span>()
-<span class="co">#&gt; {"level":400,"timestamp":"2020-04-14 06:31:47","logger":"root","caller":"eval","msg":"We lived in Styria"}</span>
+<span class="co">#&gt; {"level":400,"timestamp":"2020-04-14 06:47:13","logger":"root","caller":"eval","msg":"We lived in Styria"}</span>
 
 <span class="co"># $data always returns a data.frame if available. It is an active binding </span>
 <span class="co"># rather than a method, so no extra arguments are possible</span>
 <span class="no">lgr</span>$<span class="no">appenders</span>$<span class="no">json</span>$<span class="no">data</span>
 <span class="co">#&gt;   level           timestamp logger caller                msg</span>
-<span class="co">#&gt; 1   400 2020-04-14 06:31:47   root   eval We lived in Styria</span></pre></body></html></div>
+<span class="co">#&gt; 1   400 2020-04-14 06:47:13   root   eval We lived in Styria</span></pre></body></html></div>
 <p>Please note that under the hood, <code>AppenderJson</code> is just an <code>AppenderFile</code> with <code>LayoutJson</code>. The only difference is AppenderJson provides a <code>$data()</code> method while AppenderFile does not.</p>
 </div>
 <div id="custom-fields" class="section level3">
@@ -164,13 +164,13 @@
 <p>Unlike many others Loggers for R, lgr treats a <em>LogEvent</em> as a unit of data, not just a message with a timestamp. A log event can contain arbitrary data, though not all Appenders can handle that well. The JSON appender we added above is particularly good at handling most R objects.</p>
 <div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="co"># The default console appender displays custom fields as pseudo-json after the message</span>
 <span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"Styria has"</span>, <span class="kw">poultry</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"capons"</span>, <span class="st">"turkeys"</span>))
-<span class="co">#&gt; INFO  [06:31:47.922] Styria has {poultry: [capons, turkeys]}</span>
+<span class="co">#&gt; INFO  [06:47:14.113] Styria has {poultry: [capons, turkeys]}</span>
 
 <span class="co"># JSON can store most R objects quite naturally </span>
 <span class="fu"><a href="../reference/read_json_lines.html">read_json_lines</a></span>(<span class="no">tf</span>)
 <span class="co">#&gt;   level           timestamp logger caller                msg         poultry</span>
-<span class="co">#&gt; 1   400 2020-04-14 06:31:47   root   eval We lived in Styria            NULL</span>
-<span class="co">#&gt; 2   400 2020-04-14 06:31:47   root   eval         Styria has capons, turkeys</span>
+<span class="co">#&gt; 1   400 2020-04-14 06:47:13   root   eval We lived in Styria            NULL</span>
+<span class="co">#&gt; 2   400 2020-04-14 06:47:14   root   eval         Styria has capons, turkeys</span>
 <span class="fu"><a href="../reference/read_json_lines.html">read_json_lines</a></span>(<span class="no">tf</span>)$<span class="no">poultry</span><span class="kw">[[</span><span class="fl">2</span>]]  <span class="co"># works because poultry is a list column</span>
 <span class="co">#&gt; [1] "capons"  "turkeys"</span></pre></body></html></div>
 </div>
@@ -271,18 +271,18 @@
 <a href="#logging-syntax" class="anchor"></a>Logging syntax</h3>
 <p>lgr Loggers are R6 objects with <em>methods</em> (functions) for logging. You can refer to the <em>root</em> logger with <code>lgr</code>.</p>
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">lgr</span>$<span class="fu">fatal</span>(<span class="st">"This is an important message about %s going wrong"</span>, <span class="st">"-&gt;something&lt;-"</span>)
-<span class="co">#&gt; FATAL [06:31:47.959] This is an important message about -&gt;something&lt;- going wrong</span>
+<span class="co">#&gt; FATAL [06:47:14.152] This is an important message about -&gt;something&lt;- going wrong</span>
 <span class="no">lgr</span>$<span class="fu"><a href="https://rdrr.io/r/base/trace.html">trace</a></span>(<span class="st">"Trace messages are still hidden"</span>)
 <span class="no">lgr</span>$<span class="fu">set_threshold</span>(<span class="st">"trace"</span>)
 <span class="no">lgr</span>$<span class="fu"><a href="https://rdrr.io/r/base/trace.html">trace</a></span>(<span class="st">"Unless we lower the threshold"</span>)
-<span class="co">#&gt; TRACE [06:31:47.963] Unless we lower the threshold</span></pre></body></html></div>
+<span class="co">#&gt; TRACE [06:47:14.155] Unless we lower the threshold</span></pre></body></html></div>
 </div>
 <div id="formatting-strings" class="section level3">
 <h3 class="hasAnchor">
 <a href="#formatting-strings" class="anchor"></a>Formatting strings</h3>
 <p>You can use <code><a href="https://rdrr.io/r/base/sprintf.html">sprintf()</a></code> style formatting strings directly in log messages.</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"The sky was the color of %s, tuned to a dead chanel"</span>, <span class="st">"television"</span>)
-<span class="co">#&gt; INFO  [06:31:47.967] The sky was the color of television, tuned to a dead chanel</span></pre></body></html></div>
+<span class="co">#&gt; INFO  [06:47:14.160] The sky was the color of television, tuned to a dead chanel</span></pre></body></html></div>
 </div>
 </div>
 <div id="logevents-the-atomic-unit-of-logging" class="section level2">
@@ -290,15 +290,15 @@
 <a href="#logevents-the-atomic-unit-of-logging" class="anchor"></a>LogEvents: The atomic unit of logging</h2>
 <p>LogEvents are objects that store all information collected by the Logger. They are passed on to Appenders that output them, but Appenders usually don’t utilize all the information present in a log event. The last event produced by a Logger is stored in its <code>last_event</code> field.</p>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"Vampire stories are generally located in Styria"</span>)
-<span class="co">#&gt; INFO  [06:31:47.972] Vampire stories are generally located in Styria</span>
+<span class="co">#&gt; INFO  [06:47:14.165] Vampire stories are generally located in Styria</span>
 <span class="no">lgr</span>$<span class="no">last_event</span>  <span class="co"># a summary output of the event</span>
-<span class="co">#&gt; INFO  [2020-04-14 06:31:47] Vampire stories are generally located in Styria</span>
+<span class="co">#&gt; INFO  [2020-04-14 06:47:14] Vampire stories are generally located in Styria</span>
 <span class="no">lgr</span>$<span class="no">last_event</span>$<span class="no">values</span>  <span class="co"># all values stored in the event as a list</span>
 <span class="co">#&gt; $level</span>
 <span class="co">#&gt; [1] 400</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $timestamp</span>
-<span class="co">#&gt; [1] "2020-04-14 06:31:47 UTC"</span>
+<span class="co">#&gt; [1] "2020-04-14 06:47:14 UTC"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $logger</span>
 <span class="co">#&gt; [1] "root"</span>
@@ -312,16 +312,16 @@
 <p>You should consider making use of custom fields liberally and using output formats that support them (such as JSON), rather than producing elaborately formatted but hard to parse log messages. If you ever want to analyse your log data, you will thank me for this tip.</p>
 <div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="co"># bad</span>
 <span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"Processing track '%s' with %s waypoints"</span>, <span class="st">"track.gpx"</span>, <span class="fl">32</span>)
-<span class="co">#&gt; INFO  [06:31:47.982] Processing track 'track.gpx' with 32 waypoints</span>
+<span class="co">#&gt; INFO  [06:47:14.176] Processing track 'track.gpx' with 32 waypoints</span>
 
 <span class="co"># Good</span>
 <span class="no">tf</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>()
 <span class="no">lgr</span>$<span class="fu"><a href="../reference/simple_logging.html">add_appender</a></span>(<span class="no">AppenderJson</span>$<span class="fu">new</span>(<span class="no">tf</span>), <span class="st">"json"</span>)
 <span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"Processing track"</span>, <span class="kw">file</span> <span class="kw">=</span> <span class="st">"track.gpx"</span>, <span class="kw">waypoints</span> <span class="kw">=</span> <span class="fl">32</span>)
-<span class="co">#&gt; INFO  [06:31:47.985] Processing track {file: track.gpx, waypoints: 32}</span>
+<span class="co">#&gt; INFO  [06:47:14.180] Processing track {file: track.gpx, waypoints: 32}</span>
 <span class="no">lgr</span>$<span class="no">appenders</span>$<span class="no">json</span>$<span class="no">data</span>
 <span class="co">#&gt;   level           timestamp logger caller              msg      file waypoints</span>
-<span class="co">#&gt; 1   400 2020-04-14 06:31:47   root   eval Processing track track.gpx        32</span></pre></body></html></div>
+<span class="co">#&gt; 1   400 2020-04-14 06:47:14   root   eval Processing track track.gpx        32</span></pre></body></html></div>
 </div>
 <div id="thresholds" class="section level2">
 <h2 class="hasAnchor">
@@ -337,7 +337,7 @@
 
 <span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"is it a plane?"</span>)
 <span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"no! is it a bird?"</span>)
-<span class="co">#&gt; INFO  [06:31:48.002] no! is it a bird?</span>
+<span class="co">#&gt; INFO  [06:47:14.199] no! is it a bird?</span>
 
 <span class="co"># since this is not a very useful filter, we better remove it again</span>
 <span class="no">lgr</span>$<span class="fu">set_filters</span>(<span class="kw">NULL</span>)</pre></body></html></div>
@@ -358,12 +358,12 @@
 <span class="no">lgr</span>$<span class="no">appenders</span>$<span class="no">console</span>$<span class="fu">set_threshold</span>(<span class="st">"info"</span>)
 <span class="no">lgr</span>$<span class="no">appenders</span>$<span class="no">file</span>$<span class="fu">set_threshold</span>(<span class="fl">NA</span>)
 <span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"Another informational message"</span>)
-<span class="co">#&gt; INFO  [06:31:48.020] Another informational message</span>
+<span class="co">#&gt; INFO  [06:47:14.219] Another informational message</span>
 <span class="no">lgr</span>$<span class="fu"><a href="https://rdrr.io/r/base/debug.html">debug</a></span>(<span class="st">"A debug message not shown by the console appender"</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">tf</span>)
-<span class="co">#&gt; [1] "INFO  [2020-04-14 06:31:48.020] Another informational message"                    </span>
-<span class="co">#&gt; [2] "DEBUG [2020-04-14 06:31:48.022] A debug message not shown by the console appender"</span>
+<span class="co">#&gt; [1] "INFO  [2020-04-14 06:47:14.219] Another informational message"                    </span>
+<span class="co">#&gt; [2] "DEBUG [2020-04-14 06:47:14.221] A debug message not shown by the console appender"</span>
 
 <span class="co"># Remove the appender again</span>
 <span class="no">lgr</span>$<span class="fu"><a href="../reference/simple_logging.html">remove_appender</a></span>(<span class="st">"file"</span>)
@@ -405,13 +405,13 @@
   <span class="st">"pastes together unnamed arguments "</span>,
   <span class="st">"and evaluates arbitray expressions inside braces {Sys.Date()}"</span>
 )
-<span class="co">#&gt; INFO  [06:31:48.058] glue automatically pastes together unnamed arguments and evaluates arbitray expressions inside braces 2020-04-14</span></pre></body></html></div>
+<span class="co">#&gt; INFO  [06:47:14.259] glue automatically pastes together unnamed arguments and evaluates arbitray expressions inside braces 2020-04-14</span></pre></body></html></div>
 <p>Glue lets you define temporary variables inside the <code><a href="https://glue.tidyverse.org/reference/glue.html">glue()</a></code> call. As with the normal Logger, named arguments get turned into custom fields.</p>
 <div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">lg</span>$<span class="fu">info</span>(<span class="st">"For more info on glue see {website}"</span>, <span class="kw">website</span> <span class="kw">=</span> <span class="st">"https://glue.tidyverse.org/"</span>)
-<span class="co">#&gt; INFO  [06:31:48.083] For more info on glue see https://glue.tidyverse.org/ {website: https://glue.tidyverse.org/}</span></pre></body></html></div>
+<span class="co">#&gt; INFO  [06:47:14.285] For more info on glue see https://glue.tidyverse.org/ {website: https://glue.tidyverse.org/}</span></pre></body></html></div>
 <p>You can suppress this behaviour by making named argument start with a <code>"."</code>.</p>
 <div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">lg</span>$<span class="fu">info</span>(<span class="st">"Glue is available from {.cran}"</span>, <span class="kw">.cran</span> <span class="kw">=</span> <span class="st">"https://CRAN.R-project.org/package=glue"</span>)
-<span class="co">#&gt; INFO  [06:31:48.089] Glue is available from https://CRAN.R-project.org/package=glue</span></pre></body></html></div>
+<span class="co">#&gt; INFO  [06:47:14.291] Glue is available from https://CRAN.R-project.org/package=glue</span></pre></body></html></div>
 </div>
 </div>
 <div id="configuration" class="section level1">
@@ -483,10 +483,10 @@
 
 
 <span class="no">lg</span>$<span class="fu">info</span>(<span class="st">"the default format"</span>)
-<span class="co">#&gt; INFO  [06:31:48.146] the default format</span>
+<span class="co">#&gt; INFO  [06:47:14.355] the default format</span>
 <span class="no">lg</span>$<span class="no">appenders</span>$<span class="no">cons</span>$<span class="no">layout</span>$<span class="fu">set_fmt</span>(<span class="st">"%L (%n) [%t] %c(): !! %m !!"</span>)
 <span class="no">lg</span>$<span class="fu">info</span>(<span class="st">"A more involved custom format"</span>)
-<span class="co">#&gt; INFO  (400) [06:31:48.148] eval(): !! A more involved custom format !!</span></pre></body></html></div>
+<span class="co">#&gt; INFO  (400) [06:47:14.357] eval(): !! A more involved custom format !!</span></pre></body></html></div>
 <p>If this is not enough for you, you can use <code>LayoutGlue</code> based on the awesome <a href="https://github.com/tidyverse/glue">glue</a> package. The syntax is a bit more verbose, and <code>AppenderGlue</code> is a bit less performant than <code>AppenderFormat</code>, but the possibilities are endless.</p>
 <div class="sourceCode" id="cb27"><html><body><pre class="r"><span class="co"># install.packages("glue")</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">glue</span>)
@@ -517,16 +517,16 @@
 <span class="co"># same as </span>
 <span class="fu"><a href="../reference/read_json_lines.html">read_json_lines</a></span>(<span class="no">tf</span>)</pre></body></html></div>
 <pre><code>#&gt;   level           timestamp logger caller             msg  field numbers  use
-#&gt; 1   400 2020-04-14 06:31:48   test   eval JSON naturally  custom    NULL &lt;NA&gt;
-#&gt; 2   400 2020-04-14 06:31:48   test   eval supports custom   &lt;NA&gt; 1, 2, 3 &lt;NA&gt;
-#&gt; 3   400 2020-04-14 06:31:48   test   eval      log fields   &lt;NA&gt;    NULL JSON</code></pre>
+#&gt; 1   400 2020-04-14 06:47:14   test   eval JSON naturally  custom    NULL &lt;NA&gt;
+#&gt; 2   400 2020-04-14 06:47:14   test   eval supports custom   &lt;NA&gt; 1, 2, 3 &lt;NA&gt;
+#&gt; 3   400 2020-04-14 06:47:14   test   eval      log fields   &lt;NA&gt;    NULL JSON</code></pre>
 <p>JSON is also human readable, though this vignette does not transport that fact very well because of the lack of horizontal space.</p>
 <div class="sourceCode" id="cb31"><html><body><pre class="r"><span class="no">lg</span>$<span class="no">appenders</span>$<span class="no">json</span>$<span class="fu">show</span>()
 <span class="co"># same as</span>
 <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">tf</span>), <span class="kw">sep</span> <span class="kw">=</span> <span class="st">"\n"</span>)</pre></body></html></div>
-<pre><code>#&gt; {"level":400,"timestamp":"2020-04-14 06:31:48","logger":"test","caller":"eval","msg":"JSON naturally ","field":"custom"}
-#&gt; {"level":400,"timestamp":"2020-04-14 06:31:48","logger":"test","caller":"eval","msg":"supports custom","numbers":[1,2,3]}
-#&gt; {"level":400,"timestamp":"2020-04-14 06:31:48","logger":"test","caller":"eval","msg":"log fields","use":"JSON"}</code></pre>
+<pre><code>#&gt; {"level":400,"timestamp":"2020-04-14 06:47:14","logger":"test","caller":"eval","msg":"JSON naturally ","field":"custom"}
+#&gt; {"level":400,"timestamp":"2020-04-14 06:47:14","logger":"test","caller":"eval","msg":"supports custom","numbers":[1,2,3]}
+#&gt; {"level":400,"timestamp":"2020-04-14 06:47:14","logger":"test","caller":"eval","msg":"log fields","use":"JSON"}</code></pre>
 <div class="sourceCode" id="cb33"><html><body><pre class="r"><span class="co"># cleanup</span>
 <span class="no">lg</span>$<span class="fu">config</span>(<span class="kw">NULL</span>)
 <span class="co">#&gt; &lt;Logger&gt; [all] test</span>
@@ -555,17 +555,17 @@
 <span class="co"># display info on the backups of tf</span>
 <span class="no">lg</span>$<span class="no">appenders</span>$<span class="no">rotating</span>$<span class="no">backups</span>
 <span class="co">#&gt;                                     path             name sfx ext  size isdir</span>
-<span class="co">#&gt; 1 /tmp/RtmpBCpDdL/file5f895378d309.1.log file5f895378d309   1 log 10608 FALSE</span>
-<span class="co">#&gt; 2 /tmp/RtmpBCpDdL/file5f895378d309.2.log file5f895378d309   2 log 10608 FALSE</span>
-<span class="co">#&gt; 3 /tmp/RtmpBCpDdL/file5f895378d309.3.log file5f895378d309   3 log 10608 FALSE</span>
-<span class="co">#&gt; 4 /tmp/RtmpBCpDdL/file5f895378d309.4.log file5f895378d309   4 log 10608 FALSE</span>
-<span class="co">#&gt; 5 /tmp/RtmpBCpDdL/file5f895378d309.5.log file5f895378d309   5 log 10608 FALSE</span>
+<span class="co">#&gt; 1 /tmp/RtmpSwFZAa/file5ea0285e1270.1.log file5ea0285e1270   1 log 10608 FALSE</span>
+<span class="co">#&gt; 2 /tmp/RtmpSwFZAa/file5ea0285e1270.2.log file5ea0285e1270   2 log 10608 FALSE</span>
+<span class="co">#&gt; 3 /tmp/RtmpSwFZAa/file5ea0285e1270.3.log file5ea0285e1270   3 log 10608 FALSE</span>
+<span class="co">#&gt; 4 /tmp/RtmpSwFZAa/file5ea0285e1270.4.log file5ea0285e1270   4 log 10608 FALSE</span>
+<span class="co">#&gt; 5 /tmp/RtmpSwFZAa/file5ea0285e1270.5.log file5ea0285e1270   5 log 10608 FALSE</span>
 <span class="co">#&gt;   mode               mtime               ctime               atime  uid  gid</span>
-<span class="co">#&gt; 1  664 2020-04-14 06:31:48 2020-04-14 06:31:48 2020-04-14 06:31:48 2000 2000</span>
-<span class="co">#&gt; 2  664 2020-04-14 06:31:48 2020-04-14 06:31:48 2020-04-14 06:31:48 2000 2000</span>
-<span class="co">#&gt; 3  664 2020-04-14 06:31:48 2020-04-14 06:31:48 2020-04-14 06:31:48 2000 2000</span>
-<span class="co">#&gt; 4  664 2020-04-14 06:31:48 2020-04-14 06:31:48 2020-04-14 06:31:48 2000 2000</span>
-<span class="co">#&gt; 5  664 2020-04-14 06:31:48 2020-04-14 06:31:48 2020-04-14 06:31:48 2000 2000</span>
+<span class="co">#&gt; 1  664 2020-04-14 06:47:14 2020-04-14 06:47:14 2020-04-14 06:47:14 2000 2000</span>
+<span class="co">#&gt; 2  664 2020-04-14 06:47:14 2020-04-14 06:47:14 2020-04-14 06:47:14 2000 2000</span>
+<span class="co">#&gt; 3  664 2020-04-14 06:47:14 2020-04-14 06:47:14 2020-04-14 06:47:14 2000 2000</span>
+<span class="co">#&gt; 4  664 2020-04-14 06:47:14 2020-04-14 06:47:14 2020-04-14 06:47:14 2000 2000</span>
+<span class="co">#&gt; 5  664 2020-04-14 06:47:14 2020-04-14 06:47:14 2020-04-14 06:47:14 2000 2000</span>
 <span class="co">#&gt;    uname grname index</span>
 <span class="co">#&gt; 1 travis travis     1</span>
 <span class="co">#&gt; 2 travis travis     2</span>
@@ -596,14 +596,14 @@
 <span class="co">#&gt; &lt;Logger&gt; [all] mypackage</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; appenders:</span>
-<span class="co">#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/RtmpBCpDdL/file5f89c18a497</span>
+<span class="co">#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/RtmpSwFZAa/file5ea07b3c34d7</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; inherited appenders:</span>
 <span class="co">#&gt;   appenders.console: &lt;AppenderConsole&gt; [info] -&gt; console</span></pre></body></html></div>
 <p>This tells us that <code>lg</code> logs all events of at least level <code>info</code>. It does have a single (unnamed) Appender that logs to a temporary file, and dispatches all LogEvents it creates to the Appenders of the root Logger (ignoring the threshold and filters of the root Logger, but not of its Appenders).</p>
 <p>We can use <code>lg$fatal()</code>, <code>lg$info()</code>, etc.. to log messages with this Logger:</p>
 <div class="sourceCode" id="cb37"><html><body><pre class="r"><span class="no">lg</span>$<span class="fu">info</span>(<span class="st">"A test message for lg"</span>)
-<span class="co">#&gt; INFO  [06:31:48.454] A test message for lg</span></pre></body></html></div>
+<span class="co">#&gt; INFO  [06:47:14.681] A test message for lg</span></pre></body></html></div>
 <p>If we do not want <code>lg</code> to dispatch to the root Logger, we can set <code>propagate</code> to <code>FALSE</code>.</p>
 <div class="sourceCode" id="cb38"><html><body><pre class="r"><span class="no">lg</span>$<span class="fu">set_propagate</span>(<span class="fl">FALSE</span>)</pre></body></html></div>
 <p>When we take a look at the Logger again, we now see that it does not inherit any Appenders anymore</p>
@@ -611,7 +611,7 @@
 <span class="co">#&gt; &lt;Logger&gt; [all] mypackage</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; appenders:</span>
-<span class="co">#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/RtmpBCpDdL/file5f89c18a497</span></pre></body></html></div>
+<span class="co">#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/RtmpSwFZAa/file5ea07b3c34d7</span></pre></body></html></div>
 <p>Consequently, <code>lg</code> no longer outputs log messages to he console</p>
 <div class="sourceCode" id="cb40"><html><body><pre class="r"><span class="no">lg</span>$<span class="fu">info</span>(<span class="st">"Nothing to see here"</span>)</pre></body></html></div>
 <div class="sourceCode" id="cb41"><html><body><pre class="r"><span class="co"># cleanup</span>
@@ -647,12 +647,12 @@
 
 <span class="co"># An event of level 'error' or 'fatal' triggers flushing of the buffer</span>
 <span class="no">lg</span>$<span class="fu">error</span>(<span class="st">"But the days grow short when you reach September"</span>)
-<span class="co">#&gt; DEBUG [06:31:48.502] April </span>
-<span class="co">#&gt; DEBUG [06:31:48.502] May </span>
-<span class="co">#&gt; DEBUG [06:31:48.502] June </span>
-<span class="co">#&gt; DEBUG [06:31:48.502] July </span>
-<span class="co">#&gt; DEBUG [06:31:48.502] August </span>
-<span class="co">#&gt; ERROR [06:31:48.504] But the days grow short when you reach September</span></pre></body></html></div>
+<span class="co">#&gt; DEBUG [06:47:14.729] April </span>
+<span class="co">#&gt; DEBUG [06:47:14.729] May </span>
+<span class="co">#&gt; DEBUG [06:47:14.729] June </span>
+<span class="co">#&gt; DEBUG [06:47:14.729] July </span>
+<span class="co">#&gt; DEBUG [06:47:14.730] August </span>
+<span class="co">#&gt; ERROR [06:47:14.731] But the days grow short when you reach September</span></pre></body></html></div>
 </div>
 <div id="logging-to-databases" class="section level2">
 <h2 class="hasAnchor">
@@ -708,9 +708,9 @@
 }
 <span class="fu">analyze</span>()</pre></body></html></div>
 <p>The result is the same in both cases:</p>
-<pre><code>#&gt; INFO  [06:31:48.525] cleaning data {dataset_id: dataset1}
-#&gt; INFO  [06:31:48.526] processing data {dataset_id: dataset1}
-#&gt; INFO  [06:31:48.526] outputing data {dataset_id: dataset1}</code></pre>
+<pre><code>#&gt; INFO  [06:47:14.752] cleaning data {dataset_id: dataset1}
+#&gt; INFO  [06:47:14.753] processing data {dataset_id: dataset1}
+#&gt; INFO  [06:47:14.754] outputing data {dataset_id: dataset1}</code></pre>
 <p>You can use <code><a href="../reference/with_log_level.html">with_log_level()</a></code> and <code>FilterForceLevel</code> in a similar fashion to modify the log level of events conveniently.</p>
 </div>
 <div id="temporarily-disable-logging" class="section level2">
