@@ -197,13 +197,13 @@ that logs to a memory buffer, see also <code><a href='simple_logging.html'>show_
 <span class='fu'>basic_config</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>())</div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [info] root
 #&gt; 
 #&gt; appenders:
-#&gt;   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/RtmpCQnSdP/file5eca73e75100
+#&gt;   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/Rtmpgv7Zig/file5e6c2210fa17
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>lgr</span>$<span class='no'>appenders</span>$<span class='no'>file</span>$<span class='no'>file</span>)  <span class='co'># cleanup</span>
 
 <span class='fu'>basic_config</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>"jsonl"</span>))</div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [info] root
 #&gt; 
 #&gt; appenders:
-#&gt;   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/RtmpCQnSdP/file5eca1f6105c2jsonl
+#&gt;   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/Rtmpgv7Zig/file5e6c1b4c3067jsonl
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>lgr</span>$<span class='no'>appenders</span>$<span class='no'>file</span>$<span class='no'>file</span>)  <span class='co'># cleanup</span>
 
 <span class='co'># log debug messages to a memory buffer</span>
@@ -211,9 +211,9 @@ that logs to a memory buffer, see also <code><a href='simple_logging.html'>show_
 #&gt; 
 #&gt; appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [info] -&gt; console
-#&gt;   memory : &lt;AppenderBuffer&gt;  [ all] -&gt; 0 child Appenders</div><div class='input'><span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"an info message"</span>)</div><div class='output co'>#&gt; INFO  [07:46:15.031] an info message </div><div class='input'><span class='no'>lgr</span>$<span class='fu'><a href='https://rdrr.io/r/base/debug.html'>debug</a></span>(<span class='st'>"a hidden message"</span>)
-<span class='fu'><a href='simple_logging.html'>show_log</a></span>()</div><div class='output co'>#&gt; INFO  [07:46:15] an info message
-#&gt; DEBUG [07:46:15] a hidden message</div><div class='input'>
+#&gt;   memory : &lt;AppenderBuffer&gt;  [ all] -&gt; 0 child Appenders</div><div class='input'><span class='no'>lgr</span>$<span class='fu'>info</span>(<span class='st'>"an info message"</span>)</div><div class='output co'>#&gt; INFO  [10:22:37.142] an info message </div><div class='input'><span class='no'>lgr</span>$<span class='fu'><a href='https://rdrr.io/r/base/debug.html'>debug</a></span>(<span class='st'>"a hidden message"</span>)
+<span class='fu'><a href='simple_logging.html'>show_log</a></span>()</div><div class='output co'>#&gt; INFO  [10:22:37] an info message
+#&gt; DEBUG [10:22:37] a hidden message</div><div class='input'>
 <span class='co'># reset to default config</span>
 <span class='fu'>basic_config</span>()</div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [info] root
 #&gt; 
