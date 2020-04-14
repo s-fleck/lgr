@@ -38,9 +38,28 @@ test_that("Filterable: $add_filter(), $remove_filter(), $filters", {
   app$remove_filter("foo")
   expect_length(app$filters, 0)
 
-
   fil <- function(event) { NA }
   app$add_filter(fil, "foo")
   app$add_filter(fil, "foo")
   expect_warning(expect_true(app$filter()))
+})
+
+
+
+
+test_that("Filterable: $set_filter works with functions", {
+  app <- Appender$new()
+  fil <- function(event) { FALSE }
+  app$set_filters(fil)
+  expect_identical(app$filters[[1]], fil)
+  expect_length(app$filters, 1L)
+
+  app$set_filters(list(fil))
+  expect_identical(app$filters[[1]], fil)
+  expect_length(app$filters, 1L)
+
+  app$set_filters(list(fil, fil))
+  expect_identical(app$filters[[1]], fil)
+  expect_identical(app$filters[[2]], fil)
+  expect_length(app$filters, 2L)
 })

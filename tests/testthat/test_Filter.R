@@ -51,3 +51,19 @@ test_that("FilterForceLevel and FilterInject work inside function", {
   expect_length(lgr$filters, 0)
   lg$config(logger_config())
 })
+
+
+
+
+test_that("standardize_filters_list works as expected", {
+  f1 <- function(event) TRUE
+  expect_identical(standardize_filters_list(f1), list(f1))
+  expect_identical(
+    standardize_filters_list(list(f1, f1)),
+    list(f1, f1)
+  )
+  expect_error(
+    standardize_filters_list(list(f1, mean)),
+    class = "ObjectIsNoFilterError"
+  )
+})

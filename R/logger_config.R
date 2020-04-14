@@ -278,24 +278,3 @@ standardize_appenders_list <- function(x){
 
   x
 }
-
-
-
-
-standardize_filters_list <- function(x){
-  if (is.null(x))
-    return(list())
-
-  if (is_filter(x))
-    return(list(x))
-
-  assert(
-    is.list(x),
-    "'filters' must be a list Filters or a single Filter (see ?is_filter)"
-  )
-
-  for (f in x)
-    assert_filter(x)
-
-  x
-}

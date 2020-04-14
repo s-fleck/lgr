@@ -221,6 +221,27 @@ is_filter <- function(
 
 
 
+standardize_filters_list <- function(x){
+  if (is.null(x))
+    return(list())
+
+  if (is_filter(x))
+    return(list(x))
+
+  assert(
+    is.list(x),
+    "'filters' must be a list Filters or a single Filter (see ?is_filter)"
+  )
+
+  for (f in x)
+    assert_filter(f)
+
+  x
+}
+
+
+
+
 assert_filter <- function(x){
   if (is_filter(x))
     TRUE
