@@ -40,8 +40,8 @@
 
 
 <meta property="og:title" content="Abstract Class for Filterables — Filterable" />
-<meta property="og:description" content="Superclass for classes that have a $filter() method such as Appenders and
-Loggers. See EventFilter for Details.
+<meta property="og:description" content="Superclass for classes that have a $filter() method such as
+Appenders and Loggers. See EventFilter for details.
 NOTE: This is an abstract class. Abstract classes cannot be instantiated
 directly, but are exported for package developers that want to extend lgr -
 for example by creating their own Appenders or Layouts.
@@ -126,8 +126,8 @@ class." />
     </div>
 
     <div class="ref-description">
-    <p>Superclass for classes that have a <code>$filter()</code> method such as <a href='Appender.html'>Appenders</a> and
-<a href='Logger.html'>Loggers</a>. See <a href='EventFilter.html'>EventFilter</a> for Details.</p>
+    <p>Superclass for classes that have a <code>$filter()</code> method such as
+<a href='Appender.html'>Appenders</a> and <a href='Logger.html'>Loggers</a>. See <a href='EventFilter.html'>EventFilter</a> for details.</p>
 <p><strong>NOTE</strong>: This is an <em>abstract class</em>. Abstract classes cannot be instantiated
 directly, but are exported for package developers that want to extend lgr -
 for example by creating their own <a href='Appender.html'>Appenders</a> or <a href='Layout.html'>Layouts</a>.
@@ -146,7 +146,7 @@ class.</p>
     <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
 
     <p><div class="r6-active-bindings"></p><dl'>
-<dt><code>filters</code></dt><dd><p>a <code>list</code> of all attached Filters. See <code><a href='is_filter.html'>is_filter()</a></code>.</p></dd>
+<dt><code>filters</code></dt><dd><p>a <code>list</code> of all attached Filters.</p></dd>
 
 </dl><p></div></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
@@ -174,21 +174,20 @@ Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the active b
 </dl><p></div></p>
 <p><hr>
 <a id="method-add_filter"></a></p><h3>Method <code>add_filter()</code></h3>
-<p>Add a Filter. When adding a filter an optional <code>name</code>
-can be specified. <code>remove_filter()</code> can remove by position or name (if
-one was specified)</p><h3>Usage</h3>
+<p>Attach a filter</p><h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>Filterable</span>$<span class='fu'>add_filter</span>(<span class='no'>filter</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
 <p><div class="arguments"></p><dl'>
 <dt><code>filter</code></dt><dd><p><ul>
-<li><p>a function with the single argument <code>event</code> that returns <code>TRUE</code> or <code>FALSE</code>;</p></li>
+<li><p>a function with the single argument <code>event</code> that returns <code>TRUE</code>
+or <code>FALSE</code>;</p></li>
 <li><p>an <a href='EventFilter.html'>EventFilter</a> <a href='https://rdrr.io/pkg/R6/man/R6Class.html'>R6::R6</a> object; or</p></li>
 <li><p>any <span style="R">R</span> object with a <code>$filter()</code> method.</p></li>
 </ul>If a Filter returns a non-<code>FALSE</code> value, will be interpreted as <code>TRUE</code>
 (= no filtering takes place) and a warning will be thrown.</p></dd>
 
-<dt><code>name</code></dt><dd><p><code>character</code> scalar or <code>NULL</code>. A filter can have an optional
+<dt><code>name</code></dt><dd><p><code>character</code> scalar or <code>NULL</code>. An optional
 name which makes it easier to access (or remove) the filter</p></dd>
 
 </dl><p></div></p>
@@ -211,8 +210,8 @@ Filter to be removed.</p></dd>
 
 <h3>Arguments</h3>
 <p><div class="arguments"></p><dl'>
-<dt><code>filters</code></dt><dd><p>a <code>list</code> (named or unnamed) of <a href='EventFilter.html'>EventFilters</a> or
-predicate functions. See <code><a href='is_filter.html'>is_filter()</a></code>.</p></dd>
+<dt><code>filters</code></dt><dd><p>a <code>list</code> (named or unnamed) of <a href='EventFilter.html'>EventFilters</a>
+or predicate functions. See <code><a href='is_filter.html'>is_filter()</a></code>.</p></dd>
 
 </dl><p></div></p>
 

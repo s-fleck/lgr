@@ -40,20 +40,20 @@
 
 
 <meta property="og:title" content="Event Filters — EventFilter" />
-<meta property="og:description" content="Filters screen whether or not an object should be processed by a
-Logger or Appender. They are attached to a Logger or Appender via their
-$set_filter() and $add_filter() methods. If all Filters evaluate to
-TRUE for a given LogEvent, that event is passed on. Since LogEvents have
-reference semantics, filters can also be abused to modify them before they
-are passed on. Look at the source code of with_log_level() or
-with_log_value() for examples.
-Usually you do not need to
-instantiate a formal EventFilter object as you can just use any function
-that has the single argument event instead; however, for complex filter
-logic a more formal approach might be desirable.
-.obj() is a special function that can only be used within the $filter()
-methods of EventFilters. It returns the Logger or Appender
-that the EventFilter is attached to." />
+<meta property="og:description" content="EventFilters specify arbitrarily complex logic for whether or
+not a LogEvent should be processed by a Logger or Appender. They are
+attached to Loggers/Appenders via their $set_filter() or $add_filter()
+methods. If any EventFilter evaluates to FALSE for a given event, that
+event is ignored - similarly to when it does not pass the objects'
+threshold.
+Usually you do not need to instantiate a formal EventFilter object as you
+can just use any function that has the single argument event instead.
+If you need to implement more complex filter logic - for example a filter
+that is dependent on a dataset - it might be desirable to subclass
+EventFilter, as R6::R6 objects can store data and functions together.
+.obj() is a special function that can only be used within the
+$filter() methods of EventFilters. It returns the Logger
+or Appender that the EventFilter is attached to." />
 
 
 
@@ -133,32 +133,32 @@ that the EventFilter is attached to." />
     </div>
 
     <div class="ref-description">
-    <p>Filters screen whether or not an object should be processed by a
-<a href='Logger.html'>Logger</a> or <a href='Appender.html'>Appender</a>. They are attached to a Logger or Appender via their
-<code>$set_filter()</code> and <code>$add_filter()</code> methods. If all Filters evaluate to
-<code>TRUE</code> for a given <a href='LogEvent.html'>LogEvent</a>, that event is passed on. Since LogEvents have
-reference semantics, filters can also be abused to modify them before they
-are passed on. Look at the source code of <code><a href='with_log_level.html'>with_log_level()</a></code> or
-<code><a href='with_log_level.html'>with_log_value()</a></code> for examples.</p>
-<p>Usually you do not need to
-instantiate a formal <code>EventFilter</code> object as you can just use any <code>function</code>
-that has the single argument <code>event</code> instead; however, for complex filter
-logic a more formal approach might be desirable.</p>
-<p><code>.obj()</code> is a special function that can only be used within the <code>$filter()</code>
-methods of EventFilters. It returns the <a href='Logger.html'>Logger</a> or <a href='Appender.html'>Appender</a>
-that the EventFilter is attached to.</p>
+    <p>EventFilters specify arbitrarily complex logic for whether or
+not a LogEvent should be processed by a <a href='Logger.html'>Logger</a> or <a href='Appender.html'>Appender</a>. They are
+attached to Loggers/Appenders via their <code>$set_filter()</code> or <code>$add_filter()</code>
+methods. If any EventFilter evaluates to <code>FALSE</code> for a given event, that
+event is ignored - similarly to when it does not pass the objects'
+threshold.</p>
+<p>Usually you do not need to instantiate a formal <code>EventFilter</code> object as you
+can just use any <code>function</code> that has the single argument <code>event</code> instead.
+If you need to implement more complex filter logic - for example a filter
+that is dependent on a dataset - it might be desirable to subclass
+EventFilter, as <a href='https://rdrr.io/pkg/R6/man/R6Class.html'>R6::R6</a> objects can store data and functions together.</p>
+<p><code>.obj()</code> is a special function that can only be used within the
+<code>$filter()</code> methods of EventFilters. It returns the <a href='Logger.html'>Logger</a>
+or <a href='Appender.html'>Appender</a> that the EventFilter is attached to.</p>
     </div>
 
     <pre class="usage"><span class='fu'>.obj</span>()</pre>
 
 
-    <h2 class="hasAnchor" id="modifying-logevents-with-filters"><a class="anchor" href="#modifying-logevents-with-filters"></a>Modifying LogEvents with Filters</h2>
+    <h2 class="hasAnchor" id="modifying-logevents-with-eventfilters"><a class="anchor" href="#modifying-logevents-with-eventfilters"></a>Modifying LogEvents with EventFilters</h2>
 
     
 
 
-<p>Since LogEvents are R6 objects with reference semantics, Filters can be
-abused to modify log events before passing them on. lgr comes with a few
+<p>Since LogEvents are R6 objects with reference semantics, EventFilters can be
+abused to modify events before passing them on. lgr comes with a few
 preset filters that use this property: <a href='FilterInject.html'>FilterInject</a> (similar to
 <code><a href='with_log_level.html'>with_log_level()</a></code>) and <a href='FilterForceLevel.html'>FilterForceLevel</a> (similar to <code><a href='with_log_level.html'>with_log_value()</a></code>).</p>
 <p><strong>NOTE:</strong> The base class for Filters is called <code>EventFilter</code> so that it
@@ -185,8 +185,8 @@ Filter subclasses is to call them <code>FilterSomething</code> and leave out the
 <h3>Arguments</h3>
 <p><div class="arguments"></p><dl'>
 <dt><code>fun</code></dt><dd><p>a <code>function</code> with a single argument <code>event</code> that must return
-either <code>TRUE</code> or <code>FALSE</code>. Any  non-<code>FALSE</code> will be interpreted as <code>TRUE</code>
-(= no filtering takes place) and a warning will be thrown.</p></dd>
+either <code>TRUE</code> or <code>FALSE</code>. Any  non-<code>FALSE</code> will be interpreted as
+<code>TRUE</code> (= no filtering takes place) and a warning will be thrown.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
@@ -212,7 +212,7 @@ either <code>TRUE</code> or <code>FALSE</code>. Any  non-<code>FALSE</code> will
 <span class='no'>lg</span>$<span class='fu'>add_filter</span>(<span class='no'>f</span>)
 <span class='no'>lg</span>$<span class='fu'>fatal</span>(<span class='st'>"test"</span>)</div><div class='output co'>#&gt; via event$.logger: 400 
 #&gt; via .obj():       400 
-#&gt; FATAL [10:22:33.265] test </div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
+#&gt; FATAL [06:03:07.594] test </div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div></pre>

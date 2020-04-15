@@ -40,9 +40,10 @@
 
 
 <meta property="og:title" content="Override the log level of all events processed by a Logger/Appender — FilterForceLevel" />
-<meta property="og:description" content="Overrides the log level of the  Appender/Logger that this filter is attached
-to to with level. See also with_log_level(). It is recommended to use
-this filter only with Loggers, but it will also work on Appenders." />
+<meta property="og:description" content="Overrides the log level of the  Appender/Logger that this filter
+is attached to to with level. See also with_log_level(). It is
+recommended to use filters that modify LogEvents only with Loggers, but
+they will also work with Appenders." />
 
 
 
@@ -122,9 +123,10 @@ this filter only with Loggers, but it will also work on Appenders." />
     </div>
 
     <div class="ref-description">
-    <p>Overrides the log level of the  Appender/Logger that this filter is attached
-to to with <code>level</code>. See also <code><a href='with_log_level.html'>with_log_level()</a></code>. It is recommended to use
-this filter only with Loggers, but it will also work on Appenders.</p>
+    <p>Overrides the log level of the  Appender/Logger that this filter
+is attached to to with <code>level</code>. See also <code><a href='with_log_level.html'>with_log_level()</a></code>. It is
+recommended to use filters that modify LogEvents only with Loggers, but
+they will also work with Appenders.</p>
     </div>
 
 
@@ -185,7 +187,7 @@ levels of each <a href='LogEvent.html'>LogEvent</a> processed by this filter.</p
   <span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"an error with forced log level INFO"</span>)
 }
 
-<span class='fu'>analyse</span>()</div><div class='output co'>#&gt; INFO  [10:22:33.375] an error with forced log level INFO </div><div class='input'><span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"an normal error"</span>)</div><div class='output co'>#&gt; ERROR [10:22:33.376] an normal error </div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)  <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
+<span class='fu'>analyse</span>()</div><div class='output co'>#&gt; INFO  [06:03:07.706] an error with forced log level INFO </div><div class='input'><span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"an normal error"</span>)</div><div class='output co'>#&gt; ERROR [06:03:07.707] an normal error </div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)  <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div></pre>
