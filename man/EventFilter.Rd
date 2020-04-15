@@ -9,28 +9,28 @@
 .obj()
 }
 \description{
-Filters screen whether or not an object should be processed by a
-\link{Logger} or \link{Appender}. They are attached to a Logger or Appender via their
-\verb{$set_filter()} and \verb{$add_filter()} methods. If all Filters evaluate to
-\code{TRUE} for a given \link{LogEvent}, that event is passed on. Since LogEvents have
-reference semantics, filters can also be abused to modify them before they
-are passed on. Look at the source code of \code{\link[=with_log_level]{with_log_level()}} or
-\code{\link[=with_log_value]{with_log_value()}} for examples.
+EventFilters specify arbitrarily complex logic for whether or
+not a LogEvent should be processed by a \link{Logger} or \link{Appender}. They are
+attached to Loggers/Appenders via their \verb{$set_filter()} or \verb{$add_filter()}
+methods. If any EventFilter evaluates to \code{FALSE} for a given event, that
+event is ignored - similarly to when it does not pass the objects'
+threshold.
 
-Usually you do not need to
-instantiate a formal \code{EventFilter} object as you can just use any \code{function}
-that has the single argument \code{event} instead; however, for complex filter
-logic a more formal approach might be desirable.
+Usually you do not need to instantiate a formal \code{EventFilter} object as you
+can just use any \code{function} that has the single argument \code{event} instead.
+If you need to implement more complex filter logic - for example a filter
+that is dependent on a dataset - it might be desirable to subclass
+EventFilter, as \link[R6:R6]{R6::R6} objects can store data and functions together.
 
-\code{.obj()} is a special function that can only be used within the \verb{$filter()}
-methods of \link[=EventFilter]{EventFilters}. It returns the \link{Logger} or \link{Appender}
-that the EventFilter is attached to.
+\code{.obj()} is a special function that can only be used within the
+\verb{$filter()} methods of \link[=EventFilter]{EventFilters}. It returns the \link{Logger}
+or \link{Appender} that the EventFilter is attached to.
 }
-\section{Modifying LogEvents with Filters}{
+\section{Modifying LogEvents with EventFilters}{
 
 
-Since LogEvents are R6 objects with reference semantics, Filters can be
-abused to modify log events before passing them on. lgr comes with a few
+Since LogEvents are R6 objects with reference semantics, EventFilters can be
+abused to modify events before passing them on. lgr comes with a few
 preset filters that use this property: \link{FilterInject} (similar to
 \code{\link[=with_log_level]{with_log_level()}}) and \link{FilterForceLevel} (similar to \code{\link[=with_log_value]{with_log_value()}}).
 
@@ -74,8 +74,8 @@ Initialize a new EventFilter
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{fun}}{a \code{function} with a single argument \code{event} that must return
-either \code{TRUE} or \code{FALSE}. Any  non-\code{FALSE} will be interpreted as \code{TRUE}
-(= no filtering takes place) and a warning will be thrown.}
+either \code{TRUE} or \code{FALSE}. Any  non-\code{FALSE} will be interpreted as
+\code{TRUE} (= no filtering takes place) and a warning will be thrown.}
 }
 \if{html}{\out{</div>}}
 }

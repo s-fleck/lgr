@@ -2,23 +2,24 @@
 
 #' Event Filters
 #'
-#' @description Filters screen whether or not an object should be processed by a
-#' [Logger] or [Appender]. They are attached to a Logger or Appender via their
-#' `$set_filter()` and `$add_filter()` methods. If all Filters evaluate to
-#' `TRUE` for a given [LogEvent], that event is passed on. Since LogEvents have
-#' reference semantics, filters can also be abused to modify them before they
-#' are passed on. Look at the source code of [with_log_level()] or
-#' [with_log_value()] for examples.
+#' @description EventFilters specify arbitrarily complex logic for whether or
+#'   not a LogEvent should be processed by a [Logger] or [Appender]. They are
+#'   attached to Loggers/Appenders via their `$set_filter()` or `$add_filter()`
+#'   methods. If any EventFilter evaluates to `FALSE` for a given event, that
+#'   event is ignored - similarly to when it does not pass the objects'
+#'   threshold.
 #'
-#' Usually you do not need to
-#' instantiate a formal `EventFilter` object as you can just use any `function`
-#' that has the single argument `event` instead; however, for complex filter
-#' logic a more formal approach might be desirable.
+#'   Usually you do not need to instantiate a formal `EventFilter` object as you
+#'   can just use any `function` that has the single argument `event` instead.
+#'   If you need to implement more complex filter logic - for example a filter
+#'   that is dependent on a dataset - it might be desirable to subclass
+#'   EventFilter, as [R6::R6] objects can store data and functions together.
 #'
-#' @section Modifying LogEvents with Filters:
 #'
-#'   Since LogEvents are R6 objects with reference semantics, Filters can be
-#'   abused to modify log events before passing them on. lgr comes with a few
+#' @section Modifying LogEvents with EventFilters:
+#'
+#'   Since LogEvents are R6 objects with reference semantics, EventFilters can be
+#'   abused to modify events before passing them on. lgr comes with a few
 #'   preset filters that use this property: [FilterInject] (similar to
 #'   [with_log_level()]) and [FilterForceLevel] (similar to [with_log_value()]).
 #'
@@ -36,16 +37,16 @@ EventFilter <- R6::R6Class(
 
     #' @description Initialize a new EventFilter
     #' @param fun a `function` with a single argument `event` that must return
-    #'   either `TRUE` or `FALSE`. Any  non-`FALSE` will be interpreted as `TRUE`
-    #'   (= no filtering takes place) and a warning will be thrown.
+    #'   either `TRUE` or `FALSE`. Any  non-`FALSE` will be interpreted as
+    #'   `TRUE` (= no filtering takes place) and a warning will be thrown.
     initialize = function(fun = function(event) TRUE){
       self$filter <- fun
     },
 
-    #' @description filter
-    #' The `filter` method of an event must return either `TRUE` or `FALSE`. If
-    #' it returns `TRUE`, [Filterables] such as [Appenders] or [Loggers] will
-    #' continue processing the event, if `FALSE` the event will be discarded.
+    #' @description filter The `filter` method of an event must return either
+    #'   `TRUE` or `FALSE`. If it returns `TRUE`, [Filterables] such as
+    #'   [Appenders] or [Loggers] will continue processing the event, if `FALSE`
+    #'   the event will be discarded.
     filter = NULL
   )
 )
@@ -57,10 +58,9 @@ EventFilter <- R6::R6Class(
 
 #' Inject values into all events processed by a Logger/Appender
 #'
-#' @description
-#' Inject arbitrary values into all [LogEvents][LogEvent] processed by a
-#' Logger/Appender.  It is recommended to use this filter only with Loggers,
-#' but it will also work on Appenders.
+#' @description Inject arbitrary values into all [LogEvents][LogEvent] processed
+#' by a Logger/Appender. It is recommended to use filters that modify LogEvents
+#' only with Loggers, but they will also work with Appenders.
 #'
 #' @export
 #' @examples
@@ -83,8 +83,8 @@ FilterInject <- R6::R6Class(
     #' @description Initialize a new FilterInject
     #' @param ...,.list any number of named \R objects that will be injected as
     #'   custom fields into all [LogEvents][LogEvent] processed by the
-    #'   Appender/Logger that this filter is attached to.
-    #'   See also [with_log_value()].
+    #'   Appender/Logger that this filter is attached to. See also
+    #'   [with_log_value()].
     initialize = function(..., .list = list()){
       vals <- list(...)
       assert(!is.null(names(vals)) && is_equal_length(names(vals)), vals)
@@ -104,8 +104,8 @@ FilterInject <- R6::R6Class(
       }
     },
 
-    #' @field values a named `list` of values to be injected into each [LogEvent]
-    #'   processed by this filter
+    #' @field values a named `list` of values to be injected into each
+    #'   [LogEvent] processed by this filter
     values = NULL
   )
 )
@@ -117,11 +117,10 @@ FilterInject <- R6::R6Class(
 
 #' Override the log level of all events processed by a Logger/Appender
 #'
-#'
-#' @description
-#' Overrides the log level of the  Appender/Logger that this filter is attached
-#' to to with `level`. See also [with_log_level()]. It is recommended to use
-#' this filter only with Loggers, but it will also work on Appenders.
+#' @description Overrides the log level of the  Appender/Logger that this filter
+#'   is attached to to with `level`. See also [with_log_level()]. It is
+#'   recommended to use filters that modify LogEvents only with Loggers, but
+#'   they will also work with Appenders.
 #'
 #' @export
 #' @examples
@@ -163,10 +162,9 @@ FilterForceLevel <- R6::R6Class(
 
 # utils -------------------------------------------------------------------
 
-#' @description
-#' `.obj()` is a special function that can only be used within the `$filter()`
-#' methods of [EventFilters][EventFilter]. It returns the [Logger] or [Appender]
-#' that the EventFilter is attached to.
+#' @description `.obj()` is a special function that can only be used within the
+#' `$filter()` methods of [EventFilters][EventFilter]. It returns the [Logger]
+#' or [Appender] that the EventFilter is attached to.
 #'
 #' @rdname EventFilter
 #' @export
@@ -189,16 +187,14 @@ FilterForceLevel <- R6::R6Class(
 
 #' Check if an R Object is a Filter
 #'
+#' @description Returns `TRUE` for any \R object that can be used as a Filter
+#' for [Loggers] or, [Appenders]:
+#' * a `function` with the single argument `event`;
+#' * an [EventFilter] [R6::R6] object; or
+#' * any object with a `$filter(event)` method.
 #'
-#' @description
-#' Returns `TRUE` for any \R object that can be used as a Filter for
-#' [Loggers] or, [Appenders]:
-#'  * a `function` with the single argument `event`;
-#'  * an [EventFilter] [R6::R6] object; or
-#'  * any object with a `$filter(event)` method.
-#'
-#' **Note:** A Filter **must** return a scalar `TRUE` or `FALSE`, but
-#' this property cannot be checked by [is_filter()].
+#' **Note:** A Filter **must** return a scalar `TRUE` or `FALSE`, but this
+#' property cannot be checked by [is_filter()].
 #'
 #' @param x any \R Object
 #' @seealso [EventFilter], [Filterable]

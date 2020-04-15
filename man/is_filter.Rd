@@ -13,16 +13,16 @@ is_filter(x)
 \code{TRUE} or \code{FALSE}
 }
 \description{
-Returns \code{TRUE} for any \R object that can be used as a Filter for
-\link{Loggers} or, \link{Appenders}:
+Returns \code{TRUE} for any \R object that can be used as a Filter
+for \link{Loggers} or, \link{Appenders}:
 \itemize{
 \item a \code{function} with the single argument \code{event};
 \item an \link{EventFilter} \link[R6:R6]{R6::R6} object; or
 \item any object with a \verb{$filter(event)} method.
 }
 
-\strong{Note:} A Filter \strong{must} return a scalar \code{TRUE} or \code{FALSE}, but
-this property cannot be checked by \code{\link[=is_filter]{is_filter()}}.
+\strong{Note:} A Filter \strong{must} return a scalar \code{TRUE} or \code{FALSE}, but this
+property cannot be checked by \code{\link[=is_filter]{is_filter()}}.
 }
 \seealso{
 \link{EventFilter}, \link{Filterable}

@@ -4,9 +4,9 @@
 \alias{FilterInject}
 \title{Inject values into all events processed by a Logger/Appender}
 \description{
-Inject arbitrary values into all \link[=LogEvent]{LogEvents} processed by a
-Logger/Appender.  It is recommended to use this filter only with Loggers,
-but it will also work on Appenders.
+Inject arbitrary values into all \link[=LogEvent]{LogEvents} processed
+by a Logger/Appender. It is recommended to use filters that modify LogEvents
+only with Loggers, but they will also work with Appenders.
 }
 \examples{
 lg <- get_logger("test")
@@ -27,8 +27,8 @@ lg$config(NULL)  # reset config
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{values}}{a named \code{list} of values to be injected into each \link{LogEvent}
-processed by this filter}
+\item{\code{values}}{a named \code{list} of values to be injected into each
+\link{LogEvent} processed by this filter}
 }
 \if{html}{\out{</div>}}
 }
@@ -59,8 +59,8 @@ Initialize a new FilterInject
 \describe{
 \item{\code{..., .list}}{any number of named \R objects that will be injected as
 custom fields into all \link[=LogEvent]{LogEvents} processed by the
-Appender/Logger that this filter is attached to.
-See also \code{\link[=with_log_value]{with_log_value()}}.}
+Appender/Logger that this filter is attached to. See also
+\code{\link[=with_log_value]{with_log_value()}}.}
 }
 \if{html}{\out{</div>}}
 }

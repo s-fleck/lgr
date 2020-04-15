@@ -4,9 +4,10 @@
 \alias{FilterForceLevel}
 \title{Override the log level of all events processed by a Logger/Appender}
 \description{
-Overrides the log level of the  Appender/Logger that this filter is attached
-to to with \code{level}. See also \code{\link[=with_log_level]{with_log_level()}}. It is recommended to use
-this filter only with Loggers, but it will also work on Appenders.
+Overrides the log level of the  Appender/Logger that this filter
+is attached to to with \code{level}. See also \code{\link[=with_log_level]{with_log_level()}}. It is
+recommended to use filters that modify LogEvents only with Loggers, but
+they will also work with Appenders.
 }
 \examples{
 lg <- get_logger("test")
