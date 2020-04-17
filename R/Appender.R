@@ -2,13 +2,14 @@
 
 #' Appenders
 #'
-#' @description
-#' Appenders are assigned to [Loggers] and manage the output of the [LogEvents]
-#' to a destination (such as the console or a text file). An Appender has a
-#' single [Layout] that tells it how to format the LogEvent. For details
-#' please refer to the documentations of the specific Appenders.
+#' @description Appenders are attached to [Loggers] and manage the output of the
+#' [LogEvents] to a destination - such as the console or a text file. An
+#' Appender has a single [Layout] that tells it how to format the LogEvent. For
+#' details please refer to the documentations of the specific Appenders.
 #'
-#' More appenders can be found in the package [lgrExtra](https://github.com/s-fleck/lgrExtra)
+#' Additional Appenders that support a wide range of output destinations -
+#' such as databases, email, push-notifications or linux syslog - are available
+#' from the package [lgrExtra](https://github.com/s-fleck/lgrExtra).
 #'
 #' @template abstract_class
 #'
