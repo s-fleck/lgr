@@ -5,12 +5,14 @@
 \alias{Appenders}
 \title{Appenders}
 \description{
-Appenders are assigned to \link{Loggers} and manage the output of the \link{LogEvents}
-to a destination (such as the console or a text file). An Appender has a
-single \link{Layout} that tells it how to format the LogEvent. For details
-please refer to the documentations of the specific Appenders.
+Appenders are attached to \link{Loggers} and manage the output of the
+\link{LogEvents} to a destination - such as the console or a text file. An
+Appender has a single \link{Layout} that tells it how to format the LogEvent. For
+details please refer to the documentations of the specific Appenders.
 
-More appenders can be found in the package \href{https://github.com/s-fleck/lgrExtra}{lgrExtra}
+Additional Appenders that support a wide range of output destinations -
+such as databases, email, push-notifications or Linux syslog - are available
+from the package \href{https://github.com/s-fleck/lgrExtra}{lgrExtra}.
 
 \strong{NOTE}: This is an \emph{abstract class}. Abstract classes cannot be instantiated
 directly, but are exported for package developers that want to extend lgr -

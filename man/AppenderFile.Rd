@@ -5,24 +5,11 @@
 \alias{AppenderJson}
 \title{Log to a file}
 \description{
-\code{AppenderJson} is just a shortcut for \code{AppenderFile} preconfigured with
-\code{\link{LayoutJson}}.
-}
-\details{
 A simple Appender that outputs to a file in the file system. If you plan
 to log to text files, consider logging to JSON files and take a look at
-\link{AppenderJson}, which is more or less a shortcut for \code{AppenderFile} with
-\code{\link{LayoutJson}} and a few extra methods for convenience.
+\link{AppenderJson}, which is a shortcut for \code{AppenderFile} preconfigured with
+\code{\link{LayoutJson}}.
 }
-\section{Fields}{
-
-
-\describe{
-\item{\code{file}, \code{set_file(file)}}{\code{character} scalar. Path to the desired log
-file. If the file does not exist it will be created.}
-}
-}
-
 \examples{
 lg <- get_logger("test")
 default <- tempfile()
@@ -86,6 +73,20 @@ Other Appenders:
 \section{Super classes}{
 \code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{AppenderFile}
 }
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{file}}{\code{character} scalar. path to the log file}
+
+\item{\code{data}}{\code{character} scalar. Contents of \code{file} parsed to a
+\code{data.frame} if used with a \link{Layout} that supports parsing of log
+file data (notably \link{LayoutJson}).}
+
+\item{\code{data}}{\code{character} scalar. Like \verb{$data}, but returns a \code{data.table}
+instead (requires the \strong{data.table} package).}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -135,10 +136,19 @@ Other Appenders:
 \if{html}{\out{<a id="method-set_file"></a>}}
 \if{latex}{\out{\hypertarget{method-set_file}{}}}
 \subsection{Method \code{set_file()}}{
+Set a log file
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFile$set_file(file)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{file}}{\code{character} scalar. Path to the log file. If \code{file} does not
+exist it will be created.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-show"></a>}}

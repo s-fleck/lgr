@@ -8,7 +8,7 @@
 #' details please refer to the documentations of the specific Appenders.
 #'
 #' Additional Appenders that support a wide range of output destinations -
-#' such as databases, email, push-notifications or linux syslog - are available
+#' such as databases, email, push-notifications or Linux syslog - are available
 #' from the package [lgrExtra](https://github.com/s-fleck/lgrExtra).
 #'
 #' @template abstract_class
@@ -135,7 +135,7 @@ Appender <- R6::R6Class(
 
 #' Log to the console
 #'
-#' A simple Appender that outputs to the console. If you have the package
+#' An Appender that outputs to the \R console. If you have the package
 #' **crayon** installed log levels will be coloured by default
 #' (but you can modify this behaviour by passing a custom [Layout]).
 #'
@@ -192,18 +192,11 @@ AppenderConsole <- R6::R6Class(
 
 #' Log to a file
 #'
+#' @description
 #' A simple Appender that outputs to a file in the file system. If you plan
 #' to log to text files, consider logging to JSON files and take a look at
-#' [AppenderJson], which is more or less a shortcut for `AppenderFile` with
-#' [`LayoutJson`] and a few extra methods for convenience.
-#'
-#'
-#' @section Fields:
-#'
-#' \describe{
-#'   \item{`file`, `set_file(file)`}{`character` scalar. Path to the desired log
-#'   file. If the file does not exist it will be created.}
-#'  }
+#' [AppenderJson], which is a shortcut for `AppenderFile` preconfigured with
+#' [`LayoutJson`].
 #'
 #'
 #' @export
@@ -262,6 +255,9 @@ AppenderFile <- R6::R6Class(
       )
     },
 
+    #' @description Set a log file
+    #' @param file `character` scalar. Path to the log file. If `file` does not
+    #' exist it will be created.
     set_file = function(file){
       assert(
         is_scalar_character(file),
@@ -307,20 +303,30 @@ AppenderFile <- R6::R6Class(
 
   # +- active ---------------------------------------------------------------
   active = list(
+
+    #' @field file `character` scalar. path to the log file
     file = function() private$.file,
+
+    #' @field data `character` scalar. Contents of `file` parsed to a
+    #' `data.frame` if used with a [Layout] that supports parsing of log
+    #' file data (notably [LayoutJson]).
     data = function(){
       parser <- self$layout$parse
 
       assert(
         !is.null(parser),
-        "Neither ", fmt_class(class(self)[[1]]), " nor ", fmt_class(class(self$layout)[[1]]),
-        " support parsing log files to data.frames. Consider using <LayoutJson> ",
-        "instead."
+        CannotParseLogError(paste(
+          "Neither", fmt_class(class(self)[[1]]), "nor", fmt_class(class(self$layout)[[1]]),
+          "support parsing log files to data.frames. Consider using <LayoutJson>",
+          "instead."
+        ))
       )
 
       parser(self$file)
     },
 
+    #' @field data `character` scalar. Like `$data`, but returns a `data.table`
+    #' instead (requires the **data.table** package).
     dt = function(){
       data.table::as.data.table(self$data)
     },
@@ -340,11 +346,9 @@ AppenderFile <- R6::R6Class(
 
 #' Log to a JSON file
 #'
-#' `AppenderJson` is just a shortcut for `AppenderFile` preconfigured with
-#' [`LayoutJson`].
+#' @rdname AppenderFile
 #'
 #' @family Appenders
-#' @rdname AppenderFile
 #' @export
 #' @seealso [LayoutFormat], [LayoutJson]
 #' @examples
@@ -393,24 +397,10 @@ AppenderJson <- R6::R6Class(
 #'
 #' @template abstract_class
 #'
-#' @description
-#' AppenderTable is extended by Appenders that write to a data source that
-#' can be interpreted as tables, (usually a `data.frame`). Examples are
-#' [lgrExtra::AppenderDbi], [lgrExtra::AppenderRjdbc] and [lgrExtra::AppenderDt].
-#'
-#'
-#' @section Fields:
-#'
-#' \describe{
-#'   \item{`data`}{Get the log recorded by this `Appender` as a `data.frame`}
-#' }
-#'
-#' @section Methods:
-#'
-#' \describe{
-#'   \item{`show(n, threshold)`}{Show the last `n` log entries with a
-#'   log level bellow `threshold`.}
-#' }
+#' @description AppenderTable is extended by Appenders that write to a data
+#' source that can be interpreted as tables, (usually a `data.frame`). Examples
+#' are [lgrExtra::AppenderDbi], [lgrExtra::AppenderRjdbc] and
+#' [lgrExtra::AppenderDt].
 #'
 #' @family Appenders
 #' @export
@@ -424,7 +414,10 @@ AppenderTable <- R6::R6Class(
       stop(CannotInitializeAbstractClassError())
     },
 
-
+    #' @description Show recent log entries
+    #' @param n a positive `integer` scalar. Show at most that many entries
+    #' @param threshold an `integer` or `character` [threshold][log_level].
+    #'   Only show events with a log level at or below this threshold.
     show = function(threshold = NA_integer_, n = 20L) NULL,
 
     format = function(
@@ -445,8 +438,13 @@ AppenderTable <- R6::R6Class(
   ),
 
   active = list(
+    #' @field data `character` scalar. Contents of the table, parsed to a
+    #' `data.frame`.
     data = function() as.data.frame(self$dt),
-    dt   = function() NULL
+
+    #' @field data `character` scalar. Like `$data`, but returns a `data.table`
+    #' instead (requires the **data.table** package).
+    dt   = function() data.table::as.data.table(self$data)
   )
 )
 
@@ -464,33 +462,6 @@ AppenderTable <- R6::R6Class(
 #' @description
 #' AppenderMemory is extended by Appenders that retain an in-memory event
 #' buffer, such as [AppenderBuffer] and [lgrExtra::AppenderPushbullet].
-#'
-#'
-#' @section Fields:
-#'
-#' \describe{
-#'   \item{`buffer_size, set_buffer_size(x)`}{`integer` scalar `>= 0` Number of
-#'     [LogEvents] to buffer.
-#'   }
-#'
-#'   \item{`buffer_events`, `buffer_df`, `buffer_dt`}{
-#'     The contents of the buffer as a `list` of [LogEvents][LogEvent], a
-#'     `data.frame` or a `data.table`.
-#'   }
-#'
-#'  \item{`flush_threshold`, `set_flush_threshold()`}{`integer` or `character`
-#'  [log level][log_level]. Minimum event level that will trigger flushing of
-#'  the buffer (set `NULL` for no flushing). This behaviour is implemented
-#'  through `should_flush()`, and you can modify that function for different
-#'  behaviour.
-#'   }
-#'   \item{`should_flush(event)`, `set_should_flush(x)`}{
-#'     A function with exactly one arguments: `event`.
-#'     If the function returns `TRUE`, flushing of the buffer
-#'     is triggered. Defaults to flushing if an event of level `error`
-#'     or higher is registered.}
-#' }
-#'
 #'
 #' @export
 #' @seealso [LayoutFormat]
@@ -513,29 +484,34 @@ AppenderMemory <- R6::R6Class(
       private[["event_order"]][[i]] <- private[["last_event"]]
       private[[".buffer_events"]][[i]] <- event
 
-      bs <- get(".buffer_size", envir = private)
-
-      sf <- get(".should_flush", envir = private)(event)
-      if (!is_scalar_bool(sf)){
-        warning(
-          "`should_flush()` did not return `TRUE` or `FALSE` but ",
-          preview_object(sf), ". ",
-          "Please set a proper filter function with `$set_should_flush()`"
+      # check if buffer should be flushed
+      if ({
+        # buffer is rotated
+        i > get(".buffer_size", envir = private) &&
+        get(".flush_on_rotate", envir = private)
+      } || {
+        # flush threshold is exceeded
+        thr <- get(".flush_threshold", envir = private)
+        !is.null(thr) && (is.na(thr) || all(event[["level"]] <= thr))
+      } || {
+        # should_flush() function triggers
+        standardize_should_flush_output(
+          get(".should_flush", envir = private)(event)
         )
-        sf <- FALSE
-      }
-
-      if (sf){
-        self[["flush"]]()
-      } else if (i > bs){
+      }){
+        self$flush()
+      } else if (i > get(".buffer_size", envir = private)){
+        # check if flush should be triggered if buffer size is exceeded
+        # sepparetly from other conditions. Must be below all other flush
+        # conditions in case this causes the buffer to be cleared but not flushed.
         if (get(".flush_on_rotate", envir = private) ){
           self[["flush"]]()
         } else {
+          # does not clear the buffer. this is intentional
           assign("insert_pos", 0L, envir = private)
         }
       }
 
-      NULL
     },
 
 
@@ -547,13 +523,18 @@ AppenderMemory <- R6::R6Class(
     #' @description Clears the buffer, discarding all buffered Events
     clear = function(self){},
 
-
+    #' @description Set the maximum size of the buffer
+    #' @param x an `integer` scalar `>= 0`. Number of [LogEvents] to buffer.
     set_buffer_size = function(x){
-      assert(is_scalar_integerish(x))
+      assert(is_n0(x))
       private$.buffer_size <- x
       invisible(self)
     },
 
+    #' @description
+    #' @param x A `function` with exactly one arguments: `event`. If the
+    #'   function returns `TRUE`, the buffer is flushed. Defaults
+    #'   to flushing if an event of level `error` or higher is encountered
     set_should_flush = function(x){
       if (is.null(x)) x <- function(event) FALSE
       assert_filter(x)
@@ -561,18 +542,27 @@ AppenderMemory <- R6::R6Class(
       invisible(self)
     },
 
+    #' @description
+    #' @param x A `logical` scalar. Should the buffer be flushed if the Appender
+    #'   is destroyed (e.g. because the \R session is terminated)?
     set_flush_on_exit = function(x){
       assert(is_scalar_bool(x))
       private$.flush_on_exit <- x
       invisible(self)
     },
 
+    #' @description
+    #' @param x A `logical` scalar. Should the buffer be flushed when it is
+    #'   rotated because `$buffer_size` is exceeded?
     set_flush_on_rotate = function(x){
       assert(is_scalar_bool(x))
       private$.flush_on_rotate <- x
       invisible(self)
     },
 
+    #' @description
+    #' @param level A `numeric` or `character` [threshold][log_level]. A
+    #'   threshold that triggers flushing of the buffer.
     set_flush_threshold = function(level){
       if (!is.null(level))
         level <- standardize_threshold(level)
@@ -633,6 +623,9 @@ AppenderMemory <- R6::R6Class(
       get(".should_flush", private)
     },
 
+
+    #' @field buffer_size `integer` scalar `>= 0`. Maximum number of [LogEvents]
+    #' to buffer.
     buffer_size = function() {
       get(".buffer_size", private)
     },
@@ -703,8 +696,6 @@ AppenderMemory <- R6::R6Class(
 #' An Appender that Buffers LogEvents in-memory and and redirects them to other
 #' Appenders once certain conditions are met.
 #'
-#'
-#'
 #' @section Fields:
 #'
 #' \describe{
@@ -758,7 +749,7 @@ AppenderBuffer <- R6::R6Class(
       flush_threshold = NULL,
       flush_on_exit = TRUE,
       flush_on_rotate = TRUE,
-      should_flush = default_should_flush,
+      should_flush = NULL,
       filters = NULL
     ){
       self$set_threshold(threshold)
@@ -790,14 +781,12 @@ AppenderBuffer <- R6::R6Class(
       self$clear()
     },
 
-
     #' @description Clears the buffer, discarding all buffered Events
     clear = function(){
       assign("insert_pos", 0L, envir = private)
       private$.buffer_events <- list()
       invisible(self)
     },
-
 
     set_appenders = function(x){
       if (is.null(x)){
@@ -1492,37 +1481,6 @@ AppenderSyslog <- R6::R6Class(
 
 
 
-
-# helpers -----------------------------------------------------------------
-
-#' Default reader for files created with AppenderFile
-#'
-#' @param file a `character` scalar: path to a file
-#' @param threshold only `NA` is supported for the default reader, other
-#'   values cause a warning. See `LayoutFormat$read()` for an example where
-#'   that supports thresholds.
-#' @param n an `integer` scalar > 0
-#'
-#' @return
-#' @noRd
-default_file_reader <- function(file, threshold, n){
-  assert(
-    is_scalar_character(file),
-    "`file` must be the path to a file, not ", preview_object(file)
-  )
-
-  if (isFALSE(is.na(threshold))){
-    warning("A threshold was supplied to AppenderFile$show(), but the ",
-    "Appenders' Layout does not support filtering by log level")
-  }
-
-  last_n(readLines(file), n)
-}
-
-
-
-
-
 # print.Appender ----------------------------------------------------------
 
 #' Print an Appender object
@@ -1592,3 +1550,63 @@ appender_summary <- function(x){
   )
 }
 
+
+
+# helpers -----------------------------------------------------------------
+
+#' Default reader for files created with AppenderFile
+#'
+#' @param file a `character` scalar: path to a file
+#' @param threshold only `NA` is supported for the default reader, other
+#'   values cause a warning. See `LayoutFormat$read()` for an example where
+#'   that supports thresholds.
+#' @param n an `integer` scalar > 0
+#'
+#' @return
+#' @noRd
+default_file_reader <- function(file, threshold, n){
+  assert(
+    is_scalar_character(file),
+    "`file` must be the path to a file, not ", preview_object(file)
+  )
+
+  if (isFALSE(is.na(threshold))){
+    warning("A threshold was supplied to AppenderFile$show(), but the ",
+    "Appenders' Layout does not support filtering by log level")
+  }
+
+  last_n(readLines(file), n)
+}
+
+
+
+standardize_should_flush_output <- function(
+  x
+){
+  if (isTRUE(x)){
+    TRUE
+  } else if (isFALSE(x)){
+    FALSE
+  } else {
+    warning(ValueIsNotBoolWarning(paste0(
+      "`$should_flush()` did not return `TRUE` or `FALSE` but ",
+      preview_object(x), ". ",
+      "Please set a valid filter function with `$set_should_flush()`."
+    )))
+    FALSE
+  }
+}
+
+
+
+# conditions --------------------------------------------------------------
+
+CannotParseLogError <- function(message){
+  error(message = message, class = "CannotParseLogError")
+}
+
+
+
+ValueIsNotBoolWarning <- function(message){
+  condition(message, class = c("ValueIsNotBoolWarning", "warning"))
+}
