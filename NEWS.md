@@ -36,6 +36,10 @@
 
 * lgr is now automatically tested for all major R version >= 3.2.0
 
+* AppenderMemory/AppenderBuffer: `flush_threshold` is now independent of
+  `should_flush` function. `default_should_flush()` is no longer necessary
+  and has been removed.
+
 
 # lgr 0.3.4
 

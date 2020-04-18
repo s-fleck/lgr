@@ -1,4 +1,4 @@
-# sfmisc utils 1.0.0.9031
+# sfmisc utils 1.0.0.9033
 
 
 
@@ -43,8 +43,8 @@ ptrunc <- function(
 
 
 
-fmt_class <- function(x){
-  paste0("<", paste(x, collapse = "/"), ">")
+fmt_class <- function(x, open = "<", close = ">"){
+  paste0(open, paste(x, collapse = "/"), close)
 }
 
 
@@ -690,23 +690,22 @@ preview_object <- function(
   quotes   = c("`", "`"),
   dots = ".."
 ){
-    if (is.function(x)){
-      fmls <- names(formals(x))
-      len_fmls <- length(fmls)
+  if (is.function(x)){
+    fmls <- names(formals(x))
+    len_fmls <- length(fmls)
 
-      if (len_fmls > 4){
-        fmls <- fmls[1:4]
-        fmls_fmt <- paste(fmls, collapse = ", ")
-        fmls_fmt <- paste0(fmls_fmt, ", +", len_fmls - length(fmls), "")
-      } else {
-        fmls_fmt <- paste(fmls, collapse = ", ")
-      }
-      return(
-      fmt_class(paste(
-        class(x), "(", fmls_fmt, ")",
-        sep = ""
-      )))
+    if (len_fmls > 4){
+      fmls <- fmls[1:4]
+      fmls_fmt <- paste(fmls, collapse = ", ")
+      fmls_fmt <- paste0(fmls_fmt, ", +", len_fmls - length(fmls), "")
+    } else {
+      fmls_fmt <- paste(fmls, collapse = ", ")
     }
+    return(fmt_class(paste(
+      fmt_class(class(x), open = "", close = ""), "(", fmls_fmt, ")",
+      sep = ""
+    )))
+  }
 
 
   if (!is.atomic(x))
@@ -723,6 +722,32 @@ preview_object <- function(
     res <- paste0(quotes[[1]], res, quotes[[2]])
 
   res
+}
+
+
+
+
+#' Collapse text vectors with a comma
+#'
+#' @param x `character` vector
+#'
+#' @return a `character` scalar
+#' @noRd
+comma <- function(..., collapse = ", "){
+  paste(unlist(c(...)), collapse = collapse)
+}
+
+
+
+
+#' Collapse text vectors with a comma (no duplicates)
+#'
+#' @param x `character` vector
+#'
+#' @return a `character` scalar
+#' @noRd
+commaset <- function(..., collapse = ", "){
+  paste(sort(unique(unlist(c(...)))), collapse = collapse)
 }
 
 

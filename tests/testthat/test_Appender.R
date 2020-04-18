@@ -132,7 +132,7 @@ test_that("AppenderFile$data throws an error", {
   lg$info("foo bar")
   lg$info("blah blubb")
 
-  expect_error(lg$appenders$file$data)
+  expect_error(lg$appenders$file$data, class = "CannotParseLogError")
 })
 
 
@@ -469,4 +469,20 @@ test_that("default_file_reader() works", {
 
   writeLines(LETTERS, tf)
   expect_warning(default_file_reader(tf, threshold = 4, n = 3))
+})
+
+
+
+
+test_that("standardize_should_flush_output() works", {
+  expect_identical(standardize_should_flush_output(TRUE), TRUE)
+  expect_identical(standardize_should_flush_output(FALSE), FALSE)
+  expect_warning(
+    expect_identical(standardize_should_flush_output(NA), FALSE),
+    class = "ValueIsNotBoolError"
+  )
+  expect_warning(
+    expect_identical(standardize_should_flush_output(iris), FALSE),
+    class = "ValueIsNotBoolError"
+  )
 })

@@ -147,7 +147,7 @@ basic_config <- function(
     if (isTRUE(memory)) memory <- NA
     l$add_appender(name = "memory", AppenderBuffer$new(
       threshold = memory,
-      should_flush = function(event) FALSE
+      should_flush = NULL
     ))
   }
 

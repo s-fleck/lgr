@@ -105,7 +105,7 @@ its \verb{$show()} method.
   flush_threshold = NULL,
   flush_on_exit = TRUE,
   flush_on_rotate = TRUE,
-  should_flush = default_should_flush,
+  should_flush = NULL,
   filters = NULL
 )}\if{html}{\out{</div>}}
 }
