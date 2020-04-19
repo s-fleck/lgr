@@ -78,7 +78,7 @@ buffer, such as AppenderBuffer and lgrExtra::AppenderPushbullet." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9004</span>
       </span>
     </div>
 
@@ -137,30 +137,6 @@ buffer, such as <a href='AppenderBuffer.html'>AppenderBuffer</a> and <a href='ht
 
 
 
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
-
-    
-
-
-<dl'>
-<dt><code>buffer_size, set_buffer_size(x)</code></dt><dd><p><code>integer</code> scalar <code>&gt;= 0</code> Number of
-<a href='LogEvent.html'>LogEvents</a> to buffer.</p></dd>
-
-<dt><code>buffer_events</code>, <code>buffer_df</code>, <code>buffer_dt</code></dt><dd><p>The contents of the buffer as a <code>list</code> of <a href='LogEvent.html'>LogEvents</a>, a
-<code>data.frame</code> or a <code>data.table</code>.</p></dd>
-
-<dt><code>flush_threshold</code>, <code>set_flush_threshold()</code></dt><dd><p><code>integer</code> or <code>character</code>
-<a href='get_log_levels.html'>log level</a>. Minimum event level that will trigger flushing of
-the buffer (set <code>NULL</code> for no flushing). This behaviour is implemented
-through <code>should_flush()</code>, and you can modify that function for different
-behaviour.</p></dd>
-<dt><code>should_flush(event)</code>, <code>set_should_flush(x)</code></dt><dd><p>A function with exactly one arguments: <code>event</code>.
-If the function returns <code>TRUE</code>, flushing of the buffer
-is triggered. Defaults to flushing if an event of level <code>error</code>
-or higher is registered.</p></dd>
-
-</dl>
-
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='LayoutFormat.html'>LayoutFormat</a></p>
@@ -171,6 +147,13 @@ or higher is registered.</p></dd>
     <h2 class="hasAnchor" id="super-classes"><a class="anchor" href="#super-classes"></a>Super classes</h2>
 
     <p><code><a href='Filterable.html'>lgr::Filterable</a></code> -&gt; <code><a href='Appender.html'>lgr::Appender</a></code> -&gt; <code>AppenderMemory</code></p>
+    <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
+
+    <p><div class="r6-active-bindings"></p><dl'>
+<dt><code>buffer_size</code></dt><dd><p><code>integer</code> scalar <code>&gt;= 0</code>. Maximum number of <a href='LogEvent.html'>LogEvents</a>
+to buffer.</p></dd>
+
+</dl><p></div></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
@@ -225,34 +208,63 @@ then clears the Buffer</p><h3>Usage</h3>
 
 <p><hr>
 <a id="method-set_buffer_size"></a></p><h3>Method <code>set_buffer_size()</code></h3>
-
-<h3>Usage</h3>
+<p>Set the maximum size of the buffer</p><h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>AppenderMemory</span>$<span class='fu'>set_buffer_size</span>(<span class='no'>x</span>)</pre><p></div></p>
 
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>x</code></dt><dd><p>an <code>integer</code> scalar <code>&gt;= 0</code>. Number of <a href='LogEvent.html'>LogEvents</a> to buffer.</p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-set_should_flush"></a></p><h3>Method <code>set_should_flush()</code></h3>
 
 <h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>AppenderMemory</span>$<span class='fu'>set_should_flush</span>(<span class='no'>x</span>)</pre><p></div></p>
 
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>x</code></dt><dd><p>A <code>function</code> with exactly one arguments: <code>event</code>. If the
+function returns <code>TRUE</code>, the buffer is flushed. Defaults
+to flushing if an event of level <code>error</code> or higher is encountered</p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-set_flush_on_exit"></a></p><h3>Method <code>set_flush_on_exit()</code></h3>
 
 <h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>AppenderMemory</span>$<span class='fu'>set_flush_on_exit</span>(<span class='no'>x</span>)</pre><p></div></p>
 
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>x</code></dt><dd><p>A <code>logical</code> scalar. Should the buffer be flushed if the Appender
+is destroyed (e.g. because the <span style="R">R</span> session is terminated)?</p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-set_flush_on_rotate"></a></p><h3>Method <code>set_flush_on_rotate()</code></h3>
 
 <h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>AppenderMemory</span>$<span class='fu'>set_flush_on_rotate</span>(<span class='no'>x</span>)</pre><p></div></p>
 
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>x</code></dt><dd><p>A <code>logical</code> scalar. Should the buffer be flushed when it is
+rotated because <code>$buffer_size</code> is exceeded?</p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-set_flush_threshold"></a></p><h3>Method <code>set_flush_threshold()</code></h3>
 
 <h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>AppenderMemory</span>$<span class='fu'>set_flush_threshold</span>(<span class='no'>level</span>)</pre><p></div></p>
 
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>level</code></dt><dd><p>A <code>numeric</code> or <code>character</code> <a href='get_log_levels.html'>threshold</a>. A
+threshold that triggers flushing of the buffer.</p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-show"></a></p><h3>Method <code>show()</code></h3>
 

@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9004</span>
       </span>
     </div>
 
@@ -133,6 +133,7 @@
 <li><p>LayoutJson gains a <code>timestamp_fmt</code> field that can be used for custom timestamp formats (<a href='https://github.com/s-fleck/lgr/issues/34'>#34</a>)</p></li>
 <li><p>added <code><a href="../reference/toString.LogEvent.html">toString.LogEvent()</a></code> for compact representations of LogEvents</p></li>
 <li><p>lgr is now automatically tested for all major R version &gt;= 3.2.0</p></li>
+<li><p>AppenderMemory/AppenderBuffer: <code>flush_threshold</code> is now independent of <code>should_flush</code> function. <code>default_should_flush()</code> is no longer necessary and has been removed.</p></li>
 </ul>
 </div>
     <div id="lgr-0-3-4" class="section level1">

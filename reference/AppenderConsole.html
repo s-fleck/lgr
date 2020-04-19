@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Log to the console — AppenderConsole" />
-<meta property="og:description" content="A simple Appender that outputs to the console. If you have the package
+<meta property="og:description" content="An Appender that outputs to the R console. If you have the package
 crayon installed log levels will be coloured by default
 (but you can modify this behaviour by passing a custom Layout)." />
 
@@ -74,7 +74,7 @@ crayon installed log levels will be coloured by default
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9004</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@ crayon installed log levels will be coloured by default
     </div>
 
     <div class="ref-description">
-    <p>A simple Appender that outputs to the console. If you have the package
+    <p>An Appender that outputs to the <span style="R">R</span> console. If you have the package
 <strong>crayon</strong> installed log levels will be coloured by default
 (but you can modify this behaviour by passing a custom <a href='Layout.html'>Layout</a>).</p>
     </div>
@@ -193,8 +193,8 @@ crayon installed log levels will be coloured by default
   <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(<span class='st'>"[%t] %c(): [%n] %m"</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"lgr.colors"</span>))))
 
 <span class='co'># Will output the message twice because we attached two console appenders</span>
-<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; WARN  [05:17:02.716] A test message 
-#&gt; [2020-04-17 05:17:02.716] eval(): [300] A test message</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>) <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
+<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; WARN  [05:03:24.236] A test message 
+#&gt; [2020-04-19 05:03:24.236] eval(): [300] A test message</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>) <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div></pre>
