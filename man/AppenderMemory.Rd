@@ -28,8 +28,30 @@ Other abstract classes:
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
+\item{\code{flush_on_exit}}{A \code{logical} scalar. Should the buffer be flushed if
+the Appender is destroyed (e.g. because the \R session is terminated)?}
+
+\item{\code{flush_on_rotate}}{A \code{logical} scalar. Should the buffer be flushed when it is
+rotated because \verb{$buffer_size} is exceeded?}
+
+\item{\code{should_flush}}{A \code{function} with exactly one arguments: \code{event}.
+\verb{$append()} calls this function internally on the current \link{LogEvent}
+and flushes the buffer if it evaluates to \code{TRUE}.}
+
 \item{\code{buffer_size}}{\code{integer} scalar \verb{>= 0}. Maximum number of \link{LogEvents}
 to buffer.}
+
+\item{\code{flush_threshold}}{A \code{numeric} or \code{character} threshold. \link{LogEvents}
+with a \link{log_level} equal to or lower than this threshold trigger
+flushing the buffer.}
+
+\item{\code{buffer_events}}{A \code{list} of \link{LogEvents}. Contents of the buffer.}
+
+\item{\code{buffer_events}}{A \code{data.frame}. Contents of the buffer converted
+to a \code{data.frame}.}
+
+\item{\code{buffer_events}}{A \code{data.frame}. Contents of the buffer converted
+to a \code{data.table}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -96,7 +118,7 @@ then clears the Buffer
 \subsection{Method \code{clear()}}{
 Clears the buffer, discarding all buffered Events
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$clear(self)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$clear()}\if{html}{\out{</div>}}
 }
 
 }
@@ -112,7 +134,7 @@ Set the maximum size of the buffer
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{an \code{integer} scalar \verb{>= 0}. Number of \link{LogEvents} to buffer.}
+\item{\code{x}}{an \code{integer} scalar \verb{>= 0}. See active bindings.}
 }
 \if{html}{\out{</div>}}
 }
@@ -121,6 +143,7 @@ Set the maximum size of the buffer
 \if{html}{\out{<a id="method-set_should_flush"></a>}}
 \if{latex}{\out{\hypertarget{method-set_should_flush}{}}}
 \subsection{Method \code{set_should_flush()}}{
+Set function that can trigger flushing the buffer
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$set_should_flush(x)}\if{html}{\out{</div>}}
 }
@@ -128,9 +151,8 @@ Set the maximum size of the buffer
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{A \code{function} with exactly one arguments: \code{event}. If the
-function returns \code{TRUE}, the buffer is flushed. Defaults
-to flushing if an event of level \code{error} or higher is encountered}
+\item{\code{x}}{A \code{function} with the single argument \code{event}. Setting \code{x} to
+\code{NULL} is a shortcut for \code{function(event) FALSE}. See active bindings.}
 }
 \if{html}{\out{</div>}}
 }
@@ -139,6 +161,7 @@ to flushing if an event of level \code{error} or higher is encountered}
 \if{html}{\out{<a id="method-set_flush_on_exit"></a>}}
 \if{latex}{\out{\hypertarget{method-set_flush_on_exit}{}}}
 \subsection{Method \code{set_flush_on_exit()}}{
+Should the buffer be flushed when the Appender is destroyed?
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$set_flush_on_exit(x)}\if{html}{\out{</div>}}
 }
@@ -146,8 +169,7 @@ to flushing if an event of level \code{error} or higher is encountered}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{A \code{logical} scalar. Should the buffer be flushed if the Appender
-is destroyed (e.g. because the \R session is terminated)?}
+\item{\code{x}}{A \code{logical} scalar. See active bindings.}
 }
 \if{html}{\out{</div>}}
 }
@@ -156,6 +178,7 @@ is destroyed (e.g. because the \R session is terminated)?}
 \if{html}{\out{<a id="method-set_flush_on_rotate"></a>}}
 \if{latex}{\out{\hypertarget{method-set_flush_on_rotate}{}}}
 \subsection{Method \code{set_flush_on_rotate()}}{
+Should the buffer be flushed if \code{buffer_size} is exceeded?
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$set_flush_on_rotate(x)}\if{html}{\out{</div>}}
 }
@@ -163,8 +186,7 @@ is destroyed (e.g. because the \R session is terminated)?}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{A \code{logical} scalar. Should the buffer be flushed when it is
-rotated because \verb{$buffer_size} is exceeded?}
+\item{\code{x}}{A \code{logical} scalar. See active bindings.}
 }
 \if{html}{\out{</div>}}
 }
@@ -173,6 +195,7 @@ rotated because \verb{$buffer_size} is exceeded?}
 \if{html}{\out{<a id="method-set_flush_threshold"></a>}}
 \if{latex}{\out{\hypertarget{method-set_flush_threshold}{}}}
 \subsection{Method \code{set_flush_threshold()}}{
+Set threshold that triggers flushing
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$set_flush_threshold(level)}\if{html}{\out{</div>}}
 }
@@ -180,8 +203,8 @@ rotated because \verb{$buffer_size} is exceeded?}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{level}}{A \code{numeric} or \code{character} \link[=log_level]{threshold}. A
-threshold that triggers flushing of the buffer.}
+\item{\code{level}}{A \code{numeric} or \code{character} \link[=log_level]{threshold}. See
+active bindings.}
 }
 \if{html}{\out{</div>}}
 }
@@ -190,10 +213,23 @@ threshold that triggers flushing of the buffer.}
 \if{html}{\out{<a id="method-show"></a>}}
 \if{latex}{\out{\hypertarget{method-show}{}}}
 \subsection{Method \code{show()}}{
+Display the contents of the log table. Relies on the
+\verb{$format_event} method of the \link{Layout} attached to this Appender.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$show(threshold = NA_integer_, n = 20L)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
+that should be displayed.}
+
+\item{\code{n}}{\code{integer} scalar. Show only the last \code{n} log entries that match
+\code{threshold}.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-format"></a>}}

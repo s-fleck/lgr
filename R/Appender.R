@@ -519,22 +519,20 @@ AppenderMemory <- R6::R6Class(
     #'   then clears the Buffer
     flush = function(){self},
 
-
     #' @description Clears the buffer, discarding all buffered Events
-    clear = function(self){},
+    clear = function(){self},
 
     #' @description Set the maximum size of the buffer
-    #' @param x an `integer` scalar `>= 0`. Number of [LogEvents] to buffer.
+    #' @param x an `integer` scalar `>= 0`. See active bindings.
     set_buffer_size = function(x){
       assert(is_n0(x))
       private$.buffer_size <- x
       invisible(self)
     },
 
-    #' @description
-    #' @param x A `function` with exactly one arguments: `event`. If the
-    #'   function returns `TRUE`, the buffer is flushed. Defaults
-    #'   to flushing if an event of level `error` or higher is encountered
+    #' @description Set function that can trigger flushing the buffer
+    #' @param x A `function` with the single argument `event`. Setting `x` to
+    #'   `NULL` is a shortcut for `function(event) FALSE`. See active bindings.
     set_should_flush = function(x){
       if (is.null(x)) x <- function(event) FALSE
       assert_filter(x)
@@ -542,27 +540,25 @@ AppenderMemory <- R6::R6Class(
       invisible(self)
     },
 
-    #' @description
-    #' @param x A `logical` scalar. Should the buffer be flushed if the Appender
-    #'   is destroyed (e.g. because the \R session is terminated)?
+    #' @description Should the buffer be flushed when the Appender is destroyed?
+    #' @param x A `logical` scalar. See active bindings.
     set_flush_on_exit = function(x){
       assert(is_scalar_bool(x))
       private$.flush_on_exit <- x
       invisible(self)
     },
 
-    #' @description
-    #' @param x A `logical` scalar. Should the buffer be flushed when it is
-    #'   rotated because `$buffer_size` is exceeded?
+    #' @description Should the buffer be flushed if `buffer_size` is exceeded?
+    #' @param x A `logical` scalar. See active bindings.
     set_flush_on_rotate = function(x){
       assert(is_scalar_bool(x))
       private$.flush_on_rotate <- x
       invisible(self)
     },
 
-    #' @description
-    #' @param level A `numeric` or `character` [threshold][log_level]. A
-    #'   threshold that triggers flushing of the buffer.
+    #' @description Set threshold that triggers flushing
+    #' @param level A `numeric` or `character` [threshold][log_level]. See
+    #'  active bindings.
     set_flush_threshold = function(level){
       if (!is.null(level))
         level <- standardize_threshold(level)
@@ -571,6 +567,14 @@ AppenderMemory <- R6::R6Class(
       invisible(self)
     },
 
+
+    #' @description Display the contents of the log table. Relies on the
+    #' `$format_event` method of the [Layout] attached to this Appender.
+    #'
+    #' @param threshold `character` or `integer` scalar. The minimum log level
+    #'   that should be displayed.
+    #' @param n `integer` scalar. Show only the last `n` log entries that match
+    #'   `threshold`.
     show = function(threshold = NA_integer_, n = 20L){
       assert(is_scalar_integerish(n))
       threshold <- standardize_threshold(threshold)
@@ -611,18 +615,24 @@ AppenderMemory <- R6::R6Class(
 
   # +- active ---------------------------------------------------------------
   active = list(
+    #' @field flush_on_exit A `logical` scalar. Should the buffer be flushed if
+    #'   the Appender is destroyed (e.g. because the \R session is terminated)?
     flush_on_exit = function() {
       get(".flush_on_exit", private)
     },
 
+    #' @field flush_on_rotate A `logical` scalar. Should the buffer be flushed when it is
+    #'   rotated because `$buffer_size` is exceeded?
     flush_on_rotate = function() {
       get(".flush_on_rotate", private)
     },
 
+    #' @field should_flush A `function` with exactly one arguments: `event`.
+    #'   `$append()` calls this function internally on the current [LogEvent]
+    #'   and flushes the buffer if it evaluates to `TRUE`.
     should_flush = function(){
       get(".should_flush", private)
     },
-
 
     #' @field buffer_size `integer` scalar `>= 0`. Maximum number of [LogEvents]
     #' to buffer.
@@ -630,10 +640,14 @@ AppenderMemory <- R6::R6Class(
       get(".buffer_size", private)
     },
 
+    #' @field flush_threshold A `numeric` or `character` threshold. [LogEvents]
+    #'   with a [log_level] equal to or lower than this threshold trigger
+    #'   flushing the buffer.
     flush_threshold = function(){
       get(".flush_threshold", private)
     },
 
+    #' @field buffer_events A `list` of [LogEvents]. Contents of the buffer.
     buffer_events = function() {
       ord <- get("event_order", envir = private)
       ord <- ord - min(ord) + 1L
@@ -652,10 +666,14 @@ AppenderMemory <- R6::R6Class(
       self$buffer_dt
     },
 
+    #' @field buffer_events A `data.frame`. Contents of the buffer converted
+    #'   to a `data.frame`.
     buffer_df = function() {
       as.data.frame(self[["buffer_dt"]])
     },
 
+    #' @field buffer_events A `data.frame`. Contents of the buffer converted
+    #'   to a `data.table`.
     buffer_dt = function(){
       assert_namespace("data.table")
       as.data.table.event_list(get("buffer_events", self))
