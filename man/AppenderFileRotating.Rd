@@ -4,31 +4,24 @@
 \alias{AppenderFileRotating}
 \title{Log to a rotating file}
 \description{
-Log to a rotating file
-
-Log to a rotating file
-}
-\details{
 An extension of \link{AppenderFile} that rotates logfiles based on certain
 conditions. Please refer to the documentation of \code{\link[rotor:rotate]{rotor::rotate()}} for
 the meanings of the extra arguments
 }
-\section{Fields}{
-
-
-\describe{
-
-\item{\code{backups}}{A \code{data.frame} containing information on path, file size,
-etc... on the available backups of \code{file}.}
-}
-}
-
 \seealso{
 \link{AppenderFileRotatingDate}, \link{AppenderFileRotatingTime}, \code{\link[rotor:rotate]{rotor::rotate()}}
 }
 \concept{Appenders, Rotating Appenders}
 \section{Super classes}{
 \code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{\link[lgr:AppenderFile]{lgr::AppenderFile}} -> \code{AppenderFileRotating}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{backups}}{A \code{data.frame} containing information on path, file size,
+etc... on the available backups of \code{file}.}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{

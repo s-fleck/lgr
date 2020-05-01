@@ -523,7 +523,7 @@ AppenderMemory <- R6::R6Class(
     clear = function(){self},
 
     #' @description Set the maximum size of the buffer
-    #' @param x an `integer` scalar `>= 0`. See active bindings.
+    #' @param x an `integer` scalar `>= 0`. Number of [LogEvents] to buffer.
     set_buffer_size = function(x){
       assert(is_n0(x))
       private$.buffer_size <- x
@@ -943,28 +943,15 @@ AppenderBuffer <- R6::R6Class(
 #' conditions. Please refer to the documentation of [rotor::rotate()] for
 #' the meanings of the extra arguments
 #'
-#'
-#' @section Fields:
-#'
-#' \describe{
-#'
-#'
-#'   \item{`backups`}{A `data.frame` containing information on path, file size,
-#'     etc... on the available backups of `file`.}
-#'  }
-#'
-#'
 #' @export
 #' @seealso [AppenderFileRotatingDate], [AppenderFileRotatingTime], [rotor::rotate()]
 #' @family Appenders, Rotating Appenders
-#' @name AppenderFileRotating
 #' @export
 AppenderFileRotating <- R6::R6Class(
   "AppenderFileRotating",
   inherit = AppenderFile,
   public = list(
 
-    #' @description
     #' @param age,size,max_backups,fmt,overwrite,compression,backup_dir
     #' Please see [rotor::rotate()] for the meaning of these arguments
     #  (`fmt` is passed on as `format`).
@@ -1122,7 +1109,12 @@ AppenderFileRotating <- R6::R6Class(
 
     compression = function() get("bq", private)$compression,
     max_backups = function() get("bq", private)$max_backups,
+
+    #' @field backups A `data.frame` containing information on path, file size,
+    #'     etc... on the available backups of `file`.
     backups     = function() get("bq", private)$backups,
+
+
     backup_dir  = function() get("bq", private)$backup_dir
   ),
 
@@ -1362,29 +1354,13 @@ AppenderFileRotatingDate <- R6::R6Class(
 
 #' Log to the POSIX System Log
 #'
+#' @description
 #' An Appender that writes to the syslog on supported POSIX platforms. Requires
 #' the \pkg{rsyslog} package.
 #'
-#'
-#' @section Fields:
-#'
-#' \describe{
-#'   \item{`identifier`}{`character` scalar. A string identifying the process;
-#'     if `NULL` defaults to the logger name}
-#'   \item{`syslog_levels`}{
-#'  * a named `character` vector mapping whose names are log levels as
-#'    understood by [rsyslog::syslog()] and whose values are
-#'    [lgr log levels][log_levels] (either `character` or `numeric`)
-#'  * a `function` that takes a vector of lgr log levels as input and returns a
-#'    `character` vector of log levels for [rsyslog::syslog()].
-#'  }
-#'  }
-#'
-#' @export
 #' @seealso [LayoutFormat], [LayoutJson]
 #' @family Appenders
-#' @name AppenderSyslog
-#'
+#' @export
 #' @examples
 #' if (requireNamespace("rsyslog", quietly = TRUE)) {
 #'   lg <- get_logger("rsyslog/test")
@@ -1442,6 +1418,13 @@ AppenderSyslog <- R6::R6Class(
     },
 
 
+    #' @description Define conversion between lgr and syslog log levels
+    #' @param x
+    #'  * a named `character` vector mapping whose names are log
+    #'    levels as understood by [rsyslog::syslog()] and whose values are [lgr
+    #'    log levels][log_levels] (either `character` or `numeric`)
+    #'  * a `function` that takes a vector of lgr log levels as input and
+    #'    returns a `character` vector of log levels for [rsyslog::syslog()].
     set_syslog_levels = function(x){
       if (is.function(x)){
         private$.syslog_levels <- x
@@ -1457,7 +1440,7 @@ AppenderSyslog <- R6::R6Class(
       self
     },
 
-
+    #' @description Set a string to identify the process.
     set_identifier = function(x){
       assert(is.null(x) || is_scalar_character(x))
       private$.identifier <- x
@@ -1468,7 +1451,14 @@ AppenderSyslog <- R6::R6Class(
   # +- active ---------------------------------------------------------------
   active = list(
     destination   = function() sprintf("syslog [%s]", private$.identifier),
+
+    #' @field identifier `character` scalar. A string identifying the process;
+    #'  if `NULL` defaults to the logger name
     identifier    = function() get(".identifier", private),
+
+    #' @field syslog_levels. Either a named `character` vector or a `function`
+    #'   mapping lgr [log_levels] to rsyslog log levels. See
+    #'   `$set_syslog_levels()`.
     syslog_levels = function() get(".syslog_levels", private)
   ),
 

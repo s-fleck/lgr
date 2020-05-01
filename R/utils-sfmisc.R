@@ -1,4 +1,4 @@
-# sfmisc utils 1.0.0.9033
+# sfmisc utils 1.0.0.9034
 
 
 
@@ -783,5 +783,30 @@ path_tidy <- function(x){
 }
 
 
+
+
+#' Return (unique) duplicated elements of a vector or rows of a data.frame
+#'
+#' For every element/row of `x` that has at least one duplicate, return one
+#' instance of that element.
+#'
+#' @param x an [atomic] vector or [data.frame]
+#' @param ... passed on to [duplicated()]
+#'
+#' @noRd
+#'
+#' @examples
+#' dupes(c(1, 1, 1, 2))
+#' dupes(cars[c(1, 1, 1, 2), ])
+dupes <- function(x, ...){
+
+  if (is.atomic(x)){
+    sort(unique(x[duplicated(x, ...)]))
+  } else if (is.data.frame(x)){
+    res <- unique(x[duplicated(x, ...), ])
+    row.names(res) <- NULL
+    res
+  }
+}
 
 # nocov end

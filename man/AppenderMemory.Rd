@@ -134,7 +134,7 @@ Set the maximum size of the buffer
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{an \code{integer} scalar \verb{>= 0}. See active bindings.}
+\item{\code{x}}{an \code{integer} scalar \verb{>= 0}. Number of \link{LogEvents} to buffer.}
 }
 \if{html}{\out{</div>}}
 }
