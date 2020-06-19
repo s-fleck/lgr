@@ -4,7 +4,7 @@
 \alias{AppenderConsole}
 \title{Log to the console}
 \description{
-A simple Appender that outputs to the console. If you have the package
+An Appender that outputs to the \R console. If you have the package
 \strong{crayon} installed log levels will be coloured by default
 (but you can modify this behaviour by passing a custom \link{Layout}).
 }

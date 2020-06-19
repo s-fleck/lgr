@@ -11,7 +11,7 @@ more \link{Appenders} which are responsible for the output (console, file, ...)
 of the event. \strong{lgr} comes with a single pre-configured Logger called the
 \verb{root Logger} that can be accessed via \verb{lgr$<...>}. Instantiation of new
 Loggers is done with \code{\link[=get_logger]{get_logger()}}. It is advisable to instantiate a
-sepparate Logger with a descriptive name for each package/script in which
+separate Logger with a descriptive name for each package/script in which
 you use \pkg{lgr}.
 }
 \note{
@@ -145,14 +145,14 @@ lgr$info(stop("this produces a warning instead of an error"))
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
 \item{\code{name}}{A \code{character} scalar. The unique name of each logger,
-which also includes the names of its ancestors (sepparated by \code{/}).}
+which also includes the names of its ancestors (separated by \code{/}).}
 
 \item{\code{threshold}}{\code{integer} scalar. The threshold of the \code{Logger}, or if it
 \code{NULL} the threshold it inherits from its closest ancestor with a
 non-\code{NULL} threshold}
 
 \item{\code{propagate}}{A \code{TRUE} or \code{FALSE}. The unique name of each logger,
-which also includes the names of its ancestors (sepparated by \code{/}).}
+which also includes the names of its ancestors (separated by \code{/}).}
 
 \item{\code{ancestry}}{A named \code{logical} vector of containing the propagate value
 of each Logger upper the inheritance tree. The names are the names of
@@ -214,12 +214,12 @@ inherits from its ancestors}
 \strong{Loggers should never be instantiated directly with \code{Logger$new()}} but
 rather via \code{\link[=get_logger]{get_logger("name")}}. This way new Loggers are
 registered in a global namespace which ensures uniqueness and
-facillitates inheritance between Loggers. If \code{"name"} does not exist, a
+facilitates inheritance between Loggers. If \code{"name"} does not exist, a
 new Logger with that name will be created, otherwise the function returns
 a Reference to the existing Logger.
 
 \code{name} is potentially a \code{"/"} separated hierarchical value like
-\code{foo/bar/baz}. Loggers further down the hierarchy are descendents of the
+\code{foo/bar/baz}. Loggers further down the hierarchy are descendants of the
 loggers above and (by default) inherit \code{threshold} and \code{Appenders} from
 their ancestors.
 \subsection{Usage}{
@@ -249,7 +249,7 @@ Log an event.
 
 If \code{level} passes the Logger's \code{threshold} a new \link{LogEvent} with \code{level},
 \code{msg}, \code{timestamp} and \code{caller} is created.  If the new LogEvent also
-passes the Loggers \link[=Filter]{Filters}, it is be dispatched to the
+passes the Loggers \link[=EventFilter]{Filters}, it is be dispatched to the
 relevant \link{Appenders}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Logger$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))}\if{html}{\out{</div>}}

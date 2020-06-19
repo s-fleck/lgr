@@ -4,33 +4,21 @@
 \alias{AppenderTable}
 \title{Abstract class for logging to tabular structures}
 \description{
-This is an \strong{abstract class} and as such cannot be instantiated directly.
-It is exported for package developers that want to extend it
+\strong{NOTE}: This is an \emph{abstract class}. Abstract classes cannot be instantiated
+directly, but are exported for package developers that want to extend lgr -
+for example by creating their own \link[=Appender]{Appenders} or \link[=Layout]{Layouts}.
+Please refer to the \emph{see also} section for actual implementations of this
+class.
 
-AppenderTable is extended by Appenders that write to a data source that
-can be interpreted as tables, (usually a \code{data.frame}). Examples are
-\link[lgrExtra:AppenderDbi]{lgrExtra::AppenderDbi}, \link[lgrExtra:AppenderRjdbc]{lgrExtra::AppenderRjdbc} and \link[lgrExtra:AppenderDt]{lgrExtra::AppenderDt}.
+AppenderTable is extended by Appenders that write to a data
+source that can be interpreted as tables, (usually a \code{data.frame}). Examples
+are \link[lgrExtra:AppenderDbi]{lgrExtra::AppenderDbi}, \link[lgrExtra:AppenderRjdbc]{lgrExtra::AppenderRjdbc} and
+\link[lgrExtra:AppenderDt]{lgrExtra::AppenderDt}.
 }
-\section{Fields}{
-
-
-\describe{
-\item{\code{data}}{Get the log recorded by this \code{Appender} as a \code{data.frame}}
-}
-}
-
-\section{Methods}{
-
-
-\describe{
-\item{\code{show(n, threshold)}}{Show the last \code{n} log entries with a
-log level bellow \code{threshold}.}
-}
-}
-
 \seealso{
 Other abstract classes: 
 \code{\link{AppenderMemory}},
+\code{\link{Appender}},
 \code{\link{Filterable}}
 
 Other Appenders: 
@@ -44,6 +32,17 @@ Other Appenders:
 \concept{abstract classes}
 \section{Super classes}{
 \code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{AppenderTable}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{data}}{\code{character} scalar. Contents of the table, parsed to a
+\code{data.frame}.}
+
+\item{\code{data}}{\code{character} scalar. Like \verb{$data}, but returns a \code{data.table}
+instead (requires the \strong{data.table} package).}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -79,10 +78,21 @@ Other Appenders:
 \if{html}{\out{<a id="method-show"></a>}}
 \if{latex}{\out{\hypertarget{method-show}{}}}
 \subsection{Method \code{show()}}{
+Show recent log entries
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderTable$show(threshold = NA_integer_, n = 20L)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{threshold}}{an \code{integer} or \code{character} \link[=log_level]{threshold}.
+Only show events with a log level at or below this threshold.}
+
+\item{\code{n}}{a positive \code{integer} scalar. Show at most that many entries}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-format"></a>}}

@@ -33,12 +33,12 @@ as.data.table.event_list(x, na.rm = TRUE)
 }
 \arguments{
 \item{...}{for \code{event} elements to be added to the list, for the \verb{as_*()}
-functions paramters passed on to methods.}
+functions parameters passed on to methods.}
 
 \item{x}{any \code{R} object}
 
 \item{scalarize}{\code{logical} scalar. Turn \link{LogEvents} with non-scalar \code{msg}
-field into sepparate log events}
+field into separate log events}
 
 \item{na.rm}{remove \code{NA} values before coercing a data.frame to an \code{event_list()}.}
 

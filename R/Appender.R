@@ -2,13 +2,14 @@
 
 #' Appenders
 #'
-#' @description
-#' Appenders are assigned to [Loggers] and manage the output of the [LogEvents]
-#' to a destination (such as the console or a text file). An Appender has a
-#' single [Layout] that tells it how to format the LogEvent. For details
-#' please refer to the documentations of the specific Appenders.
+#' @description Appenders are attached to [Loggers] and manage the output of the
+#' [LogEvents] to a destination - such as the console or a text file. An
+#' Appender has a single [Layout] that tells it how to format the LogEvent. For
+#' details please refer to the documentations of the specific Appenders.
 #'
-#' More appenders can be found in the package [lgrExtra](https://github.com/s-fleck/lgrExtra)
+#' Additional Appenders that support a wide range of output destinations -
+#' such as databases, email, push-notifications or Linux syslog - are available
+#' from the package [lgrExtra](https://github.com/s-fleck/lgrExtra).
 #'
 #' @template abstract_class
 #'
@@ -134,7 +135,7 @@ Appender <- R6::R6Class(
 
 #' Log to the console
 #'
-#' A simple Appender that outputs to the console. If you have the package
+#' An Appender that outputs to the \R console. If you have the package
 #' **crayon** installed log levels will be coloured by default
 #' (but you can modify this behaviour by passing a custom [Layout]).
 #'
@@ -191,18 +192,11 @@ AppenderConsole <- R6::R6Class(
 
 #' Log to a file
 #'
+#' @description
 #' A simple Appender that outputs to a file in the file system. If you plan
 #' to log to text files, consider logging to JSON files and take a look at
-#' [AppenderJson], which is more or less a shortcut for `AppenderFile` with
-#' [`LayoutJson`] and a few extra methods for convenience.
-#'
-#'
-#' @section Fields:
-#'
-#' \describe{
-#'   \item{`file`, `set_file(file)`}{`character` scalar. Path to the desired log
-#'   file. If the file does not exist it will be created.}
-#'  }
+#' [AppenderJson], which is a shortcut for `AppenderFile` preconfigured with
+#' [`LayoutJson`].
 #'
 #'
 #' @export
@@ -261,6 +255,9 @@ AppenderFile <- R6::R6Class(
       )
     },
 
+    #' @description Set a log file
+    #' @param file `character` scalar. Path to the log file. If `file` does not
+    #' exist it will be created.
     set_file = function(file){
       assert(
         is_scalar_character(file),
@@ -306,20 +303,30 @@ AppenderFile <- R6::R6Class(
 
   # +- active ---------------------------------------------------------------
   active = list(
+
+    #' @field file `character` scalar. path to the log file
     file = function() private$.file,
+
+    #' @field data `character` scalar. Contents of `file` parsed to a
+    #' `data.frame` if used with a [Layout] that supports parsing of log
+    #' file data (notably [LayoutJson]).
     data = function(){
       parser <- self$layout$parse
 
       assert(
         !is.null(parser),
-        "Neither ", fmt_class(class(self)[[1]]), " nor ", fmt_class(class(self$layout)[[1]]),
-        " support parsing log files to data.frames. Consider using <LayoutJson> ",
-        "instead."
+        CannotParseLogError(paste(
+          "Neither", fmt_class(class(self)[[1]]), "nor", fmt_class(class(self$layout)[[1]]),
+          "support parsing log files to data.frames. Consider using <LayoutJson>",
+          "instead."
+        ))
       )
 
       parser(self$file)
     },
 
+    #' @field data `character` scalar. Like `$data`, but returns a `data.table`
+    #' instead (requires the **data.table** package).
     dt = function(){
       data.table::as.data.table(self$data)
     },
@@ -339,11 +346,9 @@ AppenderFile <- R6::R6Class(
 
 #' Log to a JSON file
 #'
-#' `AppenderJson` is just a shortcut for `AppenderFile` preconfigured with
-#' [`LayoutJson`].
+#' @rdname AppenderFile
 #'
 #' @family Appenders
-#' @rdname AppenderFile
 #' @export
 #' @seealso [LayoutFormat], [LayoutJson]
 #' @examples
@@ -392,24 +397,10 @@ AppenderJson <- R6::R6Class(
 #'
 #' @template abstract_class
 #'
-#' @description
-#' AppenderTable is extended by Appenders that write to a data source that
-#' can be interpreted as tables, (usually a `data.frame`). Examples are
-#' [lgrExtra::AppenderDbi], [lgrExtra::AppenderRjdbc] and [lgrExtra::AppenderDt].
-#'
-#'
-#' @section Fields:
-#'
-#' \describe{
-#'   \item{`data`}{Get the log recorded by this `Appender` as a `data.frame`}
-#' }
-#'
-#' @section Methods:
-#'
-#' \describe{
-#'   \item{`show(n, threshold)`}{Show the last `n` log entries with a
-#'   log level bellow `threshold`.}
-#' }
+#' @description AppenderTable is extended by Appenders that write to a data
+#' source that can be interpreted as tables, (usually a `data.frame`). Examples
+#' are [lgrExtra::AppenderDbi], [lgrExtra::AppenderRjdbc] and
+#' [lgrExtra::AppenderDt].
 #'
 #' @family Appenders
 #' @export
@@ -423,7 +414,10 @@ AppenderTable <- R6::R6Class(
       stop(CannotInitializeAbstractClassError())
     },
 
-
+    #' @description Show recent log entries
+    #' @param n a positive `integer` scalar. Show at most that many entries
+    #' @param threshold an `integer` or `character` [threshold][log_level].
+    #'   Only show events with a log level at or below this threshold.
     show = function(threshold = NA_integer_, n = 20L) NULL,
 
     format = function(
@@ -444,8 +438,13 @@ AppenderTable <- R6::R6Class(
   ),
 
   active = list(
+    #' @field data `character` scalar. Contents of the table, parsed to a
+    #' `data.frame`.
     data = function() as.data.frame(self$dt),
-    dt   = function() NULL
+
+    #' @field data `character` scalar. Like `$data`, but returns a `data.table`
+    #' instead (requires the **data.table** package).
+    dt   = function() data.table::as.data.table(self$data)
   )
 )
 
@@ -463,33 +462,6 @@ AppenderTable <- R6::R6Class(
 #' @description
 #' AppenderMemory is extended by Appenders that retain an in-memory event
 #' buffer, such as [AppenderBuffer] and [lgrExtra::AppenderPushbullet].
-#'
-#'
-#' @section Fields:
-#'
-#' \describe{
-#'   \item{`buffer_size, set_buffer_size(x)`}{`integer` scalar `>= 0` Number of
-#'     [LogEvents] to buffer.
-#'   }
-#'
-#'   \item{`buffer_events`, `buffer_df`, `buffer_dt`}{
-#'     The contents of the buffer as a `list` of [LogEvents][LogEvent], a
-#'     `data.frame` or a `data.table`.
-#'   }
-#'
-#'  \item{`flush_threshold`, `set_flush_threshold()`}{`integer` or `character`
-#'  [log level][log_level]. Minimum event level that will trigger flushing of
-#'  the buffer (set `NULL` for no flushing). This behaviour is implemented
-#'  through `should_flush()`, and you can modify that function for different
-#'  behaviour.
-#'   }
-#'   \item{`should_flush(event)`, `set_should_flush(x)`}{
-#'     A function with exactly one arguments: `event`.
-#'     If the function returns `TRUE`, flushing of the buffer
-#'     is triggered. Defaults to flushing if an event of level `error`
-#'     or higher is registered.}
-#' }
-#'
 #'
 #' @export
 #' @seealso [LayoutFormat]
@@ -512,29 +484,34 @@ AppenderMemory <- R6::R6Class(
       private[["event_order"]][[i]] <- private[["last_event"]]
       private[[".buffer_events"]][[i]] <- event
 
-      bs <- get(".buffer_size", envir = private)
-
-      sf <- get(".should_flush", envir = private)(event)
-      if (!is_scalar_bool(sf)){
-        warning(
-          "`should_flush()` did not return `TRUE` or `FALSE` but ",
-          preview_object(sf), ". ",
-          "Please set a proper filter function with `$set_should_flush()`"
+      # check if buffer should be flushed
+      if ({
+        # buffer is rotated
+        i > get(".buffer_size", envir = private) &&
+        get(".flush_on_rotate", envir = private)
+      } || {
+        # flush threshold is exceeded
+        thr <- get(".flush_threshold", envir = private)
+        !is.null(thr) && (is.na(thr) || all(event[["level"]] <= thr))
+      } || {
+        # should_flush() function triggers
+        standardize_should_flush_output(
+          get(".should_flush", envir = private)(event)
         )
-        sf <- FALSE
-      }
-
-      if (sf){
-        self[["flush"]]()
-      } else if (i > bs){
+      }){
+        self$flush()
+      } else if (i > get(".buffer_size", envir = private)){
+        # check if flush should be triggered if buffer size is exceeded
+        # sepparetly from other conditions. Must be below all other flush
+        # conditions in case this causes the buffer to be cleared but not flushed.
         if (get(".flush_on_rotate", envir = private) ){
           self[["flush"]]()
         } else {
+          # does not clear the buffer. this is intentional
           assign("insert_pos", 0L, envir = private)
         }
       }
 
-      NULL
     },
 
 
@@ -542,17 +519,20 @@ AppenderMemory <- R6::R6Class(
     #'   then clears the Buffer
     flush = function(){self},
 
-
     #' @description Clears the buffer, discarding all buffered Events
-    clear = function(self){},
+    clear = function(){self},
 
-
+    #' @description Set the maximum size of the buffer
+    #' @param x an `integer` scalar `>= 0`. Number of [LogEvents] to buffer.
     set_buffer_size = function(x){
-      assert(is_scalar_integerish(x))
+      assert(is_n0(x))
       private$.buffer_size <- x
       invisible(self)
     },
 
+    #' @description Set function that can trigger flushing the buffer
+    #' @param x A `function` with the single argument `event`. Setting `x` to
+    #'   `NULL` is a shortcut for `function(event) FALSE`. See active bindings.
     set_should_flush = function(x){
       if (is.null(x)) x <- function(event) FALSE
       assert_filter(x)
@@ -560,18 +540,25 @@ AppenderMemory <- R6::R6Class(
       invisible(self)
     },
 
+    #' @description Should the buffer be flushed when the Appender is destroyed?
+    #' @param x A `logical` scalar. See active bindings.
     set_flush_on_exit = function(x){
       assert(is_scalar_bool(x))
       private$.flush_on_exit <- x
       invisible(self)
     },
 
+    #' @description Should the buffer be flushed if `buffer_size` is exceeded?
+    #' @param x A `logical` scalar. See active bindings.
     set_flush_on_rotate = function(x){
       assert(is_scalar_bool(x))
       private$.flush_on_rotate <- x
       invisible(self)
     },
 
+    #' @description Set threshold that triggers flushing
+    #' @param level A `numeric` or `character` [threshold][log_level]. See
+    #'  active bindings.
     set_flush_threshold = function(level){
       if (!is.null(level))
         level <- standardize_threshold(level)
@@ -580,6 +567,14 @@ AppenderMemory <- R6::R6Class(
       invisible(self)
     },
 
+
+    #' @description Display the contents of the log table. Relies on the
+    #' `$format_event` method of the [Layout] attached to this Appender.
+    #'
+    #' @param threshold `character` or `integer` scalar. The minimum log level
+    #'   that should be displayed.
+    #' @param n `integer` scalar. Show only the last `n` log entries that match
+    #'   `threshold`.
     show = function(threshold = NA_integer_, n = 20L){
       assert(is_scalar_integerish(n))
       threshold <- standardize_threshold(threshold)
@@ -620,26 +615,39 @@ AppenderMemory <- R6::R6Class(
 
   # +- active ---------------------------------------------------------------
   active = list(
+    #' @field flush_on_exit A `logical` scalar. Should the buffer be flushed if
+    #'   the Appender is destroyed (e.g. because the \R session is terminated)?
     flush_on_exit = function() {
       get(".flush_on_exit", private)
     },
 
+    #' @field flush_on_rotate A `logical` scalar. Should the buffer be flushed when it is
+    #'   rotated because `$buffer_size` is exceeded?
     flush_on_rotate = function() {
       get(".flush_on_rotate", private)
     },
 
+    #' @field should_flush A `function` with exactly one arguments: `event`.
+    #'   `$append()` calls this function internally on the current [LogEvent]
+    #'   and flushes the buffer if it evaluates to `TRUE`.
     should_flush = function(){
       get(".should_flush", private)
     },
 
+    #' @field buffer_size `integer` scalar `>= 0`. Maximum number of [LogEvents]
+    #' to buffer.
     buffer_size = function() {
       get(".buffer_size", private)
     },
 
+    #' @field flush_threshold A `numeric` or `character` threshold. [LogEvents]
+    #'   with a [log_level] equal to or lower than this threshold trigger
+    #'   flushing the buffer.
     flush_threshold = function(){
       get(".flush_threshold", private)
     },
 
+    #' @field buffer_events A `list` of [LogEvents]. Contents of the buffer.
     buffer_events = function() {
       ord <- get("event_order", envir = private)
       ord <- ord - min(ord) + 1L
@@ -658,10 +666,14 @@ AppenderMemory <- R6::R6Class(
       self$buffer_dt
     },
 
+    #' @field buffer_events A `data.frame`. Contents of the buffer converted
+    #'   to a `data.frame`.
     buffer_df = function() {
       as.data.frame(self[["buffer_dt"]])
     },
 
+    #' @field buffer_events A `data.frame`. Contents of the buffer converted
+    #'   to a `data.table`.
     buffer_dt = function(){
       assert_namespace("data.table")
       as.data.table.event_list(get("buffer_events", self))
@@ -701,8 +713,6 @@ AppenderMemory <- R6::R6Class(
 #'
 #' An Appender that Buffers LogEvents in-memory and and redirects them to other
 #' Appenders once certain conditions are met.
-#'
-#'
 #'
 #' @section Fields:
 #'
@@ -757,7 +767,7 @@ AppenderBuffer <- R6::R6Class(
       flush_threshold = NULL,
       flush_on_exit = TRUE,
       flush_on_rotate = TRUE,
-      should_flush = default_should_flush,
+      should_flush = NULL,
       filters = NULL
     ){
       self$set_threshold(threshold)
@@ -789,14 +799,12 @@ AppenderBuffer <- R6::R6Class(
       self$clear()
     },
 
-
     #' @description Clears the buffer, discarding all buffered Events
     clear = function(){
       assign("insert_pos", 0L, envir = private)
       private$.buffer_events <- list()
       invisible(self)
     },
-
 
     set_appenders = function(x){
       if (is.null(x)){
@@ -935,28 +943,15 @@ AppenderBuffer <- R6::R6Class(
 #' conditions. Please refer to the documentation of [rotor::rotate()] for
 #' the meanings of the extra arguments
 #'
-#'
-#' @section Fields:
-#'
-#' \describe{
-#'
-#'
-#'   \item{`backups`}{A `data.frame` containing information on path, file size,
-#'     etc... on the available backups of `file`.}
-#'  }
-#'
-#'
 #' @export
 #' @seealso [AppenderFileRotatingDate], [AppenderFileRotatingTime], [rotor::rotate()]
 #' @family Appenders, Rotating Appenders
-#' @name AppenderFileRotating
 #' @export
 AppenderFileRotating <- R6::R6Class(
   "AppenderFileRotating",
   inherit = AppenderFile,
   public = list(
 
-    #' @description
     #' @param age,size,max_backups,fmt,overwrite,compression,backup_dir
     #' Please see [rotor::rotate()] for the meaning of these arguments
     #  (`fmt` is passed on as `format`).
@@ -1114,7 +1109,12 @@ AppenderFileRotating <- R6::R6Class(
 
     compression = function() get("bq", private)$compression,
     max_backups = function() get("bq", private)$max_backups,
+
+    #' @field backups A `data.frame` containing information on path, file size,
+    #'     etc... on the available backups of `file`.
     backups     = function() get("bq", private)$backups,
+
+
     backup_dir  = function() get("bq", private)$backup_dir
   ),
 
@@ -1295,7 +1295,7 @@ AppenderFileRotatingTime <- R6::R6Class(
 #' Log to a date-stamped rotating file
 #'
 #' This is a simpler version of AppenderFileRotatingTime when the timestamps
-#' do not need to inclue sub-day accuracy.
+#' do not need to include sub-day accuracy.
 #'
 #' @seealso [AppenderFileRotatingTime], [AppenderFileRotating], [rotor::rotate()]
 #' @export
@@ -1354,29 +1354,13 @@ AppenderFileRotatingDate <- R6::R6Class(
 
 #' Log to the POSIX System Log
 #'
+#' @description
 #' An Appender that writes to the syslog on supported POSIX platforms. Requires
 #' the \pkg{rsyslog} package.
 #'
-#'
-#' @section Fields:
-#'
-#' \describe{
-#'   \item{`identifier`}{`character` scalar. A string identifying the process;
-#'     if `NULL` defaults to the logger name}
-#'   \item{`syslog_levels`}{
-#'  * a named `character` vector mapping whose names are log levels as
-#'    understood by [rsyslog::syslog()] and whose values are
-#'    [lgr log levels][log_levels] (either `character` or `numeric`)
-#'  * a `function` that takes a vector of lgr log levels as input and returns a
-#'    `character` vector of log levels for [rsyslog::syslog()].
-#'  }
-#'  }
-#'
-#' @export
 #' @seealso [LayoutFormat], [LayoutJson]
 #' @family Appenders
-#' @name AppenderSyslog
-#'
+#' @export
 #' @examples
 #' if (requireNamespace("rsyslog", quietly = TRUE)) {
 #'   lg <- get_logger("rsyslog/test")
@@ -1434,6 +1418,13 @@ AppenderSyslog <- R6::R6Class(
     },
 
 
+    #' @description Define conversion between lgr and syslog log levels
+    #' @param x
+    #'  * a named `character` vector mapping whose names are log
+    #'    levels as understood by [rsyslog::syslog()] and whose values are [lgr
+    #'    log levels][log_levels] (either `character` or `numeric`)
+    #'  * a `function` that takes a vector of lgr log levels as input and
+    #'    returns a `character` vector of log levels for [rsyslog::syslog()].
     set_syslog_levels = function(x){
       if (is.function(x)){
         private$.syslog_levels <- x
@@ -1449,7 +1440,7 @@ AppenderSyslog <- R6::R6Class(
       self
     },
 
-
+    #' @description Set a string to identify the process.
     set_identifier = function(x){
       assert(is.null(x) || is_scalar_character(x))
       private$.identifier <- x
@@ -1460,7 +1451,14 @@ AppenderSyslog <- R6::R6Class(
   # +- active ---------------------------------------------------------------
   active = list(
     destination   = function() sprintf("syslog [%s]", private$.identifier),
+
+    #' @field identifier `character` scalar. A string identifying the process;
+    #'  if `NULL` defaults to the logger name
     identifier    = function() get(".identifier", private),
+
+    #' @field syslog_levels. Either a named `character` vector or a `function`
+    #'   mapping lgr [log_levels] to rsyslog log levels. See
+    #'   `$set_syslog_levels()`.
     syslog_levels = function() get(".syslog_levels", private)
   ),
 
@@ -1488,37 +1486,6 @@ AppenderSyslog <- R6::R6Class(
     .syslog_levels = NULL
   )
 )
-
-
-
-
-# helpers -----------------------------------------------------------------
-
-#' Default reader for files created with AppenderFile
-#'
-#' @param file a `character` scalar: path to a file
-#' @param threshold only `NA` is supported for the default reader, other
-#'   values cause a warning. See `LayoutFormat$read()` for an example where
-#'   that supports thresholds.
-#' @param n an `integer` scalar > 0
-#'
-#' @return
-#' @noRd
-default_file_reader <- function(file, threshold, n){
-  assert(
-    is_scalar_character(file),
-    "`file` must be the path to a file, not ", preview_object(file)
-  )
-
-  if (isFALSE(is.na(threshold))){
-    warning("A threshold was supplied to AppenderFile$show(), but the ",
-    "Appenders' Layout does not support filtering by log level")
-  }
-
-  last_n(readLines(file), n)
-}
-
-
 
 
 
@@ -1589,4 +1556,65 @@ appender_summary <- function(x){
       destination
     )
   )
+}
+
+
+
+# helpers -----------------------------------------------------------------
+
+#' Default reader for files created with AppenderFile
+#'
+#' @param file a `character` scalar: path to a file
+#' @param threshold only `NA` is supported for the default reader, other
+#'   values cause a warning. See `LayoutFormat$read()` for an example where
+#'   that supports thresholds.
+#' @param n an `integer` scalar > 0
+#'
+#' @return
+#' @noRd
+default_file_reader <- function(file, threshold, n){
+  assert(
+    is_scalar_character(file),
+    "`file` must be the path to a file, not ", preview_object(file)
+  )
+
+  if (isFALSE(is.na(threshold))){
+    warning("A threshold was supplied to AppenderFile$show(), but the ",
+    "Appenders' Layout does not support filtering by log level")
+  }
+
+  last_n(readLines(file), n)
+}
+
+
+
+standardize_should_flush_output <- function(
+  x
+){
+  if (isTRUE(x)){
+    TRUE
+  } else if (isFALSE(x)){
+    FALSE
+  } else {
+    warning(ValueIsNotBoolWarning(paste0(
+      "`$should_flush()` did not return `TRUE` or `FALSE` but ",
+      preview_object(x), ". ",
+      "Please set a valid filter function with `$set_should_flush()`."
+    )))
+    FALSE
+  }
+}
+
+
+
+# conditions --------------------------------------------------------------
+
+CannotParseLogError <- function(message){
+  error(message = message, class = "CannotParseLogError")
+}
+
+
+
+ValueIsNotBoolWarning <- function(message){
+  condition(message, class = c("ValueIsNotBoolWarning", "warning"))
 }

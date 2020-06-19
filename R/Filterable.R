@@ -1,8 +1,7 @@
 #' Abstract Class for Filterables
 #'
-#' @description
-#' Superclass for classes that have a `$filter()` method such as [Appenders] and
-#' [Loggers]. See [EventFilter] for Details.
+#' @description Superclass for classes that have a `$filter()` method such as
+#' [Appenders] and [Loggers]. See [EventFilter] for details.
 #'
 #' @template abstract_class
 #'
@@ -14,8 +13,8 @@ Filterable <- R6::R6Class(
   public = list(
 
     #' @description Determine whether the LogEvent `x` should be passed on to
-    #' Appenders (`TRUE`) or not (`FALSE`). See also the active binding
-    #' `filters`.
+    #'   Appenders (`TRUE`) or not (`FALSE`). See also the active binding
+    #'   `filters`.
     #'
     #' @param event a [LogEvent]
     filter = function(event){
@@ -44,18 +43,17 @@ Filterable <- R6::R6Class(
       TRUE
     },
 
-    #' @description Add a Filter. When adding a filter an optional `name`
-    #'   can be specified. `remove_filter()` can remove by position or name (if
-    #'   one was specified)
+    #' @description Attach a filter
     #' @param filter
-    #' * a function with the single argument `event` that returns `TRUE` or `FALSE`;
+    #' * a function with the single argument `event` that returns `TRUE`
+    #'   or `FALSE`;
     #' * an [EventFilter] [R6::R6] object; or
     #' * any \R object with a `$filter()` method.
     #'
-    #'  If a Filter returns a non-`FALSE` value, will be interpeted as `TRUE`
+    #'  If a Filter returns a non-`FALSE` value, will be interpreted as `TRUE`
     #'  (= no filtering takes place) and a warning will be thrown.
     #'
-    #' @param name `character` scalar or `NULL`. A filter can have an optional
+    #' @param name `character` scalar or `NULL`. An optional
     #' name which makes it easier to access (or remove) the filter
     add_filter = function(filter, name = NULL){
       assert_filter(filter)
@@ -81,8 +79,8 @@ Filterable <- R6::R6Class(
     #' @description Set or replace (all) Filters of parent object. See
     #' [EventFilter] for how Filters work.
     #'
-    #' @param filters a `list` (named or unnamed) of [EventFilters] or
-    #' predicate functions. See [is_filter()].
+    #' @param filters a `list` (named or unnamed) of [EventFilters][EventFilter]
+    #'   or predicate functions. See [is_filter()].
     set_filters = function(filters){
       filters <- standardize_filters_list(filters)
       private[[".filters"]] <- filters
@@ -91,7 +89,7 @@ Filterable <- R6::R6Class(
   ),
 
   active = list(
-    #' @field filters a `list` of all attached Filters. See [is_filter()].
+    #' @field filters a `list` of all attached Filters.
     filters = function(){
       get(".filters", private)
     }

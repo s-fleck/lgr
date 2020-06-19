@@ -34,10 +34,16 @@
   
 * added `toString.LogEvent()` for compact representations of LogEvents
 
+* lgr is now automatically tested for all major R version >= 3.2.0
+
+* AppenderMemory/AppenderBuffer: `flush_threshold` is now independent of
+  `should_flush` function. `default_should_flush()` is no longer necessary
+  and has been removed.
+
 
 # lgr 0.3.4
 
-* Hotfix for compat with R < 3.6.0 (#32)
+* Hotfix for compatibility with R < 3.6.0 (#32)
 
 
 # lgr 0.3.3

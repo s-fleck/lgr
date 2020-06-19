@@ -19,26 +19,3 @@ default_exception_handler <- function(e){
     "An error occurred during logging: ", e, call. = FALSE
   )
 }
-
-
-
-
-#' Default should_flush function
-#'
-#' This is the default "`should_flush()`" trigger function for Appenders that
-#' support such a mechanism, such as [AppenderBuffer] and [lgrExtra::AppenderDbi]. It
-#' returns `TRUE` if the event's `level` meets or exceeds the Appender's
-#' `flush_threshold`.
-#'
-#' @param event a [LogEvent]
-#'
-#' @return `TRUE` or `FALSE`
-#' @export
-default_should_flush <- function(event){
-  thr <- get("flush_threshold", .obj())
-
-  if (is.null(thr))
-    FALSE
-  else
-    is.na(thr) || all(event[["level"]] <= thr)
-}

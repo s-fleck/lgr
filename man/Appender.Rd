@@ -5,23 +5,27 @@
 \alias{Appenders}
 \title{Appenders}
 \description{
-Appenders
+Appenders are attached to \link{Loggers} and manage the output of the
+\link{LogEvents} to a destination - such as the console or a text file. An
+Appender has a single \link{Layout} that tells it how to format the LogEvent. For
+details please refer to the documentations of the specific Appenders.
 
-Appenders
-}
-\details{
-Appenders are assigned to \link{Loggers} and manage the output of the \link{LogEvents}
-to a destination (such as the console or a text file). An Appender has a
-single \link{Layout} that tells it how to format the LogEvent. For details
-please refer to the documentations of the specific Appenders.
+Additional Appenders that support a wide range of output destinations -
+such as databases, email, push-notifications or Linux syslog - are available
+from the package \href{https://github.com/s-fleck/lgrExtra}{lgrExtra}.
 
-The Appender class itself \strong{is not designed for direct usage}, but it is the
-basis on which all other Appenders are built. Please see the \strong{see also}
-section towards the end of this document a list of available Appenders.
-
-More appenders can be found in the package \href{https://github.com/s-fleck/lgrExtra}{lgrExtra}
+\strong{NOTE}: This is an \emph{abstract class}. Abstract classes cannot be instantiated
+directly, but are exported for package developers that want to extend lgr -
+for example by creating their own \link[=Appender]{Appenders} or \link[=Layout]{Layouts}.
+Please refer to the \emph{see also} section for actual implementations of this
+class.
 }
 \seealso{
+Other abstract classes: 
+\code{\link{AppenderMemory}},
+\code{\link{AppenderTable}},
+\code{\link{Filterable}}
+
 Other Appenders: 
 \code{\link{AppenderBuffer}},
 \code{\link{AppenderConsole}},
@@ -30,6 +34,7 @@ Other Appenders:
 \code{\link{AppenderTable}}
 }
 \concept{Appenders}
+\concept{abstract classes}
 \keyword{internal}
 \section{Super class}{
 \code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{Appender}

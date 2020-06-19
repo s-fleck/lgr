@@ -1,7 +1,7 @@
 Type: Package
 Package: lgr
 Title: A Fully Featured Logging Framework
-Version: 0.3.4.9003
+Version: 0.3.4.9004
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -19,7 +19,7 @@ License: MIT + file LICENSE
 URL: https://s-fleck.github.io/lgr
 BugReports: https://github.com/s-fleck/lgr/issues
 Depends:
-    R (>= 3.5.0)
+    R (>= 3.2.0)
 Imports: 
     R6 (>= 2.4.0)
 Suggests: 

@@ -10,7 +10,7 @@
 #'
 #' @param x any `R` object
 #' @param ... for `event` elements to be added to the list, for the `as_*()`
-#'   functions paramters passed on to methods.
+#'   functions parameters passed on to methods.
 #'
 #' @family docs relevant for extending lgr
 #' @export
@@ -67,7 +67,7 @@ as_event_list.list <- function(
 
 
 #' @param scalarize `logical` scalar. Turn [LogEvents] with non-scalar `msg`
-#'   field into sepparate log events
+#'   field into separate log events
 #' @export
 #' @rdname event_list
 #' @examples

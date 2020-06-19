@@ -209,9 +209,9 @@ fmt_bytes <- function(
 #' Logger Error Conditions
 #'
 #' @param class `character` scalar. The abstract class that was mistakenly
-#'   tried to initilize. The default is to discover the class name
-#'   automatically if called inside `$initilize(){...}` in an [R6::R6] class
-#'   defintion.
+#'   tried to initialize. The default is to discover the class name
+#'   automatically if called inside `$initialize(){...}` in an [R6::R6] class
+#'   definition
 #'
 #' @return a condition object
 #' @export

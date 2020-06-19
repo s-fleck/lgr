@@ -5,7 +5,7 @@
 \title{Log to a date-stamped rotating file}
 \description{
 This is a simpler version of AppenderFileRotatingTime when the timestamps
-do not need to inclue sub-day accuracy.
+do not need to include sub-day accuracy.
 }
 \seealso{
 \link{AppenderFileRotatingTime}, \link{AppenderFileRotating}, \code{\link[rotor:rotate]{rotor::rotate()}}

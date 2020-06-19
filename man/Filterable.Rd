@@ -4,23 +4,26 @@
 \alias{Filterable}
 \title{Abstract Class for Filterables}
 \description{
-This is an \strong{abstract class} and as such cannot be instantiated directly.
-It is exported for package developers that want to extend it
+Superclass for classes that have a \verb{$filter()} method such as
+\link{Appenders} and \link{Loggers}. See \link{EventFilter} for details.
 
-Superclass for classes that have a \verb{$filter()} method such as \link{Appenders} and
-\link{Loggers}. See \link{EventFilter} for Details.
+\strong{NOTE}: This is an \emph{abstract class}. Abstract classes cannot be instantiated
+directly, but are exported for package developers that want to extend lgr -
+for example by creating their own \link[=Appender]{Appenders} or \link[=Layout]{Layouts}.
+Please refer to the \emph{see also} section for actual implementations of this
+class.
 }
 \seealso{
 Other abstract classes: 
 \code{\link{AppenderMemory}},
-\code{\link{AppenderTable}}
+\code{\link{AppenderTable}},
+\code{\link{Appender}}
 }
 \concept{abstract classes}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{filters}}{a \code{list} of all attached filters (either \link{Filter} R6
-objects or \code{functions}).}
+\item{\code{filters}}{a \code{list} of all attached Filters.}
 }
 \if{html}{\out{</div>}}
 }
@@ -39,7 +42,7 @@ objects or \code{functions}).}
 \subsection{Method \code{filter()}}{
 Determine whether the LogEvent \code{x} should be passed on to
 Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
-\code{filters}
+\code{filters}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Filterable$filter(event)}\if{html}{\out{</div>}}
 }
@@ -56,9 +59,7 @@ Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 \if{html}{\out{<a id="method-add_filter"></a>}}
 \if{latex}{\out{\hypertarget{method-add_filter}{}}}
 \subsection{Method \code{add_filter()}}{
-Add a Filter. When adding a filter an optional \code{name}
-can be specified. \code{remove_filter()} can remove by position or name (if
-one was specified)
+Attach a filter
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Filterable$add_filter(filter, name = NULL)}\if{html}{\out{</div>}}
 }
@@ -66,10 +67,17 @@ one was specified)
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{filter}}{a function that returns \code{TRUE} or \code{FALSE}, a
-\link[=EventFilter]{Filter} or any \R object with a \verb{$filter()} method.}
+\item{\code{filter}}{\itemize{
+\item a function with the single argument \code{event} that returns \code{TRUE}
+or \code{FALSE};
+\item an \link{EventFilter} \link[R6:R6]{R6::R6} object; or
+\item any \R object with a \verb{$filter()} method.
+}
 
-\item{\code{name}}{\code{character} scalar or \code{NULL}. A filter can have an optional
+If a Filter returns a non-\code{FALSE} value, will be interpreted as \code{TRUE}
+(= no filtering takes place) and a warning will be thrown.}
+
+\item{\code{name}}{\code{character} scalar or \code{NULL}. An optional
 name which makes it easier to access (or remove) the filter}
 }
 \if{html}{\out{</div>}}
@@ -97,15 +105,8 @@ Filter to be removed.}
 \if{html}{\out{<a id="method-set_filters"></a>}}
 \if{latex}{\out{\hypertarget{method-set_filters}{}}}
 \subsection{Method \code{set_filters()}}{
-Replace all filters with a list of either \code{functions} or
-arbitrary \R object with a \verb{$filter()} method (preferably a \link{Filter} R6
-object). These functions/methods must have exactly one argument:
-\code{event} which will get passed the LogEvent when the Filterable's
-\verb{$filter()} method is invoked. If all of these functions evaluate to
-\code{TRUE} the LogEvent is passed on. Since LogEvents have reference
-semantics, filters can also be abused to modify them before they are
-passed on. Look at the source code of \code{\link[=with_log_level]{with_log_level()}} or
-\code{\link[=with_log_value]{with_log_value()}} for examples.
+Set or replace (all) Filters of parent object. See
+\link{EventFilter} for how Filters work.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Filterable$set_filters(filters)}\if{html}{\out{</div>}}
 }
@@ -113,8 +114,8 @@ passed on. Look at the source code of \code{\link[=with_log_level]{with_log_leve
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{filters}}{a \code{list} (named or unnamed) of \link[=Filters]{Filter} or
-predicate functions.}
+\item{\code{filters}}{a \code{list} (named or unnamed) of \link[=EventFilter]{EventFilters}
+or predicate functions. See \code{\link[=is_filter]{is_filter()}}.}
 }
 \if{html}{\out{</div>}}
 }

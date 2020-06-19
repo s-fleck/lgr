@@ -7,24 +7,6 @@
 An Appender that writes to the syslog on supported POSIX platforms. Requires
 the \pkg{rsyslog} package.
 }
-\section{Fields}{
-
-
-\describe{
-\item{\code{identifier}}{\code{character} scalar. A string identifying the process;
-if \code{NULL} defaults to the logger name}
-\item{\code{syslog_levels}}{
-\itemize{
-\item a named \code{character} vector mapping whose names are log levels as
-understood by \code{\link[rsyslog:syslog]{rsyslog::syslog()}} and whose values are
-\link[=log_levels]{lgr log levels} (either \code{character} or \code{numeric})
-\item a \code{function} that takes a vector of lgr log levels as input and returns a
-\code{character} vector of log levels for \code{\link[rsyslog:syslog]{rsyslog::syslog()}}.
-}
-}
-}
-}
-
 \examples{
 if (requireNamespace("rsyslog", quietly = TRUE)) {
   lg <- get_logger("rsyslog/test")
@@ -51,6 +33,27 @@ Other Appenders:
 \concept{Appenders}
 \section{Super classes}{
 \code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{AppenderSyslog}
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{syslog_levels.}}{Either a named \code{character} vector or a \code{function}
+mapping lgr \link{log_levels} to rsyslog log levels. See
+\verb{$set_syslog_levels()}.}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{identifier}}{\code{character} scalar. A string identifying the process;
+if \code{NULL} defaults to the logger name}
+
+\item{\code{syslog_levels.}}{Either a named \code{character} vector or a \code{function}
+mapping lgr \link{log_levels} to rsyslog log levels. See
+\verb{$set_syslog_levels()}.}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -103,15 +106,29 @@ Other Appenders:
 \if{html}{\out{<a id="method-set_syslog_levels"></a>}}
 \if{latex}{\out{\hypertarget{method-set_syslog_levels}{}}}
 \subsection{Method \code{set_syslog_levels()}}{
+Define conversion between lgr and syslog log levels
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderSyslog$set_syslog_levels(x)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{\itemize{
+\item a named \code{character} vector mapping whose names are log
+levels as understood by \code{\link[rsyslog:syslog]{rsyslog::syslog()}} and whose values are \link[=log_levels]{lgr log levels} (either \code{character} or \code{numeric})
+\item a \code{function} that takes a vector of lgr log levels as input and
+returns a \code{character} vector of log levels for \code{\link[rsyslog:syslog]{rsyslog::syslog()}}.
+}}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_identifier"></a>}}
 \if{latex}{\out{\hypertarget{method-set_identifier}{}}}
 \subsection{Method \code{set_identifier()}}{
+Set a string to identify the process.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderSyslog$set_identifier(x)}\if{html}{\out{</div>}}
 }
