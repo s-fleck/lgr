@@ -135,7 +135,6 @@ crayon installed log levels will be coloured by default
 <p>Other Appenders: 
 <code><a href='AppenderBuffer.html'>AppenderBuffer</a></code>,
 <code><a href='AppenderFile.html'>AppenderFile</a></code>,
-<code><a href='AppenderSyslog.html'>AppenderSyslog</a></code>,
 <code><a href='AppenderTable.html'>AppenderTable</a></code>,
 <code><a href='Appender.html'>Appender</a></code></p></div>
     <h2 class="hasAnchor" id="super-classes"><a class="anchor" href="#super-classes"></a>Super classes</h2>
@@ -193,8 +192,8 @@ crayon installed log levels will be coloured by default
   <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(<span class='st'>"[%t] %c(): [%n] %m"</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"lgr.colors"</span>))))
 
 <span class='co'># Will output the message twice because we attached two console appenders</span>
-<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; WARN  [11:24:34.926] A test message 
-#&gt; [2020-06-22 11:24:34.926] eval(): [300] A test message</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>) <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
+<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; WARN  [14:43:29.123] A test message 
+#&gt; [2020-06-22 14:43:29.123] eval(): [300] A test message</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>) <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div></pre>
