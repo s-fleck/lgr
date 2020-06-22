@@ -28,7 +28,6 @@ the buffer should be flushed when the Buffer is full (f.e when you close
 Other Appenders: 
 \code{\link{AppenderConsole}},
 \code{\link{AppenderFile}},
-\code{\link{AppenderSyslog}},
 \code{\link{AppenderTable}},
 \code{\link{Appender}}
 }

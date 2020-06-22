@@ -758,7 +758,7 @@ configure based on the backend used. For performance reasons database inserts
 are buffered by default. This works exactly identical as described above for
 AppenderBuffer. If you want to write each LogEvent directly to the database,
 just set the buffer size to `0`. As of lgr 0.4.0, database appenders are
-part of the lgrExtra package that has to be installed separately
+part of the **lgrExtra** package that has to be installed separately.
 
 ```{r, eval = FALSE}
 # install.packages("RSQLite")

@@ -36,7 +36,6 @@ Suggests:
     rmarkdown,
     rotor (>= 0.2.2),
     rprojroot,
-    rsyslog,
     testthat,
     tibble,
     tools,
@@ -73,4 +72,3 @@ Collate:
     'utils-logging.R'
     'utils-rd.R'
     'utils-rotor.R'
-    'utils-tests.R'

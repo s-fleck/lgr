@@ -181,7 +181,7 @@ have minimal dependencies, and are well maintained :
     read for humans and machines alike.
     
   - [rotor](https://github.com/s-fleck/rotor) for log rotation via 
-    AppenderFileRotating and co.
+    AppenderFileRotating and co. 
     
   - [data.table](https://github.com/Rdatatable/) for fast in-memory 
     logging with `AppenderDt`, and also by all database / DBI Appenders. 
@@ -210,6 +210,9 @@ have minimal dependencies, and are well maintained :
       
   - [RPushbullet](https://github.com/eddelbuettel/rpushbullet) for push
     notifications.
+    
+  - [Rsyslog](https://cran.r-project.org/package=rsyslog) for logging to
+    syslog on POSIX-compatible systems.
   
   Other extra features:
   
