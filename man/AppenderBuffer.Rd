@@ -4,11 +4,6 @@
 \alias{AppenderBuffer}
 \title{Log to a memory buffer}
 \description{
-Log to a memory buffer
-
-Log to a memory buffer
-}
-\details{
 An Appender that Buffers LogEvents in-memory and and redirects them to other
 Appenders once certain conditions are met.
 }
@@ -24,23 +19,6 @@ you close \R)}
 \item{\verb{flush_on_rotate, set_flush_on_rotate}}{\code{TRUE} or \code{FALSE}: Whether
 the buffer should be flushed when the Buffer is full (f.e when you close
 \R). Setting this to off can have slightly negative performance impacts.}
-}
-}
-
-\section{Methods}{
-
-
-\describe{
-\item{\code{flush()}}{Manually trigger flushing}
-
-\item{\code{add_appender(appender, name = NULL)}, \code{remove_appender(pos)}}{
-Add or remove an \link{Appender}. Supplying a \code{name} is optional but
-recommended. After adding an Appender with
-\code{appender$add_appender(AppenderConsole$new(), name = "console")} you can
-refer to it via \code{appender$appenders$console}. \code{remove_appender()} can
-remove an Appender by position or name.
-}
-
 }
 }
 
@@ -136,28 +114,67 @@ Clears the buffer, discarding all buffered Events
 \if{html}{\out{<a id="method-set_appenders"></a>}}
 \if{latex}{\out{\hypertarget{method-set_appenders}{}}}
 \subsection{Method \code{set_appenders()}}{
+Exactly like A \link{Logger}, an \link{AppenderBuffer} can have an
+arbitrary amount of Appenders attached. When the buffer is flushed, the
+buffered events are dispatched to these Appenders.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderBuffer$set_appenders(x)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{single \link{Appender} or a \code{list} thereof. Appenders control the
+output of a Logger. Be aware that a Logger also inherits the Appenders
+of its ancestors (see \code{vignette("lgr", package = "lgr")} for more info
+about Logger inheritance).}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-add_appender"></a>}}
 \if{latex}{\out{\hypertarget{method-add_appender}{}}}
 \subsection{Method \code{add_appender()}}{
+Add an Appender to the AppenderBuffer
+
+
+Add or remove an \link{Appender}. Supplying a \code{name} is optional but
+recommended. After adding an Appender with
+\code{appender$add_appender(AppenderConsole$new(), name = "console")} you can
+refer to it via \code{appender$appenders$console}. \code{remove_appender()} can
+remove an Appender by position or name.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderBuffer$add_appender(appender, name = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{appender}}{a single \link{Appender}}
+
+\item{\code{name}}{a \code{character} scalar. Optional but recommended.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-remove_appender"></a>}}
 \if{latex}{\out{\hypertarget{method-remove_appender}{}}}
 \subsection{Method \code{remove_appender()}}{
+remove an appender
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderBuffer$remove_appender(pos)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{pos}}{\code{integer} index or \code{character} name of the Appender(s) to
+remove}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-format"></a>}}

@@ -711,6 +711,7 @@ AppenderMemory <- R6::R6Class(
 
 #' Log to a memory buffer
 #'
+#' @description
 #' An Appender that Buffers LogEvents in-memory and and redirects them to other
 #' Appenders once certain conditions are met.
 #'
@@ -725,21 +726,6 @@ AppenderMemory <- R6::R6Class(
 #'   \item{`flush_on_rotate, set_flush_on_rotate`}{`TRUE` or `FALSE`: Whether
 #'     the buffer should be flushed when the Buffer is full (f.e when you close
 #'     \R). Setting this to off can have slightly negative performance impacts.}
-#' }
-#'
-#' @section Methods:
-#'
-#' \describe{
-#'   \item{`flush()`}{Manually trigger flushing}
-#'
-#'   \item{`add_appender(appender, name = NULL)`, `remove_appender(pos)`}{
-#'     Add or remove an [Appender]. Supplying a `name` is optional but
-#'     recommended. After adding an Appender with
-#'     `appender$add_appender(AppenderConsole$new(), name = "console")` you can
-#'      refer to it via `appender$appenders$console`. `remove_appender()` can
-#'      remove an Appender by position or name.
-#'    }
-#'
 #' }
 #'
 #' @export
@@ -806,6 +792,15 @@ AppenderBuffer <- R6::R6Class(
       invisible(self)
     },
 
+
+    #' @description Exactly like A [Logger], an [AppenderBuffer] can have an
+    #' arbitrary amount of Appenders attached. When the buffer is flushed, the
+    #' buffered events are dispatched to these Appenders.
+    #'
+    #' @param x single [Appender] or a `list` thereof. Appenders control the
+    #'   output of a Logger. Be aware that a Logger also inherits the Appenders
+    #'   of its ancestors (see `vignette("lgr", package = "lgr")` for more info
+    #'   about Logger inheritance).
     set_appenders = function(x){
       if (is.null(x)){
         private$.appenders <- list()
@@ -828,6 +823,15 @@ AppenderBuffer <- R6::R6Class(
     },
 
 
+    #' @description Add an Appender to the AppenderBuffer
+    #' @param appender a single [Appender]
+    #' @param name a `character` scalar. Optional but recommended.
+    #'
+    #' @description  Add or remove an [Appender]. Supplying a `name` is optional but
+    #'     recommended. After adding an Appender with
+    #'     `appender$add_appender(AppenderConsole$new(), name = "console")` you can
+    #'      refer to it via `appender$appenders$console`. `remove_appender()` can
+    #'  remove an Appender by position or name.
     add_appender = function(
       appender,
       name = NULL
@@ -842,6 +846,10 @@ AppenderBuffer <- R6::R6Class(
     },
 
 
+    #' @description remove an appender
+    #' @param pos `integer` index or `character` name of the Appender(s) to
+    #' remove
+    #'
     remove_appender = function(
       pos
     ){
