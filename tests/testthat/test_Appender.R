@@ -418,6 +418,30 @@ test_that("AppenderBuffer: Custom $should_flush works", {
 
 
 
+# self contained buffer tests
+test_that("AppenderBuffer: buffer_size 0 works as expected", {
+  l <- Logger$new(
+    "0 buffer test",
+    appenders = list(buffer = AppenderBuffer$new()$
+      set_appenders(list(file = AppenderFile$new(file = tempfile())))),
+    propagate = FALSE
+  )
+  on.exit(unlink(l$appenders$buffer$appenders$file$file))
+
+  l$appenders$buffer$set_buffer_size(0)
+  expect_silent(l$info(LETTERS[1:3]))
+  expect_length(readLines(l$appenders$buffer$appenders$file$file), 3L)
+
+  expect_silent({
+    expect_identical(nrow(l$appenders$buffer$buffer_df), 0L)
+    expect_identical(nrow(l$appenders$buffer$buffer_dt), 0L)
+    expect_length(l$appenders$buffer$buffer_events, 0L)
+  })
+})
+
+
+
+
 # utils -------------------------------------------------------------------
 
 test_that("default_file_reader() works", {

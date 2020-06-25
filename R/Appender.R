@@ -649,10 +649,15 @@ AppenderMemory <- R6::R6Class(
 
     #' @field buffer_events A `list` of [LogEvents]. Contents of the buffer.
     buffer_events = function() {
-      ord <- get("event_order", envir = private)
-      ord <- ord - min(ord) + 1L
-      ord <- order(ord)
-      res <- get(".buffer_events", envir = private)[ord]
+      res <- get(".buffer_events", envir = private)
+
+      if (length(res)){
+        ord <- get("event_order", envir = private)
+        ord <- ord - min(ord) + 1L
+        ord <- order(ord)
+        res <- res[ord]
+      }
+
       as_event_list(
         res[!vapply(res, is.null, FALSE)]
       )
