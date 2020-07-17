@@ -78,7 +78,7 @@ Other Layouts:
 \describe{
 \item{\code{fmt}}{a \code{character} scalar containing format tokens. See \code{\link[=format.LogEvent]{format.LogEvent()}}.}
 
-\item{\code{timestamp_fmt}}{a \code{character} scalar. See \code{\link[base:format.POSIXct]{base::format.POSIXct()}}.}
+\item{\code{timestamp_fmt}}{a \code{character} scalar. See \code{\link[base:strptime]{base::format.POSIXct()}}.}
 
 \item{\code{colors}}{a named \code{list} of functions (like the ones provided by
 the package \pkg{crayon}) passed on on \code{\link[=format.LogEvent]{format.LogEvent()}}.}

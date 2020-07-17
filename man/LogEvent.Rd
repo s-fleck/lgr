@@ -45,7 +45,7 @@ Other docs relevant for extending lgr:
 active binding \code{level_name} to get the \code{character} representation
 instead.}
 
-\item{\code{timestamp}}{\code{\link[base:POSIXct]{POSIXct}}. The time when then the
+\item{\code{timestamp}}{\code{\link[base:DateTimeClasses]{POSIXct}}. The time when then the
 LogEvent was created.}
 
 \item{\code{caller}}{\code{character}. The name of the calling function.}

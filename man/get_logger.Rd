@@ -13,7 +13,7 @@ get_logger_glue(name)
 \item{name}{a \code{character} scalar or vector: The qualified name of the Logger
 as a hierarchical value.}
 
-\item{class}{An \link[R6:R6]{R6ClassGenerator} object. Usually \code{Logger} or \code{LoggerGlue}
+\item{class}{An \link[R6:R6Class]{R6ClassGenerator} object. Usually \code{Logger} or \code{LoggerGlue}
 are the only valid choices.}
 
 \item{reset}{a \code{logical} scalar. If \code{TRUE} the logger is reset to an

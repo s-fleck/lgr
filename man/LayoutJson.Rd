@@ -39,7 +39,7 @@ Other Layouts:
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{toJSON_args}}{a list of values passed on to \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}}
+\item{\code{toJSON_args}}{a list of values passed on to \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}}}
 
 \item{\code{timestamp_fmt}}{Used by  \verb{$format_event()} to format timestamps.}
 }
@@ -109,11 +109,11 @@ Set a format that this Layout will apply to timestamps.
 \describe{
 \item{\code{x}}{\itemize{
 \item \code{NULL} (the default): formatting of the timestamp is left to
-\code{\link[jsonlite:toJSON]{jsonlite::toJSON()}},
+\code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}},
 \item a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSIXct()}}, or
 \item a \code{function} that returns a vector of the same length as its
 (\link{POSIXct}) input. The returned vector can be of any type
-supported by \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}, but should usually be \code{character}.
+supported by \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}}, but should usually be \code{character}.
 }}
 }
 \if{html}{\out{</div>}}

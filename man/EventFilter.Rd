@@ -20,7 +20,7 @@ Usually you do not need to instantiate a formal \code{EventFilter} object as you
 can just use any \code{function} that has the single argument \code{event} instead.
 If you need to implement more complex filter logic - for example a filter
 that is dependent on a dataset - it might be desirable to subclass
-EventFilter, as \link[R6:R6]{R6::R6} objects can store data and functions together.
+EventFilter, as \link[R6:R6Class]{R6::R6} objects can store data and functions together.
 
 \code{.obj()} is a special function that can only be used within the
 \verb{$filter()} methods of \link[=EventFilter]{EventFilters}. It returns the \link{Logger}
@@ -35,7 +35,7 @@ preset filters that use this property: \link{FilterInject} (similar to
 \code{\link[=with_log_level]{with_log_level()}}) and \link{FilterForceLevel} (similar to \code{\link[=with_log_value]{with_log_value()}}).
 
 \strong{NOTE:} The base class for Filters is called \code{EventFilter} so that it
-doesn't conflict with \code{\link[base:Filter]{base::Filter()}}. The recommended convention for
+doesn't conflict with \code{\link[base:funprog]{base::Filter()}}. The recommended convention for
 Filter subclasses is to call them \code{FilterSomething} and leave out the
 \code{Event} prefix.
 }
