@@ -862,6 +862,8 @@ LoggerGlue <- R6::R6Class(
           "Can only utilize vectorized logging if log level is the same for all entries"
         )
 
+        msg <- glue::glue(..., .envir = .envir)
+
         # Check if LogEvent should be created
         if (
           identical(level[[1]] > get("threshold", envir = self), TRUE) ||
@@ -870,9 +872,6 @@ LoggerGlue <- R6::R6Class(
           return(invisible(msg))
         }
 
-        # init
-        # the do.call is so that `...` gets evaluated in the correct environment
-        msg <- glue::glue(..., .envir = .envir)
         force(caller)
 
         if (missing(...)){
