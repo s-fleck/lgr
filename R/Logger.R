@@ -686,7 +686,7 @@ Logger <- R6::R6Class(
           return(NULL)
 
         unlist(
-          mget(c("appenders", "inherited_appenders"), envir = p),
+          unname(mget(c("appenders", "inherited_appenders"), envir = p)),
           recursive = FALSE
         )
       } else {
@@ -999,7 +999,7 @@ is_Logger <- function(x){
 #'
 #'
 #' @param x any \R Object
-#' @param color `TRUE` or `FALSE`: Output with color? Requires the Package
+#' @param color `TRUE` or `FALSE`: Output with color? Requi<- the Package
 #'   **crayon**
 #' @param ... ignored
 #'
@@ -1050,7 +1050,6 @@ format.Logger = function(
   appenders <- appender_summary(x$appenders)
   inherited_appenders  <- appender_summary(x$inherited_appenders)
 
-
   ind <- "  "
   res <- header
 
@@ -1085,16 +1084,16 @@ appender_summary <- function(x){
   }
 
 
-  names(dd) <- ifelse(
-    is.na(names(x)) | is_blank(names(x)),
-    paste0("[[", seq_len(length(x)), "]]"),
-    names(x)
-  )
   dd <- do.call(rbind, dd)
 
   if (is.null(dd)) return(NULL)
 
-  dd$name <- rownames(dd)
+  dd$name <- ifelse(
+    is.na(names(x)) | is_blank(names(x)),
+    paste0("[[", seq_len(length(x)), "]]"),
+    names(x)
+  )
+
   dd$destination <- ifelse(
     !is_blank(dd$destination),
     paste("->", dd$destination),

@@ -193,10 +193,16 @@ test_that("Exceptions are cought and turned into warnings", {
 
 
 test_that("Inheritance and event propagation works", {
+  on.exit({
+    c1$config(NULL)
+    c2$config(NULL)
+    c3$config(NULL)
+    unlink(c(tf1, tf2, tf3))
+  })
+
   tf1 <- tempfile()
   tf2 <- tempfile()
   tf3 <- tempfile()
-  on.exit(unlink(c(tf1, tf2, tf3)))
 
   c1  <- get_logger("c1")
   c1$add_appender(AppenderFile$new(tf1))
@@ -216,6 +222,60 @@ test_that("Inheritance and event propagation works", {
   expect_silent(c3$error("blubb"))
   expect_identical(readLines(tf2), readLines(tf3))
   expect_lt(length(readLines(tf1)), length(readLines(tf3)))
+})
+
+
+
+
+test_that("Named inherited appenders are displayed correctly", {
+  on.exit({
+    c1$config(NULL)
+    c2$config(NULL)
+    c3$config(NULL)
+  })
+
+  c1  <- get_logger("c1")$
+    set_propagate(FALSE)$
+    add_appender(AppenderConsole$new(), "console")
+
+  expect_null(c1$inherited_appenders)
+
+  c2  <- get_logger("c1/c2")$
+    add_appender(AppenderConsole$new(), "console")
+
+  expect_length(c2$inherited_appenders, 1L)
+
+  c3  <- Logger$new("c1/c2/c3")$
+    add_appender(AppenderConsole$new(), "console")
+
+  expect_length(c3$inherited_appenders, 2L)
+
+  expect_identical(names(c3$inherited_appenders), c("console", "console"))
+  expect_output(print(c3), "\\sconsole:.*\\sconsole:.*")
+})
+
+
+
+
+test_that("Unnamed inherited appenders are displayed correctly", {
+  on.exit({
+    c1$config(NULL)
+    c2$config(NULL)
+    c3$config(NULL)
+  })
+
+  c1  <- get_logger("c1")$
+    set_propagate(FALSE)$
+    add_appender(AppenderConsole$new())
+
+  c2  <- get_logger("c1/c2")$
+    add_appender(AppenderConsole$new())
+
+  c3  <- Logger$new("c1/c2/c3")$
+    add_appender(AppenderConsole$new())
+
+  expect_null(names(c3$inherited_appenders))
+  expect_output(print(c3), "\\[\\[1\\]\\]\\:.*\\[\\[2\\]\\]\\:.*")
 })
 
 
