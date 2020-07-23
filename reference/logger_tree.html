@@ -149,7 +149,7 @@ LogEvents up the tree.</p></li>
     <pre class="examples"><div class='input'><span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"fancymodel"</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [info] fancymodel
 #&gt; 
 #&gt; inherited appenders:
-#&gt;   appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"fancymodel/shiny"</span>)$
+#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"fancymodel/shiny"</span>)$
   <span class='fu'>set_propagate</span>(<span class='fl'>FALSE</span>)
 
 <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"fancymodel/shiny/ui"</span>)$
@@ -162,7 +162,7 @@ LogEvents up the tree.</p></li>
 <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"fancymodel/plumber"</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [info] fancymodel/plumber
 #&gt; 
 #&gt; inherited appenders:
-#&gt;   inherited_appenders.appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'>
+#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'>
 <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"cli"</span>)){
   <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'>logger_tree</span>())
 }</div><div class='output co'>#&gt; root [info] -&gt; 1 appender          

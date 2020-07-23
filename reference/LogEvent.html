@@ -219,13 +219,13 @@ this way, but not all Appenders will support them. See <a href='AppenderFile.htm
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)
-<span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"foo bar"</span>)</div><div class='output co'>#&gt; ERROR [06:52:37.479] foo bar </div><div class='input'>
+<span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"foo bar"</span>)</div><div class='output co'>#&gt; ERROR [13:48:55.352] foo bar </div><div class='input'>
 <span class='co'># The last LogEvent produced by a Logger is stored in its `last_event` field</span>
-<span class='no'>lg</span>$<span class='no'>last_event</span>  <span class='co'># formatted console output</span></div><div class='output co'>#&gt; ERROR [2020-07-23 06:52:37] foo bar  </div><div class='input'><span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>values</span>  <span class='co'># values stored in the event</span></div><div class='output co'>#&gt; $level
+<span class='no'>lg</span>$<span class='no'>last_event</span>  <span class='co'># formatted console output</span></div><div class='output co'>#&gt; ERROR [2020-07-23 13:48:55] foo bar  </div><div class='input'><span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>values</span>  <span class='co'># values stored in the event</span></div><div class='output co'>#&gt; $level
 #&gt; [1] 200
 #&gt; 
 #&gt; $timestamp
-#&gt; [1] "2020-07-23 06:52:37 UTC"
+#&gt; [1] "2020-07-23 13:48:55 UTC"
 #&gt; 
 #&gt; $logger
 #&gt; [1] "test"
@@ -244,7 +244,7 @@ this way, but not all Appenders will support them. See <a href='AppenderFile.htm
 <span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>.logger</span>$<span class='no'>last_event</span>$<span class='no'>msg</span></div><div class='output co'>#&gt; [1] "foo bar"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='no'>lg</span>, <span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>.logger</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)  <span class='co'># reset logger config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
 #&gt; 
 #&gt; inherited appenders:
-#&gt;   appenders.console: &lt;AppenderConsole&gt; [all] -&gt; console</div></pre>
+#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
