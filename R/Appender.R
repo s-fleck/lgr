@@ -984,10 +984,7 @@ AppenderFileRotating <- R6::R6Class(
 
       if (!file.exists(file))  file.create(file)
 
-      private$bq <- rotor::BackupQueueIndex$new(
-        file,
-        backup_dir = backup_dir
-      )
+      private$bq <- rotor::BackupQueueIndex$new(file)
 
       self$set_file(file)
       self$set_threshold(threshold)
@@ -1018,7 +1015,7 @@ AppenderFileRotating <- R6::R6Class(
       bq <- get("bq", private)
 
       if (force || bq$should_rotate(size = self$size)){
-        bq$push_backup()
+        bq$push()
         bq$prune()
         file.remove(self$file)
         file.create(self$file)
@@ -1038,7 +1035,7 @@ AppenderFileRotating <- R6::R6Class(
       file
     ){
       super$set_file(file)
-      private$bq$set_file(self$file)
+      private$bq$set_origin(self$file)
       self
     },
 
@@ -1079,7 +1076,7 @@ AppenderFileRotating <- R6::R6Class(
     set_backup_dir = function(
       x
     ){
-      private$bq$set_backup_dir(x)
+      private$bq$set_dir(x, create = FALSE)
       self
     },
 
@@ -1125,10 +1122,10 @@ AppenderFileRotating <- R6::R6Class(
 
     #' @field backups A `data.frame` containing information on path, file size,
     #'     etc... on the available backups of `file`.
-    backups     = function() get("bq", private)$backups,
+    backups     = function() get("bq", private)$files,
 
 
-    backup_dir  = function() get("bq", private)$backup_dir
+    backup_dir  = function() get("bq", private)$dir
   ),
 
 
@@ -1170,10 +1167,7 @@ AppenderFileRotatingTime <- R6::R6Class(
 
       if (!file.exists(file))  file.create(file)
 
-      private$bq <- rotor::BackupQueueDateTime$new(
-        file,
-        backup_dir = backup_dir
-      )
+      private$bq <- rotor::BackupQueueDateTime$new(file)
 
       self$set_file(file)
       self$set_threshold(threshold)
@@ -1209,7 +1203,7 @@ AppenderFileRotatingTime <- R6::R6Class(
           now = now
         )
       ){
-        bq$push_backup(
+        bq$push(
           overwrite = self$overwrite,
           now = now
         )
@@ -1337,10 +1331,7 @@ AppenderFileRotatingDate <- R6::R6Class(
 
       if (!file.exists(file))  file.create(file)
 
-      private$bq <- rotor::BackupQueueDate$new(
-        file,
-        backup_dir = backup_dir
-      )
+      private$bq <- rotor::BackupQueueDate$new(file)
 
       self$set_file(file)
       self$set_threshold(threshold)

@@ -77,7 +77,8 @@ test_that("AppenderFileRotating: works with different backup_dir", {
 
   # backup_dir does not exist
   expect_error(
-    app <- AppenderFileRotating$new(file = tf, backup_dir = bu_dir)
+    app <- AppenderFileRotating$new(file = tf, backup_dir = bu_dir),
+    class = "DirDoesNotExistError"
   )
 
   # rotating to different dir works
