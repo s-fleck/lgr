@@ -364,7 +364,7 @@ test_that("$config works with lists", {
 
 
 
-test_that("$config works with lists", {
+test_that("Logger$log() dispatches to all appenders, even if some throw an error", {
   ln <- Logger$new("normal", propagate = FALSE)
   lg <- LoggerGlue$new("glue", propagate = FALSE)
 
@@ -376,7 +376,7 @@ test_that("$config works with lists", {
   )
 
   tf <- tempfile()
-  on.exit(file.remove())
+  on.exit(unlink(tf))
 
   ln$set_appenders(list(
     err = AppErr$new(),
@@ -390,6 +390,6 @@ test_that("$config works with lists", {
   expect_warning(ln$info("test_normal"))
   expect_warning(ln$info("test_glue"))
 
-  expect_true(any(grepl("test_normal", readLines(tf1))))
-  expect_true(any(grepl("test_glue", readLines(tf1))))
+  expect_true(any(grepl("test_normal", readLines(tf))))
+  expect_true(any(grepl("test_glue", readLines(tf))))
 })

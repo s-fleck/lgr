@@ -44,6 +44,8 @@
 
 * Most errors now have appropriate subclasses
 
+* Logger$log() dispatches to all appenders, even if some throw an error
+
 
 # lgr 0.3.4
 
