@@ -136,6 +136,7 @@
 <li><p>AppenderMemory/AppenderBuffer: <code>flush_threshold</code> is now independent of <code>should_flush</code> function. <code>default_should_flush()</code> is no longer necessary and has been removed.</p></li>
 <li><p>Updated AppenderFileRotating to use new <strong>rotor</strong> 2.5.0</p></li>
 <li><p>Most errors now have appropriate subclasses</p></li>
+<li><p>Logger$log() dispatches to all appenders, even if some throw an error</p></li>
 </ul>
 </div>
     <div id="lgr-0-3-4" class="section level1">
