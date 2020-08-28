@@ -268,19 +268,21 @@ Logger <- R6::R6Class(
 
         if (get("filter", envir = self)(event)){
           for (app in unlist(mget(c("appenders", "inherited_appenders"), self), recursive = FALSE)){
-            app_thresh <- get("threshold", envir = app)
-            if (
-              (is.na(app_thresh) || get("level", envir = event) <= app_thresh) &&
-              get("filter", envir = app)(event)
-            ){
-              get("append", envir = app)(event)
-            }
+            tryCatch({
+              app_thresh <- get("threshold", envir = app)
+              if (
+                (is.na(app_thresh) || get("level", envir = event) <= app_thresh) &&
+                get("filter", envir = app)(event)
+              ){
+                get("append", envir = app)(event)
+              }
+            }, error = get("handle_exception", envir = self))
           }
         }
 
         invisible(msg)
       },
-      error = get("handle_exception", envir = self)
+        error = get("handle_exception", envir = self)
       )
     },
 
@@ -906,19 +908,22 @@ LoggerGlue <- R6::R6Class(
 
         if (get("filter", envir = self)(event)){
           for (app in unlist(mget(c("appenders", "inherited_appenders"), self), recursive = FALSE)){
-            app_thresh <- get("threshold", envir = app)
-            if (
-              (is.na(app_thresh) || get("level", envir = event) <= app_thresh) &&
-              get("filter", envir = app)(event)
-            ){
-              get("append", envir = app)(event)
-            }
+            tryCatch({
+              app_thresh <- get("threshold", envir = app)
+              if (
+                (is.na(app_thresh) || get("level", envir = event) <= app_thresh) &&
+                get("filter", envir = app)(event)
+              ){
+                get("append", envir = app)(event)
+              }
+            },
+              error = get("handle_exception", envir = self)
+            )
           }
         }
-
         invisible(msg)
       },
-      error = get("handle_exception", envir = self)
+        error = get("handle_exception", envir = self)
       )
     },
 

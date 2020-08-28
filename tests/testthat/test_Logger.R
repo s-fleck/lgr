@@ -359,3 +359,37 @@ test_that("$config works with lists", {
   expect_true(is_virgin_Logger(l, allow_subclass = TRUE))
   expect_false(is_virgin_Logger(l))
 })
+
+
+
+
+
+test_that("$config works with lists", {
+  ln <- Logger$new("normal", propagate = FALSE)
+  lg <- LoggerGlue$new("glue", propagate = FALSE)
+
+  AppErr <- R6::R6Class(
+    inherit = AppenderConsole,
+    public = list(
+      append = function(...) stop("error")
+    )
+  )
+
+  tf <- tempfile()
+  on.exit(file.remove())
+
+  ln$set_appenders(list(
+    err = AppErr$new(),
+    file = AppenderFile$new(file = tf)
+  ))
+  lg$set_appenders(list(
+    err = AppErr$new(),
+    file = AppenderFile$new(file = tf)
+  ))
+
+  expect_warning(ln$info("test_normal"))
+  expect_warning(ln$info("test_glue"))
+
+  expect_true(any(grepl("test_normal", readLines(tf1))))
+  expect_true(any(grepl("test_glue", readLines(tf1))))
+})
