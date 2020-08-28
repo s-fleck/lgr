@@ -138,12 +138,12 @@ test_that("AppenderFile$data throws an error", {
 
 # AppenderJson ------------------------------------------------------------
 
-test_that("AppenderJson: $show() works", {
+test_that("AppenderJson: AppenderFile with LayoutJson$show() and $data() work", {
   tf <- tempfile()
   on.exit(unlink(tf))
 
   # with default format
-  app <- AppenderJson$new(file = tf)
+  app <- AppenderFile$new(file = tf, layout = LayoutJson$new())
 
   for (i in 1:10)
     app$append(x)
@@ -155,9 +155,9 @@ test_that("AppenderJson: $show() works", {
 
   r <- utils::capture.output(app$show(threshold = 100))
   expect_identical(r, "")
+
+  expect_identical(nrow(app$data), 10L)
 })
-
-
 
 
 # AppenderConsole ---------------------------------------------------------
