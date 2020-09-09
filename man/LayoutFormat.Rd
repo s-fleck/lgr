@@ -21,8 +21,7 @@ see Fields
 
 see Fields
 
-see Fields
-Convert Layout to a Character String
+Convert Layout to a \code{character} string
 Read a log file written using LayoutFormat
 }
 \section{Format Tokens}{

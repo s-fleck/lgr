@@ -137,8 +137,8 @@ LayoutFormat <- R6::R6Class(
       invisible(self)
     },
 
-    #' @details see Fields
-    #' Convert Layout to a Character String
+    #' @details
+    #' Convert Layout to a `character` string
     toString = function(){
       paste(fmt_class(class(self)[[1]]), self$fmt)
     },
@@ -302,12 +302,16 @@ LayoutGlue <- R6::R6Class(
 
 #' Format LogEvents as JSON
 #'
+#' @description
+#' A format for formatting LogEvents as
+#' [jsonlines](http://jsonlines.org/) log files. This provides a
+#' nice balance between human- an machine-readability.
+#'
 #' @family Layouts
 #' @seealso [read_json_lines()], [http://jsonlines.org/](http://jsonlines.org/)
 #' @export
 #' @examples
 #' # setup a dummy LogEvent
-#'
 #' event <- LogEvent$new(
 #'   logger = Logger$new("dummy logger"),
 #'   level = 200,
@@ -325,8 +329,6 @@ LayoutJson <- R6::R6Class(
   inherit = Layout,
   public = list(
 
-    #' @description Set a `format` that this Layout will apply to timestamps.
-    #' can be a `character` scalar as for [format.POSIXct()] or a function.
     initialize = function(
       toJSON_args = list(auto_unbox = TRUE),
       timestamp_fmt = NULL
@@ -349,8 +351,8 @@ LayoutJson <- R6::R6Class(
       )
     },
 
-    #' @description Set a `format` that this Layout will apply to timestamps.
-    #' can be a `character` scalar as for [format.POSIXct()] or a function.
+    #' @description Set arguments to pass on to [jsonlite::toJSON()]
+    #' @param x a named `list`
     set_toJSON_args = function(x){
       assert(is.list(x))
       assert(identical(length(names(x)), length(x)))

@@ -4,13 +4,12 @@
 \alias{LayoutJson}
 \title{Format LogEvents as JSON}
 \description{
-Format LogEvents as JSON
-
-Format LogEvents as JSON
+A format for formatting LogEvents as
+\href{http://jsonlines.org/}{jsonlines} log files. This provides a
+nice balance between human- an machine-readability.
 }
 \examples{
 # setup a dummy LogEvent
-
 event <- LogEvent$new(
   logger = Logger$new("dummy logger"),
   level = 200,
@@ -68,8 +67,6 @@ Other Layouts:
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
-Set a \code{format} that this Layout will apply to timestamps.
-can be a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSIXct()}} or a function.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$new(toJSON_args = list(auto_unbox = TRUE), timestamp_fmt = NULL)}\if{html}{\out{</div>}}
 }
@@ -88,12 +85,18 @@ can be a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSI
 \if{html}{\out{<a id="method-set_toJSON_args"></a>}}
 \if{latex}{\out{\hypertarget{method-set_toJSON_args}{}}}
 \subsection{Method \code{set_toJSON_args()}}{
-Set a \code{format} that this Layout will apply to timestamps.
-can be a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSIXct()}} or a function.
+Set arguments to pass on to \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$set_toJSON_args(x)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{a named \code{list}}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_timestamp_fmt"></a>}}
