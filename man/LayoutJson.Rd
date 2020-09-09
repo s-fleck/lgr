@@ -85,7 +85,7 @@ Other Layouts:
 \if{html}{\out{<a id="method-set_toJSON_args"></a>}}
 \if{latex}{\out{\hypertarget{method-set_toJSON_args}{}}}
 \subsection{Method \code{set_toJSON_args()}}{
-Set arguments to pass on to \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}
+Set arguments to pass on to \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$set_toJSON_args(x)}\if{html}{\out{</div>}}
 }

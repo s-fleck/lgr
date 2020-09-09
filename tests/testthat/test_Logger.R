@@ -387,8 +387,8 @@ test_that("Logger$log() dispatches to all appenders, even if some throw an error
     file = AppenderFile$new(file = tf)
   ))
 
-  expect_warning(ln$info("test_normal"))
-  expect_warning(ln$info("test_glue"))
+  expect_warning(ln$info("test_normal"), class = "appendingFailedWarning")
+  expect_warning(ln$info("test_glue"), class = "appendingFailedWarning")
 
   expect_true(any(grepl("test_normal", readLines(tf))))
   expect_true(any(grepl("test_glue", readLines(tf))))

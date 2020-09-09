@@ -269,4 +269,14 @@ error <- function(message, class, call = NULL, ...) {
     list(message = message, call = call, ...)
   )
 }
+
+
+
+
+warning_condition <- function(message, class, call = NULL, ...) {
+  structure(
+    class = union(class, c("warning", "condition")),
+    list(message = message, call = call, ...)
+  )
+}
 # nocov end
