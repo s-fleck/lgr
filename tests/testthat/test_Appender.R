@@ -138,12 +138,12 @@ test_that("AppenderFile$data throws an error", {
 
 # AppenderJson ------------------------------------------------------------
 
-test_that("AppenderJson: $show() works", {
+test_that("AppenderJson: AppenderFile with LayoutJson$show() and $data() work", {
   tf <- tempfile()
   on.exit(unlink(tf))
 
   # with default format
-  app <- AppenderJson$new(file = tf)
+  app <- AppenderFile$new(file = tf, layout = LayoutJson$new())
 
   for (i in 1:10)
     app$append(x)
@@ -155,9 +155,9 @@ test_that("AppenderJson: $show() works", {
 
   r <- utils::capture.output(app$show(threshold = 100))
   expect_identical(r, "")
+
+  expect_identical(nrow(app$data), 10L)
 })
-
-
 
 
 # AppenderConsole ---------------------------------------------------------
@@ -418,41 +418,27 @@ test_that("AppenderBuffer: Custom $should_flush works", {
 
 
 
-# AppenderSyslog ----------------------------------------------------------
-
-test_that("AppenderSyslog: to_syslog_level works", {
-  skip_if_not_installed("rsyslog")
-  app <- AppenderSyslog$new("myapp")
-
-  expect_identical(
-    app$.__enclos_env__$private$to_syslog_levels(c("fatal", "info", "error", "debug", "warn", "trace")),
-    c("CRITICAL", "INFO", "ERR", "DEBUG", "WARNING", "DEBUG")
+# self contained buffer tests
+test_that("AppenderBuffer: buffer_size 0 works as expected", {
+  l <- Logger$new(
+    "0 buffer test",
+    appenders = list(buffer = AppenderBuffer$new()$
+      set_appenders(list(file = AppenderFile$new(file = tempfile())))),
+    propagate = FALSE
   )
+  on.exit(unlink(l$appenders$buffer$appenders$file$file))
 
-  expect_identical(
-    app$.__enclos_env__$private$to_syslog_levels(c("fatal", "info", "error", "debug", "warn", "trace")),
-    app$.__enclos_env__$private$to_syslog_levels(c(100, 400, 200, 500, 300, 600))
-  )
+  l$appenders$buffer$set_buffer_size(0)
+  expect_silent(l$info(LETTERS[1:3]))
+  expect_length(readLines(l$appenders$buffer$appenders$file$file), 3L)
+
+  expect_silent({
+    expect_identical(nrow(l$appenders$buffer$buffer_df), 0L)
+    expect_identical(nrow(l$appenders$buffer$buffer_dt), 0L)
+    expect_length(l$appenders$buffer$buffer_events, 0L)
+  })
 })
 
-
-
-
-test_that("AppenderSyslog: logging to syslog works", {
-  skip_if_not_installed("rsyslog")
-  if (!file_is_readable("/var/log/syslog"))
-    skip("'/var/log/syslog' is not readable")
-
-  msg <- format(Sys.time())
-
-  lg <- get_logger("rsyslog/test")$set_propagate(FALSE)
-  on.exit(lg$config(NULL))
-  lg$add_appender(AppenderSyslog$new(), "syslog")
-  lg$info("A test message from R package lgr %s", msg)
-
-  log <- suppressMessages(suppressWarnings( system("cat /var/log/syslog | grep rsyslog/test", intern = TRUE)))
-  expect_true(any(grepl(msg, log), fixed = TRUE))
-})
 
 
 

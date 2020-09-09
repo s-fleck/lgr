@@ -70,7 +70,7 @@ Attach a filter
 \item{\code{filter}}{\itemize{
 \item a function with the single argument \code{event} that returns \code{TRUE}
 or \code{FALSE};
-\item an \link{EventFilter} \link[R6:R6]{R6::R6} object; or
+\item an \link{EventFilter} \link[R6:R6Class]{R6::R6} object; or
 \item any \R object with a \verb{$filter()} method.
 }
 

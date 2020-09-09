@@ -30,7 +30,6 @@ Other Appenders:
 \code{\link{AppenderBuffer}},
 \code{\link{AppenderConsole}},
 \code{\link{AppenderFile}},
-\code{\link{AppenderSyslog}},
 \code{\link{AppenderTable}}
 }
 \concept{Appenders}

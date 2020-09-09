@@ -28,7 +28,6 @@ lg$config(NULL) # reset config
 Other Appenders: 
 \code{\link{AppenderBuffer}},
 \code{\link{AppenderFile}},
-\code{\link{AppenderSyslog}},
 \code{\link{AppenderTable}},
 \code{\link{Appender}}
 }

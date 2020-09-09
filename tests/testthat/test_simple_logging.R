@@ -121,3 +121,11 @@ test_that("show_data() works", {
   expect_s3_class(show_dt(), "data.table")
   expect_identical(nrow(show_dt()), 4L)
 })
+
+
+
+
+test_that("basic_config can set the console output format", {
+  basic_config(console_fmt = "foobar %L [%t] %c: %m")
+  expect_output(lgr$info("baz"), "foobar")
+})

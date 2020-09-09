@@ -107,14 +107,15 @@ as_event_list.data.frame <- function(
   structure(lapply(
     seq_len(nrow(x)),
 
+    # the hardcoded .id and .fields columns are used by lgrExtra::AppenderDt
     function(i){
-      dd <- as.list(x[i, !names(x) %in% c(".id", ".custom")])
+      dd <- as.list(x[i, !names(x) %in% c(".id", ".fields")])
 
       if (na.rm){
         for (j in rev(seq_along(dd))) if (is.na(dd[[j]])) dd[[j]] <- NULL
       }
 
-      r <- as.environment(c(dd, x[i, ][[".custom"]][[1]]))
+      r <- as.environment(c(dd, x[i, ][[".fields"]][[1]]))
       r[["values"]] <- rev(as.list(r))
       r
     }

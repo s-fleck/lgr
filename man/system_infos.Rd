@@ -28,7 +28,7 @@ foo()
 get_user()
 }
 \seealso{
-\code{\link[base:sys.call]{base::sys.call()}}
+\code{\link[base:sys.parent]{base::sys.call()}}
 
 \code{\link[whoami:whoami]{whoami::whoami()}}
 }

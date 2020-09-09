@@ -8,7 +8,7 @@ status](https://www.r-pkg.org/badges/version/lgr)](https://cran.r-project.org/pa
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Travis build
-status](https://travis-ci.org/s-fleck/lgr.svg?branch=master)](https://travis-ci.org/s-fleck/lgr)
+status](https://travis-ci.com/s-fleck/lgr.svg?branch=master)](https://travis-ci.com/s-fleck/lgr)
 [![Codecov test
 coverage](https://codecov.io/gh/s-fleck/lgr/branch/master/graph/badge.svg)](https://codecov.io/gh/s-fleck/lgr?branch=master)
 
@@ -65,13 +65,13 @@ vignette.
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [09:33:26.760] A critical error
+#> FATAL [09:29:16.642] A critical error
 lgr$error("A less severe error")
-#> ERROR [09:33:26.801] A less severe error
+#> ERROR [09:29:16.732] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [09:33:26.815] A potentially bad situation
+#> WARN  [09:29:16.742] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [09:33:26.817] iris has 150 rows
+#> INFO  [09:29:16.745] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
@@ -85,9 +85,9 @@ appender to log to a file with little effort.
 tf <- tempfile()
 lgr$add_appender(AppenderFile$new(tf, layout = LayoutJson$new()))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [09:33:26.836] cars has 50 rows
+#> INFO  [09:29:16.803] cars has 50 rows
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2020-04-14 09:33:26","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2020-07-30 09:29:16","logger":"root","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 By passing a named argument to `info()`, `warn()`, and co you can log
@@ -97,10 +97,10 @@ logfiles that are machine as well as (somewhat) human readable.
 
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [09:33:26.866] loading cars {rows: 50, cols: 2}
+#> INFO  [09:29:16.851] loading cars {rows: 50, cols: 2}
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2020-04-14 09:33:26","logger":"root","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2020-04-14 09:33:26","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
+#> {"level":400,"timestamp":"2020-07-30 09:29:16","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2020-07-30 09:29:16","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
 ```
 
 For more examples please see the package
@@ -200,6 +200,9 @@ Extra appenders via [lgrExtra](https://github.com/s-fleck/lgrExtra):
 
   - [RPushbullet](https://github.com/eddelbuettel/rpushbullet) for push
     notifications.
+
+  - [Rsyslog](https://cran.r-project.org/package=rsyslog) for logging to
+    syslog on POSIX-compatible systems.
 
 Other extra features:
 

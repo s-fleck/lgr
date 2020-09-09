@@ -39,6 +39,12 @@
 * AppenderMemory/AppenderBuffer: `flush_threshold` is now independent of
   `should_flush` function. `default_should_flush()` is no longer necessary
   and has been removed.
+  
+* Updated AppenderFileRotating to use new **rotor** 2.5.0
+
+* Most errors now have appropriate subclasses
+
+* Logger$log() dispatches to all appenders, even if some throw an error
 
 
 # lgr 0.3.4

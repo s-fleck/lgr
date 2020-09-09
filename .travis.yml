@@ -19,6 +19,7 @@ matrix:
   - r: 3.2
 r_github_packages:
   - s-fleck/lgrExtra
+  - s-fleck/rotor
 sudo: false
 after_success:
   - Rscript -e 'devtools::install();devtools::test()'

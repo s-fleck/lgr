@@ -268,19 +268,21 @@ Logger <- R6::R6Class(
 
         if (get("filter", envir = self)(event)){
           for (app in unlist(mget(c("appenders", "inherited_appenders"), self), recursive = FALSE)){
-            app_thresh <- get("threshold", envir = app)
-            if (
-              (is.na(app_thresh) || get("level", envir = event) <= app_thresh) &&
-              get("filter", envir = app)(event)
-            ){
-              get("append", envir = app)(event)
-            }
+            tryCatch({
+              app_thresh <- get("threshold", envir = app)
+              if (
+                (is.na(app_thresh) || get("level", envir = event) <= app_thresh) &&
+                get("filter", envir = app)(event)
+              ){
+                get("append", envir = app)(event)
+              }
+            }, error = get("handle_exception", envir = self))
           }
         }
 
         invisible(msg)
       },
-      error = get("handle_exception", envir = self)
+        error = get("handle_exception", envir = self)
       )
     },
 
@@ -686,7 +688,7 @@ Logger <- R6::R6Class(
           return(NULL)
 
         unlist(
-          mget(c("appenders", "inherited_appenders"), envir = p),
+          unname(mget(c("appenders", "inherited_appenders"), envir = p)),
           recursive = FALSE
         )
       } else {
@@ -862,6 +864,8 @@ LoggerGlue <- R6::R6Class(
           "Can only utilize vectorized logging if log level is the same for all entries"
         )
 
+        msg <- glue::glue(..., .envir = .envir)
+
         # Check if LogEvent should be created
         if (
           identical(level[[1]] > get("threshold", envir = self), TRUE) ||
@@ -870,9 +874,6 @@ LoggerGlue <- R6::R6Class(
           return(invisible(msg))
         }
 
-        # init
-        # the do.call is so that `...` gets evaluated in the correct environment
-        msg <- glue::glue(..., .envir = .envir)
         force(caller)
 
         if (missing(...)){
@@ -907,19 +908,22 @@ LoggerGlue <- R6::R6Class(
 
         if (get("filter", envir = self)(event)){
           for (app in unlist(mget(c("appenders", "inherited_appenders"), self), recursive = FALSE)){
-            app_thresh <- get("threshold", envir = app)
-            if (
-              (is.na(app_thresh) || get("level", envir = event) <= app_thresh) &&
-              get("filter", envir = app)(event)
-            ){
-              get("append", envir = app)(event)
-            }
+            tryCatch({
+              app_thresh <- get("threshold", envir = app)
+              if (
+                (is.na(app_thresh) || get("level", envir = event) <= app_thresh) &&
+                get("filter", envir = app)(event)
+              ){
+                get("append", envir = app)(event)
+              }
+            },
+              error = get("handle_exception", envir = self)
+            )
           }
         }
-
         invisible(msg)
       },
-      error = get("handle_exception", envir = self)
+        error = get("handle_exception", envir = self)
       )
     },
 
@@ -1000,7 +1004,7 @@ is_Logger <- function(x){
 #'
 #'
 #' @param x any \R Object
-#' @param color `TRUE` or `FALSE`: Output with color? Requires the Package
+#' @param color `TRUE` or `FALSE`: Output with color? Requi<- the Package
 #'   **crayon**
 #' @param ... ignored
 #'
@@ -1051,7 +1055,6 @@ format.Logger = function(
   appenders <- appender_summary(x$appenders)
   inherited_appenders  <- appender_summary(x$inherited_appenders)
 
-
   ind <- "  "
   res <- header
 
@@ -1086,16 +1089,16 @@ appender_summary <- function(x){
   }
 
 
-  names(dd) <- ifelse(
-    is.na(names(x)) | is_blank(names(x)),
-    paste0("[[", seq_len(length(x)), "]]"),
-    names(x)
-  )
   dd <- do.call(rbind, dd)
 
   if (is.null(dd)) return(NULL)
 
-  dd$name <- rownames(dd)
+  dd$name <- ifelse(
+    is.na(names(x)) | is_blank(names(x)),
+    paste0("[[", seq_len(length(x)), "]]"),
+    names(x)
+  )
+
   dd$destination <- ifelse(
     !is_blank(dd$destination),
     paste("->", dd$destination),
