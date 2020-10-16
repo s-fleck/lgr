@@ -574,7 +574,7 @@ human-readable text to transmit data objects consisting of attribute–value
 pairs and array data types ([Wikipedia](https://en.wikipedia.org/wiki/JSON)).
 JSON is the **recommended text-based logging format when logging to files**
   ^[Technically, the logger does not produce standard JSON files but 
-  [JSON lines](http://jsonlines.org/)], 
+  [JSON lines](https://jsonlines.org/)], 
 as it is human- as well as machine readable. You should only log to a different 
 format if you have very good reasons for it. The easiest way to log to
 JSON files is with AppenderJson^[AppenderJson is just an AppenderFile with 
@@ -759,9 +759,11 @@ are buffered by default. This works exactly identical as described above for
 AppenderBuffer. If you want to write each LogEvent directly to the database,
 just set the buffer size to `0`. As of lgr 0.4.0, database appenders are
 part of the **lgrExtra** package that has to be installed separately.
+**Database logging is still somewhat experimental**.
 
 ```{r, eval = FALSE}
 # install.packages("RSQLite")
+# install.packages("lgrExtra")
 lg <- get_logger("db_logger")
 lg$
   set_propagate(FALSE)$

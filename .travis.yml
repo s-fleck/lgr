@@ -1,6 +1,11 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 # https://gist.github.com/gaborcsardi/68960fb01bec74d89611bb9c2b0b7e5a
 language: R
+addons:
+  apt:
+    packages:
+      - libharfbuzz-dev # for pkgdown
+      - libfribidi-dev
 matrix:
   include:
   - r: devel
@@ -11,15 +16,14 @@ matrix:
       - Rscript -e 'covr::codecov()'
     deploy:
       provider: script
-      script: Rscript -e 'remotes::install_cran("pkgdown");pkgdown::deploy_site_github(ssh_id = Sys.getenv("TRAVIS_DEPLOY_KEY", ""))'
+      script: Rscript -e 'pkgdown::deploy_site_github(ssh_id = Sys.getenv("TRAVIS_DEPLOY_KEY", ""))'
       skip_cleanup: true
   - r: 3.5
   - r: 3.4
   - r: 3.3
   - r: 3.2
 r_github_packages:
-  - s-fleck/lgrExtra
-  - s-fleck/rotor
+  - s-fleck/lgrExtra  # for building the documentation that has links to lgrExtra
 sudo: false
 after_success:
   - Rscript -e 'devtools::install();devtools::test()'

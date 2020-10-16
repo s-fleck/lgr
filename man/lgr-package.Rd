@@ -49,8 +49,8 @@ option manually use \code{\link[=suspend_logging]{suspend_logging()}} and \code{
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://s-fleck.github.io/lgr}
-  \item Report bugs at \url{https://github.com/s-fleck/lgr/issues}
+  \item \url{https://s-fleck.github.io/lgr/}
+  \item Report bugs at \url{https://github.com/s-fleck/lgr/issues/}
 }
 
 }

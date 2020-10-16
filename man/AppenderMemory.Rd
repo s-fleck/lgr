@@ -11,7 +11,8 @@ Please refer to the \emph{see also} section for actual implementations of this
 class.
 
 AppenderMemory is extended by Appenders that retain an in-memory event
-buffer, such as \link{AppenderBuffer} and \link[lgrExtra:AppenderPushbullet]{lgrExtra::AppenderPushbullet}.
+buffer, such as \link{AppenderBuffer} and \code{AppenderPushbullet} from the
+\href{https://github.com/s-fleck/lgrExtra}{lgrExtra} package.
 }
 \seealso{
 \link{LayoutFormat}

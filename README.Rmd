@@ -147,13 +147,9 @@ file.remove(logfile)
 ## Development status
 
 lgr in general is stable and safe for use, but some Appenders are still 
-experimental. This especially concerns database appenders which are currently 
-being moved into to their own package 
+experimental. This especially concerns database appenders which are available
+from the sepparate package
 [lgrExtra](https://github.com/s-fleck/lgrExtra). 
-**Please install the stable version from CRAN if you want to try out lgr**
-
-The documentation needs a rewrite and will be ported to roxygen 7.x.x soon. 
-If you have questions please file an issue.
 
 
 

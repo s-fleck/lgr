@@ -399,8 +399,8 @@ AppenderJson <- R6::R6Class(
 #'
 #' @description AppenderTable is extended by Appenders that write to a data
 #' source that can be interpreted as tables, (usually a `data.frame`). Examples
-#' are [lgrExtra::AppenderDbi], [lgrExtra::AppenderRjdbc] and
-#' [lgrExtra::AppenderDt].
+#' are `AppenderDbi`, `AppenderRjdbc` and `AppenderDt` from the
+#' [lgrExtra](https://github.com/s-fleck/lgrExtra) package.
 #'
 #' @family Appenders
 #' @export
@@ -461,7 +461,8 @@ AppenderTable <- R6::R6Class(
 #'
 #' @description
 #' AppenderMemory is extended by Appenders that retain an in-memory event
-#' buffer, such as [AppenderBuffer] and [lgrExtra::AppenderPushbullet].
+#' buffer, such as [AppenderBuffer] and `AppenderPushbullet` from the
+#' [lgrExtra](https://github.com/s-fleck/lgrExtra) package.
 #'
 #' @export
 #' @seealso [LayoutFormat]
@@ -958,7 +959,7 @@ AppenderBuffer <- R6::R6Class(
 #'
 #' @export
 #' @seealso [AppenderFileRotatingDate], [AppenderFileRotatingTime], [rotor::rotate()]
-#' @family Appenders, Rotating Appenders
+#' @family Appenders
 #' @export
 AppenderFileRotating <- R6::R6Class(
   "AppenderFileRotating",
@@ -1140,7 +1141,7 @@ AppenderFileRotating <- R6::R6Class(
 # AppenderFileRotatingTime ------------------------------------------------
 
 #' Log to a time-stamped rotating file
-#'
+#' @family Appenders
 #' @seealso [AppenderFileRotatingDate], [AppenderFileRotating], [rotor::rotate()]
 #' @export
 AppenderFileRotatingTime <- R6::R6Class(
@@ -1303,7 +1304,7 @@ AppenderFileRotatingTime <- R6::R6Class(
 #'
 #' This is a simpler version of AppenderFileRotatingTime when the timestamps
 #' do not need to include sub-day accuracy.
-#'
+#' @family Appenders
 #' @seealso [AppenderFileRotatingTime], [AppenderFileRotating], [rotor::rotate()]
 #' @export
 AppenderFileRotatingDate <- R6::R6Class(

@@ -304,11 +304,11 @@ LayoutGlue <- R6::R6Class(
 #'
 #' @description
 #' A format for formatting LogEvents as
-#' [jsonlines](http://jsonlines.org/) log files. This provides a
+#' [jsonlines](https://jsonlines.org/) log files. This provides a
 #' nice balance between human- an machine-readability.
 #'
 #' @family Layouts
-#' @seealso [read_json_lines()], [http://jsonlines.org/](http://jsonlines.org/)
+#' @seealso [read_json_lines()], [https://jsonlines.org/](https://jsonlines.org/)
 #' @export
 #' @examples
 #' # setup a dummy LogEvent

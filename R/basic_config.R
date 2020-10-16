@@ -6,7 +6,7 @@
 #'
 #' @param file `character` scalar: If not `NULL` a [AppenderFile] will be
 #'   created that logs to this file. If the filename ends in `.jsonl`, the
-#'   Appender will be set up to use the [JSON Lines](http://jsonlines.org/)
+#'   Appender will be set up to use the [JSON Lines](https://jsonlines.org/)
 #'   format instead of plain text (see [AppenderFile] and [AppenderJson]).
 #' @param fmt `character` scalar: Format to use if `file` is supplied and not a
 #'   `.jsonl` file. If `NULL` it defaults to `"%L [%t] %m"` (see
@@ -100,7 +100,7 @@ basic_config <- function(
         "Please use `.jsonl` and not `.json` as file extension for JSON log",
         "files. The reason is that that JSON files created",
         "by lgr are not true JSON files but JSONlines files.",
-        "See http://jsonlines.org/ for more infos."
+        "See https://jsonlines.org/ for more infos."
       )
 
     } else if (identical(tolower(ext), "jsonl")){

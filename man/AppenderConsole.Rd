@@ -27,6 +27,9 @@ lg$config(NULL) # reset config
 
 Other Appenders: 
 \code{\link{AppenderBuffer}},
+\code{\link{AppenderFileRotatingDate}},
+\code{\link{AppenderFileRotatingTime}},
+\code{\link{AppenderFileRotating}},
 \code{\link{AppenderFile}},
 \code{\link{AppenderTable}},
 \code{\link{Appender}}

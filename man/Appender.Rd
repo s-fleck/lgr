@@ -29,6 +29,9 @@ Other abstract classes:
 Other Appenders: 
 \code{\link{AppenderBuffer}},
 \code{\link{AppenderConsole}},
+\code{\link{AppenderFileRotatingDate}},
+\code{\link{AppenderFileRotatingTime}},
+\code{\link{AppenderFileRotating}},
 \code{\link{AppenderFile}},
 \code{\link{AppenderTable}}
 }

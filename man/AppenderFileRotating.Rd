@@ -10,8 +10,17 @@ the meanings of the extra arguments
 }
 \seealso{
 \link{AppenderFileRotatingDate}, \link{AppenderFileRotatingTime}, \code{\link[rotor:rotate]{rotor::rotate()}}
+
+Other Appenders: 
+\code{\link{AppenderBuffer}},
+\code{\link{AppenderConsole}},
+\code{\link{AppenderFileRotatingDate}},
+\code{\link{AppenderFileRotatingTime}},
+\code{\link{AppenderFile}},
+\code{\link{AppenderTable}},
+\code{\link{Appender}}
 }
-\concept{Appenders, Rotating Appenders}
+\concept{Appenders}
 \section{Super classes}{
 \code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{\link[lgr:AppenderFile]{lgr::AppenderFile}} -> \code{AppenderFileRotating}
 }

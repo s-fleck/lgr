@@ -10,7 +10,17 @@ Log to a time-stamped rotating file
 }
 \seealso{
 \link{AppenderFileRotatingDate}, \link{AppenderFileRotating}, \code{\link[rotor:rotate]{rotor::rotate()}}
+
+Other Appenders: 
+\code{\link{AppenderBuffer}},
+\code{\link{AppenderConsole}},
+\code{\link{AppenderFileRotatingDate}},
+\code{\link{AppenderFileRotating}},
+\code{\link{AppenderFile}},
+\code{\link{AppenderTable}},
+\code{\link{Appender}}
 }
+\concept{Appenders}
 \section{Super classes}{
 \code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{\link[lgr:AppenderFile]{lgr::AppenderFile}} -> \code{\link[lgr:AppenderFileRotating]{lgr::AppenderFileRotating}} -> \code{AppenderFileRotating}
 }

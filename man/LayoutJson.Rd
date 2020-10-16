@@ -5,7 +5,7 @@
 \title{Format LogEvents as JSON}
 \description{
 A format for formatting LogEvents as
-\href{http://jsonlines.org/}{jsonlines} log files. This provides a
+\href{https://jsonlines.org/}{jsonlines} log files. This provides a
 nice balance between human- an machine-readability.
 }
 \examples{
@@ -24,7 +24,7 @@ lo <- LayoutJson$new()
 lo$format_event(event)
 }
 \seealso{
-\code{\link[=read_json_lines]{read_json_lines()}}, \url{http://jsonlines.org/}
+\code{\link[=read_json_lines]{read_json_lines()}}, \url{https://jsonlines.org/}
 
 Other Layouts: 
 \code{\link{LayoutFormat}},

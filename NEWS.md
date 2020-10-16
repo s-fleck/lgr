@@ -1,4 +1,4 @@
-# lgr (development version)
+# lgr 0.4.0
 
 * Moved more complex Appenders to package 
   [lgrExtra](https://github.com/s-fleck/lgrExtra). This includes database 
@@ -40,12 +40,15 @@
   `should_flush` function. `default_should_flush()` is no longer necessary
   and has been removed.
   
-* Updated AppenderFileRotating to use new **rotor** 2.5.0
+* Updated AppenderFileRotating and co for compatibility with **rotor** 0.3.0
 
 * Most errors now have appropriate subclasses
 
-* Logger$log() dispatches to all appenders, even if some throw an error (instead
-  of aborting after the first Appender that throws an error)
+* `Logger$log()` dispatches to all appenders - even if some throw an error -
+  instead of aborting after the first Appender that throws an error
+  
+* complete rewrite of the documentation to use the new roxgen2 features for
+  R6 classes.
 
 
 # lgr 0.3.4

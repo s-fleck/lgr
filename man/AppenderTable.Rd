@@ -12,8 +12,8 @@ class.
 
 AppenderTable is extended by Appenders that write to a data
 source that can be interpreted as tables, (usually a \code{data.frame}). Examples
-are \link[lgrExtra:AppenderDbi]{lgrExtra::AppenderDbi}, \link[lgrExtra:AppenderRjdbc]{lgrExtra::AppenderRjdbc} and
-\link[lgrExtra:AppenderDt]{lgrExtra::AppenderDt}.
+are \code{AppenderDbi}, \code{AppenderRjdbc} and \code{AppenderDt} from the
+\href{https://github.com/s-fleck/lgrExtra}{lgrExtra} package.
 }
 \seealso{
 Other abstract classes: 
@@ -24,6 +24,9 @@ Other abstract classes:
 Other Appenders: 
 \code{\link{AppenderBuffer}},
 \code{\link{AppenderConsole}},
+\code{\link{AppenderFileRotatingDate}},
+\code{\link{AppenderFileRotatingTime}},
+\code{\link{AppenderFileRotating}},
 \code{\link{AppenderFile}},
 \code{\link{Appender}}
 }
