@@ -44,7 +44,8 @@
 
 * Most errors now have appropriate subclasses
 
-* Logger$log() dispatches to all appenders, even if some throw an error
+* Logger$log() dispatches to all appenders, even if some throw an error (instead
+  of aborting after the first Appender that throws an error)
 
 
 # lgr 0.3.4

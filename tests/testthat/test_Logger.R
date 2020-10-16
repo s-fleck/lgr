@@ -185,8 +185,8 @@ test_that("Exceptions are cought and turned into warnings", {
     )
   )
 
-  expect_warning(ml$fatal(stop("blubb")), "Error.*blubb")
-  expect_warning(ml$fatal(), "Error")
+  expect_warning(ml$fatal(stop("blubb")), "error.*blubb")
+  expect_warning(ml$fatal(), "error")
 })
 
 
