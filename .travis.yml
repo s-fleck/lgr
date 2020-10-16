@@ -11,7 +11,7 @@ matrix:
       - Rscript -e 'covr::codecov()'
     deploy:
       provider: script
-      script: Rscript -e 'pkgdown::deploy_site_github(ssh_id = Sys.getenv("TRAVIS_DEPLOY_KEY", ""))'
+      script: Rscript -e 'remotes::install_cran("pkgdown");pkgdown::deploy_site_github(ssh_id = Sys.getenv("TRAVIS_DEPLOY_KEY", ""))'
       skip_cleanup: true
   - r: 3.5
   - r: 3.4
