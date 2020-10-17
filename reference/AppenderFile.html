@@ -75,7 +75,7 @@ LayoutJson." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -150,7 +150,7 @@ AppenderJson, which is a shortcut for <code>AppenderFile</code> preconfigured wi
     <p><code><a href='Filterable.html'>lgr::Filterable</a></code> -&gt; <code><a href='Appender.html'>lgr::Appender</a></code> -&gt; <code>AppenderFile</code></p>
     <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
 
-    <p><div class="r6-active-bindings"></p><dl'>
+    <p><div class="r6-active-bindings"></p><dl>
 <dt><code>file</code></dt><dd><p><code>character</code> scalar. path to the log file</p></dd>
 
 <dt><code>data</code></dt><dd><p><code>character</code> scalar. Contents of <code>file</code> parsed to a
@@ -164,7 +164,7 @@ instead (requires the <strong>data.table</strong> package).</p></dd>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-<h3>Public methods</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
 
 <ul>
 <li><p><a href='#method-new'><code>AppenderFile$new()</code></a></p></li>
@@ -185,40 +185,40 @@ instead (requires the <strong>data.table</strong> package).</p></dd>
 </details>
 
 <hr>
-<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+<a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
 
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AppenderFile</span>$<span class='fu'>new</span>(
-  <span class='no'>file</span>,
-  <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>,
-  <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(),
-  <span class='kw'>filters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</pre><p></div></p>
-
-<p><hr>
-<a id="method-append"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/append.html'>append()</a></code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AppenderFile</span>$<span class='fu'><a href='https://rdrr.io/r/base/append.html'>append</a></span>(<span class='no'>event</span>)</pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>AppenderFile</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  <span class='va'>file</span>,
+  threshold <span class='op'>=</span> <span class='cn'>NA_integer_</span>,
+  layout <span class='op'>=</span> <span class='va'><a href='LayoutFormat.html'>LayoutFormat</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>,
+  filters <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-set_file"></a></p><h3>Method <code>set_file()</code></h3>
-<p>Set a log file</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AppenderFile</span>$<span class='fu'>set_file</span>(<span class='no'>file</span>)</pre><p></div></p>
+<a id="method-append"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/append.html'>append()</a></code></h3>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>AppenderFile</span><span class='op'>$</span><span class='fu'>append</span><span class='op'>(</span><span class='va'>event</span><span class='op'>)</span></pre><p></div></p>
+
+<p><hr>
+<a id="method-set_file"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_file()</code></h3>
+<p>Set a log file</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>AppenderFile</span><span class='op'>$</span><span class='fu'>set_file</span><span class='op'>(</span><span class='va'>file</span><span class='op'>)</span></pre><p></div></p>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>file</code></dt><dd><p><code>character</code> scalar. Path to the log file. If <code>file</code> does not
 exist it will be created.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-show"></a></p><h3>Method <code>show()</code></h3>
-<p>Display the contents of the log file.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AppenderFile</span>$<span class='fu'>show</span>(<span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>20L</span>)</pre><p></div></p>
+<a id="method-show"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>show()</code></h3>
+<p>Display the contents of the log file.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>AppenderFile</span><span class='op'>$</span><span class='fu'>show</span><span class='op'>(</span>threshold <span class='op'>=</span> <span class='cn'>NA_integer_</span>, n <span class='op'>=</span> <span class='fl'>20L</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>threshold</code></dt><dd><p><code>character</code> or <code>integer</code> scalar. The minimum log level
 that should be displayed.</p></dd>
 
@@ -234,7 +234,7 @@ that should be displayed.</p></dd>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-<h3>Public methods</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
 
 <ul>
 <li><p><a href='#method-new'><code>AppenderJson$new()</code></a></p></li>
@@ -255,62 +255,71 @@ that should be displayed.</p></dd>
 </details>
 
 <hr>
-<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+<a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
 
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AppenderJson</span>$<span class='fu'>new</span>(
-  <span class='no'>file</span>,
-  <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>,
-  <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>(),
-  <span class='kw'>filters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>AppenderJson</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  <span class='va'>file</span>,
+  threshold <span class='op'>=</span> <span class='cn'>NA_integer_</span>,
+  layout <span class='op'>=</span> <span class='va'><a href='LayoutJson.html'>LayoutJson</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>,
+  filters <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre><p></div></p>
 
 
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)
-<span class='no'>default</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>()
-<span class='no'>fancy</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>()
-<span class='no'>json</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>()
+    <pre class="examples"><div class='input'><span class='va'>lg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span><span class='op'>(</span><span class='st'>"test"</span><span class='op'>)</span>
+<span class='va'>default</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>fancy</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>json</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='no'>lg</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>default</span>), <span class='st'>"default"</span>)
-<span class='no'>lg</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(
-  <span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>fancy</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(<span class='st'>"[%t] %c(): %L %m"</span>)), <span class='st'>"fancy"</span>
-)
-<span class='no'>lg</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(
-  <span class='no'>AppenderFile</span>$<span class='fu'>new</span>(<span class='no'>json</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutJson</span>$<span class='fu'>new</span>()), <span class='st'>"json"</span>
-)
+<span class='va'>lg</span><span class='op'>$</span><span class='fu'>add_appender</span><span class='op'>(</span><span class='va'>AppenderFile</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>default</span><span class='op'>)</span>, <span class='st'>"default"</span><span class='op'>)</span>
+<span class='va'>lg</span><span class='op'>$</span><span class='fu'>add_appender</span><span class='op'>(</span>
+  <span class='va'>AppenderFile</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>fancy</span>, layout <span class='op'>=</span> <span class='va'><a href='LayoutFormat.html'>LayoutFormat</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='st'>"[%t] %c(): %L %m"</span><span class='op'>)</span><span class='op'>)</span>, <span class='st'>"fancy"</span>
+<span class='op'>)</span>
+<span class='va'>lg</span><span class='op'>$</span><span class='fu'>add_appender</span><span class='op'>(</span>
+  <span class='va'>AppenderFile</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>json</span>, layout <span class='op'>=</span> <span class='va'><a href='LayoutJson.html'>LayoutJson</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>, <span class='st'>"json"</span>
+<span class='op'>)</span>
 
-<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; INFO  [10:40:21.987] A test message </div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>default</span>)</div><div class='output co'>#&gt; [1] "INFO  [2020-08-28 10:40:21.987] A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>fancy</span>)</div><div class='output co'>#&gt; [1] "[2020-08-28 10:40:21.987] eval(): INFO  A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>json</span>)</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2020-08-28 10:40:21\",\"logger\":\"test\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div><div class='input'>
+<span class='va'>lg</span><span class='op'>$</span><span class='fu'>info</span><span class='op'>(</span><span class='st'>"A test message"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; INFO  [08:47:13.369] A test message </div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>default</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "INFO  [2020-10-17 08:47:13.369] A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>fancy</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "[2020-10-17 08:47:13.369] eval(): INFO  A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>json</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2020-10-17 08:47:13\",\"logger\":\"test\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div><div class='input'>
 <span class='co'># cleanup</span>
-<span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
+<span class='va'>lg</span><span class='op'>$</span><span class='fu'>config</span><span class='op'>(</span><span class='cn'>NULL</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
 #&gt; 
 #&gt; inherited appenders:
-#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>default</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>fancy</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>json</span>)
-<span class='no'>tf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>()
-<span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)$
-  <span class='fu'>set_appenders</span>(<span class='no'>AppenderJson</span>$<span class='fu'>new</span>(<span class='no'>tf</span>))$
-  <span class='fu'>set_propagate</span>(<span class='fl'>FALSE</span>)
+#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>default</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>fancy</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>json</span><span class='op'>)</span>
+<span class='va'>tf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>lg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span><span class='op'>(</span><span class='st'>"test"</span><span class='op'>)</span><span class='op'>$</span>
+  <span class='fu'>set_appenders</span><span class='op'>(</span><span class='va'>AppenderJson</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span><span class='op'>)</span><span class='op'>$</span>
+  <span class='fu'>set_propagate</span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span>
 
-<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message"</span>)
-<span class='no'>lg</span>$<span class='fu'>info</span>(<span class='st'>"A test message %s strings"</span>, <span class='st'>"with format strings"</span>, <span class='kw'>and</span> <span class='kw'>=</span> <span class='st'>"custom_fields"</span>)
+<span class='va'>lg</span><span class='op'>$</span><span class='fu'>info</span><span class='op'>(</span><span class='st'>"A test message"</span><span class='op'>)</span>
+<span class='va'>lg</span><span class='op'>$</span><span class='fu'>info</span><span class='op'>(</span><span class='st'>"A test message %s strings"</span>, <span class='st'>"with format strings"</span>, and <span class='op'>=</span> <span class='st'>"custom_fields"</span><span class='op'>)</span>
 
-<span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='fu'>show</span>()</div><div class='output co'>#&gt; {"level":400,"timestamp":"2020-08-28 10:40:22","logger":"test","caller":"eval","msg":"A test message"}
-#&gt; {"level":400,"timestamp":"2020-08-28 10:40:22","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='no'>lg</span>$<span class='no'>appenders</span><span class='kw'>[[</span><span class='fl'>1</span>]]$<span class='no'>data</span></div><div class='output co'>#&gt;   level           timestamp logger caller
-#&gt; 1   400 2020-08-28 10:40:22   test   eval
-#&gt; 2   400 2020-08-28 10:40:22   test   eval
+<span class='va'>lg</span><span class='op'>$</span><span class='va'>appenders</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>$</span><span class='fu'>show</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; {"level":400,"timestamp":"2020-10-17 08:47:13","logger":"test","caller":"eval","msg":"A test message"}
+#&gt; {"level":400,"timestamp":"2020-10-17 08:47:13","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='va'>lg</span><span class='op'>$</span><span class='va'>appenders</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>$</span><span class='va'>data</span>
+</div><div class='output co'>#&gt;   level           timestamp logger caller
+#&gt; 1   400 2020-10-17 08:47:13   test   eval
+#&gt; 2   400 2020-10-17 08:47:13   test   eval
 #&gt;                                          msg           and
 #&gt; 1                             A test message          &lt;NA&gt;
 #&gt; 2 A test message with format strings strings custom_fields</div><div class='input'>
 <span class='co'># cleanup</span>
-<span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)</div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
+<span class='va'>lg</span><span class='op'>$</span><span class='fu'>config</span><span class='op'>(</span><span class='cn'>NULL</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
 #&gt; 
 #&gt; inherited appenders:
-#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>tf</span>)</div></pre>
+#&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -326,7 +335,7 @@ that should be displayed.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

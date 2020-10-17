@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -112,29 +112,32 @@
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
 <p>To log an <em>event</em> with with lgr we call <code>lgr$&lt;logging function&gt;()</code>. Unnamed arguments to the logging function are interpreted by <code><a href="https://rdrr.io/r/base/sprintf.html">sprintf()</a></code>. For a way to create loggers that <a href="https://glue.tidyverse.org/">glue</a> instead please refer to the vignette.</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="no">lgr</span>$<span class="fu">fatal</span>(<span class="st">"A critical error"</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="va">lgr</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"A critical error"</span><span class="op">)</span>
 <span class="co">#&gt; FATAL [09:29:16.642] A critical error</span>
-<span class="no">lgr</span>$<span class="fu">error</span>(<span class="st">"A less severe error"</span>)
+<span class="va">lgr</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"A less severe error"</span><span class="op">)</span>
 <span class="co">#&gt; ERROR [09:29:16.732] A less severe error</span>
-<span class="no">lgr</span>$<span class="fu">warn</span>(<span class="st">"A potentially bad situation"</span>)
+<span class="va">lgr</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"A potentially bad situation"</span><span class="op">)</span>
 <span class="co">#&gt; WARN  [09:29:16.742] A potentially bad situation</span>
-<span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"iris has %s rows"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">iris</span>))
+<span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"iris has %s rows"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; INFO  [09:29:16.745] iris has 150 rows</span>
 
 <span class="co"># the following log levels are hidden by default</span>
-<span class="no">lgr</span>$<span class="fu"><a href="https://rdrr.io/r/base/debug.html">debug</a></span>(<span class="st">"A debug message"</span>)
-<span class="no">lgr</span>$<span class="fu"><a href="https://rdrr.io/r/base/trace.html">trace</a></span>(<span class="st">"A finer grained debug message"</span>)</pre></div>
+<span class="va">lgr</span><span class="op">$</span><span class="fu">debug</span><span class="op">(</span><span class="st">"A debug message"</span><span class="op">)</span>
+<span class="va">lgr</span><span class="op">$</span><span class="fu">trace</span><span class="op">(</span><span class="st">"A finer grained debug message"</span><span class="op">)</span></pre></div>
 <p>A Logger can have several Appenders. For example, we can add a JSON appender to log to a file with little effort.</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="no">tf</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>()
-<span class="no">lgr</span>$<span class="fu"><a href="reference/simple_logging.html">add_appender</a></span>(<span class="no">AppenderFile</span>$<span class="fu">new</span>(<span class="no">tf</span>, <span class="kw">layout</span> <span class="kw">=</span> <span class="no">LayoutJson</span>$<span class="fu">new</span>()))
-<span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"cars has %s rows"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">cars</span>))
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">lgr</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="reference/AppenderFile.html">AppenderFile</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">tf</span>, layout <span class="op">=</span> <span class="va"><a href="reference/LayoutJson.html">LayoutJson</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"cars has %s rows"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; INFO  [09:29:16.803] cars has 50 rows</span>
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">tf</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; {"level":400,"timestamp":"2020-07-30 09:29:16","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></pre></div>
 <p>By passing a named argument to <code>info()</code>, <code>warn()</code>, and co you can log not only text but arbitrary R objects. Not all appenders handle such <em>custom fields</em> perfectly, but JSON does. This way you can create logfiles that are machine as well as (somewhat) human readable.</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"loading cars"</span>, <span class="st">"cars"</span>, <span class="kw">rows</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">cars</span>), <span class="kw">cols</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span>(<span class="no">cars</span>))
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"loading cars"</span>, <span class="st">"cars"</span>, rows <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; INFO  [09:29:16.851] loading cars {rows: 50, cols: 2}</span>
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">tf</span>), <span class="kw">sep</span> <span class="kw">=</span> <span class="st">"\n"</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span>
 <span class="co">#&gt; {"level":400,"timestamp":"2020-07-30 09:29:16","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span>
 <span class="co">#&gt; {"level":400,"timestamp":"2020-07-30 09:29:16","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}</span></pre></div>
 <p>For more examples please see the package <a href="https://s-fleck.github.io/lgr/articles/lgr.html">vignette</a> and <a href="https://s-fleck.github.io/lgr/">documentation</a></p>
@@ -143,24 +146,25 @@
 <h2 class="hasAnchor">
 <a href="#see-lgr-in-action" class="anchor"></a>See lgr in action</h2>
 <p>lgr is used to govern console output in my shiny based csv editor <a href="https://github.com/s-fleck/shed">shed</a></p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="co"># install.packages("remotes")</span>
-<span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"s-fleck/shed"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">shed</span>)
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="co"># install.packages("remotes")</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"s-fleck/shed"</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">shed</span><span class="op">)</span>
 
 <span class="co"># log only output from the "shed" logger to a file</span>
-<span class="no">logfile</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>()
-<span class="kw pkg">lgr</span><span class="kw ns">::</span><span class="fu"><a href="reference/get_logger.html">get_logger</a></span>(<span class="st">"shed"</span>)$<span class="fu"><a href="reference/simple_logging.html">add_appender</a></span>(<span class="no">AppenderFile</span>$<span class="fu">new</span>(<span class="no">logfile</span>))
-<span class="kw pkg">lgr</span><span class="kw ns">::</span><span class="fu"><a href="reference/simple_logging.html">threshold</a></span>(<span class="st">"all"</span>)
+<span class="va">logfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu">lgr</span><span class="fu">::</span><span class="fu"><a href="reference/get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"shed"</span><span class="op">)</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="reference/AppenderFile.html">AppenderFile</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">logfile</span><span class="op">)</span><span class="op">)</span>
+<span class="fu">lgr</span><span class="fu">::</span><span class="fu"><a href="reference/simple_logging.html">threshold</a></span><span class="op">(</span><span class="st">"all"</span><span class="op">)</span>
 
 <span class="co"># edit away and watch the rstudio console!</span>
-<span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"starting shed"</span>)
-<span class="fu">shed</span>(<span class="no">iris</span>)
-<span class="no">lgr</span>$<span class="fu">info</span>(<span class="st">"this will not end up in the log file"</span>)
+<span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"starting shed"</span><span class="op">)</span>
+<span class="fu">shed</span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>  
+<span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"this will not end up in the log file"</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">logfile</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">logfile</span><span class="op">)</span>
 
 <span class="co"># cleanup</span>
-<span class="fu"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span>(<span class="no">logfile</span>)</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span><span class="op">(</span><span class="va">logfile</span><span class="op">)</span></pre></div>
 </div>
 <div id="development-status" class="section level2">
 <h2 class="hasAnchor">
@@ -230,10 +234,12 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install lgr from CRAN</p>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"lgr"</span>)</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"lgr"</span><span class="op">)</span></pre></div>
 <p>Or you can install the current development version directly from github</p>
-<div class="sourceCode" id="cb6"><pre class="r"><span class="co">#install.packages("remotes")</span>
-<span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"s-fleck/lgr"</span>)</pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="co">#install.packages("remotes")</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"s-fleck/lgr"</span><span class="op">)</span></pre></div>
 </div>
 <div id="outlook" class="section level2">
 <h2 class="hasAnchor">
@@ -297,7 +303,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

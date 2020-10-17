@@ -76,7 +76,7 @@ Layouts you need to understand LogEvents." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -141,7 +141,7 @@ Layouts you need to understand LogEvents.</p>
 <code><a href='standardize_threshold.html'>standardize_threshold</a>()</code></p></div>
     <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
 
-    <p><div class="r6-fields"></p><dl'>
+    <p><div class="r6-fields"></p><dl>
 <dt><code>level</code></dt><dd><p><code>integer</code>. The <a href='get_log_levels.html'>log_level</a> / priority of the LogEvent. Use the
 active binding <code>level_name</code> to get the <code>character</code> representation
 instead.</p></dd>
@@ -159,7 +159,7 @@ event (equivalent to <code><a href='get_logger.html'>get_logger(event$logger)</a
 </dl><p></div></p>
     <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
 
-    <p><div class="r6-active-bindings"></p><dl'>
+    <p><div class="r6-active-bindings"></p><dl>
 <dt><code>values</code></dt><dd><p><code>list</code>. All values stored in the <code>LogEvent</code>, including
 all <em>custom fields</em>, but not including <code>event$.logger</code>.</p></dd>
 
@@ -173,30 +173,30 @@ created this event, equivalent to <code>event$.logger$name</code>)</p></dd>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-<h3>Public methods</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
 
 <ul>
 <li><p><a href='#method-new'><code>LogEvent$new()</code></a></p></li>
 <li><p><a href='#method-clone'><code>LogEvent$clone()</code></a></p></li>
 </ul>
 <p><hr>
-<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+<a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
 <p>The arguments to <code>LogEvent$new()</code> directly translate to the fields stored
 in the <code>LogEvent</code>. Usually these values will be scalars, but (except for
 <code>"logger"</code>) they can also be vectors if they are all of the same length (or
 scalars that will be recycled). In this case the event will be treated by
-the <a href='Appender.html'>Appenders</a> and <a href='Layout.html'>Layouts</a> as if several separate events.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LogEvent</span>$<span class='fu'>new</span>(
-  <span class='no'>logger</span>,
-  <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>400</span>,
-  <span class='kw'>timestamp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(),
-  <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>msg</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='no'>...</span>
-)</pre><p></div></p>
+the <a href='Appender.html'>Appenders</a> and <a href='Layout.html'>Layouts</a> as if several separate events.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LogEvent</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  <span class='va'>logger</span>,
+  level <span class='op'>=</span> <span class='fl'>400</span>,
+  timestamp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span><span class='op'>(</span><span class='op'>)</span>,
+  caller <span class='op'>=</span> <span class='cn'>NA</span>,
+  msg <span class='op'>=</span> <span class='cn'>NA</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>logger, level, timestamp, caller, msg</code></dt><dd><p>see <strong>Public fields</strong>.</p></dd>
 
 <dt><code>...</code></dt><dd><p>All named arguments in <code>...</code> will be added to the LogEvent
@@ -205,12 +205,12 @@ this way, but not all Appenders will support them. See <a href='AppenderFile.htm
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
-<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LogEvent</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
+<a id="method-clone"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LogEvent</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
 
 </dl><p></div></p>
@@ -218,14 +218,17 @@ this way, but not all Appenders will support them. See <a href='AppenderFile.htm
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)
-<span class='no'>lg</span>$<span class='fu'>error</span>(<span class='st'>"foo bar"</span>)</div><div class='output co'>#&gt; ERROR [10:40:26.419] foo bar </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='va'>lg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span><span class='op'>(</span><span class='st'>"test"</span><span class='op'>)</span>
+<span class='va'>lg</span><span class='op'>$</span><span class='fu'>error</span><span class='op'>(</span><span class='st'>"foo bar"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; ERROR [08:47:17.239] foo bar </div><div class='input'>
 <span class='co'># The last LogEvent produced by a Logger is stored in its `last_event` field</span>
-<span class='no'>lg</span>$<span class='no'>last_event</span>  <span class='co'># formatted console output</span></div><div class='output co'>#&gt; ERROR [2020-08-28 10:40:26] foo bar  </div><div class='input'><span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>values</span>  <span class='co'># values stored in the event</span></div><div class='output co'>#&gt; $level
+<span class='va'>lg</span><span class='op'>$</span><span class='va'>last_event</span>  <span class='co'># formatted console output</span>
+</div><div class='output co'>#&gt; ERROR [2020-10-17 08:47:17] foo bar  </div><div class='input'><span class='va'>lg</span><span class='op'>$</span><span class='va'>last_event</span><span class='op'>$</span><span class='va'>values</span>  <span class='co'># values stored in the event</span>
+</div><div class='output co'>#&gt; $level
 #&gt; [1] 200
 #&gt; 
 #&gt; $timestamp
-#&gt; [1] "2020-08-28 10:40:26 UTC"
+#&gt; [1] "2020-10-17 08:47:17 UTC"
 #&gt; 
 #&gt; $logger
 #&gt; [1] "test"
@@ -237,11 +240,16 @@ this way, but not all Appenders will support them. See <a href='AppenderFile.htm
 #&gt; [1] "foo bar"
 #&gt; </div><div class='input'>
 <span class='co'># Also contains the Logger that created it as .logger</span>
-<span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>logger</span></div><div class='output co'>#&gt; [1] "test"</div><div class='input'><span class='co'># equivalent to</span>
-<span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>.logger</span>$<span class='no'>name</span></div><div class='output co'>#&gt; [1] "test"</div><div class='input'>
+<span class='va'>lg</span><span class='op'>$</span><span class='va'>last_event</span><span class='op'>$</span><span class='va'>logger</span>
+</div><div class='output co'>#&gt; [1] "test"</div><div class='input'><span class='co'># equivalent to</span>
+<span class='va'>lg</span><span class='op'>$</span><span class='va'>last_event</span><span class='op'>$</span><span class='va'>.logger</span><span class='op'>$</span><span class='va'>name</span>
+</div><div class='output co'>#&gt; [1] "test"</div><div class='input'>
 <span class='co'># This is really a reference to the complete Logger, so the following is</span>
 <span class='co'># possible (though nonsensical)</span>
-<span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>.logger</span>$<span class='no'>last_event</span>$<span class='no'>msg</span></div><div class='output co'>#&gt; [1] "foo bar"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='no'>lg</span>, <span class='no'>lg</span>$<span class='no'>last_event</span>$<span class='no'>.logger</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>)  <span class='co'># reset logger config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
+<span class='va'>lg</span><span class='op'>$</span><span class='va'>last_event</span><span class='op'>$</span><span class='va'>.logger</span><span class='op'>$</span><span class='va'>last_event</span><span class='op'>$</span><span class='va'>msg</span>
+</div><div class='output co'>#&gt; [1] "foo bar"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='va'>lg</span>, <span class='va'>lg</span><span class='op'>$</span><span class='va'>last_event</span><span class='op'>$</span><span class='va'>.logger</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='va'>lg</span><span class='op'>$</span><span class='fu'>config</span><span class='op'>(</span><span class='cn'>NULL</span><span class='op'>)</span>  <span class='co'># reset logger config</span>
+</div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div></pre>
@@ -260,7 +268,7 @@ this way, but not all Appenders will support them. See <a href='AppenderFile.htm
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

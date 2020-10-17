@@ -73,7 +73,7 @@ Format Log Events as Text" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -136,8 +136,7 @@ more control and flexibility, consider using <a href='LayoutGlue.html'>LayoutGlu
 <p>see Fields</p>
 <p>see Fields</p>
 <p>see Fields</p>
-<p>see Fields
-Convert Layout to a Character String
+<p>Convert Layout to a <code>character</code> string
 Read a log file written using LayoutFormat</p>
     <h2 class="hasAnchor" id="format-tokens"><a class="anchor" href="#format-tokens"></a>Format Tokens</h2>
 
@@ -145,7 +144,7 @@ Read a log file written using LayoutFormat</p>
 
 <p>This is the same list of format tokens as for <code><a href='print.LogEvent.html'>format.LogEvent()</a></code></p>
 
-<dl'>
+<dl>
 <dt><code>%t</code></dt><dd><p>The timestamp of the message, formatted according to
 <code>timestamp_fmt</code>)</p></dd>
 <dt><code>%l</code></dt><dd><p>the log level, lowercase <code>character</code> representation</p></dd>
@@ -176,7 +175,7 @@ have <strong>jsonlite</strong> installed and does not support colors as opposed 
     <p><code><a href='Layout.html'>lgr::Layout</a></code> -&gt; <code>LayoutFormat</code></p>
     <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
 
-    <p><div class="r6-active-bindings"></p><dl'>
+    <p><div class="r6-active-bindings"></p><dl>
 <dt><code>fmt</code></dt><dd><p>a <code>character</code> scalar containing format tokens. See <code><a href='print.LogEvent.html'>format.LogEvent()</a></code>.</p></dd>
 
 <dt><code>timestamp_fmt</code></dt><dd><p>a <code>character</code> scalar. See <code><a href='https://rdrr.io/r/base/strptime.html'>base::format.POSIXct()</a></code>.</p></dd>
@@ -190,7 +189,7 @@ the package <span class="pkg">crayon</span>) passed on on <code><a href='print.L
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-<h3>Public methods</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
 
 <ul>
 <li><p><a href='#method-new'><code>LayoutFormat$new()</code></a></p></li>
@@ -209,76 +208,76 @@ the package <span class="pkg">crayon</span>) passed on on <code><a href='print.L
 </details>
 
 <hr>
-<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+<a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
 
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(
-  <span class='kw'>fmt</span> <span class='kw'>=</span> <span class='st'>"%L [%t] %m"</span>,
-  <span class='kw'>timestamp_fmt</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%OS3"</span>,
-  <span class='kw'>colors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>pad_levels</span> <span class='kw'>=</span> <span class='st'>"right"</span>
-)</pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LayoutFormat</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  fmt <span class='op'>=</span> <span class='st'>"%L [%t] %m"</span>,
+  timestamp_fmt <span class='op'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%OS3"</span>,
+  colors <span class='op'>=</span> <span class='cn'>NULL</span>,
+  pad_levels <span class='op'>=</span> <span class='st'>"right"</span>
+<span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-format_event"></a></p><h3>Method <code>format_event()</code></h3>
-<p>Format a LogEvent</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LayoutFormat</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</pre><p></div></p>
+<a id="method-format_event"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>format_event()</code></h3>
+<p>Format a LogEvent</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LayoutFormat</span><span class='op'>$</span><span class='fu'>format_event</span><span class='op'>(</span><span class='va'>event</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>event</code></dt><dd><p>a <a href='LogEvent.html'>LogEvent</a></p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-set_fmt"></a></p><h3>Method <code>set_fmt()</code></h3>
+<a id="method-set_fmt"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_fmt()</code></h3>
 
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LayoutFormat</span>$<span class='fu'>set_fmt</span>(<span class='no'>x</span>)</pre><p></div></p>
-
-<p><hr>
-<a id="method-set_timestamp_fmt"></a></p><h3>Method <code>set_timestamp_fmt()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LayoutFormat</span>$<span class='fu'>set_timestamp_fmt</span>(<span class='no'>x</span>)</pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LayoutFormat</span><span class='op'>$</span><span class='fu'>set_fmt</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-set_colors"></a></p><h3>Method <code>set_colors()</code></h3>
+<a id="method-set_timestamp_fmt"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_timestamp_fmt()</code></h3>
 
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LayoutFormat</span>$<span class='fu'>set_colors</span>(<span class='no'>x</span>)</pre><p></div></p>
-
-<p><hr>
-<a id="method-set_pad_levels"></a></p><h3>Method <code>set_pad_levels()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LayoutFormat</span>$<span class='fu'>set_pad_levels</span>(<span class='no'>x</span>)</pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LayoutFormat</span><span class='op'>$</span><span class='fu'>set_timestamp_fmt</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-toString"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/toString.html'>toString()</a></code></h3>
+<a id="method-set_colors"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_colors()</code></h3>
 
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LayoutFormat</span>$<span class='fu'><a href='https://rdrr.io/r/base/toString.html'>toString</a></span>()</pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LayoutFormat</span><span class='op'>$</span><span class='fu'>set_colors</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-read"></a></p><h3>Method <code>read()</code></h3>
+<a id="method-set_pad_levels"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_pad_levels()</code></h3>
 
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LayoutFormat</span>$<span class='fu'>read</span>(<span class='no'>file</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>20L</span>)</pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LayoutFormat</span><span class='op'>$</span><span class='fu'>set_pad_levels</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<p><hr>
+<a id="method-toString"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/toString.html'>toString()</a></code></h3>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LayoutFormat</span><span class='op'>$</span><span class='fu'>toString</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+
+<p><hr>
+<a id="method-read"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>read()</code></h3>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LayoutFormat</span><span class='op'>$</span><span class='fu'>read</span><span class='op'>(</span><span class='va'>file</span>, threshold <span class='op'>=</span> <span class='cn'>NA_integer_</span>, n <span class='op'>=</span> <span class='fl'>20L</span><span class='op'>)</span></pre><p></div></p>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>threshold</code></dt><dd><p>a <code>character</code> or <code>integer</code> threshold</p></dd>
 
 <dt><code>n</code></dt><dd><p>number of log entries to display</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
-<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LayoutFormat</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
+<a id="method-clone"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LayoutFormat</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
 
 </dl><p></div></p>
@@ -287,15 +286,16 @@ the package <span class="pkg">crayon</span>) passed on on <code><a href='print.L
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># setup a dummy LogEvent</span>
-<span class='no'>event</span> <span class='kw'>&lt;-</span> <span class='no'>LogEvent</span>$<span class='fu'>new</span>(
-  <span class='kw'>logger</span> <span class='kw'>=</span> <span class='no'>Logger</span>$<span class='fu'>new</span>(<span class='st'>"dummy logger"</span>),
-  <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>200</span>,
-  <span class='kw'>timestamp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(),
-  <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>,
-  <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"a test message"</span>
-)
-<span class='no'>lo</span> <span class='kw'>&lt;-</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>()
-<span class='no'>lo</span>$<span class='fu'>format_event</span>(<span class='no'>event</span>)</div><div class='output co'>#&gt; [1] "ERROR [2020-08-28 10:40:24.518] a test message"</div></pre>
+<span class='va'>event</span> <span class='op'>&lt;-</span> <span class='va'><a href='LogEvent.html'>LogEvent</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  logger <span class='op'>=</span> <span class='va'><a href='Logger.html'>Logger</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='st'>"dummy logger"</span><span class='op'>)</span>,
+  level <span class='op'>=</span> <span class='fl'>200</span>,
+  timestamp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span><span class='op'>(</span><span class='op'>)</span>,
+  caller <span class='op'>=</span> <span class='cn'>NA_character_</span>,
+  msg <span class='op'>=</span> <span class='st'>"a test message"</span>
+<span class='op'>)</span>
+<span class='va'>lo</span> <span class='op'>&lt;-</span> <span class='va'>LayoutFormat</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>lo</span><span class='op'>$</span><span class='fu'>format_event</span><span class='op'>(</span><span class='va'>event</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "ERROR [2020-10-17 08:47:15.820] a test message"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -311,7 +311,7 @@ the package <span class="pkg">crayon</span>) passed on on <code><a href='print.L
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

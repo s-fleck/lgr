@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@
 <li><p>AppenderMemory/AppenderBuffer: <code>flush_threshold</code> is now independent of <code>should_flush</code> function. <code>default_should_flush()</code> is no longer necessary and has been removed.</p></li>
 <li><p>Updated AppenderFileRotating to use new <strong>rotor</strong> 2.5.0</p></li>
 <li><p>Most errors now have appropriate subclasses</p></li>
-<li><p>Logger$log() dispatches to all appenders, even if some throw an error</p></li>
+<li><p>Logger$log() dispatches to all appenders, even if some throw an error (instead of aborting after the first Appender that throws an error)</p></li>
 </ul>
 </div>
     <div id="lgr-0-3-4" class="section level1">
@@ -262,7 +262,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

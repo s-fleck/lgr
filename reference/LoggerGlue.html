@@ -76,7 +76,7 @@ slightly less performance than sprintf()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -146,7 +146,7 @@ examples.</p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-<h3>Public methods</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
 
 <ul>
 <li><p><a href='#method-fatal'><code>LoggerGlue$fatal()</code></a></p></li>
@@ -178,64 +178,64 @@ examples.</p>
 </details>
 
 <hr>
-<a id="method-fatal"></a></p><h3>Method <code>fatal()</code></h3>
+<a id="method-fatal"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>fatal()</code></h3>
 
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LoggerGlue</span>$<span class='fu'>fatal</span>(<span class='no'>...</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>8L</span>), <span class='kw'>.envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())</pre><p></div></p>
-
-<p><hr>
-<a id="method-error"></a></p><h3>Method <code>error()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LoggerGlue</span>$<span class='fu'>error</span>(<span class='no'>...</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>8L</span>), <span class='kw'>.envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())</pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LoggerGlue</span><span class='op'>$</span><span class='fu'>fatal</span><span class='op'>(</span><span class='va'>...</span>, caller <span class='op'>=</span> <span class='fu'><a href='get_caller.html'>get_caller</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>8L</span><span class='op'>)</span>, .envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-warn"></a></p><h3>Method <code>warn()</code></h3>
+<a id="method-error"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>error()</code></h3>
 
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LoggerGlue</span>$<span class='fu'>warn</span>(<span class='no'>...</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>8L</span>), <span class='kw'>.envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())</pre><p></div></p>
-
-<p><hr>
-<a id="method-info"></a></p><h3>Method <code>info()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LoggerGlue</span>$<span class='fu'>info</span>(<span class='no'>...</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>8L</span>), <span class='kw'>.envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())</pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LoggerGlue</span><span class='op'>$</span><span class='fu'>error</span><span class='op'>(</span><span class='va'>...</span>, caller <span class='op'>=</span> <span class='fu'><a href='get_caller.html'>get_caller</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>8L</span><span class='op'>)</span>, .envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-debug"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/debug.html'>debug()</a></code></h3>
+<a id="method-warn"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>warn()</code></h3>
 
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LoggerGlue</span>$<span class='fu'><a href='https://rdrr.io/r/base/debug.html'>debug</a></span>(<span class='no'>...</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>8L</span>), <span class='kw'>.envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())</pre><p></div></p>
-
-<p><hr>
-<a id="method-trace"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/trace.html'>trace()</a></code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LoggerGlue</span>$<span class='fu'><a href='https://rdrr.io/r/base/trace.html'>trace</a></span>(<span class='no'>...</span>, <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>8L</span>), <span class='kw'>.envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())</pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LoggerGlue</span><span class='op'>$</span><span class='fu'>warn</span><span class='op'>(</span><span class='va'>...</span>, caller <span class='op'>=</span> <span class='fu'><a href='get_caller.html'>get_caller</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>8L</span><span class='op'>)</span>, .envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-log"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/Log.html'>log()</a></code></h3>
+<a id="method-info"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>info()</code></h3>
 
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LoggerGlue</span>$<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(
-  <span class='no'>level</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>timestamp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(),
-  <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'><a href='system_infos.html'>get_caller</a></span>(-<span class='fl'>7</span>),
-  <span class='kw'>.envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>()
-)</pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LoggerGlue</span><span class='op'>$</span><span class='fu'>info</span><span class='op'>(</span><span class='va'>...</span>, caller <span class='op'>=</span> <span class='fu'><a href='get_caller.html'>get_caller</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>8L</span><span class='op'>)</span>, .envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-list_log"></a></p><h3>Method <code>list_log()</code></h3>
+<a id="method-debug"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/debug.html'>debug()</a></code></h3>
 
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LoggerGlue</span>$<span class='fu'>list_log</span>(<span class='no'>x</span>)</pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LoggerGlue</span><span class='op'>$</span><span class='fu'>debug</span><span class='op'>(</span><span class='va'>...</span>, caller <span class='op'>=</span> <span class='fu'><a href='get_caller.html'>get_caller</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>8L</span><span class='op'>)</span>, .envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-spawn"></a></p><h3>Method <code>spawn()</code></h3>
+<a id="method-trace"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/trace.html'>trace()</a></code></h3>
 
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>LoggerGlue</span>$<span class='fu'>spawn</span>(<span class='no'>name</span>)</pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LoggerGlue</span><span class='op'>$</span><span class='fu'>trace</span><span class='op'>(</span><span class='va'>...</span>, caller <span class='op'>=</span> <span class='fu'><a href='get_caller.html'>get_caller</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>8L</span><span class='op'>)</span>, .envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre><p></div></p>
+
+<p><hr>
+<a id="method-log"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/Log.html'>log()</a></code></h3>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LoggerGlue</span><span class='op'>$</span><span class='fu'>log</span><span class='op'>(</span>
+  <span class='va'>level</span>,
+  <span class='va'>...</span>,
+  timestamp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span><span class='op'>(</span><span class='op'>)</span>,
+  caller <span class='op'>=</span> <span class='fu'><a href='get_caller.html'>get_caller</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>7</span><span class='op'>)</span>,
+  .envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span></pre><p></div></p>
+
+<p><hr>
+<a id="method-list_log"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>list_log()</code></h3>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LoggerGlue</span><span class='op'>$</span><span class='fu'>list_log</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre><p></div></p>
+
+<p><hr>
+<a id="method-spawn"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>spawn()</code></h3>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LoggerGlue</span><span class='op'>$</span><span class='fu'>spawn</span><span class='op'>(</span><span class='va'>name</span><span class='op'>)</span></pre><p></div></p>
 
 
 
@@ -255,7 +255,7 @@ examples.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

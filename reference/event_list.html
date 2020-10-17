@@ -75,7 +75,7 @@ their own Appenders." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -129,30 +129,30 @@ This structure is occasionally used internally in lgr (for example by
 their own Appenders.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>event_list</span>(<span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>event_list</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>as_event_list</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>as_event_list</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for list</span>
-<span class='fu'>as_event_list</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>scalarize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>as_event_list</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, scalarize <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
 <span class='co'># S3 method for LogEvent</span>
-<span class='fu'>as_event_list</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>scalarize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>as_event_list</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, scalarize <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
 <span class='co'># S3 method for data.frame</span>
-<span class='fu'>as_event_list</span>(<span class='no'>x</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+<span class='fu'>as_event_list</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>as.data.table.event_list</span>(<span class='no'>x</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>as.data.table.event_list</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
 <span class='co'># S3 method for event_list</span>
-<span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(
-  <span class='no'>x</span>,
-  <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>optional</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='no'>...</span>
-)</pre>
+<span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  row.names <span class='op'>=</span> <span class='cn'>NULL</span>,
+  optional <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -209,39 +209,44 @@ exist for event lists.</p>
 <code><a href='standardize_threshold.html'>standardize_threshold</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>e</span> <span class='kw'>&lt;-</span> <span class='no'>LogEvent</span>$<span class='fu'>new</span>(<span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>300</span>, <span class='kw'>msg</span> <span class='kw'>=</span> <span class='st'>"a"</span>, <span class='kw'>logger</span> <span class='kw'>=</span> <span class='no'>lgr</span>)
-<span class='fu'>as_event_list</span>(<span class='no'>e</span>)</div><div class='output co'>#&gt; [[1]]
-#&gt; WARN  [2020-08-28 10:40:29] a  
+    <pre class="examples"><div class='input'><span class='va'>e</span> <span class='op'>&lt;-</span> <span class='va'><a href='LogEvent.html'>LogEvent</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>level <span class='op'>=</span> <span class='fl'>300</span>, msg <span class='op'>=</span> <span class='st'>"a"</span>, logger <span class='op'>=</span> <span class='va'>lgr</span><span class='op'>)</span>
+<span class='fu'>as_event_list</span><span class='op'>(</span><span class='va'>e</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [[1]]
+#&gt; WARN  [2020-10-17 08:47:20] a  
 #&gt; 
 #&gt; attr(,"class")
-#&gt; [1] "event_list" "list"      </div><div class='input'><span class='fu'>as_event_list</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>e</span>, <span class='no'>e</span>))</div><div class='output co'>#&gt; [[1]]
-#&gt; WARN  [2020-08-28 10:40:29] a  
+#&gt; [1] "event_list" "list"      </div><div class='input'><span class='fu'>as_event_list</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>e</span>, <span class='va'>e</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [[1]]
+#&gt; WARN  [2020-10-17 08:47:20] a  
 #&gt; 
 #&gt; [[2]]
-#&gt; WARN  [2020-08-28 10:40:29] a  
+#&gt; WARN  [2020-10-17 08:47:20] a  
 #&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "event_list" "list"      </div><div class='input'><span class='co'># nested lists get automatically unnested</span>
-<span class='fu'>as_event_list</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>e</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>nested_event</span> <span class='kw'>=</span> <span class='no'>e</span>)))</div><div class='output co'>#&gt; [[1]]
-#&gt; WARN  [2020-08-28 10:40:29] a  
+<span class='fu'>as_event_list</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>e</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>nested_event <span class='op'>=</span> <span class='va'>e</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [[1]]
+#&gt; WARN  [2020-10-17 08:47:20] a  
 #&gt; 
 #&gt; $nested_event
-#&gt; WARN  [2020-08-28 10:40:29] a  
+#&gt; WARN  [2020-10-17 08:47:20] a  
 #&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "event_list" "list"      </div><div class='input'>
 <span class='co'># scalarize = TRUE "unpacks" events with vector log messages</span>
-<span class='no'>e</span> <span class='kw'>&lt;-</span> <span class='no'>LogEvent</span>$<span class='fu'>new</span>(<span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>300</span>, <span class='kw'>msg</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>), <span class='kw'>logger</span> <span class='kw'>=</span> <span class='no'>lgr</span>)
-<span class='fu'>as_event_list</span>(<span class='no'>e</span>, <span class='kw'>scalarize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [[1]]
-#&gt; WARN  [2020-08-28 10:40:29] A  
-#&gt; WARN  [2020-08-28 10:40:29] B  
+<span class='va'>e</span> <span class='op'>&lt;-</span> <span class='va'><a href='LogEvent.html'>LogEvent</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>level <span class='op'>=</span> <span class='fl'>300</span>, msg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, logger <span class='op'>=</span> <span class='va'>lgr</span><span class='op'>)</span>
+<span class='fu'>as_event_list</span><span class='op'>(</span><span class='va'>e</span>, scalarize <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [[1]]
+#&gt; WARN  [2020-10-17 08:47:20] A  
+#&gt; WARN  [2020-10-17 08:47:20] B  
 #&gt; 
 #&gt; attr(,"class")
-#&gt; [1] "event_list" "list"      </div><div class='input'><span class='fu'>as_event_list</span>(<span class='no'>e</span>, <span class='kw'>scalarize</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [[1]]
-#&gt; WARN  [2020-08-28 10:40:29] A  
+#&gt; [1] "event_list" "list"      </div><div class='input'><span class='fu'>as_event_list</span><span class='op'>(</span><span class='va'>e</span>, scalarize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [[1]]
+#&gt; WARN  [2020-10-17 08:47:20] A  
 #&gt; 
 #&gt; [[2]]
-#&gt; WARN  [2020-08-28 10:40:29] B  
+#&gt; WARN  [2020-10-17 08:47:20] B  
 #&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "event_list" "list"      </div><div class='input'>
@@ -261,7 +266,7 @@ exist for event lists.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

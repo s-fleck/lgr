@@ -73,7 +73,7 @@ Appenders once certain conditions are met." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -132,7 +132,7 @@ Appenders once certain conditions are met.</p>
     
 
 
-<dl'>
+<dl>
 <dt><code>appenders</code>, <code>set_appenders()</code></dt><dd><p>Like for a <a href='Logger.html'>Logger</a>. Buffered events
 will be passed on to these Appenders once a flush is triggered</p></dd>
 <dt><code>flush_on_exit, set_flush_on_exit(x)</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>: Whether the
@@ -158,7 +158,7 @@ the buffer should be flushed when the Buffer is full (f.e when you close
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-<h3>Public methods</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
 
 <ul>
 <li><p><a href='#method-new'><code>AppenderBuffer$new()</code></a></p></li>
@@ -188,42 +188,42 @@ the buffer should be flushed when the Buffer is full (f.e when you close
 </details>
 
 <hr>
-<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+<a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
 <p>The <a href='Layout.html'>Layout</a> for this Appender is used only to format console output of
-its <code>$show()</code> method.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AppenderBuffer</span>$<span class='fu'>new</span>(
-  <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>,
-  <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(<span class='kw'>fmt</span> <span class='kw'>=</span> <span class='st'>"%L [%t] %m"</span>, <span class='kw'>timestamp_fmt</span> <span class='kw'>=</span> <span class='st'>"%H:%M:%S"</span>,
-    <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"lgr.colors"</span>)),
-  <span class='kw'>appenders</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>buffer_size</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='kw'>flush_threshold</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>flush_on_exit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>flush_on_rotate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>should_flush</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>filters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</pre><p></div></p>
+its <code>$show()</code> method.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>AppenderBuffer</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  threshold <span class='op'>=</span> <span class='cn'>NA_integer_</span>,
+  layout <span class='op'>=</span> <span class='va'><a href='LayoutFormat.html'>LayoutFormat</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>fmt <span class='op'>=</span> <span class='st'>"%L [%t] %m"</span>, timestamp_fmt <span class='op'>=</span> <span class='st'>"%H:%M:%S"</span>,
+    colors <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"lgr.colors"</span><span class='op'>)</span><span class='op'>)</span>,
+  appenders <span class='op'>=</span> <span class='cn'>NULL</span>,
+  buffer_size <span class='op'>=</span> <span class='fl'>1000</span>,
+  flush_threshold <span class='op'>=</span> <span class='cn'>NULL</span>,
+  flush_on_exit <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  flush_on_rotate <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  should_flush <span class='op'>=</span> <span class='cn'>NULL</span>,
+  filters <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-flush"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/connections.html'>flush()</a></code></h3>
+<a id="method-flush"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/connections.html'>flush()</a></code></h3>
 <p>Sends the buffer's contents to all attached Appenders and
-then clears the Buffer</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AppenderBuffer</span>$<span class='fu'><a href='https://rdrr.io/r/base/connections.html'>flush</a></span>()</pre><p></div></p>
+then clears the Buffer</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>AppenderBuffer</span><span class='op'>$</span><span class='fu'>flush</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-clear"></a></p><h3>Method <code>clear()</code></h3>
-<p>Clears the buffer, discarding all buffered Events</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AppenderBuffer</span>$<span class='fu'>clear</span>()</pre><p></div></p>
+<a id="method-clear"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>clear()</code></h3>
+<p>Clears the buffer, discarding all buffered Events</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>AppenderBuffer</span><span class='op'>$</span><span class='fu'>clear</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-set_appenders"></a></p><h3>Method <code>set_appenders()</code></h3>
+<a id="method-set_appenders"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_appenders()</code></h3>
 <p>Exactly like A <a href='Logger.html'>Logger</a>, an AppenderBuffer can have an
 arbitrary amount of Appenders attached. When the buffer is flushed, the
-buffered events are dispatched to these Appenders.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AppenderBuffer</span>$<span class='fu'>set_appenders</span>(<span class='no'>x</span>)</pre><p></div></p>
+buffered events are dispatched to these Appenders.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>AppenderBuffer</span><span class='op'>$</span><span class='fu'>set_appenders</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>x</code></dt><dd><p>single <a href='Appender.html'>Appender</a> or a <code>list</code> thereof. Appenders control the
 output of a Logger. Be aware that a Logger also inherits the Appenders
 of its ancestors (see <code><a href='../articles/lgr.html'>vignette("lgr", package = "lgr")</a></code> for more info
@@ -231,39 +231,39 @@ about Logger inheritance).</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-add_appender"></a></p><h3>Method <code><a href='simple_logging.html'>add_appender()</a></code></h3>
+<a id="method-add_appender"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='simple_logging.html'>add_appender()</a></code></h3>
 <p>Add an Appender to the AppenderBuffer</p>
 
 <p>Add or remove an <a href='Appender.html'>Appender</a>. Supplying a <code>name</code> is optional but
 recommended. After adding an Appender with
 <code>appender$add_appender(AppenderConsole$new(), name = "console")</code> you can
 refer to it via <code>appender$appenders$console</code>. <code><a href='simple_logging.html'>remove_appender()</a></code> can
-remove an Appender by position or name.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AppenderBuffer</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>appender</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre><p></div></p>
+remove an Appender by position or name.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>AppenderBuffer</span><span class='op'>$</span><span class='fu'>add_appender</span><span class='op'>(</span><span class='va'>appender</span>, name <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>appender</code></dt><dd><p>a single <a href='Appender.html'>Appender</a></p></dd>
 
 <dt><code>name</code></dt><dd><p>a <code>character</code> scalar. Optional but recommended.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-remove_appender"></a></p><h3>Method <code><a href='simple_logging.html'>remove_appender()</a></code></h3>
-<p>remove an appender</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AppenderBuffer</span>$<span class='fu'><a href='simple_logging.html'>remove_appender</a></span>(<span class='no'>pos</span>)</pre><p></div></p>
+<a id="method-remove_appender"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='simple_logging.html'>remove_appender()</a></code></h3>
+<p>remove an appender</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>AppenderBuffer</span><span class='op'>$</span><span class='fu'>remove_appender</span><span class='op'>(</span><span class='va'>pos</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>pos</code></dt><dd><p><code>integer</code> index or <code>character</code> name of the Appender(s) to
 remove</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-format"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code></h3>
+<a id="method-format"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code></h3>
 
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AppenderBuffer</span>$<span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span>(<span class='no'>...</span>)</pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>AppenderBuffer</span><span class='op'>$</span><span class='fu'>format</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
 
 
@@ -283,7 +283,7 @@ remove</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

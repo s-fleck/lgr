@@ -74,7 +74,7 @@ crayon installed log levels will be coloured by default
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -143,7 +143,7 @@ crayon installed log levels will be coloured by default
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-<h3>Public methods</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
 
 <ul>
 <li><p><a href='#method-new'><code>AppenderConsole$new()</code></a></p></li>
@@ -162,21 +162,21 @@ crayon installed log levels will be coloured by default
 </details>
 
 <hr>
-<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+<a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
 
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(
-  <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>,
-  <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(<span class='kw'>fmt</span> <span class='kw'>=</span> <span class='st'>"%L [%t] %m %f"</span>, <span class='kw'>timestamp_fmt</span> <span class='kw'>=</span> <span class='st'>"%H:%M:%OS3"</span>,
-    <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"lgr.colors"</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())),
-  <span class='kw'>filters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>AppenderConsole</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  threshold <span class='op'>=</span> <span class='cn'>NA_integer_</span>,
+  layout <span class='op'>=</span> <span class='va'><a href='LayoutFormat.html'>LayoutFormat</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>fmt <span class='op'>=</span> <span class='st'>"%L [%t] %m %f"</span>, timestamp_fmt <span class='op'>=</span> <span class='st'>"%H:%M:%OS3"</span>,
+    colors <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"lgr.colors"</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
+  filters <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-append"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/append.html'>append()</a></code></h3>
+<a id="method-append"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/append.html'>append()</a></code></h3>
 
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AppenderConsole</span>$<span class='fu'><a href='https://rdrr.io/r/base/append.html'>append</a></span>(<span class='no'>event</span>)</pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>AppenderConsole</span><span class='op'>$</span><span class='fu'>append</span><span class='op'>(</span><span class='va'>event</span><span class='op'>)</span></pre><p></div></p>
 
 
 
@@ -185,15 +185,17 @@ crayon installed log levels will be coloured by default
     <pre class="examples"><div class='input'><span class='co'># create a new logger with propagate = FALSE to prevent routing to the root</span>
 <span class='co'># logger. Please look at the section "Logger Hirarchies" in the package</span>
 <span class='co'># vignette for more info.</span>
-<span class='no'>lg</span>  <span class='kw'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span>(<span class='st'>"test"</span>)$<span class='fu'>set_propagate</span>(<span class='fl'>FALSE</span>)
+<span class='va'>lg</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span><span class='op'>(</span><span class='st'>"test"</span><span class='op'>)</span><span class='op'>$</span><span class='fu'>set_propagate</span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span>
 
-<span class='no'>lg</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>())
-<span class='no'>lg</span>$<span class='fu'><a href='simple_logging.html'>add_appender</a></span>(<span class='no'>AppenderConsole</span>$<span class='fu'>new</span>(
-  <span class='kw'>layout</span> <span class='kw'>=</span> <span class='no'>LayoutFormat</span>$<span class='fu'>new</span>(<span class='st'>"[%t] %c(): [%n] %m"</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"lgr.colors"</span>))))
+<span class='va'>lg</span><span class='op'>$</span><span class='fu'>add_appender</span><span class='op'>(</span><span class='va'>AppenderConsole</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>lg</span><span class='op'>$</span><span class='fu'>add_appender</span><span class='op'>(</span><span class='va'>AppenderConsole</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  layout <span class='op'>=</span> <span class='va'><a href='LayoutFormat.html'>LayoutFormat</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='st'>"[%t] %c(): [%n] %m"</span>, colors <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"lgr.colors"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># Will output the message twice because we attached two console appenders</span>
-<span class='no'>lg</span>$<span class='fu'>warn</span>(<span class='st'>"A test message"</span>)</div><div class='output co'>#&gt; WARN  [10:40:21.792] A test message 
-#&gt; [2020-08-28 10:40:21.792] eval(): [300] A test message</div><div class='input'><span class='no'>lg</span>$<span class='fu'>config</span>(<span class='kw'>NULL</span>) <span class='co'># reset config</span></div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
+<span class='va'>lg</span><span class='op'>$</span><span class='fu'>warn</span><span class='op'>(</span><span class='st'>"A test message"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; WARN  [08:47:13.176] A test message 
+#&gt; [2020-10-17 08:47:13.176] eval(): [300] A test message</div><div class='input'><span class='va'>lg</span><span class='op'>$</span><span class='fu'>config</span><span class='op'>(</span><span class='cn'>NULL</span><span class='op'>)</span> <span class='co'># reset config</span>
+</div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div></pre>
@@ -212,7 +214,7 @@ crayon installed log levels will be coloured by default
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

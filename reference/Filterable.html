@@ -78,7 +78,7 @@ class." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -145,14 +145,14 @@ class.</p>
 <code><a href='Appender.html'>Appender</a></code></p></div>
     <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
 
-    <p><div class="r6-active-bindings"></p><dl'>
+    <p><div class="r6-active-bindings"></p><dl>
 <dt><code>filters</code></dt><dd><p>a <code>list</code> of all attached Filters.</p></dd>
 
 </dl><p></div></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-<h3>Public methods</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
 
 <ul>
 <li><p><a href='#method-filter'><code>Filterable$filter()</code></a></p></li>
@@ -161,28 +161,28 @@ class.</p>
 <li><p><a href='#method-set_filters'><code>Filterable$set_filters()</code></a></p></li>
 </ul>
 <p><hr>
-<a id="method-filter"></a></p><h3>Method <code><a href='https://rdrr.io/r/stats/filter.html'>filter()</a></code></h3>
+<a id="method-filter"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/stats/filter.html'>filter()</a></code></h3>
 <p>Determine whether the LogEvent <code>x</code> should be passed on to
 Appenders (<code>TRUE</code>) or not (<code>FALSE</code>). See also the active binding
-<code>filters</code>.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Filterable</span>$<span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span>(<span class='no'>event</span>)</pre><p></div></p>
+<code>filters</code>.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Filterable</span><span class='op'>$</span><span class='fu'>filter</span><span class='op'>(</span><span class='va'>event</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>event</code></dt><dd><p>a <a href='LogEvent.html'>LogEvent</a></p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-add_filter"></a></p><h3>Method <code>add_filter()</code></h3>
-<p>Attach a filter</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Filterable</span>$<span class='fu'>add_filter</span>(<span class='no'>filter</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre><p></div></p>
+<a id="method-add_filter"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>add_filter()</code></h3>
+<p>Attach a filter</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Filterable</span><span class='op'>$</span><span class='fu'>add_filter</span><span class='op'>(</span><span class='va'>filter</span>, name <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>filter</code></dt><dd><p><ul>
 <li><p>a function with the single argument <code>event</code> that returns <code>TRUE</code>
 or <code>FALSE</code>;</p></li>
-<li><p>an <a href='EventFilter.html'>EventFilter</a> <a href='https://rdrr.io/pkg/R6/man/R6Class.html'>R6::R6</a> object; or</p></li>
+<li><p>an <a href='EventFilter.html'>EventFilter</a> <a href='https://r6.r-lib.org/reference/R6Class.html'>R6::R6</a> object; or</p></li>
 <li><p>any <span style="R">R</span> object with a <code>$filter()</code> method.</p></li>
 </ul>If a Filter returns a non-<code>FALSE</code> value, will be interpreted as <code>TRUE</code>
 (= no filtering takes place) and a warning will be thrown.</p></dd>
@@ -192,24 +192,24 @@ name which makes it easier to access (or remove) the filter</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-remove_filter"></a></p><h3>Method <code>remove_filter()</code></h3>
-<p>Remove a filter</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Filterable</span>$<span class='fu'>remove_filter</span>(<span class='no'>pos</span>)</pre><p></div></p>
+<a id="method-remove_filter"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>remove_filter()</code></h3>
+<p>Remove a filter</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Filterable</span><span class='op'>$</span><span class='fu'>remove_filter</span><span class='op'>(</span><span class='va'>pos</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>pos</code></dt><dd><p><code>character</code> or <code>integer</code> scalar. The name or index of the
 Filter to be removed.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-set_filters"></a></p><h3>Method <code>set_filters()</code></h3>
+<a id="method-set_filters"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_filters()</code></h3>
 <p>Set or replace (all) Filters of parent object. See
-<a href='EventFilter.html'>EventFilter</a> for how Filters work.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Filterable</span>$<span class='fu'>set_filters</span>(<span class='no'>filters</span>)</pre><p></div></p>
+<a href='EventFilter.html'>EventFilter</a> for how Filters work.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Filterable</span><span class='op'>$</span><span class='fu'>set_filters</span><span class='op'>(</span><span class='va'>filters</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>filters</code></dt><dd><p>a <code>list</code> (named or unnamed) of <a href='EventFilter.html'>EventFilters</a>
 or predicate functions. See <code><a href='is_filter.html'>is_filter()</a></code>.</p></dd>
 
@@ -232,7 +232,7 @@ or predicate functions. See <code><a href='is_filter.html'>is_filter()</a></code
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
