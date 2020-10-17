@@ -12,3 +12,6 @@
 
 Major update (see NEWS.md). Fixes CRAN check errors that are due to a breaking 
 update in the companion-package rotor.
+
+
+**resubmission:** fixed some outdated URLs that have moved

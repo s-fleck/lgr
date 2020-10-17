@@ -1,4 +1,4 @@
-# lgr 0.4.0
+# lgr 0.4.1
 
 * Moved more complex Appenders to package 
   [lgrExtra](https://github.com/s-fleck/lgrExtra). This includes database 
