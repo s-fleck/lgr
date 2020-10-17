@@ -10,4 +10,5 @@
 
 0 errors | 0 warnings | 0 notes
 
-fixes a significant performance regression
+Major update (see NEWS.md). Fixes CRAN check errors that are due to a breaking 
+update in the companion-package rotor.
