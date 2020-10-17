@@ -23,7 +23,7 @@ Users that have not worked with R6 classes before, will find configuring
 Loggers a bit strange and verbose, but care was taken to keep the syntax
 for common logging tasks and interactive usage simple and concise. User
 that have experience with [shiny](https://github.com/rstudio/shiny),
-[plumber](https://github.com/trestletech/plumber), [python
+[plumber](https://github.com/rstudio/plumber), [python
 logging](https://docs.python.org/3/library/logging.html) or [Apache
 Log4j](https://logging.apache.org/log4j/2.x/) will feel at home. User
 that are proficient with R6 classes will also find it easy to extend and
@@ -65,13 +65,13 @@ vignette.
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [10:55:49.023] A critical error
+#> FATAL [17:25:32.336] A critical error
 lgr$error("A less severe error")
-#> ERROR [10:55:49.145] A less severe error
+#> ERROR [17:25:32.401] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [10:55:49.202] A potentially bad situation
+#> WARN  [17:25:32.421] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [10:55:49.217] iris has 150 rows
+#> INFO  [17:25:32.425] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
@@ -85,9 +85,9 @@ appender to log to a file with little effort.
 tf <- tempfile()
 lgr$add_appender(AppenderFile$new(tf, layout = LayoutJson$new()))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [10:55:49.270] cars has 50 rows
+#> INFO  [17:25:32.458] cars has 50 rows
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2020-10-17 10:55:49","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2020-10-17 17:25:32","logger":"root","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 By passing a named argument to `info()`, `warn()`, and co you can log
@@ -97,10 +97,10 @@ logfiles that are machine as well as (somewhat) human readable.
 
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [10:55:49.322] loading cars {rows: 50, cols: 2}
+#> INFO  [17:25:32.502] loading cars {rows: 50, cols: 2}
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2020-10-17 10:55:49","logger":"root","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2020-10-17 10:55:49","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
+#> {"level":400,"timestamp":"2020-10-17 17:25:32","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2020-10-17 17:25:32","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
 ```
 
 For more examples please see the package
@@ -243,5 +243,5 @@ to post a feature request on the issue tracker.
 
 ## Acknowledgement
 
-  - [Inkscape](https://inkscape.org/) for the hex sticker
-  - [draw.io](https://draw.io/) for the flow chart in the vignette
+  - [diagrams.net](https://app.diagrams.net/) for the flow chart in the
+    vignette

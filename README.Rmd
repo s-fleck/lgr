@@ -35,7 +35,7 @@ Loggers a bit strange and verbose, but care was taken to keep
 the syntax for common logging tasks and interactive usage simple and concise.
 User that have experience with 
   [shiny](https://github.com/rstudio/shiny), 
-  [plumber](https://github.com/trestletech/plumber),
+  [plumber](https://github.com/rstudio/plumber),
   [python logging](https://docs.python.org/3/library/logging.html) or 
   [Apache Log4j](https://logging.apache.org/log4j/2.x/) will feel
 at home. User that are proficient with R6 classes will also find it easy
@@ -257,5 +257,4 @@ request on the issue tracker.
 
 ## Acknowledgement
 
-* [Inkscape](https://inkscape.org/) for the hex sticker
-* [draw.io](https://draw.io/) for the flow chart in the vignette
+* [diagrams.net](https://app.diagrams.net/) for the flow chart in the vignette
