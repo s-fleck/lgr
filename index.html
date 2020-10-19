@@ -82,7 +82,7 @@
 <a href="#lgr" class="anchor"></a>lgr</h1></div>
 
 <p>lgr is a logging package for R built on the back of <a href="https://github.com/r-lib/R6">R6</a> classes. It is designed to be flexible, performant and extensible. The package <a href="https://s-fleck.github.io/lgr/articles/lgr.html">vignette</a> contains a comprehensive description of the features of lgr (some of them unique among R logging packages) along with many code examples.</p>
-<p>Users that have not worked with R6 classes before, will find configuring Loggers a bit strange and verbose, but care was taken to keep the syntax for common logging tasks and interactive usage simple and concise. User that have experience with <a href="https://github.com/rstudio/shiny">shiny</a>, <a href="https://github.com/trestletech/plumber">plumber</a>, <a href="https://docs.python.org/3/library/logging.html">python logging</a> or <a href="https://logging.apache.org/log4j/2.x/">Apache Log4j</a> will feel at home. User that are proficient with R6 classes will also find it easy to extend and customize lgr, for example with their own appenders Loggers or Appenders.</p>
+<p>Users that have not worked with R6 classes before, will find configuring Loggers a bit strange and verbose, but care was taken to keep the syntax for common logging tasks and interactive usage simple and concise. User that have experience with <a href="https://github.com/rstudio/shiny">shiny</a>, <a href="https://github.com/rstudio/plumber">plumber</a>, <a href="https://docs.python.org/3/library/logging.html">python logging</a> or <a href="https://logging.apache.org/log4j/2.x/">Apache Log4j</a> will feel at home. User that are proficient with R6 classes will also find it easy to extend and customize lgr, for example with their own appenders Loggers or Appenders.</p>
 <div id="features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#features" class="anchor"></a>Features</h2>
@@ -114,13 +114,13 @@
 <p>To log an <em>event</em> with with lgr we call <code>lgr$&lt;logging function&gt;()</code>. Unnamed arguments to the logging function are interpreted by <code><a href="https://rdrr.io/r/base/sprintf.html">sprintf()</a></code>. For a way to create loggers that <a href="https://glue.tidyverse.org/">glue</a> instead please refer to the vignette.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="va">lgr</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"A critical error"</span><span class="op">)</span>
-<span class="co">#&gt; FATAL [10:55:49.023] A critical error</span>
+<span class="co">#&gt; FATAL [17:25:32.336] A critical error</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"A less severe error"</span><span class="op">)</span>
-<span class="co">#&gt; ERROR [10:55:49.145] A less severe error</span>
+<span class="co">#&gt; ERROR [17:25:32.401] A less severe error</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"A potentially bad situation"</span><span class="op">)</span>
-<span class="co">#&gt; WARN  [10:55:49.202] A potentially bad situation</span>
+<span class="co">#&gt; WARN  [17:25:32.421] A potentially bad situation</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"iris has %s rows"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [10:55:49.217] iris has 150 rows</span>
+<span class="co">#&gt; INFO  [17:25:32.425] iris has 150 rows</span>
 
 <span class="co"># the following log levels are hidden by default</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">debug</span><span class="op">(</span><span class="st">"A debug message"</span><span class="op">)</span>
@@ -130,16 +130,16 @@
 <span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="reference/AppenderFile.html">AppenderFile</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">tf</span>, layout <span class="op">=</span> <span class="va"><a href="reference/LayoutJson.html">LayoutJson</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"cars has %s rows"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [10:55:49.270] cars has 50 rows</span>
+<span class="co">#&gt; INFO  [17:25:32.458] cars has 50 rows</span>
 <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; {"level":400,"timestamp":"2020-10-17 10:55:49","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></pre></div>
+<span class="co">#&gt; {"level":400,"timestamp":"2020-10-17 17:25:32","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></pre></div>
 <p>By passing a named argument to <code>info()</code>, <code>warn()</code>, and co you can log not only text but arbitrary R objects. Not all appenders handle such <em>custom fields</em> perfectly, but JSON does. This way you can create logfiles that are machine as well as (somewhat) human readable.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"loading cars"</span>, <span class="st">"cars"</span>, rows <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [10:55:49.322] loading cars {rows: 50, cols: 2}</span>
+<span class="co">#&gt; INFO  [17:25:32.502] loading cars {rows: 50, cols: 2}</span>
 <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span>
-<span class="co">#&gt; {"level":400,"timestamp":"2020-10-17 10:55:49","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span>
-<span class="co">#&gt; {"level":400,"timestamp":"2020-10-17 10:55:49","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}</span></pre></div>
+<span class="co">#&gt; {"level":400,"timestamp":"2020-10-17 17:25:32","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span>
+<span class="co">#&gt; {"level":400,"timestamp":"2020-10-17 17:25:32","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}</span></pre></div>
 <p>For more examples please see the package <a href="https://s-fleck.github.io/lgr/articles/lgr.html">vignette</a> and <a href="https://s-fleck.github.io/lgr/">documentation</a></p>
 </div>
 <div id="see-lgr-in-action" class="section level2">
@@ -250,9 +250,7 @@
 <a href="#acknowledgement" class="anchor"></a>Acknowledgement</h2>
 <ul>
 <li>
-<a href="https://inkscape.org/">Inkscape</a> for the hex sticker</li>
-<li>
-<a href="https://draw.io/">draw.io</a> for the flow chart in the vignette</li>
+<a href="https://app.diagrams.net/">diagrams.net</a> for the flow chart in the vignette</li>
 </ul>
 </div>
 </div>
