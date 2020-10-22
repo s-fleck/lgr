@@ -134,7 +134,7 @@
 <li><p>added <code><a href="../reference/toString.LogEvent.html">toString.LogEvent()</a></code> for compact representations of LogEvents</p></li>
 <li><p>lgr is now automatically tested for all major R version &gt;= 3.2.0</p></li>
 <li><p>AppenderMemory/AppenderBuffer: <code>flush_threshold</code> is now independent of <code>should_flush</code> function. <code>default_should_flush()</code> is no longer necessary and has been removed.</p></li>
-<li><p>Updated AppenderFileRotating and co for compatibility with <strong>rotor</strong> 0.3.0</p></li>
+<li><p>Updated AppenderFileRotating and co for compatibility with <a href="https://github.com/s-fleck/rotor">rotor</a> 0.3.0</p></li>
 <li><p>Most errors now have appropriate subclasses</p></li>
 <li><p><code>Logger$log()</code> dispatches to all appenders - even if some throw an error - instead of aborting after the first Appender that throws an error</p></li>
 <li><p>complete rewrite of the documentation to use the new roxgen2 features for R6 classes.</p></li>
