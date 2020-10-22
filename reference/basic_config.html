@@ -198,14 +198,14 @@ that logs to a memory buffer, see also <code><a href='simple_logging.html'>show_
 </div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [info] root
 #&gt; 
 #&gt; appenders:
-#&gt;   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/Rtmp410cF0/file2067444ff363
+#&gt;   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/RtmpRPavVY/file20431a4095a8
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>lgr</span><span class='op'>$</span><span class='va'>appenders</span><span class='op'>$</span><span class='va'>file</span><span class='op'>$</span><span class='va'>file</span><span class='op'>)</span>  <span class='co'># cleanup</span>
 
 <span class='fu'>basic_config</span><span class='op'>(</span>file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>"jsonl"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [info] root
 #&gt; 
 #&gt; appenders:
-#&gt;   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/Rtmp410cF0/file2067234d5a2ajsonl
+#&gt;   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/RtmpRPavVY/file204328c29f5jsonl
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>lgr</span><span class='op'>$</span><span class='va'>appenders</span><span class='op'>$</span><span class='va'>file</span><span class='op'>$</span><span class='va'>file</span><span class='op'>)</span>  <span class='co'># cleanup</span>
 
 <span class='co'># log debug messages to a memory buffer</span>
@@ -215,10 +215,10 @@ that logs to a memory buffer, see also <code><a href='simple_logging.html'>show_
 #&gt; appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [info] -&gt; console
 #&gt;   memory : &lt;AppenderBuffer&gt;  [ all] -&gt; 0 child Appenders</div><div class='input'><span class='va'>lgr</span><span class='op'>$</span><span class='fu'>info</span><span class='op'>(</span><span class='st'>"an info message"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO  [07:51:53.589] an info message </div><div class='input'><span class='va'>lgr</span><span class='op'>$</span><span class='fu'>debug</span><span class='op'>(</span><span class='st'>"a hidden message"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; INFO  [11:06:56.609] an info message </div><div class='input'><span class='va'>lgr</span><span class='op'>$</span><span class='fu'>debug</span><span class='op'>(</span><span class='st'>"a hidden message"</span><span class='op'>)</span>
 <span class='fu'><a href='simple_logging.html'>show_log</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO  [07:51:53] an info message
-#&gt; DEBUG [07:51:53] a hidden message</div><div class='input'>
+</div><div class='output co'>#&gt; INFO  [11:06:56] an info message
+#&gt; DEBUG [11:06:56] a hidden message</div><div class='input'>
 <span class='co'># reset to default config</span>
 <span class='fu'>basic_config</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;LoggerRoot&gt; [info] root

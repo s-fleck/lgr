@@ -289,11 +289,11 @@ that should be displayed.</p></dd>
 <span class='op'>)</span>
 
 <span class='va'>lg</span><span class='op'>$</span><span class='fu'>info</span><span class='op'>(</span><span class='st'>"A test message"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO  [07:51:46.701] A test message </div><div class='input'>
+</div><div class='output co'>#&gt; INFO  [11:06:49.621] A test message </div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>default</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "INFO  [2020-10-20 07:51:46.701] A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>fancy</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "[2020-10-20 07:51:46.701] eval(): INFO  A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>json</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2020-10-20 07:51:46\",\"logger\":\"test\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "INFO  [2020-10-22 11:06:49.621] A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>fancy</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "[2020-10-22 11:06:49.621] eval(): INFO  A test message"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>json</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "{\"level\":400,\"timestamp\":\"2020-10-22 11:06:49\",\"logger\":\"test\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</div><div class='input'>
 <span class='co'># cleanup</span>
 <span class='va'>lg</span><span class='op'>$</span><span class='fu'>config</span><span class='op'>(</span><span class='cn'>NULL</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;Logger&gt; [info] test
@@ -311,11 +311,11 @@ that should be displayed.</p></dd>
 <span class='va'>lg</span><span class='op'>$</span><span class='fu'>info</span><span class='op'>(</span><span class='st'>"A test message %s strings"</span>, <span class='st'>"with format strings"</span>, and <span class='op'>=</span> <span class='st'>"custom_fields"</span><span class='op'>)</span>
 
 <span class='va'>lg</span><span class='op'>$</span><span class='va'>appenders</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>$</span><span class='fu'>show</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; {"level":400,"timestamp":"2020-10-20 07:51:46","logger":"test","caller":"eval","msg":"A test message"}
-#&gt; {"level":400,"timestamp":"2020-10-20 07:51:46","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='va'>lg</span><span class='op'>$</span><span class='va'>appenders</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>$</span><span class='va'>data</span>
+</div><div class='output co'>#&gt; {"level":400,"timestamp":"2020-10-22 11:06:49","logger":"test","caller":"eval","msg":"A test message"}
+#&gt; {"level":400,"timestamp":"2020-10-22 11:06:49","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</div><div class='input'><span class='va'>lg</span><span class='op'>$</span><span class='va'>appenders</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>$</span><span class='va'>data</span>
 </div><div class='output co'>#&gt;   level           timestamp logger caller
-#&gt; 1   400 2020-10-20 07:51:46   test   eval
-#&gt; 2   400 2020-10-20 07:51:46   test   eval
+#&gt; 1   400 2020-10-22 11:06:49   test   eval
+#&gt; 2   400 2020-10-22 11:06:49   test   eval
 #&gt;                                          msg           and
 #&gt; 1                             A test message          &lt;NA&gt;
 #&gt; 2 A test message with format strings strings custom_fields</div><div class='input'>
