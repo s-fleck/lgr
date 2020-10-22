@@ -40,7 +40,8 @@
   `should_flush` function. `default_should_flush()` is no longer necessary
   and has been removed.
   
-* Updated AppenderFileRotating and co for compatibility with **rotor** 0.3.0
+* Updated AppenderFileRotating and co for compatibility with 
+  [rotor](https://github.com/s-fleck/rotor) 0.3.0
 
 * Most errors now have appropriate subclasses
 
