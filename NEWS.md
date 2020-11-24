@@ -1,4 +1,4 @@
-# lgr 0.4.0
+# lgr 0.4.1
 
 * Moved more complex Appenders to package 
   [lgrExtra](https://github.com/s-fleck/lgrExtra). This includes database 
@@ -40,7 +40,8 @@
   `should_flush` function. `default_should_flush()` is no longer necessary
   and has been removed.
   
-* Updated AppenderFileRotating and co for compatibility with **rotor** 0.3.0
+* Updated AppenderFileRotating and co for compatibility with 
+  [rotor](https://github.com/s-fleck/rotor) 0.3.0
 
 * Most errors now have appropriate subclasses
 
