@@ -152,6 +152,7 @@ Read a log file written using LayoutFormat</p>
 <dt><code>%k</code></dt><dd><p>the log level, first letter of lowercase <code>character</code> representation</p></dd>
 <dt><code>%K</code></dt><dd><p>the log level, first letter of uppercase <code>character</code> representation</p></dd>
 <dt><code>%n</code></dt><dd><p>the log level, <code>integer</code> representation</p></dd>
+<dt><code>%g</code></dt><dd><p>the name of the logger</p></dd>
 <dt><code>%p</code></dt><dd><p>the PID (process ID). Useful when logging code that uses
 multiple threads.</p></dd>
 <dt><code>%c</code></dt><dd><p>the calling function</p></dd>
@@ -295,7 +296,7 @@ the package <span class="pkg">crayon</span>) passed on on <code><a href='print.L
 <span class='op'>)</span>
 <span class='va'>lo</span> <span class='op'>&lt;-</span> <span class='va'>LayoutFormat</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>lo</span><span class='op'>$</span><span class='fu'>format_event</span><span class='op'>(</span><span class='va'>event</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "ERROR [2020-10-22 11:20:17.370] a test message"</div></pre>
+</div><div class='output co'>#&gt; [1] "ERROR [2020-12-06 16:17:00.075] a test message"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
