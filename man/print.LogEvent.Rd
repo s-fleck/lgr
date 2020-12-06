@@ -59,6 +59,7 @@ Print or Format Logging Data
 \item{\verb{\%k}}{the log level, first letter of lowercase \code{character} representation}
 \item{\verb{\%K}}{the log level, first letter of uppercase \code{character} representation}
 \item{\verb{\%n}}{the log level, \code{integer} representation}
+\item{\verb{\%g}}{the name of the logger}
 \item{\verb{\%p}}{the PID (process ID). Useful when logging code that uses
 multiple threads.}
 \item{\verb{\%c}}{the calling function}

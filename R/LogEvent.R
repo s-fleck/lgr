@@ -264,6 +264,7 @@ as_tibble.LogEvent <- function(
 #'   \item{`%k`}{the log level, first letter of lowercase `character` representation}
 #'   \item{`%K`}{the log level, first letter of uppercase `character` representation}
 #'   \item{`%n`}{the log level, `integer` representation}
+#'   \item{`%g`}{the name of the logger}
 #'   \item{`%p`}{the PID (process ID). Useful when logging code that uses
 #'       multiple threads.}
 #'   \item{`%c`}{the calling function}
