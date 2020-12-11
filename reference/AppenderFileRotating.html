@@ -40,9 +40,8 @@
 
 
 <meta property="og:title" content="Log to a rotating file — AppenderFileRotating" />
-<meta property="og:description" content="An extension of AppenderFile that rotates logfiles based on certain
-conditions. Please refer to the documentation of rotor::rotate() for
-the meanings of the extra arguments" />
+<meta property="og:description" content="Log to a rotating file
+Log to a rotating file" />
 
 
 
@@ -122,13 +121,17 @@ the meanings of the extra arguments" />
     </div>
 
     <div class="ref-description">
-    <p>An extension of <a href='AppenderFile.html'>AppenderFile</a> that rotates logfiles based on certain
-conditions. Please refer to the documentation of <code><a href='https://s-fleck.github.io/rotor/reference/rotate.html'>rotor::rotate()</a></code> for
-the meanings of the extra arguments</p>
+    <p>Log to a rotating file</p>
+<p>Log to a rotating file</p>
     </div>
 
 
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>An extension of <a href='AppenderFile.html'>AppenderFile</a> that rotates logfiles based on certain
+conditions. Please refer to the documentation of <code><a href='https://s-fleck.github.io/rotor/reference/rotate.html'>rotor::rotate()</a></code> for
+the meanings of the extra arguments</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='AppenderFileRotatingDate.html'>AppenderFileRotatingDate</a>, <a href='AppenderFileRotatingTime.html'>AppenderFileRotatingTime</a>, <code><a href='https://s-fleck.github.io/rotor/reference/rotate.html'>rotor::rotate()</a></code></p>
@@ -194,12 +197,13 @@ etc... on the available backups of <code>file</code>.</p></dd>
   max_backups <span class='op'>=</span> <span class='cn'>Inf</span>,
   compression <span class='op'>=</span> <span class='cn'>FALSE</span>,
   backup_dir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span><span class='op'>(</span><span class='va'>file</span><span class='op'>)</span>,
-  create_file <span class='op'>=</span> <span class='cn'>TRUE</span>
+  create_file <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
-<dt><code>age, size, max_backups, fmt, overwrite, compression, backup_dir</code></dt><dd><p>Please see <code><a href='https://s-fleck.github.io/rotor/reference/rotate.html'>rotor::rotate()</a></code> for the meaning of these arguments</p></dd>
+<dt><code>size, max_backups, compression, backup_dir, fmt</code></dt><dd><p>see <code><a href='https://s-fleck.github.io/rotor/reference/rotate.html'>rotor::rotate()</a></code> for the meaning of these arguments. Note that
+<code>fmt</code> corresponds to <code>format</code> and <code>backup_dir</code> to <code>dir</code>.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
