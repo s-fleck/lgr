@@ -4,6 +4,11 @@
 \alias{AppenderFileRotating}
 \title{Log to a rotating file}
 \description{
+Log to a rotating file
+
+Log to a rotating file
+}
+\details{
 An extension of \link{AppenderFile} that rotates logfiles based on certain
 conditions. Please refer to the documentation of \code{\link[rotor:rotate]{rotor::rotate()}} for
 the meanings of the extra arguments
@@ -76,14 +81,15 @@ etc... on the available backups of \code{file}.}
   max_backups = Inf,
   compression = FALSE,
   backup_dir = dirname(file),
-  create_file = TRUE
+  create_file = NULL
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{age, size, max_backups, fmt, overwrite, compression, backup_dir}}{Please see \code{\link[rotor:rotate]{rotor::rotate()}} for the meaning of these arguments}
+\item{\code{size, max_backups, compression, backup_dir, fmt}}{see \code{\link[rotor:rotate]{rotor::rotate()}} for the meaning of these arguments. Note that
+\code{fmt} corresponds to \code{format} and \code{backup_dir} to \code{dir}.}
 }
 \if{html}{\out{</div>}}
 }

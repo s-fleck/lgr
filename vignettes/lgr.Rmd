@@ -785,7 +785,7 @@ lg$appenders$db$show()
 ```
 
 
-## Inject values into LogEvents
+## Adding default extra fields to messages
 
 By abusing Filters, lgr can modify LogEvents as they are processed. One example
 for when this is useful is assigning a grouping identifier to a series of log 
@@ -884,8 +884,6 @@ events will get redirected to the root Logger (see [Inheritance](#hierarchy)).
 ## Creating a Layout that mimics NodeJS Winston logstash
 
 see https://github.com/s-fleck/lgr/issues/29
-
-
 
 
 # References

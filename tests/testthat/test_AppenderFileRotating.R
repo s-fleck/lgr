@@ -407,8 +407,6 @@ test_that("AppenderFileRotatingTime: works with different backup_dir", {
 
 test_that("AppenderFileRotatingTime: `size` and `age` arguments work as expected", {
 
-
-
   #setup
   tf <- file.path(td, "test.log")
   app <- AppenderFileRotatingTime$new(file = tf)$set_age(-1)
@@ -419,11 +417,11 @@ test_that("AppenderFileRotatingTime: `size` and `age` arguments work as expected
   })
 
   # file size to small
-  app$set_size("3 KiB")
+  app$set_size(file.size(tf) + 2)
   app$rotate()
   expect_identical(nrow(app$backups), 0L)
 
-  app$set_size("0.5 KiB")
+  app$set_size(file.size(tf) / 2)
   app$rotate(now = "2999-01-01")
   expect_identical(nrow(app$backups), 1L)
 
@@ -435,4 +433,40 @@ test_that("AppenderFileRotatingTime: `size` and `age` arguments work as expected
 
   app$rotate(now = "2999-01-02")
   expect_identical(nrow(app$backups), 2L)
+})
+
+
+# Issues ------------------------------------------------------------------
+
+test_that("AppenderFileRotatingTime: `size` and `age` arguments work as expected #39", {
+
+  #setup
+  tf <- file.path(td, "test.log")
+  log_dir <- file.path(td, "backups")
+  dir.create(log_dir)
+  app <- AppenderFileRotatingTime$new(
+    file = tf,
+    layout = LayoutJson$new(),
+    age = -1,
+    size = "0.5 kb",
+    max_backups = 5,
+    backup_dir = log_dir,
+    fmt = "%Y-%m-%d",
+    overwrite = FALSE,
+    compression = TRUE,
+    threshold = "info"
+  )
+
+  on.exit({
+    unlink(tf)
+    app$prune(0)
+  })
+
+  lg <- get_logger("test_issue_39")$
+    set_propagate(FALSE)$
+    set_appenders(list(rotating = app))
+
+  for (i in 1:100) {
+    lg$info("test")
+  }
 })

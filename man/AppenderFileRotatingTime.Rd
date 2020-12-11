@@ -87,11 +87,19 @@ with the backups.}
   backup_dir = dirname(file),
   fmt = "\%Y-\%m-\%d--\%H-\%M-\%S",
   overwrite = FALSE,
-  create_file = TRUE,
-  cache_backups = TRUE
+  cache_backups = TRUE,
+  create_file = NULL
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{size, age, max_backups, compression, backup_dir, fmt, overwrite, cache_backups}}{see \code{\link[rotor:rotate]{rotor::rotate_time()}} for the meaning of these arguments. Note that
+\code{fmt} corresponds to \code{format} and \code{backup_dir} to \code{dir}.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-rotate"></a>}}

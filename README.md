@@ -65,13 +65,13 @@ vignette.
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [17:25:32.336] A critical error
+#> FATAL [17:43:04.854] A critical error
 lgr$error("A less severe error")
-#> ERROR [17:25:32.401] A less severe error
+#> ERROR [17:43:04.905] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [17:25:32.421] A potentially bad situation
+#> WARN  [17:43:04.932] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [17:25:32.425] iris has 150 rows
+#> INFO  [17:43:04.940] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
@@ -85,9 +85,9 @@ appender to log to a file with little effort.
 tf <- tempfile()
 lgr$add_appender(AppenderFile$new(tf, layout = LayoutJson$new()))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [17:25:32.458] cars has 50 rows
+#> INFO  [17:43:04.975] cars has 50 rows
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2020-10-17 17:25:32","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2020-12-11 17:43:04","logger":"root","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 By passing a named argument to `info()`, `warn()`, and co you can log
@@ -97,10 +97,10 @@ logfiles that are machine as well as (somewhat) human readable.
 
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [17:25:32.502] loading cars {rows: 50, cols: 2}
+#> INFO  [17:43:05.060] loading cars {rows: 50, cols: 2}
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2020-10-17 17:25:32","logger":"root","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2020-10-17 17:25:32","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
+#> {"level":400,"timestamp":"2020-12-11 17:43:04","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2020-12-11 17:43:05","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
 ```
 
 For more examples please see the package
@@ -135,10 +135,16 @@ file.remove(logfile)
 
 ## Development status
 
-lgr in general is stable and safe for use, but some Appenders are still
-experimental. This especially concerns database appenders which are
-available from the sepparate package
-[lgrExtra](https://github.com/s-fleck/lgrExtra).
+lgr in general is stable and safe for use, but the following features
+are still experimental:
+
+  - Database appenders which are available from the separate package
+    [lgrExtra](https://github.com/s-fleck/lgrExtra).
+  - yaml/json config files for loggers (do not yet support all planned
+    features)
+  - The documentation in general. I’m still hoping for more R6-specific
+    features in [roxygen2](https://github.com/r-lib/roxygen2)) before I
+    invest more time in object documentation.
 
 ## Dependencies
 

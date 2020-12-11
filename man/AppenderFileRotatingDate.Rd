@@ -4,6 +4,11 @@
 \alias{AppenderFileRotatingDate}
 \title{Log to a date-stamped rotating file}
 \description{
+Log to a date-stamped rotating file
+
+Log to a date-stamped rotating file
+}
+\details{
 This is a simpler version of AppenderFileRotatingTime when the timestamps
 do not need to include sub-day accuracy.
 }
@@ -74,11 +79,20 @@ Other Appenders:
   backup_dir = dirname(file),
   fmt = "\%Y-\%m-\%d",
   overwrite = FALSE,
-  create_file = TRUE,
-  cache_backups = TRUE
+  cache_backups = TRUE,
+  create_file = NULL
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{size, age, max_backups, compression, backup_dir, fmt, overwrite, cache_backups}}{see \code{\link[rotor:rotate]{rotor::rotate_date()}} for the meaning of these arguments. Note that
+\code{fmt} corresponds to \code{format} (because \verb{$format} has a special meaning
+for R6 classes).}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

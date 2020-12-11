@@ -146,11 +146,14 @@ file.remove(logfile)
 
 ## Development status
 
-lgr in general is stable and safe for use, but some Appenders are still 
-experimental. This especially concerns database appenders which are available
-from the sepparate package
-[lgrExtra](https://github.com/s-fleck/lgrExtra). 
+lgr in general is stable and safe for use, but **the following features are still experimental**: 
 
+* Database appenders which are available from the separate package
+  [lgrExtra](https://github.com/s-fleck/lgrExtra). 
+* yaml/json config files for loggers (do not yet support all planned features)
+* The documentation in general. I'm still hoping for more R6-specific features
+  in [roxygen2](https://github.com/r-lib/roxygen2) before I invest more
+  time in object documentation.
 
 
 ## Dependencies

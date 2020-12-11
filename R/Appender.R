@@ -966,9 +966,10 @@ AppenderFileRotating <- R6::R6Class(
   inherit = AppenderFile,
   public = list(
 
-    #' @param age,size,max_backups,fmt,overwrite,compression,backup_dir
-    #' Please see [rotor::rotate()] for the meaning of these arguments
-    #  (`fmt` is passed on as `format`).
+    #' @description
+    #' @param  size,max_backups,compression,backup_dir,fmt
+    #'   see [rotor::rotate()] for the meaning of these arguments. Note that
+    #'   `fmt` corresponds to `format` and `backup_dir` to `dir`.
     initialize = function(
       file,
       threshold = NA_integer_,
@@ -979,11 +980,15 @@ AppenderFileRotating <- R6::R6Class(
       max_backups = Inf,
       compression = FALSE,
       backup_dir = dirname(file),
-      create_file = TRUE
+      create_file = NULL
     ){
       assert_namespace("rotor")
 
       if (!file.exists(file))  file.create(file)
+
+      if (length(create_file)){
+        .Deprecated(msg = "The create_file argument is defunct and will be removed from future versions of lgr.")
+      }
 
       private$bq <- rotor::BackupQueueIndex$new(file)
 
@@ -996,7 +1001,7 @@ AppenderFileRotating <- R6::R6Class(
       self$set_max_backups(max_backups)
       self$set_compression(compression)
       self$set_backup_dir(backup_dir)
-      self$set_create_file(create_file)
+      self$set_create_file(TRUE)
 
       self
     },
@@ -1148,6 +1153,12 @@ AppenderFileRotatingTime <- R6::R6Class(
   "AppenderFileRotating",
   inherit = AppenderFileRotating,
   public = list(
+
+
+  #' @description
+  #' @param  size,age,max_backups,compression,backup_dir,fmt,overwrite,cache_backups
+  #'   see [rotor::rotate_time()] for the meaning of these arguments. Note that
+  #'   `fmt` corresponds to `format` and `backup_dir` to `dir`.
     initialize = function(
       file,
       threshold = NA_integer_,
@@ -1161,10 +1172,14 @@ AppenderFileRotatingTime <- R6::R6Class(
       backup_dir = dirname(file),
       fmt = "%Y-%m-%d--%H-%M-%S",
       overwrite = FALSE,
-      create_file = TRUE,
-      cache_backups = TRUE
+      cache_backups = TRUE,
+      create_file = NULL
     ){
       assert_namespace("rotor")
+
+      if (length(create_file)){
+        .Deprecated(msg = "The create_file argument is defunct and will be removed from future versions of lgr.")
+      }
 
       if (!file.exists(file))  file.create(file)
 
@@ -1182,7 +1197,7 @@ AppenderFileRotatingTime <- R6::R6Class(
       self$set_compression(compression)
       self$set_overwrite(overwrite)
       self$set_backup_dir(backup_dir)
-      self$set_create_file(create_file)
+      self$set_create_file(TRUE)
       self$set_cache_backups(cache_backups)
 
       self
@@ -1312,6 +1327,12 @@ AppenderFileRotatingDate <- R6::R6Class(
   inherit = AppenderFileRotatingTime,
   public = list(
 
+
+    #' @description
+    #' @param  size,age,max_backups,compression,backup_dir,fmt,overwrite,cache_backups
+    #'   see [rotor::rotate_date()] for the meaning of these arguments. Note that
+    #'   `fmt` corresponds to `format` (because `$format` has a special meaning
+    #'   for R6 classes).
     initialize = function(
       file,
       threshold = NA_integer_,
@@ -1325,12 +1346,16 @@ AppenderFileRotatingDate <- R6::R6Class(
       backup_dir = dirname(file),
       fmt = "%Y-%m-%d",
       overwrite = FALSE,
-      create_file = TRUE,
-      cache_backups = TRUE
+      cache_backups = TRUE,
+      create_file = NULL
     ){
       assert_namespace("rotor")
 
       if (!file.exists(file))  file.create(file)
+
+      if (length(create_file)){
+        .Deprecated(msg = "The create_file argument is defunct and will be removed from future versions of lgr.")
+      }
 
       private$bq <- rotor::BackupQueueDate$new(file)
 
@@ -1345,7 +1370,7 @@ AppenderFileRotatingDate <- R6::R6Class(
       self$set_max_backups(max_backups)
       self$set_compression(compression)
       self$set_overwrite(overwrite)
-      self$set_create_file(create_file)
+      self$set_create_file(TRUE)
       self$set_backup_dir(backup_dir)
       self$set_cache_backups(cache_backups)
 

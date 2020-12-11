@@ -1,3 +1,7 @@
+# dev
+  * Deprecated the `create_file` argument of `AppenderFileRotating*`. This
+  is now hardcoded to `TRUE` (because `FALSE` doesn't really make sense here).
+
 # lgr 0.4.1
 
 * Moved more complex Appenders to package 
