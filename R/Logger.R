@@ -278,6 +278,7 @@ Logger <- R6::R6Class(
               }
             }, error = function(e) {
               e$appender <- app
+              e$logger <- self
               get("handle_exception", envir = self)(e)
             }
           )
@@ -286,7 +287,10 @@ Logger <- R6::R6Class(
 
         invisible(msg)
       },
-        error = get("handle_exception", envir = self)
+        error = function(e) {
+          e$logger <- self
+          get("handle_exception", envir = self)(e)
+        }
       )
     },
 
@@ -929,7 +933,10 @@ LoggerGlue <- R6::R6Class(
       }
         invisible(msg)
       },
-        error = get("handle_exception", envir = self)
+        error = function(e){
+          e$logger <- self
+          get("handle_exception", envir = self)(e)
+        }
       )
     },
 

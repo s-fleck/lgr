@@ -14,28 +14,28 @@
 #' tryCatch(stop("an error has occurred"), error = default_exception_handler)
 #'
 default_exception_handler <- function(e){
-  ts <- paste0("[", format(Sys.time(), format = "%Y-%m-%d %H:%M:%OS3"), "]")
+  ts <- format(Sys.time(), format = "%Y-%m-%d %H:%M:%OS3")
+  call <- paste(trimws(format(e$call)), collapse = " ")
+  logger <- format(e$logger$name)
 
   if ("appender" %in% names(e)){
-    res <- appendingFailedWarning(
-      paste(ts, paste(class_fmt(e$appender, ignore = c("Filterable", "R6", "Appender")), "encountered an error:", e$message)),
-      error = e
-    )
+    appender <- paste0(class_fmt(e$appender, ignore = c("Filterable", "R6", "Appender")))
+    message <- sprintf("[%s] %s %s ~ error in `%s`: %s", ts, logger, appender, call, e$message)
+    res <- AppenderWarning(message = message, error = e)
+
   } else {
-    res <- loggingFailedWarning(
-      paste(ts, "an error occurred during logging:", e$message),
-      error = e
-    )
+    message <- sprintf("[%s] %s ~ error in `%s`: %s", ts, logger, call, e$message)
+    res <- LoggerWarning(message = message, error = e)
   }
   warning(res)
 }
 
 
 
-appendingFailedWarning <- function(message, class = NULL, call = NULL, ...){
-  warning_condition(
+AppenderWarning <- function(message, class = NULL, call = NULL, ...){
+  LoggerWarning(
     message = message,
-    class = union(class, "appendingFailedWarning"),
+    class = union(class, "AppenderWarning"),
     call = call,
     ...
   )
@@ -43,10 +43,10 @@ appendingFailedWarning <- function(message, class = NULL, call = NULL, ...){
 
 
 
-loggingFailedWarning <- function(message, class = NULL, call = NULL, ...){
+LoggerWarning <- function(message, class = NULL, call = NULL, ...){
   warning_condition(
     message = message,
-    class = union(class, "loggingFailedWarning"),
+    class = union(class, "LoggerWarning"),
     call = call,
     ...
   )

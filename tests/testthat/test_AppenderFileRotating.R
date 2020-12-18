@@ -451,7 +451,6 @@ test_that("AppenderFileRotatingTime: `size` and `age` arguments work as expected
     size = "0.5 kb",
     max_backups = 5,
     backup_dir = log_dir,
-    fmt = "%Y-%m-%d",
     overwrite = FALSE,
     compression = TRUE,
     threshold = "info"
@@ -459,6 +458,7 @@ test_that("AppenderFileRotatingTime: `size` and `age` arguments work as expected
 
   on.exit({
     unlink(tf)
+    unlink(log_dir, recursive = TRUE)
     app$prune(0)
   })
 
@@ -466,7 +466,14 @@ test_that("AppenderFileRotatingTime: `size` and `age` arguments work as expected
     set_propagate(FALSE)$
     set_appenders(list(rotating = app))
 
-  for (i in 1:100) {
+  # push log messages until rotation is triggered, should only take a few iterations
+  for (i in 1:100){
     lg$info("test")
+    if (nrow(lg$appenders$rotating$backups) >= 1)
+      break
   }
+
+  expect_identical(nrow(lg$appenders$rotating$backups), 1L)
+  expect_length(list.files(log_dir), 1)
 })
+

@@ -1,6 +1,9 @@
 # dev
   * Deprecated the `create_file` argument of `AppenderFileRotating*`. This
   is now hardcoded to `TRUE` (because `FALSE` doesn't really make sense here).
+  
+  * `default_exception_handler()` now throws more informative warnings if an
+  error is encountered during logging.
 
 # lgr 0.4.1
 
