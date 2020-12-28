@@ -393,3 +393,13 @@ test_that("Logger$log() dispatches to all appenders, even if some throw an error
   expect_true(any(grepl("test_normal", readLines(tf))))
   expect_true(any(grepl("test_glue", readLines(tf))))
 })
+
+
+
+test_that("lgr error contains useful call object", {
+  l <- get_logger("test")
+  g <- get_logger_glue("testglue")
+
+  expect_warning(l$info("this will fail", e = stop()), "l\\$info")
+  expect_warning(g$info("this will fail", e = stop()), "g\\$info")
+})

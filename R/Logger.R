@@ -289,6 +289,7 @@ Logger <- R6::R6Class(
       },
         error = function(e) {
           e$logger <- self
+          e$call <- sys.call(-5)
           get("handle_exception", envir = self)(e)
         }
       )
@@ -934,6 +935,7 @@ LoggerGlue <- R6::R6Class(
         invisible(msg)
       },
         error = function(e){
+          e$call <- sys.call(-5)
           e$logger <- self
           get("handle_exception", envir = self)(e)
         }
