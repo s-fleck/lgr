@@ -34,7 +34,7 @@ Suggests:
     jsonlite,
     knitr,
     rmarkdown,
-    rotor (>= 0.3.0),
+    rotor (>= 0.3.5),
     rprojroot,
     testthat,
     tibble,
