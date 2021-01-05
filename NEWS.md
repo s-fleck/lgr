@@ -5,6 +5,9 @@
   * `default_exception_handler()` now throws more informative warnings if an
   error is encountered during logging.
 
+  * drop tests for deprecated future plans to ensure compatibility with
+  upcomming versions of future (#43)
+  
 # lgr 0.4.1
 
 * Moved more complex Appenders to package 

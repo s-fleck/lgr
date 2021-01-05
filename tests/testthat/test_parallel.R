@@ -1,8 +1,6 @@
 for (strategy in c(
   "sequential",
-  "transparent",
   "multicore"
-  # "multiprocess",
   # "multisession",
   # "cluster"
 )){
