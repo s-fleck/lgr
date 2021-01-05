@@ -200,6 +200,7 @@ Logger <- R6::R6Class(
       caller = get_caller(-7)
     ){
       if (identical(get("threshold", envir = self), 0L))  return(invisible())
+      LOG_CALL <- sys.call(-1L)  # for error reporting
 
       tryCatch({
         # preconditions
@@ -277,7 +278,7 @@ Logger <- R6::R6Class(
                 get("append", envir = app)(event)
               }
             }, error = function(e) {
-              e$call <- sys.call(-9L)
+              e$call <- LOG_CALL
               e$appender <- app
               e$logger <- self
               get("handle_exception", envir = self)(e)
@@ -290,7 +291,7 @@ Logger <- R6::R6Class(
       },
         error = function(e) {
           e$logger <- self
-          e$call <- sys.call(-5)
+          e$call <- LOG_CALL
           get("handle_exception", envir = self)(e)
         }
       )
@@ -865,6 +866,8 @@ LoggerGlue <- R6::R6Class(
       if (identical(get("threshold", envir = self), 0L))
         return(invisible())
 
+      LOG_CALL <- sys.call(-1L)  # for error reporting
+
       force(.envir)
       tryCatch({
         # preconditions
@@ -927,7 +930,7 @@ LoggerGlue <- R6::R6Class(
                 get("append", envir = app)(event)
               }
             }, error = function(e) {
-              e$call <- sys.call(-9L)
+              e$call <- LOG_CALL
               e$appender <- app
               e$logger <- self
               get("handle_exception", envir = self)(e)
@@ -938,7 +941,7 @@ LoggerGlue <- R6::R6Class(
         invisible(msg)
       },
         error = function(e){
-          e$call <- sys.call(-5)
+          e$call <- LOG_CALL
           e$logger <- self
           get("handle_exception", envir = self)(e)
         }
