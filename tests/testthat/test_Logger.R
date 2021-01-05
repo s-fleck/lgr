@@ -396,10 +396,36 @@ test_that("Logger$log() dispatches to all appenders, even if some throw an error
 
 
 
-test_that("lgr error contains useful call object", {
+test_that("Logger error contains useful call object", {
   l <- get_logger("test")
   g <- get_logger_glue("testglue")
 
   expect_warning(l$info("this will fail", e = stop()), "l\\$info")
   expect_warning(g$info("this will fail", e = stop()), "g\\$info")
 })
+
+
+
+
+
+test_that("Appender error contains useful call object", {
+  l <- get_logger("test")$set_propagate(FALSE)
+  g <- get_logger_glue("testglue")$set_propagate(FALSE)
+
+  AppenderFail <- R6::R6Class(
+    "AppenderFail",
+    inherit = Appender,
+    public = list(
+      append = function(e) stop("bummer")
+    )
+  )
+
+  a <- AppenderFail$new()
+
+  l$add_appender(a, "fail")
+  g$add_appender(a, "fail")
+
+  expect_warning(l$info("this will fail"), ".*AppenderFail.*l\\$info")
+  expect_warning(g$info("this will fail"), ".*AppenderFail.*g\\$info")
+})
+

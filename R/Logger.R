@@ -277,6 +277,7 @@ Logger <- R6::R6Class(
                 get("append", envir = app)(event)
               }
             }, error = function(e) {
+              e$call <- sys.call(-9L)
               e$appender <- app
               e$logger <- self
               get("handle_exception", envir = self)(e)
@@ -926,7 +927,9 @@ LoggerGlue <- R6::R6Class(
                 get("append", envir = app)(event)
               }
             }, error = function(e) {
+              e$call <- sys.call(-9L)
               e$appender <- app
+              e$logger <- self
               get("handle_exception", envir = self)(e)
             }
           )
