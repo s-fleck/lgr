@@ -1,4 +1,5 @@
-# dev
+# lgr 0.4.2
+
   * Deprecated the `create_file` argument of `AppenderFileRotating*`. This
   is now hardcoded to `TRUE` (because `FALSE` doesn't really make sense here).
   
@@ -6,7 +7,8 @@
   error is encountered during logging.
 
   * drop tests for deprecated future plans to ensure compatibility with
-  upcomming versions of future (#43)
+  upcoming versions of future (#43)
+  
   
 # lgr 0.4.1
 
@@ -82,29 +84,29 @@
 
 # lgr 0.3.1
 
-  * Added `logger_tree()` which provides an overview of all registered loggers
-  * Added `print()` and `format()` methods for Appenders
-  * `AppenderMemory`: added `data` and `dt` active fields (which return the
-    log as a data.frame or data.table)
-  * Removed deprecated functions `FATAL()`, `ERROR()`. Use `lgr$fatal()`, 
-    `lgr$error()`, ... instead.
-  * `AppenderMemory`: `$buffer_dt()` and `$show()` now handle custom fields
-    containing atomic vectors correctly
+* Added `logger_tree()` which provides an overview of all registered loggers
+* Added `print()` and `format()` methods for Appenders
+* `AppenderMemory`: added `data` and `dt` active fields (which return the
+  log as a data.frame or data.table)
+* Removed deprecated functions `FATAL()`, `ERROR()`. Use `lgr$fatal()`, 
+  `lgr$error()`, ... instead.
+* `AppenderMemory`: `$buffer_dt()` and `$show()` now handle custom fields
+  containing atomic vectors correctly
 
 
 # lgr 0.3.0
 
-  * Added support for rotating log files via `AppenderFileRotating`, 
-    `AppenderFileRotatingDate` and `AppenderFileRotatingTime`. Requires the
-    package [rotor](https://github.com/s-fleck/rotor).
-  * functions like `show_log()`, `show_data()`,... now accept logger names as
-    well as Logger or Appender objects as `target`.
-  * `AppenderFile$new()` now creates an empty file, or fails if it can't
-  * Improved support for RMariaDB and dropped support for RMySQL
-  * Improved support for RPostgres and dropped support for RPostgreSQL
-  * added `reset` argument to `get_logger()`. This completely resets the
-    configuration of the logger and also replaces special loggers (such as 
-    `LoggerGlue`) with vanilla ones.
+* Added support for rotating log files via `AppenderFileRotating`, 
+  `AppenderFileRotatingDate` and `AppenderFileRotatingTime`. Requires the
+  package [rotor](https://github.com/s-fleck/rotor).
+* functions like `show_log()`, `show_data()`,... now accept logger names as
+  well as Logger or Appender objects as `target`.
+* `AppenderFile$new()` now creates an empty file, or fails if it can't
+* Improved support for RMariaDB and dropped support for RMySQL
+* Improved support for RPostgres and dropped support for RPostgreSQL
+* added `reset` argument to `get_logger()`. This completely resets the
+  configuration of the logger and also replaces special loggers (such as 
+  `LoggerGlue`) with vanilla ones.
 
 
 # lgr 0.2.2
