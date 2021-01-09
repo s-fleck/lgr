@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -117,6 +117,16 @@
       <small>Source: <a href='https://github.com/s-fleck/lgr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="lgr-0-4-2" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.2">
+<a href="#lgr-0-4-2" class="anchor"></a>lgr 0.4.2<small> Unreleased </small>
+</h1>
+<ul>
+<li><p>Deprecated the <code>create_file</code> argument of <code>AppenderFileRotating*</code>. This is now hardcoded to <code>TRUE</code> (because <code>FALSE</code> doesn’t really make sense here).</p></li>
+<li><p><code><a href="../reference/default_exception_handler.html">default_exception_handler()</a></code> now throws more informative warnings if an error is encountered during logging.</p></li>
+<li><p>drop tests for deprecated future plans to ensure compatibility with upcoming versions of future (<a href='https://github.com/s-fleck/lgr/issues/43'>#43</a>)</p></li>
+</ul>
+</div>
     <div id="lgr-0-4-1" class="section level1">
 <h1 class="page-header" data-toc-text="0.4.1">
 <a href="#lgr-0-4-1" class="anchor"></a>lgr 0.4.1<small> 2020-10-20 </small>
