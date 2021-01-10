@@ -1,17 +1,24 @@
 ## Test environments
-* ubuntu 18.04, R 4.0.2
-* ubuntu 16.04 (on travis-ci), R 3.5.2
-* ubuntu 18.04 (remote RStudio server), R 3.6.1
-* win-builder (devel and release)
-* rhub (rhub::check_for_cran())
+- ubuntu 20.10 (R 4.0.2)
+- win-builder (r-devel)
+- R-hub windows-x86_64-devel (r-devel)
+- R-hub ubuntu-gcc-release (r-release)
+- R-hub fedora-clang-devel (r-devel)
 
 
 ## R CMD check results
 
 0 errors | 0 warnings | 0 notes
 
-Major update (see NEWS.md). Fixes CRAN check errors that are due to a breaking 
-update in the companion-package rotor.
+
+## revdepcheck results
+
+We checked 20 reverse dependencies (10 from CRAN + 10 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
+
+ * We saw 0 new problems
+ * We failed to check 0 packages
 
 
-**resubmission:** fixed some outdated URLs that have moved
+## Comments
+
+Maintenance release with minor improvements and fixes
