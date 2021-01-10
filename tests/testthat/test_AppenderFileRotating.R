@@ -452,7 +452,7 @@ test_that("AppenderFileRotatingTime: `size` and `age` arguments work as expected
     max_backups = 5,
     backup_dir = log_dir,
     overwrite = FALSE,
-    compression = TRUE,
+    compression = FALSE,
     threshold = "info"
   )
 
