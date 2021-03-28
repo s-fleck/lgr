@@ -14,7 +14,7 @@ logger_index <- function(){
 
     initialize_implicit_loggers()
     names <- sort(ls(envir = loggers))
-    names <- union("root", names)
+    names <- union("root", names)  # ensure root logger is sorted first
 
     res <- lapply(names, function(logger_name){
         cur_logger <- get_logger(logger_name)
@@ -29,8 +29,6 @@ logger_index <- function(){
         )
     })
 
-
-
     res <- do.call(rbind, res)
     structure(
         res,
@@ -40,13 +38,13 @@ logger_index <- function(){
 
 
 
-#' Initilize all loggers along all logger paths
+#' Initialize all loggers along all logger paths
 #'
-#' Sometimes necessary for things like `logger_index()`
-#' @examples
-#' remove_all_loggers()
-#' get_logger("a/test/logger")
-#' print(ls(loggers))
+#' This is usually not necessary because all loggers along the path are
+#' initialized the first time they are needed (even when printing a
+#' logger!); however, it is sometimes necessary to do this explicitely
+#' when calling `logger_index()`.
+#' @noRd
 initialize_implicit_loggers <- function(){
     names <- sort(ls(envir = loggers))
     for (n in names){
