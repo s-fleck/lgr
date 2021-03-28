@@ -18,7 +18,6 @@ logger_index <- function(){
 
     res <- lapply(names, function(logger_name){
         cur_logger <- get_logger(logger_name)
-        cur_logger <- get_logger(logger_name)
 
         data.frame(
             name = logger_name,
