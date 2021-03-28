@@ -1,3 +1,8 @@
+# lgr dev
+
+* `logger_index()` returns a `data.frame` with metadata on all registered
+  loggers (#47) (thanks @Fuco1)
+
 # lgr 0.4.2
 
 * Deprecated the `create_file` argument of `AppenderFileRotating*`. This

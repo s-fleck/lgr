@@ -1,7 +1,7 @@
 Type: Package
 Package: lgr
 Title: A Fully Featured Logging Framework
-Version: 0.4.2
+Version: 0.4.2.9000
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -64,6 +64,7 @@ Collate:
     'get_logger.R'
     'lgr-package.R'
     'logger_config.R'
+    'logger_index.R'
     'logger_tree.R'
     'read_json_lines.R'
     'simple_logging.R'

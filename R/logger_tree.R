@@ -14,6 +14,10 @@
 #'   LogEvents up the tree.
 #'
 #' @return `data.frame` with subclass `"logger_tree"`
+#'
+#' @seealso [logger_index()] for a tidy `data.frame` representation of
+#'   all registered loggers
+#'
 #' @export
 #'
 #' @examples

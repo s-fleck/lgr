@@ -45,3 +45,7 @@ if (requireNamespace("cli")){
 }
 
 }
+\seealso{
+\code{\link[=logger_index]{logger_index()}} for a tidy \code{data.frame} representation of
+all registered loggers
+}
