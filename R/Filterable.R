@@ -35,7 +35,7 @@ Filterable <- R6::R6Class(
         } else {
           warning(
             "`$filter()` of ", class_fmt(self, c("R6", "Filterable")),
-            " object did not return `TRUE` or `FALSE` but ", preview_object(r),
+            " object did not return `TRUE` or `FALSE` but ", string_repr(r),
             ". Please check its `$filters`", call. = FALSE
           )
         }

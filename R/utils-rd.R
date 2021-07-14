@@ -34,7 +34,7 @@ r6_usage <- function(
       ignore = ignore
     )
   } else {
-    stop("Object ", preview_object(x), "not supported")
+    stop("Object ", string_repr(x), "not supported")
   }
 
 

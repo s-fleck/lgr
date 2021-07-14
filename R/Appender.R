@@ -64,7 +64,7 @@ Appender <- R6::R6Class(
       }
       assert(
         inherits(layout, "Layout"),
-        "`layout` must a `Layout` object, but is ", preview_object(layout)
+        "`layout` must a `Layout` object, but is ", string_repr(layout)
       )
       private$.layout <- layout
       invisible(self)
@@ -261,7 +261,7 @@ AppenderFile <- R6::R6Class(
     set_file = function(file){
       assert(
         is_scalar_character(file),
-        "`file` must be character scalar, not: ", preview_object(file)
+        "`file` must be character scalar, not: ", string_repr(file)
       )
 
       assert(
@@ -1468,7 +1468,7 @@ appender_summary <- function(x){
 default_file_reader <- function(file, threshold, n){
   assert(
     is_scalar_character(file),
-    "`file` must be the path to a file, not ", preview_object(file)
+    "`file` must be the path to a file, not ", string_repr(file)
   )
 
   if (isFALSE(is.na(threshold))){
@@ -1491,7 +1491,7 @@ standardize_should_flush_output <- function(
   } else {
     warning(ValueIsNotBoolWarning(paste0(
       "`$should_flush()` did not return `TRUE` or `FALSE` but ",
-      preview_object(x), ". ",
+      string_repr(x), ". ",
       "Please set a valid filter function with `$set_should_flush()`."
     )))
     FALSE

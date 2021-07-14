@@ -2,6 +2,9 @@
 
 * `logger_index()` returns a `data.frame` with metadata on all registered
   loggers (#47) (thanks @Fuco1)
+* export new `string_repr()` generic that is used to layout R objects for 
+  formatted log message output (#48, thanks @mmuurr)
+
 
 # lgr 0.4.2
 

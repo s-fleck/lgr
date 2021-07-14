@@ -240,7 +240,7 @@ isFALSE <- function(x){
 last_n <- function(x, n){
   assert(
     is_n0(n),
-    "`n` must be a postive integer >= 0, not ", preview_object(n)
+    "`n` must be a postive integer >= 0, not ", string_repr(n)
   )
 
   len <- length(x)

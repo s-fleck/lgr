@@ -245,7 +245,7 @@ assert_filter <- function(x){
     stop(ObjectIsNoFilterError(paste0(
       "`", deparse(substitute(x)), "` ",
       "is not a function with the single argument `event` or an EventFilter, ",
-      "but ", preview_object(x), ". See ?is_filter."
+      "but ", string_repr(x), ". See ?is_filter."
     )
   ))
 }

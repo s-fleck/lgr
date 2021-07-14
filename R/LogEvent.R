@@ -411,7 +411,7 @@ format.LogEvent <- function(
 #' toString(LogEvent$new(logger = lgr::lgr))
 toString.LogEvent <- function(x, ...){
   paste(
-    paste0("$", names(x$values), ": ", vapply(x$values, function(.) preview_object(.), character(1L))),
+    paste0("$", names(x$values), ": ", vapply(x$values, function(.) string_repr(.), character(1L))),
     collapse = ", "
   )
 }
@@ -473,7 +473,7 @@ format_custom_fields <- function(
 
   res <- lapply(
     x,
-    preview_object,
+    string_repr,
     width = max_len, brackets = brackets, dots = dots, quotes = c("", "")
   )
 
