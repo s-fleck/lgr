@@ -7,7 +7,7 @@ test_that("logging conditions works", {
   ln <- get_logger("test")
   lg <- get_logger_glue("test_glue")
 
-  e <- errorCondition("blahblah")
+  e <- error("blahblah")
 
   ln$fatal(e, conditon = e)
 
