@@ -2,6 +2,24 @@ context("Logger")
 
 
 
+test_that("logging conditions works", {
+
+  ln <- get_logger("test")
+  lg <- get_logger_glue("test_glue")
+
+  e <- errorCondition("blahblah")
+
+  ln$fatal(e, conditon = e)
+
+  expect_match(ln$fatal(e), "blahblah")
+  expect_match(lg$fatal(e, "this is <{it}>", e, it = 1, conditon = e), "blahblahthis is <1>blahblah")
+
+  lg$fatal(e)
+
+
+})
+
+
 
 test_that("set_threshold()", {
   ml <- Logger$new("test_logger")
@@ -313,11 +331,11 @@ test_that("LoggerGlue supports custom fields", {
 
   expect_output(
     l$fatal("blah", "blubb", foo = "bar"),
-    "blahblubb.*bar\\}"
+    ".*blahblubb.*bar.*\\}"
   )
   expect_output(
     l$fatal("blah", "blubb {fizz}", foo = "bar", fizz = "buzz"),
-    "buzz.*\\{foo.*bar.*fizz.*buzz\\}$"
+    "buzz.*foo.*bar.*fizz.*buzz.*"
   )
 
   expect_output(l$fatal("a", .open = "{", .foo = "bar", fizz = "buzz"))

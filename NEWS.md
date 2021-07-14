@@ -4,6 +4,8 @@
   loggers (#47) (thanks @Fuco1)
 * export new `string_repr()` generic that is used to layout R objects for 
   formatted log message output (#48, thanks @mmuurr)
+* The `$log()` method of Logger and LoggerGlue now unpacks conditons (except
+  if they are supplied as a named argument) (#45, thanks @mmuurr)
 
 
 # lgr 0.4.2

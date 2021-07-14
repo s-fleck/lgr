@@ -23,7 +23,7 @@ string_repr(x, width = 32, ...)
 
 \item{width}{a scalar integer}
 
-\item{...}{}
+\item{...}{passed on to methods}
 }
 \value{
 a \code{scalar} character

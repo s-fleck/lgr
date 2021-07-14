@@ -6,7 +6,7 @@
 #'
 #' @param x Any \R object.
 #' @param width a scalar integer
-#' @param ...
+#' @param ... passed on to methods
 #'
 #' @return a `scalar` character
 #' @export

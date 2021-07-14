@@ -452,7 +452,7 @@ format_custom_fields <- function(
 ){
   if (!length(x)) return("")
 
-  max_len <- max(512 / length(x) - sum(nchar(names(x))), 16)
+  max_len <- floor(max(512 / length(x) - sum(nchar(names(x))), 16))
 
   braces   <- c("{", "}")
   brackets <- c("[", "]")
@@ -465,16 +465,14 @@ format_custom_fields <- function(
     style_accent <- identity
   } else {
     braces   <- style_subtle(braces)
-    brackets <- style_subtle(brackets)
     colon    <- style_subtle(colon)
     comma    <- style_subtle(comma)
-    dots     <- style_subtle("..")
   }
 
   res <- lapply(
     x,
     string_repr,
-    width = max_len, brackets = brackets, dots = dots, quotes = c("", "")
+    width = max_len
   )
 
   paste0(
@@ -482,7 +480,7 @@ format_custom_fields <- function(
     paste(
       style_accent(names(res)), colon, res,
       sep = "",
-      collapse  = comma
+      collapse = comma
     ),
     braces[[2L]]
   )

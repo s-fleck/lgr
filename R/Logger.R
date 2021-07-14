@@ -219,7 +219,12 @@ Logger <- R6::R6Class(
         }
 
         # init
-        msg <- as.character(msg)
+        if (inherits(msg, "condition")){
+          msg <- conditionMessage(msg)
+        } else {
+          msg <- as.character(msg)
+        }
+
         force(caller)
 
         if (missing(...)){
@@ -877,7 +882,21 @@ LoggerGlue <- R6::R6Class(
           "Can only utilize vectorized logging if log level is the same for all entries"
         )
 
-        msg <- glue::glue(..., .envir = .envir)
+        dots <- list(...)
+        sel <- names(dots) == ""
+        if (!length(sel)){
+          sel <- seq_along(dots)
+        }
+
+        dots[sel] <- lapply(dots[sel], function(e){
+          if (inherits(e, "condition")){
+            conditionMessage(e)
+          } else {
+            as.character(e)
+          }
+        })
+
+        msg <- do.call(glue::glue, args = c(dots, list(.envir = .envir)))
 
         # Check if LogEvent should be created
         if (
