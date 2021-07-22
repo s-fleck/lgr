@@ -198,13 +198,13 @@ rows in the result (rather than a single list-column row). This defaults to
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>lg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span><span class='op'>(</span><span class='st'>"test"</span><span class='op'>)</span>
 <span class='va'>lg</span><span class='op'>$</span><span class='fu'>info</span><span class='op'>(</span><span class='st'>"lorem ipsum"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO  [09:32:49.309] lorem ipsum </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='va'>lg</span><span class='op'>$</span><span class='va'>last_event</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; INFO  [09:35:41.178] lorem ipsum </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='va'>lg</span><span class='op'>$</span><span class='va'>last_event</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   level           timestamp logger caller         msg
-#&gt; 1   400 2021-07-22 09:32:49   test   eval lorem ipsum</div><div class='input'>
+#&gt; 1   400 2021-07-22 09:35:41   test   eval lorem ipsum</div><div class='input'>
 <span class='va'>lg</span><span class='op'>$</span><span class='fu'>info</span><span class='op'>(</span><span class='st'>"LogEvents can store any custom log values"</span>, df <span class='op'>=</span> <span class='va'>iris</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO  [09:32:49.314] LogEvents can store any custom log values {df: &lt;data.frame 150x5&gt;}</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='va'>lg</span><span class='op'>$</span><span class='va'>last_event</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; INFO  [09:35:41.183] LogEvents can store any custom log values {df: &lt;data.frame 150x5&gt;}</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='va'>lg</span><span class='op'>$</span><span class='va'>last_event</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   level           timestamp logger caller
-#&gt; 1   400 2021-07-22 09:32:49   test   eval
+#&gt; 1   400 2021-07-22 09:35:41   test   eval
 #&gt;                                         msg           df
 #&gt; 1 LogEvents can store any custom log values c(5.1, 4....</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='va'>lg</span><span class='op'>$</span><span class='va'>last_event</span><span class='op'>)</span><span class='op'>$</span><span class='va'>df</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
@@ -218,69 +218,69 @@ rows in the result (rather than a single list-column row). This defaults to
 
 <span class='co'># by default non-scalars are boxed</span>
 <span class='va'>lg</span><span class='op'>$</span><span class='fu'>info</span><span class='op'>(</span><span class='st'>"letters"</span>, letters <span class='op'>=</span> <span class='va'>letters</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO  [09:32:49.323] letters {letters: (a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z)}</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='va'>lg</span><span class='op'>$</span><span class='va'>last_event</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; INFO  [09:35:41.191] letters {letters: (a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z)}</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='va'>lg</span><span class='op'>$</span><span class='va'>last_event</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   level           timestamp logger caller     msg      letters
-#&gt; 1   400 2021-07-22 09:32:49   test   eval letters a, b, c,....</div><div class='input'>
+#&gt; 1   400 2021-07-22 09:35:41   test   eval letters a, b, c,....</div><div class='input'>
 <span class='co'># this behaviour can be modified by supplying a custom boxing function</span>
 <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='va'>lg</span><span class='op'>$</span><span class='va'>last_event</span>, box_if <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;    level           timestamp logger caller     msg letters
-#&gt; 1    400 2021-07-22 09:32:49   test   eval letters       a
-#&gt; 2    400 2021-07-22 09:32:49   test   eval letters       b
-#&gt; 3    400 2021-07-22 09:32:49   test   eval letters       c
-#&gt; 4    400 2021-07-22 09:32:49   test   eval letters       d
-#&gt; 5    400 2021-07-22 09:32:49   test   eval letters       e
-#&gt; 6    400 2021-07-22 09:32:49   test   eval letters       f
-#&gt; 7    400 2021-07-22 09:32:49   test   eval letters       g
-#&gt; 8    400 2021-07-22 09:32:49   test   eval letters       h
-#&gt; 9    400 2021-07-22 09:32:49   test   eval letters       i
-#&gt; 10   400 2021-07-22 09:32:49   test   eval letters       j
-#&gt; 11   400 2021-07-22 09:32:49   test   eval letters       k
-#&gt; 12   400 2021-07-22 09:32:49   test   eval letters       l
-#&gt; 13   400 2021-07-22 09:32:49   test   eval letters       m
-#&gt; 14   400 2021-07-22 09:32:49   test   eval letters       n
-#&gt; 15   400 2021-07-22 09:32:49   test   eval letters       o
-#&gt; 16   400 2021-07-22 09:32:49   test   eval letters       p
-#&gt; 17   400 2021-07-22 09:32:49   test   eval letters       q
-#&gt; 18   400 2021-07-22 09:32:49   test   eval letters       r
-#&gt; 19   400 2021-07-22 09:32:49   test   eval letters       s
-#&gt; 20   400 2021-07-22 09:32:49   test   eval letters       t
-#&gt; 21   400 2021-07-22 09:32:49   test   eval letters       u
-#&gt; 22   400 2021-07-22 09:32:49   test   eval letters       v
-#&gt; 23   400 2021-07-22 09:32:49   test   eval letters       w
-#&gt; 24   400 2021-07-22 09:32:49   test   eval letters       x
-#&gt; 25   400 2021-07-22 09:32:49   test   eval letters       y
-#&gt; 26   400 2021-07-22 09:32:49   test   eval letters       z</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='va'>lg</span><span class='op'>$</span><span class='va'>last_event</span>, cols_expand <span class='op'>=</span> <span class='st'>"letters"</span><span class='op'>)</span>
+#&gt; 1    400 2021-07-22 09:35:41   test   eval letters       a
+#&gt; 2    400 2021-07-22 09:35:41   test   eval letters       b
+#&gt; 3    400 2021-07-22 09:35:41   test   eval letters       c
+#&gt; 4    400 2021-07-22 09:35:41   test   eval letters       d
+#&gt; 5    400 2021-07-22 09:35:41   test   eval letters       e
+#&gt; 6    400 2021-07-22 09:35:41   test   eval letters       f
+#&gt; 7    400 2021-07-22 09:35:41   test   eval letters       g
+#&gt; 8    400 2021-07-22 09:35:41   test   eval letters       h
+#&gt; 9    400 2021-07-22 09:35:41   test   eval letters       i
+#&gt; 10   400 2021-07-22 09:35:41   test   eval letters       j
+#&gt; 11   400 2021-07-22 09:35:41   test   eval letters       k
+#&gt; 12   400 2021-07-22 09:35:41   test   eval letters       l
+#&gt; 13   400 2021-07-22 09:35:41   test   eval letters       m
+#&gt; 14   400 2021-07-22 09:35:41   test   eval letters       n
+#&gt; 15   400 2021-07-22 09:35:41   test   eval letters       o
+#&gt; 16   400 2021-07-22 09:35:41   test   eval letters       p
+#&gt; 17   400 2021-07-22 09:35:41   test   eval letters       q
+#&gt; 18   400 2021-07-22 09:35:41   test   eval letters       r
+#&gt; 19   400 2021-07-22 09:35:41   test   eval letters       s
+#&gt; 20   400 2021-07-22 09:35:41   test   eval letters       t
+#&gt; 21   400 2021-07-22 09:35:41   test   eval letters       u
+#&gt; 22   400 2021-07-22 09:35:41   test   eval letters       v
+#&gt; 23   400 2021-07-22 09:35:41   test   eval letters       w
+#&gt; 24   400 2021-07-22 09:35:41   test   eval letters       x
+#&gt; 25   400 2021-07-22 09:35:41   test   eval letters       y
+#&gt; 26   400 2021-07-22 09:35:41   test   eval letters       z</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='va'>lg</span><span class='op'>$</span><span class='va'>last_event</span>, cols_expand <span class='op'>=</span> <span class='st'>"letters"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;    level           timestamp logger caller     msg letters
-#&gt; 1    400 2021-07-22 09:32:49   test   eval letters       a
-#&gt; 2    400 2021-07-22 09:32:49   test   eval letters       b
-#&gt; 3    400 2021-07-22 09:32:49   test   eval letters       c
-#&gt; 4    400 2021-07-22 09:32:49   test   eval letters       d
-#&gt; 5    400 2021-07-22 09:32:49   test   eval letters       e
-#&gt; 6    400 2021-07-22 09:32:49   test   eval letters       f
-#&gt; 7    400 2021-07-22 09:32:49   test   eval letters       g
-#&gt; 8    400 2021-07-22 09:32:49   test   eval letters       h
-#&gt; 9    400 2021-07-22 09:32:49   test   eval letters       i
-#&gt; 10   400 2021-07-22 09:32:49   test   eval letters       j
-#&gt; 11   400 2021-07-22 09:32:49   test   eval letters       k
-#&gt; 12   400 2021-07-22 09:32:49   test   eval letters       l
-#&gt; 13   400 2021-07-22 09:32:49   test   eval letters       m
-#&gt; 14   400 2021-07-22 09:32:49   test   eval letters       n
-#&gt; 15   400 2021-07-22 09:32:49   test   eval letters       o
-#&gt; 16   400 2021-07-22 09:32:49   test   eval letters       p
-#&gt; 17   400 2021-07-22 09:32:49   test   eval letters       q
-#&gt; 18   400 2021-07-22 09:32:49   test   eval letters       r
-#&gt; 19   400 2021-07-22 09:32:49   test   eval letters       s
-#&gt; 20   400 2021-07-22 09:32:49   test   eval letters       t
-#&gt; 21   400 2021-07-22 09:32:49   test   eval letters       u
-#&gt; 22   400 2021-07-22 09:32:49   test   eval letters       v
-#&gt; 23   400 2021-07-22 09:32:49   test   eval letters       w
-#&gt; 24   400 2021-07-22 09:32:49   test   eval letters       x
-#&gt; 25   400 2021-07-22 09:32:49   test   eval letters       y
-#&gt; 26   400 2021-07-22 09:32:49   test   eval letters       z</div><div class='input'>
+#&gt; 1    400 2021-07-22 09:35:41   test   eval letters       a
+#&gt; 2    400 2021-07-22 09:35:41   test   eval letters       b
+#&gt; 3    400 2021-07-22 09:35:41   test   eval letters       c
+#&gt; 4    400 2021-07-22 09:35:41   test   eval letters       d
+#&gt; 5    400 2021-07-22 09:35:41   test   eval letters       e
+#&gt; 6    400 2021-07-22 09:35:41   test   eval letters       f
+#&gt; 7    400 2021-07-22 09:35:41   test   eval letters       g
+#&gt; 8    400 2021-07-22 09:35:41   test   eval letters       h
+#&gt; 9    400 2021-07-22 09:35:41   test   eval letters       i
+#&gt; 10   400 2021-07-22 09:35:41   test   eval letters       j
+#&gt; 11   400 2021-07-22 09:35:41   test   eval letters       k
+#&gt; 12   400 2021-07-22 09:35:41   test   eval letters       l
+#&gt; 13   400 2021-07-22 09:35:41   test   eval letters       m
+#&gt; 14   400 2021-07-22 09:35:41   test   eval letters       n
+#&gt; 15   400 2021-07-22 09:35:41   test   eval letters       o
+#&gt; 16   400 2021-07-22 09:35:41   test   eval letters       p
+#&gt; 17   400 2021-07-22 09:35:41   test   eval letters       q
+#&gt; 18   400 2021-07-22 09:35:41   test   eval letters       r
+#&gt; 19   400 2021-07-22 09:35:41   test   eval letters       s
+#&gt; 20   400 2021-07-22 09:35:41   test   eval letters       t
+#&gt; 21   400 2021-07-22 09:35:41   test   eval letters       u
+#&gt; 22   400 2021-07-22 09:35:41   test   eval letters       v
+#&gt; 23   400 2021-07-22 09:35:41   test   eval letters       w
+#&gt; 24   400 2021-07-22 09:35:41   test   eval letters       x
+#&gt; 25   400 2021-07-22 09:35:41   test   eval letters       y
+#&gt; 26   400 2021-07-22 09:35:41   test   eval letters       z</div><div class='input'>
 <span class='co'># The `msg` argument of a log event is always vectorized</span>
 <span class='va'>lg</span><span class='op'>$</span><span class='fu'>info</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a vectorized"</span>, <span class='st'>"log message"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO  [09:32:49.332] a vectorized 
-#&gt; INFO  [09:32:49.332] log message </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='va'>lg</span><span class='op'>$</span><span class='va'>last_event</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; INFO  [09:35:41.200] a vectorized 
+#&gt; INFO  [09:35:41.200] log message </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='va'>lg</span><span class='op'>$</span><span class='va'>last_event</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   level    timestamp logger caller msg.c..a.vectorized....log.message..
 #&gt; 1   400 2021-07-....   test   eval                         a vectorized
 #&gt; 2   400 2021-07-....   test   eval                          log message
