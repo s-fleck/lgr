@@ -263,7 +263,7 @@ condition <- function(message, class, call = NULL, ...) {
 
 
 
-error <- function(message, class, call = NULL, ...) {
+error <- function(message, class = NULL, call = NULL, ...) {
   structure(
     class = union(class, c("error", "condition")),
     list(message = message, call = call, ...)
