@@ -13,10 +13,6 @@ test_that("logging conditions works", {
 
   expect_match(ln$fatal(e), "blahblah")
   expect_match(lg$fatal(e, "this is <{it}>", e, it = 1, conditon = e), "blahblahthis is <1>blahblah")
-
-  lg$fatal(e)
-
-
 })
 
 
