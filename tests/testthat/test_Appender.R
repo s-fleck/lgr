@@ -166,7 +166,7 @@ test_that("AppenderConsole: $append() works", {
   app <- AppenderConsole$new()
   expect_match(
     capture.output(app$append(x)),
-    "ERROR .*:19:33.* foo bar"
+    "ERROR.*:19:33.*foo.*bar"
   )
 })
 

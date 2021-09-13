@@ -3,13 +3,13 @@ context("Logger")
 
 
 test_that("logging conditions works", {
+  ln <- get_logger("test")$
+    config(NULL)$
+    set_propagate(FALSE)
 
-  ln <- get_logger("test")
-  lg <- get_logger_glue("test_glue")
-
-  e <- error("blahblah")
-
-  ln$fatal(e, conditon = e)
+  lg <- get_logger_glue("test_glue")$
+    config(NULL)$
+    set_propagate(FALSE)
 
   expect_match(ln$fatal(e), "blahblah")
   expect_match(lg$fatal(e, "this is <{it}>", e, it = 1, conditon = e), "blahblahthis is <1>blahblah")
