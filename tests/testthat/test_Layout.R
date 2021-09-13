@@ -4,7 +4,7 @@ context("Layout")
 tevent <- LogEvent$new(
   logger = Logger$new("dummy"),
   level = 200L,
-  timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
+  timestamp = as.POSIXct(1541175573.9308, origin = "1970-01-01", tz = "UTC"),
   caller = NA_character_,
   msg = "foo bar"
 )
@@ -72,7 +72,7 @@ test_that("LayoutJson works as expected", {
   expect_identical(tres[["level"]], eres[["level"]])
   expect_identical(tres[["msg"]], eres[["msg"]])
   expect_identical(tres[["caller"]], eres[["caller"]])
-  expect_equal(as.POSIXct(tres[["timestamp"]]), eres[["timestamp"]], tolerance = 1)
+  expect_equal(as.POSIXct(tres[["timestamp"]], tz = "UTC"), eres[["timestamp"]], tolerance = 1)
   expect_equal(tres[["foo"]], "bar")
 })
 
@@ -92,3 +92,4 @@ test_that("formatting timestamps with LayoutJson works", {
   lo$set_timestamp_fmt("%H:%M:%S..%OS")
   expect_match(lo$format_event(x), format(x$timestamp, "%H:%M:%S..%OS"))
 })
+
