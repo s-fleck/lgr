@@ -21,8 +21,8 @@ matrix:
   - r: 3.5
   - r: 3.4
   - r: 3.3
-r_github_packages:
-  - s-fleck/lgrExtra  # for building the documentation that has links to lgrExtra
 sudo: false
+r_packages:
+  - lgrExtra
 after_success:
   - Rscript -e 'devtools::install();devtools::test()'

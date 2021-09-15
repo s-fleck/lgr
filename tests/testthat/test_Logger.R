@@ -3,6 +3,8 @@ context("Logger")
 
 
 test_that("logging conditions works", {
+  e <- error("blahblah")
+
   ln <- get_logger("test")$
     config(NULL)$
     set_propagate(FALSE)

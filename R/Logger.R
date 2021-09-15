@@ -1044,7 +1044,7 @@ is_Logger <- function(x){
 #'
 #'
 #' @param x any \R Object
-#' @param color `TRUE` or `FALSE`: Output with color? Requi<- the Package
+#' @param color `TRUE` or `FALSE`: Output with color? Requires the Package
 #'   **crayon**
 #' @param ... ignored
 #'

@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{any \R Object}
 
-\item{color}{\code{TRUE} or \code{FALSE}: Output with color? Requi<- the Package
+\item{color}{\code{TRUE} or \code{FALSE}: Output with color? Requires the Package
 \strong{crayon}}
 
 \item{...}{ignored}
