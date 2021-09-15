@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -117,6 +117,17 @@
       <small>Source: <a href='https://github.com/s-fleck/lgr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="lgr-0-4-3" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.3">
+<a href="#lgr-0-4-3" class="anchor"></a>lgr 0.4.3<small> Unreleased </small>
+</h1>
+<ul>
+<li><p><code><a href="../reference/logger_index.html">logger_index()</a></code> returns a <code>data.frame</code> with metadata on all registered loggers (<a href='https://github.com/s-fleck/lgr/issues/47'>#47</a>) (thanks <a href='https://github.com/Fuco1'>@Fuco1</a>)</p></li>
+<li><p>export new <code><a href="../reference/string_repr.html">string_repr()</a></code> generic that is used to layout R objects for formatted log message output (<a href='https://github.com/s-fleck/lgr/issues/48'>#48</a>, thanks <a href='https://github.com/mmuurr'>@mmuurr</a>)</p></li>
+<li><p>The <code>$log()</code> method of Logger and LoggerGlue now unpacks conditons (except if they are supplied as a named argument) (<a href='https://github.com/s-fleck/lgr/issues/45'>#45</a>, thanks <a href='https://github.com/mmuurr'>@mmuurr</a>)</p></li>
+<li><p>Fix some timezone related tests for CRAN</p></li>
+</ul>
+</div>
     <div id="lgr-0-4-2" class="section level1">
 <h1 class="page-header" data-toc-text="0.4.2">
 <a href="#lgr-0-4-2" class="anchor"></a>lgr 0.4.2<small> 2021-01-10 </small>
