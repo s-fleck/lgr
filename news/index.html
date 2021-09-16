@@ -124,7 +124,7 @@
 <ul>
 <li><p><code><a href="../reference/logger_index.html">logger_index()</a></code> returns a <code>data.frame</code> with metadata on all registered loggers (<a href='https://github.com/s-fleck/lgr/issues/47'>#47</a>) (thanks <a href='https://github.com/Fuco1'>@Fuco1</a>)</p></li>
 <li><p>export new <code><a href="../reference/string_repr.html">string_repr()</a></code> generic that is used to layout R objects for formatted log message output (<a href='https://github.com/s-fleck/lgr/issues/48'>#48</a>, thanks <a href='https://github.com/mmuurr'>@mmuurr</a>)</p></li>
-<li><p>The <code>$log()</code> method of Logger and LoggerGlue now unpacks conditons (except if they are supplied as a named argument) (<a href='https://github.com/s-fleck/lgr/issues/45'>#45</a>, thanks <a href='https://github.com/mmuurr'>@mmuurr</a>)</p></li>
+<li><p>The <code>$log()</code> method of Logger and LoggerGlue now unpacks conditions (except if they are supplied as a named argument) (<a href='https://github.com/s-fleck/lgr/issues/45'>#45</a>, thanks <a href='https://github.com/mmuurr'>@mmuurr</a>)</p></li>
 <li><p>Fix some timezone related tests for CRAN</p></li>
 </ul>
 </div>
@@ -158,7 +158,7 @@
 <li><p>Updated AppenderFileRotating and co for compatibility with <a href="https://github.com/s-fleck/rotor">rotor</a> 0.3.0</p></li>
 <li><p>Most errors now have appropriate subclasses</p></li>
 <li><p><code>Logger$log()</code> dispatches to all appenders - even if some throw an error - instead of aborting after the first Appender that throws an error</p></li>
-<li><p>complete rewrite of the documentation to use the new roxgen2 features for R6 classes.</p></li>
+<li><p>complete rewrite of the documentation to use the new roxygen2 features for R6 classes.</p></li>
 </ul>
 </div>
     <div id="lgr-0-3-4" class="section level1">

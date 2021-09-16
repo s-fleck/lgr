@@ -484,15 +484,15 @@ to <code><a href='get_logger.html'>get_logger("foo/bar/baz")</a></code></p></dd>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># lgr::lgr is the root logger that is always available</span>
 <span class='va'>lgr</span><span class='op'>$</span><span class='fu'>info</span><span class='op'>(</span><span class='st'>"Today is a good day"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO  [11:17:15.273] Today is a good day </div><div class='input'><span class='va'>lgr</span><span class='op'>$</span><span class='fu'>fatal</span><span class='op'>(</span><span class='st'>"This is a serious error"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; FATAL [11:17:15.275] This is a serious error </div><div class='input'>
+</div><div class='output co'>#&gt; INFO  [05:09:26.081] Today is a good day </div><div class='input'><span class='va'>lgr</span><span class='op'>$</span><span class='fu'>fatal</span><span class='op'>(</span><span class='st'>"This is a serious error"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; FATAL [05:09:26.083] This is a serious error </div><div class='input'>
 <span class='co'># Loggers use sprintf() for string formatting by default</span>
 <span class='va'>lgr</span><span class='op'>$</span><span class='fu'>info</span><span class='op'>(</span><span class='st'>"Today is %s"</span>, <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO  [11:17:15.276] Today is 2021-09-15 </div><div class='input'>
+</div><div class='output co'>#&gt; INFO  [05:09:26.084] Today is 2021-09-16 </div><div class='input'>
 <span class='co'># If no unnamed `...` are present, msg is not passed through sprintf()</span>
 <span class='va'>lgr</span><span class='op'>$</span><span class='fu'>fatal</span><span class='op'>(</span><span class='st'>"100% bad"</span><span class='op'>)</span>  <span class='co'># so this works</span>
-</div><div class='output co'>#&gt; FATAL [11:17:15.277] 100% bad </div><div class='input'><span class='va'>lgr</span><span class='op'>$</span><span class='fu'>fatal</span><span class='op'>(</span><span class='st'>"%s%% bad"</span>, <span class='fl'>100</span><span class='op'>)</span>  <span class='co'># if you use unnamed arguments, you must escape %</span>
-</div><div class='output co'>#&gt; FATAL [11:17:15.279] 100% bad </div><div class='input'>
+</div><div class='output co'>#&gt; FATAL [05:09:26.085] 100% bad </div><div class='input'><span class='va'>lgr</span><span class='op'>$</span><span class='fu'>fatal</span><span class='op'>(</span><span class='st'>"%s%% bad"</span>, <span class='fl'>100</span><span class='op'>)</span>  <span class='co'># if you use unnamed arguments, you must escape %</span>
+</div><div class='output co'>#&gt; FATAL [05:09:26.087] 100% bad </div><div class='input'>
 <span class='co'># You can create new loggers with get_logger()</span>
 <span class='va'>tf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>lg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span><span class='op'>(</span><span class='st'>"mylogger"</span><span class='op'>)</span><span class='op'>$</span><span class='fu'>set_appenders</span><span class='op'>(</span><span class='va'><a href='AppenderFile.html'>AppenderFile</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span><span class='op'>)</span>
@@ -501,8 +501,8 @@ to <code><a href='get_logger.html'>get_logger("foo/bar/baz")</a></code></p></dd>
 <span class='co'># logger, which is by default the root logger. This is why the following</span>
 <span class='co'># writes not only the file 'tf', but also to the console.</span>
 <span class='va'>lg</span><span class='op'>$</span><span class='fu'>fatal</span><span class='op'>(</span><span class='st'>"blubb"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; FATAL [11:17:15.283] blubb </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "FATAL [2021-09-15 11:17:15.283] blubb"</div><div class='input'>
+</div><div class='output co'>#&gt; FATAL [05:09:26.091] blubb </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "FATAL [2021-09-16 05:09:26.091] blubb"</div><div class='input'>
 <span class='co'># This logger's print() method depicts this relationship.</span>
 <span class='va'>child</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span><span class='op'>(</span><span class='st'>"lg/child"</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>child</span><span class='op'>)</span>
@@ -515,10 +515,10 @@ to <code><a href='get_logger.html'>get_logger("foo/bar/baz")</a></code></p></dd>
 <span class='va'>tf2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>lg</span><span class='op'>$</span><span class='fu'>add_appender</span><span class='op'>(</span><span class='va'><a href='AppenderFile.html'>AppenderFile</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>tf2</span>, layout <span class='op'>=</span> <span class='va'><a href='LayoutJson.html'>LayoutJson</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>lg</span><span class='op'>$</span><span class='fu'>info</span><span class='op'>(</span><span class='st'>"Not all %s support custom fields"</span>, <span class='st'>"appenders"</span>, type <span class='op'>=</span> <span class='st'>"test"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO  [11:17:15.292] Not all appenders support custom fields {type: `test`}</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>"\n"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; FATAL [2021-09-15 11:17:15.283] blubb
-#&gt; INFO  [2021-09-15 11:17:15.292] Not all appenders support custom fields</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>tf2</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>"\n"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; {"level":400,"timestamp":"2021-09-15 11:17:15","logger":"mylogger","caller":"eval","msg":"Not all appenders support custom fields","type":"test"}</div><div class='input'>
+</div><div class='output co'>#&gt; INFO  [05:09:26.100] Not all appenders support custom fields {type: `test`}</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>"\n"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; FATAL [2021-09-16 05:09:26.091] blubb
+#&gt; INFO  [2021-09-16 05:09:26.100] Not all appenders support custom fields</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>tf2</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>"\n"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; {"level":400,"timestamp":"2021-09-16 05:09:26","logger":"mylogger","caller":"eval","msg":"Not all appenders support custom fields","type":"test"}</div><div class='input'>
 <span class='co'># cleanup</span>
 <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>tf</span>, <span class='va'>tf2</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>lg</span><span class='op'>$</span><span class='fu'>config</span><span class='op'>(</span><span class='cn'>NULL</span><span class='op'>)</span>  <span class='co'># reset logger config</span>
@@ -541,8 +541,8 @@ to <code><a href='get_logger.html'>get_logger("foo/bar/baz")</a></code></p></dd>
   <span class='fu'><a href='get_logger.html'>get_logger</a></span><span class='op'>(</span><span class='st'>"glue"</span>, reset <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
 <span class='op'>}</span>
-</div><div class='output co'>#&gt; FATAL [11:17:15.301] blah fizz is set to: buzz {foo: `bar`, fizz: `buzz`}
-#&gt; FATAL [11:17:15.334] blah fizz is set to: buzz {foo: `bar`}</div><div class='output co'>#&gt; &lt;Logger&gt; [info] glue
+</div><div class='output co'>#&gt; FATAL [05:09:26.110] blah fizz is set to: buzz {foo: `bar`, fizz: `buzz`}
+#&gt; FATAL [05:09:26.145] blah fizz is set to: buzz {foo: `bar`}</div><div class='output co'>#&gt; &lt;Logger&gt; [info] glue
 #&gt; 
 #&gt; inherited appenders:
 #&gt;   console: &lt;AppenderConsole&gt; [all] -&gt; console</div><div class='input'>
@@ -605,7 +605,7 @@ Logger:
 
 <span class='va'>lg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_logger.html'>get_logger</a></span><span class='op'>(</span><span class='st'>"test"</span><span class='op'>)</span>
 <span class='va'>lg</span><span class='op'>$</span><span class='fu'>list_log</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>level <span class='op'>=</span> <span class='fl'>400</span>, msg <span class='op'>=</span> <span class='st'>"example"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO  [11:17:15.354] example </div><div class='input'>
+</div><div class='output co'>#&gt; INFO  [05:09:26.165] example </div><div class='input'>
 <span class='co'>## ------------------------------------------------</span>
 <span class='co'>## Method `Logger$add_appender`</span>
 <span class='co'>## ------------------------------------------------</span>
@@ -629,7 +629,7 @@ Logger:
 <span class='co'>## ------------------------------------------------</span>
 
 <span class='va'>lgr</span><span class='op'>$</span><span class='fu'>info</span><span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span><span class='op'>(</span><span class='st'>"this produces a warning instead of an error"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: [2021-09-15 11:17:15.371] root ~ error in `lgr$info(stop("this produces a warning instead of an error"))`: this produces a warning instead of an error</span></div></pre>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: [2021-09-16 05:09:26.183] root ~ error in `lgr$info(stop("this produces a warning instead of an error"))`: this produces a warning instead of an error</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
