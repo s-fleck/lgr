@@ -15,3 +15,5 @@ We checked 7 reverse dependencies (4 from CRAN + 3 from Bioconductor), comparing
 
 Maintenance release with minor improvements and fixes (including a timezone
 issue that trigger CRAN errors on mcOS)
+
+Resubmission: Fixed some urls

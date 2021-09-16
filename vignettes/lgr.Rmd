@@ -890,4 +890,4 @@ see https://github.com/s-fleck/lgr/issues/29
 
 [Python Logging](https://docs.python.org/3/library/logging.html)
 
-[Eric Stenbock: The True Story of A Vampire](http://gutenberg.net.au/ebooks06/0606601h.html)
+[Eric Stenbock: The True Story of A Vampire](https://gutenberg.net.au/ebooks06/0606601h.html)
