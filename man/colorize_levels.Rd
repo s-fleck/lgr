@@ -4,7 +4,11 @@
 \alias{colorize_levels}
 \title{Colorize Levels}
 \usage{
-colorize_levels(x, colors = getOption("lgr.colors", NULL))
+colorize_levels(
+  x,
+  colors = getOption("lgr.colors", NULL),
+  transform = identity
+)
 }
 \arguments{
 \item{x}{\code{numeric} or \code{character} levels to be colored. Unlike in many other
@@ -14,6 +18,8 @@ comfortable to use \code{colorize_levels()} inside formatting functions.}
 
 \item{colors}{A \code{list} of \code{functions} that will be used to color the
 log levels (likely from \link[crayon:crayon]{crayon::crayon}).}
+
+\item{transform}{a \code{function} to transform \code{x} (for example \code{toupper()})}
 }
 \value{
 a \code{character} vector wit color ANSI codes
@@ -24,6 +30,7 @@ Colorize Levels
 \examples{
 cat(colorize_levels(c(100, 200)))
 cat(colorize_levels(c("trace", "warn ", "DEBUG")))
+cat(colorize_levels(c("trace", "warn ", "DEBUG"), transform = function(x) strtrim(x, 1) ))
 }
 \seealso{
 Other formatting utils: 

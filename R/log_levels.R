@@ -152,6 +152,7 @@ fmt_log_levels <- function(
 #'   functions in lgr, `character` levels are *not* case sensitive in this
 #'   function and leading/trailing whitespace is ignored to make it more
 #'   comfortable to use `colorize_levels()` inside formatting functions.
+#' @param transform a `function` to transform `x` (for example `toupper()`)
 #' @inheritParams format.LogEvent
 #'
 #' @return a `character` vector wit color ANSI codes
@@ -161,9 +162,11 @@ fmt_log_levels <- function(
 #' @examples
 #' cat(colorize_levels(c(100, 200)))
 #' cat(colorize_levels(c("trace", "warn ", "DEBUG")))
+#' cat(colorize_levels(c("trace", "warn ", "DEBUG"), transform = function(x) strtrim(x, 1) ))
 colorize_levels <- function(
   x,
-  colors = getOption("lgr.colors", NULL)
+  colors = getOption("lgr.colors", NULL),
+  transform = identity
 ){
   if (length(x) && length(colors)){
     if (is.character(x))
@@ -174,7 +177,7 @@ colorize_levels <- function(
     cn <- standardize_log_levels( tolower(names(colors)))
     for (i in seq_along(colors)){
       sel <- dd == cn[[i]]
-      x[sel] <- colors[[i]](x[sel])
+      x[sel] <- colors[[i]](transform(x[sel]))
     }
   }
 

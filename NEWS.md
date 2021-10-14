@@ -1,3 +1,9 @@
+#lgr (dev)
+
+* `%k` and `%K` parameters in `format.LogEvent` now work as expected when using
+  **crayon** terminal colours (#52).
+  
+
 # lgr 0.4.3
 
 * `logger_index()` returns a `data.frame` with metadata on all registered
