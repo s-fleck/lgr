@@ -244,7 +244,7 @@ LayoutGlue <- R6::R6Class(
   inherit = Layout,
   public = list(
     initialize = function(
-      fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)} [{timestamp}] msg"
+      fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)} [{timestamp}] {msg}"
     ){
       assert_namespace("glue")
       self$set_fmt(fmt)
