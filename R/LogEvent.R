@@ -388,14 +388,23 @@ format.LogEvent <- function(
       "%g" = get("logger", envir = x),
       "%p" = Sys.getpid(),
       "%f" = format_custom_fields(get_custom_fields(x), color = length(colors)),
-      "%j" = jsonlite::toJSON(get_custom_fields(x), auto_unbox = TRUE),
+      "%j" = format_custom_fields_json(get_custom_fields(x)),
       tokens[[i]]
     )
   }
 
-  do.call(paste0, res)
+  sub("[ \t\r]*$", "", do.call(paste0, res))
 }
 
+
+
+format_custom_fields_json <- function(x){
+  if (length(x)){
+    jsonlite::toJSON(x, auto_unbox = TRUE)
+  } else {
+    ""
+  }
+}
 
 
 

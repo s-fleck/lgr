@@ -136,6 +136,28 @@ test_that("AppenderFile$data throws an error", {
 })
 
 
+
+
+
+test_that("AppenderFile: creates empty log file on init", {
+  tf <- tempfile()
+  on.exit(unlink(tf))
+
+  app <- AppenderFile$new(file = file.path(tf))
+
+  lg <-
+    get_logger("lgr/testAppenderFileCreatesEmptyLogFile")$
+    set_appenders(app)$
+    set_propagate(FALSE)
+
+  lg$fatal("foo", foo = "bar")
+
+  res <- app$show()
+
+  expect_match(res, '"bar"}')
+})
+
+
 # AppenderJson ------------------------------------------------------------
 
 test_that("AppenderJson: AppenderFile with LayoutJson$show() and $data() work", {

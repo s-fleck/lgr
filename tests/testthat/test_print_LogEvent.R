@@ -69,3 +69,27 @@ test_that("toString.LogEvent works as expected", {
 
   toString(x)
 })
+
+
+test_that("toString.LogEvent without custom fields does not end in whitespace", {
+  event_without_field <- LogEvent$new(
+    logger = lgr::lgr,
+    msg = "lorem skjdghsad akjsgh asdgjh asdgjshadk gklsd."
+  )
+  res <- format(event_without_field, fmt = "%m  %f", colors = NULL)
+  expect_identical(
+    substr(res, nchar(res), nchar(res)),
+    "."
+  )
+
+  event_with_field <- LogEvent$new(
+    logger = lgr::lgr,
+    msg = "lorem skjdghsad akjsgh asdgjh asdgjshadk gklsd.",
+    foo = "bar"
+  )
+  res <- format(event_with_field, fmt = "msg  %f", colors = NULL)
+  expect_identical(
+    substr(res, nchar(res), nchar(res)),
+    "}"
+  )
+})

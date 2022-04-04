@@ -80,7 +80,7 @@ LayoutFormat <- R6::R6Class(
   inherit = Layout,
   public = list(
     initialize = function(
-      fmt = "%L [%t] %m",
+      fmt = "%L [%t] %m %j",
       timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
       colors = NULL,
       pad_levels = "right"
