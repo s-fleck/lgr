@@ -2,6 +2,8 @@
 
 * `%k` and `%K` parameters in `format.LogEvent` now work as expected when using
   **crayon** terminal colours (#52).
+* Fix default format string for `LayoutGlue` which was using `msg` 
+  instead of `{msg}` (#54, thx @mmuurr)  
   
 
 # lgr 0.4.3
