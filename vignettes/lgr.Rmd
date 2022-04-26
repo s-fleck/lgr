@@ -135,9 +135,9 @@ while AppenderFile does not.
 
 
 
-### Custom Fields
+### Structured Logging (custom fields)
 
-Unlike many others Loggers for R, lgr treats a  *LogEvent* as a unit of data,
+lgr treats a  *LogEvent* as a unit of data,
 not just a message with a timestamp. A log event can contain arbitrary data,
 though not all Appenders can handle that well. The JSON appender we added
 above is particularly good at handling most R objects.
@@ -189,10 +189,7 @@ of the logging process.
   a message, the name of the calling function, and a 
   [reference](https://adv-r.hadley.nz/r6.html#r6-semantics]) to the Logger
   that created it. In addition, a LogEvent can contain any number of custom
-  fields, but not all Appenders/Layouts support custom fields. For example
-  if you use `AppenderFormat` with `LayoutFormat` you can only use the standard 
-  fields in your log message, while `LayoutJson` supports custom fields in 
-  a quite natural manner. See [examples 1 & 2](#examples)
+  fields. See [examples 1 & 2](#examples)
 
 
 ### On R6 classes
@@ -305,10 +302,9 @@ function (as opposed as to parameters to `sprintf()`, which are passed as
 unnamed arguments). It is up to the Appender whether to process them further or 
 not. 
 
-You should consider making use of custom fields liberally and using output
+You should consider making use of structured logging liberally and using output
 formats that support them (such as JSON), rather than producing elaborately 
-formatted but hard to parse log messages. If you ever want to analyse your 
-log data, you will thank me for this tip.
+formatted but hard to parse log messages.
 
 ```{r}
 # bad

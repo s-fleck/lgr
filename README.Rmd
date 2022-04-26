@@ -50,7 +50,7 @@ Appenders.
   want to be able to configure logging on a per-package basis.
 * An *arbitrary number of appenders* for each logger. A single logger can write
   to the console, a logfile, a database, etc... .
-* Allow for *custom fields* in log events. As opposed to many other logging 
+* Support for structured logging. As opposed to many other logging 
   packages for R a log event is not just a message with a timestamp, but an
   object that can contain arbitrary data fields. This is useful for producing 
   machine readable logs.
@@ -98,7 +98,7 @@ cat(readLines(tf))
 ```
 
 By passing a named argument to `info()`, `warn()`, and co you can log not only 
-text but arbitrary R objects. Not all appenders handle such _custom fields_
+text but arbitrary R objects. Not all appenders support structured logging
 perfectly, but JSON does. This way you can create 
 logfiles that are machine as well as (somewhat) human readable.
 
