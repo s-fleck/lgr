@@ -307,9 +307,10 @@ AppenderFile <- R6::R6Class(
     #' @field file `character` scalar. path to the log file
     file = function() private$.file,
 
-    #' @field data `character` scalar. Contents of `file` parsed to a
+    #' @field data `data.frame`. Contents of `file` parsed to a
     #' `data.frame` if used with a [Layout] that supports parsing of log
-    #' file data (notably [LayoutJson]).
+    #' file data (notably [LayoutJson]). Will throw an error if `Layout` does
+    #' not support parsing.
     data = function(){
       parser <- self$layout$parse
 

@@ -68,7 +68,7 @@ Other Layouts:
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutGlue$new(
-  fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)} [{timestamp}] msg"
+  fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)} [{timestamp}] {msg}"
 )}\if{html}{\out{</div>}}
 }
 

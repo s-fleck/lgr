@@ -113,7 +113,7 @@ the package \pkg{crayon}) passed on on \code{\link[=format.LogEvent]{format.LogE
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$new(
-  fmt = "\%L [\%t] \%m",
+  fmt = "\%L [\%t] \%m \%j",
   timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3",
   colors = NULL,
   pad_levels = "right"

@@ -82,9 +82,10 @@ Other Appenders:
 \describe{
 \item{\code{file}}{\code{character} scalar. path to the log file}
 
-\item{\code{data}}{\code{character} scalar. Contents of \code{file} parsed to a
+\item{\code{data}}{\code{data.frame}. Contents of \code{file} parsed to a
 \code{data.frame} if used with a \link{Layout} that supports parsing of log
-file data (notably \link{LayoutJson}).}
+file data (notably \link{LayoutJson}). Will throw an error if \code{Layout} does
+not support parsing.}
 
 \item{\code{data}}{\code{character} scalar. Like \verb{$data}, but returns a \code{data.table}
 instead (requires the \strong{data.table} package).}
