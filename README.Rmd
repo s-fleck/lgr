@@ -210,6 +210,9 @@ have minimal dependencies, and are well maintained :
     
   - [Rsyslog](https://cran.r-project.org/package=rsyslog) for logging to
     syslog on POSIX-compatible systems.
+    
+  - [elastic](https://cran.r-project.org/package=elastic) for logging
+    to ElasticSearch
   
   Other extra features:
   
