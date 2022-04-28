@@ -20,8 +20,6 @@ basic_config()  # ensure default config
 
 [![CRAN status](https://www.r-pkg.org/badges/version/lgr)](https://cran.r-project.org/package=lgr)
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
-[![Travis build status](https://travis-ci.com/s-fleck/lgr.svg?branch=master)](https://app.travis-ci.com/github/s-fleck/lgr)
-[![Codecov test coverage](https://codecov.io/gh/s-fleck/lgr/branch/master/graph/badge.svg)](https://codecov.io/gh/s-fleck/lgr?branch=master)
 
 lgr is a logging package for R built on the back of 
 [R6](https://github.com/r-lib/R6) classes. It is designed to be flexible,

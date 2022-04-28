@@ -7,10 +7,6 @@
 status](https://www.r-pkg.org/badges/version/lgr)](https://cran.r-project.org/package=lgr)
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
-[![Travis build
-status](https://travis-ci.com/s-fleck/lgr.svg?branch=master)](https://app.travis-ci.com/github/s-fleck/lgr)
-[![Codecov test
-coverage](https://codecov.io/gh/s-fleck/lgr/branch/master/graph/badge.svg)](https://codecov.io/gh/s-fleck/lgr?branch=master)
 
 lgr is a logging package for R built on the back of
 [R6](https://github.com/r-lib/R6) classes. It is designed to be
@@ -37,10 +33,10 @@ Appenders.
     basis.
 -   An *arbitrary number of appenders* for each logger. A single logger
     can write to the console, a logfile, a database, etc… .
--   Allow for *custom fields* in log events. As opposed to many other
-    logging packages for R a log event is not just a message with a
-    timestamp, but an object that can contain arbitrary data fields.
-    This is useful for producing machine readable logs.
+-   Support for structured logging. As opposed to many other logging
+    packages for R a log event is not just a message with a timestamp,
+    but an object that can contain arbitrary data fields. This is useful
+    for producing machine readable logs.
 -   *Vectorized* logging (so `lgr$fatal(capture.output(iris))` works)
 -   Lightning fast *in-memory logs* for interactive use.
 -   Appenders that write logs to a wide range of destinations:
@@ -65,13 +61,14 @@ vignette.
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [09:46:45.461] A critical error
+#> FATAL [09:29:52.755] A critical error
 lgr$error("A less severe error")
-#> ERROR [09:46:45.701] A less severe error
+#> ERROR [09:29:52.777] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [09:46:45.852] A potentially bad situation
+#> WARN  [09:29:52.784] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [09:46:45.880] iris has 150 rows
+#> INFO  [09:29:52.785] iris has 150 rows
+
 # the following log levels are hidden by default
 lgr$debug("A debug message")
 lgr$trace("A finer grained debug message")
@@ -84,22 +81,23 @@ appender to log to a file with little effort.
 tf <- tempfile()
 lgr$add_appender(AppenderFile$new(tf, layout = LayoutJson$new()))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [09:46:45.959] cars has 50 rows
+#> INFO  [09:29:52.805] cars has 50 rows
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2021-09-16 09:46:45","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2022-04-28 09:29:52","logger":"root","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 By passing a named argument to `info()`, `warn()`, and co you can log
-not only text but arbitrary R objects. Not all appenders handle such
-*custom fields* perfectly, but JSON does. This way you can create
+not only text but arbitrary R objects. Not all appenders support
+structured logging perfectly, but JSON does. This way you can create
 logfiles that are machine as well as (somewhat) human readable.
 
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> INFO  [09:46:46.095] loading cars {rows: 50, cols: 2}
+#> Warning in (function (fmt, ...) : one argument not used by format 'loading cars'
+#> INFO  [09:29:52.832] loading cars {rows: `50`, cols: `2`}
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2021-09-16 09:46:45","logger":"root","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2021-09-16 09:46:46","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
+#> {"level":400,"timestamp":"2022-04-28 09:29:52","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2022-04-28 09:29:52","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
 ```
 
 For more examples please see the package
