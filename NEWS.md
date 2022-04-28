@@ -1,4 +1,4 @@
-#lgr (dev)
+# lgr (dev)
 
 * `%k` and `%K` parameters in `format.LogEvent` now work as expected when using
   **crayon** terminal colours (#52).
