@@ -9,6 +9,10 @@
 * Update docs to use the more common term "structured logging" instead of 
   "custom fields" where appropriate
 
+* `as_event_list.data.frame` now really returns a list of `LogEvents`
+
+* added `as_LogEvent()` to coerce various event-like objects to `LogEvents`
+
 
 # lgr 0.4.3
 

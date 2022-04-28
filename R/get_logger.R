@@ -97,8 +97,7 @@ get_logger_glue <- function(
       "'%s' must be an unconfigured <Logger> or a <LoggerGlue>. You can use
       `get_logger('%s')$config(NULL)` to reset its configuration.",
       name,
-      name,
-      class(res)[[1]]
+      name
     )
   )
 

@@ -34,6 +34,7 @@ lg$config(NULL)  # reset logger config
 \code{\link[=as.data.frame.LogEvent]{as.data.frame.LogEvent()}}
 
 Other docs relevant for extending lgr: 
+\code{\link{as_LogEvent}()},
 \code{\link{event_list}()},
 \code{\link{standardize_threshold}()}
 }

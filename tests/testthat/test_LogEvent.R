@@ -74,3 +74,38 @@ for (nm in names(as_funs)){
     expect_identical(nrow(res$df[[2]]), 150L)
   })
 }
+
+
+
+
+
+test_that("as_LogEvent.list and as_LogEvent.data.frame work", {
+
+  ts <- Sys.time()
+
+  l <- list(
+    level = 100,
+    msg = "blah",
+    timestamp = ts,
+    caller = NA,
+    foo = "bar"
+  )
+
+  Sys.sleep(1)
+  expect_identical(as_LogEvent(l)$timestamp, l$timestamp)
+  expect_s3_class(as_LogEvent(l), "LogEvent")
+  expect_s3_class(as_LogEvent(as.data.frame(l)), "LogEvent")
+
+
+  l <- list(
+    level = 100,
+    msg = "blah",
+    `@timestamp` = ts,
+    caller = NA,
+    foo = "bar"
+  )
+
+  expect_identical(as_LogEvent(l)[["timestamp"]], l[["@timestamp"]])
+  expect_s3_class(as_LogEvent(l), "LogEvent")
+  expect_s3_class(as_LogEvent(as.data.frame(l)), "LogEvent")
+})

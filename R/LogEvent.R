@@ -131,6 +131,64 @@ LogEvent <- R6::R6Class(
 
 # coercion ---------------------------------------------------
 
+#' Coerce objects to LogEvent
+#'
+#' Smartly coerce \R objects that look like LogEvents to LogEvents. Mainly
+#' useful for developing Appenders.
+#'
+#' **Note**: `as_LogEvent.data.frame()` only supports single-row `data.frames`
+#'
+#' @param x any supported \R object
+#' @param ... currently ignored
+#'
+#' @return a [LogEvent]
+#' @family docs relevant for extending lgr
+#' @export
+as_LogEvent <- function(x, ...){
+  UseMethod("as_LogEvent")
+}
+
+
+
+
+#' @rdname as_LogEvent
+#' @export
+as_LogEvent.list <- function(x, ...){
+
+  if (is.null(x[["logger"]])){
+    x[["logger"]] <- get_logger()
+  }
+
+  # smartly rename timestamp fields from ElasticSearch/Logstash
+  if (!"timestamp" %in% names(x) && "@timestamp" %in% names(x)){
+    names(x)[names(x) == "@timestamp"] <- "timestamp"
+  }
+
+  x[["level"]] <- standardize_log_level(x[["level"]])
+
+  do.call(LogEvent$new, x)
+}
+
+
+
+
+#' @rdname as_LogEvent
+#' @export
+as_LogEvent.data.frame <- function(
+  x,
+  ...
+){
+  assert(
+    identical(nrow(x), 1L),
+    "`as_LogEvent()` only supports single-row data.frames. Try `as_event_list()` instead"
+  )
+
+  as_LogEvent(unclass(x))
+}
+
+
+
+
 #' Coerce LogEvents to Data Frames
 #'
 #' Coerce LogEvents to `data.frames`, [`data.tables`][data.table::data.table],

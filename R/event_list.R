@@ -115,8 +115,7 @@ as_event_list.data.frame <- function(
         for (j in rev(seq_along(dd))) if (is.na(dd[[j]])) dd[[j]] <- NULL
       }
 
-      r <- as.environment(c(dd, x[i, ][[".fields"]][[1]]))
-      r[["values"]] <- rev(as.list(r))
+      r <- as_LogEvent(c(dd, x[i, ][[".fields"]][[1]]))
       r
     }
   ),

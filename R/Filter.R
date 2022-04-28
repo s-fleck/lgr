@@ -205,7 +205,7 @@ is_filter <- function(
   x
 ){
   if (is.function(x)){
-    identical(names(formals(x)), c("event"))
+    identical(names(formals(x)), "event")
   } else {
     # the extra is.function is to prevent infinite recursions
     "filter" %in% names(x) &&

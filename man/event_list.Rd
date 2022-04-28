@@ -84,6 +84,7 @@ as_event_list(e, scalarize = TRUE)
 \seealso{
 Other docs relevant for extending lgr: 
 \code{\link{LogEvent}},
+\code{\link{as_LogEvent}()},
 \code{\link{standardize_threshold}()}
 }
 \concept{docs relevant for extending lgr}

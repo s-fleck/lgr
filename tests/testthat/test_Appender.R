@@ -152,8 +152,6 @@ test_that("AppenderFile: creates empty log file on init", {
 
   lg$fatal("foo", foo = "bar")
 
-  res <- app$show()
-
   expect_match(res, '"bar"}')
 })
 
