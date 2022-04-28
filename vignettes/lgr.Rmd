@@ -1,5 +1,5 @@
 ---
-title: "Yet Another Log4j Inspired Logging Framework"
+title: "lgr: A fully featured logging framework for R"
 author: "Stefan Fleck"
 date: "`r Sys.Date()`"
 output: 

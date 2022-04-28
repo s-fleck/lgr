@@ -40,6 +40,7 @@ reference:
   contents:
   - LogEvent
   - as.data.frame.LogEvent
+  - as_event_list
   - print.LogEvent
 - title: Filters
   desc: Filter events passed to Appenders or Loggers
