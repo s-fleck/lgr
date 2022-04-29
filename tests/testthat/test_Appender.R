@@ -1,7 +1,7 @@
 context("Appender")
 
 
-x <- LogEvent$new(
+event <- LogEvent$new(
   logger = Logger$new("dummy"),
   level = 200L,
   timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
@@ -15,7 +15,7 @@ x <- LogEvent$new(
 # Appender --------------------------------------------------------------------
 test_that("Appender: $append() works", {
   app <- Appender$new()
-  expect_match(app$append(x), "foo bar")
+  expect_match(app$append(event), "foo bar")
 })
 
 
@@ -42,8 +42,8 @@ test_that("AppenderFile: logging with LayoutFormat", {
   on.exit(unlink(tf))
 
   app <- AppenderFile$new(file = tf)
-  app$append(x)
-  app$append(x)
+  app$append(event)
+  app$append(event)
   res <- readLines(tf)
   expect_true(grepl("foo", res[[1]]))
   expect_true(grepl("bar", res[[2]]))
@@ -56,10 +56,10 @@ test_that("AppenderFile: logging with LayoutJson", {
   on.exit(unlink(tf))
 
   app <- AppenderFile$new(file = tf, layout = LayoutJson$new())
-  app$append(x)
-  app$append(x)
+  app$append(event)
+  app$append(event)
   tres <- read_json_lines(tf)
-  eres <- data.table::rbindlist(list(x$values, x$values))
+  eres <- data.table::rbindlist(list(event$values, event$values))
 
   expect_identical(tres[["level"]], eres[["level"]])
   expect_identical(tres[["msg"]], eres[["msg"]])
@@ -143,7 +143,7 @@ test_that("AppenderFile: creates empty log file on init", {
   tf <- tempfile()
   on.exit(unlink(tf))
 
-  app <- AppenderFile$new(file = file.path(tf))
+  app <- AppenderFile$new(file = tf)
 
   lg <-
     get_logger("lgr/testAppenderFileCreatesEmptyLogFile")$
@@ -152,6 +152,7 @@ test_that("AppenderFile: creates empty log file on init", {
 
   lg$fatal("foo", foo = "bar")
 
+  res <- readLines(tf)
   expect_match(res, '"bar"}')
 })
 
@@ -166,7 +167,7 @@ test_that("AppenderJson: AppenderFile with LayoutJson$show() and $data() work", 
   app <- AppenderFile$new(file = tf, layout = LayoutJson$new())
 
   for (i in 1:10)
-    app$append(x)
+    app$append(event)
 
   # show shows the correct number of lines
   r <- utils::capture.output(app$show(n = 3))
@@ -185,7 +186,7 @@ test_that("AppenderJson: AppenderFile with LayoutJson$show() and $data() work", 
 test_that("AppenderConsole: $append() works", {
   app <- AppenderConsole$new()
   expect_match(
-    capture.output(app$append(x)),
+    capture.output(app$append(event)),
     "ERROR.*:19:33.*foo.*bar"
   )
 })
@@ -195,9 +196,9 @@ test_that("AppenderConsole: $append() works", {
 
 test_that("AppenderConsole: $filter() works", {
   app1 <- AppenderConsole$new()
-  expect_true(app1$filter(x))
+  expect_true(app1$filter(event))
   app1$set_filters(list(function(event) FALSE))
-  expect_false(app1$filter(x))
+  expect_false(app1$filter(event))
 })
 
 

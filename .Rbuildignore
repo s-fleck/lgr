@@ -16,3 +16,4 @@
 ^docs$
 ^\.httr-oauth$
 ^revdep$
+^.github$
