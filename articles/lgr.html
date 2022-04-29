@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Yet Another Log4j Inspired Logging Framework • lgr</title>
+<title>lgr: A fully featured logging framework for R • lgr</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Yet Another Log4j Inspired Logging Framework">
+<script src="../pkgdown.js"></script><meta property="og:title" content="lgr: A fully featured logging framework for R">
 <meta property="og:description" content="lgr">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3.9001</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/lgr.html">Get started</a>
 </li>
@@ -55,7 +51,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/s-fleck/lgr/">
+  <a href="https://github.com/s-fleck/lgr/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -70,150 +66,153 @@
 
       
 
-      </header><div class="row">
+      </header><script src="lgr_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Yet Another Log4j Inspired Logging Framework</h1>
-                        <h4 class="author">Stefan Fleck</h4>
+      <h1 data-toc-skip>lgr: A fully featured logging framework for R</h1>
+                        <h4 data-toc-skip class="author">Stefan Fleck</h4>
             
-            <h4 class="date">2021-09-16</h4>
+            <h4 data-toc-skip class="date">2022-04-29</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/s-fleck/lgr/blob/master/vignettes/lgr.Rmd"><code>vignettes/lgr.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/s-fleck/lgr/blob/HEAD/vignettes/lgr.Rmd" class="external-link"><code>vignettes/lgr.Rmd</code></a></small>
       <div class="hidden name"><code>lgr.Rmd</code></div>
 
     </div>
 
     
     
-<div id="introduction" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h1>
-<p>lgr is a logging framework for R inspired by <a href="https://logging.apache.org/log4j/2.x/">Apache Log4j</a> and <a href="https://docs.python.org/3/library/logging.html">Python logging</a>. It follows an object oriented design implemented through <a href="https://github.com/r-lib/R6">R6 classes</a>. This enables lgr to have a larger set of features than other logging packages for R, and makes it flexible and easy to extend.</p>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<p>lgr is a logging framework for R inspired by <a href="https://logging.apache.org/log4j/2.x/" class="external-link">Apache Log4j</a> and <a href="https://docs.python.org/3/library/logging.html" class="external-link">Python logging</a>. It follows an object oriented design implemented through <a href="https://github.com/r-lib/R6" class="external-link">R6 classes</a>. This enables lgr to have a larger set of features than other logging packages for R, and makes it flexible and easy to extend.</p>
 <p>If you are not sure if lgr is the right package for you, take a look <a href="#examples">examples</a> to see what lgr can do for you.</p>
-<div id="quickstart" class="section level2">
-<h2 class="hasAnchor">
-<a href="#quickstart" class="anchor"></a>Quickstart</h2>
+<div class="section level3">
+<h3 id="quickstart">Quickstart<a class="anchor" aria-label="anchor" href="#quickstart"></a>
+</h3>
 <p>lgr comes with a so-called <strong>root logger</strong> that is ready to go after you install it. If you are a package developer you can (and should) set up a new Logger for your package, but more on that later. For many use cases the root Logger will suffice.</p>
-<div id="logging-to-the-console" class="section level3">
-<h3 class="hasAnchor">
-<a href="#logging-to-the-console" class="anchor"></a>Logging to the console</h3>
+<div class="section level4">
+<h4 id="logging-to-the-console">Logging to the console<a class="anchor" aria-label="anchor" href="#logging-to-the-console"></a>
+</h4>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># the root logger is called "lgr"</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Vampire stories are generally located in Styria."</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [08:08:04.164] Vampire stories are generally located in Styria.</span></code></pre></div>
-<p>You can use formatting strings that are passed on to <code><a href="https://rdrr.io/r/base/sprintf.html">sprintf()</a></code> in lgr.</p>
+<span class="co">#&gt; INFO  [17:17:45.003] Vampire stories are generally located in Styria.</span></code></pre></div>
+<p>You can use formatting strings that are passed on to <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code> in lgr.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lgr</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"Vampires generally arrive in carriages drawn by %i black horses."</span>, <span class="fl">2</span><span class="op">)</span>
-<span class="co">#&gt; ERROR [08:08:04.264] Vampires generally arrive in carriages drawn by 2 black horses.</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #D75F5F;">ERROR</span> [17:17:45.142] Vampires generally arrive in carriages drawn by 2 black horses.</span></code></pre></div>
 </div>
-<div id="logging-to-plaintext-files" class="section level3">
-<h3 class="hasAnchor">
-<a href="#logging-to-plaintext-files" class="anchor"></a>Logging to plaintext files</h3>
+<div class="section level4">
+<h4 id="logging-to-plaintext-files">Logging to plaintext files<a class="anchor" aria-label="anchor" href="#logging-to-plaintext-files"></a>
+</h4>
 <p>Usually you don’t (only) want to log to the console, you want to log to files. Output of Loggers is managed by Appenders. The root Logger is preconfigured with a console Appender (that is why we see output in the console). Let’s add a file Appender:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".info"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".info"</span><span class="op">)</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="../reference/AppenderFile.html">AppenderFile</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"file"</span><span class="op">)</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"You must think I am joking"</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [08:08:04.348] You must think I am joking</span>
-<span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>
-<span class="co">#&gt; [1] "INFO  [2021-09-16 08:08:04.348] You must think I am joking"</span></code></pre></div>
+<span class="co">#&gt; INFO  [17:17:45.282] You must think I am joking</span>
+<span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>
+<span class="co">#&gt; [1] "INFO  [2022-04-29 17:17:45.282] You must think I am joking"</span></code></pre></div>
 <p>The various Appenders available in lgr are R6 classes. To instantiate an object of that class (i.e. create a new appender) you have to use the <code>$new()</code> function as in the example above. Whenever you see something in lgr that <code>IsNamedLikeThis</code>, you can be sure that it is such an R6 class.</p>
 <p>If you look at the output, you see that the timestamp format of the file appender is slightly different to the timestamp format of the console Appender. Formatting is handled by <strong>Layouts</strong>, and each Appender has exactly one:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">file</span><span class="op">$</span><span class="fu">set_layout</span><span class="op">(</span><span class="va"><a href="../reference/LayoutFormat.html">LayoutFormat</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>timestamp_fmt <span class="op">=</span> <span class="st">"%B %d %T"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"No, I am quite serious"</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [08:08:04.425] No, I am quite serious</span>
-<span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>
-<span class="co">#&gt; [1] "INFO  [2021-09-16 08:08:04.348] You must think I am joking"</span>
-<span class="co">#&gt; [2] "INFO  [September 16 08:08:04] No, I am quite serious"</span>
+<span class="co">#&gt; INFO  [17:17:45.496] No, I am quite serious</span>
+<span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>
+<span class="co">#&gt; [1] "INFO  [2022-04-29 17:17:45.282] You must think I am joking"</span>
+<span class="co">#&gt; [2] "INFO  [April 29 17:17:45] No, I am quite serious"</span>
+
 <span class="co">#cleanup</span>
-<span class="fu"><a href="https://rdrr.io/r/base/unlink.html">unlink</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="logging-to-json-files" class="section level3">
-<h3 class="hasAnchor">
-<a href="#logging-to-json-files" class="anchor"></a>Logging to JSON files</h3>
+<div class="section level4">
+<h4 id="logging-to-json-files">Logging to JSON files<a class="anchor" aria-label="anchor" href="#logging-to-json-files"></a>
+</h4>
 <p>If you log to files, you should not log normal text. If you want to analyse your logs later, it’s much better to log to a format like JSON:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># cleanup behind the old Appender</span>
-<span class="fu"><a href="https://rdrr.io/r/base/unlink.html">unlink</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>  
+<span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>  
 <span class="va">lgr</span><span class="op">$</span><span class="fu">remove_appender</span><span class="op">(</span><span class="st">"file"</span><span class="op">)</span>
 
 <span class="co"># setup a JSON appender</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="../reference/AppenderFile.html">AppenderJson</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"json"</span><span class="op">)</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"We lived in Styria"</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [08:08:04.523] We lived in Styria</span></code></pre></div>
+<span class="co">#&gt; INFO  [17:17:45.721] We lived in Styria</span></code></pre></div>
 <p>JSON is still somewhat human readable</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; {"level":400,"timestamp":"2021-09-16 08:08:04","logger":"root","caller":"eval","msg":"We lived in Styria"}</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; {"level":400,"timestamp":"2022-04-29 17:17:45","logger":"root","caller":"eval","msg":"We lived in Styria"}</span></code></pre></div>
 <p>and easy for machines to parse</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/read_json_lines.html">read_json_lines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>
 <span class="co">#&gt;   level           timestamp logger caller                msg</span>
-<span class="co">#&gt; 1   400 2021-09-16 08:08:04   root   eval We lived in Styria</span></code></pre></div>
-<p>Many Appenders provide either a <code>$show()</code> method and a <code>$data</code> active binding convenience, and so you do not have to call <code><a href="https://rdrr.io/r/base/readLines.html">readLines()</a></code> &amp; co manually.</p>
+<span class="co">#&gt; 1   400 2022-04-29 17:17:45   root   eval We lived in Styria</span></code></pre></div>
+<p>Many Appenders provide either a <code>$show()</code> method and a <code>$data</code> active binding convenience, and so you do not have to call <code><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines()</a></code> &amp; co manually.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># show is a method and takes some extra arguments, like maximum number of lines</span>
 <span class="co"># to show</span>
 <span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">json</span><span class="op">$</span><span class="fu">show</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; {"level":400,"timestamp":"2021-09-16 08:08:04","logger":"root","caller":"eval","msg":"We lived in Styria"}</span>
+<span class="co">#&gt; {"level":400,"timestamp":"2022-04-29 17:17:45","logger":"root","caller":"eval","msg":"We lived in Styria"}</span>
+
 <span class="co"># $data always returns a data.frame if available. It is an active binding </span>
 <span class="co"># rather than a method, so no extra arguments are possible</span>
 <span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">json</span><span class="op">$</span><span class="va">data</span>  
 <span class="co">#&gt;   level           timestamp logger caller                msg</span>
-<span class="co">#&gt; 1   400 2021-09-16 08:08:04   root   eval We lived in Styria</span></code></pre></div>
+<span class="co">#&gt; 1   400 2022-04-29 17:17:45   root   eval We lived in Styria</span></code></pre></div>
 <p>Please note that under the hood, <code>AppenderJson</code> is just an <code>AppenderFile</code> with <code>LayoutJson</code>. The only difference is AppenderJson provides a <code>$data()</code> method while AppenderFile does not.</p>
 </div>
-<div id="custom-fields" class="section level3">
-<h3 class="hasAnchor">
-<a href="#custom-fields" class="anchor"></a>Custom Fields</h3>
-<p>Unlike many others Loggers for R, lgr treats a <em>LogEvent</em> as a unit of data, not just a message with a timestamp. A log event can contain arbitrary data, though not all Appenders can handle that well. The JSON appender we added above is particularly good at handling most R objects.</p>
+<div class="section level4">
+<h4 id="structured-logging-custom-fields">Structured Logging (custom fields)<a class="anchor" aria-label="anchor" href="#structured-logging-custom-fields"></a>
+</h4>
+<p>lgr treats a <em>LogEvent</em> as a unit of data, not just a message with a timestamp. A log event can contain arbitrary data, though not all Appenders can handle that well. The JSON appender we added above is particularly good at handling most R objects.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># The default console appender displays custom fields as pseudo-json after the message</span>
-<span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Styria has"</span>, poultry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"capons"</span>, <span class="st">"turkeys"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [08:08:04.872] Styria has {poultry: (capons, turkeys)}</span>
+<span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Styria has"</span>, poultry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"capons"</span>, <span class="st">"turkeys"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; INFO  [17:17:46.381] Styria has <span style="color: #808080;">{</span><span style="color: #D75FAF;">poultry</span><span style="color: #808080;">: </span>(capons, turkeys)<span style="color: #808080;">}</span></span>
+
 <span class="co"># JSON can store most R objects quite naturally </span>
 <span class="fu"><a href="../reference/read_json_lines.html">read_json_lines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>
 <span class="co">#&gt;   level           timestamp logger caller                msg         poultry</span>
-<span class="co">#&gt; 1   400 2021-09-16 08:08:04   root   eval We lived in Styria            NULL</span>
-<span class="co">#&gt; 2   400 2021-09-16 08:08:04   root   eval         Styria has capons, turkeys</span>
+<span class="co">#&gt; 1   400 2022-04-29 17:17:45   root   eval We lived in Styria            NULL</span>
+<span class="co">#&gt; 2   400 2022-04-29 17:17:46   root   eval         Styria has capons, turkeys</span>
 <span class="fu"><a href="../reference/read_json_lines.html">read_json_lines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span><span class="op">$</span><span class="va">poultry</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>  <span class="co"># works because poultry is a list column</span>
 <span class="co">#&gt; [1] "capons"  "turkeys"</span></code></pre></div>
 </div>
-<div id="what-else" class="section level3">
-<h3 class="hasAnchor">
-<a href="#what-else" class="anchor"></a>What Else</h3>
-<p>If the examples above have piqued your interest, the rest of this vignette will provide more details on the workings of lgr. Discussing all Appenders and configuration options is beyond the scope of this vignette, please refer to the <a href="https://s-fleck.github.io/lgr/reference/index.html">function reference</a> for that.</p>
+<div class="section level4">
+<h4 id="what-else">What Else<a class="anchor" aria-label="anchor" href="#what-else"></a>
+</h4>
+<p>If the examples above have piqued your interest, the rest of this vignette will provide more details on the workings of lgr. Discussing all Appenders and configuration options is beyond the scope of this vignette, please refer to the <a href="https://s-fleck.github.io/lgr/reference/index.html" class="external-link">function reference</a> for that.</p>
 </div>
 </div>
 </div>
-<div id="usage" class="section level1">
-<h1 class="hasAnchor">
-<a href="#usage" class="anchor"></a>Usage</h1>
-<div id="structure-of-the-logging-system" class="section level2">
-<h2 class="hasAnchor">
-<a href="#structure-of-the-logging-system" class="anchor"></a>Structure of the logging system</h2>
+<div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h2>
+<div class="section level3">
+<h3 id="structure-of-the-logging-system">Structure of the logging system<a class="anchor" aria-label="anchor" href="#structure-of-the-logging-system"></a>
+</h3>
 <p>If you want custom logging configurations, you have to understand the structure of the logging process.</p>
 <ul>
 <li>A <strong>Logger</strong> collects information and dispatches it to its <em>Appenders</em>, and also the <em>Appenders</em> of its <em>Parent Loggers</em> (also see the section on hierarchical logging)</li>
 <li>An <strong>Appender</strong> writes the log message to destination (the console, a file, a database, etc…).</li>
 <li>A <strong>Layout</strong> is used by an Appender to format LogEvents. For example, <code>AppenderFile</code> uses <code>LayoutFormat</code> by default to write human readable log events to a text file, but can also use <code>LayoutJson</code> produce machine readable JSON lines logfiles.</li>
 <li>
-<strong>LogEvents</strong> are produced by the Logger and dispatched to Appenders. They contain all the information that is being logged (think of it as a row in table). LogEvents usually contain the log level, a timestamp, a message, the name of the calling function, and a <a href="https://adv-r.hadley.nz/r6.html#r6-semantics%5D">reference</a> to the Logger that created it. In addition, a LogEvent can contain any number of custom fields, but not all Appenders/Layouts support custom fields. For example if you use <code>AppenderFormat</code> with <code>LayoutFormat</code> you can only use the standard fields in your log message, while <code>LayoutJson</code> supports custom fields in a quite natural manner. See <a href="#examples">examples 1 &amp; 2</a>
+<strong>LogEvents</strong> are produced by the Logger and dispatched to Appenders. They contain all the information that is being logged (think of it as a row in table). LogEvents usually contain the log level, a timestamp, a message, the name of the calling function, and a <a href="https://adv-r.hadley.nz/r6.html#r6-semantics%5D" class="external-link">reference</a> to the Logger that created it. In addition, a LogEvent can contain any number of custom fields. See <a href="#examples">examples 1 &amp; 2</a>
 </li>
 </ul>
-<div id="on-r6-classes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#on-r6-classes" class="anchor"></a>On R6 classes</h3>
+<div class="section level4">
+<h4 id="on-r6-classes">On R6 classes<a class="anchor" aria-label="anchor" href="#on-r6-classes"></a>
+</h4>
 <p>The elements described above are R6 classes. R6 is an object orientation system for R that is used by many popular packages such as shiny, dplyr, plumber, roxygen2, and testthat but often behind the scenes and not as exposed as in lgr.</p>
 <p>You recognize R6 classes in this package because they are named following the <code>UpperCamelCase</code> naming convention. While there is only one kind of Logger and one kind of LogEvent, there are several subclasses of Appenders and Layouts.</p>
-<p>An introduction to R6 classes is beyond the scope of this document, but you can find the official documentation <a href="https://r6.r-lib.org/">here</a> and there is also this <a href="https://www.youtube.com/watch?v=3GEFd8rZQgY">talk on Youtube</a>. In short R6 classes store data (fields) together with functions (methods) and have to be instantiated with <code>&lt;classname&gt;$new()</code>. So if you want to create a new <code>AppenderFile</code>, you do this by calling <code>AppenderFile$new(file = tempfile())</code>.</p>
+<p>An introduction to R6 classes is beyond the scope of this document, but you can find the official documentation <a href="https://r6.r-lib.org/" class="external-link">here</a> and there is also this <a href="https://www.youtube.com/watch?v=3GEFd8rZQgY" class="external-link">talk on Youtube</a>. In short R6 classes store data (fields) together with functions (methods) and have to be instantiated with <code>&lt;classname&gt;$new()</code>. So if you want to create a new <code>AppenderFile</code>, you do this by calling <code>AppenderFile$new(file = tempfile())</code>.</p>
 <p>Please not that Loggers should never be instantiated directly with <code>$new()</code> but always with <code><a href="../reference/get_logger.html">get_logger()</a></code>.</p>
 </div>
 </div>
-<div id="log-levels" class="section level2">
-<h2 class="hasAnchor">
-<a href="#log-levels" class="anchor"></a>Log levels</h2>
+<div class="section level3">
+<h3 id="log-levels">Log levels<a class="anchor" aria-label="anchor" href="#log-levels"></a>
+</h3>
 <p>lgr supports the standard log4j Log Levels outlined bellow. The Log Level of an event represents its severity. The named log levels are really just nicknames for integer values, and you can use the <code>character</code> or <code>integer</code> representations interchangeably. You can also use arbitrary integer values (greater than <code>0</code>), but you are encouraged to stick to the ones bellow.</p>
 <table class="table">
 <colgroup>
@@ -235,7 +234,7 @@
 <tr class="even">
 <td align="right">100</td>
 <td align="left">fatal</td>
-<td align="left">Critical error that leads to program abort. Should always indicate a <code><a href="https://rdrr.io/r/base/stop.html">stop()</a></code> or similar</td>
+<td align="left">Critical error that leads to program abort. Should always indicate a <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> or similar</td>
 </tr>
 <tr class="odd">
 <td align="right">200</td>
@@ -245,7 +244,7 @@
 <tr class="even">
 <td align="right">300</td>
 <td align="left">warn</td>
-<td align="left">A potentially harmful situation, like <code><a href="https://rdrr.io/r/base/warning.html">warning()</a></code>
+<td align="left">A potentially harmful situation, like <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code>
 </td>
 </tr>
 <tr class="odd">
@@ -261,7 +260,7 @@
 <tr class="odd">
 <td align="right">600</td>
 <td align="left">trace</td>
-<td align="left">An even finer grained message than debug (<a href="https://softwareengineering.stackexchange.com/questions/279690/why-does-the-trace-level-exist-and-when-should-i-use-it-rather-than-debug">more info</a>)</td>
+<td align="left">An even finer grained message than debug (<a href="https://softwareengineering.stackexchange.com/questions/279690/why-does-the-trace-level-exist-and-when-should-i-use-it-rather-than-debug" class="external-link">more info</a>)</td>
 </tr>
 <tr class="even">
 <td align="right">NA</td>
@@ -270,49 +269,49 @@
 </tr>
 </tbody>
 </table>
-<p><code>off</code> and <code>all</code> are valid thresholds for Appenders and Loggers, but not valid levels for LogEvents; e.g. <code>lgr$set_threshold(NA)</code> makes sense, but <code>lgr$log("all", "an example message")</code> does not.</p>
-<p>The list of named log levels is stored as a global option (<code><a href="https://rdrr.io/r/base/options.html">getOption("lgr.log_levels")</a></code>) and you can use <code><a href="../reference/get_log_levels.html">add_log_levels()</a></code> and <code><a href="../reference/get_log_levels.html">remove_log_levels()</a></code> to define your own named levels if you want to. There are only predefined logging methods (<code>lgr$fatal()</code>, etc..) for the standard log levels and you have to use <code>lgr$log(level, message)</code> to create a LogEvent with a custom log level.</p>
+<p><code>off</code> and <code>all</code> are valid thresholds for Appenders and Loggers, but not valid levels for LogEvents; e.g. <code>lgr$set_threshold(NA)</code> makes sense, but <code>lgr$log("all", "an example message")</code> does not.</p>
+<p>The list of named log levels is stored as a global option (<code>getOption("lgr.log_levels")</code>) and you can use <code><a href="../reference/get_log_levels.html">add_log_levels()</a></code> and <code><a href="../reference/get_log_levels.html">remove_log_levels()</a></code> to define your own named levels if you want to. There are only predefined logging methods (<code>lgr$fatal()</code>, etc..) for the standard log levels and you have to use <code>lgr$log(level, message)</code> to create a LogEvent with a custom log level.</p>
 </div>
-<div id="logging-with-the-root-logger" class="section level2">
-<h2 class="hasAnchor">
-<a href="#logging-with-the-root-logger" class="anchor"></a>Logging with the Root Logger</h2>
+<div class="section level3">
+<h3 id="logging-with-the-root-logger">Logging with the Root Logger<a class="anchor" aria-label="anchor" href="#logging-with-the-root-logger"></a>
+</h3>
 <p>lgr comes with a pre-configured root Logger. It is called <em>root</em> because you can <a href="#hierarchy">set up a tree of Loggers</a> that descent from it, but for basic use you will not have to worry about that.</p>
-<div id="logging-syntax" class="section level3">
-<h3 class="hasAnchor">
-<a href="#logging-syntax" class="anchor"></a>Logging syntax</h3>
+<div class="section level4">
+<h4 id="logging-syntax">Logging syntax<a class="anchor" aria-label="anchor" href="#logging-syntax"></a>
+</h4>
 <p>lgr Loggers are R6 objects with <em>methods</em> (functions) for logging. You can refer to the <em>root</em> logger with <code>lgr</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lgr</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"This is an important message about %s going wrong"</span>, <span class="st">"-&gt;something&lt;-"</span><span class="op">)</span>
-<span class="co">#&gt; FATAL [08:08:05.106] This is an important message about -&gt;something&lt;- going wrong</span>
+<span class="co">#&gt; <span style="color: #D75F5F; font-weight: bold;">FATAL</span> [17:17:46.868] This is an important message about -&gt;something&lt;- going wrong</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">trace</span><span class="op">(</span><span class="st">"Trace messages are still hidden"</span><span class="op">)</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">set_threshold</span><span class="op">(</span><span class="st">"trace"</span><span class="op">)</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">trace</span><span class="op">(</span><span class="st">"Unless we lower the threshold"</span><span class="op">)</span>
-<span class="co">#&gt; TRACE [08:08:05.110] Unless we lower the threshold</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #808080;">TRACE</span> [17:17:46.874] Unless we lower the threshold</span></code></pre></div>
 </div>
-<div id="formatting-strings" class="section level3">
-<h3 class="hasAnchor">
-<a href="#formatting-strings" class="anchor"></a>Formatting strings</h3>
-<p>You can use <code><a href="https://rdrr.io/r/base/sprintf.html">sprintf()</a></code> style formatting strings directly in log messages.</p>
+<div class="section level4">
+<h4 id="formatting-strings">Formatting strings<a class="anchor" aria-label="anchor" href="#formatting-strings"></a>
+</h4>
+<p>You can use <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code> style formatting strings directly in log messages.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"The sky was the color of %s, tuned to a dead chanel"</span>, <span class="st">"television"</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [08:08:05.181] The sky was the color of television, tuned to a dead chanel</span></code></pre></div>
+<span class="co">#&gt; INFO  [17:17:46.997] The sky was the color of television, tuned to a dead chanel</span></code></pre></div>
 </div>
 </div>
-<div id="logevents-the-atomic-unit-of-logging" class="section level2">
-<h2 class="hasAnchor">
-<a href="#logevents-the-atomic-unit-of-logging" class="anchor"></a>LogEvents: The atomic unit of logging</h2>
+<div class="section level3">
+<h3 id="logevents-the-atomic-unit-of-logging">LogEvents: The atomic unit of logging<a class="anchor" aria-label="anchor" href="#logevents-the-atomic-unit-of-logging"></a>
+</h3>
 <p>LogEvents are objects that store all information collected by the Logger. They are passed on to Appenders that output them, but Appenders usually don’t utilize all the information present in a log event. The last event produced by a Logger is stored in its <code>last_event</code> field.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Vampire stories are generally located in Styria"</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [08:08:05.252] Vampire stories are generally located in Styria</span>
+<span class="co">#&gt; INFO  [17:17:47.121] Vampire stories are generally located in Styria</span>
 <span class="va">lgr</span><span class="op">$</span><span class="va">last_event</span>  <span class="co"># a summary output of the event</span>
-<span class="co">#&gt; INFO  [2021-09-16 08:08:05] Vampire stories are generally located in Styria</span>
+<span class="co">#&gt; INFO  [2022-04-29 17:17:47] Vampire stories are generally located in Styria</span>
 <span class="va">lgr</span><span class="op">$</span><span class="va">last_event</span><span class="op">$</span><span class="va">values</span>  <span class="co"># all values stored in the event as a list</span>
 <span class="co">#&gt; $level</span>
 <span class="co">#&gt; [1] 400</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $timestamp</span>
-<span class="co">#&gt; [1] "2021-09-16 08:08:05 UTC"</span>
+<span class="co">#&gt; [1] "2022-04-29 17:17:47 UTC"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $logger</span>
 <span class="co">#&gt; [1] "root"</span>
@@ -322,24 +321,25 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $msg</span>
 <span class="co">#&gt; [1] "Vampire stories are generally located in Styria"</span></code></pre></div>
-<p>LogEvents can contain not only these standard values, but an arbitrary number of extra values. These extra values are passed as named arguments to the logging function (as opposed as to parameters to <code><a href="https://rdrr.io/r/base/sprintf.html">sprintf()</a></code>, which are passed as unnamed arguments). It is up to the Appender whether to process them further or not.</p>
-<p>You should consider making use of custom fields liberally and using output formats that support them (such as JSON), rather than producing elaborately formatted but hard to parse log messages. If you ever want to analyse your log data, you will thank me for this tip.</p>
+<p>LogEvents can contain not only these standard values, but an arbitrary number of extra values. These extra values are passed as named arguments to the logging function (as opposed as to parameters to <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code>, which are passed as unnamed arguments). It is up to the Appender whether to process them further or not.</p>
+<p>You should consider making use of structured logging liberally and using output formats that support them (such as JSON), rather than producing elaborately formatted but hard to parse log messages.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># bad</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Processing track '%s' with %s waypoints"</span>, <span class="st">"track.gpx"</span>, <span class="fl">32</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [08:08:05.329] Processing track 'track.gpx' with 32 waypoints</span>
+<span class="co">#&gt; INFO  [17:17:47.253] Processing track 'track.gpx' with 32 waypoints</span>
+
 <span class="co"># Good</span>
-<span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="../reference/AppenderFile.html">AppenderJson</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>, <span class="st">"json"</span><span class="op">)</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Processing track"</span>, file <span class="op">=</span> <span class="st">"track.gpx"</span>, waypoints <span class="op">=</span> <span class="fl">32</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [08:08:05.333] Processing track {file: `track.gpx`, waypoints: `32`}</span>
+<span class="co">#&gt; INFO  [17:17:47.261] Processing track <span style="color: #808080;">{</span><span style="color: #D75FAF;">file</span><span style="color: #808080;">: </span>`track.gpx`<span style="color: #808080;">, </span><span style="color: #D75FAF;">waypoints</span><span style="color: #808080;">: </span>`32`<span style="color: #808080;">}</span></span>
 <span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">json</span><span class="op">$</span><span class="va">data</span>
 <span class="co">#&gt;   level           timestamp logger caller              msg      file waypoints</span>
-<span class="co">#&gt; 1   400 2021-09-16 08:08:05   root   eval Processing track track.gpx        32</span></code></pre></div>
+<span class="co">#&gt; 1   400 2022-04-29 17:17:47   root   eval Processing track track.gpx        32</span></code></pre></div>
 </div>
-<div id="thresholds" class="section level2">
-<h2 class="hasAnchor">
-<a href="#thresholds" class="anchor"></a>Thresholds &amp; Filters: controlling output detail</h2>
+<div class="section level3">
+<h3 id="thresholds">Thresholds &amp; Filters: controlling output detail<a class="anchor" aria-label="anchor" href="#thresholds"></a>
+</h3>
 <p>To control the level of detail of the log output, you can set <strong>thresholds</strong> for Loggers and Appenders. A Logger with a threshold of <code>warn</code> will only create LogEvents of the priorities <code>warn</code>, <code>error</code> and <code>fatal</code> and dispatch them to its Appenders.</p>
 <blockquote>
 <p>A <strong>threshold</strong> of a Logger or Appender is the minimum <strong>log level</strong> a LogEvent must have so that that Logger/Appender processes it.</p>
@@ -347,21 +347,22 @@
 <p>If you require more complex logic to decide whether a LogEvent should be created/processed you can also assign <strong>filters</strong> to Loggers/Appenders. Filters are just functions that have exactly one argument, <code>event</code> (the LogEvent to be filtered), and return <code>TRUE</code> or <code>FALSE</code>. They will be applied after the threshold is checked. Alternatively there is also a formal R6 class for Filters (?EventFilter) that you can use, but this is usually not necessary.</p>
 <p>examples:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">f1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">event</span><span class="op">)</span> <span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"bird"</span>, <span class="va">event</span><span class="op">$</span><span class="va">msg</span><span class="op">)</span> <span class="op">}</span>
-<span class="va">lgr</span><span class="op">$</span><span class="fu">set_filters</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">f1</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">f1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">event</span><span class="op">)</span> <span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"bird"</span>, <span class="va">event</span><span class="op">$</span><span class="va">msg</span><span class="op">)</span> <span class="op">}</span>
+<span class="va">lgr</span><span class="op">$</span><span class="fu">set_filters</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">f1</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"is it a plane?"</span><span class="op">)</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"no! is it a bird?"</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [08:08:05.483] no! is it a bird?</span>
+<span class="co">#&gt; INFO  [17:17:47.604] no! is it a bird?</span>
+
 <span class="co"># since this is not a very useful filter, we better remove it again</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">set_filters</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="appenders-managing-log-destinations" class="section level2">
-<h2 class="hasAnchor">
-<a href="#appenders-managing-log-destinations" class="anchor"></a>Appenders: Managing log destinations</h2>
+<div class="section level3">
+<h3 id="appenders-managing-log-destinations">Appenders: Managing log destinations<a class="anchor" aria-label="anchor" href="#appenders-managing-log-destinations"></a>
+</h3>
 <p>The root logger only logs to the console by default. If you want to redirect the output to a file you can just add a file appender to lgr.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># Add a new appender to a logger. We don't have to supply a name, but that</span>
 <span class="co"># makes it easier to remove later.</span>
@@ -373,19 +374,20 @@
 <span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">console</span><span class="op">$</span><span class="fu">set_threshold</span><span class="op">(</span><span class="st">"info"</span><span class="op">)</span>
 <span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">file</span><span class="op">$</span><span class="fu">set_threshold</span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Another informational message"</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [08:08:05.571] Another informational message</span>
+<span class="co">#&gt; INFO  [17:17:47.745] Another informational message</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">debug</span><span class="op">(</span><span class="st">"A debug message not shown by the console appender"</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>
-<span class="co">#&gt; [1] "INFO  [2021-09-16 08:08:05.571] Another informational message"                    </span>
-<span class="co">#&gt; [2] "DEBUG [2021-09-16 08:08:05.572] A debug message not shown by the console appender"</span>
+<span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>
+<span class="co">#&gt; [1] "INFO  [2022-04-29 17:17:47.745] Another informational message"                    </span>
+<span class="co">#&gt; [2] "DEBUG [2022-04-29 17:17:47.830] A debug message not shown by the console appender"</span>
+
 <span class="co"># Remove the appender again</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">remove_appender</span><span class="op">(</span><span class="st">"file"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/unlink.html">unlink</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="hierarchy" class="section level2">
-<h2 class="hasAnchor">
-<a href="#hierarchy" class="anchor"></a>Inheritance: Hierarchical Loggers</h2>
+<div class="section level3">
+<h3 id="hierarchy">Inheritance: Hierarchical Loggers<a class="anchor" aria-label="anchor" href="#hierarchy"></a>
+</h3>
 <p>Logger hierarchies are a powerful concept to organize logging for different parts of a larger system. This is mainly relevant for package developers. It is good practice to have a separate Logger for each package. Since it is not common in R to build complex systems of hierarchically organised packages, hierarchies will usually be pretty flat (i.e. most Loggers will only inherit from the root logger).</p>
 <p>Each newly created Logger is child to a parent Logger, derived from its name. So <code>lg &lt;- get_logger("foo/bar")</code> creates the logger with the qualified name <code>foo/bar</code> whose parent is the logger <code>foo</code> whose parent is (implicitly) the <code>root</code> logger. If the logger <code>foo</code> does not exist in that scenario, it is created automatically. This behaviour might sound strange at first, but it mimics tried and tested behaviour of python logging. This way logging is decoupled from the business logic and your program will not abort if you forgot to initialize some logger up the hierarchy for whatever reason.</p>
 <p>A logger dispatches the LogEvents it creates not only to its own Appenders, but also to the Appenders of all its ancestral Loggers (ignoring the threshold and Filters of the ancestral Loggers, but not of the Appenders). When you define Loggers for your package, you should <em>not</em> configure them (with custom Appenders or thresholds); that should be left to the user of the package.</p>
@@ -400,17 +402,17 @@
   └─#shiny
     ├─server [trace] -&gt; 2 appenders
     └─ui -&gt; 1 appenders</code></pre>
-<div id="log-flow" class="section level3">
-<h3 class="hasAnchor">
-<a href="#log-flow" class="anchor"></a>Log flow</h3>
+<div class="section level4">
+<h4 id="log-flow">Log flow<a class="anchor" aria-label="anchor" href="#log-flow"></a>
+</h4>
 <p>The graph bellow outlines the flow of LogEvents through the logging system. This is an important reference if you want to work with Filters and Logger hierarchies.</p>
 <p><img src="log_flow.svg"></p>
 </div>
 </div>
-<div id="logging-with-loggerglue" class="section level2">
-<h2 class="hasAnchor">
-<a href="#logging-with-loggerglue" class="anchor"></a>Logging with LoggerGlue</h2>
-<p><a href="https://glue.tidyverse.org/">glue</a> is very nicely designed package for string interpolation. It makes composing log messages more flexible and comfortable at the price of an additional dependency and slightly less performance than <code><a href="https://rdrr.io/r/base/sprintf.html">sprintf()</a></code> (which is used by normal Loggers). To take advantage of glue, simply create a new LoggerGlue like this:</p>
+<div class="section level3">
+<h3 id="logging-with-loggerglue">Logging with LoggerGlue<a class="anchor" aria-label="anchor" href="#logging-with-loggerglue"></a>
+</h3>
+<p><a href="https://glue.tidyverse.org/" class="external-link">glue</a> is very nicely designed package for string interpolation. It makes composing log messages more flexible and comfortable at the price of an additional dependency and slightly less performance than <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code> (which is used by normal Loggers). To take advantage of glue, simply create a new LoggerGlue like this:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("glue")</span>
 
@@ -421,44 +423,44 @@
   <span class="st">"pastes together unnamed arguments "</span>,
   <span class="st">"and evaluates arbitray expressions inside braces {Sys.Date()}"</span>
 <span class="op">)</span>
-<span class="co">#&gt; INFO  [08:08:05.679] glue automatically pastes together unnamed arguments and evaluates arbitray expressions inside braces 2021-09-16</span></code></pre></div>
-<p>Glue lets you define temporary variables inside the <code><a href="https://glue.tidyverse.org/reference/glue.html">glue()</a></code> call. As with the normal Logger, named arguments get turned into custom fields.</p>
+<span class="co">#&gt; INFO  [17:17:48.064] glue automatically pastes together unnamed arguments and evaluates arbitray expressions inside braces 2022-04-29</span></code></pre></div>
+<p>Glue lets you define temporary variables inside the <code><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue()</a></code> call. As with the normal Logger, named arguments get turned into custom fields.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"For more info on glue see {website}"</span>, website <span class="op">=</span> <span class="st">"https://glue.tidyverse.org/"</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [08:08:05.779] For more info on glue see https://glue.tidyverse.org/ {website: `https://glue.tidyverse.org/`}</span></code></pre></div>
+<span class="co">#&gt; INFO  [17:17:48.238] For more info on glue see https://glue.tidyverse.org/ <span style="color: #808080;">{</span><span style="color: #D75FAF;">website</span><span style="color: #808080;">: </span>`https://glue.tidyverse.org/`<span style="color: #808080;">}</span></span></code></pre></div>
 <p>You can suppress this behaviour by making named argument start with a <code>"."</code>.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Glue is available from {.cran}"</span>, .cran <span class="op">=</span> <span class="st">"https://CRAN.R-project.org/package=glue"</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [08:08:05.855] Glue is available from https://CRAN.R-project.org/package=glue</span></code></pre></div>
+<span class="co">#&gt; INFO  [17:17:48.365] Glue is available from https://CRAN.R-project.org/package=glue</span></code></pre></div>
 </div>
 </div>
-<div id="configuration" class="section level1">
-<h1 class="hasAnchor">
-<a href="#configuration" class="anchor"></a>Configuration</h1>
-<div id="with-setters" class="section level2">
-<h2 class="hasAnchor">
-<a href="#with-setters" class="anchor"></a>With setters</h2>
+<div class="section level2">
+<h2 id="configuration">Configuration<a class="anchor" aria-label="anchor" href="#configuration"></a>
+</h2>
+<div class="section level3">
+<h3 id="with-setters">With setters<a class="anchor" aria-label="anchor" href="#with-setters"></a>
+</h3>
 <p>There are several different ways to configure loggers. The most straight forward one is to use <em>setters</em> to specify the Loggers properties.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span>
 <span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>  <span class="co"># resets logger to unconfigured state</span>
-<span class="co">#&gt; &lt;Logger&gt; [all] test</span>
+<span class="co">#&gt; &lt;Logger&gt; [<span style="color: #808080;">all</span>] test</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; inherited appenders:</span>
 <span class="co">#&gt;   console: &lt;AppenderConsole&gt; [info] -&gt; console</span>
 <span class="va">lg</span><span class="op">$</span><span class="fu">set_threshold</span><span class="op">(</span><span class="st">"fatal"</span><span class="op">)</span></code></pre></div>
-<p>lgr sets up Loggers in a way so that R6 piping with <code><a href="https://rdrr.io/r/base/Extract.html">$</a></code> is possible. This works similar to the magrittr (<code>#%&gt;#</code>) pipes.</p>
+<p>lgr sets up Loggers in a way so that R6 piping with <code>$</code> is possible. This works similar to the magrittr (<code>#%&gt;#</code>) pipes.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lg</span><span class="op">$</span>
   <span class="fu">set_threshold</span><span class="op">(</span><span class="st">"info"</span><span class="op">)</span><span class="op">$</span>
   <span class="fu">set_appenders</span><span class="op">(</span><span class="va"><a href="../reference/AppenderConsole.html">AppenderConsole</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>threshold <span class="op">=</span> <span class="st">"info"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span>
   <span class="fu">set_propagate</span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="with-a-list-object" class="section level2">
-<h2 class="hasAnchor">
-<a href="#with-a-list-object" class="anchor"></a>With a list object</h2>
+<div class="section level3">
+<h3 id="with-a-list-object">With a list object<a class="anchor" aria-label="anchor" href="#with-a-list-object"></a>
+</h3>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
   threshold <span class="op">=</span> <span class="st">"info"</span>,
   propagate <span class="op">=</span> <span class="cn">FALSE</span>,
   appenders <span class="op">=</span> <span class="va"><a href="../reference/AppenderConsole.html">AppenderConsole</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>threshold <span class="op">=</span> <span class="st">"info"</span><span class="op">)</span>
@@ -468,9 +470,9 @@
 <span class="co">#&gt; appenders:</span>
 <span class="co">#&gt;   [[1]]: &lt;AppenderConsole&gt; [info] -&gt; console</span></code></pre></div>
 </div>
-<div id="with-yaml-or-json" class="section level2">
-<h2 class="hasAnchor">
-<a href="#with-yaml-or-json" class="anchor"></a>With YAML or JSON</h2>
+<div class="section level3">
+<h3 id="with-yaml-or-json">With YAML or JSON<a class="anchor" aria-label="anchor" href="#with-yaml-or-json"></a>
+</h3>
 <p>You can use YAML and JSON config files with lgr.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="st">"path/to/config.yaml"</span><span class="op">)</span>
@@ -493,28 +495,28 @@
 <span class="co">#&gt;   AppenderConsole: &lt;AppenderConsole&gt; [info] -&gt; console</span></code></pre></div>
 </div>
 </div>
-<div id="examples" class="section level1">
-<h1 class="hasAnchor">
-<a href="#examples" class="anchor"></a>Examples</h1>
-<div id="logging-to-the-console-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#logging-to-the-console-1" class="anchor"></a>Logging to the console</h2>
+<div class="section level2">
+<h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
+</h2>
+<div class="section level3">
+<h3 id="logging-to-the-console-1">Logging to the console<a class="anchor" aria-label="anchor" href="#logging-to-the-console-1"></a>
+</h3>
 <p>lgr comes with simple but powerful formatting syntax for LogEvents. Please refer to <code><a href="../reference/print.LogEvent.html">?format.LogEvent</a></code> for the full list of available placeholders.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span>
-<span class="va">lg</span><span class="op">$</span><span class="fu">set_appenders</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>cons <span class="op">=</span> <span class="va"><a href="../reference/AppenderConsole.html">AppenderConsole</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="va">lg</span><span class="op">$</span><span class="fu">set_appenders</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>cons <span class="op">=</span> <span class="va"><a href="../reference/AppenderConsole.html">AppenderConsole</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="va">lg</span><span class="op">$</span><span class="fu">set_propagate</span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span>
 
 
 <span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"the default format"</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [08:08:06.310] the default format</span>
+<span class="co">#&gt; INFO  [17:17:49.109] the default format</span>
 <span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">cons</span><span class="op">$</span><span class="va">layout</span><span class="op">$</span><span class="fu">set_fmt</span><span class="op">(</span><span class="st">"%L (%n) [%t] %c(): !! %m !!"</span><span class="op">)</span>
 <span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"A more involved custom format"</span><span class="op">)</span>
-<span class="co">#&gt; INFO  (400) [08:08:06.313] eval(): !! A more involved custom format !!</span></code></pre></div>
-<p>If this is not enough for you, you can use <code>LayoutGlue</code> based on the awesome <a href="https://github.com/tidyverse/glue">glue</a> package. The syntax is a bit more verbose, and <code>AppenderGlue</code> is a bit less performant than <code>AppenderFormat</code>, but the possibilities are endless.</p>
+<span class="co">#&gt; INFO  (400) [17:17:49.114] eval(): !! A more involved custom format !!</span></code></pre></div>
+<p>If this is not enough for you, you can use <code>LayoutGlue</code> based on the awesome <a href="https://github.com/tidyverse/glue" class="external-link">glue</a> package. The syntax is a bit more verbose, and <code>AppenderGlue</code> is a bit less performant than <code>AppenderFormat</code>, but the possibilities are endless.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("glue")</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidyverse/glue">glue</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidyverse/glue" class="external-link">glue</a></span><span class="op">)</span>
 <span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">cons</span><span class="op">$</span><span class="fu">set_layout</span><span class="op">(</span><span class="va"><a href="../reference/LayoutGlue.html">LayoutGlue</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
   fmt <span class="op">=</span> <span class="st">"{.logger$name} {level_name} {caller}: {toupper(msg)}"</span>
 <span class="op">)</span><span class="op">)</span>
@@ -522,17 +524,17 @@
 <span class="co">#&gt; test info eval: WITH GLUE</span></code></pre></div>
 <p>All fields of the [LogEvent] object are exposed through LayoutGlue, so please refer to <code><a href="../reference/LogEvent.html">?LogEvent</a></code> for a list of all available Fields.</p>
 </div>
-<div id="logging-to-json-files-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#logging-to-json-files-1" class="anchor"></a>Logging to JSON files</h2>
-<p>JavaScript Object Notation (JSON) is an open-standard file format that uses human-readable text to transmit data objects consisting of attribute–value pairs and array data types (<a href="https://en.wikipedia.org/wiki/JSON">Wikipedia</a>). JSON is the <strong>recommended text-based logging format when logging to files</strong> <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, as it is human- as well as machine readable. You should only log to a different format if you have very good reasons for it. The easiest way to log to JSON files is with AppenderJson<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<div class="section level3">
+<h3 id="logging-to-json-files-1">Logging to JSON files<a class="anchor" aria-label="anchor" href="#logging-to-json-files-1"></a>
+</h3>
+<p>JavaScript Object Notation (JSON) is an open-standard file format that uses human-readable text to transmit data objects consisting of attribute–value pairs and array data types (<a href="https://en.wikipedia.org/wiki/JSON" class="external-link">Wikipedia</a>). JSON is the <strong>recommended text-based logging format when logging to files</strong> <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, as it is human- as well as machine readable. You should only log to a different format if you have very good reasons for it. The easiest way to log to JSON files is with AppenderJson<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("jsonlite")</span>
-<span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span>
 
-<span class="va">lg</span><span class="op">$</span><span class="fu">set_appenders</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>json <span class="op">=</span> <span class="va"><a href="../reference/AppenderFile.html">AppenderJson</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>file <span class="op">=</span> <span class="va">tf</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="va">lg</span><span class="op">$</span><span class="fu">set_appenders</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>json <span class="op">=</span> <span class="va"><a href="../reference/AppenderFile.html">AppenderJson</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>file <span class="op">=</span> <span class="va">tf</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="va">lg</span><span class="op">$</span><span class="fu">set_propagate</span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"JSON naturally "</span>, field <span class="op">=</span> <span class="st">"custom"</span><span class="op">)</span>
@@ -543,90 +545,92 @@
 <code class="sourceCode R"><span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">json</span><span class="op">$</span><span class="va">data</span>
 <span class="co"># same as </span>
 <span class="fu"><a href="../reference/read_json_lines.html">read_json_lines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></code></pre></div>
-<pre><code>#&gt;   level           timestamp logger caller             msg  field numbers  use
-#&gt; 1   400 2021-09-16 08:08:06   test   eval JSON naturally  custom    NULL &lt;NA&gt;
-#&gt; 2   400 2021-09-16 08:08:06   test   eval supports custom   &lt;NA&gt; 1, 2, 3 &lt;NA&gt;
-#&gt; 3   400 2021-09-16 08:08:06   test   eval      log fields   &lt;NA&gt;    NULL JSON</code></pre>
+<pre><code><span class="co">#&gt;   level           timestamp logger caller             msg  field numbers  use</span>
+<span class="co">#&gt; 1   400 2022-04-29 17:17:49   test   eval JSON naturally  custom    NULL &lt;NA&gt;</span>
+<span class="co">#&gt; 2   400 2022-04-29 17:17:49   test   eval supports custom   &lt;NA&gt; 1, 2, 3 &lt;NA&gt;</span>
+<span class="co">#&gt; 3   400 2022-04-29 17:17:49   test   eval      log fields   &lt;NA&gt;    NULL JSON</span></code></pre>
 <p>JSON is also human readable, though this vignette does not transport that fact very well because of the lack of horizontal space.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">json</span><span class="op">$</span><span class="fu">show</span><span class="op">(</span><span class="op">)</span>
 <span class="co"># same as</span>
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></code></pre></div>
-<pre><code>#&gt; {"level":400,"timestamp":"2021-09-16 08:08:06","logger":"test","caller":"eval","msg":"JSON naturally ","field":"custom"}
-#&gt; {"level":400,"timestamp":"2021-09-16 08:08:06","logger":"test","caller":"eval","msg":"supports custom","numbers":[1,2,3]}
-#&gt; {"level":400,"timestamp":"2021-09-16 08:08:06","logger":"test","caller":"eval","msg":"log fields","use":"JSON"}</code></pre>
+<span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">#&gt; {"level":400,"timestamp":"2022-04-29 17:17:49","logger":"test","caller":"eval","msg":"JSON naturally ","field":"custom"}</span>
+<span class="co">#&gt; {"level":400,"timestamp":"2022-04-29 17:17:49","logger":"test","caller":"eval","msg":"supports custom","numbers":[1,2,3]}</span>
+<span class="co">#&gt; {"level":400,"timestamp":"2022-04-29 17:17:49","logger":"test","caller":"eval","msg":"log fields","use":"JSON"}</span></code></pre>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># cleanup</span>
 <span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>
-<span class="co">#&gt; &lt;Logger&gt; [all] test</span>
+<span class="co">#&gt; &lt;Logger&gt; [<span style="color: #808080;">all</span>] test</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; inherited appenders:</span>
 <span class="co">#&gt;   console: &lt;AppenderConsole&gt; [info] -&gt; console</span>
-<span class="fu"><a href="https://rdrr.io/r/base/unlink.html">unlink</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="logging-to-rotating-files" class="section level2">
-<h2 class="hasAnchor">
-<a href="#logging-to-rotating-files" class="anchor"></a>Logging to rotating files</h2>
+<div class="section level3">
+<h3 id="logging-to-rotating-files">Logging to rotating files<a class="anchor" aria-label="anchor" href="#logging-to-rotating-files"></a>
+</h3>
 <p>lgr can also log to rotating files. The following example logs to a file that is reset and backed-up once it reaches a size of 10kb. Only the last 5 backups of the logfile are kept.</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("rotor")</span>
-<span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".log"</span><span class="op">)</span>
+<span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".log"</span><span class="op">)</span>
 
 <span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span><span class="op">$</span>
   <span class="fu">set_propagate</span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span>
-  <span class="fu">set_appenders</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>rotating <span class="op">=</span> <span class="va"><a href="../reference/AppenderFileRotating.html">AppenderFileRotating</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+  <span class="fu">set_appenders</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>rotating <span class="op">=</span> <span class="va"><a href="../reference/AppenderFileRotating.html">AppenderFileRotating</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
     file <span class="op">=</span> <span class="va">tf</span>, 
     size <span class="op">=</span> <span class="st">"10 kb"</span>,
     max_backups <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span>
   <span class="op">)</span>
 
-<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span> <span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">LETTERS</span>, sep <span class="op">=</span> <span class="st">"-"</span><span class="op">)</span><span class="op">)</span>
+<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span> <span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">LETTERS</span>, sep <span class="op">=</span> <span class="st">"-"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># display info on the backups of tf</span>
 <span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">rotating</span><span class="op">$</span><span class="va">backups</span>
-<span class="co">#&gt;                                     path             name sfx ext  size isdir</span>
-<span class="co">#&gt; 1 /tmp/Rtmp9BjtIg/file210859ef39ed.1.log file210859ef39ed   1 log 10608 FALSE</span>
-<span class="co">#&gt; 2 /tmp/Rtmp9BjtIg/file210859ef39ed.2.log file210859ef39ed   2 log 10608 FALSE</span>
-<span class="co">#&gt; 3 /tmp/Rtmp9BjtIg/file210859ef39ed.3.log file210859ef39ed   3 log 10608 FALSE</span>
-<span class="co">#&gt; 4 /tmp/Rtmp9BjtIg/file210859ef39ed.4.log file210859ef39ed   4 log 10608 FALSE</span>
-<span class="co">#&gt; 5 /tmp/Rtmp9BjtIg/file210859ef39ed.5.log file210859ef39ed   5 log 10608 FALSE</span>
-<span class="co">#&gt;   mode               mtime               ctime               atime  uid  gid</span>
-<span class="co">#&gt; 1  666 2021-09-16 08:08:07 2021-09-16 08:08:07 2021-09-16 08:08:07 2000 2000</span>
-<span class="co">#&gt; 2  666 2021-09-16 08:08:07 2021-09-16 08:08:07 2021-09-16 08:08:07 2000 2000</span>
-<span class="co">#&gt; 3  666 2021-09-16 08:08:07 2021-09-16 08:08:07 2021-09-16 08:08:07 2000 2000</span>
-<span class="co">#&gt; 4  666 2021-09-16 08:08:07 2021-09-16 08:08:07 2021-09-16 08:08:07 2000 2000</span>
-<span class="co">#&gt; 5  666 2021-09-16 08:08:07 2021-09-16 08:08:07 2021-09-16 08:08:07 2000 2000</span>
-<span class="co">#&gt;    uname grname index</span>
-<span class="co">#&gt; 1 travis travis     1</span>
-<span class="co">#&gt; 2 travis travis     2</span>
-<span class="co">#&gt; 3 travis travis     3</span>
-<span class="co">#&gt; 4 travis travis     4</span>
-<span class="co">#&gt; 5 travis travis     5</span>
+<span class="co">#&gt;                                                                                path</span>
+<span class="co">#&gt; 1 /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpdAqr2o/fileb4c1e7ccd6c.1.log</span>
+<span class="co">#&gt; 2 /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpdAqr2o/fileb4c1e7ccd6c.2.log</span>
+<span class="co">#&gt; 3 /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpdAqr2o/fileb4c1e7ccd6c.3.log</span>
+<span class="co">#&gt; 4 /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpdAqr2o/fileb4c1e7ccd6c.4.log</span>
+<span class="co">#&gt; 5 /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpdAqr2o/fileb4c1e7ccd6c.5.log</span>
+<span class="co">#&gt;              name sfx ext  size isdir mode               mtime</span>
+<span class="co">#&gt; 1 fileb4c1e7ccd6c   1 log 10608 FALSE  644 2022-04-29 17:17:54</span>
+<span class="co">#&gt; 2 fileb4c1e7ccd6c   2 log 10608 FALSE  644 2022-04-29 17:17:54</span>
+<span class="co">#&gt; 3 fileb4c1e7ccd6c   3 log 10608 FALSE  644 2022-04-29 17:17:53</span>
+<span class="co">#&gt; 4 fileb4c1e7ccd6c   4 log 10608 FALSE  644 2022-04-29 17:17:53</span>
+<span class="co">#&gt; 5 fileb4c1e7ccd6c   5 log 10608 FALSE  644 2022-04-29 17:17:52</span>
+<span class="co">#&gt;                 ctime               atime uid gid  uname grname index</span>
+<span class="co">#&gt; 1 2022-04-29 17:17:54 2022-04-29 17:17:54 501  20 runner  staff     1</span>
+<span class="co">#&gt; 2 2022-04-29 17:17:54 2022-04-29 17:17:54 501  20 runner  staff     2</span>
+<span class="co">#&gt; 3 2022-04-29 17:17:54 2022-04-29 17:17:53 501  20 runner  staff     3</span>
+<span class="co">#&gt; 4 2022-04-29 17:17:54 2022-04-29 17:17:53 501  20 runner  staff     4</span>
+<span class="co">#&gt; 5 2022-04-29 17:17:54 2022-04-29 17:17:52 501  20 runner  staff     5</span>
+
 <span class="co"># manually delete all backups</span>
-<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">rotating</span><span class="op">$</span><span class="fu">prune</span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">rotating</span><span class="op">$</span><span class="fu">prune</span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span>
 <span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">rotating</span><span class="op">$</span><span class="va">backups</span>
 <span class="co">#&gt;  [1] path   name   sfx    ext    size   isdir  mode   mtime  ctime  atime </span>
 <span class="co">#&gt; [11] uid    gid    uname  grname index </span>
 <span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span>
+
 <span class="co">#cleanup</span>
-<span class="fu"><a href="https://rdrr.io/r/base/unlink.html">unlink</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="examples-hierarchy" class="section level2">
-<h2 class="hasAnchor">
-<a href="#examples-hierarchy" class="anchor"></a>Logger hierarchies</h2>
+<div class="section level3">
+<h3 id="examples-hierarchy">Logger hierarchies<a class="anchor" aria-label="anchor" href="#examples-hierarchy"></a>
+</h3>
 <p>The most common use cases for creating a new Logger rather than just using the root Logger is if you create a Package that should contain logging. This way you can have separate Appenders (e.g logfiles) and thresholds for each package.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># The logger name should be the same as the package name</span>
-<span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"mypackage"</span><span class="op">)</span>
 <span class="va">lg</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="../reference/AppenderFile.html">AppenderFile</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">tf</span><span class="op">)</span><span class="op">)</span>  </code></pre></div>
-<p>The <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> method for Loggers gives a nice overview of the newly created Logger:</p>
+<p>The <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> method for Loggers gives a nice overview of the newly created Logger:</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">lg</span><span class="op">)</span>
-<span class="co">#&gt; &lt;Logger&gt; [all] mypackage</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">lg</span><span class="op">)</span>
+<span class="co">#&gt; &lt;Logger&gt; [<span style="color: #808080;">all</span>] mypackage</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; appenders:</span>
-<span class="co">#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/Rtmp9BjtIg/file21086bcafdf0</span>
+<span class="co">#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpdAqr2o/fileb4c76527b0a</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; inherited appenders:</span>
 <span class="co">#&gt;   console: &lt;AppenderConsole&gt; [info] -&gt; console</span></code></pre></div>
@@ -634,32 +638,32 @@
 <p>We can use <code>lg$fatal()</code>, <code>lg$info()</code>, etc.. to log messages with this Logger:</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"A test message for lg"</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [08:08:07.373] A test message for lg</span></code></pre></div>
+<span class="co">#&gt; INFO  [17:17:55.014] A test message for lg</span></code></pre></div>
 <p>If we do not want <code>lg</code> to dispatch to the root Logger, we can set <code>propagate</code> to <code>FALSE</code>.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lg</span><span class="op">$</span><span class="fu">set_propagate</span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p>When we take a look at the Logger again, we now see that it does not inherit any Appenders anymore</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">lg</span><span class="op">)</span>
-<span class="co">#&gt; &lt;Logger&gt; [all] mypackage</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">lg</span><span class="op">)</span>
+<span class="co">#&gt; &lt;Logger&gt; [<span style="color: #808080;">all</span>] mypackage</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; appenders:</span>
-<span class="co">#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/Rtmp9BjtIg/file21086bcafdf0</span></code></pre></div>
+<span class="co">#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpdAqr2o/fileb4c76527b0a</span></code></pre></div>
 <p>Consequently, <code>lg</code> no longer outputs log messages to he console</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Nothing to see here"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># cleanup</span>
 <span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>
-<span class="co">#&gt; &lt;Logger&gt; [all] mypackage</span>
+<span class="co">#&gt; &lt;Logger&gt; [<span style="color: #808080;">all</span>] mypackage</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; inherited appenders:</span>
 <span class="co">#&gt;   console: &lt;AppenderConsole&gt; [info] -&gt; console</span>
-<span class="fu"><a href="https://rdrr.io/r/base/unlink.html">unlink</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="buffered-logging" class="section level2">
-<h2 class="hasAnchor">
-<a href="#buffered-logging" class="anchor"></a>Buffered logging</h2>
+<div class="section level3">
+<h3 id="buffered-logging">Buffered logging<a class="anchor" aria-label="anchor" href="#buffered-logging"></a>
+</h3>
 <p>The main purpose of AppenderBuffer is to retain LogEvents in memory and write them to destinations at a later point in time, e.g. when the Buffer is full and needs to be flushed. For example, if you log to a remote database you can postpone this costly operation until after your analysis is finished.</p>
 <p>By setting a <a href="#thresholds">filter</a> as a custom <code>$should_flush()</code> method for an AppenderBuffer, you can define more complex conditions to trigger flushing. For example, the will output the last 5 LogEvents that happened before an <code>error</code> occurred.</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
@@ -683,16 +687,16 @@
 
 <span class="co"># An event of level 'error' or 'fatal' triggers flushing of the buffer</span>
 <span class="va">lg</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"But the days grow short when you reach September"</span><span class="op">)</span>
-<span class="co">#&gt; DEBUG [08:08:07.753] April </span>
-<span class="co">#&gt; DEBUG [08:08:07.754] May </span>
-<span class="co">#&gt; DEBUG [08:08:07.754] June </span>
-<span class="co">#&gt; DEBUG [08:08:07.754] July </span>
-<span class="co">#&gt; DEBUG [08:08:07.754] August </span>
-<span class="co">#&gt; ERROR [08:08:07.755] But the days grow short when you reach September</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #808080;">DEBUG</span> [17:17:55.850] April</span>
+<span class="co">#&gt; <span style="color: #808080;">DEBUG</span> [17:17:55.850] May</span>
+<span class="co">#&gt; <span style="color: #808080;">DEBUG</span> [17:17:55.851] June</span>
+<span class="co">#&gt; <span style="color: #808080;">DEBUG</span> [17:17:55.851] July</span>
+<span class="co">#&gt; <span style="color: #808080;">DEBUG</span> [17:17:55.851] August</span>
+<span class="co">#&gt; <span style="color: #D75F5F;">ERROR</span> [17:17:55.853] But the days grow short when you reach September</span></code></pre></div>
 </div>
-<div id="logging-to-databases" class="section level2">
-<h2 class="hasAnchor">
-<a href="#logging-to-databases" class="anchor"></a>Logging to databases</h2>
+<div class="section level3">
+<h3 id="logging-to-databases">Logging to databases<a class="anchor" aria-label="anchor" href="#logging-to-databases"></a>
+</h3>
 <p>Logging to databases is simple, though a few aspects can be tricky to configure based on the backend used. For performance reasons database inserts are buffered by default. This works exactly identical as described above for AppenderBuffer. If you want to write each LogEvent directly to the database, just set the buffer size to <code>0</code>. As of lgr 0.4.0, database appenders are part of the <strong>lgrExtra</strong> package that has to be installed separately. <strong>Database logging is still somewhat experimental</strong>.</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("RSQLite")</span>
@@ -702,7 +706,7 @@
   <span class="fu">set_propagate</span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span>
   <span class="fu">add_appender</span><span class="op">(</span>
     name <span class="op">=</span> <span class="st">"db"</span>, 
-    <span class="fu">lgrExtra</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/lgrExtra/man/AppenderDbi.html">AppenderDbi</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+    <span class="fu">lgrExtra</span><span class="fu">::</span><span class="va">AppenderDbi</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
       conn <span class="op">=</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu">dbConnect</span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu">SQLite</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,
       table <span class="op">=</span> <span class="st">"log"</span>,
       buffer_size <span class="op">=</span> <span class="fl">2L</span>
@@ -716,9 +720,9 @@
 <span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Now as the buffer is rotated, all events are output to the db"</span><span class="op">)</span>
 <span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">db</span><span class="op">$</span><span class="fu">show</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="adding-default-extra-fields-to-messages" class="section level2">
-<h2 class="hasAnchor">
-<a href="#adding-default-extra-fields-to-messages" class="anchor"></a>Adding default extra fields to messages</h2>
+<div class="section level3">
+<h3 id="adding-default-extra-fields-to-messages">Adding default extra fields to messages<a class="anchor" aria-label="anchor" href="#adding-default-extra-fields-to-messages"></a>
+</h3>
 <p>By abusing Filters, lgr can modify LogEvents as they are processed. One example for when this is useful is assigning a grouping identifier to a series of log calls.</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># setup an example function</span>
@@ -734,14 +738,14 @@
 <p><code><a href="../reference/with_log_level.html">with_log_value()</a></code> provides a convenient wrapper to inject values into log calls.</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/with_log_level.html">with_log_value</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>dataset_id <span class="op">=</span> <span class="st">"dataset1"</span><span class="op">)</span>, 
+  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>dataset_id <span class="op">=</span> <span class="st">"dataset1"</span><span class="op">)</span>, 
   <span class="fu">analyze</span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <p>An alternative way to achieve the same is to use one of the preconfigured Filters that come with lgr. This approach is more more comfortable for use within functions.</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">analyze</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">id</span> <span class="op">=</span> <span class="st">"dataset1"</span><span class="op">)</span><span class="op">{</span>
   <span class="va">lgr</span><span class="op">$</span><span class="fu">add_filter</span><span class="op">(</span><span class="va"><a href="../reference/FilterInject.html">FilterInject</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>dataset_id <span class="op">=</span> <span class="va">id</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"inject"</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html">on.exit</a></span><span class="op">(</span><span class="va">lgr</span><span class="op">$</span><span class="fu">remove_filter</span><span class="op">(</span><span class="st">"inject"</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="va">lgr</span><span class="op">$</span><span class="fu">remove_filter</span><span class="op">(</span><span class="st">"inject"</span><span class="op">)</span><span class="op">)</span>
   
   <span class="fu">clean</span><span class="op">(</span><span class="op">)</span>
   <span class="fu">process</span><span class="op">(</span><span class="op">)</span>
@@ -749,14 +753,14 @@
 <span class="op">}</span>
 <span class="fu">analyze</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>The result is the same in both cases:</p>
-<pre><code>#&gt; INFO  [08:08:08.106] cleaning data {dataset_id: `dataset1`}
-#&gt; INFO  [08:08:08.107] processing data {dataset_id: `dataset1`}
-#&gt; INFO  [08:08:08.108] outputing data {dataset_id: `dataset1`}</code></pre>
+<pre><code><span class="co">#&gt; INFO  [17:17:56.757] cleaning data <span style="color: #808080;">{</span><span style="color: #D75FAF;">dataset_id</span><span style="color: #808080;">: </span>`dataset1`<span style="color: #808080;">}</span></span>
+<span class="co">#&gt; INFO  [17:17:56.760] processing data <span style="color: #808080;">{</span><span style="color: #D75FAF;">dataset_id</span><span style="color: #808080;">: </span>`dataset1`<span style="color: #808080;">}</span></span>
+<span class="co">#&gt; INFO  [17:17:56.763] outputing data <span style="color: #808080;">{</span><span style="color: #D75FAF;">dataset_id</span><span style="color: #808080;">: </span>`dataset1`<span style="color: #808080;">}</span></span></code></pre>
 <p>You can use <code><a href="../reference/with_log_level.html">with_log_level()</a></code> and <code>FilterForceLevel</code> in a similar fashion to modify the log level of events conveniently.</p>
 </div>
-<div id="temporarily-disable-logging" class="section level2">
-<h2 class="hasAnchor">
-<a href="#temporarily-disable-logging" class="anchor"></a>Temporarily disable logging</h2>
+<div class="section level3">
+<h3 id="temporarily-disable-logging">Temporarily disable logging<a class="anchor" aria-label="anchor" href="#temporarily-disable-logging"></a>
+</h3>
 <p>Temporary disabling logging for portions of code is straight forward and easy with lgr:</p>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/suspend_logging.html">without_logging</a></span><span class="op">(</span><span class="op">{</span>
@@ -764,39 +768,39 @@
   <span class="va">lgr</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"Oh No"</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="adding-a-custom-logger-to-a-package" class="section level2">
-<h2 class="hasAnchor">
-<a href="#adding-a-custom-logger-to-a-package" class="anchor"></a>Adding a custom logger to a package</h2>
+<div class="section level3">
+<h3 id="adding-a-custom-logger-to-a-package">Adding a custom logger to a package<a class="anchor" aria-label="anchor" href="#adding-a-custom-logger-to-a-package"></a>
+</h3>
 <p>If you are a package author, it is good practice to define a separate logger for your package. This gives users the ability to easily enable/disable logging on a per-package basis. Loggers must be initialized in the packages .onLoad hook. You can do this by adding the following code to any <code>.R</code> file inside the <code>R/</code> directory of your package:</p>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># mypackage/R/mypackage-package.R</span>
 <span class="va">.onLoad</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span><span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/assign.html">assign</a></span><span class="op">(</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/assign.html" class="external-link">assign</a></span><span class="op">(</span>
     <span class="st">"lg"</span>,  <span class="co"># the recommended name for a logger object</span>
     <span class="fu">lgr</span><span class="fu">::</span><span class="fu"><a href="../reference/get_logger.html">get_logger</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"mypackage"</span><span class="op">)</span>,  <span class="co"># should be the same as the package name</span>
-    envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/environment.html">parent.env</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/environment.html">environment</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+    envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">parent.env</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">environment</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
   <span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <p>You can also just use <code><a href="../reference/use_logger.html">lgr::use_logger()</a></code> to generate the appropriate code for your package automatically.</p>
 <p>After you set this up you can use <code>lg$fatal()</code>, <code>lg$info()</code>, etc… inside your package. You do not have to define any appenders, since all log events will get redirected to the root Logger (see <a href="#hierarchy">Inheritance</a>).</p>
 </div>
-<div id="creating-a-layout-that-mimics-nodejs-winston-logstash" class="section level2">
-<h2 class="hasAnchor">
-<a href="#creating-a-layout-that-mimics-nodejs-winston-logstash" class="anchor"></a>Creating a Layout that mimics NodeJS Winston logstash</h2>
-<p>see <a href="https://github.com/s-fleck/lgr/issues/29" class="uri">https://github.com/s-fleck/lgr/issues/29</a></p>
+<div class="section level3">
+<h3 id="creating-a-layout-that-mimics-nodejs-winston-logstash">Creating a Layout that mimics NodeJS Winston logstash<a class="anchor" aria-label="anchor" href="#creating-a-layout-that-mimics-nodejs-winston-logstash"></a>
+</h3>
+<p>see <a href="https://github.com/s-fleck/lgr/issues/29" class="external-link uri">https://github.com/s-fleck/lgr/issues/29</a></p>
 </div>
 </div>
-<div id="references" class="section level1">
-<h1 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h1>
-<p><a href="https://docs.python.org/3/library/logging.html">Python Logging</a></p>
-<p><a href="https://gutenberg.net.au/ebooks06/0606601h.html">Eric Stenbock: The True Story of A Vampire</a></p>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<p><a href="https://docs.python.org/3/library/logging.html" class="external-link">Python Logging</a></p>
+<p><a href="https://gutenberg.net.au/ebooks06/0606601h.html" class="external-link">Eric Stenbock: The True Story of A Vampire</a></p>
 </div>
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>Technically, the logger does not produce standard JSON files but <a href="https://jsonlines.org/">JSON lines</a><a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p>AppenderJson is just an AppenderFile with LayotJson as default Layout and a few extra features<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p>Technically, the logger does not produce standard JSON files but <a href="https://jsonlines.org/" class="external-link">JSON lines</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>AppenderJson is just an AppenderFile with LayotJson as default Layout and a few extra features<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
   </div>
@@ -812,11 +816,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Stefan Fleck.</p>
+  <p></p>
+<p>Developed by Stefan Fleck.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>
@@ -824,6 +830,8 @@
 
   
 
+
+  
 
   </body>
 </html>

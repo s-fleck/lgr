@@ -24,6 +24,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -36,18 +38,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">lgr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3.9001</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="articles/lgr.html">Get started</a>
 </li>
@@ -60,7 +56,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/s-fleck/lgr/">
+  <a href="https://github.com/s-fleck/lgr/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -77,25 +73,24 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="lgr" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#lgr" class="anchor"></a>lgr</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="lgr">lgr<a class="anchor" aria-label="anchor" href="#lgr"></a>
+</h1></div>
 
-<p>lgr is a logging package for R built on the back of <a href="https://github.com/r-lib/R6">R6</a> classes. It is designed to be flexible, performant and extensible. The package <a href="https://s-fleck.github.io/lgr/articles/lgr.html">vignette</a> contains a comprehensive description of the features of lgr (some of them unique among R logging packages) along with many code examples.</p>
-<p>Users that have not worked with R6 classes before, will find configuring Loggers a bit strange and verbose, but care was taken to keep the syntax for common logging tasks and interactive usage simple and concise. User that have experience with <a href="https://github.com/rstudio/shiny">shiny</a>, <a href="https://github.com/rstudio/plumber">plumber</a>, <a href="https://docs.python.org/3/library/logging.html">python logging</a> or <a href="https://logging.apache.org/log4j/2.x/">Apache Log4j</a> will feel at home. User that are proficient with R6 classes will also find it easy to extend and customize lgr, for example with their own appenders Loggers or Appenders.</p>
-<div id="features" class="section level2">
-<h2 class="hasAnchor">
-<a href="#features" class="anchor"></a>Features</h2>
+<p>lgr is a logging package for R built on the back of <a href="https://github.com/r-lib/R6" class="external-link">R6</a> classes. It is designed to be flexible, performant and extensible. The package <a href="https://s-fleck.github.io/lgr/articles/lgr.html" class="external-link">vignette</a> contains a comprehensive description of the features of lgr (some of them unique among R logging packages) along with many code examples.</p>
+<p>Users that have not worked with R6 classes before, will find configuring Loggers a bit strange and verbose, but care was taken to keep the syntax for common logging tasks and interactive usage simple and concise. User that have experience with <a href="https://github.com/rstudio/shiny" class="external-link">shiny</a>, <a href="https://github.com/rstudio/plumber" class="external-link">plumber</a>, <a href="https://docs.python.org/3/library/logging.html" class="external-link">python logging</a> or <a href="https://logging.apache.org/log4j/2.x/" class="external-link">Apache Log4j</a> will feel at home. User that are proficient with R6 classes will also find it easy to extend and customize lgr, for example with their own appenders Loggers or Appenders.</p>
+<div class="section level2">
+<h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
+</h2>
 <ul>
 <li>
 <em>Hierarchical loggers</em> like in log4j and python logging. This is useful if you want to be able to configure logging on a per-package basis.</li>
 <li>An <em>arbitrary number of appenders</em> for each logger. A single logger can write to the console, a logfile, a database, etc… .</li>
-<li>Allow for <em>custom fields</em> in log events. As opposed to many other logging packages for R a log event is not just a message with a timestamp, but an object that can contain arbitrary data fields. This is useful for producing machine readable logs.</li>
+<li>Support for structured logging. As opposed to many other logging packages for R a log event is not just a message with a timestamp, but an object that can contain arbitrary data fields. This is useful for producing machine readable logs.</li>
 <li>
 <em>Vectorized</em> logging (so <code>lgr$fatal(capture.output(iris))</code> works)</li>
 <li>Lightning fast <em>in-memory logs</em> for interactive use.</li>
-<li>Appenders that write logs to a wide range of destinations:
-<ul>
+<li>Appenders that write logs to a wide range of destinations:<ul>
 <li>databases (buffered or directly)</li>
 <li>email or pushbullet</li>
 <li>plaintext files (with a powerful formatting syntax)</li>
@@ -105,53 +100,55 @@
 <li>(colored) console output</li>
 </ul>
 </li>
-<li>Optional support to use <a href="https://glue.tidyverse.org/">glue</a> instead of <code><a href="https://rdrr.io/r/base/sprintf.html">sprintf()</a></code> for composing log messages.</li>
+<li>Optional support to use <a href="https://glue.tidyverse.org/" class="external-link">glue</a> instead of <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code> for composing log messages.</li>
 </ul>
 </div>
-<div id="usage" class="section level2">
-<h2 class="hasAnchor">
-<a href="#usage" class="anchor"></a>Usage</h2>
-<p>To log an <em>event</em> with with lgr we call <code>lgr$&lt;logging function&gt;()</code>. Unnamed arguments to the logging function are interpreted by <code><a href="https://rdrr.io/r/base/sprintf.html">sprintf()</a></code>. For a way to create loggers that <a href="https://glue.tidyverse.org/">glue</a> instead please refer to the vignette.</p>
+<div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h2>
+<p>To log an <em>event</em> with with lgr we call <code>lgr$&lt;logging function&gt;()</code>. Unnamed arguments to the logging function are interpreted by <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code>. For a way to create loggers that <a href="https://glue.tidyverse.org/" class="external-link">glue</a> instead please refer to the vignette.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lgr</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"A critical error"</span><span class="op">)</span>
-<span class="co">#&gt; FATAL [09:46:45.461] A critical error</span>
+<span class="co">#&gt; FATAL [09:29:52.755] A critical error</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"A less severe error"</span><span class="op">)</span>
-<span class="co">#&gt; ERROR [09:46:45.701] A less severe error</span>
+<span class="co">#&gt; ERROR [09:29:52.777] A less severe error</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"A potentially bad situation"</span><span class="op">)</span>
-<span class="co">#&gt; WARN  [09:46:45.852] A potentially bad situation</span>
-<span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"iris has %s rows"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [09:46:45.880] iris has 150 rows</span>
+<span class="co">#&gt; WARN  [09:29:52.784] A potentially bad situation</span>
+<span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"iris has %s rows"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; INFO  [09:29:52.785] iris has 150 rows</span>
+
 <span class="co"># the following log levels are hidden by default</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">debug</span><span class="op">(</span><span class="st">"A debug message"</span><span class="op">)</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">trace</span><span class="op">(</span><span class="st">"A finer grained debug message"</span><span class="op">)</span></code></pre></div>
 <p>A Logger can have several Appenders. For example, we can add a JSON appender to log to a file with little effort.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">lgr</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="reference/AppenderFile.html">AppenderFile</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">tf</span>, layout <span class="op">=</span> <span class="va"><a href="reference/LayoutJson.html">LayoutJson</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"cars has %s rows"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [09:46:45.959] cars has 50 rows</span>
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; {"level":400,"timestamp":"2021-09-16 09:46:45","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></code></pre></div>
-<p>By passing a named argument to <code>info()</code>, <code>warn()</code>, and co you can log not only text but arbitrary R objects. Not all appenders handle such <em>custom fields</em> perfectly, but JSON does. This way you can create logfiles that are machine as well as (somewhat) human readable.</p>
+<span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"cars has %s rows"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; INFO  [09:29:52.805] cars has 50 rows</span>
+<span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; {"level":400,"timestamp":"2022-04-28 09:29:52","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></code></pre></div>
+<p>By passing a named argument to <code>info()</code>, <code>warn()</code>, and co you can log not only text but arbitrary R objects. Not all appenders support structured logging perfectly, but JSON does. This way you can create logfiles that are machine as well as (somewhat) human readable.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"loading cars"</span>, <span class="st">"cars"</span>, rows <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; INFO  [09:46:46.095] loading cars {rows: 50, cols: 2}</span>
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span>
-<span class="co">#&gt; {"level":400,"timestamp":"2021-09-16 09:46:45","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span>
-<span class="co">#&gt; {"level":400,"timestamp":"2021-09-16 09:46:46","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}</span></code></pre></div>
-<p>For more examples please see the package <a href="https://s-fleck.github.io/lgr/articles/lgr.html">vignette</a> and <a href="https://s-fleck.github.io/lgr/">documentation</a></p>
+<code class="sourceCode R"><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"loading cars"</span>, <span class="st">"cars"</span>, rows <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Warning in (function (fmt, ...) : one argument not used by format 'loading cars'</span>
+<span class="co">#&gt; INFO  [09:29:52.832] loading cars {rows: `50`, cols: `2`}</span>
+<span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span>
+<span class="co">#&gt; {"level":400,"timestamp":"2022-04-28 09:29:52","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span>
+<span class="co">#&gt; {"level":400,"timestamp":"2022-04-28 09:29:52","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}</span></code></pre></div>
+<p>For more examples please see the package <a href="https://s-fleck.github.io/lgr/articles/lgr.html" class="external-link">vignette</a> and <a href="https://s-fleck.github.io/lgr/" class="external-link">documentation</a></p>
 </div>
-<div id="see-lgr-in-action" class="section level2">
-<h2 class="hasAnchor">
-<a href="#see-lgr-in-action" class="anchor"></a>See lgr in action</h2>
-<p>lgr is used to govern console output in my shiny based csv editor <a href="https://github.com/s-fleck/shed">shed</a></p>
+<div class="section level2">
+<h2 id="see-lgr-in-action">See lgr in action<a class="anchor" aria-label="anchor" href="#see-lgr-in-action"></a>
+</h2>
+<p>lgr is used to govern console output in my shiny based csv editor <a href="https://github.com/s-fleck/shed" class="external-link">shed</a></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("remotes")</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"s-fleck/shed"</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">shed</span><span class="op">)</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"s-fleck/shed"</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">shed</span><span class="op">)</span>
 
 <span class="co"># log only output from the "shed" logger to a file</span>
-<span class="va">logfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">logfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu">lgr</span><span class="fu">::</span><span class="fu"><a href="reference/get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"shed"</span><span class="op">)</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="reference/AppenderFile.html">AppenderFile</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">logfile</span><span class="op">)</span><span class="op">)</span>
 <span class="fu">lgr</span><span class="fu">::</span><span class="fu"><a href="reference/simple_logging.html">threshold</a></span><span class="op">(</span><span class="st">"all"</span><span class="op">)</span>
 
@@ -160,151 +157,157 @@
 <span class="fu">shed</span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>  
 <span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"this will not end up in the log file"</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">logfile</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">logfile</span><span class="op">)</span>
 
 <span class="co"># cleanup</span>
-<span class="fu"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span><span class="op">(</span><span class="va">logfile</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.remove</a></span><span class="op">(</span><span class="va">logfile</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="development-status" class="section level2">
-<h2 class="hasAnchor">
-<a href="#development-status" class="anchor"></a>Development status</h2>
+<div class="section level2">
+<h2 id="development-status">Development status<a class="anchor" aria-label="anchor" href="#development-status"></a>
+</h2>
 <p>lgr in general is stable and safe for use, but <strong>the following features are still experimental</strong>:</p>
 <ul>
-<li>Database appenders which are available from the separate package <a href="https://github.com/s-fleck/lgrExtra">lgrExtra</a>.</li>
+<li>Database appenders which are available from the separate package <a href="https://github.com/s-fleck/lgrExtra" class="external-link">lgrExtra</a>.</li>
 <li>yaml/json config files for loggers (do not yet support all planned features)</li>
-<li>The documentation in general. I’m still hoping for more R6-specific features in <a href="https://github.com/r-lib/roxygen2">roxygen2</a> before I invest more time in object documentation.</li>
+<li>The documentation in general. I’m still hoping for more R6-specific features in <a href="https://github.com/r-lib/roxygen2" class="external-link">roxygen2</a> before I invest more time in object documentation.</li>
 </ul>
 </div>
-<div id="dependencies" class="section level2">
-<h2 class="hasAnchor">
-<a href="#dependencies" class="anchor"></a>Dependencies</h2>
-<p><a href="https://github.com/r-lib/R6">R6</a>: The R6 class system provides the framework on which lgr is built and the <strong>only Package lgr will ever depend on</strong>. If you are a <strong>package developer</strong> and want to add logging to your package, this is the only transitive dependency you have to worry about, as configuring of the loggers should be left to the user of your package.</p>
-<div id="optional-dependencies" class="section level3">
-<h3 class="hasAnchor">
-<a href="#optional-dependencies" class="anchor"></a>Optional dependencies</h3>
+<div class="section level2">
+<h2 id="dependencies">Dependencies<a class="anchor" aria-label="anchor" href="#dependencies"></a>
+</h2>
+<p><a href="https://github.com/r-lib/R6" class="external-link">R6</a>: The R6 class system provides the framework on which lgr is built and the <strong>only Package lgr will ever depend on</strong>. If you are a <strong>package developer</strong> and want to add logging to your package, this is the only transitive dependency you have to worry about, as configuring of the loggers should be left to the user of your package.</p>
+<div class="section level3">
+<h3 id="optional-dependencies">Optional dependencies<a class="anchor" aria-label="anchor" href="#optional-dependencies"></a>
+</h3>
 <p>lgr comes with a long list of optional dependencies that make a wide range of appenders possible. You only need the dependencies for the Appenders you actually want to use. Care was taken to choose packages that are slim, stable, have minimal dependencies, and are well maintained :</p>
 <p>Extra appenders (in the main package):</p>
 <ul>
-<li><p><a href="https://github.com/jeroen/jsonlite">jsonlite</a> for JSON logging via <code>LayoutJson</code>. JSON is a popular plaintext based file format that is easy to read for humans and machines alike.</p></li>
-<li><p><a href="https://github.com/s-fleck/rotor">rotor</a> for log rotation via AppenderFileRotating and co.</p></li>
-<li><p><a href="https://github.com/Rdatatable/">data.table</a> for fast in-memory logging with <code>AppenderDt</code>, and also by all database / DBI Appenders.</p></li>
-<li><p><a href="https://glue.tidyverse.org/">glue</a> for a more flexible formatting syntax via LoggerGlue and LayoutGlue.</p></li>
+<li><p><a href="https://github.com/jeroen/jsonlite" class="external-link">jsonlite</a> for JSON logging via <code>LayoutJson</code>. JSON is a popular plaintext based file format that is easy to read for humans and machines alike.</p></li>
+<li><p><a href="https://github.com/s-fleck/rotor" class="external-link">rotor</a> for log rotation via AppenderFileRotating and co.</p></li>
+<li><p><a href="https://github.com/Rdatatable/" class="external-link">data.table</a> for fast in-memory logging with <code>AppenderDt</code>, and also by all database / DBI Appenders.</p></li>
+<li><p><a href="https://glue.tidyverse.org/" class="external-link">glue</a> for a more flexible formatting syntax via LoggerGlue and LayoutGlue.</p></li>
 </ul>
-<p>Extra appenders via <a href="https://github.com/s-fleck/lgrExtra">lgrExtra</a>:</p>
+<p>Extra appenders via <a href="https://github.com/s-fleck/lgrExtra" class="external-link">lgrExtra</a>:</p>
 <ul>
 <li>
-<p><a href="https://github.com/r-dbi/DBI">DBI</a> for logging to databases. lgr is confirmed to work with the following backends:</p>
+<p><a href="https://github.com/r-dbi/DBI" class="external-link">DBI</a> for logging to databases. lgr is confirmed to work with the following backends:</p>
 <ul>
 <li>
-<a href="https://github.com/r-dbi/RSQLite">RSQLite</a>,</li>
+<a href="https://github.com/r-dbi/RSQLite" class="external-link">RSQLite</a>,</li>
 <li>
-<a href="https://github.com/r-dbi/RMariaDB">RMariaDB</a> for MariaDB and MySQL,</li>
+<a href="https://github.com/r-dbi/RMariaDB" class="external-link">RMariaDB</a> for MariaDB and MySQL,</li>
 <li>
-<a href="https://cran.r-project.org/package=RPostgres">RPostgres</a>,</li>
+<a href="https://cran.r-project.org/package=RPostgres" class="external-link">RPostgres</a>,</li>
 <li>
-<a href="https://github.com/s-u/RJDBC">RJDBC</a> for DB2, and</li>
+<a href="https://github.com/s-u/RJDBC" class="external-link">RJDBC</a> for DB2, and</li>
 <li>
-<a href="https://github.com/r-dbi/odbc">odbc</a> also for DB2.</li>
+<a href="https://github.com/r-dbi/odbc" class="external-link">odbc</a> also for DB2.</li>
 </ul>
 <p>In theory all DBI compliant database packages should work. If you are using lgr with a database backend, please report your (positive and negative) experiences, as database support is still somewhat experimental.</p>
 </li>
-<li><p><a href="https://cran.r-project.org/package=gmailr">gmailr</a> or</p></li>
-<li><p><a href="https://cran.r-project.org/package=sendmailR">sendmailR</a> for email notifications.</p></li>
-<li><p><a href="https://github.com/eddelbuettel/rpushbullet">RPushbullet</a> for push notifications.</p></li>
-<li><p><a href="https://cran.r-project.org/package=rsyslog">Rsyslog</a> for logging to syslog on POSIX-compatible systems.</p></li>
+<li><p><a href="https://cran.r-project.org/package=gmailr" class="external-link">gmailr</a> or</p></li>
+<li><p><a href="https://cran.r-project.org/package=sendmailR" class="external-link">sendmailR</a> for email notifications.</p></li>
+<li><p><a href="https://github.com/eddelbuettel/rpushbullet" class="external-link">RPushbullet</a> for push notifications.</p></li>
+<li><p><a href="https://cran.r-project.org/package=rsyslog" class="external-link">Rsyslog</a> for logging to syslog on POSIX-compatible systems.</p></li>
 </ul>
 <p>Other extra features:</p>
 <ul>
 <li>
-<a href="https://CRAN.R-project.org/package=yaml">yaml</a> for configuring loggers via YAML files<br>
+<a href="https://CRAN.R-project.org/package=yaml" class="external-link">yaml</a> for configuring loggers via YAML files<br>
 </li>
 <li>
-<a href="https://github.com/r-lib/crayon">crayon</a> for colored console output.<br>
+<a href="https://github.com/r-lib/crayon" class="external-link">crayon</a> for colored console output.<br>
 </li>
 <li>
-<a href="https://github.com/r-lib/whoami/blob/master/DESCRIPTION">whoami</a> for guessing the user name from various sources. You can also set the user name manually if you want to use it for logging.</li>
+<a href="https://github.com/r-lib/whoami/blob/master/DESCRIPTION" class="external-link">whoami</a> for guessing the user name from various sources. You can also set the user name manually if you want to use it for logging.</li>
 <li>
-<a href="https://CRAN.R-project.org/package=desc">desc</a> for the package development convenience function <code><a href="reference/use_logger.html">use_logger()</a></code>
+<a href="https://CRAN.R-project.org/package=desc" class="external-link">desc</a> for the package development convenience function <code><a href="reference/use_logger.html">use_logger()</a></code>
 </li>
 <li>
-<a href="https://CRAN.R-project.org/package=cli">cli</a> for printing the tree structure of registered loggers with <code><a href="reference/logger_tree.html">logger_tree()</a></code>
+<a href="https://CRAN.R-project.org/package=cli" class="external-link">cli</a> for printing the tree structure of registered loggers with <code><a href="reference/logger_tree.html">logger_tree()</a></code>
 </li>
 </ul>
-<p>Other <code>Suggests</code> (<a href="https://CRAN.R-project.org/package=future">future</a>, <a href="https://CRAN.R-project.org/package=future.apply">future.apply</a>) do not provide extra functionality but had to be included for some of the automated unit tests run by lgr.</p>
+<p>Other <code>Suggests</code> (<a href="https://CRAN.R-project.org/package=future" class="external-link">future</a>, <a href="https://CRAN.R-project.org/package=future.apply" class="external-link">future.apply</a>) do not provide extra functionality but had to be included for some of the automated unit tests run by lgr.</p>
 </div>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p>You can install lgr from CRAN</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"lgr"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"lgr"</span><span class="op">)</span></code></pre></div>
 <p>Or you can install the current development version directly from github</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#install.packages("remotes")</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"s-fleck/lgr"</span><span class="op">)</span></code></pre></div>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"s-fleck/lgr"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="outlook" class="section level2">
-<h2 class="hasAnchor">
-<a href="#outlook" class="anchor"></a>Outlook</h2>
+<div class="section level2">
+<h2 id="outlook">Outlook<a class="anchor" aria-label="anchor" href="#outlook"></a>
+</h2>
 <p>The long term goal is to support (nearly) all features of the python logging module. If you have experience with python logging or Log4j and are missing features/appenders that you’d like to see, please feel free to post a feature request on the issue tracker.</p>
 </div>
-<div id="acknowledgement" class="section level2">
-<h2 class="hasAnchor">
-<a href="#acknowledgement" class="anchor"></a>Acknowledgement</h2>
-<ul>
-<li>
-<a href="https://app.diagrams.net/">diagrams.net</a> for the flow chart in the vignette</li>
-</ul>
+<div class="section level2">
+<h2 id="acknowledgement">Acknowledgement<a class="anchor" aria-label="anchor" href="#acknowledgement"></a>
+</h2>
+<ul><li>
+<a href="https://app.diagrams.net/" class="external-link">diagrams.net</a> for the flow chart in the vignette</li></ul>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=lgr">https://​cloud.r-project.org/​package=lgr</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/s-fleck/lgr/">https://​github.com/​s-fleck/​lgr/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/s-fleck/lgr/issues/">https://​github.com/​s-fleck/​lgr/​issues/​</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Stefan Fleck <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-3344-9851" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="https://cloud.r-project.org/package=lgr" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/s-fleck/lgr/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/s-fleck/lgr/issues/" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/package=lgr"><img src="https://www.r-pkg.org/badges/version/lgr" alt="CRAN status"></a></li>
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
-<li><a href="https://app.travis-ci.com/github/s-fleck/lgr"><img src="https://travis-ci.com/s-fleck/lgr.svg?branch=master" alt="Travis build status"></a></li>
-<li><a href="https://codecov.io/gh/s-fleck/lgr?branch=master"><img src="https://codecov.io/gh/s-fleck/lgr/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing lgr</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Stefan Fleck <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-3344-9851" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://cran.r-project.org/package=lgr" class="external-link"><img src="https://www.r-pkg.org/badges/version/lgr" alt="CRAN status"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Stefan Fleck.</p>
+  <p></p>
+<p>Developed by Stefan Fleck.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>
@@ -312,6 +315,8 @@
 
   
 
+
+  
 
   </body>
 </html>
