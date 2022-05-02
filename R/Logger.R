@@ -226,6 +226,7 @@ Logger <- R6::R6Class(
         }
 
         force(caller)
+        rawMsg <- msg
 
         if (missing(...)){
           vals <- list(
@@ -233,7 +234,8 @@ Logger <- R6::R6Class(
             level = level,
             timestamp = timestamp,
             caller = caller,
-            msg = msg
+            msg = msg,
+            .rawMsg = rawMsg
           )
         } else {
           dots <- list(...)
@@ -245,7 +247,8 @@ Logger <- R6::R6Class(
               level = level,
               timestamp = timestamp,
               caller = caller,
-              msg = msg
+              msg = msg,
+              .rawMsg = rawMsg
             )
           } else {
             not_named <- vapply(names(dots), is_blank, TRUE, USE.NAMES = FALSE)
@@ -259,7 +262,8 @@ Logger <- R6::R6Class(
                 level = level,
                 timestamp = timestamp,
                 caller = caller,
-                msg = msg
+                msg = msg,
+                .rawMsg = rawMsg
               ),
               dots[!not_named]
             )
@@ -882,6 +886,11 @@ LoggerGlue <- R6::R6Class(
           "Can only utilize vectorized logging if log level is the same for all entries"
         )
 
+        assert(
+          !missing(...),
+          "No log message or structured logging fields supplied"
+        )
+
         dots <- list(...)
 
         if ("msg" %in% names(dots)){
@@ -909,6 +918,7 @@ LoggerGlue <- R6::R6Class(
           }
         })
 
+        rawMsg <- dots[[1]]
         msg <- do.call(glue::glue, args = c(dots_msg, list(.envir = .envir)))
 
         # Check if LogEvent should be created
@@ -921,22 +931,21 @@ LoggerGlue <- R6::R6Class(
 
         force(caller)
 
-        if (missing(...)){
-          stop("No log message or structured logging fields supplied")
-        } else {
-          custom_fields <- !(grepl("^\\.", names(dots)) | is_blank(names(dots)))
+        # Create list that contains all values equired for the log event
+        custom_fields <- !(grepl("^\\.", names(dots)) | is_blank(names(dots)))
 
-          vals <- c(
-            list(
-              logger = self,
-              level = level,
-              timestamp = timestamp,
-              caller = caller,
-              msg = msg
-            ),
-            dots[custom_fields]
-          )
-        }
+        vals <- c(
+          list(
+            logger = self,
+            level = level,
+            timestamp = timestamp,
+            caller = caller,
+            msg = msg,
+            .rawMsg = rawMsg
+          ),
+          dots[custom_fields]
+        )
+
 
         # This code looks really weird, but it really is just replacing all
         # instances of [[ with get() for minimal overhead. We want event

@@ -55,6 +55,9 @@ LogEvent was created.}
 
 \item{\code{.logger}}{\link{Logger}. A reference to the Logger that created the
 event (equivalent to \code{get_logger(event$logger)}).}
+
+\item{\code{.rawMsg}}{\code{character}. The raw log message without string
+interpolation.}
 }
 \if{html}{\out{</div>}}
 }
@@ -62,7 +65,7 @@ event (equivalent to \code{get_logger(event$logger)}).}
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
 \item{\code{values}}{\code{list}. All values stored in the \code{LogEvent}, including
-all \emph{custom fields}, but not including \code{event$.logger}.}
+all \emph{custom fields}, but not including \code{event$.logger} and \code{event$.rawMsg}.}
 
 \item{\code{level_name}}{\code{character}. The \link{log_level} / priority of the LogEvent labelled
 according to \code{getOption("lgr.log_levels")}}
@@ -95,6 +98,7 @@ the \link{Appenders} and \link{Layouts} as if several separate events.
   timestamp = Sys.time(),
   caller = NA,
   msg = NA,
+  .rawMsg = msg,
   ...
 )}\if{html}{\out{</div>}}
 }
