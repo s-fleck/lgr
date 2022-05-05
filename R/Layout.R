@@ -39,7 +39,7 @@ Layout <- R6::R6Class(
       toString(event)
     },
 
-    toString = function() "<empty>"
+    toString = function() fmt_class(class(self)[[1]])
   )
 )
 
