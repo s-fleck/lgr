@@ -882,6 +882,27 @@ events will get redirected to the root Logger (see [Inheritance](#hierarchy)).
 see https://github.com/s-fleck/lgr/issues/29
 
 
+## Adding the source file / R-script to the log event
+
+Getting the source file is sadly non-trivial in R, otherwise it would have
+been included in the core logging functions. Luckily, this is easy to add
+with filters and the awesome [this.path](https://CRAN.R-project.org/package=this.path)
+package. This solution works in most scenarions, but not in all
+(for example, building this vignette).
+
+```{r, eval = FALSE}
+# install.packages("this.path")
+
+lg <- get_logger("srcfile")
+lg$add_filter(function(event){
+  tryCatch({
+    event$srcfile <- this.path::this.path()
+  }, error = function(e) NULL)
+  TRUE
+})
+```
+
+
 # References
 
 [Python Logging](https://docs.python.org/3/library/logging.html)
