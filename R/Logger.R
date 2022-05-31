@@ -883,12 +883,25 @@ LoggerGlue <- R6::R6Class(
         )
 
         dots <- list(...)
-        sel <- names(dots) == ""
-        if (!length(sel)){
-          sel <- seq_along(dots)
+
+        if ("msg" %in% names(dots)){
+          warning(
+            "LoggerGlue does not support a `$msg` argument. Please use unnamed ",
+            "text strings for construction your message like in `glue::glue()`.",
+            call. = FALSE
+          )
+          names(dots)[names(dots) == "msg"] <- ""
         }
 
-        dots[sel] <- lapply(dots[sel], function(e){
+        # construct msg
+        dots_msg <- dots  # because we need the original dots later again
+
+        sel <- names(dots_msg) == ""
+        if (!length(sel)){
+          sel <- seq_along(dots_msg)
+        }
+
+        dots_msg[sel] <- lapply(dots_msg[sel], function(e){
           if (inherits(e, "condition")){
             conditionMessage(e)
           } else {
@@ -896,7 +909,7 @@ LoggerGlue <- R6::R6Class(
           }
         })
 
-        msg <- do.call(glue::glue, args = c(dots, list(.envir = .envir)))
+        msg <- do.call(glue::glue, args = c(dots_msg, list(.envir = .envir)))
 
         # Check if LogEvent should be created
         if (
@@ -909,15 +922,8 @@ LoggerGlue <- R6::R6Class(
         force(caller)
 
         if (missing(...)){
-          vals <- list(
-            logger = self,
-            level = level,
-            timestamp = timestamp,
-            caller = caller,
-            msg = msg
-          )
+          stop("No log message or structured logging fields supplied")
         } else {
-          dots <- list(...)
           custom_fields <- !(grepl("^\\.", names(dots)) | is_blank(names(dots)))
 
           vals <- c(

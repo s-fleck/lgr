@@ -428,6 +428,11 @@ test_that("Appender error contains useful call object", {
   l <- get_logger("test")$set_propagate(FALSE)
   g <- get_logger_glue("testglue")$set_propagate(FALSE)
 
+  on.exit({
+    l$config(NULL)
+    g$config(NULL)
+  })
+
   AppenderFail <- R6::R6Class(
     "AppenderFail",
     inherit = Appender,
@@ -445,3 +450,19 @@ test_that("Appender error contains useful call object", {
   expect_warning(g$info("this will fail"), ".*AppenderFail.*g\\$info")
 })
 
+
+
+
+
+test_that("Logger$log 'msg' argument works as expected", {
+  l <- get_logger("test")$set_propagate(FALSE)
+  g <- get_logger_glue("testglue")$set_propagate(FALSE)
+
+  on.exit({
+    l$config(NULL)
+    g$config(NULL)
+  })
+
+  expect_silent(l$log(level = "fatal", msg = "test"))
+  expect_warning(g$log(level = "fatal", msg = "test"), "does not support")
+})
