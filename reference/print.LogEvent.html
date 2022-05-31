@@ -158,11 +158,11 @@ have <strong>jsonlite</strong> installed and does not support colors as opposed 
 <span class="r-in">  level <span class="op">=</span> <span class="fl">300</span>, msg <span class="op">=</span> <span class="st">"a test event"</span>, caller <span class="op">=</span> <span class="st">"testfun()"</span>, logger <span class="op">=</span> <span class="va">lgr</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-08 07:47:27] a test event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-31 06:20:17] a test event</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, fmt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"%t (%p) %c: %n - %m"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2022-05-08 07:47:27 (2994) testfun(): 300 - a test event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2022-05-31 06:20:17 (4128) testfun(): 300 - a test event</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, colors <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-08 07:47:27] a test event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-31 06:20:17] a test event</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># custom values</span></span>
 <span class="r-in"><span class="va">y</span> <span class="op">&lt;-</span> <span class="va"><a href="LogEvent.html">LogEvent</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
@@ -172,13 +172,13 @@ have <strong>jsonlite</strong> installed and does not support colors as opposed 
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># default output with %f</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-08 07:47:27] a gps track  {waypoints: `10`, location: `Austria`}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-31 06:20:17] a gps track  {waypoints: `10`, location: `Austria`}</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># proper JSON output with %j</span></span>
 <span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"jsonlite"</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span>, fmt <span class="op">=</span> <span class="st">"%L [%t] %m  %j"</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-08 07:47:27] a gps track  {"waypoints":10,"location":"Austria"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-31 06:20:17] a gps track  {"waypoints":10,"location":"Austria"}</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
