@@ -1,4 +1,4 @@
-# lgr (dev)
+# lgr 0.4.4
 
 * `%k` and `%K` parameters in `format.LogEvent` now work as expected when using
   **crayon** terminal colours (#52).
@@ -12,6 +12,8 @@
 * `as_event_list.data.frame` now really returns a list of `LogEvents`
 
 * added `as_LogEvent()` to coerce various event-like objects to `LogEvents`
+
+* rebuild docs for R 4.2.0
 
 
 # lgr 0.4.3

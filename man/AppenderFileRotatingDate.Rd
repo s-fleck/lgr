@@ -31,40 +31,40 @@ Other Appenders:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{AppenderFileRotatingDate$new()}}
-\item \href{#method-clone}{\code{AppenderFileRotatingDate$clone()}}
+\item \href{#method-AppenderFileRotatingDate-new}{\code{AppenderFileRotatingDate$new()}}
+\item \href{#method-AppenderFileRotatingDate-clone}{\code{AppenderFileRotatingDate$clone()}}
 }
 }
-\if{html}{
-\out{<details ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter">}\href{../../lgr/html/Filterable.html#method-add_filter}{\code{lgr::Filterable$add_filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter">}\href{../../lgr/html/Filterable.html#method-filter}{\code{lgr::Filterable$filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter">}\href{../../lgr/html/Filterable.html#method-remove_filter}{\code{lgr::Filterable$remove_filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters">}\href{../../lgr/html/Filterable.html#method-set_filters}{\code{lgr::Filterable$set_filters()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout">}\href{../../lgr/html/Appender.html#method-set_layout}{\code{lgr::Appender$set_layout()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold">}\href{../../lgr/html/Appender.html#method-set_threshold}{\code{lgr::Appender$set_threshold()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="show">}\href{../../lgr/html/AppenderFile.html#method-show}{\code{lgr::AppenderFile$show()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="append">}\href{../../lgr/html/AppenderFileRotating.html#method-append}{\code{lgr::AppenderFileRotating$append()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="prune">}\href{../../lgr/html/AppenderFileRotating.html#method-prune}{\code{lgr::AppenderFileRotating$prune()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_backup_dir">}\href{../../lgr/html/AppenderFileRotating.html#method-set_backup_dir}{\code{lgr::AppenderFileRotating$set_backup_dir()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_compression">}\href{../../lgr/html/AppenderFileRotating.html#method-set_compression}{\code{lgr::AppenderFileRotating$set_compression()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_create_file">}\href{../../lgr/html/AppenderFileRotating.html#method-set_create_file}{\code{lgr::AppenderFileRotating$set_create_file()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_file">}\href{../../lgr/html/AppenderFileRotating.html#method-set_file}{\code{lgr::AppenderFileRotating$set_file()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_max_backups">}\href{../../lgr/html/AppenderFileRotating.html#method-set_max_backups}{\code{lgr::AppenderFileRotating$set_max_backups()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_size">}\href{../../lgr/html/AppenderFileRotating.html#method-set_size}{\code{lgr::AppenderFileRotating$set_size()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="format">}\href{../../lgr/html/AppenderFileRotating.html#method-format}{\code{lgr::AppenderFileRotating$format()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="rotate">}\href{../../lgr/html/AppenderFileRotating.html#method-rotate}{\code{lgr::AppenderFileRotating$rotate()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_age">}\href{../../lgr/html/AppenderFileRotating.html#method-set_age}{\code{lgr::AppenderFileRotating$set_age()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_cache_backups">}\href{../../lgr/html/AppenderFileRotating.html#method-set_cache_backups}{\code{lgr::AppenderFileRotating$set_cache_backups()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_fmt">}\href{../../lgr/html/AppenderFileRotating.html#method-set_fmt}{\code{lgr::AppenderFileRotating$set_fmt()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_overwrite">}\href{../../lgr/html/AppenderFileRotating.html#method-set_overwrite}{\code{lgr::AppenderFileRotating$set_overwrite()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-Appender-set_layout'><code>lgr::Appender$set_layout()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-Appender-set_threshold'><code>lgr::Appender$set_threshold()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="show"><a href='../../lgr/html/AppenderFile.html#method-AppenderFile-show'><code>lgr::AppenderFile$show()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="append"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-append'><code>lgr::AppenderFileRotating$append()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="prune"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-prune'><code>lgr::AppenderFileRotating$prune()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_backup_dir"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_backup_dir'><code>lgr::AppenderFileRotating$set_backup_dir()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_compression"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_compression'><code>lgr::AppenderFileRotating$set_compression()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_create_file"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_create_file'><code>lgr::AppenderFileRotating$set_create_file()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_file"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_file'><code>lgr::AppenderFileRotating$set_file()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_max_backups"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_max_backups'><code>lgr::AppenderFileRotating$set_max_backups()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_size"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_size'><code>lgr::AppenderFileRotating$set_size()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="format"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-format'><code>lgr::AppenderFileRotating$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="rotate"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-rotate'><code>lgr::AppenderFileRotating$rotate()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_age"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_age'><code>lgr::AppenderFileRotating$set_age()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_cache_backups"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_cache_backups'><code>lgr::AppenderFileRotating$set_cache_backups()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_fmt"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_fmt'><code>lgr::AppenderFileRotating$set_fmt()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_overwrite"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_overwrite'><code>lgr::AppenderFileRotating$set_overwrite()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotatingDate-new"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotatingDate-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingDate$new(
@@ -95,8 +95,8 @@ for R6 classes).}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotatingDate-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotatingDate-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

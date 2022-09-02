@@ -37,14 +37,14 @@ Other Layouts:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-format_event}{\code{Layout$format_event()}}
-\item \href{#method-toString}{\code{Layout$toString()}}
-\item \href{#method-clone}{\code{Layout$clone()}}
+\item \href{#method-Layout-format_event}{\code{Layout$format_event()}}
+\item \href{#method-Layout-toString}{\code{Layout$toString()}}
+\item \href{#method-Layout-clone}{\code{Layout$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-format_event"></a>}}
-\if{latex}{\out{\hypertarget{method-format_event}{}}}
+\if{html}{\out{<a id="method-Layout-format_event"></a>}}
+\if{latex}{\out{\hypertarget{method-Layout-format_event}{}}}
 \subsection{Method \code{format_event()}}{
 Format a log event
 
@@ -63,8 +63,8 @@ that an \link{Appender} can write to an output destination.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-toString"></a>}}
-\if{latex}{\out{\hypertarget{method-toString}{}}}
+\if{html}{\out{<a id="method-Layout-toString"></a>}}
+\if{latex}{\out{\hypertarget{method-Layout-toString}{}}}
 \subsection{Method \code{toString()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Layout$toString()}\if{html}{\out{</div>}}
@@ -72,8 +72,8 @@ that an \link{Appender} can write to an output destination.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-Layout-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-Layout-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

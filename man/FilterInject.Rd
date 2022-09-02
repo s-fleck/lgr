@@ -35,19 +35,13 @@ lg$config(NULL)  # reset config
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{FilterInject$new()}}
-\item \href{#method-clone}{\code{FilterInject$clone()}}
+\item \href{#method-FilterInject-new}{\code{FilterInject$new()}}
+\item \href{#method-FilterInject-clone}{\code{FilterInject$clone()}}
 }
-}
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-}
-\out{</details>}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-FilterInject-new"></a>}}
+\if{latex}{\out{\hypertarget{method-FilterInject-new}{}}}
 \subsection{Method \code{new()}}{
 Initialize a new FilterInject
 \subsection{Usage}{
@@ -66,8 +60,8 @@ Appender/Logger that this filter is attached to. See also
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-FilterInject-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-FilterInject-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

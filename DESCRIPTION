@@ -1,7 +1,7 @@
 Type: Package
 Package: lgr
 Title: A Fully Featured Logging Framework
-Version: 0.4.3.9001
+Version: 0.4.4
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -46,7 +46,7 @@ VignetteBuilder:
     knitr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1.9000
 Collate: 
     'Filterable.R'
     'utils-sfmisc.R'

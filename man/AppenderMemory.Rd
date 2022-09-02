@@ -59,34 +59,34 @@ to a \code{data.table}.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{AppenderMemory$new()}}
-\item \href{#method-append}{\code{AppenderMemory$append()}}
-\item \href{#method-flush}{\code{AppenderMemory$flush()}}
-\item \href{#method-clear}{\code{AppenderMemory$clear()}}
-\item \href{#method-set_buffer_size}{\code{AppenderMemory$set_buffer_size()}}
-\item \href{#method-set_should_flush}{\code{AppenderMemory$set_should_flush()}}
-\item \href{#method-set_flush_on_exit}{\code{AppenderMemory$set_flush_on_exit()}}
-\item \href{#method-set_flush_on_rotate}{\code{AppenderMemory$set_flush_on_rotate()}}
-\item \href{#method-set_flush_threshold}{\code{AppenderMemory$set_flush_threshold()}}
-\item \href{#method-show}{\code{AppenderMemory$show()}}
-\item \href{#method-format}{\code{AppenderMemory$format()}}
+\item \href{#method-AppenderMemory-new}{\code{AppenderMemory$new()}}
+\item \href{#method-AppenderMemory-append}{\code{AppenderMemory$append()}}
+\item \href{#method-AppenderMemory-flush}{\code{AppenderMemory$flush()}}
+\item \href{#method-AppenderMemory-clear}{\code{AppenderMemory$clear()}}
+\item \href{#method-AppenderMemory-set_buffer_size}{\code{AppenderMemory$set_buffer_size()}}
+\item \href{#method-AppenderMemory-set_should_flush}{\code{AppenderMemory$set_should_flush()}}
+\item \href{#method-AppenderMemory-set_flush_on_exit}{\code{AppenderMemory$set_flush_on_exit()}}
+\item \href{#method-AppenderMemory-set_flush_on_rotate}{\code{AppenderMemory$set_flush_on_rotate()}}
+\item \href{#method-AppenderMemory-set_flush_threshold}{\code{AppenderMemory$set_flush_threshold()}}
+\item \href{#method-AppenderMemory-show}{\code{AppenderMemory$show()}}
+\item \href{#method-AppenderMemory-format}{\code{AppenderMemory$format()}}
 }
 }
-\if{html}{
-\out{<details ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter">}\href{../../lgr/html/Filterable.html#method-add_filter}{\code{lgr::Filterable$add_filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter">}\href{../../lgr/html/Filterable.html#method-filter}{\code{lgr::Filterable$filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter">}\href{../../lgr/html/Filterable.html#method-remove_filter}{\code{lgr::Filterable$remove_filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters">}\href{../../lgr/html/Filterable.html#method-set_filters}{\code{lgr::Filterable$set_filters()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout">}\href{../../lgr/html/Appender.html#method-set_layout}{\code{lgr::Appender$set_layout()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold">}\href{../../lgr/html/Appender.html#method-set_threshold}{\code{lgr::Appender$set_threshold()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-Appender-set_layout'><code>lgr::Appender$set_layout()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-Appender-set_threshold'><code>lgr::Appender$set_threshold()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-AppenderMemory-new"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderMemory-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$new(...)}\if{html}{\out{</div>}}
@@ -94,8 +94,8 @@ to a \code{data.table}.}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-append"></a>}}
-\if{latex}{\out{\hypertarget{method-append}{}}}
+\if{html}{\out{<a id="method-AppenderMemory-append"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderMemory-append}{}}}
 \subsection{Method \code{append()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$append(event)}\if{html}{\out{</div>}}
@@ -103,8 +103,8 @@ to a \code{data.table}.}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-flush"></a>}}
-\if{latex}{\out{\hypertarget{method-flush}{}}}
+\if{html}{\out{<a id="method-AppenderMemory-flush"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderMemory-flush}{}}}
 \subsection{Method \code{flush()}}{
 Sends the buffer's contents to all attached Appenders and
 then clears the Buffer
@@ -114,8 +114,8 @@ then clears the Buffer
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clear"></a>}}
-\if{latex}{\out{\hypertarget{method-clear}{}}}
+\if{html}{\out{<a id="method-AppenderMemory-clear"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderMemory-clear}{}}}
 \subsection{Method \code{clear()}}{
 Clears the buffer, discarding all buffered Events
 \subsection{Usage}{
@@ -124,8 +124,8 @@ Clears the buffer, discarding all buffered Events
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_buffer_size"></a>}}
-\if{latex}{\out{\hypertarget{method-set_buffer_size}{}}}
+\if{html}{\out{<a id="method-AppenderMemory-set_buffer_size"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderMemory-set_buffer_size}{}}}
 \subsection{Method \code{set_buffer_size()}}{
 Set the maximum size of the buffer
 \subsection{Usage}{
@@ -141,8 +141,8 @@ Set the maximum size of the buffer
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_should_flush"></a>}}
-\if{latex}{\out{\hypertarget{method-set_should_flush}{}}}
+\if{html}{\out{<a id="method-AppenderMemory-set_should_flush"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderMemory-set_should_flush}{}}}
 \subsection{Method \code{set_should_flush()}}{
 Set function that can trigger flushing the buffer
 \subsection{Usage}{
@@ -159,8 +159,8 @@ Set function that can trigger flushing the buffer
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_flush_on_exit"></a>}}
-\if{latex}{\out{\hypertarget{method-set_flush_on_exit}{}}}
+\if{html}{\out{<a id="method-AppenderMemory-set_flush_on_exit"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderMemory-set_flush_on_exit}{}}}
 \subsection{Method \code{set_flush_on_exit()}}{
 Should the buffer be flushed when the Appender is destroyed?
 \subsection{Usage}{
@@ -176,8 +176,8 @@ Should the buffer be flushed when the Appender is destroyed?
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_flush_on_rotate"></a>}}
-\if{latex}{\out{\hypertarget{method-set_flush_on_rotate}{}}}
+\if{html}{\out{<a id="method-AppenderMemory-set_flush_on_rotate"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderMemory-set_flush_on_rotate}{}}}
 \subsection{Method \code{set_flush_on_rotate()}}{
 Should the buffer be flushed if \code{buffer_size} is exceeded?
 \subsection{Usage}{
@@ -193,8 +193,8 @@ Should the buffer be flushed if \code{buffer_size} is exceeded?
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_flush_threshold"></a>}}
-\if{latex}{\out{\hypertarget{method-set_flush_threshold}{}}}
+\if{html}{\out{<a id="method-AppenderMemory-set_flush_threshold"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderMemory-set_flush_threshold}{}}}
 \subsection{Method \code{set_flush_threshold()}}{
 Set threshold that triggers flushing
 \subsection{Usage}{
@@ -211,8 +211,8 @@ active bindings.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-show"></a>}}
-\if{latex}{\out{\hypertarget{method-show}{}}}
+\if{html}{\out{<a id="method-AppenderMemory-show"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderMemory-show}{}}}
 \subsection{Method \code{show()}}{
 Display the contents of the log table. Relies on the
 \verb{$format_event} method of the \link{Layout} attached to this Appender.
@@ -233,8 +233,8 @@ that should be displayed.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-format"></a>}}
-\if{latex}{\out{\hypertarget{method-format}{}}}
+\if{html}{\out{<a id="method-AppenderMemory-format"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderMemory-format}{}}}
 \subsection{Method \code{format()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$format(color = FALSE, ...)}\if{html}{\out{</div>}}

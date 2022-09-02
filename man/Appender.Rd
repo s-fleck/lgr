@@ -52,26 +52,26 @@ is mainly used when printing information about the Appender itself.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{Appender$new()}}
-\item \href{#method-append}{\code{Appender$append()}}
-\item \href{#method-set_threshold}{\code{Appender$set_threshold()}}
-\item \href{#method-set_layout}{\code{Appender$set_layout()}}
-\item \href{#method-format}{\code{Appender$format()}}
+\item \href{#method-Appender-new}{\code{Appender$new()}}
+\item \href{#method-Appender-append}{\code{Appender$append()}}
+\item \href{#method-Appender-set_threshold}{\code{Appender$set_threshold()}}
+\item \href{#method-Appender-set_layout}{\code{Appender$set_layout()}}
+\item \href{#method-Appender-format}{\code{Appender$format()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter">}\href{../../lgr/html/Filterable.html#method-add_filter}{\code{lgr::Filterable$add_filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter">}\href{../../lgr/html/Filterable.html#method-filter}{\code{lgr::Filterable$filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter">}\href{../../lgr/html/Filterable.html#method-remove_filter}{\code{lgr::Filterable$remove_filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters">}\href{../../lgr/html/Filterable.html#method-set_filters}{\code{lgr::Filterable$set_filters()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-Appender-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Appender-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Appender$new(layout = Layout$new(), threshold = NA_integer_)}\if{html}{\out{</div>}}
@@ -79,8 +79,8 @@ is mainly used when printing information about the Appender itself.}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-append"></a>}}
-\if{latex}{\out{\hypertarget{method-append}{}}}
+\if{html}{\out{<a id="method-Appender-append"></a>}}
+\if{latex}{\out{\hypertarget{method-Appender-append}{}}}
 \subsection{Method \code{append()}}{
 Process a \link{LogEvent} \code{event}. This method is usually not
 called by the user, but invoked by a \link{Logger}
@@ -90,8 +90,8 @@ called by the user, but invoked by a \link{Logger}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_threshold"></a>}}
-\if{latex}{\out{\hypertarget{method-set_threshold}{}}}
+\if{html}{\out{<a id="method-Appender-set_threshold"></a>}}
+\if{latex}{\out{\hypertarget{method-Appender-set_threshold}{}}}
 \subsection{Method \code{set_threshold()}}{
 Set the minimum log level that triggers this Appender. See
 \code{\link[=threshold]{threshold()}} for examples
@@ -108,8 +108,8 @@ Set the minimum log level that triggers this Appender. See
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_layout"></a>}}
-\if{latex}{\out{\hypertarget{method-set_layout}{}}}
+\if{html}{\out{<a id="method-Appender-set_layout"></a>}}
+\if{latex}{\out{\hypertarget{method-Appender-set_layout}{}}}
 \subsection{Method \code{set_layout()}}{
 Set the \code{Layout} that this Appender will use for formatting
 \code{LogEvents}
@@ -119,8 +119,8 @@ Set the \code{Layout} that this Appender will use for formatting
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-format"></a>}}
-\if{latex}{\out{\hypertarget{method-format}{}}}
+\if{html}{\out{<a id="method-Appender-format"></a>}}
+\if{latex}{\out{\hypertarget{method-Appender-format}{}}}
 \subsection{Method \code{format()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Appender$format(color = FALSE, ...)}\if{html}{\out{</div>}}

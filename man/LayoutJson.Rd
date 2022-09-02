@@ -47,25 +47,19 @@ Other Layouts:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{LayoutJson$new()}}
-\item \href{#method-format_event}{\code{LayoutJson$format_event()}}
-\item \href{#method-set_toJSON_args}{\code{LayoutJson$set_toJSON_args()}}
-\item \href{#method-set_timestamp_fmt}{\code{LayoutJson$set_timestamp_fmt()}}
-\item \href{#method-toString}{\code{LayoutJson$toString()}}
-\item \href{#method-parse}{\code{LayoutJson$parse()}}
-\item \href{#method-read}{\code{LayoutJson$read()}}
-\item \href{#method-clone}{\code{LayoutJson$clone()}}
+\item \href{#method-LayoutJson-new}{\code{LayoutJson$new()}}
+\item \href{#method-LayoutJson-format_event}{\code{LayoutJson$format_event()}}
+\item \href{#method-LayoutJson-set_toJSON_args}{\code{LayoutJson$set_toJSON_args()}}
+\item \href{#method-LayoutJson-set_timestamp_fmt}{\code{LayoutJson$set_timestamp_fmt()}}
+\item \href{#method-LayoutJson-toString}{\code{LayoutJson$toString()}}
+\item \href{#method-LayoutJson-parse}{\code{LayoutJson$parse()}}
+\item \href{#method-LayoutJson-read}{\code{LayoutJson$read()}}
+\item \href{#method-LayoutJson-clone}{\code{LayoutJson$clone()}}
 }
-}
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-}
-\out{</details>}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-LayoutJson-new"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutJson-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$new(toJSON_args = list(auto_unbox = TRUE), timestamp_fmt = NULL)}\if{html}{\out{</div>}}
@@ -73,8 +67,8 @@ Other Layouts:
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-format_event"></a>}}
-\if{latex}{\out{\hypertarget{method-format_event}{}}}
+\if{html}{\out{<a id="method-LayoutJson-format_event"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutJson-format_event}{}}}
 \subsection{Method \code{format_event()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$format_event(event)}\if{html}{\out{</div>}}
@@ -82,8 +76,8 @@ Other Layouts:
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_toJSON_args"></a>}}
-\if{latex}{\out{\hypertarget{method-set_toJSON_args}{}}}
+\if{html}{\out{<a id="method-LayoutJson-set_toJSON_args"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutJson-set_toJSON_args}{}}}
 \subsection{Method \code{set_toJSON_args()}}{
 Set arguments to pass on to \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}}
 \subsection{Usage}{
@@ -99,8 +93,8 @@ Set arguments to pass on to \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_timestamp_fmt"></a>}}
-\if{latex}{\out{\hypertarget{method-set_timestamp_fmt}{}}}
+\if{html}{\out{<a id="method-LayoutJson-set_timestamp_fmt"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutJson-set_timestamp_fmt}{}}}
 \subsection{Method \code{set_timestamp_fmt()}}{
 Set a format that this Layout will apply to timestamps.
 \subsection{Usage}{
@@ -123,8 +117,8 @@ supported by \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}}, but should usu
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-toString"></a>}}
-\if{latex}{\out{\hypertarget{method-toString}{}}}
+\if{html}{\out{<a id="method-LayoutJson-toString"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutJson-toString}{}}}
 \subsection{Method \code{toString()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$toString()}\if{html}{\out{</div>}}
@@ -132,8 +126,8 @@ supported by \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}}, but should usu
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-parse"></a>}}
-\if{latex}{\out{\hypertarget{method-parse}{}}}
+\if{html}{\out{<a id="method-LayoutJson-parse"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutJson-parse}{}}}
 \subsection{Method \code{parse()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$parse(file)}\if{html}{\out{</div>}}
@@ -141,8 +135,8 @@ supported by \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}}, but should usu
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read"></a>}}
-\if{latex}{\out{\hypertarget{method-read}{}}}
+\if{html}{\out{<a id="method-LayoutJson-read"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutJson-read}{}}}
 \subsection{Method \code{read()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$read(file, threshold = NA_integer_, n = 20L)}\if{html}{\out{</div>}}
@@ -150,8 +144,8 @@ supported by \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}}, but should usu
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-LayoutJson-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutJson-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

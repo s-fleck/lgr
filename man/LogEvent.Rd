@@ -75,13 +75,13 @@ created this event, equivalent to \code{event$.logger$name})}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{LogEvent$new()}}
-\item \href{#method-clone}{\code{LogEvent$clone()}}
+\item \href{#method-LogEvent-new}{\code{LogEvent$new()}}
+\item \href{#method-LogEvent-clone}{\code{LogEvent$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-LogEvent-new"></a>}}
+\if{latex}{\out{\hypertarget{method-LogEvent-new}{}}}
 \subsection{Method \code{new()}}{
 The arguments to \code{LogEvent$new()} directly translate to the fields stored
 in the \code{LogEvent}. Usually these values will be scalars, but (except for
@@ -112,8 +112,8 @@ this way, but not all Appenders will support them. See \link{AppenderJson} for}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-LogEvent-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-LogEvent-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

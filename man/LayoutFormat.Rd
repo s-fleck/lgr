@@ -90,26 +90,20 @@ the package \pkg{crayon}) passed on on \code{\link[=format.LogEvent]{format.LogE
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{LayoutFormat$new()}}
-\item \href{#method-format_event}{\code{LayoutFormat$format_event()}}
-\item \href{#method-set_fmt}{\code{LayoutFormat$set_fmt()}}
-\item \href{#method-set_timestamp_fmt}{\code{LayoutFormat$set_timestamp_fmt()}}
-\item \href{#method-set_colors}{\code{LayoutFormat$set_colors()}}
-\item \href{#method-set_pad_levels}{\code{LayoutFormat$set_pad_levels()}}
-\item \href{#method-toString}{\code{LayoutFormat$toString()}}
-\item \href{#method-read}{\code{LayoutFormat$read()}}
-\item \href{#method-clone}{\code{LayoutFormat$clone()}}
+\item \href{#method-LayoutFormat-new}{\code{LayoutFormat$new()}}
+\item \href{#method-LayoutFormat-format_event}{\code{LayoutFormat$format_event()}}
+\item \href{#method-LayoutFormat-set_fmt}{\code{LayoutFormat$set_fmt()}}
+\item \href{#method-LayoutFormat-set_timestamp_fmt}{\code{LayoutFormat$set_timestamp_fmt()}}
+\item \href{#method-LayoutFormat-set_colors}{\code{LayoutFormat$set_colors()}}
+\item \href{#method-LayoutFormat-set_pad_levels}{\code{LayoutFormat$set_pad_levels()}}
+\item \href{#method-LayoutFormat-toString}{\code{LayoutFormat$toString()}}
+\item \href{#method-LayoutFormat-read}{\code{LayoutFormat$read()}}
+\item \href{#method-LayoutFormat-clone}{\code{LayoutFormat$clone()}}
 }
-}
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-}
-\out{</details>}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-LayoutFormat-new"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutFormat-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$new(
@@ -122,8 +116,8 @@ the package \pkg{crayon}) passed on on \code{\link[=format.LogEvent]{format.LogE
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-format_event"></a>}}
-\if{latex}{\out{\hypertarget{method-format_event}{}}}
+\if{html}{\out{<a id="method-LayoutFormat-format_event"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutFormat-format_event}{}}}
 \subsection{Method \code{format_event()}}{
 Format a LogEvent
 \subsection{Usage}{
@@ -139,8 +133,8 @@ Format a LogEvent
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_fmt"></a>}}
-\if{latex}{\out{\hypertarget{method-set_fmt}{}}}
+\if{html}{\out{<a id="method-LayoutFormat-set_fmt"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutFormat-set_fmt}{}}}
 \subsection{Method \code{set_fmt()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_fmt(x)}\if{html}{\out{</div>}}
@@ -148,8 +142,8 @@ Format a LogEvent
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_timestamp_fmt"></a>}}
-\if{latex}{\out{\hypertarget{method-set_timestamp_fmt}{}}}
+\if{html}{\out{<a id="method-LayoutFormat-set_timestamp_fmt"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutFormat-set_timestamp_fmt}{}}}
 \subsection{Method \code{set_timestamp_fmt()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_timestamp_fmt(x)}\if{html}{\out{</div>}}
@@ -157,8 +151,8 @@ Format a LogEvent
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_colors"></a>}}
-\if{latex}{\out{\hypertarget{method-set_colors}{}}}
+\if{html}{\out{<a id="method-LayoutFormat-set_colors"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutFormat-set_colors}{}}}
 \subsection{Method \code{set_colors()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_colors(x)}\if{html}{\out{</div>}}
@@ -166,8 +160,8 @@ Format a LogEvent
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_pad_levels"></a>}}
-\if{latex}{\out{\hypertarget{method-set_pad_levels}{}}}
+\if{html}{\out{<a id="method-LayoutFormat-set_pad_levels"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutFormat-set_pad_levels}{}}}
 \subsection{Method \code{set_pad_levels()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_pad_levels(x)}\if{html}{\out{</div>}}
@@ -175,8 +169,8 @@ Format a LogEvent
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-toString"></a>}}
-\if{latex}{\out{\hypertarget{method-toString}{}}}
+\if{html}{\out{<a id="method-LayoutFormat-toString"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutFormat-toString}{}}}
 \subsection{Method \code{toString()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$toString()}\if{html}{\out{</div>}}
@@ -184,8 +178,8 @@ Format a LogEvent
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read"></a>}}
-\if{latex}{\out{\hypertarget{method-read}{}}}
+\if{html}{\out{<a id="method-LayoutFormat-read"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutFormat-read}{}}}
 \subsection{Method \code{read()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$read(file, threshold = NA_integer_, n = 20L)}\if{html}{\out{</div>}}
@@ -202,8 +196,8 @@ Format a LogEvent
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-LayoutFormat-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutFormat-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

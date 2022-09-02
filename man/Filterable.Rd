@@ -30,15 +30,15 @@ Other abstract classes:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-filter}{\code{Filterable$filter()}}
-\item \href{#method-add_filter}{\code{Filterable$add_filter()}}
-\item \href{#method-remove_filter}{\code{Filterable$remove_filter()}}
-\item \href{#method-set_filters}{\code{Filterable$set_filters()}}
+\item \href{#method-Filterable-filter}{\code{Filterable$filter()}}
+\item \href{#method-Filterable-add_filter}{\code{Filterable$add_filter()}}
+\item \href{#method-Filterable-remove_filter}{\code{Filterable$remove_filter()}}
+\item \href{#method-Filterable-set_filters}{\code{Filterable$set_filters()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-filter"></a>}}
-\if{latex}{\out{\hypertarget{method-filter}{}}}
+\if{html}{\out{<a id="method-Filterable-filter"></a>}}
+\if{latex}{\out{\hypertarget{method-Filterable-filter}{}}}
 \subsection{Method \code{filter()}}{
 Determine whether the LogEvent \code{x} should be passed on to
 Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
@@ -56,8 +56,8 @@ Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-add_filter"></a>}}
-\if{latex}{\out{\hypertarget{method-add_filter}{}}}
+\if{html}{\out{<a id="method-Filterable-add_filter"></a>}}
+\if{latex}{\out{\hypertarget{method-Filterable-add_filter}{}}}
 \subsection{Method \code{add_filter()}}{
 Attach a filter
 \subsection{Usage}{
@@ -84,8 +84,8 @@ name which makes it easier to access (or remove) the filter}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-remove_filter"></a>}}
-\if{latex}{\out{\hypertarget{method-remove_filter}{}}}
+\if{html}{\out{<a id="method-Filterable-remove_filter"></a>}}
+\if{latex}{\out{\hypertarget{method-Filterable-remove_filter}{}}}
 \subsection{Method \code{remove_filter()}}{
 Remove a filter
 \subsection{Usage}{
@@ -102,8 +102,8 @@ Filter to be removed.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_filters"></a>}}
-\if{latex}{\out{\hypertarget{method-set_filters}{}}}
+\if{html}{\out{<a id="method-Filterable-set_filters"></a>}}
+\if{latex}{\out{\hypertarget{method-Filterable-set_filters}{}}}
 \subsection{Method \code{set_filters()}}{
 Set or replace (all) Filters of parent object. See
 \link{EventFilter} for how Filters work.

@@ -95,28 +95,28 @@ instead (requires the \strong{data.table} package).}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{AppenderFile$new()}}
-\item \href{#method-append}{\code{AppenderFile$append()}}
-\item \href{#method-set_file}{\code{AppenderFile$set_file()}}
-\item \href{#method-show}{\code{AppenderFile$show()}}
+\item \href{#method-AppenderFile-new}{\code{AppenderFile$new()}}
+\item \href{#method-AppenderFile-append}{\code{AppenderFile$append()}}
+\item \href{#method-AppenderFile-set_file}{\code{AppenderFile$set_file()}}
+\item \href{#method-AppenderFile-show}{\code{AppenderFile$show()}}
 }
 }
-\if{html}{
-\out{<details ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter">}\href{../../lgr/html/Filterable.html#method-add_filter}{\code{lgr::Filterable$add_filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter">}\href{../../lgr/html/Filterable.html#method-filter}{\code{lgr::Filterable$filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter">}\href{../../lgr/html/Filterable.html#method-remove_filter}{\code{lgr::Filterable$remove_filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters">}\href{../../lgr/html/Filterable.html#method-set_filters}{\code{lgr::Filterable$set_filters()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="format">}\href{../../lgr/html/Appender.html#method-format}{\code{lgr::Appender$format()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout">}\href{../../lgr/html/Appender.html#method-set_layout}{\code{lgr::Appender$set_layout()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold">}\href{../../lgr/html/Appender.html#method-set_threshold}{\code{lgr::Appender$set_threshold()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="format"><a href='../../lgr/html/Appender.html#method-Appender-format'><code>lgr::Appender$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-Appender-set_layout'><code>lgr::Appender$set_layout()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-Appender-set_threshold'><code>lgr::Appender$set_threshold()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-AppenderFile-new"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFile-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFile$new(
@@ -129,8 +129,8 @@ instead (requires the \strong{data.table} package).}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-append"></a>}}
-\if{latex}{\out{\hypertarget{method-append}{}}}
+\if{html}{\out{<a id="method-AppenderFile-append"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFile-append}{}}}
 \subsection{Method \code{append()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFile$append(event)}\if{html}{\out{</div>}}
@@ -138,8 +138,8 @@ instead (requires the \strong{data.table} package).}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_file"></a>}}
-\if{latex}{\out{\hypertarget{method-set_file}{}}}
+\if{html}{\out{<a id="method-AppenderFile-set_file"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFile-set_file}{}}}
 \subsection{Method \code{set_file()}}{
 Set a log file
 \subsection{Usage}{
@@ -156,8 +156,8 @@ exist it will be created.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-show"></a>}}
-\if{latex}{\out{\hypertarget{method-show}{}}}
+\if{html}{\out{<a id="method-AppenderFile-show"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFile-show}{}}}
 \subsection{Method \code{show()}}{
 Display the contents of the log file.
 \subsection{Usage}{
@@ -183,28 +183,28 @@ that should be displayed.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{AppenderJson$new()}}
+\item \href{#method-AppenderJson-new}{\code{AppenderJson$new()}}
 }
 }
-\if{html}{
-\out{<details ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter">}\href{../../lgr/html/Filterable.html#method-add_filter}{\code{lgr::Filterable$add_filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter">}\href{../../lgr/html/Filterable.html#method-filter}{\code{lgr::Filterable$filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter">}\href{../../lgr/html/Filterable.html#method-remove_filter}{\code{lgr::Filterable$remove_filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters">}\href{../../lgr/html/Filterable.html#method-set_filters}{\code{lgr::Filterable$set_filters()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="format">}\href{../../lgr/html/Appender.html#method-format}{\code{lgr::Appender$format()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout">}\href{../../lgr/html/Appender.html#method-set_layout}{\code{lgr::Appender$set_layout()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold">}\href{../../lgr/html/Appender.html#method-set_threshold}{\code{lgr::Appender$set_threshold()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="append">}\href{../../lgr/html/AppenderFile.html#method-append}{\code{lgr::AppenderFile$append()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="set_file">}\href{../../lgr/html/AppenderFile.html#method-set_file}{\code{lgr::AppenderFile$set_file()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="show">}\href{../../lgr/html/AppenderFile.html#method-show}{\code{lgr::AppenderFile$show()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="format"><a href='../../lgr/html/Appender.html#method-Appender-format'><code>lgr::Appender$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-Appender-set_layout'><code>lgr::Appender$set_layout()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-Appender-set_threshold'><code>lgr::Appender$set_threshold()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="append"><a href='../../lgr/html/AppenderFile.html#method-AppenderFile-append'><code>lgr::AppenderFile$append()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="set_file"><a href='../../lgr/html/AppenderFile.html#method-AppenderFile-set_file'><code>lgr::AppenderFile$set_file()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="show"><a href='../../lgr/html/AppenderFile.html#method-AppenderFile-show'><code>lgr::AppenderFile$show()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-AppenderJson-new"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderJson-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderJson$new(

@@ -23,39 +23,39 @@ examples.
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-fatal}{\code{LoggerGlue$fatal()}}
-\item \href{#method-error}{\code{LoggerGlue$error()}}
-\item \href{#method-warn}{\code{LoggerGlue$warn()}}
-\item \href{#method-info}{\code{LoggerGlue$info()}}
-\item \href{#method-debug}{\code{LoggerGlue$debug()}}
-\item \href{#method-trace}{\code{LoggerGlue$trace()}}
-\item \href{#method-log}{\code{LoggerGlue$log()}}
-\item \href{#method-list_log}{\code{LoggerGlue$list_log()}}
-\item \href{#method-spawn}{\code{LoggerGlue$spawn()}}
+\item \href{#method-LoggerGlue-fatal}{\code{LoggerGlue$fatal()}}
+\item \href{#method-LoggerGlue-error}{\code{LoggerGlue$error()}}
+\item \href{#method-LoggerGlue-warn}{\code{LoggerGlue$warn()}}
+\item \href{#method-LoggerGlue-info}{\code{LoggerGlue$info()}}
+\item \href{#method-LoggerGlue-debug}{\code{LoggerGlue$debug()}}
+\item \href{#method-LoggerGlue-trace}{\code{LoggerGlue$trace()}}
+\item \href{#method-LoggerGlue-log}{\code{LoggerGlue$log()}}
+\item \href{#method-LoggerGlue-list_log}{\code{LoggerGlue$list_log()}}
+\item \href{#method-LoggerGlue-spawn}{\code{LoggerGlue$spawn()}}
 }
 }
-\if{html}{
-\out{<details ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter">}\href{../../lgr/html/Filterable.html#method-add_filter}{\code{lgr::Filterable$add_filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter">}\href{../../lgr/html/Filterable.html#method-filter}{\code{lgr::Filterable$filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter">}\href{../../lgr/html/Filterable.html#method-remove_filter}{\code{lgr::Filterable$remove_filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters">}\href{../../lgr/html/Filterable.html#method-set_filters}{\code{lgr::Filterable$set_filters()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="add_appender">}\href{../../lgr/html/Logger.html#method-add_appender}{\code{lgr::Logger$add_appender()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="config">}\href{../../lgr/html/Logger.html#method-config}{\code{lgr::Logger$config()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="handle_exception">}\href{../../lgr/html/Logger.html#method-handle_exception}{\code{lgr::Logger$handle_exception()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="initialize">}\href{../../lgr/html/Logger.html#method-initialize}{\code{lgr::Logger$initialize()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="remove_appender">}\href{../../lgr/html/Logger.html#method-remove_appender}{\code{lgr::Logger$remove_appender()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_appenders">}\href{../../lgr/html/Logger.html#method-set_appenders}{\code{lgr::Logger$set_appenders()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_exception_handler">}\href{../../lgr/html/Logger.html#method-set_exception_handler}{\code{lgr::Logger$set_exception_handler()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_propagate">}\href{../../lgr/html/Logger.html#method-set_propagate}{\code{lgr::Logger$set_propagate()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_threshold">}\href{../../lgr/html/Logger.html#method-set_threshold}{\code{lgr::Logger$set_threshold()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="add_appender"><a href='../../lgr/html/Logger.html#method-Logger-add_appender'><code>lgr::Logger$add_appender()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="config"><a href='../../lgr/html/Logger.html#method-Logger-config'><code>lgr::Logger$config()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="handle_exception"><a href='../../lgr/html/Logger.html#method-Logger-handle_exception'><code>lgr::Logger$handle_exception()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="initialize"><a href='../../lgr/html/Logger.html#method-Logger-initialize'><code>lgr::Logger$initialize()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="remove_appender"><a href='../../lgr/html/Logger.html#method-Logger-remove_appender'><code>lgr::Logger$remove_appender()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_appenders"><a href='../../lgr/html/Logger.html#method-Logger-set_appenders'><code>lgr::Logger$set_appenders()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_exception_handler"><a href='../../lgr/html/Logger.html#method-Logger-set_exception_handler'><code>lgr::Logger$set_exception_handler()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_propagate"><a href='../../lgr/html/Logger.html#method-Logger-set_propagate'><code>lgr::Logger$set_propagate()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_threshold"><a href='../../lgr/html/Logger.html#method-Logger-set_threshold'><code>lgr::Logger$set_threshold()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-fatal"></a>}}
-\if{latex}{\out{\hypertarget{method-fatal}{}}}
+\if{html}{\out{<a id="method-LoggerGlue-fatal"></a>}}
+\if{latex}{\out{\hypertarget{method-LoggerGlue-fatal}{}}}
 \subsection{Method \code{fatal()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$fatal(..., caller = get_caller(-8L), .envir = parent.frame())}\if{html}{\out{</div>}}
@@ -63,8 +63,8 @@ examples.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-error"></a>}}
-\if{latex}{\out{\hypertarget{method-error}{}}}
+\if{html}{\out{<a id="method-LoggerGlue-error"></a>}}
+\if{latex}{\out{\hypertarget{method-LoggerGlue-error}{}}}
 \subsection{Method \code{error()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$error(..., caller = get_caller(-8L), .envir = parent.frame())}\if{html}{\out{</div>}}
@@ -72,8 +72,8 @@ examples.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-warn"></a>}}
-\if{latex}{\out{\hypertarget{method-warn}{}}}
+\if{html}{\out{<a id="method-LoggerGlue-warn"></a>}}
+\if{latex}{\out{\hypertarget{method-LoggerGlue-warn}{}}}
 \subsection{Method \code{warn()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$warn(..., caller = get_caller(-8L), .envir = parent.frame())}\if{html}{\out{</div>}}
@@ -81,8 +81,8 @@ examples.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-info"></a>}}
-\if{latex}{\out{\hypertarget{method-info}{}}}
+\if{html}{\out{<a id="method-LoggerGlue-info"></a>}}
+\if{latex}{\out{\hypertarget{method-LoggerGlue-info}{}}}
 \subsection{Method \code{info()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$info(..., caller = get_caller(-8L), .envir = parent.frame())}\if{html}{\out{</div>}}
@@ -90,8 +90,8 @@ examples.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-debug"></a>}}
-\if{latex}{\out{\hypertarget{method-debug}{}}}
+\if{html}{\out{<a id="method-LoggerGlue-debug"></a>}}
+\if{latex}{\out{\hypertarget{method-LoggerGlue-debug}{}}}
 \subsection{Method \code{debug()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$debug(..., caller = get_caller(-8L), .envir = parent.frame())}\if{html}{\out{</div>}}
@@ -99,8 +99,8 @@ examples.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-trace"></a>}}
-\if{latex}{\out{\hypertarget{method-trace}{}}}
+\if{html}{\out{<a id="method-LoggerGlue-trace"></a>}}
+\if{latex}{\out{\hypertarget{method-LoggerGlue-trace}{}}}
 \subsection{Method \code{trace()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$trace(..., caller = get_caller(-8L), .envir = parent.frame())}\if{html}{\out{</div>}}
@@ -108,8 +108,8 @@ examples.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-log"></a>}}
-\if{latex}{\out{\hypertarget{method-log}{}}}
+\if{html}{\out{<a id="method-LoggerGlue-log"></a>}}
+\if{latex}{\out{\hypertarget{method-LoggerGlue-log}{}}}
 \subsection{Method \code{log()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$log(
@@ -123,8 +123,8 @@ examples.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-list_log"></a>}}
-\if{latex}{\out{\hypertarget{method-list_log}{}}}
+\if{html}{\out{<a id="method-LoggerGlue-list_log"></a>}}
+\if{latex}{\out{\hypertarget{method-LoggerGlue-list_log}{}}}
 \subsection{Method \code{list_log()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$list_log(x)}\if{html}{\out{</div>}}
@@ -132,8 +132,8 @@ examples.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-spawn"></a>}}
-\if{latex}{\out{\hypertarget{method-spawn}{}}}
+\if{html}{\out{<a id="method-LoggerGlue-spawn"></a>}}
+\if{latex}{\out{\hypertarget{method-LoggerGlue-spawn}{}}}
 \subsection{Method \code{spawn()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$spawn(name)}\if{html}{\out{</div>}}

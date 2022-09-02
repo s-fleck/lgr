@@ -57,13 +57,13 @@ lg$config(NULL)
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{EventFilter$new()}}
-\item \href{#method-clone}{\code{EventFilter$clone()}}
+\item \href{#method-EventFilter-new}{\code{EventFilter$new()}}
+\item \href{#method-EventFilter-clone}{\code{EventFilter$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-EventFilter-new"></a>}}
+\if{latex}{\out{\hypertarget{method-EventFilter-new}{}}}
 \subsection{Method \code{new()}}{
 Initialize a new EventFilter
 \subsection{Usage}{
@@ -81,8 +81,8 @@ either \code{TRUE} or \code{FALSE}. Any  non-\code{FALSE} will be interpreted as
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-EventFilter-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-EventFilter-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

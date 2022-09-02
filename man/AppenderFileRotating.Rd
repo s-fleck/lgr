@@ -40,36 +40,36 @@ etc... on the available backups of \code{file}.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{AppenderFileRotating$new()}}
-\item \href{#method-append}{\code{AppenderFileRotating$append()}}
-\item \href{#method-rotate}{\code{AppenderFileRotating$rotate()}}
-\item \href{#method-prune}{\code{AppenderFileRotating$prune()}}
-\item \href{#method-set_file}{\code{AppenderFileRotating$set_file()}}
-\item \href{#method-set_size}{\code{AppenderFileRotating$set_size()}}
-\item \href{#method-set_max_backups}{\code{AppenderFileRotating$set_max_backups()}}
-\item \href{#method-set_compression}{\code{AppenderFileRotating$set_compression()}}
-\item \href{#method-set_create_file}{\code{AppenderFileRotating$set_create_file()}}
-\item \href{#method-set_backup_dir}{\code{AppenderFileRotating$set_backup_dir()}}
-\item \href{#method-format}{\code{AppenderFileRotating$format()}}
-\item \href{#method-clone}{\code{AppenderFileRotating$clone()}}
+\item \href{#method-AppenderFileRotating-new}{\code{AppenderFileRotating$new()}}
+\item \href{#method-AppenderFileRotating-append}{\code{AppenderFileRotating$append()}}
+\item \href{#method-AppenderFileRotating-rotate}{\code{AppenderFileRotating$rotate()}}
+\item \href{#method-AppenderFileRotating-prune}{\code{AppenderFileRotating$prune()}}
+\item \href{#method-AppenderFileRotating-set_file}{\code{AppenderFileRotating$set_file()}}
+\item \href{#method-AppenderFileRotating-set_size}{\code{AppenderFileRotating$set_size()}}
+\item \href{#method-AppenderFileRotating-set_max_backups}{\code{AppenderFileRotating$set_max_backups()}}
+\item \href{#method-AppenderFileRotating-set_compression}{\code{AppenderFileRotating$set_compression()}}
+\item \href{#method-AppenderFileRotating-set_create_file}{\code{AppenderFileRotating$set_create_file()}}
+\item \href{#method-AppenderFileRotating-set_backup_dir}{\code{AppenderFileRotating$set_backup_dir()}}
+\item \href{#method-AppenderFileRotating-format}{\code{AppenderFileRotating$format()}}
+\item \href{#method-AppenderFileRotating-clone}{\code{AppenderFileRotating$clone()}}
 }
 }
-\if{html}{
-\out{<details ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter">}\href{../../lgr/html/Filterable.html#method-add_filter}{\code{lgr::Filterable$add_filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter">}\href{../../lgr/html/Filterable.html#method-filter}{\code{lgr::Filterable$filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter">}\href{../../lgr/html/Filterable.html#method-remove_filter}{\code{lgr::Filterable$remove_filter()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters">}\href{../../lgr/html/Filterable.html#method-set_filters}{\code{lgr::Filterable$set_filters()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout">}\href{../../lgr/html/Appender.html#method-set_layout}{\code{lgr::Appender$set_layout()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold">}\href{../../lgr/html/Appender.html#method-set_threshold}{\code{lgr::Appender$set_threshold()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="show">}\href{../../lgr/html/AppenderFile.html#method-show}{\code{lgr::AppenderFile$show()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-Appender-set_layout'><code>lgr::Appender$set_layout()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-Appender-set_threshold'><code>lgr::Appender$set_threshold()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="show"><a href='../../lgr/html/AppenderFile.html#method-AppenderFile-show'><code>lgr::AppenderFile$show()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotating-new"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotating-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$new(
@@ -95,8 +95,8 @@ etc... on the available backups of \code{file}.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-append"></a>}}
-\if{latex}{\out{\hypertarget{method-append}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotating-append"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotating-append}{}}}
 \subsection{Method \code{append()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$append(event)}\if{html}{\out{</div>}}
@@ -104,8 +104,8 @@ etc... on the available backups of \code{file}.}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-rotate"></a>}}
-\if{latex}{\out{\hypertarget{method-rotate}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotating-rotate"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotating-rotate}{}}}
 \subsection{Method \code{rotate()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$rotate(force = FALSE)}\if{html}{\out{</div>}}
@@ -113,8 +113,8 @@ etc... on the available backups of \code{file}.}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-prune"></a>}}
-\if{latex}{\out{\hypertarget{method-prune}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotating-prune"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotating-prune}{}}}
 \subsection{Method \code{prune()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$prune(max_backups = self$max_backups)}\if{html}{\out{</div>}}
@@ -122,8 +122,8 @@ etc... on the available backups of \code{file}.}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_file"></a>}}
-\if{latex}{\out{\hypertarget{method-set_file}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotating-set_file"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotating-set_file}{}}}
 \subsection{Method \code{set_file()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$set_file(file)}\if{html}{\out{</div>}}
@@ -131,8 +131,8 @@ etc... on the available backups of \code{file}.}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_size"></a>}}
-\if{latex}{\out{\hypertarget{method-set_size}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotating-set_size"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotating-set_size}{}}}
 \subsection{Method \code{set_size()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$set_size(x)}\if{html}{\out{</div>}}
@@ -140,8 +140,8 @@ etc... on the available backups of \code{file}.}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_max_backups"></a>}}
-\if{latex}{\out{\hypertarget{method-set_max_backups}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotating-set_max_backups"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotating-set_max_backups}{}}}
 \subsection{Method \code{set_max_backups()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$set_max_backups(x)}\if{html}{\out{</div>}}
@@ -149,8 +149,8 @@ etc... on the available backups of \code{file}.}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_compression"></a>}}
-\if{latex}{\out{\hypertarget{method-set_compression}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotating-set_compression"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotating-set_compression}{}}}
 \subsection{Method \code{set_compression()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$set_compression(x)}\if{html}{\out{</div>}}
@@ -158,8 +158,8 @@ etc... on the available backups of \code{file}.}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_create_file"></a>}}
-\if{latex}{\out{\hypertarget{method-set_create_file}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotating-set_create_file"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotating-set_create_file}{}}}
 \subsection{Method \code{set_create_file()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$set_create_file(x)}\if{html}{\out{</div>}}
@@ -167,8 +167,8 @@ etc... on the available backups of \code{file}.}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_backup_dir"></a>}}
-\if{latex}{\out{\hypertarget{method-set_backup_dir}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotating-set_backup_dir"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotating-set_backup_dir}{}}}
 \subsection{Method \code{set_backup_dir()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$set_backup_dir(x)}\if{html}{\out{</div>}}
@@ -176,8 +176,8 @@ etc... on the available backups of \code{file}.}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-format"></a>}}
-\if{latex}{\out{\hypertarget{method-format}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotating-format"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotating-format}{}}}
 \subsection{Method \code{format()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$format(color = false, ...)}\if{html}{\out{</div>}}
@@ -185,8 +185,8 @@ etc... on the available backups of \code{file}.}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotating-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotating-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

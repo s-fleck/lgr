@@ -48,23 +48,17 @@ Other Layouts:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{LayoutGlue$new()}}
-\item \href{#method-format_event}{\code{LayoutGlue$format_event()}}
-\item \href{#method-set_fmt}{\code{LayoutGlue$set_fmt()}}
-\item \href{#method-set_colors}{\code{LayoutGlue$set_colors()}}
-\item \href{#method-toString}{\code{LayoutGlue$toString()}}
-\item \href{#method-clone}{\code{LayoutGlue$clone()}}
+\item \href{#method-LayoutGlue-new}{\code{LayoutGlue$new()}}
+\item \href{#method-LayoutGlue-format_event}{\code{LayoutGlue$format_event()}}
+\item \href{#method-LayoutGlue-set_fmt}{\code{LayoutGlue$set_fmt()}}
+\item \href{#method-LayoutGlue-set_colors}{\code{LayoutGlue$set_colors()}}
+\item \href{#method-LayoutGlue-toString}{\code{LayoutGlue$toString()}}
+\item \href{#method-LayoutGlue-clone}{\code{LayoutGlue$clone()}}
 }
-}
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-}
-\out{</details>}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-LayoutGlue-new"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutGlue-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutGlue$new(
@@ -74,8 +68,8 @@ Other Layouts:
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-format_event"></a>}}
-\if{latex}{\out{\hypertarget{method-format_event}{}}}
+\if{html}{\out{<a id="method-LayoutGlue-format_event"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutGlue-format_event}{}}}
 \subsection{Method \code{format_event()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutGlue$format_event(event)}\if{html}{\out{</div>}}
@@ -83,8 +77,8 @@ Other Layouts:
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_fmt"></a>}}
-\if{latex}{\out{\hypertarget{method-set_fmt}{}}}
+\if{html}{\out{<a id="method-LayoutGlue-set_fmt"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutGlue-set_fmt}{}}}
 \subsection{Method \code{set_fmt()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutGlue$set_fmt(x)}\if{html}{\out{</div>}}
@@ -92,8 +86,8 @@ Other Layouts:
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_colors"></a>}}
-\if{latex}{\out{\hypertarget{method-set_colors}{}}}
+\if{html}{\out{<a id="method-LayoutGlue-set_colors"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutGlue-set_colors}{}}}
 \subsection{Method \code{set_colors()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutGlue$set_colors(x)}\if{html}{\out{</div>}}
@@ -101,8 +95,8 @@ Other Layouts:
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-toString"></a>}}
-\if{latex}{\out{\hypertarget{method-toString}{}}}
+\if{html}{\out{<a id="method-LayoutGlue-toString"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutGlue-toString}{}}}
 \subsection{Method \code{toString()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutGlue$toString()}\if{html}{\out{</div>}}
@@ -110,8 +104,8 @@ Other Layouts:
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-LayoutGlue-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutGlue-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
