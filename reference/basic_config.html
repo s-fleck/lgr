@@ -60,17 +60,17 @@ most common configurations to a single line of code.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">basic_config</span><span class="op">(</span>
-  file <span class="op">=</span> <span class="cn">NULL</span>,
-  fmt <span class="op">=</span> <span class="st">"%L [%t] %m"</span>,
-  timestamp_fmt <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%OS3"</span>,
-  threshold <span class="op">=</span> <span class="st">"info"</span>,
-  appenders <span class="op">=</span> <span class="cn">NULL</span>,
-  console <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">appenders</span><span class="op">)</span><span class="op">)</span> <span class="st">"all"</span> <span class="kw">else</span> <span class="cn">FALSE</span>,
-  console_fmt <span class="op">=</span> <span class="st">"%L [%t] %m %f"</span>,
-  console_timestamp_fmt <span class="op">=</span> <span class="st">"%H:%M:%OS3"</span>,
-  memory <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">basic_config</span><span class="op">(</span></span>
+<span>  file <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  fmt <span class="op">=</span> <span class="st">"%L [%t] %m"</span>,</span>
+<span>  timestamp_fmt <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%OS3"</span>,</span>
+<span>  threshold <span class="op">=</span> <span class="st">"info"</span>,</span>
+<span>  appenders <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  console <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">appenders</span><span class="op">)</span><span class="op">)</span> <span class="st">"all"</span> <span class="kw">else</span> <span class="cn">FALSE</span>,</span>
+<span>  console_fmt <span class="op">=</span> <span class="st">"%L [%t] %m %f"</span>,</span>
+<span>  console_timestamp_fmt <span class="op">=</span> <span class="st">"%H:%M:%OS3"</span>,</span>
+<span>  memory <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -80,68 +80,87 @@ most common configurations to a single line of code.</p>
 created that logs to this file. If the filename ends in <code>.jsonl</code>, the
 Appender will be set up to use the <a href="https://jsonlines.org/" class="external-link">JSON Lines</a>
 format instead of plain text (see <a href="AppenderFile.html">AppenderFile</a> and <a href="AppenderFile.html">AppenderJson</a>).</p></dd>
+
+
 <dt>fmt</dt>
 <dd><p><code>character</code> scalar: Format to use if <code>file</code> is supplied and not a
 <code>.jsonl</code> file. If <code>NULL</code> it defaults to <code>"%L [%t] %m"</code> (see
 <a href="print.LogEvent.html">format.LogEvent</a>)</p></dd>
+
+
 <dt>timestamp_fmt</dt>
 <dd><p>see <code><a href="https://rdrr.io/r/base/strptime.html" class="external-link">format.POSIXct()</a></code></p></dd>
+
+
 <dt>threshold</dt>
 <dd><p><code>character</code> or <code>integer</code> scalar. The minimum <a href="get_log_levels.html">log level</a> that should be processed by the root logger.</p></dd>
+
+
 <dt>appenders</dt>
 <dd><p>a single <a href="Appender.html">Appender</a> or a list thereof.</p></dd>
+
+
 <dt>console</dt>
 <dd><p><code>logical</code> scalar or a <code>threshold</code> (see above). Add an appender
 logs to the console (i.e. displays messages in an interactive R session)</p></dd>
+
+
 <dt>console_fmt</dt>
 <dd><p><code>character</code> scalar: like <code>fmt</code> but used for console output</p></dd>
+
+
 <dt>console_timestamp_fmt</dt>
 <dd><p><code>character</code> scalar: like <code>timestamp_fmt</code> but
 used for console output</p></dd>
+
+
 <dt>memory</dt>
 <dd><p><code>logical</code> scalar. or a <code>threshold</code> (see above). Add an Appender
 that logs to a memory buffer, see also <code><a href="simple_logging.html">show_log()</a></code> and <a href="AppenderBuffer.html">AppenderBuffer</a></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>the <code>root</code> Logger (lgr)</p>
+    
+
+<p>the <code>root</code> Logger (lgr)</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># log to a file</span></span>
-<span class="r-in"><span class="fu">basic_config</span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># log to a file</span></span></span>
+<span class="r-in"><span><span class="fu">basic_config</span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;LoggerRoot&gt; [info] root</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> appenders:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   file   : &lt;AppenderFile&gt;    [all] -&gt; /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpdMJBoZ/file1020677ac24e</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   file   : &lt;AppenderFile&gt;    [all] -&gt; /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnfGXW4/file141f4e713e7e</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [all] -&gt; console</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">file</span><span class="op">$</span><span class="va">file</span><span class="op">)</span>  <span class="co"># cleanup</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">basic_config</span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">"jsonl"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">file</span><span class="op">$</span><span class="va">file</span><span class="op">)</span>  <span class="co"># cleanup</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">basic_config</span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">"jsonl"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;LoggerRoot&gt; [info] root</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> appenders:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   file   : &lt;AppenderFile&gt;    [all] -&gt; /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpdMJBoZ/file10202c6ac3f5jsonl</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   file   : &lt;AppenderFile&gt;    [all] -&gt; /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnfGXW4/file141f6cbdea6djsonl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [all] -&gt; console</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">file</span><span class="op">$</span><span class="va">file</span><span class="op">)</span>  <span class="co"># cleanup</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># log debug messages to a memory buffer</span></span>
-<span class="r-in"><span class="fu">basic_config</span><span class="op">(</span>threshold <span class="op">=</span> <span class="st">"all"</span>, memory <span class="op">=</span> <span class="st">"all"</span>, console <span class="op">=</span> <span class="st">"info"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">file</span><span class="op">$</span><span class="va">file</span><span class="op">)</span>  <span class="co"># cleanup</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># log debug messages to a memory buffer</span></span></span>
+<span class="r-in"><span><span class="fu">basic_config</span><span class="op">(</span>threshold <span class="op">=</span> <span class="st">"all"</span>, memory <span class="op">=</span> <span class="st">"all"</span>, console <span class="op">=</span> <span class="st">"info"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;LoggerRoot&gt; [all] root</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> appenders:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [info] -&gt; console</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   memory : &lt;AppenderBuffer&gt;  [ all] -&gt; 0 child Appenders</span>
-<span class="r-in"><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"an info message"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [06:20:12.370] an info message</span>
-<span class="r-in"><span class="va">lgr</span><span class="op">$</span><span class="fu">debug</span><span class="op">(</span><span class="st">"a hidden message"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="simple_logging.html">show_log</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [06:20:12] an info message</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DEBUG [06:20:12] a hidden message</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># reset to default config</span></span>
-<span class="r-in"><span class="fu">basic_config</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"an info message"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [10:02:54.197] an info message</span>
+<span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">debug</span><span class="op">(</span><span class="st">"a hidden message"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="simple_logging.html">show_log</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [10:02:54] an info message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DEBUG [10:02:54] a hidden message</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># reset to default config</span></span></span>
+<span class="r-in"><span><span class="fu">basic_config</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;LoggerRoot&gt; [info] root</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> appenders:</span>
@@ -160,7 +179,7 @@ that logs to a memory buffer, see also <code><a href="simple_logging.html">show_
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -142,29 +142,29 @@ inherits from its ancestors</p></dd>
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>Logger$new()</code></a></p></li>
-<li><p><a href="#method-log"><code>Logger$log()</code></a></p></li>
-<li><p><a href="#method-fatal"><code>Logger$fatal()</code></a></p></li>
-<li><p><a href="#method-error"><code>Logger$error()</code></a></p></li>
-<li><p><a href="#method-warn"><code>Logger$warn()</code></a></p></li>
-<li><p><a href="#method-info"><code>Logger$info()</code></a></p></li>
-<li><p><a href="#method-debug"><code>Logger$debug()</code></a></p></li>
-<li><p><a href="#method-trace"><code>Logger$trace()</code></a></p></li>
-<li><p><a href="#method-list_log"><code>Logger$list_log()</code></a></p></li>
-<li><p><a href="#method-config"><code>Logger$config()</code></a></p></li>
-<li><p><a href="#method-add_appender"><code>Logger$add_appender()</code></a></p></li>
-<li><p><a href="#method-remove_appender"><code>Logger$remove_appender()</code></a></p></li>
-<li><p><a href="#method-handle_exception"><code>Logger$handle_exception()</code></a></p></li>
-<li><p><a href="#method-set_exception_handler"><code>Logger$set_exception_handler()</code></a></p></li>
-<li><p><a href="#method-set_propagate"><code>Logger$set_propagate()</code></a></p></li>
-<li><p><a href="#method-set_threshold"><code>Logger$set_threshold()</code></a></p></li>
-<li><p><a href="#method-set_appenders"><code>Logger$set_appenders()</code></a></p></li>
-<li><p><a href="#method-spawn"><code>Logger$spawn()</code></a></p></li>
-</ul></div><p><details open><summary>Inherited methods</summary><ul><li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href="Filterable.html#method-add_filter"><code>lgr::Filterable$add_filter()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href="Filterable.html#method-filter"><code>lgr::Filterable$filter()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href="Filterable.html#method-remove_filter"><code>lgr::Filterable$remove_filter()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href="Filterable.html#method-set_filters"><code>lgr::Filterable$set_filters()</code></a></span></p></li>
-</ul></details></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-Logger-new"><code>Logger$new()</code></a></p></li>
+<li><p><a href="#method-Logger-log"><code>Logger$log()</code></a></p></li>
+<li><p><a href="#method-Logger-fatal"><code>Logger$fatal()</code></a></p></li>
+<li><p><a href="#method-Logger-error"><code>Logger$error()</code></a></p></li>
+<li><p><a href="#method-Logger-warn"><code>Logger$warn()</code></a></p></li>
+<li><p><a href="#method-Logger-info"><code>Logger$info()</code></a></p></li>
+<li><p><a href="#method-Logger-debug"><code>Logger$debug()</code></a></p></li>
+<li><p><a href="#method-Logger-trace"><code>Logger$trace()</code></a></p></li>
+<li><p><a href="#method-Logger-list_log"><code>Logger$list_log()</code></a></p></li>
+<li><p><a href="#method-Logger-config"><code>Logger$config()</code></a></p></li>
+<li><p><a href="#method-Logger-add_appender"><code>Logger$add_appender()</code></a></p></li>
+<li><p><a href="#method-Logger-remove_appender"><code>Logger$remove_appender()</code></a></p></li>
+<li><p><a href="#method-Logger-handle_exception"><code>Logger$handle_exception()</code></a></p></li>
+<li><p><a href="#method-Logger-set_exception_handler"><code>Logger$set_exception_handler()</code></a></p></li>
+<li><p><a href="#method-Logger-set_propagate"><code>Logger$set_propagate()</code></a></p></li>
+<li><p><a href="#method-Logger-set_threshold"><code>Logger$set_threshold()</code></a></p></li>
+<li><p><a href="#method-Logger-set_appenders"><code>Logger$set_appenders()</code></a></p></li>
+<li><p><a href="#method-Logger-spawn"><code>Logger$spawn()</code></a></p></li>
+</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href="Filterable.html#method-add_filter"><code>lgr::Filterable$add_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href="Filterable.html#method-filter"><code>lgr::Filterable$filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href="Filterable.html#method-remove_filter"><code>lgr::Filterable$remove_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href="Filterable.html#method-set_filters"><code>lgr::Filterable$set_filters()</code></a></span></li>
+</ul></details></p><hr><a id="method-Logger-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p><strong>Loggers should never be instantiated directly with <code>Logger$new()</code></strong> but
 rather via <code><a href="get_logger.html">get_logger("name")</a></code>. This way new Loggers are
@@ -177,14 +177,14 @@ a Reference to the existing Logger.</p>
 loggers above and (by default) inherit <code>threshold</code> and <code>Appenders</code> from
 their ancestors.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/Logger.html">Logger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
-  name <span class="op">=</span> <span class="st">"(unnamed logger)"</span>,
-  appenders <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  threshold <span class="op">=</span> <span class="cn">NULL</span>,
-  filters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  exception_handler <span class="op">=</span> <span class="va">default_exception_handler</span>,
-  propagate <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/Logger.html">Logger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="st">"(unnamed logger)"</span>,</span>
+<span>  appenders <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  threshold <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  filters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  exception_handler <span class="op">=</span> <span class="va">default_exception_handler</span>,</span>
+<span>  propagate <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -196,7 +196,7 @@ their ancestors.</p><div class="section">
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-log"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-log"></a><div class="section">
 <h3 id="method-log-">Method <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log()</a></code><a class="anchor" aria-label="anchor" href="#method-log-"></a></h3>
 <p>Log an event.</p>
 <p>If <code>level</code> passes the Logger's <code>threshold</code> a new <a href="LogEvent.html">LogEvent</a> with <code>level</code>,
@@ -204,7 +204,7 @@ their ancestors.</p><div class="section">
 passes the Loggers <a href="EventFilter.html">Filters</a>, it is be dispatched to the
 relevant <a href="Appender.html">Appenders</a>.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">log</span><span class="op">(</span><span class="va">level</span>, <span class="va">msg</span>, <span class="va">...</span>, timestamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span>, caller <span class="op">=</span> <span class="fu"><a href="../reference/system_infos.html">get_caller</a></span><span class="op">(</span><span class="op">-</span><span class="fl">7</span><span class="op">)</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">log</span><span class="op">(</span><span class="va">level</span>, <span class="va">msg</span>, <span class="va">...</span>, timestamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span>, caller <span class="op">=</span> <span class="fu"><a href="../reference/system_infos.html">get_caller</a></span><span class="op">(</span><span class="op">-</span><span class="fl">7</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -237,11 +237,11 @@ will be turned into custom fields.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-fatal"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-fatal"></a><div class="section">
 <h3 id="method-fatal-">Method <code>fatal()</code><a class="anchor" aria-label="anchor" href="#method-fatal-"></a></h3>
 <p>Log an Event fatal priority</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span>, caller <span class="op">=</span> <span class="fu"><a href="../reference/system_infos.html">get_caller</a></span><span class="op">(</span><span class="op">-</span><span class="fl">8L</span><span class="op">)</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span>, caller <span class="op">=</span> <span class="fu"><a href="../reference/system_infos.html">get_caller</a></span><span class="op">(</span><span class="op">-</span><span class="fl">8L</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -253,11 +253,11 @@ will be turned into custom fields.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-error"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-error"></a><div class="section">
 <h3 id="method-error-">Method <code>error()</code><a class="anchor" aria-label="anchor" href="#method-error-"></a></h3>
 <p>Log an Event error priority</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span>, caller <span class="op">=</span> <span class="fu"><a href="../reference/system_infos.html">get_caller</a></span><span class="op">(</span><span class="op">-</span><span class="fl">8L</span><span class="op">)</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span>, caller <span class="op">=</span> <span class="fu"><a href="../reference/system_infos.html">get_caller</a></span><span class="op">(</span><span class="op">-</span><span class="fl">8L</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -269,11 +269,11 @@ will be turned into custom fields.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-warn"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-warn"></a><div class="section">
 <h3 id="method-warn-">Method <code>warn()</code><a class="anchor" aria-label="anchor" href="#method-warn-"></a></h3>
 <p>Log an Event warn priority</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span>, caller <span class="op">=</span> <span class="fu"><a href="../reference/system_infos.html">get_caller</a></span><span class="op">(</span><span class="op">-</span><span class="fl">8L</span><span class="op">)</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span>, caller <span class="op">=</span> <span class="fu"><a href="../reference/system_infos.html">get_caller</a></span><span class="op">(</span><span class="op">-</span><span class="fl">8L</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -285,11 +285,11 @@ will be turned into custom fields.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-info"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-info"></a><div class="section">
 <h3 id="method-info-">Method <code>info()</code><a class="anchor" aria-label="anchor" href="#method-info-"></a></h3>
 <p>Log an Event info priority</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span>, caller <span class="op">=</span> <span class="fu"><a href="../reference/system_infos.html">get_caller</a></span><span class="op">(</span><span class="op">-</span><span class="fl">8L</span><span class="op">)</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span>, caller <span class="op">=</span> <span class="fu"><a href="../reference/system_infos.html">get_caller</a></span><span class="op">(</span><span class="op">-</span><span class="fl">8L</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -301,11 +301,11 @@ will be turned into custom fields.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-debug"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-debug"></a><div class="section">
 <h3 id="method-debug-">Method <code><a href="https://rdrr.io/r/base/debug.html" class="external-link">debug()</a></code><a class="anchor" aria-label="anchor" href="#method-debug-"></a></h3>
 <p>Log an Event debug priority</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">debug</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span>, caller <span class="op">=</span> <span class="fu"><a href="../reference/system_infos.html">get_caller</a></span><span class="op">(</span><span class="op">-</span><span class="fl">8L</span><span class="op">)</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">debug</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span>, caller <span class="op">=</span> <span class="fu"><a href="../reference/system_infos.html">get_caller</a></span><span class="op">(</span><span class="op">-</span><span class="fl">8L</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -317,11 +317,11 @@ will be turned into custom fields.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-trace"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-trace"></a><div class="section">
 <h3 id="method-trace-">Method <code><a href="https://rdrr.io/r/base/trace.html" class="external-link">trace()</a></code><a class="anchor" aria-label="anchor" href="#method-trace-"></a></h3>
 <p>Log an Event trace priority</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">trace</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span>, caller <span class="op">=</span> <span class="fu"><a href="../reference/system_infos.html">get_caller</a></span><span class="op">(</span><span class="op">-</span><span class="fl">8L</span><span class="op">)</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">trace</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span>, caller <span class="op">=</span> <span class="fu"><a href="../reference/system_infos.html">get_caller</a></span><span class="op">(</span><span class="op">-</span><span class="fl">8L</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -333,14 +333,14 @@ will be turned into custom fields.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-list_log"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-list_log"></a><div class="section">
 <h3 id="method-list-log-">Method <code>list_log()</code><a class="anchor" aria-label="anchor" href="#method-list-log-"></a></h3>
 <p><code>list_log()</code> is a shortcut for <code>do.call(Logger$log, x)</code>.
 See <a href="https://github.com/s-fleck/joblog" class="external-link">https://github.com/s-fleck/joblog</a> for an R package that
 leverages this feature to create custom log event types for tracking
 the status of cron jobs.</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">list_log</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">list_log</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -354,16 +354,16 @@ the status of cron jobs.</p><div class="section">
 </div>
 <div class="section">
 <h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
-<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span>
-<span class="va">lg</span><span class="op">$</span><span class="fu">list_log</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">400</span>, msg <span class="op">=</span> <span class="st">"example"</span><span class="op">)</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span>
+<span><span class="va">lg</span><span class="op">$</span><span class="fu">list_log</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">400</span>, msg <span class="op">=</span> <span class="st">"example"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-config"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-config"></a><div class="section">
 <h3 id="method-config-">Method <code>config()</code><a class="anchor" aria-label="anchor" href="#method-config-"></a></h3>
 <p>Load a Logger configuration.</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="va">cfg</span>, <span class="va">file</span>, <span class="va">text</span>, <span class="va">list</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="va">cfg</span>, <span class="va">file</span>, <span class="va">text</span>, <span class="va">list</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -386,11 +386,11 @@ type. See <a href="logger_config.html">logger_config</a> for details.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-add_appender"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-add_appender"></a><div class="section">
 <h3 id="method-add-appender-">Method <code><a href="simple_logging.html">add_appender()</a></code><a class="anchor" aria-label="anchor" href="#method-add-appender-"></a></h3>
 <p>Add an Appender to the Logger</p><div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va">appender</span>, name <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va">appender</span>, name <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -407,20 +407,20 @@ type. See <a href="logger_config.html">logger_config</a> for details.</p></dd>
 </div>
 <div class="section">
 <h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
-<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span>
-<span class="va">lg</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="../reference/AppenderConsole.html">AppenderConsole</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"myconsole"</span><span class="op">)</span>
-<span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
-<span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">myconsole</span>
-<span class="va">lg</span><span class="op">$</span><span class="fu">remove_appender</span><span class="op">(</span><span class="st">"myconsole"</span><span class="op">)</span>
-<span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>  <span class="co"># reset config</span></code></pre></div><p></p></div>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span>
+<span><span class="va">lg</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="../reference/AppenderConsole.html">AppenderConsole</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"myconsole"</span><span class="op">)</span></span>
+<span><span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">myconsole</span></span>
+<span><span class="va">lg</span><span class="op">$</span><span class="fu">remove_appender</span><span class="op">(</span><span class="st">"myconsole"</span><span class="op">)</span></span>
+<span><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>  <span class="co"># reset config</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-remove_appender"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-remove_appender"></a><div class="section">
 <h3 id="method-remove-appender-">Method <code><a href="simple_logging.html">remove_appender()</a></code><a class="anchor" aria-label="anchor" href="#method-remove-appender-"></a></h3>
 <p>remove an appender</p><div class="section">
 <h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">remove_appender</span><span class="op">(</span><span class="va">pos</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">remove_appender</span><span class="op">(</span><span class="va">pos</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -433,14 +433,14 @@ remove</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-handle_exception"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-handle_exception"></a><div class="section">
 <h3 id="method-handle-exception-">Method <code>handle_exception()</code><a class="anchor" aria-label="anchor" href="#method-handle-exception-"></a></h3>
 <p>To prevent errors in the logging logic from crashing the whole script,
 Loggers pass errors they encounter to an exception handler. The default
 behaviour is to demote errors to <a href="https://rdrr.io/r/base/warnings.html" class="external-link">warnings</a>. See also
 <code>set_exception_handler()</code>.</p><div class="section">
 <h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">handle_exception</span><span class="op">(</span><span class="va">expr</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">handle_exception</span><span class="op">(</span><span class="va">expr</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -452,11 +452,11 @@ behaviour is to demote errors to <a href="https://rdrr.io/r/base/warnings.html" 
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-set_exception_handler"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-set_exception_handler"></a><div class="section">
 <h3 id="method-set-exception-handler-">Method <code>set_exception_handler()</code><a class="anchor" aria-label="anchor" href="#method-set-exception-handler-"></a></h3>
 <p>Set the exception handler of a logger</p><div class="section">
 <h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">set_exception_handler</span><span class="op">(</span><span class="va">fun</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">set_exception_handler</span><span class="op">(</span><span class="va">fun</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -469,15 +469,15 @@ behaviour is to demote errors to <a href="https://rdrr.io/r/base/warnings.html" 
 </div>
 <div class="section">
 <h4 id="examples-2">Examples<a class="anchor" aria-label="anchor" href="#examples-2"></a></h4>
-<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"this produces a warning instead of an error"</span><span class="op">)</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"this produces a warning instead of an error"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-set_propagate"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-set_propagate"></a><div class="section">
 <h3 id="method-set-propagate-">Method <code>set_propagate()</code><a class="anchor" aria-label="anchor" href="#method-set-propagate-"></a></h3>
 <p>Should a Logger propagate events to the Appenders of its ancestors?</p><div class="section">
 <h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">set_propagate</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">set_propagate</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -490,11 +490,11 @@ of the ancestral Loggers?</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-set_threshold"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-set_threshold"></a><div class="section">
 <h3 id="method-set-threshold-">Method <code>set_threshold()</code><a class="anchor" aria-label="anchor" href="#method-set-threshold-"></a></h3>
 <p>Set the minimum log level of events that a Logger should process</p><div class="section">
 <h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">set_threshold</span><span class="op">(</span><span class="va">level</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">set_threshold</span><span class="op">(</span><span class="va">level</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -507,11 +507,11 @@ of the ancestral Loggers?</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-set_appenders"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-set_appenders"></a><div class="section">
 <h3 id="method-set-appenders-">Method <code>set_appenders()</code><a class="anchor" aria-label="anchor" href="#method-set-appenders-"></a></h3>
 <p>Set the Logger's Appenders</p><div class="section">
 <h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">set_appenders</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">set_appenders</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -526,13 +526,13 @@ about Logger inheritance).</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-spawn"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-spawn"></a><div class="section">
 <h3 id="method-spawn-">Method <code>spawn()</code><a class="anchor" aria-label="anchor" href="#method-spawn-"></a></h3>
 <p>Spawn a child Logger.
 This is very similar to using <code><a href="get_logger.html">get_logger()</a></code>, but
 can be useful in some cases where Loggers are created programmatically</p><div class="section">
 <h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">spawn</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">spawn</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -552,179 +552,179 @@ to <code>get_logger("foo/bar/baz")</code></p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># lgr::lgr is the root logger that is always available</span></span>
-<span class="r-in"><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Today is a good day"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [06:20:06.113] Today is a good day</span>
-<span class="r-in"><span class="va">lgr</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"This is a serious error"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [06:20:06.117] This is a serious error</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Loggers use sprintf() for string formatting by default</span></span>
-<span class="r-in"><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Today is %s"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [06:20:06.126] Today is 2022-05-31</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># If no unnamed `...` are present, msg is not passed through sprintf()</span></span>
-<span class="r-in"><span class="va">lgr</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"100% bad"</span><span class="op">)</span>  <span class="co"># so this works</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [06:20:06.130] 100% bad</span>
-<span class="r-in"><span class="va">lgr</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"%s%% bad"</span>, <span class="fl">100</span><span class="op">)</span>  <span class="co"># if you use unnamed arguments, you must escape %</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [06:20:06.132] 100% bad</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># You can create new loggers with get_logger()</span></span>
-<span class="r-in"><span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"mylogger"</span><span class="op">)</span><span class="op">$</span><span class="fu">set_appenders</span><span class="op">(</span><span class="va"><a href="AppenderFile.html">AppenderFile</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">tf</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># The new logger passes the log message on to the appenders of its parent</span></span>
-<span class="r-in"><span class="co"># logger, which is by default the root logger. This is why the following</span></span>
-<span class="r-in"><span class="co"># writes not only the file 'tf', but also to the console.</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"blubb"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [06:20:06.152] blubb</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "FATAL [2022-05-31 06:20:06.152] blubb"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># This logger's print() method depicts this relationship.</span></span>
-<span class="r-in"><span class="va">child</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"lg/child"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">child</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># lgr::lgr is the root logger that is always available</span></span></span>
+<span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Today is a good day"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [10:02:48.805] Today is a good day</span>
+<span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"This is a serious error"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [10:02:48.808] This is a serious error</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Loggers use sprintf() for string formatting by default</span></span></span>
+<span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Today is %s"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [10:02:48.810] Today is 2022-09-02</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># If no unnamed `...` are present, msg is not passed through sprintf()</span></span></span>
+<span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"100% bad"</span><span class="op">)</span>  <span class="co"># so this works</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [10:02:48.812] 100% bad</span>
+<span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"%s%% bad"</span>, <span class="fl">100</span><span class="op">)</span>  <span class="co"># if you use unnamed arguments, you must escape %</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [10:02:48.814] 100% bad</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># You can create new loggers with get_logger()</span></span></span>
+<span class="r-in"><span><span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"mylogger"</span><span class="op">)</span><span class="op">$</span><span class="fu">set_appenders</span><span class="op">(</span><span class="va"><a href="AppenderFile.html">AppenderFile</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">tf</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The new logger passes the log message on to the appenders of its parent</span></span></span>
+<span class="r-in"><span><span class="co"># logger, which is by default the root logger. This is why the following</span></span></span>
+<span class="r-in"><span><span class="co"># writes not only the file 'tf', but also to the console.</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"blubb"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [10:02:48.820] blubb</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "FATAL [2022-09-02 10:02:48.820] blubb"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># This logger's print() method depicts this relationship.</span></span></span>
+<span class="r-in"><span><span class="va">child</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"lg/child"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">child</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;Logger&gt; [info] lg/child</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inherited appenders:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [all] -&gt; console</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">child</span><span class="op">$</span><span class="va">name</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">child</span><span class="op">$</span><span class="va">name</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "lg/child"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># use formatting strings and custom fields</span></span>
-<span class="r-in"><span class="va">tf2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="AppenderFile.html">AppenderFile</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">tf2</span>, layout <span class="op">=</span> <span class="va"><a href="LayoutJson.html">LayoutJson</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Not all %s support custom fields"</span>, <span class="st">"appenders"</span>, type <span class="op">=</span> <span class="st">"test"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [06:20:06.167] Not all appenders support custom fields {type: `test`}</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [2022-05-31 06:20:06.152] blubb</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2022-05-31 06:20:06.167] Not all appenders support custom fields {"type":"test"}</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf2</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"level":400,"timestamp":"2022-05-31 06:20:06","logger":"mylogger","caller":"eval","msg":"Not all appenders support custom fields","type":"test"}</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># cleanup</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tf</span>, <span class="va">tf2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>  <span class="co"># reset logger config</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># use formatting strings and custom fields</span></span></span>
+<span class="r-in"><span><span class="va">tf2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="AppenderFile.html">AppenderFile</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">tf2</span>, layout <span class="op">=</span> <span class="va"><a href="LayoutJson.html">LayoutJson</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Not all %s support custom fields"</span>, <span class="st">"appenders"</span>, type <span class="op">=</span> <span class="st">"test"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [10:02:48.835] Not all appenders support custom fields {type: `test`}</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [2022-09-02 10:02:48.820] blubb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2022-09-02 10:02:48.835] Not all appenders support custom fields {"type":"test"}</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf2</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"level":400,"timestamp":"2022-09-02 10:02:48","logger":"mylogger","caller":"eval","msg":"Not all appenders support custom fields","type":"test"}</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># cleanup</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tf</span>, <span class="va">tf2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>  <span class="co"># reset logger config</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;Logger&gt; [info] mylogger</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inherited appenders:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [all] -&gt; console</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># LoggerGlue</span></span>
-<span class="r-in"><span class="co"># You can also create a new logger that uses the awesome glue library for</span></span>
-<span class="r-in"><span class="co"># string formatting instead of sprintf</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"glue"</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger_glue</a></span><span class="op">(</span><span class="st">"glue"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="va">lg</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"blah "</span>, <span class="st">"fizz is set to: {fizz}"</span>, foo <span class="op">=</span> <span class="st">"bar"</span>, fizz <span class="op">=</span> <span class="st">"buzz"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="co"># prevent creation of custom fields with prefixing a dot</span></span>
-<span class="r-in">  <span class="va">lg</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"blah "</span>, <span class="st">"fizz is set to: {.fizz}"</span>, foo <span class="op">=</span> <span class="st">"bar"</span>, .fizz <span class="op">=</span> <span class="st">"buzz"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="co">#' # completely reset 'glue' to an unconfigured vanilla Logger</span></span>
-<span class="r-in">  <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"glue"</span>, reset <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [06:20:06.185] blah fizz is set to: buzz {foo: `bar`, fizz: `buzz`}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [06:20:06.249] blah fizz is set to: buzz {foo: `bar`}</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># LoggerGlue</span></span></span>
+<span class="r-in"><span><span class="co"># You can also create a new logger that uses the awesome glue library for</span></span></span>
+<span class="r-in"><span><span class="co"># string formatting instead of sprintf</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"glue"</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger_glue</a></span><span class="op">(</span><span class="st">"glue"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">lg</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"blah "</span>, <span class="st">"fizz is set to: {fizz}"</span>, foo <span class="op">=</span> <span class="st">"bar"</span>, fizz <span class="op">=</span> <span class="st">"buzz"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="co"># prevent creation of custom fields with prefixing a dot</span></span></span>
+<span class="r-in"><span>  <span class="va">lg</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"blah "</span>, <span class="st">"fizz is set to: {.fizz}"</span>, foo <span class="op">=</span> <span class="st">"bar"</span>, .fizz <span class="op">=</span> <span class="st">"buzz"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co">#' # completely reset 'glue' to an unconfigured vanilla Logger</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"glue"</span>, reset <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [10:02:48.851] blah fizz is set to: buzz {foo: `bar`, fizz: `buzz`}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [10:02:48.894] blah fizz is set to: buzz {foo: `bar`}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;Logger&gt; [info] glue</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inherited appenders:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [all] -&gt; console</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Configuring a Logger</span></span>
-<span class="r-in"><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>  <span class="co"># resets logger to unconfigured state</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Configuring a Logger</span></span></span>
+<span class="r-in"><span><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>  <span class="co"># resets logger to unconfigured state</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;Logger&gt; [info] test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inherited appenders:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [all] -&gt; console</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># With setters</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span></span>
-<span class="r-in">  <span class="fu">set_threshold</span><span class="op">(</span><span class="st">"error"</span><span class="op">)</span><span class="op">$</span></span>
-<span class="r-in">  <span class="fu">set_propagate</span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span></span>
-<span class="r-in">  <span class="fu">set_appenders</span><span class="op">(</span><span class="va"><a href="AppenderConsole.html">AppenderConsole</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>threshold <span class="op">=</span> <span class="st">"info"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># With setters</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span></span></span>
+<span class="r-in"><span>  <span class="fu">set_threshold</span><span class="op">(</span><span class="st">"error"</span><span class="op">)</span><span class="op">$</span></span></span>
+<span class="r-in"><span>  <span class="fu">set_propagate</span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span></span></span>
+<span class="r-in"><span>  <span class="fu">set_appenders</span><span class="op">(</span><span class="va"><a href="AppenderConsole.html">AppenderConsole</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>threshold <span class="op">=</span> <span class="st">"info"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;Logger&gt; [info] test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inherited appenders:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [all] -&gt; console</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># With a list</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  threshold <span class="op">=</span> <span class="st">"error"</span>,</span>
-<span class="r-in">  propagate <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">  appenders <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va"><a href="AppenderConsole.html">AppenderConsole</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>threshold <span class="op">=</span> <span class="st">"info"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># With a list</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  threshold <span class="op">=</span> <span class="st">"error"</span>,</span></span>
+<span class="r-in"><span>  propagate <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  appenders <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va"><a href="AppenderConsole.html">AppenderConsole</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>threshold <span class="op">=</span> <span class="st">"info"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;Logger&gt; [error] test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> appenders:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [[1]]: &lt;AppenderConsole&gt; [info] -&gt; console</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>  <span class="co"># resets logger to unconfigured state</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>  <span class="co"># resets logger to unconfigured state</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;Logger&gt; [info] test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inherited appenders:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [all] -&gt; console</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Via YAML</span></span>
-<span class="r-in"><span class="va">cfg</span> <span class="op">&lt;-</span> <span class="st">"</span>
-<span class="r-in">Logger:</span>
-<span class="r-in">  threshold: error</span>
-<span class="r-in">  propagate: false</span>
-<span class="r-in">  appenders:</span>
-<span class="r-in">    AppenderConsole:</span>
-<span class="r-in">      threshold: info</span>
-<span class="r-in">"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="va">cfg</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Via YAML</span></span></span>
+<span class="r-in"><span><span class="va">cfg</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">Logger:</span></span></span>
+<span class="r-in"><span><span class="st">  threshold: error</span></span></span>
+<span class="r-in"><span><span class="st">  propagate: false</span></span></span>
+<span class="r-in"><span><span class="st">  appenders:</span></span></span>
+<span class="r-in"><span><span class="st">    AppenderConsole:</span></span></span>
+<span class="r-in"><span><span class="st">      threshold: info</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="va">cfg</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;Logger&gt; [error] test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> appenders:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   AppenderConsole: &lt;AppenderConsole&gt; [info] -&gt; console</span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;Logger&gt; [info] test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inherited appenders:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [all] -&gt; console</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"><span class="co">## Method `Logger$list_log`</span></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">list_log</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">400</span>, msg <span class="op">=</span> <span class="st">"example"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [06:20:06.279] example</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"><span class="co">## Method `Logger$add_appender`</span></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="AppenderConsole.html">AppenderConsole</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"myconsole"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Logger$list_log`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">list_log</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">400</span>, msg <span class="op">=</span> <span class="st">"example"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [10:02:48.923] example</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Logger$add_appender`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="AppenderConsole.html">AppenderConsole</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"myconsole"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;AppenderConsole&gt; [all]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   layout: &lt;LayoutFormat&gt; %L [%t] %m %f</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   destination: console</span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">myconsole</span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">myconsole</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;AppenderConsole&gt; [all]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   layout: &lt;LayoutFormat&gt; %L [%t] %m %f</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   destination: console</span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">remove_appender</span><span class="op">(</span><span class="st">"myconsole"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>  <span class="co"># reset config</span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">remove_appender</span><span class="op">(</span><span class="st">"myconsole"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>  <span class="co"># reset config</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;Logger&gt; [info] test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inherited appenders:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [all] -&gt; console</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"><span class="co">## Method `Logger$set_exception_handler`</span></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"this produces a warning instead of an error"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[2022-05-31 06:20:06.309] root ~ error in `lgr$info(stop("this produces a warning instead of an error"))`: this produces a warning instead of an error</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Logger$set_exception_handler`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"this produces a warning instead of an error"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[2022-09-02 10:02:48.987] root ~ error in `lgr$info(stop("this produces a warning instead of an error"))`: this produces a warning instead of an error</span>
 </code></pre></div>
     </div>
   </div>
@@ -739,7 +739,7 @@ to <code>get_logger("foo/bar/baz")</code></p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

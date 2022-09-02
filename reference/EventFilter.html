@@ -82,7 +82,7 @@ or <a href="Appender.html">Appender</a> that the EventFilter is attached to.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">.obj</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">.obj</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="modifying-logevents-with-eventfilters">
@@ -109,13 +109,13 @@ Filter subclasses is to call them <code>FilterSomething</code> and leave out the
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>EventFilter$new()</code></a></p></li>
-<li><p><a href="#method-clone"><code>EventFilter$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-EventFilter-new"><code>EventFilter$new()</code></a></p></li>
+<li><p><a href="#method-EventFilter-clone"><code>EventFilter$clone()</code></a></p></li>
+</ul></div><p></p><hr><a id="method-EventFilter-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Initialize a new EventFilter</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/EventFilter.html">EventFilter</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>fun <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">event</span><span class="op">)</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/EventFilter.html">EventFilter</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>fun <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">event</span><span class="op">)</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -129,11 +129,11 @@ either <code>TRUE</code> or <code>FALSE</code>. Any  non-<code>FALSE</code> will
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
+</div><p></p><hr><a id="method-EventFilter-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">EventFilter</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">EventFilter</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -151,18 +151,18 @@ either <code>TRUE</code> or <code>FALSE</code>. Any  non-<code>FALSE</code> will
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">event</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"via event$.logger:"</span>, <span class="va">event</span><span class="op">$</span><span class="va">.logger</span><span class="op">$</span><span class="va">threshold</span>, <span class="st">"\n"</span><span class="op">)</span>  <span class="co">#  works for loggers only</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"via .obj():      "</span>,<span class="fu">.obj</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">threshold</span>, <span class="st">"\n"</span><span class="op">)</span> <span class="co"># works for loggers and appenders</span></span>
-<span class="r-in">  <span class="cn">TRUE</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">add_filter</span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">event</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"via event$.logger:"</span>, <span class="va">event</span><span class="op">$</span><span class="va">.logger</span><span class="op">$</span><span class="va">threshold</span>, <span class="st">"\n"</span><span class="op">)</span>  <span class="co">#  works for loggers only</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"via .obj():      "</span>,<span class="fu">.obj</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">threshold</span>, <span class="st">"\n"</span><span class="op">)</span> <span class="co"># works for loggers and appenders</span></span></span>
+<span class="r-in"><span>  <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">add_filter</span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> via event$.logger: 400 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> via .obj():       400 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [06:20:00.310] test</span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [10:02:43.227] test</span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;Logger&gt; [info] test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inherited appenders:</span>
@@ -181,7 +181,7 @@ either <code>TRUE</code> or <code>FALSE</code>. Any  non-<code>FALSE</code> will
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

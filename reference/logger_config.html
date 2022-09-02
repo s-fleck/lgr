@@ -62,35 +62,45 @@ a more formal way that includes additional argument checking.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">logger_config</span><span class="op">(</span>
-  appenders <span class="op">=</span> <span class="cn">NULL</span>,
-  threshold <span class="op">=</span> <span class="cn">NULL</span>,
-  filters <span class="op">=</span> <span class="cn">NULL</span>,
-  exception_handler <span class="op">=</span> <span class="cn">NULL</span>,
-  propagate <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
-
-<span class="fu">as_logger_config</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S3 method for list</span>
-<span class="fu">as_logger_config</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S3 method for character</span>
-<span class="fu">as_logger_config</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">logger_config</span><span class="op">(</span></span>
+<span>  appenders <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  threshold <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  filters <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  exception_handler <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  propagate <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">as_logger_config</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for list</span></span>
+<span><span class="fu">as_logger_config</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for character</span></span>
+<span><span class="fu">as_logger_config</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>appenders</dt>
 <dd><p>see <a href="Logger.html">Logger</a></p></dd>
+
+
 <dt>threshold</dt>
 <dd><p>see <a href="Logger.html">Logger</a></p></dd>
+
+
 <dt>filters</dt>
 <dd><p>see <a href="Logger.html">Logger</a></p></dd>
+
+
 <dt>exception_handler</dt>
 <dd><p>see <a href="Logger.html">Logger</a></p></dd>
+
+
 <dt>propagate</dt>
 <dd><p>see <a href="Logger.html">Logger</a></p></dd>
+
+
 <dt>x</dt>
 <dd><p>any <span style="R">R</span> object. Especially:</p><ul><li><p>A <code>character</code> scalar. This can either be the path to a
 YAML file or a character scalar containing valid YAML</p></li>
@@ -99,10 +109,17 @@ YAML file or a character scalar containing valid YAML</p></li>
 details.</p></li>
 <li><p>a Logger object, to clone its configuration.</p></li>
 </ul></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>list</code> with the subclass <code>"logger_config"</code>a logger_config object</p>
+    
+
+<p>a <code>list</code> with the subclass <code>"logger_config"</code></p>
+
+
+
+<p>a logger_config object</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -121,7 +138,7 @@ details.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

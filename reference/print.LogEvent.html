@@ -56,52 +56,69 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for LogEvent</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span>
-  <span class="va">x</span>,
-  fmt <span class="op">=</span> <span class="st">"%L [%t] %m  %f"</span>,
-  timestamp_fmt <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>,
-  colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"lgr.colors"</span><span class="op">)</span>,
-  log_levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"lgr.log_levels"</span><span class="op">)</span>,
-  pad_levels <span class="op">=</span> <span class="st">"right"</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for LogEvent</span>
-<span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span>
-  <span class="va">x</span>,
-  fmt <span class="op">=</span> <span class="st">"%L [%t] %m  %f"</span>,
-  timestamp_fmt <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>,
-  colors <span class="op">=</span> <span class="cn">NULL</span>,
-  log_levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"lgr.log_levels"</span><span class="op">)</span>,
-  pad_levels <span class="op">=</span> <span class="st">"right"</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for LogEvent</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  fmt <span class="op">=</span> <span class="st">"%L [%t] %m  %f"</span>,</span>
+<span>  timestamp_fmt <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>,</span>
+<span>  colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"lgr.colors"</span><span class="op">)</span>,</span>
+<span>  log_levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"lgr.log_levels"</span><span class="op">)</span>,</span>
+<span>  pad_levels <span class="op">=</span> <span class="st">"right"</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for LogEvent</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  fmt <span class="op">=</span> <span class="st">"%L [%t] %m  %f"</span>,</span>
+<span>  timestamp_fmt <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>,</span>
+<span>  colors <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  log_levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"lgr.log_levels"</span><span class="op">)</span>,</span>
+<span>  pad_levels <span class="op">=</span> <span class="st">"right"</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>a <a href="LogEvent.html">LogEvent</a></p></dd>
+
+
 <dt>fmt</dt>
 <dd><p>A <code>character</code> scalar that may contain any of the tokens listed
 bellow in the section Format Tokens.</p></dd>
+
+
 <dt>timestamp_fmt</dt>
 <dd><p>see <code><a href="https://rdrr.io/r/base/strptime.html" class="external-link">format.POSIXct()</a></code></p></dd>
+
+
 <dt>colors</dt>
 <dd><p>A <code>list</code> of <code>functions</code> that will be used to color the
 log levels (likely from <a href="https://rdrr.io/pkg/crayon/man/crayon.html" class="external-link">crayon::crayon</a>).</p></dd>
+
+
 <dt>log_levels</dt>
 <dd><p>named <code>integer</code> vector of valid log levels</p></dd>
+
+
 <dt>pad_levels</dt>
 <dd><p><code>right</code>, <code>left</code> or <code>NULL</code>. Whether or not to pad the log
 level names to the same width on the left or right side, or not at all.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>ignored</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>x</code> for <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> and a <code>character</code> scalar for <code><a href="https://rdrr.io/r/base/format.html" class="external-link">format()</a></code></p>
+    
+
+<p><code>x</code> for <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> and a <code>character</code> scalar for <code><a href="https://rdrr.io/r/base/format.html" class="external-link">format()</a></code></p>
+
+
     </div>
     <div id="format-tokens">
     <h2>Format Tokens</h2>
@@ -153,33 +170,33 @@ have <strong>jsonlite</strong> installed and does not support colors as opposed 
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># standard fields can be printed using special tokens</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="LogEvent.html">LogEvent</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
-<span class="r-in">  level <span class="op">=</span> <span class="fl">300</span>, msg <span class="op">=</span> <span class="st">"a test event"</span>, caller <span class="op">=</span> <span class="st">"testfun()"</span>, logger <span class="op">=</span> <span class="va">lgr</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-31 06:20:17] a test event</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, fmt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"%t (%p) %c: %n - %m"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2022-05-31 06:20:17 (4128) testfun(): 300 - a test event</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, colors <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-31 06:20:17] a test event</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># custom values</span></span>
-<span class="r-in"><span class="va">y</span> <span class="op">&lt;-</span> <span class="va"><a href="LogEvent.html">LogEvent</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
-<span class="r-in">  level <span class="op">=</span> <span class="fl">300</span>, msg <span class="op">=</span> <span class="st">"a gps track"</span>, logger <span class="op">=</span> <span class="va">lgr</span>,</span>
-<span class="r-in">  waypoints <span class="op">=</span> <span class="fl">10</span>, location <span class="op">=</span> <span class="st">"Austria"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># default output with %f</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-31 06:20:17] a gps track  {waypoints: `10`, location: `Austria`}</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># proper JSON output with %j</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"jsonlite"</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span>, fmt <span class="op">=</span> <span class="st">"%L [%t] %m  %j"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-31 06:20:17] a gps track  {"waypoints":10,"location":"Austria"}</span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># standard fields can be printed using special tokens</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="LogEvent.html">LogEvent</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  level <span class="op">=</span> <span class="fl">300</span>, msg <span class="op">=</span> <span class="st">"a test event"</span>, caller <span class="op">=</span> <span class="st">"testfun()"</span>, logger <span class="op">=</span> <span class="va">lgr</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-09-02 10:02:59] a test event</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, fmt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"%t (%p) %c: %n - %m"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2022-09-02 10:02:59 (5151) testfun(): 300 - a test event</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, colors <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-09-02 10:02:59] a test event</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># custom values</span></span></span>
+<span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va"><a href="LogEvent.html">LogEvent</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  level <span class="op">=</span> <span class="fl">300</span>, msg <span class="op">=</span> <span class="st">"a gps track"</span>, logger <span class="op">=</span> <span class="va">lgr</span>,</span></span>
+<span class="r-in"><span>  waypoints <span class="op">=</span> <span class="fl">10</span>, location <span class="op">=</span> <span class="st">"Austria"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># default output with %f</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-09-02 10:02:59] a gps track  {waypoints: `10`, location: `Austria`}</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># proper JSON output with %j</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"jsonlite"</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span>, fmt <span class="op">=</span> <span class="st">"%L [%t] %m  %j"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-09-02 10:02:59] a gps track  {"waypoints":10,"location":"Austria"}</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -194,7 +211,7 @@ have <strong>jsonlite</strong> installed and does not support colors as opposed 
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

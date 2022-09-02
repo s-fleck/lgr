@@ -101,70 +101,70 @@ the buffer should be flushed when the Buffer is full (f.e when you close
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>AppenderBuffer$new()</code></a></p></li>
-<li><p><a href="#method-flush"><code>AppenderBuffer$flush()</code></a></p></li>
-<li><p><a href="#method-clear"><code>AppenderBuffer$clear()</code></a></p></li>
-<li><p><a href="#method-set_appenders"><code>AppenderBuffer$set_appenders()</code></a></p></li>
-<li><p><a href="#method-add_appender"><code>AppenderBuffer$add_appender()</code></a></p></li>
-<li><p><a href="#method-remove_appender"><code>AppenderBuffer$remove_appender()</code></a></p></li>
-<li><p><a href="#method-format"><code>AppenderBuffer$format()</code></a></p></li>
-</ul></div><p><details><summary>Inherited methods</summary><ul><li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href="Filterable.html#method-add_filter"><code>lgr::Filterable$add_filter()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href="Filterable.html#method-filter"><code>lgr::Filterable$filter()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href="Filterable.html#method-remove_filter"><code>lgr::Filterable$remove_filter()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href="Filterable.html#method-set_filters"><code>lgr::Filterable$set_filters()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href="Appender.html#method-set_layout"><code>lgr::Appender$set_layout()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href="Appender.html#method-set_threshold"><code>lgr::Appender$set_threshold()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="append"><a href="AppenderMemory.html#method-append"><code>lgr::AppenderMemory$append()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="set_buffer_size"><a href="AppenderMemory.html#method-set_buffer_size"><code>lgr::AppenderMemory$set_buffer_size()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="set_flush_on_exit"><a href="AppenderMemory.html#method-set_flush_on_exit"><code>lgr::AppenderMemory$set_flush_on_exit()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="set_flush_on_rotate"><a href="AppenderMemory.html#method-set_flush_on_rotate"><code>lgr::AppenderMemory$set_flush_on_rotate()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="set_flush_threshold"><a href="AppenderMemory.html#method-set_flush_threshold"><code>lgr::AppenderMemory$set_flush_threshold()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="set_should_flush"><a href="AppenderMemory.html#method-set_should_flush"><code>lgr::AppenderMemory$set_should_flush()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="show"><a href="AppenderMemory.html#method-show"><code>lgr::AppenderMemory$show()</code></a></span></p></li>
-</ul></details></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-AppenderBuffer-new"><code>AppenderBuffer$new()</code></a></p></li>
+<li><p><a href="#method-AppenderBuffer-flush"><code>AppenderBuffer$flush()</code></a></p></li>
+<li><p><a href="#method-AppenderBuffer-clear"><code>AppenderBuffer$clear()</code></a></p></li>
+<li><p><a href="#method-AppenderBuffer-set_appenders"><code>AppenderBuffer$set_appenders()</code></a></p></li>
+<li><p><a href="#method-AppenderBuffer-add_appender"><code>AppenderBuffer$add_appender()</code></a></p></li>
+<li><p><a href="#method-AppenderBuffer-remove_appender"><code>AppenderBuffer$remove_appender()</code></a></p></li>
+<li><p><a href="#method-AppenderBuffer-format"><code>AppenderBuffer$format()</code></a></p></li>
+</ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href="Filterable.html#method-add_filter"><code>lgr::Filterable$add_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href="Filterable.html#method-filter"><code>lgr::Filterable$filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href="Filterable.html#method-remove_filter"><code>lgr::Filterable$remove_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href="Filterable.html#method-set_filters"><code>lgr::Filterable$set_filters()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href="Appender.html#method-set_layout"><code>lgr::Appender$set_layout()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href="Appender.html#method-set_threshold"><code>lgr::Appender$set_threshold()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="append"><a href="AppenderMemory.html#method-append"><code>lgr::AppenderMemory$append()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="set_buffer_size"><a href="AppenderMemory.html#method-set_buffer_size"><code>lgr::AppenderMemory$set_buffer_size()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="set_flush_on_exit"><a href="AppenderMemory.html#method-set_flush_on_exit"><code>lgr::AppenderMemory$set_flush_on_exit()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="set_flush_on_rotate"><a href="AppenderMemory.html#method-set_flush_on_rotate"><code>lgr::AppenderMemory$set_flush_on_rotate()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="set_flush_threshold"><a href="AppenderMemory.html#method-set_flush_threshold"><code>lgr::AppenderMemory$set_flush_threshold()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="set_should_flush"><a href="AppenderMemory.html#method-set_should_flush"><code>lgr::AppenderMemory$set_should_flush()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderMemory" data-id="show"><a href="AppenderMemory.html#method-show"><code>lgr::AppenderMemory$show()</code></a></span></li>
+</ul></details></p><hr><a id="method-AppenderBuffer-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>The <a href="Layout.html">Layout</a> for this Appender is used only to format console output of
 its <code>$show()</code> method.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/AppenderBuffer.html">AppenderBuffer</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
-  threshold <span class="op">=</span> <span class="cn">NA_integer_</span>,
-  layout <span class="op">=</span> <span class="va"><a href="../reference/LayoutFormat.html">LayoutFormat</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>fmt <span class="op">=</span> <span class="st">"%L [%t] %m"</span>, timestamp_fmt <span class="op">=</span> <span class="st">"%H:%M:%S"</span>,
-    colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"lgr.colors"</span><span class="op">)</span><span class="op">)</span>,
-  appenders <span class="op">=</span> <span class="cn">NULL</span>,
-  buffer_size <span class="op">=</span> <span class="fl">1000</span>,
-  flush_threshold <span class="op">=</span> <span class="cn">NULL</span>,
-  flush_on_exit <span class="op">=</span> <span class="cn">TRUE</span>,
-  flush_on_rotate <span class="op">=</span> <span class="cn">TRUE</span>,
-  should_flush <span class="op">=</span> <span class="cn">NULL</span>,
-  filters <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/AppenderBuffer.html">AppenderBuffer</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  threshold <span class="op">=</span> <span class="cn">NA_integer_</span>,</span>
+<span>  layout <span class="op">=</span> <span class="va"><a href="../reference/LayoutFormat.html">LayoutFormat</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>fmt <span class="op">=</span> <span class="st">"%L [%t] %m"</span>, timestamp_fmt <span class="op">=</span> <span class="st">"%H:%M:%S"</span>, colors</span>
+<span>    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"lgr.colors"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  appenders <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  buffer_size <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  flush_threshold <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  flush_on_exit <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  flush_on_rotate <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  should_flush <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  filters <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-flush"></a><div class="section">
+</div><p></p><hr><a id="method-AppenderBuffer-flush"></a><div class="section">
 <h3 id="method-flush-">Method <code><a href="https://rdrr.io/r/base/connections.html" class="external-link">flush()</a></code><a class="anchor" aria-label="anchor" href="#method-flush-"></a></h3>
 <p>Sends the buffer's contents to all attached Appenders and
 then clears the Buffer</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">AppenderBuffer</span><span class="op">$</span><span class="fu">flush</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AppenderBuffer</span><span class="op">$</span><span class="fu">flush</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-clear"></a><div class="section">
+</div><p></p><hr><a id="method-AppenderBuffer-clear"></a><div class="section">
 <h3 id="method-clear-">Method <code>clear()</code><a class="anchor" aria-label="anchor" href="#method-clear-"></a></h3>
 <p>Clears the buffer, discarding all buffered Events</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">AppenderBuffer</span><span class="op">$</span><span class="fu">clear</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AppenderBuffer</span><span class="op">$</span><span class="fu">clear</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-set_appenders"></a><div class="section">
+</div><p></p><hr><a id="method-AppenderBuffer-set_appenders"></a><div class="section">
 <h3 id="method-set-appenders-">Method <code>set_appenders()</code><a class="anchor" aria-label="anchor" href="#method-set-appenders-"></a></h3>
 <p>Exactly like A <a href="Logger.html">Logger</a>, an AppenderBuffer can have an
 arbitrary amount of Appenders attached. When the buffer is flushed, the
 buffered events are dispatched to these Appenders.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">AppenderBuffer</span><span class="op">$</span><span class="fu">set_appenders</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AppenderBuffer</span><span class="op">$</span><span class="fu">set_appenders</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -179,7 +179,7 @@ about Logger inheritance).</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-add_appender"></a><div class="section">
+</div><p></p><hr><a id="method-AppenderBuffer-add_appender"></a><div class="section">
 <h3 id="method-add-appender-">Method <code><a href="simple_logging.html">add_appender()</a></code><a class="anchor" aria-label="anchor" href="#method-add-appender-"></a></h3>
 <p>Add an Appender to the AppenderBuffer</p>
 
@@ -189,7 +189,7 @@ recommended. After adding an Appender with
 refer to it via <code>appender$appenders$console</code>. <code><a href="simple_logging.html">remove_appender()</a></code> can
 remove an Appender by position or name.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">AppenderBuffer</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va">appender</span>, name <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AppenderBuffer</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va">appender</span>, name <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -205,11 +205,11 @@ remove an Appender by position or name.</p><div class="section">
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-remove_appender"></a><div class="section">
+</div><p></p><hr><a id="method-AppenderBuffer-remove_appender"></a><div class="section">
 <h3 id="method-remove-appender-">Method <code><a href="simple_logging.html">remove_appender()</a></code><a class="anchor" aria-label="anchor" href="#method-remove-appender-"></a></h3>
 <p>remove an appender</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">AppenderBuffer</span><span class="op">$</span><span class="fu">remove_appender</span><span class="op">(</span><span class="va">pos</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AppenderBuffer</span><span class="op">$</span><span class="fu">remove_appender</span><span class="op">(</span><span class="va">pos</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -222,12 +222,12 @@ remove</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-format"></a><div class="section">
+</div><p></p><hr><a id="method-AppenderBuffer-format"></a><div class="section">
 <h3 id="method-format-">Method <code><a href="https://rdrr.io/r/base/format.html" class="external-link">format()</a></code><a class="anchor" aria-label="anchor" href="#method-format-"></a></h3>
 
 <div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">AppenderBuffer</span><span class="op">$</span><span class="fu">format</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AppenderBuffer</span><span class="op">$</span><span class="fu">format</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
@@ -247,7 +247,7 @@ remove</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

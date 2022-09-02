@@ -102,131 +102,161 @@ to the root logger with <code><a href="basic_config.html">basic_config(memory = 
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">log_exception</span><span class="op">(</span><span class="va">code</span>, logfun <span class="op">=</span> <span class="va">lgr</span><span class="op">$</span><span class="va">fatal</span>, caller <span class="op">=</span> <span class="fu"><a href="system_infos.html">get_caller</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">threshold</span><span class="op">(</span><span class="va">level</span>, target <span class="op">=</span> <span class="fu">lgr</span><span class="fu">::</span><span class="va"><a href="lgr-package.html">lgr</a></span><span class="op">)</span>
-
-<span class="fu">console_threshold</span><span class="op">(</span><span class="va">level</span>, target <span class="op">=</span> <span class="fu">lgr</span><span class="fu">::</span><span class="va"><a href="lgr-package.html">lgr</a></span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">console</span><span class="op">)</span>
-
-<span class="fu">add_appender</span><span class="op">(</span><span class="va">appender</span>, name <span class="op">=</span> <span class="cn">NULL</span>, target <span class="op">=</span> <span class="fu">lgr</span><span class="fu">::</span><span class="va"><a href="lgr-package.html">lgr</a></span><span class="op">)</span>
-
-<span class="fu">remove_appender</span><span class="op">(</span><span class="va">pos</span>, target <span class="op">=</span> <span class="fu">lgr</span><span class="fu">::</span><span class="va"><a href="lgr-package.html">lgr</a></span><span class="op">)</span>
-
-<span class="fu">show_log</span><span class="op">(</span>threshold <span class="op">=</span> <span class="cn">NA_integer_</span>, n <span class="op">=</span> <span class="fl">20L</span>, target <span class="op">=</span> <span class="fu">lgr</span><span class="fu">::</span><span class="va"><a href="lgr-package.html">lgr</a></span><span class="op">)</span>
-
-<span class="fu">show_dt</span><span class="op">(</span>target <span class="op">=</span> <span class="fu">lgr</span><span class="fu">::</span><span class="va"><a href="lgr-package.html">lgr</a></span><span class="op">)</span>
-
-<span class="fu">show_data</span><span class="op">(</span>target <span class="op">=</span> <span class="fu">lgr</span><span class="fu">::</span><span class="va"><a href="lgr-package.html">lgr</a></span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">log_exception</span><span class="op">(</span><span class="va">code</span>, logfun <span class="op">=</span> <span class="va">lgr</span><span class="op">$</span><span class="va">fatal</span>, caller <span class="op">=</span> <span class="fu"><a href="system_infos.html">get_caller</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">threshold</span><span class="op">(</span><span class="va">level</span>, target <span class="op">=</span> <span class="fu">lgr</span><span class="fu">::</span><span class="va"><a href="lgr-package.html">lgr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">console_threshold</span><span class="op">(</span><span class="va">level</span>, target <span class="op">=</span> <span class="fu">lgr</span><span class="fu">::</span><span class="va"><a href="lgr-package.html">lgr</a></span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">console</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">add_appender</span><span class="op">(</span><span class="va">appender</span>, name <span class="op">=</span> <span class="cn">NULL</span>, target <span class="op">=</span> <span class="fu">lgr</span><span class="fu">::</span><span class="va"><a href="lgr-package.html">lgr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">remove_appender</span><span class="op">(</span><span class="va">pos</span>, target <span class="op">=</span> <span class="fu">lgr</span><span class="fu">::</span><span class="va"><a href="lgr-package.html">lgr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">show_log</span><span class="op">(</span>threshold <span class="op">=</span> <span class="cn">NA_integer_</span>, n <span class="op">=</span> <span class="fl">20L</span>, target <span class="op">=</span> <span class="fu">lgr</span><span class="fu">::</span><span class="va"><a href="lgr-package.html">lgr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">show_dt</span><span class="op">(</span>target <span class="op">=</span> <span class="fu">lgr</span><span class="fu">::</span><span class="va"><a href="lgr-package.html">lgr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">show_data</span><span class="op">(</span>target <span class="op">=</span> <span class="fu">lgr</span><span class="fu">::</span><span class="va"><a href="lgr-package.html">lgr</a></span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>code</dt>
 <dd><p>Any <span style="R">R</span> code</p></dd>
+
+
 <dt>logfun</dt>
 <dd><p>a <code>function</code> for processing the log request, usually
 <code>lgr$info()</code>, <code>lgr$debug()</code>, etc... .</p></dd>
+
+
 <dt>caller</dt>
 <dd><p>a <code>character</code> scalar. The name of the calling function</p></dd>
+
+
 <dt>level</dt>
 <dd><p><code>integer</code> or <code>character</code> scalar: the desired log level</p></dd>
+
+
 <dt>target</dt>
 <dd><p>a <a href="Logger.html">Logger</a> or <a href="Appender.html">Appender</a> or the name of a Logger as <code>character</code>
 scalar</p></dd>
+
+
 <dt>appender</dt>
 <dd><p>an <code>Appender</code></p></dd>
+
+
 <dt>name</dt>
 <dd><p><code>character</code> scalar. An optional name for the new Appender.</p></dd>
+
+
 <dt>pos</dt>
 <dd><p><code>integer</code> index or <code>character</code> names of the appenders to remove</p></dd>
+
+
 <dt>threshold</dt>
 <dd><p><code>character</code> or <code>integer</code> scalar. The minimum <a href="get_log_levels.html">log level</a> that should be processed by the root logger.</p></dd>
+
+
 <dt>n</dt>
 <dd><p><code>integer</code> scalar. Show only the last <code>n</code> log entries that match
 <code>threshold</code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>threshold()</code> and <code>console_threshold()</code> return the <a href="get_log_levels.html">log_level</a> of <code>target</code>as <code>integer</code> (invisibly)
-<code>add_appender()</code> and <code>remove_appender()</code> return <code>target</code>.
-<code>show_log()</code> prints to the console and returns whatever the target
+    
+
+<p><code>threshold()</code> and <code>console_threshold()</code> return the <a href="get_log_levels.html">log_level</a> of <code>target</code></p>
+
+
+<p>as <code>integer</code> (invisibly)</p>
+
+
+<p><code>add_appender()</code> and <code>remove_appender()</code> return <code>target</code>.</p>
+
+
+<p><code>show_log()</code> prints to the console and returns whatever the target
 Appender's <code>$show()</code> method returns, usually a <code>character</code> vector,
-<code>data.frame</code> or <code>data.table</code> (invisibly).
-<code>show_data()</code> always returns a <code>data.frame</code> and <code>show_dt()</code> always returns
+<code>data.frame</code> or <code>data.table</code> (invisibly).</p>
+
+
+<p><code>show_data()</code> always returns a <code>data.frame</code> and <code>show_dt()</code> always returns
 a <code>data.table</code>.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Get and set the threshold of the root logger</span></span>
-<span class="r-in"><span class="fu">threshold</span><span class="op">(</span><span class="st">"error"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">threshold</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Get and set the threshold of the root logger</span></span></span>
+<span class="r-in"><span><span class="fu">threshold</span><span class="op">(</span><span class="st">"error"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">threshold</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 200</span>
-<span class="r-in"><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"this will be supressed"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lgr</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"an important error message"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [06:20:19.673] an important error message</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># you can also specify a target to modify other loggers</span></span>
-<span class="r-in"><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">threshold</span><span class="op">(</span><span class="st">"fatal"</span>, target <span class="op">=</span> <span class="va">lg</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">threshold</span><span class="op">(</span>target <span class="op">=</span> <span class="va">lg</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"this will be supressed"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"an important error message"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [10:03:01.206] an important error message</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># you can also specify a target to modify other loggers</span></span></span>
+<span class="r-in"><span><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">threshold</span><span class="op">(</span><span class="st">"fatal"</span>, target <span class="op">=</span> <span class="va">lg</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">threshold</span><span class="op">(</span>target <span class="op">=</span> <span class="va">lg</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 100</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># If a Logger's threshold is not set, the threshold is inherited from</span></span>
-<span class="r-in"><span class="co"># its parent, in this case the root logger (that we set to error/200 before)</span></span>
-<span class="r-in"><span class="fu">threshold</span><span class="op">(</span><span class="cn">NULL</span>, target <span class="op">=</span> <span class="va">lg</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">threshold</span><span class="op">(</span>target <span class="op">=</span> <span class="va">lg</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># If a Logger's threshold is not set, the threshold is inherited from</span></span></span>
+<span class="r-in"><span><span class="co"># its parent, in this case the root logger (that we set to error/200 before)</span></span></span>
+<span class="r-in"><span><span class="fu">threshold</span><span class="op">(</span><span class="cn">NULL</span>, target <span class="op">=</span> <span class="va">lg</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">threshold</span><span class="op">(</span>target <span class="op">=</span> <span class="va">lg</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 200</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Alternative R6 API for getting/setting thresholds</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">set_threshold</span><span class="op">(</span><span class="st">"info"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="va">threshold</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Alternative R6 API for getting/setting thresholds</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">set_threshold</span><span class="op">(</span><span class="st">"info"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="va">threshold</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 400</span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">set_threshold</span><span class="op">(</span><span class="fl">300</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="va">threshold</span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">set_threshold</span><span class="op">(</span><span class="fl">300</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="va">threshold</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 300</span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">set_threshold</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="va">threshold</span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">set_threshold</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="va">threshold</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 200</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># cleanup</span></span>
-<span class="r-in"><span class="va">lgr</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># cleanup</span></span></span>
+<span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;LoggerRoot&gt; [info] root</span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;Logger&gt; [info] test</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># add Appenders to a Logger</span></span>
-<span class="r-in"><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="AppenderConsole.html">AppenderConsole</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>, <span class="st">"second_console_appender"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lgr</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"Multiple console appenders are a bad idea"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [06:20:19.694] Multiple console appenders are a bad idea</span>
-<span class="r-in"><span class="fu">remove_appender</span><span class="op">(</span><span class="st">"second_console_appender"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Good that we defined an appender name, so it's easy to remove"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Reconfigure the root logger</span></span>
-<span class="r-in"><span class="fu"><a href="basic_config.html">basic_config</a></span><span class="op">(</span>memory <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># add Appenders to a Logger</span></span></span>
+<span class="r-in"><span><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="AppenderConsole.html">AppenderConsole</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>, <span class="st">"second_console_appender"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"Multiple console appenders are a bad idea"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [10:03:01.240] Multiple console appenders are a bad idea</span>
+<span class="r-in"><span><span class="fu">remove_appender</span><span class="op">(</span><span class="st">"second_console_appender"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Good that we defined an appender name, so it's easy to remove"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Reconfigure the root logger</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="basic_config.html">basic_config</a></span><span class="op">(</span>memory <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;LoggerRoot&gt; [info] root</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> appenders:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [all] -&gt; console</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   memory : &lt;AppenderBuffer&gt;  [all] -&gt; 0 child Appenders</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># log some messages</span></span>
-<span class="r-in"><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"a log message"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [06:20:19.704] a log message</span>
-<span class="r-in"><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"another message with data"</span>, data <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [06:20:19.707] another message with data {data: (1, 2, 3)}</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">show_log</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [06:20:19] a log message</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [06:20:19] another message with data</span>
-<span class="r-in"><span class="fu">show_data</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># log some messages</span></span></span>
+<span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"a log message"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [10:03:01.249] a log message</span>
+<span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"another message with data"</span>, data <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [10:03:01.252] another message with data {data: (1, 2, 3)}</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">show_log</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [10:03:01] a log message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [10:03:01] another message with data</span>
+<span class="r-in"><span><span class="fu">show_data</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   level           timestamp logger caller                       msg    data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2022-05-31 06:20:19   root   eval             a log message    NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   400 2022-05-31 06:20:19   root   eval another message with data 1, 2, 3</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># cleanup</span></span>
-<span class="r-in"><span class="va">lgr</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2022-09-02 10:03:01   root   eval             a log message    NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   400 2022-09-02 10:03:01   root   eval another message with data 1, 2, 3</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># cleanup</span></span></span>
+<span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;LoggerRoot&gt; [info] root</span>
 </code></pre></div>
     </div>
@@ -242,7 +272,7 @@ a <code>data.table</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

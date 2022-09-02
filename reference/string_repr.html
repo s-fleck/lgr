@@ -60,42 +60,49 @@ messages. It is a generic so you can implement methods for custom S3 objects.</p
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">string_repr</span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="fl">32</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for `function`</span>
-<span class="fu">string_repr</span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="fl">32L</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for data.frame</span>
-<span class="fu">string_repr</span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="fl">32L</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for matrix</span>
-<span class="fu">string_repr</span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="fl">32L</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for default</span>
-<span class="fu">string_repr</span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="fl">32L</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">string_repr</span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="fl">32</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for `function`</span></span>
+<span><span class="fu">string_repr</span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="fl">32L</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for data.frame</span></span>
+<span><span class="fu">string_repr</span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="fl">32L</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for matrix</span></span>
+<span><span class="fu">string_repr</span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="fl">32L</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for default</span></span>
+<span><span class="fu">string_repr</span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="fl">32L</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>Any <span style="R">R</span> object.</p></dd>
+
+
 <dt>width</dt>
 <dd><p>a scalar integer</p></dd>
+
+
 <dt>...</dt>
 <dd><p>passed on to methods</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>scalar</code> character</p>
+    
+
+<p>a <code>scalar</code> character</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">string_repr</span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">string_repr</span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "&lt;data.frame 150x5&gt;"</span>
-<span class="r-in"><span class="fu">string_repr</span><span class="op">(</span><span class="va">LETTERS</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">string_repr</span><span class="op">(</span><span class="va">LETTERS</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "(A, B, C, D, E, F, G, H, I, J..)"</span>
-<span class="r-in"><span class="fu">string_repr</span><span class="op">(</span><span class="va">LETTERS</span>, <span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">string_repr</span><span class="op">(</span><span class="va">LETTERS</span>, <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "(A, B..)"</span>
 </code></pre></div>
     </div>
@@ -111,7 +118,7 @@ messages. It is a generic so you can implement methods for custom S3 objects.</p
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

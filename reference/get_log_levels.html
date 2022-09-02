@@ -56,23 +56,28 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_log_levels</span><span class="op">(</span><span class="op">)</span>
-
-<span class="fu">add_log_levels</span><span class="op">(</span><span class="va">levels</span><span class="op">)</span>
-
-<span class="fu">remove_log_levels</span><span class="op">(</span><span class="va">level_names</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_log_levels</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">add_log_levels</span><span class="op">(</span><span class="va">levels</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">remove_log_levels</span><span class="op">(</span><span class="va">level_names</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>levels</dt>
 <dd><p>a named <code>character</code> vector (see examples)</p></dd>
+
+
 <dt>level_names</dt>
 <dd><p>a <code>character</code> vector of the names of the levels to remove</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a named <code>character</code> vector of the globally available log levels
+    
+
+<p>a named <code>character</code> vector of the globally available log levels
 (<code>add_log_levels()</code> and <code>remove_log_levels()</code> return invisibly).</p>
     </div>
     <div id="default-log-levels">
@@ -86,17 +91,17 @@ the log levels of log4j.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">get_log_levels</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">get_log_levels</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fatal error  warn  info debug trace </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   100   200   300   400   500   600 </span>
-<span class="r-in"><span class="fu">add_log_levels</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>errorish <span class="op">=</span> <span class="fl">250</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">get_log_levels</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">add_log_levels</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>errorish <span class="op">=</span> <span class="fl">250</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">get_log_levels</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    fatal    error errorish     warn     info    debug    trace </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      100      200      250      300      400      500      600 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "log_levels" "integer"   </span>
-<span class="r-in"><span class="fu">remove_log_levels</span><span class="op">(</span><span class="st">"errorish"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">get_log_levels</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">remove_log_levels</span><span class="op">(</span><span class="st">"errorish"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">get_log_levels</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fatal error  warn  info debug trace </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   100   200   300   400   500   600 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
@@ -115,7 +120,7 @@ the log levels of log4j.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

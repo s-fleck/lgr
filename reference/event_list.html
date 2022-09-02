@@ -62,30 +62,30 @@ their own Appenders.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">event_list</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="fu">as_event_list</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for list</span>
-<span class="fu">as_event_list</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, scalarize <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co"># S3 method for LogEvent</span>
-<span class="fu">as_event_list</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, scalarize <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co"># S3 method for data.frame</span>
-<span class="fu">as_event_list</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">as.data.table.event_list</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co"># S3 method for event_list</span>
-<span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span>
-  <span class="va">x</span>,
-  row.names <span class="op">=</span> <span class="cn">NULL</span>,
-  optional <span class="op">=</span> <span class="cn">FALSE</span>,
-  stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span>,
-  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">event_list</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">as_event_list</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for list</span></span>
+<span><span class="fu">as_event_list</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, scalarize <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for LogEvent</span></span>
+<span><span class="fu">as_event_list</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, scalarize <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for data.frame</span></span>
+<span><span class="fu">as_event_list</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">as.data.table.event_list</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for event_list</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  row.names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  optional <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -93,27 +93,50 @@ their own Appenders.</p>
     <dl><dt>...</dt>
 <dd><p>for <code>event</code> elements to be added to the list, for the <code>as_*()</code>
 functions parameters passed on to methods.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>any <code>R</code> object</p></dd>
+
+
 <dt>scalarize</dt>
 <dd><p><code>logical</code> scalar. Turn <a href="LogEvent.html">LogEvents</a> with non-scalar <code>msg</code>
 field into separate log events</p></dd>
+
+
 <dt>na.rm</dt>
 <dd><p>remove <code>NA</code> values before coercing a data.frame to an <code>event_list()</code>.</p></dd>
+
+
 <dt>row.names</dt>
 <dd><p><code>NULL</code> or a character vector giving the row
     names for the data frame.  Missing values are not allowed.</p></dd>
+
+
 <dt>optional</dt>
 <dd><p>currently ignored and only included for compatibility.</p></dd>
+
+
 <dt>stringsAsFactors</dt>
 <dd><p><code>logical</code> scalar: should <code>character</code> vectors be
 converted to factors? Defaults to <code>FALSE</code> (as opposed to
 <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">base::as.data.frame()</a></code>) and is only included for compatibility.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>an <code>event_list()</code> and <code>as_event_list()</code> return a flat <code>list</code>of <a href="LogEvent.html">LogEvents</a>. Nested lists get automatically flattened.
-<code>as.data.frame</code> and <code>as.data.table</code> return a <code>data.frame</code> or <code>data.table</code>respectively</p>
+    
+
+<p>an <code>event_list()</code> and <code>as_event_list()</code> return a flat <code>list</code></p>
+
+
+<p>of <a href="LogEvent.html">LogEvents</a>. Nested lists get automatically flattened.</p>
+
+
+<p><code>as.data.frame</code> and <code>as.data.table</code> return a <code>data.frame</code> or <code>data.table</code></p>
+
+
+<p>respectively</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -130,52 +153,52 @@ exist for event lists.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">e</span> <span class="op">&lt;-</span> <span class="va"><a href="LogEvent.html">LogEvent</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>level <span class="op">=</span> <span class="fl">300</span>, msg <span class="op">=</span> <span class="st">"a"</span>, logger <span class="op">=</span> <span class="va">lgr</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">as_event_list</span><span class="op">(</span><span class="va">e</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">e</span> <span class="op">&lt;-</span> <span class="va"><a href="LogEvent.html">LogEvent</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>level <span class="op">=</span> <span class="fl">300</span>, msg <span class="op">=</span> <span class="st">"a"</span>, logger <span class="op">=</span> <span class="va">lgr</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">as_event_list</span><span class="op">(</span><span class="va">e</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-31 06:20:14] a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-09-02 10:02:56] a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "event_list" "list"      </span>
-<span class="r-in"><span class="fu">as_event_list</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">e</span>, <span class="va">e</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">as_event_list</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">e</span>, <span class="va">e</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-31 06:20:14] a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-09-02 10:02:56] a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-31 06:20:14] a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-09-02 10:02:56] a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "event_list" "list"      </span>
-<span class="r-in"><span class="co"># nested lists get automatically unnested</span></span>
-<span class="r-in"><span class="fu">as_event_list</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">e</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>nested_event <span class="op">=</span> <span class="va">e</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># nested lists get automatically unnested</span></span></span>
+<span class="r-in"><span><span class="fu">as_event_list</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">e</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>nested_event <span class="op">=</span> <span class="va">e</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-31 06:20:14] a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-09-02 10:02:56] a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nested_event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-31 06:20:14] a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-09-02 10:02:56] a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "event_list" "list"      </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># scalarize = TRUE "unpacks" events with vector log messages</span></span>
-<span class="r-in"><span class="va">e</span> <span class="op">&lt;-</span> <span class="va"><a href="LogEvent.html">LogEvent</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>level <span class="op">=</span> <span class="fl">300</span>, msg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, logger <span class="op">=</span> <span class="va">lgr</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">as_event_list</span><span class="op">(</span><span class="va">e</span>, scalarize <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># scalarize = TRUE "unpacks" events with vector log messages</span></span></span>
+<span class="r-in"><span><span class="va">e</span> <span class="op">&lt;-</span> <span class="va"><a href="LogEvent.html">LogEvent</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>level <span class="op">=</span> <span class="fl">300</span>, msg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, logger <span class="op">=</span> <span class="va">lgr</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">as_event_list</span><span class="op">(</span><span class="va">e</span>, scalarize <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-31 06:20:14] A</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-31 06:20:14] B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-09-02 10:02:56] A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-09-02 10:02:56] B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "event_list" "list"      </span>
-<span class="r-in"><span class="fu">as_event_list</span><span class="op">(</span><span class="va">e</span>, scalarize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">as_event_list</span><span class="op">(</span><span class="va">e</span>, scalarize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-31 06:20:14] A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-09-02 10:02:56] A</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-05-31 06:20:14] B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2022-09-02 10:02:56] B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "event_list" "list"      </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -190,7 +213,7 @@ exist for event lists.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

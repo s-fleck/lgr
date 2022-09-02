@@ -79,13 +79,13 @@ only with Loggers, but they will also work with Appenders.</p>
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>FilterInject$new()</code></a></p></li>
-<li><p><a href="#method-clone"><code>FilterInject$clone()</code></a></p></li>
-</ul></div><p><details open><summary>Inherited methods</summary><ul></ul></details></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-FilterInject-new"><code>FilterInject$new()</code></a></p></li>
+<li><p><a href="#method-FilterInject-clone"><code>FilterInject$clone()</code></a></p></li>
+</ul></div><p></p><hr><a id="method-FilterInject-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Initialize a new FilterInject</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/FilterInject.html">FilterInject</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">...</span>, .list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/FilterInject.html">FilterInject</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">...</span>, .list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -100,11 +100,11 @@ Appender/Logger that this filter is attached to. See also
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
+</div><p></p><hr><a id="method-FilterInject-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">FilterInject</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">FilterInject</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -122,19 +122,19 @@ Appender/Logger that this filter is attached to. See also
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">analyse</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span><span class="op">{</span></span>
-<span class="r-in">  <span class="va">lg</span><span class="op">$</span><span class="fu">add_filter</span><span class="op">(</span><span class="va">FilterInject</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"analysis"</span><span class="op">)</span>, <span class="st">"inject"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="va">lg</span><span class="op">$</span><span class="fu">remove_filter</span><span class="op">(</span><span class="st">"inject"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">  <span class="va">lg</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"an error with forced custom 'type'-field"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">analyse</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [06:20:01.102] an error with forced custom 'type'-field {type: `analysis`}</span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"an normal error"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [06:20:01.112] an normal error</span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>  <span class="co"># reset config</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">analyse</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span><span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">lg</span><span class="op">$</span><span class="fu">add_filter</span><span class="op">(</span><span class="va">FilterInject</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"analysis"</span><span class="op">)</span>, <span class="st">"inject"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="va">lg</span><span class="op">$</span><span class="fu">remove_filter</span><span class="op">(</span><span class="st">"inject"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">lg</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"an error with forced custom 'type'-field"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">analyse</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [10:02:43.978] an error with forced custom 'type'-field {type: `analysis`}</span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"an normal error"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [10:02:43.985] an normal error</span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>  <span class="co"># reset config</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;Logger&gt; [info] test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inherited appenders:</span>
@@ -153,7 +153,7 @@ Appender/Logger that this filter is attached to. See also
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -112,39 +112,39 @@ is mainly used when printing information about the Appender itself.</p></dd>
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>Appender$new()</code></a></p></li>
-<li><p><a href="#method-append"><code>Appender$append()</code></a></p></li>
-<li><p><a href="#method-set_threshold"><code>Appender$set_threshold()</code></a></p></li>
-<li><p><a href="#method-set_layout"><code>Appender$set_layout()</code></a></p></li>
-<li><p><a href="#method-format"><code>Appender$format()</code></a></p></li>
-</ul></div><p><details open><summary>Inherited methods</summary><ul><li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href="Filterable.html#method-add_filter"><code>lgr::Filterable$add_filter()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href="Filterable.html#method-filter"><code>lgr::Filterable$filter()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href="Filterable.html#method-remove_filter"><code>lgr::Filterable$remove_filter()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href="Filterable.html#method-set_filters"><code>lgr::Filterable$set_filters()</code></a></span></p></li>
-</ul></details></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-Appender-new"><code>Appender$new()</code></a></p></li>
+<li><p><a href="#method-Appender-append"><code>Appender$append()</code></a></p></li>
+<li><p><a href="#method-Appender-set_threshold"><code>Appender$set_threshold()</code></a></p></li>
+<li><p><a href="#method-Appender-set_layout"><code>Appender$set_layout()</code></a></p></li>
+<li><p><a href="#method-Appender-format"><code>Appender$format()</code></a></p></li>
+</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href="Filterable.html#method-add_filter"><code>lgr::Filterable$add_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href="Filterable.html#method-filter"><code>lgr::Filterable$filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href="Filterable.html#method-remove_filter"><code>lgr::Filterable$remove_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href="Filterable.html#method-set_filters"><code>lgr::Filterable$set_filters()</code></a></span></li>
+</ul></details></p><hr><a id="method-Appender-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 
 <div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/Appender.html">Appender</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>layout <span class="op">=</span> <span class="va"><a href="../reference/Layout.html">Layout</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>, threshold <span class="op">=</span> <span class="cn">NA_integer_</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/Appender.html">Appender</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>layout <span class="op">=</span> <span class="va"><a href="../reference/Layout.html">Layout</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>, threshold <span class="op">=</span> <span class="cn">NA_integer_</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-append"></a><div class="section">
+</div><p></p><hr><a id="method-Appender-append"></a><div class="section">
 <h3 id="method-append-">Method <code><a href="https://rdrr.io/r/base/append.html" class="external-link">append()</a></code><a class="anchor" aria-label="anchor" href="#method-append-"></a></h3>
 <p>Process a <a href="LogEvent.html">LogEvent</a> <code>event</code>. This method is usually not
 called by the user, but invoked by a <a href="Logger.html">Logger</a></p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Appender</span><span class="op">$</span><span class="fu">append</span><span class="op">(</span><span class="va">event</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Appender</span><span class="op">$</span><span class="fu">append</span><span class="op">(</span><span class="va">event</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-set_threshold"></a><div class="section">
+</div><p></p><hr><a id="method-Appender-set_threshold"></a><div class="section">
 <h3 id="method-set-threshold-">Method <code>set_threshold()</code><a class="anchor" aria-label="anchor" href="#method-set-threshold-"></a></h3>
 <p>Set the minimum log level that triggers this Appender. See
 <code><a href="simple_logging.html">threshold()</a></code> for examples</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Appender</span><span class="op">$</span><span class="fu">set_threshold</span><span class="op">(</span><span class="va">level</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Appender</span><span class="op">$</span><span class="fu">set_threshold</span><span class="op">(</span><span class="va">level</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -156,21 +156,21 @@ called by the user, but invoked by a <a href="Logger.html">Logger</a></p><div cl
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-set_layout"></a><div class="section">
+</div><p></p><hr><a id="method-Appender-set_layout"></a><div class="section">
 <h3 id="method-set-layout-">Method <code>set_layout()</code><a class="anchor" aria-label="anchor" href="#method-set-layout-"></a></h3>
 <p>Set the <code>Layout</code> that this Appender will use for formatting
 <code>LogEvents</code></p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Appender</span><span class="op">$</span><span class="fu">set_layout</span><span class="op">(</span><span class="va">layout</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Appender</span><span class="op">$</span><span class="fu">set_layout</span><span class="op">(</span><span class="va">layout</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-format"></a><div class="section">
+</div><p></p><hr><a id="method-Appender-format"></a><div class="section">
 <h3 id="method-format-">Method <code><a href="https://rdrr.io/r/base/format.html" class="external-link">format()</a></code><a class="anchor" aria-label="anchor" href="#method-format-"></a></h3>
 
 <div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Appender</span><span class="op">$</span><span class="fu">format</span><span class="op">(</span>color <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Appender</span><span class="op">$</span><span class="fu">format</span><span class="op">(</span>color <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
@@ -190,7 +190,7 @@ called by the user, but invoked by a <a href="Logger.html">Logger</a></p><div cl
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

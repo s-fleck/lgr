@@ -125,9 +125,9 @@ created this event, equivalent to <code>event$.logger$name</code>)</p></dd>
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>LogEvent$new()</code></a></p></li>
-<li><p><a href="#method-clone"><code>LogEvent$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-LogEvent-new"><code>LogEvent$new()</code></a></p></li>
+<li><p><a href="#method-LogEvent-clone"><code>LogEvent$clone()</code></a></p></li>
+</ul></div><p></p><hr><a id="method-LogEvent-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>The arguments to <code>LogEvent$new()</code> directly translate to the fields stored
 in the <code>LogEvent</code>. Usually these values will be scalars, but (except for
@@ -135,14 +135,14 @@ in the <code>LogEvent</code>. Usually these values will be scalars, but (except 
 scalars that will be recycled). In this case the event will be treated by
 the <a href="Appender.html">Appenders</a> and <a href="Layout.html">Layouts</a> as if several separate events.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/LogEvent.html">LogEvent</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
-  <span class="va">logger</span>,
-  level <span class="op">=</span> <span class="fl">400</span>,
-  timestamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span>,
-  caller <span class="op">=</span> <span class="cn">NA</span>,
-  msg <span class="op">=</span> <span class="cn">NA</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/LogEvent.html">LogEvent</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  <span class="va">logger</span>,</span>
+<span>  level <span class="op">=</span> <span class="fl">400</span>,</span>
+<span>  timestamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  caller <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  msg <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -160,11 +160,11 @@ this way, but not all Appenders will support them. See <a href="AppenderFile.htm
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
+</div><p></p><hr><a id="method-LogEvent-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">LogEvent</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LogEvent</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -182,19 +182,19 @@ this way, but not all Appenders will support them. See <a href="AppenderFile.htm
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"foo bar"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [06:20:05.536] foo bar</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># The last LogEvent produced by a Logger is stored in its `last_event` field</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span>  <span class="co"># formatted console output</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2022-05-31 06:20:05] foo bar</span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">$</span><span class="va">values</span>  <span class="co"># values stored in the event</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"foo bar"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [10:02:48.331] foo bar</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The last LogEvent produced by a Logger is stored in its `last_event` field</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span>  <span class="co"># formatted console output</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2022-09-02 10:02:48] foo bar</span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">$</span><span class="va">values</span>  <span class="co"># values stored in the event</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $level</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 200</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-05-31 06:20:05 UTC"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-09-02 10:02:48 UTC"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $logger</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "test"</span>
@@ -205,21 +205,21 @@ this way, but not all Appenders will support them. See <a href="AppenderFile.htm
 <span class="r-out co"><span class="r-pr">#&gt;</span> $msg</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "foo bar"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Also contains the Logger that created it as .logger</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">$</span><span class="va">logger</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Also contains the Logger that created it as .logger</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">$</span><span class="va">logger</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "test"</span>
-<span class="r-in"><span class="co"># equivalent to</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">$</span><span class="va">.logger</span><span class="op">$</span><span class="va">name</span></span>
+<span class="r-in"><span><span class="co"># equivalent to</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">$</span><span class="va">.logger</span><span class="op">$</span><span class="va">name</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "test"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># This is really a reference to the complete Logger, so the following is</span></span>
-<span class="r-in"><span class="co"># possible (though nonsensical)</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">$</span><span class="va">.logger</span><span class="op">$</span><span class="va">last_event</span><span class="op">$</span><span class="va">msg</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># This is really a reference to the complete Logger, so the following is</span></span></span>
+<span class="r-in"><span><span class="co"># possible (though nonsensical)</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">$</span><span class="va">.logger</span><span class="op">$</span><span class="va">last_event</span><span class="op">$</span><span class="va">msg</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "foo bar"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">lg</span>, <span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">$</span><span class="va">.logger</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">lg</span>, <span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">$</span><span class="va">.logger</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>  <span class="co"># reset logger config</span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>  <span class="co"># reset logger config</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;Logger&gt; [info] test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inherited appenders:</span>
@@ -238,7 +238,7 @@ this way, but not all Appenders will support them. See <a href="AppenderFile.htm
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

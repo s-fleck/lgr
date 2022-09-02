@@ -62,45 +62,48 @@ lgr until <code>unsuspend_logging()</code> is invoked, while <code>without_loggi
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">suspend_logging</span><span class="op">(</span><span class="op">)</span>
-
-<span class="fu">unsuspend_logging</span><span class="op">(</span><span class="op">)</span>
-
-<span class="fu">without_logging</span><span class="op">(</span><span class="va">code</span><span class="op">)</span>
-
-<span class="fu">with_logging</span><span class="op">(</span><span class="va">code</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">suspend_logging</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">unsuspend_logging</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">without_logging</span><span class="op">(</span><span class="va">code</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">with_logging</span><span class="op">(</span><span class="va">code</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>code</dt>
 <dd><p>Any <span style="R">R</span> code</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>suspend_logging()</code> and <code>unsuspend_logging()</code> return <code>NULL</code> (invisibly),
+    
+
+<p><code>suspend_logging()</code> and <code>unsuspend_logging()</code> return <code>NULL</code> (invisibly),
 <code>without_logging()</code> and <code>with_logging()</code> returns whatever <code>code</code> returns.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># temporarily disable logging</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">without_logging</span><span class="op">(</span><span class="op">{</span></span>
-<span class="r-in">  <span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"everything in this codeblock will be suppressed"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="va">lg</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"bar"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># globally disable logging</span></span>
-<span class="r-in"><span class="fu">suspend_logging</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"bar"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">with_logging</span><span class="op">(</span><span class="va">lg</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span><span class="op">)</span>  <span class="co"># log anyways</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># globally enable logging again</span></span>
-<span class="r-in"><span class="fu">unsuspend_logging</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lg</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># temporarily disable logging</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">without_logging</span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"everything in this codeblock will be suppressed"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">lg</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"bar"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># globally disable logging</span></span></span>
+<span class="r-in"><span><span class="fu">suspend_logging</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"bar"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">with_logging</span><span class="op">(</span><span class="va">lg</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span><span class="op">)</span>  <span class="co"># log anyways</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># globally enable logging again</span></span></span>
+<span class="r-in"><span><span class="fu">unsuspend_logging</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -115,7 +118,7 @@ lgr until <code>unsuspend_logging()</code> is invoked, while <code>without_loggi
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

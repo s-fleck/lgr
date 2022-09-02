@@ -95,41 +95,41 @@ etc... on the available backups of <code>file</code>.</p></dd>
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>AppenderFileRotating$new()</code></a></p></li>
-<li><p><a href="#method-append"><code>AppenderFileRotating$append()</code></a></p></li>
-<li><p><a href="#method-rotate"><code>AppenderFileRotating$rotate()</code></a></p></li>
-<li><p><a href="#method-prune"><code>AppenderFileRotating$prune()</code></a></p></li>
-<li><p><a href="#method-set_file"><code>AppenderFileRotating$set_file()</code></a></p></li>
-<li><p><a href="#method-set_size"><code>AppenderFileRotating$set_size()</code></a></p></li>
-<li><p><a href="#method-set_max_backups"><code>AppenderFileRotating$set_max_backups()</code></a></p></li>
-<li><p><a href="#method-set_compression"><code>AppenderFileRotating$set_compression()</code></a></p></li>
-<li><p><a href="#method-set_create_file"><code>AppenderFileRotating$set_create_file()</code></a></p></li>
-<li><p><a href="#method-set_backup_dir"><code>AppenderFileRotating$set_backup_dir()</code></a></p></li>
-<li><p><a href="#method-format"><code>AppenderFileRotating$format()</code></a></p></li>
-<li><p><a href="#method-clone"><code>AppenderFileRotating$clone()</code></a></p></li>
-</ul></div><p><details><summary>Inherited methods</summary><ul><li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href="Filterable.html#method-add_filter"><code>lgr::Filterable$add_filter()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href="Filterable.html#method-filter"><code>lgr::Filterable$filter()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href="Filterable.html#method-remove_filter"><code>lgr::Filterable$remove_filter()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href="Filterable.html#method-set_filters"><code>lgr::Filterable$set_filters()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href="Appender.html#method-set_layout"><code>lgr::Appender$set_layout()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href="Appender.html#method-set_threshold"><code>lgr::Appender$set_threshold()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="show"><a href="AppenderFile.html#method-show"><code>lgr::AppenderFile$show()</code></a></span></p></li>
-</ul></details></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-AppenderFileRotating-new"><code>AppenderFileRotating$new()</code></a></p></li>
+<li><p><a href="#method-AppenderFileRotating-append"><code>AppenderFileRotating$append()</code></a></p></li>
+<li><p><a href="#method-AppenderFileRotating-rotate"><code>AppenderFileRotating$rotate()</code></a></p></li>
+<li><p><a href="#method-AppenderFileRotating-prune"><code>AppenderFileRotating$prune()</code></a></p></li>
+<li><p><a href="#method-AppenderFileRotating-set_file"><code>AppenderFileRotating$set_file()</code></a></p></li>
+<li><p><a href="#method-AppenderFileRotating-set_size"><code>AppenderFileRotating$set_size()</code></a></p></li>
+<li><p><a href="#method-AppenderFileRotating-set_max_backups"><code>AppenderFileRotating$set_max_backups()</code></a></p></li>
+<li><p><a href="#method-AppenderFileRotating-set_compression"><code>AppenderFileRotating$set_compression()</code></a></p></li>
+<li><p><a href="#method-AppenderFileRotating-set_create_file"><code>AppenderFileRotating$set_create_file()</code></a></p></li>
+<li><p><a href="#method-AppenderFileRotating-set_backup_dir"><code>AppenderFileRotating$set_backup_dir()</code></a></p></li>
+<li><p><a href="#method-AppenderFileRotating-format"><code>AppenderFileRotating$format()</code></a></p></li>
+<li><p><a href="#method-AppenderFileRotating-clone"><code>AppenderFileRotating$clone()</code></a></p></li>
+</ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href="Filterable.html#method-add_filter"><code>lgr::Filterable$add_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href="Filterable.html#method-filter"><code>lgr::Filterable$filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href="Filterable.html#method-remove_filter"><code>lgr::Filterable$remove_filter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href="Filterable.html#method-set_filters"><code>lgr::Filterable$set_filters()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href="Appender.html#method-set_layout"><code>lgr::Appender$set_layout()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href="Appender.html#method-set_threshold"><code>lgr::Appender$set_threshold()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="show"><a href="AppenderFile.html#method-show"><code>lgr::AppenderFile$show()</code></a></span></li>
+</ul></details></p><hr><a id="method-AppenderFileRotating-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 
 <div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/AppenderFileRotating.html">AppenderFileRotating</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
-  <span class="va">file</span>,
-  threshold <span class="op">=</span> <span class="cn">NA_integer_</span>,
-  layout <span class="op">=</span> <span class="va"><a href="../reference/LayoutFormat.html">LayoutFormat</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>,
-  filters <span class="op">=</span> <span class="cn">NULL</span>,
-  size <span class="op">=</span> <span class="cn">Inf</span>,
-  max_backups <span class="op">=</span> <span class="cn">Inf</span>,
-  compression <span class="op">=</span> <span class="cn">FALSE</span>,
-  backup_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span>,
-  create_file <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/AppenderFileRotating.html">AppenderFileRotating</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  <span class="va">file</span>,</span>
+<span>  threshold <span class="op">=</span> <span class="cn">NA_integer_</span>,</span>
+<span>  layout <span class="op">=</span> <span class="va"><a href="../reference/LayoutFormat.html">LayoutFormat</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  filters <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  size <span class="op">=</span> <span class="cn">Inf</span>,</span>
+<span>  max_backups <span class="op">=</span> <span class="cn">Inf</span>,</span>
+<span>  compression <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  backup_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span>,</span>
+<span>  create_file <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -142,101 +142,101 @@ etc... on the available backups of <code>file</code>.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-append"></a><div class="section">
+</div><p></p><hr><a id="method-AppenderFileRotating-append"></a><div class="section">
 <h3 id="method-append-">Method <code><a href="https://rdrr.io/r/base/append.html" class="external-link">append()</a></code><a class="anchor" aria-label="anchor" href="#method-append-"></a></h3>
 
 <div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">append</span><span class="op">(</span><span class="va">event</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">append</span><span class="op">(</span><span class="va">event</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-rotate"></a><div class="section">
+</div><p></p><hr><a id="method-AppenderFileRotating-rotate"></a><div class="section">
 <h3 id="method-rotate-">Method <code>rotate()</code><a class="anchor" aria-label="anchor" href="#method-rotate-"></a></h3>
 
 <div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">rotate</span><span class="op">(</span>force <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">rotate</span><span class="op">(</span>force <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-prune"></a><div class="section">
+</div><p></p><hr><a id="method-AppenderFileRotating-prune"></a><div class="section">
 <h3 id="method-prune-">Method <code>prune()</code><a class="anchor" aria-label="anchor" href="#method-prune-"></a></h3>
 
 <div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">prune</span><span class="op">(</span>max_backups <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">max_backups</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">prune</span><span class="op">(</span>max_backups <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">max_backups</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-set_file"></a><div class="section">
+</div><p></p><hr><a id="method-AppenderFileRotating-set_file"></a><div class="section">
 <h3 id="method-set-file-">Method <code>set_file()</code><a class="anchor" aria-label="anchor" href="#method-set-file-"></a></h3>
 
 <div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">set_file</span><span class="op">(</span><span class="va">file</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">set_file</span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-set_size"></a><div class="section">
+</div><p></p><hr><a id="method-AppenderFileRotating-set_size"></a><div class="section">
 <h3 id="method-set-size-">Method <code>set_size()</code><a class="anchor" aria-label="anchor" href="#method-set-size-"></a></h3>
 
 <div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">set_size</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">set_size</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-set_max_backups"></a><div class="section">
+</div><p></p><hr><a id="method-AppenderFileRotating-set_max_backups"></a><div class="section">
 <h3 id="method-set-max-backups-">Method <code>set_max_backups()</code><a class="anchor" aria-label="anchor" href="#method-set-max-backups-"></a></h3>
 
 <div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">set_max_backups</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">set_max_backups</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-set_compression"></a><div class="section">
+</div><p></p><hr><a id="method-AppenderFileRotating-set_compression"></a><div class="section">
 <h3 id="method-set-compression-">Method <code>set_compression()</code><a class="anchor" aria-label="anchor" href="#method-set-compression-"></a></h3>
 
 <div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">set_compression</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">set_compression</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-set_create_file"></a><div class="section">
+</div><p></p><hr><a id="method-AppenderFileRotating-set_create_file"></a><div class="section">
 <h3 id="method-set-create-file-">Method <code>set_create_file()</code><a class="anchor" aria-label="anchor" href="#method-set-create-file-"></a></h3>
 
 <div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">set_create_file</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">set_create_file</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-set_backup_dir"></a><div class="section">
+</div><p></p><hr><a id="method-AppenderFileRotating-set_backup_dir"></a><div class="section">
 <h3 id="method-set-backup-dir-">Method <code>set_backup_dir()</code><a class="anchor" aria-label="anchor" href="#method-set-backup-dir-"></a></h3>
 
 <div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">set_backup_dir</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">set_backup_dir</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-format"></a><div class="section">
+</div><p></p><hr><a id="method-AppenderFileRotating-format"></a><div class="section">
 <h3 id="method-format-">Method <code><a href="https://rdrr.io/r/base/format.html" class="external-link">format()</a></code><a class="anchor" aria-label="anchor" href="#method-format-"></a></h3>
 
 <div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">format</span><span class="op">(</span>color <span class="op">=</span> <span class="va">false</span>, <span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">format</span><span class="op">(</span>color <span class="op">=</span> <span class="va">false</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
+</div><p></p><hr><a id="method-AppenderFileRotating-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AppenderFileRotating</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -264,7 +264,7 @@ etc... on the available backups of <code>file</code>.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
