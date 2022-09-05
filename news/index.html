@@ -51,6 +51,15 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="0.4.4" id="lgr-044">lgr 0.4.4<a class="anchor" aria-label="anchor" href="#lgr-044"></a></h2>
+<ul><li><p><code>%k</code> and <code>%K</code> parameters in <code>format.LogEvent</code> now work as expected when using <strong>crayon</strong> terminal colours (<a href="https://github.com/s-fleck/lgr/issues/52" class="external-link">#52</a>).</p></li>
+<li><p>Fix default format string for <code>LayoutGlue</code> which was using <code>msg</code> instead of <code>{msg}</code> (<a href="https://github.com/s-fleck/lgr/issues/54" class="external-link">#54</a>, thx <a href="https://github.com/mmuurr" class="external-link">@mmuurr</a>)</p></li>
+<li><p>Update docs to use the more common term “structured logging” instead of “custom fields” where appropriate</p></li>
+<li><p><code>as_event_list.data.frame</code> now really returns a list of <code>LogEvents</code></p></li>
+<li><p>added <code><a href="../reference/as_LogEvent.html">as_LogEvent()</a></code> to coerce various event-like objects to <code>LogEvents</code></p></li>
+<li><p>rebuild docs for R 4.2.0</p></li>
+</ul></div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.3" id="lgr-043">lgr 0.4.3<small>2021-09-16</small><a class="anchor" aria-label="anchor" href="#lgr-043"></a></h2>
 <ul><li><p><code><a href="../reference/logger_index.html">logger_index()</a></code> returns a <code>data.frame</code> with metadata on all registered loggers (<a href="https://github.com/s-fleck/lgr/issues/47" class="external-link">#47</a>) (thanks <a href="https://github.com/Fuco1" class="external-link">@Fuco1</a>)</p></li>
 <li><p>export new <code><a href="../reference/string_repr.html">string_repr()</a></code> generic that is used to layout R objects for formatted log message output (<a href="https://github.com/s-fleck/lgr/issues/48" class="external-link">#48</a>, thanks <a href="https://github.com/mmuurr" class="external-link">@mmuurr</a>)</p></li>

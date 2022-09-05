@@ -133,7 +133,7 @@ that logs to a memory buffer, see also <code><a href="simple_logging.html">show_
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;LoggerRoot&gt; [info] root</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> appenders:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   file   : &lt;AppenderFile&gt;    [all] -&gt; /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpLPRiGS/filef5f66d19a18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   file   : &lt;AppenderFile&gt;    [all] -&gt; /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpjn8rq3/file11cd992106d</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [all] -&gt; console</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">file</span><span class="op">$</span><span class="va">file</span><span class="op">)</span>  <span class="co"># cleanup</span></span></span>
 <span class="r-in"><span></span></span>
@@ -141,7 +141,7 @@ that logs to a memory buffer, see also <code><a href="simple_logging.html">show_
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;LoggerRoot&gt; [info] root</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> appenders:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   file   : &lt;AppenderFile&gt;    [all] -&gt; /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpLPRiGS/filef5f4adbd264jsonl</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   file   : &lt;AppenderFile&gt;    [all] -&gt; /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpjn8rq3/file11cd54746903jsonl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [all] -&gt; console</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">file</span><span class="op">$</span><span class="va">file</span><span class="op">)</span>  <span class="co"># cleanup</span></span></span>
 <span class="r-in"><span></span></span>
@@ -153,11 +153,11 @@ that logs to a memory buffer, see also <code><a href="simple_logging.html">show_
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [info] -&gt; console</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   memory : &lt;AppenderBuffer&gt;  [ all] -&gt; 0 child Appenders</span>
 <span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"an info message"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [19:53:39.098] an info message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [20:37:19.269] an info message</span>
 <span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">debug</span><span class="op">(</span><span class="st">"a hidden message"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="simple_logging.html">show_log</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [19:53:39] an info message</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DEBUG [19:53:39] a hidden message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [20:37:19] an info message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DEBUG [20:37:19] a hidden message</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># reset to default config</span></span></span>
 <span class="r-in"><span><span class="fu">basic_config</span><span class="op">(</span><span class="op">)</span></span></span>
