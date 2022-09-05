@@ -55,7 +55,7 @@ LogEvent <- R6::R6Class(
       msg = NA,
       ...
     ){
-      assert(inherits(logger, "Logger"), "Logger must be a <Logger> object, not a", class_fmt(logger))
+      assert(inherits(logger, "Logger"), "Logger must be a <Logger> object, not a ", class_fmt(logger))
 
       # assign has less overhead than [[ and event creation needs to be as fast
       # as possible
@@ -157,6 +157,8 @@ as_LogEvent.list <- function(x, ...){
 
   if (is.null(x[["logger"]])){
     x[["logger"]] <- get_logger()
+  } else if (is.character(x[["logger"]])){
+    x[["logger"]] <- get_logger(x[["logger"]])
   }
 
   # smartly rename timestamp fields from ElasticSearch/Logstash
