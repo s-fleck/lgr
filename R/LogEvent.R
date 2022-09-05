@@ -55,7 +55,7 @@ LogEvent <- R6::R6Class(
       msg = NA,
       ...
     ){
-      assert(inherits(logger, "Logger"))
+      assert(inherits(logger, "Logger"), "Logger must be a <Logger> object, not a", class_fmt(logger))
 
       # assign has less overhead than [[ and event creation needs to be as fast
       # as possible
