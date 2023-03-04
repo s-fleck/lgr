@@ -84,6 +84,7 @@ crayon installed log levels will be coloured by default
 
 <ul><li><p><a href="#method-AppenderConsole-new"><code>AppenderConsole$new()</code></a></p></li>
 <li><p><a href="#method-AppenderConsole-append"><code>AppenderConsole$append()</code></a></p></li>
+<li><p><a href="#method-AppenderConsole-set_connection"><code>AppenderConsole$set_connection()</code></a></p></li>
 </ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href="Filterable.html#method-add_filter"><code>lgr::Filterable$add_filter()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href="Filterable.html#method-filter"><code>lgr::Filterable$filter()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href="Filterable.html#method-remove_filter"><code>lgr::Filterable$remove_filter()</code></a></span></li>
@@ -100,10 +101,21 @@ crayon installed log levels will be coloured by default
 <span>  threshold <span class="op">=</span> <span class="cn">NA_integer_</span>,</span>
 <span>  layout <span class="op">=</span> <span class="va"><a href="../reference/LayoutFormat.html">LayoutFormat</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>fmt <span class="op">=</span> <span class="st">"%L [%t] %m %f"</span>, timestamp_fmt <span class="op">=</span> <span class="st">"%H:%M:%OS3"</span>,</span>
 <span>    colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"lgr.colors"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  filters <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  filters <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  connection <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>connection</code></dt>
+<dd><p>A connection or a <code>character</code> scalar. See the <code>file</code>
+argument of <code><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat()</a></code> for more details. Defaults to <code><a href="https://rdrr.io/r/base/showConnections.html" class="external-link">stdout()</a></code>, except
+inside <span class="pkg">knitr</span> rendering processes where it defaults to <code><a href="https://rdrr.io/r/base/showConnections.html" class="external-link">stderr()</a></code>.</p></dd>
+
+
+</dl><p></p></div>
+</div>
 
 </div><p></p><hr><a id="method-AppenderConsole-append"></a><div class="section">
 <h3 id="method-append-">Method <code><a href="https://rdrr.io/r/base/append.html" class="external-link">append()</a></code><a class="anchor" aria-label="anchor" href="#method-append-"></a></h3>
@@ -113,6 +125,25 @@ crayon installed log levels will be coloured by default
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AppenderConsole</span><span class="op">$</span><span class="fu">append</span><span class="op">(</span><span class="va">event</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+
+</div><p></p><hr><a id="method-AppenderConsole-set_connection"></a><div class="section">
+<h3 id="method-set-connection-">Method <code>set_connection()</code><a class="anchor" aria-label="anchor" href="#method-set-connection-"></a></h3>
+
+<div class="section">
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AppenderConsole</span><span class="op">$</span><span class="fu">set_connection</span><span class="op">(</span><span class="va">connection</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>connection</code></dt>
+<dd><p>A connection or a <code>character</code> scalar. See the <code>file</code>
+argument of <code><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat()</a></code> for more details. Defaults to <code><a href="https://rdrr.io/r/base/showConnections.html" class="external-link">stdout()</a></code>, except
+inside <span class="pkg">knitr</span> rendering processes where it defaults to <code><a href="https://rdrr.io/r/base/showConnections.html" class="external-link">stderr()</a></code>.</p></dd>
+
+
+</dl><p></p></div>
+</div>
 
 </div>
 
@@ -131,8 +162,8 @@ crayon installed log levels will be coloured by default
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Will output the message twice because we attached two console appenders</span></span></span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"A test message"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [21:01:24.973] A test message</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2022-09-05 21:01:24.973] eval(): [300] A test message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [20:04:21.465] A test message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2023-03-04 20:04:21.465] eval(): [300] A test message</span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span> <span class="co"># reset config</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;Logger&gt; [info] test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -152,7 +183,7 @@ crayon installed log levels will be coloured by default
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

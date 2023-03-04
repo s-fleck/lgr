@@ -76,7 +76,7 @@
 <div class="section level1">
 <div class="page-header"><h1 id="lgr">lgr<a class="anchor" aria-label="anchor" href="#lgr"></a>
 </h1></div>
-
+<p><a href="https://cran.r-project.org/package=lgr" class="external-link"><img src="https://www.r-pkg.org/badges/version/lgr" alt="CRAN status"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></p>
 <p>lgr is a logging package for R built on the back of <a href="https://github.com/r-lib/R6" class="external-link">R6</a> classes. It is designed to be flexible, performant and extensible. The package <a href="https://s-fleck.github.io/lgr/articles/lgr.html" class="external-link">vignette</a> contains a comprehensive description of the features of lgr (some of them unique among R logging packages) along with many code examples.</p>
 <p>Users that have not worked with R6 classes before, will find configuring Loggers a bit strange and verbose, but care was taken to keep the syntax for common logging tasks and interactive usage simple and concise. User that have experience with <a href="https://github.com/rstudio/shiny" class="external-link">shiny</a>, <a href="https://github.com/rstudio/plumber" class="external-link">plumber</a>, <a href="https://docs.python.org/3/library/logging.html" class="external-link">python logging</a> or <a href="https://logging.apache.org/log4j/2.x/" class="external-link">Apache Log4j</a> will feel at home. User that are proficient with R6 classes will also find it easy to extend and customize lgr, for example with their own appenders Loggers or Appenders.</p>
 <div class="section level2">
@@ -109,13 +109,13 @@
 <p>To log an <em>event</em> with with lgr we call <code>lgr$&lt;logging function&gt;()</code>. Unnamed arguments to the logging function are interpreted by <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code>. For a way to create loggers that <a href="https://glue.tidyverse.org/" class="external-link">glue</a> instead please refer to the vignette.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"A critical error"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; FATAL [09:29:52.755] A critical error</span></span>
+<span><span class="co">#&gt; FATAL [20:38:17.998] A critical error</span></span>
 <span><span class="va">lgr</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"A less severe error"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ERROR [09:29:52.777] A less severe error</span></span>
+<span><span class="co">#&gt; ERROR [20:38:18.057] A less severe error</span></span>
 <span><span class="va">lgr</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"A potentially bad situation"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; WARN  [09:29:52.784] A potentially bad situation</span></span>
+<span><span class="co">#&gt; WARN  [20:38:18.072] A potentially bad situation</span></span>
 <span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"iris has %s rows"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO  [09:29:52.785] iris has 150 rows</span></span>
+<span><span class="co">#&gt; INFO  [20:38:18.074] iris has 150 rows</span></span>
 <span></span>
 <span><span class="co"># the following log levels are hidden by default</span></span>
 <span><span class="va">lgr</span><span class="op">$</span><span class="fu">debug</span><span class="op">(</span><span class="st">"A debug message"</span><span class="op">)</span></span>
@@ -125,17 +125,17 @@
 <code class="sourceCode R"><span><span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">lgr</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="reference/AppenderFile.html">AppenderFile</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">tf</span>, layout <span class="op">=</span> <span class="va"><a href="reference/LayoutJson.html">LayoutJson</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"cars has %s rows"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO  [09:29:52.805] cars has 50 rows</span></span>
+<span><span class="co">#&gt; INFO  [20:38:18.173] cars has 50 rows</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; {"level":400,"timestamp":"2022-04-28 09:29:52","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></span></code></pre></div>
+<span><span class="co">#&gt; {"level":400,"timestamp":"2023-03-04 20:38:18","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></span></code></pre></div>
 <p>By passing a named argument to <code>info()</code>, <code>warn()</code>, and co you can log not only text but arbitrary R objects. Not all appenders support structured logging perfectly, but JSON does. This way you can create logfiles that are machine as well as (somewhat) human readable.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"loading cars"</span>, <span class="st">"cars"</span>, rows <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in (function (fmt, ...) : one argument not used by format 'loading cars'</span></span>
-<span><span class="co">#&gt; INFO  [09:29:52.832] loading cars {rows: `50`, cols: `2`}</span></span>
+<span><span class="co">#&gt; INFO  [20:38:18.263] loading cars {rows: `50`, cols: `2`}</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; {"level":400,"timestamp":"2022-04-28 09:29:52","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></span>
-<span><span class="co">#&gt; {"level":400,"timestamp":"2022-04-28 09:29:52","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}</span></span></code></pre></div>
+<span><span class="co">#&gt; {"level":400,"timestamp":"2023-03-04 20:38:18","logger":"root","caller":"eval","msg":"cars has 50 rows"}</span></span>
+<span><span class="co">#&gt; {"level":400,"timestamp":"2023-03-04 20:38:18","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}</span></span></code></pre></div>
 <p>For more examples please see the package <a href="https://s-fleck.github.io/lgr/articles/lgr.html" class="external-link">vignette</a> and <a href="https://s-fleck.github.io/lgr/" class="external-link">documentation</a></p>
 </div>
 <div class="section level2">
@@ -209,6 +209,7 @@
 <li><p><a href="https://cran.r-project.org/package=sendmailR" class="external-link">sendmailR</a> for email notifications.</p></li>
 <li><p><a href="https://github.com/eddelbuettel/rpushbullet" class="external-link">RPushbullet</a> for push notifications.</p></li>
 <li><p><a href="https://cran.r-project.org/package=rsyslog" class="external-link">Rsyslog</a> for logging to syslog on POSIX-compatible systems.</p></li>
+<li><p><a href="https://cran.r-project.org/package=elastic" class="external-link">elastic</a> for logging to ElasticSearch</p></li>
 </ul>
 <p>Other extra features:</p>
 <ul>
@@ -288,13 +289,7 @@
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/package=lgr" class="external-link"><img src="https://www.r-pkg.org/badges/version/lgr" alt="CRAN status"></a></li>
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
-</ul>
-</div>
+
 
   </div>
 </div>
@@ -307,7 +302,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

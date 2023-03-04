@@ -51,7 +51,11 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.4.4" id="lgr-044">lgr 0.4.4<a class="anchor" aria-label="anchor" href="#lgr-044"></a></h2>
+<h2 class="page-header" data-toc-text="0.4.5.9000" id="lgr-0459000">lgr 0.4.5.9000<a class="anchor" aria-label="anchor" href="#lgr-0459000"></a></h2>
+<ul><li>
+<code>AppenderConsole</code> now accept a <code>connection</code> argument. If called from a <a href="https://yihui.org/knitr/" class="external-link">knitr</a> rendering process, log messages are now output to <code>stderr</code> instead of <code>stdout</code> by default, to avoid polluting markdown documents (<a href="https://github.com/s-fleck/lgr/issues/62" class="external-link">#62</a>, thx <a href="https://github.com/gadenbuie" class="external-link">@gadenbuie</a>).</li></ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.4.4" id="lgr-044">lgr 0.4.4<small>2022-09-05</small><a class="anchor" aria-label="anchor" href="#lgr-044"></a></h2>
 <ul><li><p><code>%k</code> and <code>%K</code> parameters in <code>format.LogEvent</code> now work as expected when using <strong>crayon</strong> terminal colours (<a href="https://github.com/s-fleck/lgr/issues/52" class="external-link">#52</a>).</p></li>
 <li><p>Fix default format string for <code>LayoutGlue</code> which was using <code>msg</code> instead of <code>{msg}</code> (<a href="https://github.com/s-fleck/lgr/issues/54" class="external-link">#54</a>, thx <a href="https://github.com/mmuurr" class="external-link">@mmuurr</a>)</p></li>
 <li><p>Update docs to use the more common term “structured logging” instead of “custom fields” where appropriate</p></li>
@@ -163,7 +167,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

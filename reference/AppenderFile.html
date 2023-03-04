@@ -244,14 +244,14 @@ that should be displayed.</p></dd>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"A test message"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [21:01:25.489] A test message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [20:04:22.082] A test message</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">default</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "INFO  [2022-09-05 21:01:25.489] A test message"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "INFO  [2023-03-04 20:04:22.082] A test message"</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">fancy</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "[2022-09-05 21:01:25.489] eval(): INFO  A test message"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "[2023-03-04 20:04:22.082] eval(): INFO  A test message"</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">json</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "{\"level\":400,\"timestamp\":\"2022-09-05 21:01:25\",\"logger\":\"test\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "{\"level\":400,\"timestamp\":\"2023-03-04 20:04:22\",\"logger\":\"test\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># cleanup</span></span></span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span></span>
@@ -271,12 +271,12 @@ that should be displayed.</p></dd>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"A test message %s strings"</span>, <span class="st">"with format strings"</span>, and <span class="op">=</span> <span class="st">"custom_fields"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">show</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"level":400,"timestamp":"2022-09-05 21:01:25","logger":"test","caller":"eval","msg":"A test message"}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"level":400,"timestamp":"2022-09-05 21:01:25","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"level":400,"timestamp":"2023-03-04 20:04:22","logger":"test","caller":"eval","msg":"A test message"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"level":400,"timestamp":"2023-03-04 20:04:22","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   level           timestamp logger caller</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2022-09-05 21:01:25   test   eval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   400 2022-09-05 21:01:25   test   eval</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2023-03-04 20:04:22   test   eval</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   400 2023-03-04 20:04:22   test   eval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                          msg           and</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                             A test message          &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 A test message with format strings strings custom_fields</span>
@@ -302,7 +302,7 @@ that should be displayed.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
