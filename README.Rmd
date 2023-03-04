@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 
 library(lgr)
-basic_config()  # ensure default config
+basic_config(console_connection = stdout())  # ensure default config
 # <img src="man/figures/lgr-logo-plain.svg" align="right" width=160 height=160/>
 ```
 # lgr

@@ -1,3 +1,9 @@
+# lgr 0.4.5.9000
+
+* `AppenderConsole` now accept a `connection` argument. If called from a 
+  `{knitr}` rendering process, log messages are now output to `stderr` instead 
+  of `stdout` by default, to avoid polluting markdown documents (#62, thx @gadenbuie).
+
 # lgr 0.4.4
 
 * `%k` and `%K` parameters in `format.LogEvent` now work as expected when using

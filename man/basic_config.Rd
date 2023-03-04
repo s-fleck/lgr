@@ -13,6 +13,7 @@ basic_config(
   console = if (is.null(appenders)) "all" else FALSE,
   console_fmt = "\%L [\%t] \%m \%f",
   console_timestamp_fmt = "\%H:\%M:\%OS3",
+  console_connection = NULL,
   memory = FALSE
 )
 }
@@ -39,6 +40,8 @@ logs to the console (i.e. displays messages in an interactive R session)}
 
 \item{console_timestamp_fmt}{\code{character} scalar: like \code{timestamp_fmt} but
 used for console output}
+
+\item{console_connection}{see \code{\link[=cat]{cat()}} \code{file} argument.}
 
 \item{memory}{\code{logical} scalar. or a \code{threshold} (see above). Add an Appender
 that logs to a memory buffer, see also \code{\link[=show_log]{show_log()}} and \link{AppenderBuffer}}

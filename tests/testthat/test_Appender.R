@@ -202,6 +202,42 @@ test_that("AppenderConsole: $filter() works", {
 })
 
 
+test_that("AppenderConsole - with connection = stderr() - outputs to stderr", {
+  app <- AppenderConsole$new(connection = stderr())
+
+  std_out <- textConnection("msg_out", open = "w", local = TRUE)
+  sink(std_out, append = TRUE, type = "message")
+  on.exit(sink(NULL, type = "message"), add = TRUE)
+
+  expect_silent(
+    app$append(event)
+  )
+
+  expect_match(
+    msg_out,
+    "ERROR.*:19:33.*foo.*bar"
+  )
+})
+
+
+test_that("AppenderConsole: chooses stderr by default when in knitr", {
+  opts <- options(knitr.in.progress = TRUE)
+  on.exit(options(opts), add = TRUE)
+
+  app <- AppenderConsole$new()
+  std_out <- textConnection("msg_out", open = "w", local = TRUE)
+  sink(std_out, append = TRUE, type = "message")
+  on.exit(sink(NULL, type = "message"), add = TRUE)
+
+  expect_silent(
+    app$append(event)
+  )
+
+  expect_match(
+    msg_out,
+    "ERROR.*:19:33.*foo.*bar"
+  )
+})
 
 
 # AppenderBuffer ----------------------------------------------------

@@ -37,19 +37,19 @@ examples.
 \if{html}{\out{
 <details><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="add_appender"><a href='../../lgr/html/Logger.html#method-Logger-add_appender'><code>lgr::Logger$add_appender()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="config"><a href='../../lgr/html/Logger.html#method-Logger-config'><code>lgr::Logger$config()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="handle_exception"><a href='../../lgr/html/Logger.html#method-Logger-handle_exception'><code>lgr::Logger$handle_exception()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="initialize"><a href='../../lgr/html/Logger.html#method-Logger-initialize'><code>lgr::Logger$initialize()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="remove_appender"><a href='../../lgr/html/Logger.html#method-Logger-remove_appender'><code>lgr::Logger$remove_appender()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_appenders"><a href='../../lgr/html/Logger.html#method-Logger-set_appenders'><code>lgr::Logger$set_appenders()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_exception_handler"><a href='../../lgr/html/Logger.html#method-Logger-set_exception_handler'><code>lgr::Logger$set_exception_handler()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_propagate"><a href='../../lgr/html/Logger.html#method-Logger-set_propagate'><code>lgr::Logger$set_propagate()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_threshold"><a href='../../lgr/html/Logger.html#method-Logger-set_threshold'><code>lgr::Logger$set_threshold()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="add_appender"><a href='../../lgr/html/Logger.html#method-Logger-add_appender'><code>lgr::Logger$add_appender()</code></a></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="config"><a href='../../lgr/html/Logger.html#method-Logger-config'><code>lgr::Logger$config()</code></a></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="handle_exception"><a href='../../lgr/html/Logger.html#method-Logger-handle_exception'><code>lgr::Logger$handle_exception()</code></a></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="initialize"><a href='../../lgr/html/Logger.html#method-Logger-initialize'><code>lgr::Logger$initialize()</code></a></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="remove_appender"><a href='../../lgr/html/Logger.html#method-Logger-remove_appender'><code>lgr::Logger$remove_appender()</code></a></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_appenders"><a href='../../lgr/html/Logger.html#method-Logger-set_appenders'><code>lgr::Logger$set_appenders()</code></a></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_exception_handler"><a href='../../lgr/html/Logger.html#method-Logger-set_exception_handler'><code>lgr::Logger$set_exception_handler()</code></a></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_propagate"><a href='../../lgr/html/Logger.html#method-Logger-set_propagate'><code>lgr::Logger$set_propagate()</code></a></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_threshold"><a href='../../lgr/html/Logger.html#method-Logger-set_threshold'><code>lgr::Logger$set_threshold()</code></a></li>
 </ul>
 </details>
 }}
