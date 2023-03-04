@@ -28,28 +28,28 @@ Appenders.
 
 ## Features
 
--   *Hierarchical loggers* like in log4j and python logging. This is
-    useful if you want to be able to configure logging on a per-package
-    basis.
--   An *arbitrary number of appenders* for each logger. A single logger
-    can write to the console, a logfile, a database, etc… .
--   Support for structured logging. As opposed to many other logging
-    packages for R a log event is not just a message with a timestamp,
-    but an object that can contain arbitrary data fields. This is useful
-    for producing machine readable logs.
--   *Vectorized* logging (so `lgr$fatal(capture.output(iris))` works)
--   Lightning fast *in-memory logs* for interactive use.
--   Appenders that write logs to a wide range of destinations:
-    -   databases (buffered or directly)
-    -   email or pushbullet
-    -   plaintext files (with a powerful formatting syntax)
-    -   JSON files with arbitrary data fields
-    -   Rotating files that are reset and backed-up after they reach a
-        certain file size or age
-    -   memory buffers
-    -   (colored) console output
--   Optional support to use [glue](https://glue.tidyverse.org/) instead
-    of `sprintf()` for composing log messages.
+- *Hierarchical loggers* like in log4j and python logging. This is
+  useful if you want to be able to configure logging on a per-package
+  basis.
+- An *arbitrary number of appenders* for each logger. A single logger
+  can write to the console, a logfile, a database, etc… .
+- Support for structured logging. As opposed to many other logging
+  packages for R a log event is not just a message with a timestamp, but
+  an object that can contain arbitrary data fields. This is useful for
+  producing machine readable logs.
+- *Vectorized* logging (so `lgr$fatal(capture.output(iris))` works)
+- Lightning fast *in-memory logs* for interactive use.
+- Appenders that write logs to a wide range of destinations:
+  - databases (buffered or directly)
+  - email or pushbullet
+  - plaintext files (with a powerful formatting syntax)
+  - JSON files with arbitrary data fields
+  - Rotating files that are reset and backed-up after they reach a
+    certain file size or age
+  - memory buffers
+  - (colored) console output
+- Optional support to use [glue](https://glue.tidyverse.org/) instead of
+  `sprintf()` for composing log messages.
 
 ## Usage
 
@@ -61,13 +61,13 @@ vignette.
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [09:29:52.755] A critical error
+#> FATAL [20:38:17.998] A critical error
 lgr$error("A less severe error")
-#> ERROR [09:29:52.777] A less severe error
+#> ERROR [20:38:18.057] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [09:29:52.784] A potentially bad situation
+#> WARN  [20:38:18.072] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [09:29:52.785] iris has 150 rows
+#> INFO  [20:38:18.074] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
@@ -81,9 +81,9 @@ appender to log to a file with little effort.
 tf <- tempfile()
 lgr$add_appender(AppenderFile$new(tf, layout = LayoutJson$new()))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [09:29:52.805] cars has 50 rows
+#> INFO  [20:38:18.173] cars has 50 rows
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2022-04-28 09:29:52","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2023-03-04 20:38:18","logger":"root","caller":"eval","msg":"cars has 50 rows"}
 ```
 
 By passing a named argument to `info()`, `warn()`, and co you can log
@@ -94,10 +94,10 @@ logfiles that are machine as well as (somewhat) human readable.
 ``` r
 lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
 #> Warning in (function (fmt, ...) : one argument not used by format 'loading cars'
-#> INFO  [09:29:52.832] loading cars {rows: `50`, cols: `2`}
+#> INFO  [20:38:18.263] loading cars {rows: `50`, cols: `2`}
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2022-04-28 09:29:52","logger":"root","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2022-04-28 09:29:52","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
+#> {"level":400,"timestamp":"2023-03-04 20:38:18","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2023-03-04 20:38:18","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
 ```
 
 For more examples please see the package
@@ -135,13 +135,13 @@ file.remove(logfile)
 lgr in general is stable and safe for use, but **the following features
 are still experimental**:
 
--   Database appenders which are available from the separate package
-    [lgrExtra](https://github.com/s-fleck/lgrExtra).
--   yaml/json config files for loggers (do not yet support all planned
-    features)
--   The documentation in general. I’m still hoping for more R6-specific
-    features in [roxygen2](https://github.com/r-lib/roxygen2) before I
-    invest more time in object documentation.
+- Database appenders which are available from the separate package
+  [lgrExtra](https://github.com/s-fleck/lgrExtra).
+- yaml/json config files for loggers (do not yet support all planned
+  features)
+- The documentation in general. I’m still hoping for more R6-specific
+  features in [roxygen2](https://github.com/r-lib/roxygen2) before I
+  invest more time in object documentation.
 
 ## Dependencies
 
@@ -162,60 +162,62 @@ maintained :
 
 Extra appenders (in the main package):
 
--   [jsonlite](https://github.com/jeroen/jsonlite) for JSON logging via
-    `LayoutJson`. JSON is a popular plaintext based file format that is
-    easy to read for humans and machines alike.
+- [jsonlite](https://github.com/jeroen/jsonlite) for JSON logging via
+  `LayoutJson`. JSON is a popular plaintext based file format that is
+  easy to read for humans and machines alike.
 
--   [rotor](https://github.com/s-fleck/rotor) for log rotation via
-    AppenderFileRotating and co.
+- [rotor](https://github.com/s-fleck/rotor) for log rotation via
+  AppenderFileRotating and co.
 
--   [data.table](https://github.com/Rdatatable/) for fast in-memory
-    logging with `AppenderDt`, and also by all database / DBI Appenders.
+- [data.table](https://github.com/Rdatatable/) for fast in-memory
+  logging with `AppenderDt`, and also by all database / DBI Appenders.
 
--   [glue](https://glue.tidyverse.org/) for a more flexible formatting
-    syntax via LoggerGlue and LayoutGlue.
+- [glue](https://glue.tidyverse.org/) for a more flexible formatting
+  syntax via LoggerGlue and LayoutGlue.
 
 Extra appenders via [lgrExtra](https://github.com/s-fleck/lgrExtra):
 
--   [DBI](https://github.com/r-dbi/DBI) for logging to databases. lgr is
-    confirmed to work with the following backends:
+- [DBI](https://github.com/r-dbi/DBI) for logging to databases. lgr is
+  confirmed to work with the following backends:
 
-    -   [RSQLite](https://github.com/r-dbi/RSQLite),
-    -   [RMariaDB](https://github.com/r-dbi/RMariaDB) for MariaDB and
-        MySQL,
-    -   [RPostgres](https://cran.r-project.org/package=RPostgres),
-    -   [RJDBC](https://github.com/s-u/RJDBC) for DB2, and
-    -   [odbc](https://github.com/r-dbi/odbc) also for DB2.
+  - [RSQLite](https://github.com/r-dbi/RSQLite),
+  - [RMariaDB](https://github.com/r-dbi/RMariaDB) for MariaDB and MySQL,
+  - [RPostgres](https://cran.r-project.org/package=RPostgres),
+  - [RJDBC](https://github.com/s-u/RJDBC) for DB2, and
+  - [odbc](https://github.com/r-dbi/odbc) also for DB2.
 
-    In theory all DBI compliant database packages should work. If you
-    are using lgr with a database backend, please report your (positive
-    and negative) experiences, as database support is still somewhat
-    experimental.
+  In theory all DBI compliant database packages should work. If you are
+  using lgr with a database backend, please report your (positive and
+  negative) experiences, as database support is still somewhat
+  experimental.
 
--   [gmailr](https://cran.r-project.org/package=gmailr) or
+- [gmailr](https://cran.r-project.org/package=gmailr) or
 
--   [sendmailR](https://cran.r-project.org/package=sendmailR) for email
-    notifications.
+- [sendmailR](https://cran.r-project.org/package=sendmailR) for email
+  notifications.
 
--   [RPushbullet](https://github.com/eddelbuettel/rpushbullet) for push
-    notifications.
+- [RPushbullet](https://github.com/eddelbuettel/rpushbullet) for push
+  notifications.
 
--   [Rsyslog](https://cran.r-project.org/package=rsyslog) for logging to
-    syslog on POSIX-compatible systems.
+- [Rsyslog](https://cran.r-project.org/package=rsyslog) for logging to
+  syslog on POSIX-compatible systems.
+
+- [elastic](https://cran.r-project.org/package=elastic) for logging to
+  ElasticSearch
 
 Other extra features:
 
--   [yaml](https://CRAN.R-project.org/package=yaml) for configuring
-    loggers via YAML files  
--   [crayon](https://github.com/r-lib/crayon) for colored console
-    output.  
--   [whoami](https://github.com/r-lib/whoami/blob/master/DESCRIPTION)
-    for guessing the user name from various sources. You can also set
-    the user name manually if you want to use it for logging.
--   [desc](https://CRAN.R-project.org/package=desc) for the package
-    development convenience function `use_logger()`
--   [cli](https://CRAN.R-project.org/package=cli) for printing the tree
-    structure of registered loggers with `logger_tree()`
+- [yaml](https://CRAN.R-project.org/package=yaml) for configuring
+  loggers via YAML files  
+- [crayon](https://github.com/r-lib/crayon) for colored console
+  output.  
+- [whoami](https://github.com/r-lib/whoami/blob/master/DESCRIPTION) for
+  guessing the user name from various sources. You can also set the user
+  name manually if you want to use it for logging.
+- [desc](https://CRAN.R-project.org/package=desc) for the package
+  development convenience function `use_logger()`
+- [cli](https://CRAN.R-project.org/package=cli) for printing the tree
+  structure of registered loggers with `logger_tree()`
 
 Other `Suggests` ([future](https://CRAN.R-project.org/package=future),
 [future.apply](https://CRAN.R-project.org/package=future.apply)) do not
@@ -246,5 +248,5 @@ to post a feature request on the issue tracker.
 
 ## Acknowledgement
 
--   [diagrams.net](https://app.diagrams.net/) for the flow chart in the
-    vignette
+- [diagrams.net](https://app.diagrams.net/) for the flow chart in the
+  vignette

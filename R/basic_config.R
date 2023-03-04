@@ -14,6 +14,7 @@
 #' @param console_fmt `character` scalar: like `fmt` but used for console output
 #' @param console_timestamp_fmt `character` scalar: like `timestamp_fmt` but
 #'   used for console output
+#' @param console_connection see [cat()] `file` argument.
 #' @inheritParams print.LogEvent
 #' @inheritParams Logger
 #' @param appenders a single [Appender] or a list thereof.
@@ -53,6 +54,7 @@ basic_config <- function(
   console = if (is.null(appenders)) "all" else FALSE,
   console_fmt = "%L [%t] %m %f",
   console_timestamp_fmt = "%H:%M:%OS3",
+  console_connection = NULL,
   memory  = FALSE
 ){
   default_fmt = "%L [%t] %m"  # only relevant for triggering warning when logging to json
@@ -134,6 +136,7 @@ basic_config <- function(
       name = "console",
       AppenderConsole$new(
         threshold = console,
+        connection = console_connection,
         layout = LayoutFormat$new(
           colors = getOption("lgr.colors"),
           fmt = console_fmt,

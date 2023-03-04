@@ -887,7 +887,7 @@ see https://github.com/s-fleck/lgr/issues/29
 Getting the source file is sadly non-trivial in R, otherwise it would have
 been included in the core logging functions. Luckily, this is easy to add
 with filters and the awesome [this.path](https://CRAN.R-project.org/package=this.path)
-package. This solution works in most scenarions, but not in all
+package. This solution works in most scenarios, but not in all
 (for example, building this vignette).
 
 ```{r, eval = FALSE}

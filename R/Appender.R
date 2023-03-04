@@ -139,9 +139,9 @@ Appender <- R6::R6Class(
 #' **crayon** installed log levels will be coloured by default
 #' (but you can modify this behaviour by passing a custom [Layout]).
 #'
-#' @param output Choose whether the message is printed to the \R console as
-#'   regular output (`"stdout"`, default in most cases) or as a message
-#'   (`"stderr"`, default inside a \pkg{knitr} rendering process).
+#' @param connection A connection or a `character` scalar. See the `file`
+#'   argument of [cat()] for more details. Defaults to [stdout()], except
+#'   inside \pkg{knitr} rendering processes where it defaults to [stderr()].
 #'
 #' @family Appenders
 #' @seealso [LayoutFormat]
@@ -173,41 +173,48 @@ AppenderConsole <- R6::R6Class(
         colors = getOption("lgr.colors", list())
       ),
       filters = NULL,
-      output = NULL
+      connection = NULL
     ){
       self$set_threshold(threshold)
       self$set_layout(layout)
       self$set_filters(filters)
-      if (is.null(output)) {
-        output <- default_console_output(output)
+      if (is.null(connection)) {
+        connection <- default_console_connection()
       }
-      private$output <- match.arg(output, c("stdout", "stderr"))
+      self$set_connection(connection)
     },
 
     append = function(event){
-      output <- switch(private$output, stdout = stdout(), stderr = stderr())
-      cat(private$.layout$format_event(event), sep = "\n", file = output)
+      cat(private$.layout$format_event(event), sep = "\n", file = get(".connection", private))
+    },
+
+    set_connection = function(connection){
+      assert(
+        inherits(connection, "connection") || is_scalar_character(connection)
+      )
+
+      private[[".connection"]] <- connection
     }
   ),
 
   active = list(
-    destination = function() "console"
+    destination = function() "console",
+    connection = function() private[[".connection"]]
   ),
 
   private = list(
-    output = "stdout"
+    .connection = NULL
   )
 )
 
-default_console_output <- function(output) {
-  if (!is.null(output)) output
-
+default_console_connection <- function() {
   # In knitr, default to using stderr where log messages can be better handled
   if (isTRUE(getOption("knitr.in.progress", FALSE))) {
-    return("stderr")
+    return(stderr())
   }
 
-  "stdout"
+  # has to be this, not a call to `stdout()`
+  ""
 }
 
 

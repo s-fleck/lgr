@@ -101,6 +101,12 @@ the package \pkg{crayon}) passed on on \code{\link[=format.LogEvent]{format.LogE
 \item \href{#method-LayoutFormat-clone}{\code{LayoutFormat$clone()}}
 }
 }
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutFormat-new"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutFormat-new}{}}}

@@ -43,18 +43,19 @@ Other Appenders:
 \itemize{
 \item \href{#method-AppenderConsole-new}{\code{AppenderConsole$new()}}
 \item \href{#method-AppenderConsole-append}{\code{AppenderConsole$append()}}
+\item \href{#method-AppenderConsole-set_connection}{\code{AppenderConsole$set_connection()}}
 }
 }
 \if{html}{\out{
 <details><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="format"><a href='../../lgr/html/Appender.html#method-Appender-format'><code>lgr::Appender$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-Appender-set_layout'><code>lgr::Appender$set_layout()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-Appender-set_threshold'><code>lgr::Appender$set_threshold()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="format"><a href='../../lgr/html/Appender.html#method-Appender-format'><code>lgr::Appender$format()</code></a></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-Appender-set_layout'><code>lgr::Appender$set_layout()</code></a></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-Appender-set_threshold'><code>lgr::Appender$set_threshold()</code></a></li>
 </ul>
 </details>
 }}
@@ -68,16 +69,16 @@ Other Appenders:
   layout = LayoutFormat$new(fmt = "\%L [\%t] \%m \%f", timestamp_fmt = "\%H:\%M:\%OS3",
     colors = getOption("lgr.colors", list())),
   filters = NULL,
-  output = NULL
+  connection = NULL
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{output}}{Choose whether the message is printed to the \R console as
-regular output (\code{"stdout"}, default in most cases) or as a message
-(\code{"stderr"}, default inside a \pkg{knitr} rendering process).}
+\item{\code{connection}}{A connection or a \code{character} scalar. See the \code{file}
+argument of \code{\link[=cat]{cat()}} for more details. Defaults to \code{\link[=stdout]{stdout()}}, except
+inside \pkg{knitr} rendering processes where it defaults to \code{\link[=stderr]{stderr()}}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -90,5 +91,23 @@ regular output (\code{"stdout"}, default in most cases) or as a message
 \if{html}{\out{<div class="r">}}\preformatted{AppenderConsole$append(event)}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-AppenderConsole-set_connection"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderConsole-set_connection}{}}}
+\subsection{Method \code{set_connection()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AppenderConsole$set_connection(connection)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{connection}}{A connection or a \code{character} scalar. See the \code{file}
+argument of \code{\link[=cat]{cat()}} for more details. Defaults to \code{\link[=stdout]{stdout()}}, except
+inside \pkg{knitr} rendering processes where it defaults to \code{\link[=stderr]{stderr()}}.}
+}
+\if{html}{\out{</div>}}
+}
 }
 }
