@@ -139,6 +139,10 @@ Appender <- R6::R6Class(
 #' **crayon** installed log levels will be coloured by default
 #' (but you can modify this behaviour by passing a custom [Layout]).
 #'
+#' @param output Choose whether the message is printed to the \R console as
+#'   regular output (`"stdout"`, default in most cases) or as a message
+#'   (`"stderr"`, default inside a \pkg{knitr} rendering process).
+#'
 #' @family Appenders
 #' @seealso [LayoutFormat]
 #' @export
@@ -168,24 +172,43 @@ AppenderConsole <- R6::R6Class(
         timestamp_fmt = "%H:%M:%OS3",
         colors = getOption("lgr.colors", list())
       ),
-      filters = NULL
+      filters = NULL,
+      output = NULL
     ){
       self$set_threshold(threshold)
       self$set_layout(layout)
       self$set_filters(filters)
+      if (is.null(output)) {
+        output <- default_console_output(output)
+      }
+      private$output <- match.arg(output, c("stdout", "stderr"))
     },
 
     append = function(event){
-      cat(private$.layout$format_event(event), sep = "\n")
+      output <- switch(private$output, stdout = stdout(), stderr = stderr())
+      cat(private$.layout$format_event(event), sep = "\n", file = output)
     }
   ),
 
   active = list(
     destination = function() "console"
+  ),
+
+  private = list(
+    output = "stdout"
   )
 )
 
+default_console_output <- function(output) {
+  if (!is.null(output)) output
 
+  # In knitr, default to using stderr where log messages can be better handled
+  if (isTRUE(getOption("knitr.in.progress", FALSE))) {
+    return("stderr")
+  }
+
+  "stdout"
+}
 
 
 # AppenderFile ------------------------------------------------------------

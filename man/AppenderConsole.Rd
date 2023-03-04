@@ -67,10 +67,20 @@ Other Appenders:
   threshold = NA_integer_,
   layout = LayoutFormat$new(fmt = "\%L [\%t] \%m \%f", timestamp_fmt = "\%H:\%M:\%OS3",
     colors = getOption("lgr.colors", list())),
-  filters = NULL
+  filters = NULL,
+  output = NULL
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{output}}{Choose whether the message is printed to the \R console as
+regular output (\code{"stdout"}, default in most cases) or as a message
+(\code{"stderr"}, default inside a \pkg{knitr} rendering process).}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderConsole-append"></a>}}
