@@ -17,3 +17,4 @@
 ^\.httr-oauth$
 ^revdep$
 ^.github$
+^CRAN-SUBMISSION$
