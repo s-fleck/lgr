@@ -11,21 +11,13 @@ teardown({
   unlink(td, recursive = TRUE)
 })
 
-
-assert_supported_rotor_version <- function(){  # TODO: change to throwing an error once rotor 0.3.0 is on CRAN
-  if (packageVersion("rotor") < "0.3.0")
-    skip("rotor < 0.3.0 is no longer supported")
-}
-
-
-
 # AppenderFileRotating -----------------------------------------------------
 
 test_that("AppenderFileRotating: works as expected", {
   if (!is_zipcmd_available())
     skip("Test requires a workings system zip command")
 
-  assert_supported_rotor_version()
+  skip_if_not_installed("rotor", "0.3.0")
 
   tf <- file.path(td, "test.log")
   app <- AppenderFileRotating$new(file = tf, size = "1tb")
@@ -80,7 +72,7 @@ test_that("AppenderFileRotating: works with different backup_dir", {
   if (!is_zipcmd_available())
     skip("Test requires a workings system zip command")
 
-  assert_supported_rotor_version()
+  skip_if_not_installed("rotor", "0.3.0")
 
   tf     <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
@@ -136,7 +128,7 @@ test_that("AppenderFileRotating: works with different backup_dir", {
 
 test_that("AppenderFileRotating: `size` argument works as expected", {
 
-  assert_supported_rotor_version()
+  skip_if_not_installed("rotor", "0.3.0")
 
   #setup
     tf <- file.path(td, "test.log")
@@ -167,7 +159,7 @@ test_that("AppenderFileRotatingDate: works as expected", {
   if (!is_zipcmd_available())
     skip("Test requires a workings system zip command")
 
-  assert_supported_rotor_version()
+  skip_if_not_installed("rotor", "0.3.0")
 
   tf <- file.path(td, "test.log")
   app <- AppenderFileRotatingDate$new(file = tf, size = "1tb")
@@ -226,10 +218,8 @@ test_that("AppenderFileRotatingDate: works as expected", {
 
 
 test_that("AppenderFileRotatingDate: works with different backup_dir", {
-  if (!is_zipcmd_available())
-    skip("Test requires a workings system zip command")
-
-  assert_supported_rotor_version()
+  skip_if_not(is_zipcmd_available(), "Test requires a workings system zip command")
+  skip_if_not_installed("rotor", "0.3.0")
 
   tf     <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
@@ -273,7 +263,7 @@ test_that("AppenderFileRotatingDate: works with different backup_dir", {
 
 
 test_that("AppenderFileRotatingDate: `size` and `age` arguments work as expected", {
-  assert_supported_rotor_version()
+  skip_if_not_installed("rotor", "0.3.0")
 
   #setup
   tf <- file.path(td, "test.log")
@@ -309,10 +299,8 @@ test_that("AppenderFileRotatingDate: `size` and `age` arguments work as expected
 # AppenderFileRotatingTime ----------------------------------------------------
 
 test_that("AppenderFileRotatingTime: works as expected", {
-  if (!is_zipcmd_available())
-    skip("Test requires a workings system zip command")
-
-  assert_supported_rotor_version()
+  skip_if_not(is_zipcmd_available(), "Test requires a workings system zip command")
+  skip_if_not_installed("rotor", "0.3.0")
 
   tf <- file.path(td, "test.log")
   app <- AppenderFileRotatingTime$new(file = tf)
@@ -357,10 +345,8 @@ test_that("AppenderFileRotatingTime: works as expected", {
 
 
 test_that("AppenderFileRotatingTime: works with different backup_dir", {
-  if (!is_zipcmd_available())
-    skip("Test requires a workings system zip command")
-
-  assert_supported_rotor_version()
+  skip_if_not(is_zipcmd_available(), "Test requires a workings system zip command")
+  skip_if_not_installed("rotor", "0.3.0")
 
   tf     <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
