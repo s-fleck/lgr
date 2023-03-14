@@ -27,6 +27,7 @@ test_that("logger_config() works as expected", {
 
 
 test_that("as_logger_config() works as expected with YAML and JSON files", {
+  skip_if_not_installed("yaml")
   # files work...
   cy <- as_logger_config(rprojroot::find_testthat_root_file("testdata", "lg_full.yaml"))
   cj <- as_logger_config(rprojroot::find_testthat_root_file("testdata", "lg_full.json"))
@@ -49,6 +50,7 @@ test_that("as_logger_config() works as expected with YAML and JSON files", {
 
 
 test_that("as_logger_config() works for simplified yaml logger config", {
+  skip_if_not_installed("yaml")
   cy <- as_logger_config(rprojroot::find_testthat_root_file("testdata", "lg_simple.yaml"))
   cj <- as_logger_config(rprojroot::find_testthat_root_file("testdata", "lg_simple.json"))
   expect_identical(cj, cy)
@@ -115,6 +117,7 @@ test_that("resolve_r6_ctors() works as expected", {
 
 
 test_that("parse_logger_config() works", {
+  skip_if_not_installed("yaml")
   # parse_logger_config turns logger_configs into lists of R6 objects
   # that cann direclty be applied to a logger
   full <- as_logger_config(rprojroot::find_testthat_root_file("testdata", "lg_full.yaml"))
