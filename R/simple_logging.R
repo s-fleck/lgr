@@ -194,8 +194,7 @@ remove_appender <- function(
 #' @rdname simple_logging
 #' @export
 #'
-#' @examples
-#'
+#' @examples \dontrun{
 #' # Reconfigure the root logger
 #' basic_config(memory = TRUE)
 #'
@@ -208,6 +207,7 @@ remove_appender <- function(
 #'
 #' # cleanup
 #' lgr$config(NULL)
+#' }
 show_log <- function(
   threshold = NA_integer_,
   n = 20L,
