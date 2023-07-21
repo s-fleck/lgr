@@ -132,7 +132,7 @@ add_appender(AppenderConsole$new(), "second_console_appender")
 lgr$fatal("Multiple console appenders are a bad idea")
 remove_appender("second_console_appender")
 lgr$info("Good that we defined an appender name, so it's easy to remove")
-
+\dontrun{
 # Reconfigure the root logger
 basic_config(memory = TRUE)
 
@@ -145,4 +145,5 @@ show_data()
 
 # cleanup
 lgr$config(NULL)
+}
 }
