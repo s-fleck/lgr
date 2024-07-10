@@ -30,9 +30,9 @@ lgr exports a number of formatting utility functions that are
 useful for layout glue: \code{\link[=colorize_levels]{colorize_levels()}}, \code{\link[=pad_left]{pad_left()}}, \code{\link[=pad_right]{pad_right()}}.
 
 Other Layouts: 
+\code{\link{Layout}},
 \code{\link{LayoutFormat}},
-\code{\link{LayoutJson}},
-\code{\link{Layout}}
+\code{\link{LayoutJson}}
 }
 \concept{Layouts}
 \section{Super class}{
@@ -56,12 +56,6 @@ Other Layouts:
 \item \href{#method-LayoutGlue-clone}{\code{LayoutGlue$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutGlue-new"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutGlue-new}{}}}

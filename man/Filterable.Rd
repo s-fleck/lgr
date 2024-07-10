@@ -15,9 +15,9 @@ class.
 }
 \seealso{
 Other abstract classes: 
+\code{\link{Appender}},
 \code{\link{AppenderMemory}},
-\code{\link{AppenderTable}},
-\code{\link{Appender}}
+\code{\link{AppenderTable}}
 }
 \concept{abstract classes}
 \section{Active bindings}{

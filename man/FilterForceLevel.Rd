@@ -40,12 +40,6 @@ levels of each \link{LogEvent} processed by this filter.}
 \item \href{#method-FilterForceLevel-clone}{\code{FilterForceLevel$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-FilterForceLevel-new"></a>}}
 \if{latex}{\out{\hypertarget{method-FilterForceLevel-new}{}}}

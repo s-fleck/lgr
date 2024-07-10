@@ -644,8 +644,8 @@ Logger <- R6::R6Class(
     },
 
 
-    #' @field propagate A `TRUE` or `FALSE`. The unique name of each logger,
-    #' which also includes the names of its ancestors (separated by `/`).
+    #' @field propagate A `TRUE` or `FALSE`. Should a Logger propagate events
+    #' to the Appenders of its ancestors?
     propagate = function(){
       get(".propagate", envir = private)
     },

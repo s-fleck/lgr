@@ -39,12 +39,6 @@ lg$config(NULL)  # reset config
 \item \href{#method-FilterInject-clone}{\code{FilterInject$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-FilterInject-new"></a>}}
 \if{latex}{\out{\hypertarget{method-FilterInject-new}{}}}

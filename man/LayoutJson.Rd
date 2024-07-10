@@ -27,9 +27,9 @@ lo$format_event(event)
 \code{\link[=read_json_lines]{read_json_lines()}}, \url{https://jsonlines.org/}
 
 Other Layouts: 
+\code{\link{Layout}},
 \code{\link{LayoutFormat}},
-\code{\link{LayoutGlue}},
-\code{\link{Layout}}
+\code{\link{LayoutGlue}}
 }
 \concept{Layouts}
 \section{Super class}{
@@ -57,12 +57,6 @@ Other Layouts:
 \item \href{#method-LayoutJson-clone}{\code{LayoutJson$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutJson-new"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutJson-new}{}}}
