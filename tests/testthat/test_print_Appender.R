@@ -4,9 +4,7 @@ context("print_Appender")
 
 
 test_that("all Appenders print() without failure", {
-  if (!requireNamespace("rotor")){
-    skip("Required packages not installed")
-  }
+  skip_if_not_installed("rotor")
 
   tf <- tempfile()
   on.exit(unlink(tf))
