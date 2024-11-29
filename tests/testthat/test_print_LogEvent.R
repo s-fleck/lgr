@@ -67,8 +67,12 @@ test_that("toString.LogEvent works as expected", {
     letters = letters
   )
 
-  toString(x)
+  expect_length(toString(x), 1L)
+  # just a rudimentary check because exact representation depends on console width
+  expect_match(toString(x), "level.*letters")
 })
+
+
 
 
 test_that("toString.LogEvent without custom fields does not end in whitespace", {
