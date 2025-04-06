@@ -388,7 +388,7 @@ unlabel_levels <- function(
     stop("Expected character 'labels'")
 
   res             <- log_levels[match(labels, names(log_levels))]
-  if (!is.null(names(labels)) && any(is.na(res))){
+  if (!is.null(names(labels)) && anyNA(res)){
     res[is.na(res)] <- as.integer(names(labels)[is.na(res)])
   }
 
