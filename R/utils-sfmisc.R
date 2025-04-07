@@ -445,15 +445,15 @@ is_candidate_key <- function(x){
     # !is.infinite instead of is.finite because x can be a character vector
     length(x) > 1 &&
     all(!is.infinite(x)) &&
-    !any(is.na(x)) &&
+    !anyNA(x) &&
     identical(length(unique(x)), length(x))
   } else if (is.list(x)){
     length(x) > 0 &&
     length(x[[1]] > 0) &&
     do.call(is_equal_length, x) &&
     all(vapply(x, function(.x) all(!is.infinite(.x)), logical(1))) &&
-    all(vapply(x, function(.x) !any(is.na(.x)), logical(1))) &&
-    !any(duplicated(as.data.frame(x)))
+    all(vapply(x, function(.x) !anyNA(.x), logical(1))) &&
+    !anyDuplicated(as.data.frame(x)) > 0
   }
 }
 
