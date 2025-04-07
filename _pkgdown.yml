@@ -1,3 +1,9 @@
+url: https://s-fleck.github.io/lgr
+
+template:
+  bootstrap: 5
+  light-switch: true
+
 reference:
 - title: Logger
   desc: Creates and dispatches LogEvents
