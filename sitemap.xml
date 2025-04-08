@@ -1,177 +1,61 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/lgr.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Appender.html</loc>
-  </url>
-  <url>
-    <loc>/reference/AppenderBuffer.html</loc>
-  </url>
-  <url>
-    <loc>/reference/AppenderConsole.html</loc>
-  </url>
-  <url>
-    <loc>/reference/AppenderFile.html</loc>
-  </url>
-  <url>
-    <loc>/reference/AppenderFileRotating.html</loc>
-  </url>
-  <url>
-    <loc>/reference/AppenderFileRotatingDate.html</loc>
-  </url>
-  <url>
-    <loc>/reference/AppenderFileRotatingTime.html</loc>
-  </url>
-  <url>
-    <loc>/reference/AppenderMemory.html</loc>
-  </url>
-  <url>
-    <loc>/reference/AppenderTable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/CannotInitializeAbstractClassError.html</loc>
-  </url>
-  <url>
-    <loc>/reference/EventFilter.html</loc>
-  </url>
-  <url>
-    <loc>/reference/FilterForceLevel.html</loc>
-  </url>
-  <url>
-    <loc>/reference/FilterInject.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Filterable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Layout.html</loc>
-  </url>
-  <url>
-    <loc>/reference/LayoutFormat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/LayoutGlue.html</loc>
-  </url>
-  <url>
-    <loc>/reference/LayoutJson.html</loc>
-  </url>
-  <url>
-    <loc>/reference/LogEvent.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Logger.html</loc>
-  </url>
-  <url>
-    <loc>/reference/LoggerGlue.html</loc>
-  </url>
-  <url>
-    <loc>/reference/as.data.frame.LogEvent.html</loc>
-  </url>
-  <url>
-    <loc>/reference/as_LogEvent.html</loc>
-  </url>
-  <url>
-    <loc>/reference/basic_config.html</loc>
-  </url>
-  <url>
-    <loc>/reference/colorize_levels.html</loc>
-  </url>
-  <url>
-    <loc>/reference/default_exception_handler.html</loc>
-  </url>
-  <url>
-    <loc>/reference/event_list.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_log_levels.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_logger.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/is_filter.html</loc>
-  </url>
-  <url>
-    <loc>/reference/label_levels.html</loc>
-  </url>
-  <url>
-    <loc>/reference/lgr-package.html</loc>
-  </url>
-  <url>
-    <loc>/reference/logger_config.html</loc>
-  </url>
-  <url>
-    <loc>/reference/logger_index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/logger_tree.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pad_right.html</loc>
-  </url>
-  <url>
-    <loc>/reference/print.Appender.html</loc>
-  </url>
-  <url>
-    <loc>/reference/print.LogEvent.html</loc>
-  </url>
-  <url>
-    <loc>/reference/print.Logger.html</loc>
-  </url>
-  <url>
-    <loc>/reference/print.logger_tree.html</loc>
-  </url>
-  <url>
-    <loc>/reference/read_json_lines.html</loc>
-  </url>
-  <url>
-    <loc>/reference/simple_logging.html</loc>
-  </url>
-  <url>
-    <loc>/reference/standardize_threshold.html</loc>
-  </url>
-  <url>
-    <loc>/reference/string_repr.html</loc>
-  </url>
-  <url>
-    <loc>/reference/suspend_logging.html</loc>
-  </url>
-  <url>
-    <loc>/reference/system_infos.html</loc>
-  </url>
-  <url>
-    <loc>/reference/toString.LogEvent.html</loc>
-  </url>
-  <url>
-    <loc>/reference/use_logger.html</loc>
-  </url>
-  <url>
-    <loc>/reference/with_log_level.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://s-fleck.github.io/lgr/404.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/LICENSE-text.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/LICENSE.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/articles/index.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/articles/lgr.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/authors.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/index.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/news/index.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/Appender.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/AppenderBuffer.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/AppenderConsole.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/AppenderFile.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/AppenderFileRotating.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/AppenderFileRotatingDate.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/AppenderFileRotatingTime.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/AppenderMemory.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/AppenderTable.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/CannotInitializeAbstractClassError.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/EventFilter.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/FilterForceLevel.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/FilterInject.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/Filterable.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/Layout.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/LayoutFormat.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/LayoutGlue.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/LayoutJson.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/LogEvent.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/Logger.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/LoggerGlue.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/as.data.frame.LogEvent.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/as_LogEvent.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/basic_config.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/colorize_levels.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/default_exception_handler.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/event_list.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/get_log_levels.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/get_logger.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/index.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/is_filter.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/label_levels.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/lgr-package.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/logger_config.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/logger_index.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/logger_tree.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/pad_right.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/print.Appender.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/print.LogEvent.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/print.Logger.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/print.logger_tree.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/read_json_lines.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/simple_logging.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/standardize_threshold.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/string_repr.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/suspend_logging.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/system_infos.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/toString.LogEvent.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/use_logger.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/with_log_level.html</loc></url>
 </urlset>
+
