@@ -212,8 +212,8 @@ Logger <- R6::R6Class(
 
         # Check if LogEvent should be created
         if (
-          identical(level[[1]] > get("threshold", envir = self), TRUE) ||
-          identical(getOption("lgr.logging_suspended"), TRUE)
+          isTRUE(level[[1]] > get("threshold", envir = self)) ||
+          isTRUE(getOption("lgr.logging_suspended"))
         ){
           return(invisible(msg))
         }
@@ -305,7 +305,7 @@ Logger <- R6::R6Class(
     #' @description Log an Event fatal priority
     #' @param msg,...,caller see `$log()`
     fatal = function(msg, ..., caller = get_caller(-8L)){
-      if (identical(get("threshold", envir = self) < 100L, TRUE))
+      if (isTRUE(get("threshold", envir = self) < 100L))
         return(invisible())
 
       get("log", envir = self)(
@@ -321,7 +321,7 @@ Logger <- R6::R6Class(
     #' @description Log an Event error priority
     #' @param msg,...,caller see `$log()`
     error = function(msg, ..., caller = get_caller(-8L)){
-      if (identical(get("threshold", envir = self) < 200L, TRUE))
+      if (isTRUE(get("threshold", envir = self) < 200L))
         return(invisible())
 
       get("log", envir = self)(
@@ -337,7 +337,7 @@ Logger <- R6::R6Class(
     #' @description Log an Event warn priority
     #' @param msg,...,caller see `$log()`
     warn = function(msg, ..., caller = get_caller(-8L)){
-      if (identical(get("threshold", envir = self) < 300L, TRUE))
+      if (isTRUE(get("threshold", envir = self) < 300L))
         return(invisible())
 
       get("log", envir = self)(
@@ -353,7 +353,7 @@ Logger <- R6::R6Class(
     #' @description Log an Event info priority
     #' @param msg,...,caller see `$log()`
     info = function(msg, ..., caller = get_caller(-8L)){
-      if (identical(get("threshold", envir = self) < 400L, TRUE))
+      if (isTRUE(get("threshold", envir = self) < 400L))
         return(invisible())
 
       get("log", envir = self)(
@@ -369,7 +369,7 @@ Logger <- R6::R6Class(
     #' @description Log an Event debug priority
     #' @param msg,...,caller see `$log()`
     debug = function(msg, ..., caller = get_caller(-8L)){
-      if (identical(get("threshold", envir = self) < 500L, TRUE))
+      if (isTRUE(get("threshold", envir = self) < 500L))
         return(invisible())
 
       get("log", envir = self)(
@@ -385,7 +385,7 @@ Logger <- R6::R6Class(
     #' @description Log an Event trace priority
     #' @param msg,...,caller see `$log()`
     trace = function(msg, ..., caller = get_caller(-8L)){
-      if (identical(get("threshold", envir = self) < 600L, TRUE))
+      if (isTRUE(get("threshold", envir = self) < 600L))
         return(invisible())
 
       get("log", envir = self)(
@@ -781,7 +781,7 @@ LoggerGlue <- R6::R6Class(
   public = list(
 
     fatal = function(..., caller = get_caller(-8L), .envir = parent.frame()){
-      if (identical(get("threshold", envir = self) < 100L, TRUE))
+      if (isTRUE(get("threshold", envir = self) < 100L))
         return(invisible())
 
       force(.envir)
@@ -795,7 +795,7 @@ LoggerGlue <- R6::R6Class(
     },
 
     error = function(..., caller = get_caller(-8L), .envir = parent.frame()){
-      if (identical(get("threshold", envir = self) < 200L, TRUE))
+      if (isTRUE(get("threshold", envir = self) < 200L))
         return(invisible())
 
       get("log", envir = self)(
@@ -808,7 +808,7 @@ LoggerGlue <- R6::R6Class(
     },
 
     warn = function(..., caller = get_caller(-8L), .envir = parent.frame()){
-      if (identical(get("threshold", envir = self) < 300L, TRUE))
+      if (isTRUE(get("threshold", envir = self) < 300L))
         return(invisible())
 
       get("log", envir = self)(
@@ -821,7 +821,7 @@ LoggerGlue <- R6::R6Class(
     },
 
     info = function(..., caller = get_caller(-8L), .envir = parent.frame()){
-      if (identical(get("threshold", envir = self) < 400L, TRUE))
+      if (isTRUE(get("threshold", envir = self) < 400L))
         return(invisible())
 
       get("log", envir = self)(
@@ -834,7 +834,7 @@ LoggerGlue <- R6::R6Class(
     },
 
     debug = function(..., caller = get_caller(-8L), .envir = parent.frame()){
-      if (identical(get("threshold", envir = self) < 500L, TRUE))
+      if (isTRUE(get("threshold", envir = self) < 500L))
         return(invisible())
 
       force(.envir)
@@ -848,7 +848,7 @@ LoggerGlue <- R6::R6Class(
     },
 
     trace = function(..., caller = get_caller(-8L), .envir = parent.frame()){
-      if (identical(get("threshold", envir = self) < 600L, TRUE))
+      if (isTRUE(get("threshold", envir = self) < 600L))
         return(invisible())
 
       force(.envir)
@@ -913,8 +913,8 @@ LoggerGlue <- R6::R6Class(
 
         # Check if LogEvent should be created
         if (
-          identical(level[[1]] > get("threshold", envir = self), TRUE) ||
-          identical(getOption("lgr.logging_suspended"), TRUE)
+          isTRUE(level[[1]] > get("threshold", envir = self)) ||
+          isTRUE(getOption("lgr.logging_suspended"))
         ){
           return(invisible(msg))
         }
