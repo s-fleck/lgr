@@ -112,9 +112,9 @@ assert <- function(
   call. = FALSE,
   domain = NULL
 ){
-  if (identical(cond, TRUE)){
+  if (isTRUE(cond)){
     return(TRUE)
-  } else if (identical(cond, FALSE)){
+  } else if (isFALSE(cond)){
     if (identical(length(list(...)), 0L)){
       msg <- paste0("`", deparse(match.call()[[2]]), "`", " is not 'TRUE'")
       stop(msg, call. = call., domain = domain)
@@ -323,7 +323,7 @@ is_bool <- function(x){
 #' @noRd
 #'
 is_scalar_bool <- function(x){
-  identical(x, TRUE) || identical(x, FALSE)
+  is.logical(x) && length(x) == 1L && !is.na(x)
 }
 
 
@@ -356,14 +356,14 @@ is_scalar_integerish <- function(x){
 
 
 is_n <- function(x){
-  is_scalar_integerish(x) && identical(x > 0, TRUE)
+  is_scalar_integerish(x) && isTRUE(x > 0)
 }
 
 
 
 
 is_n0 <- function(x){
-  is_scalar_integerish(x) && identical(x >= 0, TRUE)
+  is_scalar_integerish(x) && isTRUE(x >= 0)
 }
 
 

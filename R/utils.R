@@ -231,7 +231,7 @@ CannotInitializeAbstractClassError <- function(
 
 # stricter & faster thant base R version & support for R < 3.5
 isFALSE <- function(x){
-  identical(x, FALSE)
+  is.logical(x) && length(x) == 1L && !is.na(x) && !x
 }
 
 
