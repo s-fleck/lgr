@@ -28,9 +28,9 @@ Filterable <- R6::R6Class(
           r <- f[["filter"]](event)
         }
 
-        if (identical(r, TRUE)){
+        if (isTRUE(r)){
           # do nothing
-        } else if (identical(r, FALSE)){
+        } else if (isFALSE(r)){
           return(FALSE)
         } else {
           warning(
