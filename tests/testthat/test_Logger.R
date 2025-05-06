@@ -1,6 +1,9 @@
 context("Logger")
 
 
+# Logger ------------------------------------------------------------------
+
+
 
 test_that("logging conditions works", {
   e <- error("blahblah")
@@ -379,10 +382,16 @@ test_that("$config works with lists", {
 
 
 
+# Multi-Logger tests -------------------------------------------------------------
 
 test_that("Logger$log() dispatches to all appenders, even if some throw an error", {
   ln <- Logger$new("normal", propagate = FALSE)
   lg <- LoggerGlue$new("glue", propagate = FALSE)
+
+  on.exit({
+    ln$config(NULL)
+    lg$config(NULL)
+  })
 
   AppErr <- R6::R6Class(
     inherit = AppenderConsole,
@@ -415,6 +424,11 @@ test_that("Logger$log() dispatches to all appenders, even if some throw an error
 test_that("Logger error contains useful call object", {
   l <- get_logger("test")
   g <- get_logger_glue("testglue")
+
+  on.exit({
+    l$config(NULL)
+    g$config(NULL)
+  })
 
   expect_warning(l$info("this will fail", e = stop()), "l\\$info")
   expect_warning(g$info("this will fail", e = stop()), "g\\$info")
@@ -451,18 +465,52 @@ test_that("Appender error contains useful call object", {
 })
 
 
-
-
-
-test_that("Logger$log 'msg' argument works as expected", {
+test_that("Logger$log - with 'msg' argument - logs the message", {
   l <- get_logger("test")$set_propagate(FALSE)
-  g <- get_logger_glue("testglue")$set_propagate(FALSE)
 
   on.exit({
     l$config(NULL)
-    g$config(NULL)
   })
 
   expect_silent(l$log(level = "fatal", msg = "test"))
-  expect_warning(g$log(level = "fatal", msg = "test"), "does not support")
 })
+
+
+test_that("LoggerGlue$log - with 'msg' argument - throws a warning", {
+  l <- get_logger_glue("testglue")$set_propagate(FALSE)
+
+  on.exit({
+    l$config(NULL)
+  })
+
+  expect_warning(l$log(level = "fatal", msg = "test"), "does not support")
+})
+
+
+test_that("Logger$log - with string interpolation - adds .rawMsg to event", {
+  l <- get_logger("test")$set_propagate(FALSE)
+
+  on.exit({
+    l$config(NULL)
+  })
+
+  l$info("foo %s", "bar")
+
+  expect_identical(l$last_event$msg, "foo bar")
+  expect_identical(l$last_event$.rawMsg, "foo %s")
+})
+
+
+test_that("LoggerGlue$log - with string interpolation - adds .rawMsg to event", {
+  l <- get_logger_glue("testglue")$set_propagate(FALSE)
+
+  on.exit({
+    l$config(NULL)
+  })
+
+  l$fatal("hash {x}", x = "baz")
+
+  expect_identical(as.character(l$last_event$msg), "hash baz")
+  expect_identical(l$last_event$.rawMsg, "hash {x}")
+})
+

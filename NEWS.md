@@ -4,6 +4,11 @@
   `{knitr}` rendering process, log messages are now output to `stderr` instead 
   of `stdout` by default, to avoid polluting markdown documents (#62, thx @gadenbuie).
 
+* added hidden `.rawMsg` property to LogEvents to store message without
+  string interpolation (e.g. that still contains the placeholders from 
+  `sprintf()` or `glue()`) (#60)
+
+
 # lgr 0.4.4
 
 * `%k` and `%K` parameters in `format.LogEvent` now work as expected when using
