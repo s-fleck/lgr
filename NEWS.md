@@ -8,7 +8,7 @@
   string interpolation (e.g. that still contains the placeholders from 
   `sprintf()` or `glue()`) (#60)
   
-* updated Readnme
+* updated Readme
 
 
 # lgr 0.4.4
