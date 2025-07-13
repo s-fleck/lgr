@@ -124,17 +124,19 @@ rows in the result (rather than a single list-column row). This defaults to
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"lorem ipsum"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [20:58:48.456] lorem ipsum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [10:19:58.310] lorem ipsum</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   level           timestamp logger caller         msg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2025-04-14 20:58:48   test   eval lorem ipsum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   level           timestamp logger caller         msg      rawMsg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2025-07-13 10:19:58   test   eval lorem ipsum lorem ipsum</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"LogEvents can store any custom log values"</span>, df <span class="op">=</span> <span class="va">iris</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [20:58:48.460] LogEvents can store any custom log values {df: &lt;data.frame 150x5&gt;}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [10:19:58.314] LogEvents can store any custom log values {df: &lt;data.frame 150x5&gt;}</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   level           timestamp logger caller</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2025-04-14 20:58:48   test   eval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                         msg           df</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2025-07-13 10:19:58   test   eval</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                         msg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 LogEvents can store any custom log values</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                      rawMsg           df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 LogEvents can store any custom log values c(5.1, 4....</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">)</span><span class="op">$</span><span class="va">df</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span>
@@ -149,80 +151,80 @@ rows in the result (rather than a single list-column row). This defaults to
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># by default non-scalars are boxed</span></span></span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"letters"</span>, letters <span class="op">=</span> <span class="va">letters</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [20:58:48.465] letters {letters: (a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z)}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [10:19:58.320] letters {letters: (a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z)}</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   level           timestamp logger caller     msg      letters</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2025-04-14 20:58:48   test   eval letters a, b, c,....</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   level           timestamp logger caller     msg  rawMsg      letters</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2025-07-13 10:19:58   test   eval letters letters a, b, c,....</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># this behaviour can be modified by supplying a custom boxing function</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span>, box_if <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    level           timestamp logger caller     msg letters</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    400 2025-04-14 20:58:48   test   eval letters       a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    400 2025-04-14 20:58:48   test   eval letters       b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    400 2025-04-14 20:58:48   test   eval letters       c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    400 2025-04-14 20:58:48   test   eval letters       d</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    400 2025-04-14 20:58:48   test   eval letters       e</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    400 2025-04-14 20:58:48   test   eval letters       f</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    400 2025-04-14 20:58:48   test   eval letters       g</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8    400 2025-04-14 20:58:48   test   eval letters       h</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9    400 2025-04-14 20:58:48   test   eval letters       i</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   400 2025-04-14 20:58:48   test   eval letters       j</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11   400 2025-04-14 20:58:48   test   eval letters       k</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12   400 2025-04-14 20:58:48   test   eval letters       l</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13   400 2025-04-14 20:58:48   test   eval letters       m</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14   400 2025-04-14 20:58:48   test   eval letters       n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15   400 2025-04-14 20:58:48   test   eval letters       o</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16   400 2025-04-14 20:58:48   test   eval letters       p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17   400 2025-04-14 20:58:48   test   eval letters       q</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18   400 2025-04-14 20:58:48   test   eval letters       r</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19   400 2025-04-14 20:58:48   test   eval letters       s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20   400 2025-04-14 20:58:48   test   eval letters       t</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21   400 2025-04-14 20:58:48   test   eval letters       u</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22   400 2025-04-14 20:58:48   test   eval letters       v</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23   400 2025-04-14 20:58:48   test   eval letters       w</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24   400 2025-04-14 20:58:48   test   eval letters       x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25   400 2025-04-14 20:58:48   test   eval letters       y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26   400 2025-04-14 20:58:48   test   eval letters       z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    level           timestamp logger caller     msg  rawMsg letters</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    400 2025-07-13 10:19:58   test   eval letters letters       a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    400 2025-07-13 10:19:58   test   eval letters letters       b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    400 2025-07-13 10:19:58   test   eval letters letters       c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    400 2025-07-13 10:19:58   test   eval letters letters       d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    400 2025-07-13 10:19:58   test   eval letters letters       e</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    400 2025-07-13 10:19:58   test   eval letters letters       f</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    400 2025-07-13 10:19:58   test   eval letters letters       g</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    400 2025-07-13 10:19:58   test   eval letters letters       h</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    400 2025-07-13 10:19:58   test   eval letters letters       i</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   400 2025-07-13 10:19:58   test   eval letters letters       j</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11   400 2025-07-13 10:19:58   test   eval letters letters       k</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12   400 2025-07-13 10:19:58   test   eval letters letters       l</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   400 2025-07-13 10:19:58   test   eval letters letters       m</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14   400 2025-07-13 10:19:58   test   eval letters letters       n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15   400 2025-07-13 10:19:58   test   eval letters letters       o</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16   400 2025-07-13 10:19:58   test   eval letters letters       p</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17   400 2025-07-13 10:19:58   test   eval letters letters       q</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18   400 2025-07-13 10:19:58   test   eval letters letters       r</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19   400 2025-07-13 10:19:58   test   eval letters letters       s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20   400 2025-07-13 10:19:58   test   eval letters letters       t</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21   400 2025-07-13 10:19:58   test   eval letters letters       u</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22   400 2025-07-13 10:19:58   test   eval letters letters       v</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23   400 2025-07-13 10:19:58   test   eval letters letters       w</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24   400 2025-07-13 10:19:58   test   eval letters letters       x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25   400 2025-07-13 10:19:58   test   eval letters letters       y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26   400 2025-07-13 10:19:58   test   eval letters letters       z</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span>, cols_expand <span class="op">=</span> <span class="st">"letters"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    level           timestamp logger caller     msg letters</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    400 2025-04-14 20:58:48   test   eval letters       a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    400 2025-04-14 20:58:48   test   eval letters       b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    400 2025-04-14 20:58:48   test   eval letters       c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    400 2025-04-14 20:58:48   test   eval letters       d</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    400 2025-04-14 20:58:48   test   eval letters       e</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    400 2025-04-14 20:58:48   test   eval letters       f</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    400 2025-04-14 20:58:48   test   eval letters       g</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8    400 2025-04-14 20:58:48   test   eval letters       h</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9    400 2025-04-14 20:58:48   test   eval letters       i</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   400 2025-04-14 20:58:48   test   eval letters       j</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11   400 2025-04-14 20:58:48   test   eval letters       k</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12   400 2025-04-14 20:58:48   test   eval letters       l</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13   400 2025-04-14 20:58:48   test   eval letters       m</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14   400 2025-04-14 20:58:48   test   eval letters       n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15   400 2025-04-14 20:58:48   test   eval letters       o</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16   400 2025-04-14 20:58:48   test   eval letters       p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17   400 2025-04-14 20:58:48   test   eval letters       q</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18   400 2025-04-14 20:58:48   test   eval letters       r</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19   400 2025-04-14 20:58:48   test   eval letters       s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20   400 2025-04-14 20:58:48   test   eval letters       t</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21   400 2025-04-14 20:58:48   test   eval letters       u</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22   400 2025-04-14 20:58:48   test   eval letters       v</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23   400 2025-04-14 20:58:48   test   eval letters       w</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24   400 2025-04-14 20:58:48   test   eval letters       x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25   400 2025-04-14 20:58:48   test   eval letters       y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26   400 2025-04-14 20:58:48   test   eval letters       z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    level           timestamp logger caller     msg  rawMsg letters</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    400 2025-07-13 10:19:58   test   eval letters letters       a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    400 2025-07-13 10:19:58   test   eval letters letters       b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    400 2025-07-13 10:19:58   test   eval letters letters       c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    400 2025-07-13 10:19:58   test   eval letters letters       d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    400 2025-07-13 10:19:58   test   eval letters letters       e</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    400 2025-07-13 10:19:58   test   eval letters letters       f</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    400 2025-07-13 10:19:58   test   eval letters letters       g</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    400 2025-07-13 10:19:58   test   eval letters letters       h</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    400 2025-07-13 10:19:58   test   eval letters letters       i</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   400 2025-07-13 10:19:58   test   eval letters letters       j</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11   400 2025-07-13 10:19:58   test   eval letters letters       k</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12   400 2025-07-13 10:19:58   test   eval letters letters       l</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   400 2025-07-13 10:19:58   test   eval letters letters       m</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14   400 2025-07-13 10:19:58   test   eval letters letters       n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15   400 2025-07-13 10:19:58   test   eval letters letters       o</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16   400 2025-07-13 10:19:58   test   eval letters letters       p</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17   400 2025-07-13 10:19:58   test   eval letters letters       q</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18   400 2025-07-13 10:19:58   test   eval letters letters       r</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19   400 2025-07-13 10:19:58   test   eval letters letters       s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20   400 2025-07-13 10:19:58   test   eval letters letters       t</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21   400 2025-07-13 10:19:58   test   eval letters letters       u</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22   400 2025-07-13 10:19:58   test   eval letters letters       v</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23   400 2025-07-13 10:19:58   test   eval letters letters       w</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24   400 2025-07-13 10:19:58   test   eval letters letters       x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25   400 2025-07-13 10:19:58   test   eval letters letters       y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26   400 2025-07-13 10:19:58   test   eval letters letters       z</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># The `msg` argument of a log event is always vectorized</span></span></span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a vectorized"</span>, <span class="st">"log message"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [20:58:48.472] a vectorized</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [20:58:48.472] log message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [10:19:58.327] a vectorized</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [10:19:58.327] log message</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   level    timestamp logger caller msg.c..a.vectorized....log.message..</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2025-04-....   test   eval                         a vectorized</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   400 2025-04-....   test   eval                          log message</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   msg.c..a.vectorized....log.message...1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                           a vectorized</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                            log message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2025-07-....   test   eval                         a vectorized</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   400 2025-07-....   test   eval                          log message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   msg.c..a.vectorized....log.message...1       rawMsg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                           a vectorized a vector....</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                            log message a vector....</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;Logger&gt; [info] test</span>
@@ -240,7 +242,7 @@ rows in the result (rather than a single list-column row). This defaults to
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

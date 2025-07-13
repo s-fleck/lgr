@@ -41,8 +41,9 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.5.9000" id="lgr-0459000">lgr 0.4.5.9000<a class="anchor" aria-label="anchor" href="#lgr-0459000"></a></h2>
-<ul><li>
-<code>AppenderConsole</code> now accept a <code>connection</code> argument. If called from a <a href="https://yihui.org/knitr/" class="external-link">knitr</a> rendering process, log messages are now output to <code>stderr</code> instead of <code>stdout</code> by default, to avoid polluting markdown documents (<a href="https://github.com/s-fleck/lgr/issues/62" class="external-link">#62</a>, thx <a href="https://github.com/gadenbuie" class="external-link">@gadenbuie</a>).</li>
+<ul><li><p><code>AppenderConsole</code> now accept a <code>connection</code> argument. If called from a <a href="https://yihui.org/knitr/" class="external-link">knitr</a> rendering process, log messages are now output to <code>stderr</code> instead of <code>stdout</code> by default, to avoid polluting markdown documents (<a href="https://github.com/s-fleck/lgr/issues/62" class="external-link">#62</a>, thx <a href="https://github.com/gadenbuie" class="external-link">@gadenbuie</a>).</p></li>
+<li><p>BREAKING: added <code>rawMsg</code> property to LogEvents to store message without string interpolation (e.g. that still contains the placeholders from <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code> or <code><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue()</a></code>). rawMessage will be added by default to json log files (<a href="https://github.com/s-fleck/lgr/issues/60" class="external-link">#60</a>)</p></li>
+<li><p>updated Readme</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.4" id="lgr-044">lgr 0.4.4<a class="anchor" aria-label="anchor" href="#lgr-044"></a></h2><p class="text-muted">CRAN release: 2022-09-05</p>
@@ -155,7 +156,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>
