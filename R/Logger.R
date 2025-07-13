@@ -235,7 +235,7 @@ Logger <- R6::R6Class(
             timestamp = timestamp,
             caller = caller,
             msg = msg,
-            .rawMsg = rawMsg
+            rawMsg = rawMsg
           )
         } else {
           dots <- list(...)
@@ -248,7 +248,7 @@ Logger <- R6::R6Class(
               timestamp = timestamp,
               caller = caller,
               msg = msg,
-              .rawMsg = rawMsg
+              rawMsg = rawMsg
             )
           } else {
             not_named <- vapply(names(dots), is_blank, TRUE, USE.NAMES = FALSE)
@@ -263,7 +263,7 @@ Logger <- R6::R6Class(
                 timestamp = timestamp,
                 caller = caller,
                 msg = msg,
-                .rawMsg = rawMsg
+                rawMsg = rawMsg
               ),
               dots[!not_named]
             )
@@ -941,7 +941,7 @@ LoggerGlue <- R6::R6Class(
             timestamp = timestamp,
             caller = caller,
             msg = msg,
-            .rawMsg = rawMsg
+            rawMsg = rawMsg
           ),
           dots[custom_fields]
         )

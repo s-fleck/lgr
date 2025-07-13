@@ -53,7 +53,7 @@ LogEvent <- R6::R6Class(
       timestamp = Sys.time(),
       caller = NA,
       msg = NA,
-      .rawMsg = msg,
+      rawMsg = msg,
       ...
     ){
       assert(inherits(logger, "Logger"), "Logger must be a <Logger> object, not a ", class_fmt(logger))
@@ -65,7 +65,7 @@ LogEvent <- R6::R6Class(
       assign("timestamp", timestamp, self)
       assign("caller", caller, self)
       assign("msg", msg, self)
-      assign(".rawMsg", .rawMsg, self)
+      assign("rawMsg", rawMsg, self)
 
       # custom values
       if (!missing(...)){
@@ -98,20 +98,20 @@ LogEvent <- R6::R6Class(
     #' event (equivalent to `get_logger(event$logger)`).
     .logger = NULL,
 
-    #' @field .rawMsg `character`. The raw log message without string
+    #' @field rawMsg `character`. The raw log message without string
     #'   interpolation.
-    .rawMsg = NULL
+    rawMsg = NULL
   ),
 
   active = list(
 
     #' @field values `list`. All values stored in the `LogEvent`, including
-    #' all *custom fields*, but not including `event$.logger` and `event$.rawMsg`.
+    #' all *custom fields*, but not including `event$.logger`.
     values = function(){
       fixed_vals   <- c("level", "timestamp", "logger", "caller", "msg")
       custom_vals <- setdiff(
         names(get(".__enclos_env__", self)[["self"]]),
-        c(".__enclos_env__", "level_name", "initialize", "clone", "values", ".rawMsg",
+        c(".__enclos_env__", "level_name", "initialize", "clone", "values", "rawMsg",
           ".logger")
       )
       valnames <- union(fixed_vals, custom_vals) # to enforce order of fixed_vals

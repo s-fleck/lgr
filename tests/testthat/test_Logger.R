@@ -487,7 +487,7 @@ test_that("LoggerGlue$log - with 'msg' argument - throws a warning", {
 })
 
 
-test_that("Logger$log - with string interpolation - adds .rawMsg to event", {
+test_that("Logger$log - with string interpolation - adds rawMsg to event", {
   l <- get_logger("test")$set_propagate(FALSE)
 
   on.exit({
@@ -497,11 +497,11 @@ test_that("Logger$log - with string interpolation - adds .rawMsg to event", {
   l$info("foo %s", "bar")
 
   expect_identical(l$last_event$msg, "foo bar")
-  expect_identical(l$last_event$.rawMsg, "foo %s")
+  expect_identical(l$last_event$rawMsg, "foo %s")
 })
 
 
-test_that("LoggerGlue$log - with string interpolation - adds .rawMsg to event", {
+test_that("LoggerGlue$log - with string interpolation - adds rawMsg to event", {
   l <- get_logger_glue("testglue")$set_propagate(FALSE)
 
   on.exit({
@@ -511,6 +511,6 @@ test_that("LoggerGlue$log - with string interpolation - adds .rawMsg to event", 
   l$fatal("hash {x}", x = "baz")
 
   expect_identical(as.character(l$last_event$msg), "hash baz")
-  expect_identical(l$last_event$.rawMsg, "hash {x}")
+  expect_identical(l$last_event$rawMsg, "hash {x}")
 })
 
