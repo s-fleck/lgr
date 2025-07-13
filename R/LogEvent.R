@@ -108,11 +108,10 @@ LogEvent <- R6::R6Class(
     #' @field values `list`. All values stored in the `LogEvent`, including
     #' all *custom fields*, but not including `event$.logger`.
     values = function(){
-      fixed_vals   <- c("level", "timestamp", "logger", "caller", "msg")
+      fixed_vals   <- c("level", "timestamp", "logger", "caller", "msg", "rawMsg")
       custom_vals <- setdiff(
         names(get(".__enclos_env__", self)[["self"]]),
-        c(".__enclos_env__", "level_name", "initialize", "clone", "values", "rawMsg",
-          ".logger")
+        c(".__enclos_env__", "level_name", "initialize", "clone", "values", ".logger")
       )
       valnames <- union(fixed_vals, custom_vals) # to enforce order of fixed_vals
       mget(valnames, envir = self)
@@ -335,6 +334,7 @@ as_tibble.LogEvent <- function(
 #'       multiple threads.}
 #'   \item{`%c`}{the calling function}
 #'   \item{`%m`}{the log message}
+#'   \item{`%r`}{the raw log message (without string interpolation)
 #'   \item{`%f`}{all custom fields of `x` in a pseudo-JSON like format that is
 #'     optimized for human readability and console output}
 #'   \item{`%j`}{all custom fields of `x` in proper JSON. This requires that you
@@ -433,7 +433,7 @@ format.LogEvent <- function(
     fmt,
     valid_tokens = paste0(
       "%",
-      c("t", "p", "c", "m", "l", "L", "n", "f", "j", "k", "K", "g"))
+      c("t", "p", "c", "m", "r", "l", "L", "n", "f", "j", "k", "K", "g"))
   )
 
   # format
@@ -450,6 +450,7 @@ format.LogEvent <- function(
       "%K" = colorize_levels(lvls, colors, transform = function(.) toupper(strtrim(., 1))),
       "%t" = format(get("timestamp", envir = x), format = timestamp_fmt),
       "%m" = get("msg", envir = x),
+      "%r" = get("rawMsg", envir = x),
       "%c" = get("caller", envir = x),
       "%g" = get("logger", envir = x),
       "%p" = Sys.getpid(),
@@ -597,4 +598,4 @@ tokenize_format <- function(
 
 # globals --------------------------------------------------------
 
-DEFAULT_FIELDS <- c("level", "timestamp", "logger", "caller", "msg")
+DEFAULT_FIELDS <- c("level", "timestamp", "logger", "caller", "msg", "rawMsg")

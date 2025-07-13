@@ -97,17 +97,20 @@ basic_config <- function(
   if (!is.null(file)){
     ext <- tools::file_ext(file)
 
-    if (identical(tolower(ext), "json")){
-      stop(
-        "Please use `.jsonl` and not `.json` as file extension for JSON log",
-        "files. The reason is that that JSON files created",
-        "by lgr are not true JSON files but JSONlines files.",
-        "See https://jsonlines.org/ for more infos."
-      )
+    if (tolower(ext) %in% c("jsonl", "json")){
 
-    } else if (identical(tolower(ext), "jsonl")){
-      if (!is.null(fmt) && !identical(fmt, default_fmt))
+      if (identical(tolower(ext), "json")){
+        warning(
+          "Please use `.jsonl` and not `.json` as file extension for JSON log ",
+          "files. The reason is that that JSON files created ",
+          "by lgr are not true JSON files but JSONlines files. ",
+          "See https://jsonlines.org/ for more infos."
+        )
+      }
+
+      if (!is.null(fmt) && !identical(fmt, default_fmt)){
         warning("`fmt` is ignored if `file` is a '.jsonl' file")
+      }
 
       l$add_appender(
         name = "file",
