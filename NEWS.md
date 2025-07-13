@@ -6,7 +6,7 @@
 
 * BREAKING: added `rawMsg` property to LogEvents to store message without
   string interpolation (e.g. that still contains the placeholders from 
-  `sprintf()` or `glue()`). rawMessage will be added by default to json
+  `sprintf()` or `glue()`). rawMsg will be added by default to json
   log files (#60)
   
 * Replace `NULL` values and empty characters in logging by the string `"<NULL>"`. 
