@@ -4,6 +4,8 @@ for (strategy in c(
   # "multisession",
   # "cluster"
 )){
+  skip_if_not_installed("future")
+
   context(sprintf("future plan = '%s'", strategy))
 
   if (!future::availableCores("multicore") > 1L){

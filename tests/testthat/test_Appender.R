@@ -6,7 +6,8 @@ event <- LogEvent$new(
   level = 200L,
   timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
   caller = NA_character_,
-  msg = "foo bar"
+  msg = "foo bar",
+  rawMsg = "foo raw"
 )
 
 
@@ -17,8 +18,6 @@ test_that("Appender: $append() works", {
   app <- Appender$new()
   expect_match(app$append(event), "foo bar")
 })
-
-
 
 
 test_that("Appender: $set_threshold() works", {
@@ -50,7 +49,6 @@ test_that("AppenderFile: logging with LayoutFormat", {
 })
 
 
-
 test_that("AppenderFile: logging with LayoutJson", {
   tf <- tempfile()
   on.exit(unlink(tf))
@@ -68,7 +66,6 @@ test_that("AppenderFile: logging with LayoutJson", {
 })
 
 
-
 test_that("AppenderFile: creates empty log file on init", {
   tf <- tempfile()
   on.exit(unlink(tf))
@@ -80,7 +77,6 @@ test_that("AppenderFile: creates empty log file on init", {
   AppenderFile$new(file = file.path(tf))
   expect_true(file.exists(tf))
 })
-
 
 
 test_that("AppenderFile: $show() works", {
@@ -117,7 +113,6 @@ test_that("AppenderFile: $show() works", {
 })
 
 
-
 test_that("AppenderFile$data throws an error", {
   tf <- tempfile()
   on.exit(unlink(tf))
@@ -134,9 +129,6 @@ test_that("AppenderFile$data throws an error", {
 
   expect_error(lg$appenders$file$data, class = "CannotParseLogError")
 })
-
-
-
 
 
 test_that("AppenderFile: creates empty log file on init", {
@@ -192,8 +184,6 @@ test_that("AppenderConsole: $append() works", {
 })
 
 
-
-
 test_that("AppenderConsole: $filter() works", {
   app1 <- AppenderConsole$new()
   expect_true(app1$filter(event))
@@ -237,6 +227,17 @@ test_that("AppenderConsole: chooses stderr by default when in knitr", {
     msg_out,
     "ERROR.*:19:33.*foo.*bar"
   )
+})
+
+
+test_that("AppenderConsole: rawMessage visible when set in layout", {
+
+  lo <- LayoutFormat$new("%m -- %r")
+  app <- AppenderConsole$new(layout = lo)
+
+  expect_match(
+    capture.output(app$append(event)),
+    "foo bar -- foo raw")
 })
 
 
