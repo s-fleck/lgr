@@ -321,6 +321,24 @@ test_that("$ancestry works", {
 })
 
 
+test_that("Logger handles null values", {
+  l <- Logger$new("test", propagate = FALSE)
+
+  log_null <- l$info("foo %s %s", NULL, character())
+  expect_equal(log_null, "foo <NULL> <NULL>")
+})
+
+
+test_that("Logger handles null values along with named parameters", {
+  l <- Logger$new("test", propagate = FALSE)
+
+  log_null <- l$info("foo %s %s", NULL, character(), valbert = "hashbaz", nullbert = NULL)
+  expect_equal(log_null, "foo <NULL> <NULL>")
+
+  expect_true(l$last_event$valbert == "hashbaz")
+  expect_true("nullbert" %in% names(l$last_event$values))
+  expect_null(l$last_event$nullbert)
+})
 
 
 # LoggerGlue --------------------------------------------------------------
@@ -347,8 +365,6 @@ test_that("LoggerGlue supports custom fields", {
 })
 
 
-
-
 test_that("LoggerGlue uses the correct evaluation environment", {
   l <- LoggerGlue$new("glue", propagate = FALSE)
 
@@ -357,8 +373,6 @@ test_that("LoggerGlue uses the correct evaluation environment", {
   expect_match(l$fatal(100, "{x}", x = iris[['Species']][[1]]), "setosa")
   expect_match(l$log(100, "{x}", x = iris[['Species']][[1]]), "setosa")
 })
-
-
 
 
 test_that("$config works with lists", {
@@ -380,6 +394,40 @@ test_that("$config works with lists", {
 })
 
 
+test_that("LoggerGlue handles null values", {
+  l <- LoggerGlue$new("glue", propagate = FALSE)
+
+  log_null <- l$info("foo", NULL)
+  expect_equal(log_null, "foo<NULL>")
+
+  log_null_parameter <- l$info("foo {bar} {baz}", bar = NULL, baz = character())
+  expect_equal(log_null_parameter, "foo <NULL> <NULL>")
+})
+
+
+test_that("LoggerGlue handles null values along with named parameters", {
+  l <- LoggerGlue$new("test", propagate = FALSE)
+
+  log_null <- l$info("foo ", NULL, character(), valbert = "hashbaz", nullbert = NULL)
+  expect_equal(log_null, "foo <NULL><NULL>")
+
+  expect_true(l$last_event$valbert == "hashbaz")
+  expect_true("nullbert" %in% names(l$last_event$values))
+  expect_null(l$last_event$nullbert)
+})
+
+
+test_that("Logger glue can use custom transformers", {
+  transformer <- function(text, envir) {
+    "transformed text"
+  }
+
+  l <- LoggerGlue$new("glue", propagate = FALSE, transformer = transformer)
+
+  e <- log_null <- l$info("foo {bar}", foo = "bar")
+
+  expect_equal(e, "foo transformed text")
+})
 
 
 # Multi-Logger tests -------------------------------------------------------------

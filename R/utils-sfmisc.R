@@ -58,13 +58,19 @@ class_fmt <- function(x, ignore = NULL){
 }
 
 
-
-
 compact <- function(x){
-  x[!vapply(x, is.null, FALSE)]
+  x[!vapply(x, is_empty, FALSE)]
 }
 
 
+replace_empty <- function(x, fallback = "<NULL>"){
+  for (i in seq_along(x)){
+    if (is_empty(x[[i]])){
+      x[[i]] <- fallback
+    }
+  }
+  x
+}
 
 
 walk <- function(.x, .f, ...){
@@ -385,14 +391,14 @@ is_equal_length <- function(...){
 
 #' Check if Object has length 0
 #'
-#' Check wheter an object is either `TRUE` or `FALSE`.
+#' Check whether an object is either `TRUE` or `FALSE`.
 #'
 #' @param x Any \R Object.
 #' @return either `TRUE` or `FALSE`
 #' @noRd
 #'
 is_empty <- function(x){
-  identical(length(x), 0L)
+  !length(x)
 }
 
 

@@ -9,7 +9,12 @@
   `sprintf()` or `glue()`). rawMessage will be added by default to json
   log files (#60)
   
-* updated Readme
+* Replace `NULL` values and empty characters in logging by the string `"<NULL>"`. 
+  Before, `NULL` values would have resulted in empty log messages. (#51)
+  
+* Support transformers for `LoggerGlue` (see `?glue::glue`) (#51)
+  
+* updated README
 
 
 # lgr 0.4.4

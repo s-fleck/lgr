@@ -105,7 +105,7 @@
 NULL
 
 
-
+# Logger ------------------------------------------------------------------
 
 #' @export
 Logger <- R6::R6Class(
@@ -148,7 +148,8 @@ Logger <- R6::R6Class(
       threshold = NULL,
       filters = list(),
       exception_handler = default_exception_handler,
-      propagate = TRUE
+      propagate = TRUE,
+      replace_empty = "<NULL>"
     ){
       # fields
       # threshold must be set *after* the logging functions have been initalized
@@ -167,6 +168,7 @@ Logger <- R6::R6Class(
       self$set_propagate(propagate)
       self$set_filters(filters)
       self$set_exception_handler(exception_handler)
+      self$set_replace_empty(replace_empty)
 
       invisible(self)
     },
@@ -241,7 +243,9 @@ Logger <- R6::R6Class(
           dots <- list(...)
 
           if (is.null(names(dots))){
-            msg  <- sprintf(msg, ...)
+            dots <- replace_empty(dots, get("replace_empty", self))
+
+            msg  <- do.call(sprintf, args = c(list(msg), dots))
             vals <- list(
               logger = self,
               level = level,
@@ -252,8 +256,11 @@ Logger <- R6::R6Class(
             )
           } else {
             not_named <- vapply(names(dots), is_blank, TRUE, USE.NAMES = FALSE)
+            unnamed_dots <- dots[not_named]
+            unnamed_dots <- replace_empty(unnamed_dots, get("replace_empty", self))
+
             if (any(not_named)){
-              msg <- do.call(sprintf, c(list(msg), dots[not_named]))
+              msg <- do.call(sprintf, c(list(msg), unnamed_dots))
             }
 
             vals <- c(
@@ -559,6 +566,8 @@ Logger <- R6::R6Class(
     },
 
 
+    # .. setters --------------------------------------------------------------
+
     #' @description Set the exception handler of a logger
     #'
     #' @param fun a `function` with the single argument `e` (an error [condition])
@@ -611,6 +620,17 @@ Logger <- R6::R6Class(
       invisible(self)
     },
 
+    #' @description Set the replacement for empty values (`NULL` or empty
+    #'   vectors)
+    #'
+    #' @param x should be a `character` vector, but other types of values are
+    #'   supported. use wisely.
+    set_replace_empty = function(x){
+      private[[".replace_empty"]] <- x
+
+      invisible(self)
+    },
+
 
     #' @description Spawn a child Logger.
     #' This is very similar to using [get_logger()], but
@@ -625,7 +645,7 @@ Logger <- R6::R6Class(
   ),
 
 
-  # active bindings ---------------------------------------------------------
+  # .. active bindings ---------------------------------------------------------
   active = list(
 
     #' @field name A `character` scalar. The unique name of each logger,
@@ -716,6 +736,9 @@ Logger <- R6::R6Class(
       }
     },
 
+    replace_empty = function() {
+      get(".replace_empty", envir = private)
+    },
 
     #' @field exception_handler a `function`. See `$set_exception_handler` and
     #'   `$handle_exception`
@@ -725,7 +748,7 @@ Logger <- R6::R6Class(
   ),
 
 
-  # private -----------------------------------------------------------------
+  # .. private -----------------------------------------------------------------
   private = list(
     set_name = function(x){
       assert(is_scalar_character(x))
@@ -747,13 +770,13 @@ Logger <- R6::R6Class(
       invisible()
     },
 
-    # +- fields ---------------------------------------------------------------
     .propagate = NULL,
     .exception_handler = NULL,
     .name = NULL,
     .appenders = NULL,
     .threshold = NULL,
-    .last_event = NULL
+    .last_event = NULL,
+    .replace_empty = NULL
   )
 )
 
@@ -784,6 +807,40 @@ LoggerGlue <- R6::R6Class(
 
   public = list(
 
+    initialize = function(
+      name = "(unnamed logger)",
+      appenders = list(),
+      threshold = NULL,
+      filters = list(),
+      exception_handler = default_exception_handler,
+      propagate = TRUE,
+      replace_empty = "<NULL>",
+      transformer = NULL
+      ){
+        # fields
+        # threshold must be set *after* the logging functions have been initalized
+        if (identical(name, "(unnamed logger)")){
+          warning(
+            "When creating a new Logger, you should assign it a unique `name`. ",
+            "Please see ?Logger for more infos.", call. = FALSE
+          )
+        }
+
+        private$set_name(name)
+        private$.last_event <- LogEvent$new(self)
+
+        self$set_threshold(threshold)
+        self$set_appenders(appenders)
+        self$set_propagate(propagate)
+        self$set_filters(filters)
+        self$set_exception_handler(exception_handler)
+        self$set_replace_empty(replace_empty)
+        self$set_transformer(transformer)
+
+        invisible(self)
+      },
+
+    # .. methods --------------------------------------------------------------
     fatal = function(..., caller = get_caller(-8L), .envir = parent.frame()){
       if (isTRUE(get("threshold", envir = self) < 100L))
         return(invisible())
@@ -918,8 +975,18 @@ LoggerGlue <- R6::R6Class(
           }
         })
 
+        dots_msg <- replace_empty(dots_msg, get("replace_empty", self))
         rawMsg <- dots[[1]]
-        msg <- do.call(glue::glue, args = c(dots_msg, list(.envir = .envir)))
+
+        glue_args <- list(.envir = .envir)
+
+        transformer <- get("transformer", self)
+
+        if (!is.null(transformer)){
+          glue_args[[".transformer"]] <- transformer
+        }
+
+        msg <- do.call(glue::glue, args = c(dots_msg, glue_args))
 
         # Check if LogEvent should be created
         if (
@@ -992,7 +1059,31 @@ LoggerGlue <- R6::R6Class(
 
     spawn = function(name){
       get_logger_glue(c(private[[".name"]], name))
+    },
+
+    # .. setters -----------------------------------------------------------------
+
+    #' @description Set the transformer for glue string interpolation
+    #'
+    #' @param x single [function] taking two arguments. See [glue::glue()].
+    set_transformer = function(x){
+      private[[".transformer"]] <- x
+
+      invisible(self)
     }
+  ),
+
+  # .. active bindings ---------------------------------------------------
+  active = list(
+    transformer = function() {
+      get(".transformer", envir = private)
+    }
+  ),
+
+
+  # . private ------------------------------------
+  private = list(
+    .transformer = NULL
   )
 )
 
