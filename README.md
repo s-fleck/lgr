@@ -6,7 +6,7 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/lgr)](https://cran.r-project.org/package=lgr)
 [![Lifecycle:
-maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+maturing](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 
 lgr is a logging package for R built on the back of
 [R6](https://github.com/r-lib/R6) classes. It is designed to be
@@ -61,13 +61,13 @@ vignette.
 
 ``` r
 lgr$fatal("A critical error")
-#> FATAL [20:38:17.998] A critical error
+#> FATAL [11:32:48.843] A critical error
 lgr$error("A less severe error")
-#> ERROR [20:38:18.057] A less severe error
+#> ERROR [11:32:48.864] A less severe error
 lgr$warn("A potentially bad situation")
-#> WARN  [20:38:18.072] A potentially bad situation
+#> WARN  [11:32:48.868] A potentially bad situation
 lgr$info("iris has %s rows", nrow(iris))
-#> INFO  [20:38:18.074] iris has 150 rows
+#> INFO  [11:32:48.869] iris has 150 rows
 
 # the following log levels are hidden by default
 lgr$debug("A debug message")
@@ -81,23 +81,22 @@ appender to log to a file with little effort.
 tf <- tempfile()
 lgr$add_appender(AppenderFile$new(tf, layout = LayoutJson$new()))
 lgr$info("cars has %s rows", nrow(cars))
-#> INFO  [20:38:18.173] cars has 50 rows
+#> INFO  [11:32:48.878] cars has 50 rows
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2023-03-04 20:38:18","logger":"root","caller":"eval","msg":"cars has 50 rows"}
+#> {"level":400,"timestamp":"2025-07-13 11:32:48","logger":"root","caller":"eval","msg":"cars has 50 rows","rawMsg":"cars has %s rows"}
 ```
 
-By passing a named argument to `info()`, `warn()`, and co you can log
-not only text but arbitrary R objects. Not all appenders support
-structured logging perfectly, but JSON does. This way you can create
-logfiles that are machine as well as (somewhat) human readable.
+By passing a named argument to the log function, you can log not only
+text but arbitrary R objects. Not all appenders support structured
+logging perfectly, but JSON does. This way you can create logfiles that
+are machine as well as (somewhat) human readable.
 
 ``` r
-lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
-#> Warning in (function (fmt, ...) : one argument not used by format 'loading cars'
-#> INFO  [20:38:18.263] loading cars {rows: `50`, cols: `2`}
+lgr$info("loading %s", "cars", rows = nrow(cars), cols = ncol(cars), vector = c(1, 2, 3))
+#> INFO  [11:32:48.893] loading cars {rows: `50`, cols: `2`, vector: (1, 2, 3)}
 cat(readLines(tf), sep = "\n")
-#> {"level":400,"timestamp":"2023-03-04 20:38:18","logger":"root","caller":"eval","msg":"cars has 50 rows"}
-#> {"level":400,"timestamp":"2023-03-04 20:38:18","logger":"root","caller":"eval","msg":"loading cars","rows":50,"cols":2}
+#> {"level":400,"timestamp":"2025-07-13 11:32:48","logger":"root","caller":"eval","msg":"cars has 50 rows","rawMsg":"cars has %s rows"}
+#> {"level":400,"timestamp":"2025-07-13 11:32:48","logger":"root","caller":"eval","msg":"loading cars","rawMsg":"loading %s","rows":50,"cols":2,"vector":[1,2,3]}
 ```
 
 For more examples please see the package
@@ -132,16 +131,22 @@ file.remove(logfile)
 
 ## Development status
 
-lgr in general is stable and safe for use, but **the following features
-are still experimental**:
+lgr is stable and safe for use. I’ve been using it in production code
+for several years myself. There has been very little recent development
+because it’s pretty stable and contains (nearly) all planned features.
 
-- Database appenders which are available from the separate package
-  [lgrExtra](https://github.com/s-fleck/lgrExtra).
-- yaml/json config files for loggers (do not yet support all planned
-  features)
-- The documentation in general. I’m still hoping for more R6-specific
-  features in [roxygen2](https://github.com/r-lib/roxygen2) before I
-  invest more time in object documentation.
+Notable points that are still planned (without specific ETA):
+
+- Support for config files is heavily experimental and incomplete. This
+  is an important basic feature, but I have not yet found a great way to
+  support this in a generic way. For now, I recommend you come up with
+  your own solution if you need to lgr to work in a production
+  environment that relies on config files.
+
+- Improve the documentation. The documentation should be mostly
+  complete, but is not perfect. If there’s something missing or
+  something you don’t understand, please ask (for example via a github
+  issue).
 
 ## Dependencies
 
@@ -175,40 +180,17 @@ Extra appenders (in the main package):
 - [glue](https://glue.tidyverse.org/) for a more flexible formatting
   syntax via LoggerGlue and LayoutGlue.
 
-Extra appenders via [lgrExtra](https://github.com/s-fleck/lgrExtra):
+Extra appenders via lgrExtra:
 
-- [DBI](https://github.com/r-dbi/DBI) for logging to databases. lgr is
-  confirmed to work with the following backends:
-
-  - [RSQLite](https://github.com/r-dbi/RSQLite),
-  - [RMariaDB](https://github.com/r-dbi/RMariaDB) for MariaDB and MySQL,
-  - [RPostgres](https://cran.r-project.org/package=RPostgres),
-  - [RJDBC](https://github.com/s-u/RJDBC) for DB2, and
-  - [odbc](https://github.com/r-dbi/odbc) also for DB2.
-
-  In theory all DBI compliant database packages should work. If you are
-  using lgr with a database backend, please report your (positive and
-  negative) experiences, as database support is still somewhat
-  experimental.
-
-- [gmailr](https://cran.r-project.org/package=gmailr) or
-
-- [sendmailR](https://cran.r-project.org/package=sendmailR) for email
-  notifications.
-
-- [RPushbullet](https://github.com/eddelbuettel/rpushbullet) for push
-  notifications.
-
-- [Rsyslog](https://cran.r-project.org/package=rsyslog) for logging to
-  syslog on POSIX-compatible systems.
-
-- [elastic](https://cran.r-project.org/package=elastic) for logging to
-  ElasticSearch
+- For support for Elasticsearch, Dynatrace, Push- and Email
+  notifications, etc… as well as the relevant dependencies please refer
+  to the documentation of
+  [lgrExtra](https://github.com/s-fleck/lgrExtra)
 
 Other extra features:
 
 - [yaml](https://CRAN.R-project.org/package=yaml) for configuring
-  loggers via YAML files  
+  loggers via YAML files (experimental)
 - [crayon](https://github.com/r-lib/crayon) for colored console
   output.  
 - [whoami](https://github.com/r-lib/whoami/blob/master/DESCRIPTION) for

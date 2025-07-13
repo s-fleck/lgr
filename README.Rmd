@@ -95,13 +95,13 @@ lgr$info("cars has %s rows", nrow(cars))
 cat(readLines(tf))
 ```
 
-By passing a named argument to `info()`, `warn()`, and co you can log not only 
+By passing a named argument to the log function, you can log not only 
 text but arbitrary R objects. Not all appenders support structured logging
 perfectly, but JSON does. This way you can create 
 logfiles that are machine as well as (somewhat) human readable.
 
 ```{r}
-lgr$info("loading cars", "cars", rows = nrow(cars), cols = ncol(cars))
+lgr$info("loading %s", "cars", rows = nrow(cars), cols = ncol(cars), vector = c(1, 2, 3))
 cat(readLines(tf), sep = "\n")
 ```
 
@@ -148,7 +148,7 @@ lgr is stable and safe for use. I've been using it in production code for
 several years myself. There has been very little recent development because
 it's pretty stable and contains (nearly) all planned features. 
 
-Notable points that are not 
+Notable points that are still planned (without specific ETA):
 
 * Support for config files is heavily experimental and incomplete. 
   This is an important basic feature, but I have not yet found a great way to
@@ -156,13 +156,9 @@ Notable points that are not
   solution if you need to lgr to work in a production environment that relies 
   on config files.
 
-* The documentation should be mostly complete, but is not perfect. If there's
-  something missing or something you don't understand - please ask (for example
-  via a github issue).
-  
-* Please also check out the lgrExtra package for a variety of extra appenders
-  [lgrExtra](https://github.com/s-fleck/lgrExtra) (that might not be as stable
-  as the main lgr package itself). 
+* Improve the documentation. The documentation should be mostly complete, but 
+  is not perfect. If there's something missing or something you don't understand,
+  please ask (for example via a github issue).
 
 
 ## Dependencies
