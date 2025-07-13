@@ -19,7 +19,7 @@ basic_config(console_connection = stdout())  # ensure default config
 # lgr
 
 [![CRAN status](https://www.r-pkg.org/badges/version/lgr)](https://cran.r-project.org/package=lgr)
-[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 
 lgr is a logging package for R built on the back of 
 [R6](https://github.com/r-lib/R6) classes. It is designed to be flexible,
@@ -144,14 +144,25 @@ file.remove(logfile)
 
 ## Development status
 
-lgr in general is stable and safe for use, but **the following features are still experimental**: 
+lgr is stable and safe for use. I've been using it in production code for 
+several years myself. There has been very little recent development because
+it's pretty stable and contains (nearly) all planned features. 
 
-* Database appenders which are available from the separate package
-  [lgrExtra](https://github.com/s-fleck/lgrExtra). 
-* yaml/json config files for loggers (do not yet support all planned features)
-* The documentation in general. I'm still hoping for more R6-specific features
-  in [roxygen2](https://github.com/r-lib/roxygen2) before I invest more
-  time in object documentation.
+Notable points that are not 
+
+* Support for config files is heavily experimental and incomplete. 
+  This is an important basic feature, but I have not yet found a great way to
+  support this in a generic way. For now, I recommend you come up with your own 
+  solution if you need to lgr to work in a production environment that relies 
+  on config files.
+
+* The documentation should be mostly complete, but is not perfect. If there's
+  something missing or something you don't understand - please ask (for example
+  via a github issue).
+  
+* Please also check out the lgrExtra package for a variety of extra appenders
+  [lgrExtra](https://github.com/s-fleck/lgrExtra) (that might not be as stable
+  as the main lgr package itself). 
 
 
 ## Dependencies
@@ -169,7 +180,6 @@ lgr comes with a long list of optional dependencies that make a wide range of
 appenders possible. You only need the dependencies for the Appenders you
 actually want to use. Care was taken to choose packages that are slim, stable, 
 have minimal dependencies, and are well maintained :
-
   
   Extra appenders (in the main package):
   
@@ -186,38 +196,16 @@ have minimal dependencies, and are well maintained :
   - [glue](https://glue.tidyverse.org/) for a more flexible formatting syntax
     via LoggerGlue and LayoutGlue.
     
-  Extra appenders via [lgrExtra](https://github.com/s-fleck/lgrExtra):
+  Extra appenders via lgrExtra:
   
-  - [DBI](https://github.com/r-dbi/DBI) for logging to databases. lgr is 
-    confirmed to work with the following backends: 
-    - [RSQLite](https://github.com/r-dbi/RSQLite), 
-    - [RMariaDB](https://github.com/r-dbi/RMariaDB) for MariaDB and MySQL,
-    - [RPostgres](https://cran.r-project.org/package=RPostgres),
-    - [RJDBC](https://github.com/s-u/RJDBC) for DB2, and
-    - [odbc](https://github.com/r-dbi/odbc) also for DB2. 
-    
-    In theory all DBI compliant database packages should work. If you
-    are using lgr with a database backend, please report your (positive and
-    negative) experiences, as database support is still somewhat experimental.
-  
-  - [gmailr](https://cran.r-project.org/package=gmailr) or
-  
-  - [sendmailR](https://cran.r-project.org/package=sendmailR) for email 
-      notifications.
-      
-  - [RPushbullet](https://github.com/eddelbuettel/rpushbullet) for push
-    notifications.
-    
-  - [Rsyslog](https://cran.r-project.org/package=rsyslog) for logging to
-    syslog on POSIX-compatible systems.
-    
-  - [elastic](https://cran.r-project.org/package=elastic) for logging
-    to ElasticSearch
-  
+  - For support for Elasticsearch, Dynatrace, Push- and Email notifications, 
+    etc... as well as the relevant dependencies please refer to the 
+    documentation of [lgrExtra](https://github.com/s-fleck/lgrExtra)
+
   Other extra features:
   
   - [yaml](https://CRAN.R-project.org/package=yaml) for configuring loggers 
-    via YAML files  
+    via YAML files (experimental)
   - [crayon](https://github.com/r-lib/crayon) for colored console output.  
   - [whoami](https://github.com/r-lib/whoami/blob/master/DESCRIPTION) for 
     guessing the user name from various sources. You can also set the user name 
@@ -255,8 +243,6 @@ The long term goal is to support (nearly) all features of the python logging
 module. If you have experience with python logging or Log4j and are missing
 features/appenders that you'd like to see, please feel free to post a feature 
 request on the issue tracker.
-
-
 
 
 ## Acknowledgement

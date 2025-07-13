@@ -7,6 +7,8 @@
 * added hidden `.rawMsg` property to LogEvents to store message without
   string interpolation (e.g. that still contains the placeholders from 
   `sprintf()` or `glue()`) (#60)
+  
+* updated Readnme
 
 
 # lgr 0.4.4
