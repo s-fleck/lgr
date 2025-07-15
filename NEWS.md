@@ -14,8 +14,8 @@
   
 * Support transformers for `LoggerGlue` (see `?glue::glue`) (#51)
 
-* Add support for `excluded_properties` to LayoutJson (and exclude rawMsg by
-  default)
+* Add support for `excluded_fields` to `Layout`, and exclude rawMsg by
+  default from `LayotJson`
   
 * updated README
 

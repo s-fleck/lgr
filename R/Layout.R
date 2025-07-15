@@ -42,7 +42,29 @@ Layout <- R6::R6Class(
       toString(event)
     },
 
-    toString = function() fmt_class(class(self)[[1]])
+    toString = function() fmt_class(class(self)[[1]]),
+
+    # . . setters -----------------------------------------------------------------
+    set_excluded_fields = function(x){
+      assert(is.null(x) || is.character(x))
+      private$.excluded_fields <- x
+      invisible(self)
+    }
+  ),
+
+
+  # . . active --------------------------------------------------------------
+  active = list(
+    #' @field excluded_fields fields to exclude from the final log
+    excluded_fields = function() {
+      get(".excluded_fields", private)
+    }
+  ),
+
+
+  # . . private -------------------------------------------------------------
+  private = list(
+    .excluded_fields = NULL
   )
 )
 
@@ -86,12 +108,14 @@ LayoutFormat <- R6::R6Class(
       fmt = "%L [%t] %m %j",
       timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
       colors = NULL,
-      pad_levels = "right"
+      pad_levels = "right",
+      excluded_fields = NULL
     ){
       self$set_fmt(fmt)
       self$set_timestamp_fmt(timestamp_fmt)
       self$set_colors(colors)
       self$set_pad_levels(pad_levels)
+      self$set_excluded_fields(excluded_fields)
     },
 
     #' @description Format a LogEvent
@@ -104,7 +128,8 @@ LayoutFormat <- R6::R6Class(
         fmt = private$.fmt,
         timestamp_fmt = private$.timestamp_fmt,
         colors = private$.colors,
-        pad_levels = private$.pad_levels
+        pad_levels = private$.pad_levels,
+        excluded_fields = private$.excluded_fields
       )
     },
 
@@ -335,16 +360,16 @@ LayoutJson <- R6::R6Class(
     initialize = function(
       toJSON_args = list(auto_unbox = TRUE),
       timestamp_fmt = NULL,
-      excluded_properties = "rawMsg"
+      excluded_fields = "rawMsg"
     ){
       self$set_toJSON_args(toJSON_args)
       self$set_timestamp_fmt(timestamp_fmt)
-      self$set_excluded_properties(excluded_properties)
+      self$set_excluded_fields(excluded_fields)
     },
 
     format_event = function(event) {
       vals <- get("values", event)
-      vals <- vals[!names(vals) %in% self$excluded_properties]
+      vals <- vals[!names(vals) %in% self$excluded_fields]
       fmt  <- get("timestamp_fmt", self)
 
       if (!is.null(fmt)){
@@ -381,12 +406,6 @@ LayoutJson <- R6::R6Class(
     set_timestamp_fmt = function(x){
       assert(is.null(x) || is_scalar_character(x) || is.function(x))
       private[[".timestamp_fmt"]] <- x
-      invisible(self)
-    },
-
-    set_excluded_properties = function(x){
-      assert(is.null(x) || is.character(x))
-      private$.excluded_properties <- x
       invisible(self)
     },
 
@@ -435,20 +454,13 @@ LayoutJson <- R6::R6Class(
     #' @field timestamp_fmt Used by  `$format_event()` to format timestamps.
     timestamp_fmt = function() {
       get(".timestamp_fmt", private)
-    },
-
-    #' @field excluded_properties Used by  `$format_event()` to exclude selected
-    #' properties before serialization
-    excluded_properties = function() {
-      get(".excluded_properties", private)
     }
   ),
 
   # . . private --------------------------------------------------------------
   private = list(
     .toJSON_args = NULL,
-    .timestamp_fmt = NULL,
-    .excluded_properties = NULL
+    .timestamp_fmt = NULL
   )
 )
 

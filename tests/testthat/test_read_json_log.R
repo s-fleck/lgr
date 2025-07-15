@@ -20,7 +20,7 @@ test_that("read_json_lines() works as expected", {
 
   tres <- read_json_lines(tf)
 
-  expect_identical(names(tres), c("level", "timestamp", "logger", "caller", "msg", "rawMsg"))
+  expect_identical(names(tres), c("level", "timestamp", "logger", "caller", "msg"))
   expect_true(all(tres$level == seq(100, 600, by = 100)))
   file.remove(tf)
 })

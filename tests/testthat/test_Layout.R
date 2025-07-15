@@ -80,8 +80,8 @@ test_that("LayoutJson works as expected", {
 })
 
 
-test_that("LayoutJson `exclude_properties` works as expected", {
-  lo <- LayoutJson$new(excluded_properties = NULL)
+test_that("LayoutJson `excluded_fields` works as expected", {
+  lo <- LayoutJson$new(excluded_fields = NULL)
 
   x <- tevent$clone()
   x$foo <- "bar"

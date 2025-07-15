@@ -401,6 +401,7 @@ format.LogEvent <- function(
   colors = NULL,
   log_levels = getOption("lgr.log_levels"),
   pad_levels = "right",
+  excluded_fields = NULL,
   ...
 ){
   stopifnot(
@@ -454,8 +455,8 @@ format.LogEvent <- function(
       "%c" = get("caller", envir = x),
       "%g" = get("logger", envir = x),
       "%p" = Sys.getpid(),
-      "%f" = format_custom_fields(get_custom_fields(x), color = length(colors)),
-      "%j" = format_custom_fields_json(get_custom_fields(x)),
+      "%f" = format_custom_fields(get_custom_fields(x, excluded_fields), color = length(colors)),
+      "%j" = format_custom_fields_json(get_custom_fields(x, excluded_fields)),
       tokens[[i]]
     )
   }
@@ -515,8 +516,8 @@ do_box_if <- function(x, predicate, except, boxer = list){
 
 
 
-get_custom_fields <- function(x){
-  x$values[!names(x$values) %in% DEFAULT_FIELDS]
+get_custom_fields <- function(x, excluded_fields = NULL){
+  x$values[!names(x$values) %in% c(DEFAULT_FIELDS, excluded_fields)]
 }
 
 
