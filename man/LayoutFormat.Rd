@@ -42,6 +42,7 @@ This is the same list of format tokens as for \code{\link[=format.LogEvent]{form
 multiple threads.}
 \item{\verb{\%c}}{the calling function}
 \item{\verb{\%m}}{the log message}
+\item{\verb{\%r}}{the raw log message (without string interpolation)
 \item{\verb{\%f}}{all custom fields of \code{x} in a pseudo-JSON like format that is
 optimized for human readability and console output}
 \item{\verb{\%j}}{all custom fields of \code{x} in proper JSON. This requires that you
@@ -101,6 +102,13 @@ the package \pkg{crayon}) passed on on \code{\link[=format.LogEvent]{format.LogE
 \item \href{#method-LayoutFormat-clone}{\code{LayoutFormat$clone()}}
 }
 }
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Layout" data-id="set_excluded_fields"><a href='../../lgr/html/Layout.html#method-Layout-set_excluded_fields'><code>lgr::Layout$set_excluded_fields()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutFormat-new"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutFormat-new}{}}}
@@ -110,7 +118,8 @@ the package \pkg{crayon}) passed on on \code{\link[=format.LogEvent]{format.LogE
   fmt = "\%L [\%t] \%m \%j",
   timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3",
   colors = NULL,
-  pad_levels = "right"
+  pad_levels = "right",
+  excluded_fields = NULL
 )}\if{html}{\out{</div>}}
 }
 

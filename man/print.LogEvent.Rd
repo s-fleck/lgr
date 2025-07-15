@@ -22,6 +22,7 @@
   colors = NULL,
   log_levels = getOption("lgr.log_levels"),
   pad_levels = "right",
+  excluded_fields = NULL,
   ...
 )
 }
@@ -64,6 +65,7 @@ Print or Format Logging Data
 multiple threads.}
 \item{\verb{\%c}}{the calling function}
 \item{\verb{\%m}}{the log message}
+\item{\verb{\%r}}{the raw log message (without string interpolation)
 \item{\verb{\%f}}{all custom fields of \code{x} in a pseudo-JSON like format that is
 optimized for human readability and console output}
 \item{\verb{\%j}}{all custom fields of \code{x} in proper JSON. This requires that you

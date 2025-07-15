@@ -194,6 +194,7 @@ inherits from its ancestors}
 \item \href{#method-Logger-set_propagate}{\code{Logger$set_propagate()}}
 \item \href{#method-Logger-set_threshold}{\code{Logger$set_threshold()}}
 \item \href{#method-Logger-set_appenders}{\code{Logger$set_appenders()}}
+\item \href{#method-Logger-set_replace_empty}{\code{Logger$set_replace_empty()}}
 \item \href{#method-Logger-spawn}{\code{Logger$spawn()}}
 }
 }
@@ -229,7 +230,8 @@ their ancestors.
   threshold = NULL,
   filters = list(),
   exception_handler = default_exception_handler,
-  propagate = TRUE
+  propagate = TRUE,
+  replace_empty = "<NULL>"
 )}\if{html}{\out{</div>}}
 }
 
@@ -582,6 +584,25 @@ Set the Logger's Appenders
 output of a Logger. Be aware that a Logger also inherits the Appenders
 of its ancestors (see \code{vignette("lgr", package = "lgr")} for more info
 about Logger inheritance).}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Logger-set_replace_empty"></a>}}
+\if{latex}{\out{\hypertarget{method-Logger-set_replace_empty}{}}}
+\subsection{Method \code{set_replace_empty()}}{
+Set the replacement for empty values (\code{NULL} or empty
+vectors)
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$set_replace_empty(x)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{should be a \code{character} vector, but other types of values are
+supported. use wisely.}
 }
 \if{html}{\out{</div>}}
 }

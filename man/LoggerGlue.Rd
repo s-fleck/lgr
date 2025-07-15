@@ -4,13 +4,17 @@
 \alias{LoggerGlue}
 \title{LoggerGlue}
 \description{
+LoggerGlue
+
+LoggerGlue
+}
+\details{
 \code{LoggerGlue} uses \code{\link[glue:glue]{glue::glue()}} instead of \code{\link[base:sprintf]{base::sprintf()}} to construct
 log messages. \strong{glue} is a very well designed package for
 string interpolation. It makes composing log messages
 more flexible and comfortable at the price of an additional dependency and
 slightly less performance than \code{sprintf()}.
-}
-\details{
+
 \code{glue()} lets you define temporary named variables inside the call.
 As with the normal Logger, these named arguments get turned into custom
 fields; however, you can suppress this behaviour by making named argument
@@ -23,6 +27,7 @@ examples.
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
+\item \href{#method-LoggerGlue-new}{\code{LoggerGlue$new()}}
 \item \href{#method-LoggerGlue-fatal}{\code{LoggerGlue$fatal()}}
 \item \href{#method-LoggerGlue-error}{\code{LoggerGlue$error()}}
 \item \href{#method-LoggerGlue-warn}{\code{LoggerGlue$warn()}}
@@ -32,6 +37,7 @@ examples.
 \item \href{#method-LoggerGlue-log}{\code{LoggerGlue$log()}}
 \item \href{#method-LoggerGlue-list_log}{\code{LoggerGlue$list_log()}}
 \item \href{#method-LoggerGlue-spawn}{\code{LoggerGlue$spawn()}}
+\item \href{#method-LoggerGlue-set_transformer}{\code{LoggerGlue$set_transformer()}}
 }
 }
 \if{html}{\out{
@@ -44,15 +50,33 @@ examples.
 <li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="add_appender"><a href='../../lgr/html/Logger.html#method-Logger-add_appender'><code>lgr::Logger$add_appender()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="config"><a href='../../lgr/html/Logger.html#method-Logger-config'><code>lgr::Logger$config()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="handle_exception"><a href='../../lgr/html/Logger.html#method-Logger-handle_exception'><code>lgr::Logger$handle_exception()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="initialize"><a href='../../lgr/html/Logger.html#method-Logger-initialize'><code>lgr::Logger$initialize()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="remove_appender"><a href='../../lgr/html/Logger.html#method-Logger-remove_appender'><code>lgr::Logger$remove_appender()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_appenders"><a href='../../lgr/html/Logger.html#method-Logger-set_appenders'><code>lgr::Logger$set_appenders()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_exception_handler"><a href='../../lgr/html/Logger.html#method-Logger-set_exception_handler'><code>lgr::Logger$set_exception_handler()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_propagate"><a href='../../lgr/html/Logger.html#method-Logger-set_propagate'><code>lgr::Logger$set_propagate()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_replace_empty"><a href='../../lgr/html/Logger.html#method-Logger-set_replace_empty'><code>lgr::Logger$set_replace_empty()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_threshold"><a href='../../lgr/html/Logger.html#method-Logger-set_threshold'><code>lgr::Logger$set_threshold()</code></a></span></li>
 </ul>
 </details>
 }}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LoggerGlue-new"></a>}}
+\if{latex}{\out{\hypertarget{method-LoggerGlue-new}{}}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$new(
+  name = "(unnamed logger)",
+  appenders = list(),
+  threshold = NULL,
+  filters = list(),
+  exception_handler = default_exception_handler,
+  propagate = TRUE,
+  replace_empty = "<NULL>",
+  transformer = NULL
+)}\if{html}{\out{</div>}}
+}
+
+}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LoggerGlue-fatal"></a>}}
 \if{latex}{\out{\hypertarget{method-LoggerGlue-fatal}{}}}
@@ -139,5 +163,22 @@ examples.
 \if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$spawn(name)}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LoggerGlue-set_transformer"></a>}}
+\if{latex}{\out{\hypertarget{method-LoggerGlue-set_transformer}{}}}
+\subsection{Method \code{set_transformer()}}{
+Set the transformer for glue string interpolation
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$set_transformer(x)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{single \link{function} taking two arguments. See \code{\link[glue:glue]{glue::glue()}}.}
+}
+\if{html}{\out{</div>}}
+}
 }
 }

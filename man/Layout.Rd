@@ -34,11 +34,19 @@ Other Layouts:
 \code{\link{LayoutJson}}
 }
 \concept{Layouts}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{excluded_fields}}{fields to exclude from the final log}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-Layout-format_event}{\code{Layout$format_event()}}
 \item \href{#method-Layout-toString}{\code{Layout$toString()}}
+\item \href{#method-Layout-set_excluded_fields}{\code{Layout$set_excluded_fields()}}
 \item \href{#method-Layout-clone}{\code{Layout$clone()}}
 }
 }
@@ -68,6 +76,15 @@ that an \link{Appender} can write to an output destination.
 \subsection{Method \code{toString()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Layout$toString()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Layout-set_excluded_fields"></a>}}
+\if{latex}{\out{\hypertarget{method-Layout-set_excluded_fields}{}}}
+\subsection{Method \code{set_excluded_fields()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Layout$set_excluded_fields(x)}\if{html}{\out{</div>}}
 }
 
 }

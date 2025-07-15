@@ -57,12 +57,23 @@ Other Layouts:
 \item \href{#method-LayoutJson-clone}{\code{LayoutJson$clone()}}
 }
 }
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Layout" data-id="set_excluded_fields"><a href='../../lgr/html/Layout.html#method-Layout-set_excluded_fields'><code>lgr::Layout$set_excluded_fields()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutJson-new"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutJson-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$new(toJSON_args = list(auto_unbox = TRUE), timestamp_fmt = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$new(
+  toJSON_args = list(auto_unbox = TRUE),
+  timestamp_fmt = NULL,
+  excluded_fields = "rawMsg"
+)}\if{html}{\out{</div>}}
 }
 
 }

@@ -56,6 +56,13 @@ Other Layouts:
 \item \href{#method-LayoutGlue-clone}{\code{LayoutGlue$clone()}}
 }
 }
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="Layout" data-id="set_excluded_fields"><a href='../../lgr/html/Layout.html#method-Layout-set_excluded_fields'><code>lgr::Layout$set_excluded_fields()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutGlue-new"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutGlue-new}{}}}
