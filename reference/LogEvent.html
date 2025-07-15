@@ -91,7 +91,7 @@ LogEvent was created.</p></dd>
 event (equivalent to <code>get_logger(event$logger)</code>).</p></dd>
 
 
-<dt><code>.rawMsg</code></dt>
+<dt><code>rawMsg</code></dt>
 <dd><p><code>character</code>. The raw log message without string
 interpolation.</p></dd>
 
@@ -102,7 +102,7 @@ interpolation.</p></dd>
     <h2 id="active-bindings">Active bindings<a class="anchor" aria-label="anchor" href="#active-bindings"></a></h2>
     <p></p><div class="r6-active-bindings"><dl><dt><code>values</code></dt>
 <dd><p><code>list</code>. All values stored in the <code>LogEvent</code>, including
-all <em>custom fields</em>, but not including <code>event$.logger</code> and <code>event$.rawMsg</code>.</p></dd>
+all <em>custom fields</em>, but not including <code>event$.logger</code>.</p></dd>
 
 
 <dt><code>level_name</code></dt>
@@ -139,7 +139,7 @@ the <a href="Appender.html">Appenders</a> and <a href="Layout.html">Layouts</a> 
 <span>  timestamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  caller <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  msg <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  .rawMsg <span class="op">=</span> <span class="va">msg</span>,</span>
+<span>  rawMsg <span class="op">=</span> <span class="va">msg</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -183,17 +183,17 @@ this way, but not all Appenders will support them. See <a href="AppenderFile.htm
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"foo bar"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [08:17:11.493] foo bar</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [08:20:42.261] foo bar</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># The last LogEvent produced by a Logger is stored in its `last_event` field</span></span></span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span>  <span class="co"># formatted console output</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2025-07-15 08:17:11] foo bar</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2025-07-15 08:20:42] foo bar</span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">$</span><span class="va">values</span>  <span class="co"># values stored in the event</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $level</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 200</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2025-07-15 08:17:11 UTC"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2025-07-15 08:20:42 UTC"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $logger</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "test"</span>

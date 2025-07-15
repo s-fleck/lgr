@@ -65,6 +65,7 @@
 <span>  colors <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  log_levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"lgr.log_levels"</span><span class="op">)</span>,</span>
 <span>  pad_levels <span class="op">=</span> <span class="st">"right"</span>,</span>
+<span>  excluded_fields <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -144,49 +145,31 @@ multiple threads.</p></dd>
 <dt><code>%m</code></dt>
 <dd><p>the log message</p></dd>
 
-<dt><code>%f</code></dt>
-<dd><p>all custom fields of <code>x</code> in a pseudo-JSON like format that is
-optimized for human readability and console output</p></dd>
-
-<dt><code>%j</code></dt>
-<dd><p>all custom fields of <code>x</code> in proper JSON. This requires that you
+<dt><code>%r</code></dt>
+<dd><p>the raw log message (without string interpolation)
+<code>%f</code>all custom fields of <code>x</code> in a pseudo-JSON like format that is
+optimized for human readability and console output
+<code>%j</code>all custom fields of <code>x</code> in proper JSON. This requires that you
 have <strong>jsonlite</strong> installed and does not support colors as opposed to
 <code>%f</code></p></dd>
 
 
-</dl></div>
-
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># standard fields can be printed using special tokens</span></span></span>
-<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="LogEvent.html">LogEvent</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  level <span class="op">=</span> <span class="fl">300</span>, msg <span class="op">=</span> <span class="st">"a test event"</span>, caller <span class="op">=</span> <span class="st">"testfun()"</span>, logger <span class="op">=</span> <span class="va">lgr</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-15 08:17:17] a test event</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, fmt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"%t (%p) %c: %n - %m"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2025-07-15 08:17:17 (7297) testfun(): 300 - a test event</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, colors <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-15 08:17:17] a test event</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># custom values</span></span></span>
-<span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va"><a href="LogEvent.html">LogEvent</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  level <span class="op">=</span> <span class="fl">300</span>, msg <span class="op">=</span> <span class="st">"a gps track"</span>, logger <span class="op">=</span> <span class="va">lgr</span>,</span></span>
-<span class="r-in"><span>  waypoints <span class="op">=</span> <span class="fl">10</span>, location <span class="op">=</span> <span class="st">"Austria"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># default output with %f</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-15 08:17:17] a gps track  {waypoints: `10`, location: `Austria`}</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># proper JSON output with %j</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"jsonlite"</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span>, fmt <span class="op">=</span> <span class="st">"%L [%t] %m  %j"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-15 08:17:17] a gps track  {"waypoints":10,"location":"Austria"}</span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
+</dl><p># standard fields can be printed using special tokens
+x &lt;- LogEvent$new(
+  level = 300, msg = "a test event", caller = "testfun()", logger = lgr
+)
+print(x)
+print(x, fmt = c("%t (%p) %c: %n - %m"))
+print(x, colors = NULL)# custom values
+y &lt;- LogEvent$new(
+  level = 300, msg = "a gps track", logger = lgr,
+  waypoints = 10, location = "Austria"
+)# default output with %f
+print(y)# proper JSON output with %j
+if (requireNamespace("jsonlite"))
+print(y, fmt = "%L [%t] %m  %j")</p>
     </div>
+
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
