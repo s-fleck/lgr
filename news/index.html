@@ -45,7 +45,7 @@
 <li><p>BREAKING: added <code>rawMsg</code> property to LogEvents to store message without string interpolation (e.g. that still contains the placeholders from <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code> or <code><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue()</a></code>). rawMsg will be added by default to json log files (<a href="https://github.com/s-fleck/lgr/issues/60" class="external-link">#60</a>)</p></li>
 <li><p>Replace <code>NULL</code> values and empty characters in logging by the string <code>"&lt;NULL&gt;"</code>. Before, <code>NULL</code> values would have resulted in empty log messages. (<a href="https://github.com/s-fleck/lgr/issues/51" class="external-link">#51</a>)</p></li>
 <li><p>Support transformers for <code>LoggerGlue</code> (see <code><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">?glue::glue</a></code>) (<a href="https://github.com/s-fleck/lgr/issues/51" class="external-link">#51</a>)</p></li>
-<li><p>Add support for <code>excluded_properties</code> to LayoutJson (and exclude rawMsg by default)</p></li>
+<li><p>Add support for <code>excluded_fields</code> to <code>Layout</code>, and exclude rawMsg by default from <code>LayotJson</code></p></li>
 <li><p>updated README</p></li>
 </ul></div>
     <div class="section level2">
