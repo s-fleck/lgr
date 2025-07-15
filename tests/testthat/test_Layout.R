@@ -7,7 +7,9 @@ tevent <- LogEvent$new(
   timestamp = as.POSIXct(1541175573.9308, origin = "1970-01-01", tz = "UTC"),
   caller = NA_character_,
   msg = "foo bar",
-  rawMsg = "foo raw"
+  rawMsg = "foo raw",
+  customField = "hashbaz",
+  customField2 = "barfoo"
 )
 
 
@@ -24,6 +26,26 @@ test_that("Layouts works as expected", {
 test_that("LayoutFormat works as expected", {
   lo <- LayoutFormat$new()
   expect_match(lo$format_event(tevent), "ERROR .*2018-11-02 .*:19:33.*\\.* foo bar")
+
+  lo$set_timestamp_fmt("%Y-%m-%d")
+  lo$set_fmt("[%t]")
+  expect_identical(lo$format_event(tevent), "[2018-11-02]")
+})
+
+
+test_that("LayoutFormat works as expected with custom fields", {
+  lo <- LayoutFormat$new("%r %j")
+  expect_identical(lo$format_event(tevent), "foo raw {\"customField\":\"hashbaz\",\"customField2\":\"barfoo\"}")
+
+  lo$set_timestamp_fmt("%Y-%m-%d")
+  lo$set_fmt("[%t]")
+  expect_identical(lo$format_event(tevent), "[2018-11-02]")
+})
+
+
+test_that("LayoutFormat works as expected with custom fields", {
+  lo <- LayoutFormat$new("%r %j", excluded_fields = "customField2")
+  expect_identical(lo$format_event(tevent), "foo raw {\"customField\":\"hashbaz\"}")
 
   lo$set_timestamp_fmt("%Y-%m-%d")
   lo$set_fmt("[%t]")
@@ -68,20 +90,22 @@ test_that("LayoutJson works as expected", {
   json <- lo$format_event(x)
   tres <- jsonlite::fromJSON(json)
 
-  expected_values <- c("level", "timestamp", "logger", "caller", "msg", "foo")  # rawMsg is excluded by default
+  expected_values <- c("level", "timestamp", "logger", "caller", "msg", "foo", "customField", "customField2" )  # rawMsg is excluded by default
 
   tres[sapply(tres, is.null)] <- NA_character_
   expect_setequal(expected_values, names(tres))
   expect_identical(tres[["level"]], eres[["level"]])
   expect_identical(tres[["msg"]], eres[["msg"]])
   expect_identical(tres[["caller"]], eres[["caller"]])
+  expect_identical(tres[["customField"]], eres[["customField"]])
+  expect_identical(tres[["customField"]], eres[["customField"]])
   expect_equal(as.POSIXct(tres[["timestamp"]], tz = "UTC"), eres[["timestamp"]], tolerance = 1)
   expect_equal(tres[["foo"]], "bar")
 })
 
 
 test_that("LayoutJson `excluded_fields` works as expected", {
-  lo <- LayoutJson$new(excluded_fields = NULL)
+  lo <- LayoutJson$new(excluded_fields = c("customField", "customField2"))
 
   x <- tevent$clone()
   x$foo <- "bar"
