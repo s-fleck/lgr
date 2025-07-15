@@ -13,6 +13,9 @@
   Before, `NULL` values would have resulted in empty log messages. (#51)
   
 * Support transformers for `LoggerGlue` (see `?glue::glue`) (#51)
+
+* Add support for `excluded_properties` to LayoutJson (and exclude rawMsg by
+  default)
   
 * updated README
 

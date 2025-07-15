@@ -1,3 +1,6 @@
+# Layout ------------------------------------------------------------------
+
+
 #' Abstract Class for Layouts
 #'
 #' [Appenders] pass [LogEvents][LogEvent] to a Layout which formats it for
@@ -331,14 +334,17 @@ LayoutJson <- R6::R6Class(
 
     initialize = function(
       toJSON_args = list(auto_unbox = TRUE),
-      timestamp_fmt = NULL
+      timestamp_fmt = NULL,
+      excluded_properties = "rawMsg"
     ){
       self$set_toJSON_args(toJSON_args)
       self$set_timestamp_fmt(timestamp_fmt)
+      self$set_excluded_properties(excluded_properties)
     },
 
     format_event = function(event) {
       vals <- get("values", event)
+      vals <- vals[!names(vals) %in% self$excluded_properties]
       fmt  <- get("timestamp_fmt", self)
 
       if (!is.null(fmt)){
@@ -360,6 +366,9 @@ LayoutJson <- R6::R6Class(
       invisible(self)
     },
 
+
+    # . . setters -------------------------------------------------------------
+
     #' @description Set a format that this Layout will apply to timestamps.
     #'
     #' @param x
@@ -374,6 +383,14 @@ LayoutJson <- R6::R6Class(
       private[[".timestamp_fmt"]] <- x
       invisible(self)
     },
+
+    set_excluded_properties = function(x){
+      assert(is.null(x) || is.character(x))
+      private$.excluded_properties <- x
+      invisible(self)
+    },
+
+    #  . . methods ----------------------------------------------------------------
 
     toString = function() {
       fmt_class(class(self)[[1]])
@@ -406,22 +423,39 @@ LayoutJson <- R6::R6Class(
 
   ),
 
+
+  #  . . active fields ------------------------------------------------------
+
   active = list(
     #' @field toJSON_args a list of values passed on to [jsonlite::toJSON()]
-    toJSON_args   = function() get(".toJSON_args", private),
+    toJSON_args = function() {
+      get(".toJSON_args", private)
+    },
 
     #' @field timestamp_fmt Used by  `$format_event()` to format timestamps.
-    timestamp_fmt = function() get(".timestamp_fmt", private)
+    timestamp_fmt = function() {
+      get(".timestamp_fmt", private)
+    },
+
+    #' @field excluded_properties Used by  `$format_event()` to exclude selected
+    #' properties before serialization
+    excluded_properties = function() {
+      get(".excluded_properties", private)
+    }
   ),
 
+  # . . private --------------------------------------------------------------
   private = list(
     .toJSON_args = NULL,
-    .timestamp_fmt = NULL
+    .timestamp_fmt = NULL,
+    .excluded_properties = NULL
   )
 )
 
 
 
+
+# utils -------------------------------------------------------------------
 
 fmt_timestamp = function(x, fmt){
   if (is.character(fmt)){

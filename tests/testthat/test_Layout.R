@@ -6,7 +6,8 @@ tevent <- LogEvent$new(
   level = 200L,
   timestamp = as.POSIXct(1541175573.9308, origin = "1970-01-01", tz = "UTC"),
   caller = NA_character_,
-  msg = "foo bar"
+  msg = "foo bar",
+  rawMsg = "foo raw"
 )
 
 
@@ -67,13 +68,38 @@ test_that("LayoutJson works as expected", {
   json <- lo$format_event(x)
   tres <- jsonlite::fromJSON(json)
 
+  expected_values <- c("level", "timestamp", "logger", "caller", "msg", "foo")  # rawMsg is excluded by default
+
   tres[sapply(tres, is.null)] <- NA_character_
-  expect_setequal(c(names(eres), "foo"), names(tres))
+  expect_setequal(expected_values, names(tres))
   expect_identical(tres[["level"]], eres[["level"]])
   expect_identical(tres[["msg"]], eres[["msg"]])
   expect_identical(tres[["caller"]], eres[["caller"]])
   expect_equal(as.POSIXct(tres[["timestamp"]], tz = "UTC"), eres[["timestamp"]], tolerance = 1)
   expect_equal(tres[["foo"]], "bar")
+})
+
+
+test_that("LayoutJson `exclude_properties` works as expected", {
+  lo <- LayoutJson$new(excluded_properties = NULL)
+
+  x <- tevent$clone()
+  x$foo <- "bar"
+
+  eres <- x$values
+  json <- lo$format_event(x)
+  tres <- jsonlite::fromJSON(json)
+
+  expected_values <- c("level", "timestamp", "logger", "caller", "msg", "foo", "rawMsg")
+
+  tres[sapply(tres, is.null)] <- NA_character_
+  expect_setequal(expected_values, names(tres))
+  expect_identical(tres[["level"]], eres[["level"]])
+  expect_identical(tres[["msg"]], eres[["msg"]])
+  expect_identical(tres[["caller"]], eres[["caller"]])
+  expect_equal(as.POSIXct(tres[["timestamp"]], tz = "UTC"), eres[["timestamp"]], tolerance = 1)
+  expect_equal(tres[["foo"]], "bar")
+  expect_equal(tres[["rawMsg"]], "foo raw")
 })
 
 
