@@ -12,6 +12,7 @@
   colors = getOption("lgr.colors"),
   log_levels = getOption("lgr.log_levels"),
   pad_levels = "right",
+  excluded_fields = NULL,
   ...
 )
 
@@ -42,6 +43,9 @@ log levels (likely from \link[crayon:crayon]{crayon::crayon}).}
 \item{pad_levels}{\code{right}, \code{left} or \code{NULL}. Whether or not to pad the log
 level names to the same width on the left or right side, or not at all.}
 
+\item{excluded_fields}{a \code{character} vector of fields to exclude from \verb{\%j} and
+\verb{\%f}}
+
 \item{...}{ignored}
 }
 \value{
@@ -65,7 +69,7 @@ Print or Format Logging Data
 multiple threads.}
 \item{\verb{\%c}}{the calling function}
 \item{\verb{\%m}}{the log message}
-\item{\verb{\%r}}{the raw log message (without string interpolation)
+\item{\verb{\%r}}{the raw log message (without string interpolation)}
 \item{\verb{\%f}}{all custom fields of \code{x} in a pseudo-JSON like format that is
 optimized for human readability and console output}
 \item{\verb{\%j}}{all custom fields of \code{x} in proper JSON. This requires that you

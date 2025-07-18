@@ -318,6 +318,8 @@ as_tibble.LogEvent <- function(
 #' @inheritParams standardize_threshold
 #' @param pad_levels `right`, `left` or `NULL`. Whether or not to pad the log
 #'   level names to the same width on the left or right side, or not at all.
+#' @param excluded_fields a `character` vector of fields to exclude from `%j` and
+#'   `%f`
 #' @param ... ignored
 #'
 #' @section Format Tokens:
@@ -334,7 +336,7 @@ as_tibble.LogEvent <- function(
 #'       multiple threads.}
 #'   \item{`%c`}{the calling function}
 #'   \item{`%m`}{the log message}
-#'   \item{`%r`}{the raw log message (without string interpolation)
+#'   \item{`%r`}{the raw log message (without string interpolation)}
 #'   \item{`%f`}{all custom fields of `x` in a pseudo-JSON like format that is
 #'     optimized for human readability and console output}
 #'   \item{`%j`}{all custom fields of `x` in proper JSON. This requires that you
@@ -376,6 +378,7 @@ print.LogEvent <- function(
   colors = getOption("lgr.colors"),
   log_levels = getOption("lgr.log_levels"),
   pad_levels = "right",
+  excluded_fields = NULL,
   ...
 ){
   cat(format(
@@ -384,7 +387,8 @@ print.LogEvent <- function(
     timestamp_fmt = timestamp_fmt,
     colors = colors,
     log_levels = log_levels,
-    pad_levels = pad_levels
+    pad_levels = pad_levels,
+    excluded_fields = excluded_fields
   ), sep = "\n")
   invisible(x)
 }

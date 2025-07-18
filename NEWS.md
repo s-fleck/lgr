@@ -13,8 +13,9 @@
 
 - Support transformers for `LoggerGlue` (see `?glue::glue`) (#51)
 
-- Add support for `excluded_fields` to `Layout`, and exclude `rawMsg` by
-  default from `LayoutJson` (for backwards compatibility)
+- Add `excluded_fields`, `transform_event` and 
+  `transform_event_names` to `Layout` to make it more flexible. Exclude `rawMsg` 
+  by default for backwards compatibility.
 
 
 # lgr 0.4.4

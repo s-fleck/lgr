@@ -53,6 +53,25 @@ test_that("format.LogEvent works with colored %k and %K paramters", {
 })
 
 
+test_that("format.LogEvent - with excluded_fields - excludes those fields", {
+
+  # Arrange
+  x <- LogEvent$new(
+    level = 200,
+    logger = lgr::lgr,
+    msg = "lorem skjdghsad akjsgh asdgjh asdgjshadk gklsd.",
+    included_custom_field = "123",
+    excluded_custom_field = "abc"
+  )
+
+  # Act
+  res <- format(x, fmt = "%k %m %j %f", excluded_fields = "excluded_custom_field")
+
+  # Assert
+  expect_match(res, "included_custom_field")
+  expect_no_match(res, "excluded_custom_field")
+})
+
 
 
 test_that("toString.LogEvent works as expected", {
