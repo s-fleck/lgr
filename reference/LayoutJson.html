@@ -40,7 +40,7 @@ nice balance between human- an machine-readability."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Format LogEvents as JSON</h1>
-      <small class="dont-index">Source: <a href="https://github.com/s-fleck/lgr/blob/master/R/Layout.R" class="external-link"><code>R/Layout.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/s-fleck/lgr/blob/master/R/LayoutJson.R" class="external-link"><code>R/LayoutJson.R</code></a></small>
       <div class="d-none name"><code>LayoutJson.Rd</code></div>
     </div>
 
@@ -51,6 +51,20 @@ nice balance between human- an machine-readability.</p>
     </div>
 
 
+    <div class="section level2">
+    <h2 id="event-transformation">Event transformation<a class="anchor" aria-label="anchor" href="#event-transformation"></a></h2>
+
+
+<p>This Layout provides 4 ways to transform the event before serialization:</p><ol><li><p><code>transform_event</code>: a generic function to transform the event</p></li>
+<li><p><code>timestamp_fmt</code>: a format string or function to apply to the timestamp field</p></li>
+<li><p><code>transform_event_names</code>: a named <code>character</code> vector or a second
+function to rename fields</p></li>
+<li><p><code>excluded_fields</code>: a <code>character</code> vector to include fields.</p></li>
+</ol><p>In theory supplying a custom <code>transform_event</code> function is enough to
+perform all these actions, but the other three parameters are provided for
+convenience. Please note that they are applied in order (e.g. if you
+rename a field you have to exclude the <em>renamed</em> field to really exclude it).</p>
+    </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="read_json_lines.html">read_json_lines()</a></code>, <a href="https://jsonlines.org/" class="external-link">https://jsonlines.org/</a></p>
@@ -64,18 +78,6 @@ nice balance between human- an machine-readability.</p>
     <p><code><a href="Layout.html">lgr::Layout</a></code> -&gt; <code>LayoutJson</code></p>
     </div>
     <div class="section level2">
-    <h2 id="active-bindings">Active bindings<a class="anchor" aria-label="anchor" href="#active-bindings"></a></h2>
-    <p></p><div class="r6-active-bindings"><dl><dt><code>toJSON_args</code></dt>
-<dd><p>a list of values passed on to <code><a href="https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html" class="external-link">jsonlite::toJSON()</a></code></p></dd>
-
-
-<dt><code>timestamp_fmt</code></dt>
-<dd><p>Used by  <code>$format_event()</code> to format timestamps.</p></dd>
-
-
-</dl><p></p></div>
-    </div>
-    <div class="section level2">
     <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
 
 <div class="section">
@@ -85,6 +87,8 @@ nice balance between human- an machine-readability.</p>
 <li><p><a href="#method-LayoutJson-format_event"><code>LayoutJson$format_event()</code></a></p></li>
 <li><p><a href="#method-LayoutJson-set_toJSON_args"><code>LayoutJson$set_toJSON_args()</code></a></p></li>
 <li><p><a href="#method-LayoutJson-set_timestamp_fmt"><code>LayoutJson$set_timestamp_fmt()</code></a></p></li>
+<li><p><a href="#method-LayoutJson-set_transform_event"><code>LayoutJson$set_transform_event()</code></a></p></li>
+<li><p><a href="#method-LayoutJson-set_transform_event_names"><code>LayoutJson$set_transform_event_names()</code></a></p></li>
 <li><p><a href="#method-LayoutJson-toString"><code>LayoutJson$toString()</code></a></p></li>
 <li><p><a href="#method-LayoutJson-parse"><code>LayoutJson$parse()</code></a></p></li>
 <li><p><a href="#method-LayoutJson-read"><code>LayoutJson$read()</code></a></p></li>
@@ -92,16 +96,53 @@ nice balance between human- an machine-readability.</p>
 </ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="lgr" data-topic="Layout" data-id="set_excluded_fields"><a href="Layout.html#method-set_excluded_fields"><code>lgr::Layout$set_excluded_fields()</code></a></span></li>
 </ul></details></p><hr><a id="method-LayoutJson-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
-
-<div class="section">
+<p>Creates a new instance of this <a href="https://r6.r-lib.org/reference/R6Class.html" class="external-link">R6</a> class.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/LayoutJson.html">LayoutJson</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  toJSON_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>auto_unbox <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>  timestamp_fmt <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  transform_event <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">event</span><span class="op">)</span> <span class="va">event</span><span class="op">[[</span><span class="st">"values"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  transform_event_names <span class="op">=</span> <span class="va">identity</span>,</span>
 <span>  excluded_fields <span class="op">=</span> <span class="st">"rawMsg"</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>toJSON_args</code></dt>
+<dd><p>a list of arguments passed to <code><a href="https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html" class="external-link">jsonlite::toJSON()</a></code>,</p></dd>
+
+
+<dt><code>timestamp_fmt</code></dt>
+<dd><p>Format to be applied to the timestamp. This is
+applied after <code>transform_event()</code> but <code>before transform_event_names()</code></p><ul><li><p><code>NULL</code> (the default): formatting of the timestamp is left to
+<code><a href="https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html" class="external-link">jsonlite::toJSON()</a></code>,</p></li>
+<li><p>a <code>character</code> scalar as for <code><a href="https://rdrr.io/r/base/strptime.html" class="external-link">format.POSIXct()</a></code>, or</p></li>
+<li><p>a <code>function</code> that returns a vector of the same length as its
+(<a href="https://rdrr.io/r/base/DateTimeClasses.html" class="external-link">POSIXct</a>) input. The returned vector can be of any type
+supported by <code><a href="https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html" class="external-link">jsonlite::toJSON()</a></code>, but should usually be <code>character</code>.</p></li>
+</ul></dd>
+
+
+<dt><code>transform_event</code></dt>
+<dd><p>a <code>function</code> with a single argument <code>event</code> that
+takes a <a href="LogEvent.html">LogEvent</a> object and returns a list of values.</p></dd>
+
+
+<dt><code>transform_event_names</code></dt>
+<dd><p>A named <code>character</code> vector mapping original
+field names to Dynatrace-compatible ones, or a function with a single
+mandatory argument that accepts a character vector of field names.
+Applied after to <code>transform_event()</code>.</p></dd>
+
+
+<dt><code>excluded_fields</code></dt>
+<dd><p>A <code>character</code> vector of field names to exclude
+from the final output. Applied after <code>transform_event_names</code>.</p></dd>
+
+
+</dl><p></p></div>
+</div>
 
 </div><p></p><hr><a id="method-LayoutJson-format_event"></a><div class="section">
 <h3 id="method-format-event-">Method <code>format_event()</code><a class="anchor" aria-label="anchor" href="#method-format-event-"></a></h3>
@@ -114,47 +155,45 @@ nice balance between human- an machine-readability.</p>
 
 </div><p></p><hr><a id="method-LayoutJson-set_toJSON_args"></a><div class="section">
 <h3 id="method-set-tojson-args-">Method <code>set_toJSON_args()</code><a class="anchor" aria-label="anchor" href="#method-set-tojson-args-"></a></h3>
-<p>Set arguments to pass on to <code><a href="https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html" class="external-link">jsonlite::toJSON()</a></code></p><div class="section">
+
+<div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutJson</span><span class="op">$</span><span class="fu">set_toJSON_args</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
-<div class="section">
-<h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>x</code></dt>
-<dd><p>a named <code>list</code></p></dd>
-
-
-</dl><p></p></div>
-</div>
 
 </div><p></p><hr><a id="method-LayoutJson-set_timestamp_fmt"></a><div class="section">
 <h3 id="method-set-timestamp-fmt-">Method <code>set_timestamp_fmt()</code><a class="anchor" aria-label="anchor" href="#method-set-timestamp-fmt-"></a></h3>
-<p>Set a format that this Layout will apply to timestamps.</p><div class="section">
+
+<div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutJson</span><span class="op">$</span><span class="fu">set_timestamp_fmt</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+
+</div><p></p><hr><a id="method-LayoutJson-set_transform_event"></a><div class="section">
+<h3 id="method-set-transform-event-">Method <code>set_transform_event()</code><a class="anchor" aria-label="anchor" href="#method-set-transform-event-"></a></h3>
+
 <div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>x</code></dt>
-<dd><ul><li><p><code>NULL</code> (the default): formatting of the timestamp is left to
-<code><a href="https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html" class="external-link">jsonlite::toJSON()</a></code>,</p></li>
-<li><p>a <code>character</code> scalar as for <code><a href="https://rdrr.io/r/base/strptime.html" class="external-link">format.POSIXct()</a></code>, or</p></li>
-<li><p>a <code>function</code> that returns a vector of the same length as its
-(<a href="https://rdrr.io/r/base/DateTimeClasses.html" class="external-link">POSIXct</a>) input. The returned vector can be of any type
-supported by <code><a href="https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html" class="external-link">jsonlite::toJSON()</a></code>, but should usually be <code>character</code>.</p></li>
-</ul></dd>
-
-
-</dl><p></p></div>
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutJson</span><span class="op">$</span><span class="fu">set_transform_event</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
+
+
+</div><p></p><hr><a id="method-LayoutJson-set_transform_event_names"></a><div class="section">
+<h3 id="method-set-transform-event-names-">Method <code>set_transform_event_names()</code><a class="anchor" aria-label="anchor" href="#method-set-transform-event-names-"></a></h3>
+
+<div class="section">
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutJson</span><span class="op">$</span><span class="fu">set_transform_event_names</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-LayoutJson-toString"></a><div class="section">
 <h3 id="method-tostring-">Method <code><a href="https://rdrr.io/r/base/toString.html" class="external-link">toString()</a></code><a class="anchor" aria-label="anchor" href="#method-tostring-"></a></h3>
 
 <div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutJson</span><span class="op">$</span><span class="fu">toString</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -163,7 +202,7 @@ supported by <code><a href="https://jeroen.r-universe.dev/jsonlite/reference/fro
 <h3 id="method-parse-">Method <code><a href="https://rdrr.io/r/base/parse.html" class="external-link">parse()</a></code><a class="anchor" aria-label="anchor" href="#method-parse-"></a></h3>
 
 <div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutJson</span><span class="op">$</span><span class="fu">parse</span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -172,7 +211,7 @@ supported by <code><a href="https://jeroen.r-universe.dev/jsonlite/reference/fro
 <h3 id="method-read-">Method <code>read()</code><a class="anchor" aria-label="anchor" href="#method-read-"></a></h3>
 
 <div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutJson</span><span class="op">$</span><span class="fu">read</span><span class="op">(</span><span class="va">file</span>, threshold <span class="op">=</span> <span class="cn">NA_integer_</span>, n <span class="op">=</span> <span class="fl">20L</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -180,12 +219,12 @@ supported by <code><a href="https://jeroen.r-universe.dev/jsonlite/reference/fro
 </div><p></p><hr><a id="method-LayoutJson-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutJson</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -212,7 +251,7 @@ supported by <code><a href="https://jeroen.r-universe.dev/jsonlite/reference/fro
 <span class="r-in"><span><span class="co"># Default settings show all event fals</span></span></span>
 <span class="r-in"><span><span class="va">lo</span> <span class="op">&lt;-</span> <span class="va">LayoutJson</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lo</span><span class="op">$</span><span class="fu">format_event</span><span class="op">(</span><span class="va">event</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"level":200,"timestamp":"2025-07-18 13:55:36","logger":"dummy logger","caller":null,"msg":"a test message","custom_field":"LayoutJson can handle arbitrary fields"} </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"level":200,"timestamp":"2025-07-18 16:06:19","logger":"dummy logger","caller":null,"msg":"a test message","custom_field":"LayoutJson can handle arbitrary fields"} </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

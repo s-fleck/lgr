@@ -45,7 +45,7 @@
 <li><p>Updated <code>AppenderConsole</code> to accept a <code>connection</code> argument. If called from a <a href="https://yihui.org/knitr/" class="external-link">knitr</a> rendering process, log messages are now output to <code>stderr</code> instead of <code>stdout</code> by default. This avoids polluting markdown documents (<a href="https://github.com/s-fleck/lgr/issues/62" class="external-link">#62</a>, thx <a href="https://github.com/gadenbuie" class="external-link">@gadenbuie</a>).</p></li>
 <li><p>Replace <code>NULL</code> values and empty characters in logging by the string <code>"&lt;NULL&gt;"</code>. Before, <code>NULL</code> values would have resulted in empty log messages. (<a href="https://github.com/s-fleck/lgr/issues/51" class="external-link">#51</a>)</p></li>
 <li><p>Support transformers for <code>LoggerGlue</code> (see <code><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">?glue::glue</a></code>) (<a href="https://github.com/s-fleck/lgr/issues/51" class="external-link">#51</a>)</p></li>
-<li><p>Add support for <code>excluded_fields</code> to <code>Layout</code>, and exclude <code>rawMsg</code> by default from <code>LayoutJson</code> (for backwards compatibility)</p></li>
+<li><p>Add <code>excluded_fields</code>, <code>transform_event</code> and <code>transform_event_names</code> to <code>Layout</code> to make it more flexible. Exclude <code>rawMsg</code> by default for backwards compatibility.</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.4" id="lgr-044">lgr 0.4.4<a class="anchor" aria-label="anchor" href="#lgr-044"></a></h2><p class="text-muted">CRAN release: 2022-09-05</p>

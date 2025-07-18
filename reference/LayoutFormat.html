@@ -99,47 +99,58 @@ multiple threads.</p></dd>
 <dd><p>the log message</p></dd>
 
 <dt><code>%r</code></dt>
-<dd><p>the raw log message (without string interpolation)
-<code>%f</code>all custom fields of <code>x</code> in a pseudo-JSON like format that is
-optimized for human readability and console output
-<code>%j</code>all custom fields of <code>x</code> in proper JSON. This requires that you
+<dd><p>the raw log message (without string interpolation)</p></dd>
+
+<dt><code>%f</code></dt>
+<dd><p>all custom fields of <code>x</code> in a pseudo-JSON like format that is
+optimized for human readability and console output</p></dd>
+
+<dt><code>%j</code></dt>
+<dd><p>all custom fields of <code>x</code> in proper JSON. This requires that you
 have <strong>jsonlite</strong> installed and does not support colors as opposed to
 <code>%f</code></p></dd>
 
 
-</dl><p># setup a dummy LogEvent
-event &lt;- LogEvent$new(
-  logger = Logger$new("dummy logger"),
-  level = 200,
-  timestamp = Sys.time(),
-  caller = NA_character_,
-  msg = "a test message"
-)
-lo &lt;- LayoutFormat$new()
-lo$format_event(event)
-
-
-Other Layouts:
+</dl></div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other Layouts:
 <code><a href="Layout.html">Layout</a></code>,
 <code><a href="LayoutGlue.html">LayoutGlue</a></code>,
-<code><a href="LayoutJson.html">LayoutJson</a></code>
+<code><a href="LayoutJson.html">LayoutJson</a></code></p></div>
+    </div>
+    <div class="section level2">
+    <h2 id="super-class">Super class<a class="anchor" aria-label="anchor" href="#super-class"></a></h2>
+    <p><code><a href="Layout.html">lgr::Layout</a></code> -&gt; <code>LayoutFormat</code></p>
+    </div>
+    <div class="section level2">
+    <h2 id="active-bindings">Active bindings<a class="anchor" aria-label="anchor" href="#active-bindings"></a></h2>
+    <p></p><div class="r6-active-bindings"><dl><dt><code>fmt</code></dt>
+<dd><p>a <code>character</code> scalar containing format tokens. See <code><a href="print.LogEvent.html">format.LogEvent()</a></code>.</p></dd>
 
-Layouts
-Super class
-<code><a href="Layout.html">lgr::Layout</a></code> -&gt; <code>LayoutFormat</code>
 
-Active bindings
-</p><div class="r6-active-bindings">
-<dl><dt><code>fmt</code></dt>
-<dd><p>a <code>character</code> scalar containing format tokens. See <code><a href="print.LogEvent.html">format.LogEvent()</a></code>.</p></dd><dt><code>timestamp_fmt</code></dt>
-<dd><p>a <code>character</code> scalar. See <code><a href="https://rdrr.io/r/base/strptime.html" class="external-link">base::format.POSIXct()</a></code>.</p></dd><dt><code>colors</code></dt>
+<dt><code>timestamp_fmt</code></dt>
+<dd><p>a <code>character</code> scalar. See <code><a href="https://rdrr.io/r/base/strptime.html" class="external-link">base::format.POSIXct()</a></code>.</p></dd>
+
+
+<dt><code>colors</code></dt>
 <dd><p>a named <code>list</code> of functions (like the ones provided by
-the package <span class="pkg">crayon</span>) passed on on <code><a href="print.LogEvent.html">format.LogEvent()</a></code>.</p></dd><dt><code>pad_levels</code></dt>
-<dd><p><code>"right"</code>, <code>"left"</code> or <code>NULL</code>. See <code><a href="print.LogEvent.html">format.LogEvent()</a></code>.</p></dd></dl></div>
+the package <span class="pkg">crayon</span>) passed on on <code><a href="print.LogEvent.html">format.LogEvent()</a></code>.</p></dd>
 
-Methods
+
+<dt><code>pad_levels</code></dt>
+<dd><p><code>"right"</code>, <code>"left"</code> or <code>NULL</code>. See <code><a href="print.LogEvent.html">format.LogEvent()</a></code>.</p></dd>
+
+
+</dl><p></p></div>
+    </div>
+    <div class="section level2">
+    <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
+
 <div class="section">
-<h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3><ul><li><p><a href="#method-LayoutFormat-new"><code>LayoutFormat$new()</code></a></p></li>
+<h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
+
+<ul><li><p><a href="#method-LayoutFormat-new"><code>LayoutFormat$new()</code></a></p></li>
 <li><p><a href="#method-LayoutFormat-format_event"><code>LayoutFormat$format_event()</code></a></p></li>
 <li><p><a href="#method-LayoutFormat-set_fmt"><code>LayoutFormat$set_fmt()</code></a></p></li>
 <li><p><a href="#method-LayoutFormat-set_timestamp_fmt"><code>LayoutFormat$set_timestamp_fmt()</code></a></p></li>
@@ -148,9 +159,11 @@ Methods
 <li><p><a href="#method-LayoutFormat-toString"><code>LayoutFormat$toString()</code></a></p></li>
 <li><p><a href="#method-LayoutFormat-read"><code>LayoutFormat$read()</code></a></p></li>
 <li><p><a href="#method-LayoutFormat-clone"><code>LayoutFormat$clone()</code></a></p></li>
-</ul></div><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="lgr" data-topic="Layout" data-id="set_excluded_fields"><a href="Layout.html#method-set_excluded_fields"><code>lgr::Layout$set_excluded_fields()</code></a></span></li>
-</ul></details><hr><a id="method-LayoutFormat-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3><div class="section">
+</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="lgr" data-topic="Layout" data-id="set_excluded_fields"><a href="Layout.html#method-set_excluded_fields"><code>lgr::Layout$set_excluded_fields()</code></a></span></li>
+</ul></details></p><hr><a id="method-LayoutFormat-new"></a><div class="section">
+<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+
+<div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/LayoutFormat.html">LayoutFormat</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  fmt <span class="op">=</span> <span class="st">"%L [%t] %m %j"</span>,</span>
@@ -159,64 +172,126 @@ Methods
 <span>  pad_levels <span class="op">=</span> <span class="st">"right"</span>,</span>
 <span>  excluded_fields <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div></div>
-<hr><a id="method-LayoutFormat-format_event"></a><div class="section">
+</div>
+
+
+</div><p></p><hr><a id="method-LayoutFormat-format_event"></a><div class="section">
 <h3 id="method-format-event-">Method <code>format_event()</code><a class="anchor" aria-label="anchor" href="#method-format-event-"></a></h3>
 <p>Format a LogEvent</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutFormat</span><span class="op">$</span><span class="fu">format_event</span><span class="op">(</span><span class="va">event</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div><div class="section">
+</div>
+
+<div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>event</code></dt>
-<dd><p>a <a href="LogEvent.html">LogEvent</a></p></dd></dl><p></p></div>
-</div></div>
-<hr><a id="method-LayoutFormat-set_fmt"></a><div class="section">
-<h3 id="method-set-fmt-">Method <code>set_fmt()</code><a class="anchor" aria-label="anchor" href="#method-set-fmt-"></a></h3><div class="section">
+<dd><p>a <a href="LogEvent.html">LogEvent</a></p></dd>
+
+
+</dl><p></p></div>
+</div>
+
+</div><p></p><hr><a id="method-LayoutFormat-set_fmt"></a><div class="section">
+<h3 id="method-set-fmt-">Method <code>set_fmt()</code><a class="anchor" aria-label="anchor" href="#method-set-fmt-"></a></h3>
+
+<div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutFormat</span><span class="op">$</span><span class="fu">set_fmt</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div></div>
-<hr><a id="method-LayoutFormat-set_timestamp_fmt"></a><div class="section">
-<h3 id="method-set-timestamp-fmt-">Method <code>set_timestamp_fmt()</code><a class="anchor" aria-label="anchor" href="#method-set-timestamp-fmt-"></a></h3><div class="section">
+</div>
+
+
+</div><p></p><hr><a id="method-LayoutFormat-set_timestamp_fmt"></a><div class="section">
+<h3 id="method-set-timestamp-fmt-">Method <code>set_timestamp_fmt()</code><a class="anchor" aria-label="anchor" href="#method-set-timestamp-fmt-"></a></h3>
+
+<div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutFormat</span><span class="op">$</span><span class="fu">set_timestamp_fmt</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div></div>
-<hr><a id="method-LayoutFormat-set_colors"></a><div class="section">
-<h3 id="method-set-colors-">Method <code>set_colors()</code><a class="anchor" aria-label="anchor" href="#method-set-colors-"></a></h3><div class="section">
+</div>
+
+
+</div><p></p><hr><a id="method-LayoutFormat-set_colors"></a><div class="section">
+<h3 id="method-set-colors-">Method <code>set_colors()</code><a class="anchor" aria-label="anchor" href="#method-set-colors-"></a></h3>
+
+<div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutFormat</span><span class="op">$</span><span class="fu">set_colors</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div></div>
-<hr><a id="method-LayoutFormat-set_pad_levels"></a><div class="section">
-<h3 id="method-set-pad-levels-">Method <code>set_pad_levels()</code><a class="anchor" aria-label="anchor" href="#method-set-pad-levels-"></a></h3><div class="section">
+</div>
+
+
+</div><p></p><hr><a id="method-LayoutFormat-set_pad_levels"></a><div class="section">
+<h3 id="method-set-pad-levels-">Method <code>set_pad_levels()</code><a class="anchor" aria-label="anchor" href="#method-set-pad-levels-"></a></h3>
+
+<div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutFormat</span><span class="op">$</span><span class="fu">set_pad_levels</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div></div>
-<hr><a id="method-LayoutFormat-toString"></a><div class="section">
-<h3 id="method-tostring-">Method <code><a href="https://rdrr.io/r/base/toString.html" class="external-link">toString()</a></code><a class="anchor" aria-label="anchor" href="#method-tostring-"></a></h3><div class="section">
+</div>
+
+
+</div><p></p><hr><a id="method-LayoutFormat-toString"></a><div class="section">
+<h3 id="method-tostring-">Method <code><a href="https://rdrr.io/r/base/toString.html" class="external-link">toString()</a></code><a class="anchor" aria-label="anchor" href="#method-tostring-"></a></h3>
+
+<div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutFormat</span><span class="op">$</span><span class="fu">toString</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div></div>
-<hr><a id="method-LayoutFormat-read"></a><div class="section">
-<h3 id="method-read-">Method <code>read()</code><a class="anchor" aria-label="anchor" href="#method-read-"></a></h3><div class="section">
+</div>
+
+
+</div><p></p><hr><a id="method-LayoutFormat-read"></a><div class="section">
+<h3 id="method-read-">Method <code>read()</code><a class="anchor" aria-label="anchor" href="#method-read-"></a></h3>
+
+<div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutFormat</span><span class="op">$</span><span class="fu">read</span><span class="op">(</span><span class="va">file</span>, threshold <span class="op">=</span> <span class="cn">NA_integer_</span>, n <span class="op">=</span> <span class="fl">20L</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div><div class="section">
+</div>
+
+<div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>threshold</code></dt>
-<dd><p>a <code>character</code> or <code>integer</code> threshold</p></dd><dt><code>n</code></dt>
-<dd><p>number of log entries to display</p></dd></dl><p></p></div>
-</div></div>
-<hr><a id="method-LayoutFormat-clone"></a><div class="section">
+<dd><p>a <code>character</code> or <code>integer</code> threshold</p></dd>
+
+
+<dt><code>n</code></dt>
+<dd><p>number of log entries to display</p></dd>
+
+
+</dl><p></p></div>
+</div>
+
+</div><p></p><hr><a id="method-LayoutFormat-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutFormat</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div><div class="section">
+</div>
+
+<div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
-<dd><p>Whether to make a deep clone.</p></dd></dl><p></p></div>
-</div></div>
+<dd><p>Whether to make a deep clone.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+
+</div>
+
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># setup a dummy LogEvent</span></span></span>
+<span class="r-in"><span><span class="va">event</span> <span class="op">&lt;-</span> <span class="va"><a href="LogEvent.html">LogEvent</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  logger <span class="op">=</span> <span class="va"><a href="Logger.html">Logger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"dummy logger"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  level <span class="op">=</span> <span class="fl">200</span>,</span></span>
+<span class="r-in"><span>  timestamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  caller <span class="op">=</span> <span class="cn">NA_character_</span>,</span></span>
+<span class="r-in"><span>  msg <span class="op">=</span> <span class="st">"a test message"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lo</span> <span class="op">&lt;-</span> <span class="va">LayoutFormat</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lo</span><span class="op">$</span><span class="fu">format_event</span><span class="op">(</span><span class="va">event</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ERROR [2025-07-18 16:06:18.483] a test message"</span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
