@@ -8,23 +8,6 @@ A format for formatting LogEvents as
 \href{https://jsonlines.org/}{jsonlines} log files. This provides a
 nice balance between human- an machine-readability.
 }
-\section{Event transformation}{
-
-This Layout provides 4 ways to transform the event before serialization:
-\enumerate{
-\item \code{transform_event}: a generic function to transform the event
-\item \code{timestamp_fmt}: a format string or function to apply to the timestamp field
-\item \code{transform_event_names}: a named \code{character} vector or a second
-function to rename fields
-\item \code{excluded_fields}: a \code{character} vector to include fields.
-}
-
-In theory supplying a custom \code{transform_event} function is enough to
-perform all these actions, but the other three parameters are provided for
-convenience. Please note that they are applied in order (e.g. if you
-rename a field you have to exclude the \emph{renamed} field to really exclude it).
-}
-
 \examples{
 # setup a dummy LogEvent
 event <- LogEvent$new(
@@ -36,8 +19,24 @@ event <- LogEvent$new(
   custom_field = "LayoutJson can handle arbitrary fields"
 )
 
-# Default settings show all event fals
 lo <- LayoutJson$new()
+lo$format_event(event)
+
+lo <- LayoutJson$new(
+  transform_event_names = toupper,
+  excluded_fields = c("RAWMSG", "CALLER"))
+
+lo$format_event(event)
+
+lo <- LayoutJson$new(
+  transform_event = function(e) {
+    values <- e$values
+    values$msg <- toupper(values$msg)
+    values
+  },
+  timestamp_fmt = "\%a \%b \%d \%H:\%M:\%S \%Y",
+  excluded_fields = c("RAWMSG", "CALLER"))
+
 lo$format_event(event)
 }
 \seealso{
@@ -51,6 +50,21 @@ Other Layouts:
 \concept{Layouts}
 \section{Super class}{
 \code{\link[lgr:Layout]{lgr::Layout}} -> \code{LayoutJson}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{toJSON_args}}{a \code{list}}
+
+\item{\code{timestamp_fmt}}{a \code{character} scalar or a \code{function} that accepts a \code{POSIXct}
+as its single argument}
+
+\item{\code{transform_event}}{a \code{function} that accepts a \code{LogEvent} as its single argument}
+
+\item{\code{transform_event_names}}{a named \code{character} vector or a function that accepts a
+\code{character} vector of field names as its single argument.}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -84,7 +98,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   toJSON_args = list(auto_unbox = TRUE),
   timestamp_fmt = NULL,
   transform_event = function(event) event[["values"]],
-  transform_event_names = identity,
+  transform_event_names = NULL,
   excluded_fields = "rawMsg"
 )}\if{html}{\out{</div>}}
 }
@@ -95,23 +109,25 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \item{\code{toJSON_args}}{a list of arguments passed to \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}},}
 
 \item{\code{timestamp_fmt}}{Format to be applied to the timestamp. This is
-applied after \code{transform_event()} but \verb{before transform_event_names()}
+applied after \code{transform_event} but \verb{before transform_event_names}
 \itemize{
-\item \code{NULL} (the default): formatting of the timestamp is left to
-\code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}},
+\item \code{NULL}: formatting of the timestamp is left to \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}},
 \item a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSIXct()}}, or
 \item a \code{function} that returns a vector of the same length as its
 (\link{POSIXct}) input. The returned vector can be of any type
-supported by \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}}, but should usually be \code{character}.
+supported by \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}}.
 }}
 
-\item{\code{transform_event}}{a \code{function} with a single argument \code{event} that
-takes a \link{LogEvent} object and returns a list of values.}
+\item{\code{transform_event}}{a \code{function} with a single argument that
+takes a \link{LogEvent} object and returns a \code{list} of values.}
 
-\item{\code{transform_event_names}}{A named \code{character} vector mapping original
-field names to Dynatrace-compatible ones, or a function with a single
-mandatory argument that accepts a character vector of field names.
-Applied after to \code{transform_event()}.}
+\item{\code{transform_event_names}}{\itemize{
+\item \code{NULL}: don't process names
+\item a named \code{character} vector where the names are the original field names
+and the values the desired new field names,
+\item or a \code{function} with a single mandatory argument that accepts a
+\code{character} vector of field names. Applied after \code{transform_event}.
+}}
 
 \item{\code{excluded_fields}}{A \code{character} vector of field names to exclude
 from the final output. Applied after \code{transform_event_names}.}
@@ -136,6 +152,13 @@ from the final output. Applied after \code{transform_event_names}.}
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$set_toJSON_args(x)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{a \code{list}}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutJson-set_timestamp_fmt"></a>}}
@@ -145,6 +168,14 @@ from the final output. Applied after \code{transform_event_names}.}
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$set_timestamp_fmt(x)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{a \code{character} scalar or a \code{function} that accepts a \code{POSIXct}
+as its single argument}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutJson-set_transform_event"></a>}}
@@ -154,6 +185,13 @@ from the final output. Applied after \code{transform_event_names}.}
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$set_transform_event(x)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{a \code{function} that accepts a \code{LogEvent} as its single argument}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutJson-set_transform_event_names"></a>}}
@@ -163,11 +201,20 @@ from the final output. Applied after \code{transform_event_names}.}
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$set_transform_event_names(x)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{a named \code{character} vector or a function that accepts a
+\code{character} vector of field names as its single argument.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutJson-toString"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutJson-toString}{}}}
 \subsection{Method \code{toString()}}{
+Represent the \code{LayoutJson} class as a string
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$toString()}\if{html}{\out{</div>}}
 }
@@ -177,19 +224,44 @@ from the final output. Applied after \code{transform_event_names}.}
 \if{html}{\out{<a id="method-LayoutJson-parse"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutJson-parse}{}}}
 \subsection{Method \code{parse()}}{
+Read and parse file written using this Layout
+
+This can be used by the \verb{$data} active binding of an \link{Appender}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$parse(file)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{file}}{\code{character} scalar: path to a file}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutJson-read"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutJson-read}{}}}
 \subsection{Method \code{read()}}{
+Read a file written using this Layout (without parsing)
+
+This can be used by the \verb{$show()} method of an \link{Appender}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LayoutJson$read(file, threshold = NA_integer_, n = 20L)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{file}}{\code{character} scalar: path to a file}
+
+\item{\code{threshold}}{\code{character} Minimum log level to show. Requires parsing
+of the log file (but will still display unparsed output)}
+
+\item{\code{n}}{\code{integer} number of lines to show}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutJson-clone"></a>}}

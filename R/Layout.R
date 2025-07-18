@@ -322,19 +322,3 @@ LayoutGlue <- R6::R6Class(
     .fmt = NULL
   )
 )
-
-
-
-
-
-
-
-# utils -------------------------------------------------------------------
-
-fmt_timestamp = function(x, fmt){
-  if (is.character(fmt)){
-    format(x, fmt)
-  } else if (is.function(fmt)){
-    fmt(x)
-  }
-}
