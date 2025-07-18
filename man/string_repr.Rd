@@ -5,6 +5,7 @@
 \alias{string_repr.function}
 \alias{string_repr.data.frame}
 \alias{string_repr.matrix}
+\alias{string_repr.numeric}
 \alias{string_repr.default}
 \title{Short string representation for R objects}
 \usage{
@@ -15,6 +16,8 @@ string_repr(x, width = 32, ...)
 \method{string_repr}{data.frame}(x, width = 32L, ...)
 
 \method{string_repr}{matrix}(x, width = 32L, ...)
+
+\method{string_repr}{numeric}(x, width = 32L, ...)
 
 \method{string_repr}{default}(x, width = 32L, ...)
 }

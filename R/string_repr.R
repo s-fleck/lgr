@@ -84,6 +84,8 @@ string_repr.data.frame <- function(
 string_repr.matrix <- string_repr.data.frame
 
 
+#' @rdname string_repr
+#' @export
 string_repr.numeric <- function(
   x,
   width = 32L,
