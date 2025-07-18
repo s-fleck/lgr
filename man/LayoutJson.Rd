@@ -7,22 +7,24 @@
 A format for formatting LogEvents as
 \href{https://jsonlines.org/}{jsonlines} log files. This provides a
 nice balance between human- an machine-readability.
+}
+\section{Event transformation}{
 
-This Layout provides 4 ways to transform the event before ingestion into
-Dynatrace:
+This Layout provides 4 ways to transform the event before serialization:
 \enumerate{
-\item \code{transform_event} a generic function to transform the event
-\item \code{timestamp_fmt}
-\item \code{transform_event_names} a named \code{character} vector or a second
+\item \code{transform_event}: a generic function to transform the event
+\item \code{timestamp_fmt}: a format string or function to apply to the timestamp field
+\item \code{transform_event_names}: a named \code{character} vector or a second
 function to rename fields
-\item \code{excluded_fields} a \code{character} vector to include fields.
+\item \code{excluded_fields}: a \code{character} vector to include fields.
 }
 
 In theory supplying a custom \code{transform_event} function is enough to
-transform the event, but the other two parameters are provided for
+perform all these actions, but the other three parameters are provided for
 convenience. Please note that they are applied in order (e.g. if you
 rename a field you have to exclude the \emph{renamed} field to really exclude it).
 }
+
 \examples{
 # setup a dummy LogEvent
 event <- LogEvent$new(
@@ -92,18 +94,9 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \describe{
 \item{\code{toJSON_args}}{a list of arguments passed to \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}},}
 
-\item{\code{transform_event}}{a \code{function} with a single argument \code{event} that
-takes a \link{LogEvent} object and returns a list of values.}
-
-\item{\code{transform_event_names}}{A named \code{character} vector mapping original
-field names to Dynatrace-compatible ones, or a function with a single
-mandatory argument that accepts a character vector of field names.
-passed to \code{\link[=transform_event]{transform_event()}}.}
-
-\item{\code{excluded_fields}}{A \code{character} vector of field names to exclude
-from the final output. passed to \code{transform_event()}.}
-
-\item{\code{timestamp_fmpt}}{\itemize{
+\item{\code{timestamp_fmt}}{Format to be applied to the timestamp. This is
+applied after \code{transform_event()} but \verb{before transform_event_names()}
+\itemize{
 \item \code{NULL} (the default): formatting of the timestamp is left to
 \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}},
 \item a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSIXct()}}, or
@@ -111,6 +104,17 @@ from the final output. passed to \code{transform_event()}.}
 (\link{POSIXct}) input. The returned vector can be of any type
 supported by \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}}, but should usually be \code{character}.
 }}
+
+\item{\code{transform_event}}{a \code{function} with a single argument \code{event} that
+takes a \link{LogEvent} object and returns a list of values.}
+
+\item{\code{transform_event_names}}{A named \code{character} vector mapping original
+field names to Dynatrace-compatible ones, or a function with a single
+mandatory argument that accepts a character vector of field names.
+Applied after to \code{transform_event()}.}
+
+\item{\code{excluded_fields}}{A \code{character} vector of field names to exclude
+from the final output. Applied after \code{transform_event_names}.}
 }
 \if{html}{\out{</div>}}
 }

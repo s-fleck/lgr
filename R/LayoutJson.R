@@ -7,17 +7,18 @@
 #' [jsonlines](https://jsonlines.org/) log files. This provides a
 #' nice balance between human- an machine-readability.
 #'
-#' This Layout provides 4 ways to transform the event before ingestion into
-#' Dynatrace:
 #'
-#' 1. `transform_event` a generic function to transform the event
-#' 2. `timestamp_fmt`
-#' 2. `transform_event_names` a named `character` vector or a second
+#' @section Event transformation:
+#' This Layout provides 4 ways to transform the event before serialization:
+#'
+#' 1. `transform_event`: a generic function to transform the event
+#' 2. `timestamp_fmt`: a format string or function to apply to the timestamp field
+#' 3. `transform_event_names`: a named `character` vector or a second
 #'     function to rename fields
-#' 3. `excluded_fields` a `character` vector to include fields.
+#' 4. `excluded_fields`: a `character` vector to include fields.
 #'
 #' In theory supplying a custom `transform_event` function is enough to
-#' transform the event, but the other two parameters are provided for
+#' perform all these actions, but the other three parameters are provided for
 #' convenience. Please note that they are applied in order (e.g. if you
 #' rename a field you have to exclude the *renamed* field to really exclude it).
 #'
@@ -48,7 +49,8 @@ LayoutJson <- R6::R6Class(
     #'
     #' @param toJSON_args a list of arguments passed to [jsonlite::toJSON()],
     #'
-    #' @param timestamp_fmpt
+    #' @param timestamp_fmt Format to be applied to the timestamp. This is
+    #'   applied after `transform_event()` but `before transform_event_names()`
     #' * `NULL` (the default): formatting of the timestamp is left to
     #' [jsonlite::toJSON()],
     #' * a `character` scalar as for [format.POSIXct()], or
@@ -59,13 +61,13 @@ LayoutJson <- R6::R6Class(
     #' @param transform_event a `function` with a single argument `event` that
     #'   takes a [LogEvent] object and returns a list of values.
     #'
-    #' @param excluded_fields A `character` vector of field names to exclude
-    #'   from the final output. passed to `transform_event()`.
-    #'
     #' @param transform_event_names A named `character` vector mapping original
     #'   field names to Dynatrace-compatible ones, or a function with a single
     #'   mandatory argument that accepts a character vector of field names.
-    #'   passed to [transform_event()].
+    #'   Applied after to `transform_event()`.
+    #'
+    #' @param excluded_fields A `character` vector of field names to exclude
+    #'   from the final output. Applied after `transform_event_names`.
     initialize = function(
       toJSON_args = list(auto_unbox = TRUE),
       timestamp_fmt = NULL,
