@@ -52,20 +52,6 @@ nice balance between human- an machine-readability.</p>
 
 
     <div class="section level2">
-    <h2 id="event-transformation">Event transformation<a class="anchor" aria-label="anchor" href="#event-transformation"></a></h2>
-
-
-<p>This Layout provides 4 ways to transform the event before serialization:</p><ol><li><p><code>transform_event</code>: a generic function to transform the event</p></li>
-<li><p><code>timestamp_fmt</code>: a format string or function to apply to the timestamp field</p></li>
-<li><p><code>transform_event_names</code>: a named <code>character</code> vector or a second
-function to rename fields</p></li>
-<li><p><code>excluded_fields</code>: a <code>character</code> vector to include fields.</p></li>
-</ol><p>In theory supplying a custom <code>transform_event</code> function is enough to
-perform all these actions, but the other three parameters are provided for
-convenience. Please note that they are applied in order (e.g. if you
-rename a field you have to exclude the <em>renamed</em> field to really exclude it).</p>
-    </div>
-    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="read_json_lines.html">read_json_lines()</a></code>, <a href="https://jsonlines.org/" class="external-link">https://jsonlines.org/</a></p>
 <p>Other Layouts:
@@ -76,6 +62,28 @@ rename a field you have to exclude the <em>renamed</em> field to really exclude 
     <div class="section level2">
     <h2 id="super-class">Super class<a class="anchor" aria-label="anchor" href="#super-class"></a></h2>
     <p><code><a href="Layout.html">lgr::Layout</a></code> -&gt; <code>LayoutJson</code></p>
+    </div>
+    <div class="section level2">
+    <h2 id="active-bindings">Active bindings<a class="anchor" aria-label="anchor" href="#active-bindings"></a></h2>
+    <p></p><div class="r6-active-bindings"><dl><dt><code>toJSON_args</code></dt>
+<dd><p>a <code>list</code></p></dd>
+
+
+<dt><code>timestamp_fmt</code></dt>
+<dd><p>a <code>character</code> scalar or a <code>function</code> that accepts a <code>POSIXct</code>
+as its single argument</p></dd>
+
+
+<dt><code>transform_event</code></dt>
+<dd><p>a <code>function</code> that accepts a <code>LogEvent</code> as its single argument</p></dd>
+
+
+<dt><code>transform_event_names</code></dt>
+<dd><p>a named <code>character</code> vector or a function that accepts a
+<code>character</code> vector of field names as its single argument.</p></dd>
+
+
+</dl><p></p></div>
     </div>
     <div class="section level2">
     <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
@@ -102,7 +110,7 @@ rename a field you have to exclude the <em>renamed</em> field to really exclude 
 <span>  toJSON_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>auto_unbox <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>  timestamp_fmt <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  transform_event <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">event</span><span class="op">)</span> <span class="va">event</span><span class="op">[[</span><span class="st">"values"</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  transform_event_names <span class="op">=</span> <span class="va">identity</span>,</span>
+<span>  transform_event_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  excluded_fields <span class="op">=</span> <span class="st">"rawMsg"</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -115,25 +123,26 @@ rename a field you have to exclude the <em>renamed</em> field to really exclude 
 
 <dt><code>timestamp_fmt</code></dt>
 <dd><p>Format to be applied to the timestamp. This is
-applied after <code>transform_event()</code> but <code>before transform_event_names()</code></p><ul><li><p><code>NULL</code> (the default): formatting of the timestamp is left to
-<code><a href="https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html" class="external-link">jsonlite::toJSON()</a></code>,</p></li>
+applied after <code>transform_event</code> but <code>before transform_event_names</code></p><ul><li><p><code>NULL</code>: formatting of the timestamp is left to <code><a href="https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html" class="external-link">jsonlite::toJSON()</a></code>,</p></li>
 <li><p>a <code>character</code> scalar as for <code><a href="https://rdrr.io/r/base/strptime.html" class="external-link">format.POSIXct()</a></code>, or</p></li>
 <li><p>a <code>function</code> that returns a vector of the same length as its
 (<a href="https://rdrr.io/r/base/DateTimeClasses.html" class="external-link">POSIXct</a>) input. The returned vector can be of any type
-supported by <code><a href="https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html" class="external-link">jsonlite::toJSON()</a></code>, but should usually be <code>character</code>.</p></li>
+supported by <code><a href="https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html" class="external-link">jsonlite::toJSON()</a></code>.</p></li>
 </ul></dd>
 
 
 <dt><code>transform_event</code></dt>
-<dd><p>a <code>function</code> with a single argument <code>event</code> that
-takes a <a href="LogEvent.html">LogEvent</a> object and returns a list of values.</p></dd>
+<dd><p>a <code>function</code> with a single argument that
+takes a <a href="LogEvent.html">LogEvent</a> object and returns a <code>list</code> of values.</p></dd>
 
 
 <dt><code>transform_event_names</code></dt>
-<dd><p>A named <code>character</code> vector mapping original
-field names to Dynatrace-compatible ones, or a function with a single
-mandatory argument that accepts a character vector of field names.
-Applied after to <code>transform_event()</code>.</p></dd>
+<dd><ul><li><p><code>NULL</code>: don't process names</p></li>
+<li><p>a named <code>character</code> vector where the names are the original field names
+and the values the desired new field names,</p></li>
+<li><p>or a <code>function</code> with a single mandatory argument that accepts a
+<code>character</code> vector of field names. Applied after <code>transform_event</code>.</p></li>
+</ul></dd>
 
 
 <dt><code>excluded_fields</code></dt>
@@ -161,6 +170,14 @@ from the final output. Applied after <code>transform_event_names</code>.</p></dd
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutJson</span><span class="op">$</span><span class="fu">set_toJSON_args</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>x</code></dt>
+<dd><p>a <code>list</code></p></dd>
+
+
+</dl><p></p></div>
+</div>
 
 </div><p></p><hr><a id="method-LayoutJson-set_timestamp_fmt"></a><div class="section">
 <h3 id="method-set-timestamp-fmt-">Method <code>set_timestamp_fmt()</code><a class="anchor" aria-label="anchor" href="#method-set-timestamp-fmt-"></a></h3>
@@ -170,6 +187,15 @@ from the final output. Applied after <code>transform_event_names</code>.</p></dd
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutJson</span><span class="op">$</span><span class="fu">set_timestamp_fmt</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>x</code></dt>
+<dd><p>a <code>character</code> scalar or a <code>function</code> that accepts a <code>POSIXct</code>
+as its single argument</p></dd>
+
+
+</dl><p></p></div>
+</div>
 
 </div><p></p><hr><a id="method-LayoutJson-set_transform_event"></a><div class="section">
 <h3 id="method-set-transform-event-">Method <code>set_transform_event()</code><a class="anchor" aria-label="anchor" href="#method-set-transform-event-"></a></h3>
@@ -179,6 +205,14 @@ from the final output. Applied after <code>transform_event_names</code>.</p></dd
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutJson</span><span class="op">$</span><span class="fu">set_transform_event</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>x</code></dt>
+<dd><p>a <code>function</code> that accepts a <code>LogEvent</code> as its single argument</p></dd>
+
+
+</dl><p></p></div>
+</div>
 
 </div><p></p><hr><a id="method-LayoutJson-set_transform_event_names"></a><div class="section">
 <h3 id="method-set-transform-event-names-">Method <code>set_transform_event_names()</code><a class="anchor" aria-label="anchor" href="#method-set-transform-event-names-"></a></h3>
@@ -188,11 +222,19 @@ from the final output. Applied after <code>transform_event_names</code>.</p></dd
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutJson</span><span class="op">$</span><span class="fu">set_transform_event_names</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>x</code></dt>
+<dd><p>a named <code>character</code> vector or a function that accepts a
+<code>character</code> vector of field names as its single argument.</p></dd>
+
+
+</dl><p></p></div>
+</div>
 
 </div><p></p><hr><a id="method-LayoutJson-toString"></a><div class="section">
 <h3 id="method-tostring-">Method <code><a href="https://rdrr.io/r/base/toString.html" class="external-link">toString()</a></code><a class="anchor" aria-label="anchor" href="#method-tostring-"></a></h3>
-
-<div class="section">
+<p>Represent the <code>LayoutJson</code> class as a string</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutJson</span><span class="op">$</span><span class="fu">toString</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -200,21 +242,46 @@ from the final output. Applied after <code>transform_event_names</code>.</p></dd
 
 </div><p></p><hr><a id="method-LayoutJson-parse"></a><div class="section">
 <h3 id="method-parse-">Method <code><a href="https://rdrr.io/r/base/parse.html" class="external-link">parse()</a></code><a class="anchor" aria-label="anchor" href="#method-parse-"></a></h3>
-
-<div class="section">
+<p>Read and parse file written using this Layout</p>
+<p>This can be used by the <code>$data</code> active binding of an <a href="Appender.html">Appender</a></p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutJson</span><span class="op">$</span><span class="fu">parse</span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>file</code></dt>
+<dd><p><code>character</code> scalar: path to a file</p></dd>
+
+
+</dl><p></p></div>
+</div>
 
 </div><p></p><hr><a id="method-LayoutJson-read"></a><div class="section">
 <h3 id="method-read-">Method <code>read()</code><a class="anchor" aria-label="anchor" href="#method-read-"></a></h3>
-
-<div class="section">
+<p>Read a file written using this Layout (without parsing)</p>
+<p>This can be used by the <code>$show()</code> method of an <a href="Appender.html">Appender</a></p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LayoutJson</span><span class="op">$</span><span class="fu">read</span><span class="op">(</span><span class="va">file</span>, threshold <span class="op">=</span> <span class="cn">NA_integer_</span>, n <span class="op">=</span> <span class="fl">20L</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>file</code></dt>
+<dd><p><code>character</code> scalar: path to a file</p></dd>
+
+
+<dt><code>threshold</code></dt>
+<dd><p><code>character</code> Minimum log level to show. Requires parsing
+of the log file (but will still display unparsed output)</p></dd>
+
+
+<dt><code>n</code></dt>
+<dd><p><code>integer</code> number of lines to show</p></dd>
+
+
+</dl><p></p></div>
+</div>
 
 </div><p></p><hr><a id="method-LayoutJson-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
@@ -224,7 +291,7 @@ from the final output. Applied after <code>transform_event_names</code>.</p></dd
 </div>
 
 <div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -248,10 +315,28 @@ from the final output. Applied after <code>transform_event_names</code>.</p></dd
 <span class="r-in"><span>  custom_field <span class="op">=</span> <span class="st">"LayoutJson can handle arbitrary fields"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Default settings show all event fals</span></span></span>
 <span class="r-in"><span><span class="va">lo</span> <span class="op">&lt;-</span> <span class="va">LayoutJson</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lo</span><span class="op">$</span><span class="fu">format_event</span><span class="op">(</span><span class="va">event</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"level":200,"timestamp":"2025-07-18 16:13:45","logger":"dummy logger","caller":null,"msg":"a test message","custom_field":"LayoutJson can handle arbitrary fields"} </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"level":200,"timestamp":"2025-07-18 20:35:27","logger":"dummy logger","caller":null,"msg":"a test message","custom_field":"LayoutJson can handle arbitrary fields"} </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lo</span> <span class="op">&lt;-</span> <span class="va">LayoutJson</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  transform_event_names <span class="op">=</span> <span class="va">toupper</span>,</span></span>
+<span class="r-in"><span>  excluded_fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RAWMSG"</span>, <span class="st">"CALLER"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lo</span><span class="op">$</span><span class="fu">format_event</span><span class="op">(</span><span class="va">event</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"LEVEL":200,"TIMESTAMP":"2025-07-18 20:35:27","LOGGER":"dummy logger","MSG":"a test message","CUSTOM_FIELD":"LayoutJson can handle arbitrary fields"} </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lo</span> <span class="op">&lt;-</span> <span class="va">LayoutJson</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  transform_event <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">values</span> <span class="op">&lt;-</span> <span class="va">e</span><span class="op">$</span><span class="va">values</span></span></span>
+<span class="r-in"><span>    <span class="va">values</span><span class="op">$</span><span class="va">msg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">toupper</a></span><span class="op">(</span><span class="va">values</span><span class="op">$</span><span class="va">msg</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">values</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span>,</span></span>
+<span class="r-in"><span>  timestamp_fmt <span class="op">=</span> <span class="st">"%a %b %d %H:%M:%S %Y"</span>,</span></span>
+<span class="r-in"><span>  excluded_fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RAWMSG"</span>, <span class="st">"CALLER"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lo</span><span class="op">$</span><span class="fu">format_event</span><span class="op">(</span><span class="va">event</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"level":200,"timestamp":"Fri Jul 18 20:35:27 2025","logger":"dummy logger","caller":null,"msg":"A TEST MESSAGE","rawMsg":"a test message","custom_field":"LayoutJson can handle arbitrary fields"} </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
