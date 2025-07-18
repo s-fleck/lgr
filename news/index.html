@@ -41,12 +41,11 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.5.9000" id="lgr-0459000">lgr 0.4.5.9000<a class="anchor" aria-label="anchor" href="#lgr-0459000"></a></h2>
-<ul><li><p><code>AppenderConsole</code> now accept a <code>connection</code> argument. If called from a <a href="https://yihui.org/knitr/" class="external-link">knitr</a> rendering process, log messages are now output to <code>stderr</code> instead of <code>stdout</code> by default, to avoid polluting markdown documents (<a href="https://github.com/s-fleck/lgr/issues/62" class="external-link">#62</a>, thx <a href="https://github.com/gadenbuie" class="external-link">@gadenbuie</a>).</p></li>
-<li><p>BREAKING: added <code>rawMsg</code> property to LogEvents to store message without string interpolation (e.g. that still contains the placeholders from <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code> or <code><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue()</a></code>). rawMsg will be added by default to json log files (<a href="https://github.com/s-fleck/lgr/issues/60" class="external-link">#60</a>)</p></li>
+<ul><li><p>Added <code>rawMsg</code> property to LogEvents to store message without string interpolation (i.e. the original string that still contains the placeholders from either <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code> or <code><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue()</a></code>) (<a href="https://github.com/s-fleck/lgr/issues/60" class="external-link">#60</a>)</p></li>
+<li><p>Updated <code>AppenderConsole</code> to accept a <code>connection</code> argument. If called from a <a href="https://yihui.org/knitr/" class="external-link">knitr</a> rendering process, log messages are now output to <code>stderr</code> instead of <code>stdout</code> by default. This avoids polluting markdown documents (<a href="https://github.com/s-fleck/lgr/issues/62" class="external-link">#62</a>, thx <a href="https://github.com/gadenbuie" class="external-link">@gadenbuie</a>).</p></li>
 <li><p>Replace <code>NULL</code> values and empty characters in logging by the string <code>"&lt;NULL&gt;"</code>. Before, <code>NULL</code> values would have resulted in empty log messages. (<a href="https://github.com/s-fleck/lgr/issues/51" class="external-link">#51</a>)</p></li>
 <li><p>Support transformers for <code>LoggerGlue</code> (see <code><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">?glue::glue</a></code>) (<a href="https://github.com/s-fleck/lgr/issues/51" class="external-link">#51</a>)</p></li>
-<li><p>Add support for <code>excluded_fields</code> to <code>Layout</code>, and exclude rawMsg by default from <code>LayotJson</code></p></li>
-<li><p>updated README</p></li>
+<li><p>Add support for <code>excluded_fields</code> to <code>Layout</code>, and exclude rawMsg by default from <code>LayoutJson</code></p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.4" id="lgr-044">lgr 0.4.4<a class="anchor" aria-label="anchor" href="#lgr-044"></a></h2><p class="text-muted">CRAN release: 2022-09-05</p>
@@ -59,10 +58,11 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.3" id="lgr-043">lgr 0.4.3<a class="anchor" aria-label="anchor" href="#lgr-043"></a></h2><p class="text-muted">CRAN release: 2021-09-16</p>
-<ul><li><p><code><a href="../reference/logger_index.html">logger_index()</a></code> returns a <code>data.frame</code> with metadata on all registered loggers (<a href="https://github.com/s-fleck/lgr/issues/47" class="external-link">#47</a>) (thanks <a href="https://github.com/Fuco1" class="external-link">@Fuco1</a>)</p></li>
-<li><p>export new <code><a href="../reference/string_repr.html">string_repr()</a></code> generic that is used to layout R objects for formatted log message output (<a href="https://github.com/s-fleck/lgr/issues/48" class="external-link">#48</a>, thanks <a href="https://github.com/mmuurr" class="external-link">@mmuurr</a>)</p></li>
-<li><p>The <code>$log()</code> method of Logger and LoggerGlue now unpacks conditions (except if they are supplied as a named argument) (<a href="https://github.com/s-fleck/lgr/issues/45" class="external-link">#45</a>, thanks <a href="https://github.com/mmuurr" class="external-link">@mmuurr</a>)</p></li>
-<li><p>Fix some timezone related tests for CRAN</p></li>
+<ul><li>
+<code><a href="../reference/logger_index.html">logger_index()</a></code> returns a <code>data.frame</code> with metadata on all registered loggers (<a href="https://github.com/s-fleck/lgr/issues/47" class="external-link">#47</a>) (thanks <a href="https://github.com/Fuco1" class="external-link">@Fuco1</a>)</li>
+<li>export new <code><a href="../reference/string_repr.html">string_repr()</a></code> generic that is used to layout R objects for formatted log message output (<a href="https://github.com/s-fleck/lgr/issues/48" class="external-link">#48</a>, thanks <a href="https://github.com/mmuurr" class="external-link">@mmuurr</a>)</li>
+<li>The <code>$log()</code> method of Logger and LoggerGlue now unpacks conditions (except if they are supplied as a named argument) (<a href="https://github.com/s-fleck/lgr/issues/45" class="external-link">#45</a>, thanks <a href="https://github.com/mmuurr" class="external-link">@mmuurr</a>)</li>
+<li>Fix some timezone related tests for CRAN</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.2" id="lgr-042">lgr 0.4.2<a class="anchor" aria-label="anchor" href="#lgr-042"></a></h2><p class="text-muted">CRAN release: 2021-01-10</p>
@@ -136,13 +136,14 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="lgr-020">lgr 0.2.0<a class="anchor" aria-label="anchor" href="#lgr-020"></a></h2><p class="text-muted">CRAN release: 2019-03-22</p>
-<ul><li><p><code>get_loggers()</code> registers new loggers in the lgr::loggers namespace, this is a more global and decoupled approach similar to how python logging handles loggers.</p></li>
-<li><p>removed <code>full_name</code> active binding for loggers. Loggers now only have qualified names and <code>name</code> is now identical to what <code>full_name</code> was before. For consistency the format method of <code>ancestry</code> has also been revised.</p></li>
-<li><p>Logger inheritance is now derived from the qualified name of a logger. Consequently <code>lg$parent</code> is now derived from <code>lg$name</code>, <code>lg$set_parent()</code> is no longer possible.</p></li>
-<li><p>If no threshold is set for a new Logger, it now inherits the threshold of its parent</p></li>
-<li><p>Depend on R6 &gt;= 2.4.0 which includes relevant fixes to finalizers. finalize methods are now private.</p></li>
-<li><p>Logger now have a <code>config</code> method that allows configuring Loggers with config objects and YAML files (experimental)</p></li>
-<li><p>added <code><a href="../reference/suspend_logging.html">with_logging()</a></code>, the opposite of <code><a href="../reference/suspend_logging.html">without_logging()</a></code>. This can be handy for automated tests where you might want so switch logging off/on only for specific unit tests.</p></li>
+<ul><li>
+<code>get_loggers()</code> registers new loggers in the lgr::loggers namespace, this is a more global and decoupled approach similar to how python logging handles loggers.</li>
+<li>removed <code>full_name</code> active binding for loggers. Loggers now only have qualified names and <code>name</code> is now identical to what <code>full_name</code> was before. For consistency the format method of <code>ancestry</code> has also been revised.</li>
+<li>Logger inheritance is now derived from the qualified name of a logger. Consequently <code>lg$parent</code> is now derived from <code>lg$name</code>, <code>lg$set_parent()</code> is no longer possible.</li>
+<li>If no threshold is set for a new Logger, it now inherits the threshold of its parent</li>
+<li>Depend on R6 &gt;= 2.4.0 which includes relevant fixes to finalizers. finalize methods are now private.</li>
+<li>Logger now have a <code>config</code> method that allows configuring Loggers with config objects and YAML files (experimental)</li>
+<li>added <code><a href="../reference/suspend_logging.html">with_logging()</a></code>, the opposite of <code><a href="../reference/suspend_logging.html">without_logging()</a></code>. This can be handy for automated tests where you might want so switch logging off/on only for specific unit tests.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.1" id="lgr-011">lgr 0.1.1<a class="anchor" aria-label="anchor" href="#lgr-011"></a></h2><p class="text-muted">CRAN release: 2019-02-22</p>
