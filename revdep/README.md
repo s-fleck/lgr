@@ -1,38 +1,26 @@
 # Platform
 
-|field    |value                        |
-|:--------|:----------------------------|
-|version  |R version 4.0.2 (2020-06-22) |
-|os       |Ubuntu 20.10                 |
-|system   |x86_64, linux-gnu            |
-|ui       |RStudio                      |
-|language |(EN)                         |
-|collate  |en_US.UTF-8                  |
-|ctype    |en_US.UTF-8                  |
-|tz       |Europe/Vienna                |
-|date     |2021-01-10                   |
+|field    |value                                                                                                                                                                                                    |
+|:--------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|version  |R Under development (unstable) (2024-11-18 r87347 ucrt)                                                                                                                                                  |
+|os       |Windows 11 x64 (build 26100)                                                                                                                                                                             |
+|system   |x86_64, mingw32                                                                                                                                                                                          |
+|ui       |RStudio                                                                                                                                                                                                  |
+|language |(EN)                                                                                                                                                                                                     |
+|collate  |German_Austria.utf8                                                                                                                                                                                      |
+|ctype    |German_Austria.utf8                                                                                                                                                                                      |
+|tz       |Europe/Vienna                                                                                                                                                                                            |
+|date     |2025-07-21                                                                                                                                                                                               |
+|rstudio  |2025.05.1+513 Mariposa Orchid (desktop)                                                                                                                                                                  |
+|pandoc   |NA                                                                                                                                                                                                       |
+|quarto   |ERROR: Unknown command "TMPDIR=C:/Users/stefan.fleck/AppData/Local/Temp/Rtmp0S7nXQ/filea8f01c6cc77". Did you mean command "create"? @ C:\Users\STEFAN~1.FLE\AppData\Local\Programs\Quarto\bin\quarto.exe |
 
 # Dependencies
 
 |package |old   |new   |Δ  |
 |:-------|:-----|:-----|:--|
-|lgr     |0.4.1 |0.4.2 |*  |
-|R6      |2.5.0 |2.5.0 |   |
+|lgr     |0.4.4 |0.5.0 |*  |
+|R6      |2.6.1 |2.6.1 |   |
 
 # Revdeps
-
-## Failed to check (10)
-
-|package          |version |error |warning |note |
-|:----------------|:-------|:-----|:-------|:----|
-|DoubleML         |?       |      |        |     |
-|mlr3db           |?       |      |        |     |
-|mlr3filters      |?       |      |        |     |
-|mlr3learners     |?       |      |        |     |
-|mlr3pipelines    |?       |      |        |     |
-|mlr3proba        |?       |      |        |     |
-|mlr3spatiotempcv |?       |      |        |     |
-|mlr3viz          |?       |      |        |     |
-|solitude         |?       |      |        |     |
-|text2vec         |?       |      |        |     |
 
