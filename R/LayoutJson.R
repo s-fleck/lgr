@@ -63,8 +63,7 @@ LayoutJson <- R6::R6Class(
     #'
     #' @param transform_event_names
     #' * `NULL`: don't process names
-    #' * a named `character` vector where the names are the original field names
-    #'   and the values the desired new field names,
+    #' * a named `character` vector of the format `new_name = old_name`
     #' * or a `function` with a single mandatory argument that accepts a
     #'   `character` vector of field names. Applied after `transform_event`.
     #'
@@ -241,8 +240,8 @@ apply_event_name_transformer = function(x, f){
   }
 
   if (is.character(f)){
-    rename_idx <- match(x, names(f), nomatch = 0L)
-    x[rename_idx > 0L] <- f[rename_idx[rename_idx > 0L]]
+    rename_idx <- match(x, f, nomatch = 0L)
+    x[rename_idx > 0L] <- names(f)[rename_idx[rename_idx > 0L]]
     return(x)
   }
 
