@@ -1,4 +1,4 @@
-# lgr 0.4.5.9000
+# lgr 0.5.0
 
 - Added `rawMsg` property to LogEvents to store message without
   string interpolation (i.e. the original string that still contains

@@ -123,8 +123,7 @@ takes a \link{LogEvent} object and returns a \code{list} of values.}
 
 \item{\code{transform_event_names}}{\itemize{
 \item \code{NULL}: don't process names
-\item a named \code{character} vector where the names are the original field names
-and the values the desired new field names,
+\item a named \code{character} vector of the format \code{new_name = old_name}
 \item or a \code{function} with a single mandatory argument that accepts a
 \code{character} vector of field names. Applied after \code{transform_event}.
 }}
