@@ -6,3 +6,5 @@ inst/doc
 .httr-oauth
 CRAN-RELEASE
 docs/
+/doc/
+/Meta/
