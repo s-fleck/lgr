@@ -110,7 +110,7 @@ console). Let’s add a file Appender:</p>
 <span><span class="va">lgr</span><span class="op">$</span><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="../reference/AppenderFile.html">AppenderFile</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"file"</span><span class="op">)</span></span>
 <span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"You must think I am joking"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "INFO  [2025-07-21 06:43:24.173] You must think I am joking"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "INFO  [2025-07-21 06:45:36.665] You must think I am joking"</span></span></code></pre></div>
 <p>The various Appenders available in lgr are R6 classes. To instantiate
 an object of that class (i.e. create a new appender) you have to use the
 <code>$new()</code> function as in the example above. Whenever you see
@@ -124,8 +124,8 @@ each Appender has exactly one:</p>
 <code class="sourceCode R"><span><span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">file</span><span class="op">$</span><span class="fu">set_layout</span><span class="op">(</span><span class="va"><a href="../reference/LayoutFormat.html">LayoutFormat</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>timestamp_fmt <span class="op">=</span> <span class="st">"%B %d %T"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"No, I am quite serious"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "INFO  [2025-07-21 06:43:24.173] You must think I am joking"</span></span>
-<span><span class="co">#&gt; [2] "INFO  [July 21 06:43:24] No, I am quite serious"</span></span>
+<span><span class="co">#&gt; [1] "INFO  [2025-07-21 06:45:36.665] You must think I am joking"</span></span>
+<span><span class="co">#&gt; [2] "INFO  [July 21 06:45:36] No, I am quite serious"</span></span>
 <span></span>
 <span><span class="co">#cleanup</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></span></code></pre></div>
@@ -147,12 +147,12 @@ JSON:</p>
 <p>JSON is still somewhat human readable</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; {"level":400,"timestamp":"2025-07-21 06:43:24","logger":"root","caller":"eval","msg":"We lived in Styria"}</span></span></code></pre></div>
+<span><span class="co">#&gt; {"level":400,"timestamp":"2025-07-21 06:45:36","logger":"root","caller":"eval","msg":"We lived in Styria"}</span></span></code></pre></div>
 <p>and easy for machines to parse</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/read_json_lines.html">read_json_lines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   level           timestamp logger caller                msg</span></span>
-<span><span class="co">#&gt; 1   400 2025-07-21 06:43:24   root   eval We lived in Styria</span></span></code></pre></div>
+<span><span class="co">#&gt; 1   400 2025-07-21 06:45:36   root   eval We lived in Styria</span></span></code></pre></div>
 <p>Many Appenders provide either a <code>$show()</code> method and a
 <code>$data</code> active binding convenience, and so you do not have to
 call <code><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines()</a></code> &amp; co manually.</p>
@@ -160,13 +160,13 @@ call <code><a href="https://rdrr.io/r/base/readLines.html" class="external-link"
 <code class="sourceCode R"><span><span class="co"># show is a method and takes some extra arguments, like maximum number of lines</span></span>
 <span><span class="co"># to show</span></span>
 <span><span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">json</span><span class="op">$</span><span class="fu">show</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; {"level":400,"timestamp":"2025-07-21 06:43:24","logger":"root","caller":"eval","msg":"We lived in Styria"}</span></span>
+<span><span class="co">#&gt; {"level":400,"timestamp":"2025-07-21 06:45:36","logger":"root","caller":"eval","msg":"We lived in Styria"}</span></span>
 <span></span>
 <span><span class="co"># $data always returns a data.frame if available. It is an active binding </span></span>
 <span><span class="co"># rather than a method, so no extra arguments are possible</span></span>
 <span><span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">json</span><span class="op">$</span><span class="va">data</span>  </span>
 <span><span class="co">#&gt;   level           timestamp logger caller                msg</span></span>
-<span><span class="co">#&gt; 1   400 2025-07-21 06:43:24   root   eval We lived in Styria</span></span></code></pre></div>
+<span><span class="co">#&gt; 1   400 2025-07-21 06:45:36   root   eval We lived in Styria</span></span></code></pre></div>
 <p>Please note that under the hood, <code>AppenderJson</code> is just an
 <code>AppenderFile</code> with <code>LayoutJson</code>. The only
 difference is AppenderJson provides a <code>$data()</code> method while
@@ -186,8 +186,8 @@ particularly good at handling most R objects.</p>
 <span><span class="co"># JSON can store most R objects quite naturally </span></span>
 <span><span class="fu"><a href="../reference/read_json_lines.html">read_json_lines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   level           timestamp logger caller                msg         poultry</span></span>
-<span><span class="co">#&gt; 1   400 2025-07-21 06:43:24   root   eval We lived in Styria            NULL</span></span>
-<span><span class="co">#&gt; 2   400 2025-07-21 06:43:24   root   eval         Styria has capons, turkeys</span></span>
+<span><span class="co">#&gt; 1   400 2025-07-21 06:45:36   root   eval We lived in Styria            NULL</span></span>
+<span><span class="co">#&gt; 2   400 2025-07-21 06:45:37   root   eval         Styria has capons, turkeys</span></span>
 <span><span class="fu"><a href="../reference/read_json_lines.html">read_json_lines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span><span class="op">$</span><span class="va">poultry</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>  <span class="co"># works because poultry is a list column</span></span>
 <span><span class="co">#&gt; [1] "capons"  "turkeys"</span></span></code></pre></div>
 </div>
@@ -376,13 +376,13 @@ field.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Vampire stories are generally located in Styria"</span><span class="op">)</span></span>
 <span><span class="va">lgr</span><span class="op">$</span><span class="va">last_event</span>  <span class="co"># a summary output of the event</span></span>
-<span><span class="co">#&gt; INFO  [2025-07-21 06:43:24] Vampire stories are generally located in Styria</span></span>
+<span><span class="co">#&gt; INFO  [2025-07-21 06:45:37] Vampire stories are generally located in Styria</span></span>
 <span><span class="va">lgr</span><span class="op">$</span><span class="va">last_event</span><span class="op">$</span><span class="va">values</span>  <span class="co"># all values stored in the event as a list</span></span>
 <span><span class="co">#&gt; $level</span></span>
 <span><span class="co">#&gt; [1] 400</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $timestamp</span></span>
-<span><span class="co">#&gt; [1] "2025-07-21 06:43:24 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2025-07-21 06:45:37 UTC"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $logger</span></span>
 <span><span class="co">#&gt; [1] "root"</span></span>
@@ -413,7 +413,7 @@ producing elaborately formatted but hard to parse log messages.</p>
 <span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Processing track"</span>, file <span class="op">=</span> <span class="st">"track.gpx"</span>, waypoints <span class="op">=</span> <span class="fl">32</span><span class="op">)</span></span>
 <span><span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">json</span><span class="op">$</span><span class="va">data</span></span>
 <span><span class="co">#&gt;   level           timestamp logger caller              msg      file waypoints</span></span>
-<span><span class="co">#&gt; 1   400 2025-07-21 06:43:25   root   eval Processing track track.gpx        32</span></span></code></pre></div>
+<span><span class="co">#&gt; 1   400 2025-07-21 06:45:37   root   eval Processing track track.gpx        32</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="thresholds">Thresholds &amp; Filters: controlling output detail<a class="anchor" aria-label="anchor" href="#thresholds"></a>
@@ -469,8 +469,8 @@ lgr.</p>
 <span><span class="va">lgr</span><span class="op">$</span><span class="fu">debug</span><span class="op">(</span><span class="st">"A debug message not shown by the console appender"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "INFO  [2025-07-21 06:43:25.241] Another informational message"                    </span></span>
-<span><span class="co">#&gt; [2] "DEBUG [2025-07-21 06:43:25.243] A debug message not shown by the console appender"</span></span>
+<span><span class="co">#&gt; [1] "INFO  [2025-07-21 06:45:37.728] Another informational message"                    </span></span>
+<span><span class="co">#&gt; [2] "DEBUG [2025-07-21 06:45:37.730] A debug message not shown by the console appender"</span></span>
 <span></span>
 <span><span class="co"># Remove the appender again</span></span>
 <span><span class="va">lgr</span><span class="op">$</span><span class="fu">remove_appender</span><span class="op">(</span><span class="st">"file"</span><span class="op">)</span></span>
@@ -689,18 +689,18 @@ even more convenient method to read the logfile.</p>
 <span><span class="co"># same as </span></span>
 <span><span class="fu"><a href="../reference/read_json_lines.html">read_json_lines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt;   level           timestamp logger caller             msg  field numbers  use</span></span>
-<span><span class="co">#&gt; 1   400 2025-07-21 06:43:26   test   eval JSON naturally  custom    NULL &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 2   400 2025-07-21 06:43:26   test   eval supports custom   &lt;NA&gt; 1, 2, 3 &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3   400 2025-07-21 06:43:26   test   eval      log fields   &lt;NA&gt;    NULL JSON</span></span></code></pre>
+<span><span class="co">#&gt; 1   400 2025-07-21 06:45:38   test   eval JSON naturally  custom    NULL &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 2   400 2025-07-21 06:45:38   test   eval supports custom   &lt;NA&gt; 1, 2, 3 &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3   400 2025-07-21 06:45:38   test   eval      log fields   &lt;NA&gt;    NULL JSON</span></span></code></pre>
 <p>JSON is also human readable, though this vignette does not transport
 that fact very well because of the lack of horizontal space.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">json</span><span class="op">$</span><span class="fu">show</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># same as</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; {"level":400,"timestamp":"2025-07-21 06:43:26","logger":"test","caller":"eval","msg":"JSON naturally ","field":"custom"}</span></span>
-<span><span class="co">#&gt; {"level":400,"timestamp":"2025-07-21 06:43:26","logger":"test","caller":"eval","msg":"supports custom","numbers":[1,2,3]}</span></span>
-<span><span class="co">#&gt; {"level":400,"timestamp":"2025-07-21 06:43:26","logger":"test","caller":"eval","msg":"log fields","use":"JSON"}</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; {"level":400,"timestamp":"2025-07-21 06:45:38","logger":"test","caller":"eval","msg":"JSON naturally ","field":"custom"}</span></span>
+<span><span class="co">#&gt; {"level":400,"timestamp":"2025-07-21 06:45:38","logger":"test","caller":"eval","msg":"supports custom","numbers":[1,2,3]}</span></span>
+<span><span class="co">#&gt; {"level":400,"timestamp":"2025-07-21 06:45:38","logger":"test","caller":"eval","msg":"log fields","use":"JSON"}</span></span></code></pre>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># cleanup</span></span>
 <span><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
@@ -734,17 +734,17 @@ the last 5 backups of the logfile are kept.</p>
 <span><span class="co"># display info on the backups of tf</span></span>
 <span><span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">rotating</span><span class="op">$</span><span class="va">backups</span></span>
 <span><span class="co">#&gt;                                     path             name sfx ext  size isdir</span></span>
-<span><span class="co">#&gt; 1 /tmp/Rtmpie2nLU/file206342e9a88c.1.log file206342e9a88c   1 log 10608 FALSE</span></span>
-<span><span class="co">#&gt; 2 /tmp/Rtmpie2nLU/file206342e9a88c.2.log file206342e9a88c   2 log 10608 FALSE</span></span>
-<span><span class="co">#&gt; 3 /tmp/Rtmpie2nLU/file206342e9a88c.3.log file206342e9a88c   3 log 10608 FALSE</span></span>
-<span><span class="co">#&gt; 4 /tmp/Rtmpie2nLU/file206342e9a88c.4.log file206342e9a88c   4 log 10608 FALSE</span></span>
-<span><span class="co">#&gt; 5 /tmp/Rtmpie2nLU/file206342e9a88c.5.log file206342e9a88c   5 log 10608 FALSE</span></span>
+<span><span class="co">#&gt; 1 /tmp/Rtmpy8vkda/file201a254e7876.1.log file201a254e7876   1 log 10608 FALSE</span></span>
+<span><span class="co">#&gt; 2 /tmp/Rtmpy8vkda/file201a254e7876.2.log file201a254e7876   2 log 10608 FALSE</span></span>
+<span><span class="co">#&gt; 3 /tmp/Rtmpy8vkda/file201a254e7876.3.log file201a254e7876   3 log 10608 FALSE</span></span>
+<span><span class="co">#&gt; 4 /tmp/Rtmpy8vkda/file201a254e7876.4.log file201a254e7876   4 log 10608 FALSE</span></span>
+<span><span class="co">#&gt; 5 /tmp/Rtmpy8vkda/file201a254e7876.5.log file201a254e7876   5 log 10608 FALSE</span></span>
 <span><span class="co">#&gt;   mode               mtime               ctime               atime  uid gid</span></span>
-<span><span class="co">#&gt; 1  644 2025-07-21 06:43:26 2025-07-21 06:43:26 2025-07-21 06:43:26 1001 118</span></span>
-<span><span class="co">#&gt; 2  644 2025-07-21 06:43:26 2025-07-21 06:43:26 2025-07-21 06:43:26 1001 118</span></span>
-<span><span class="co">#&gt; 3  644 2025-07-21 06:43:26 2025-07-21 06:43:26 2025-07-21 06:43:26 1001 118</span></span>
-<span><span class="co">#&gt; 4  644 2025-07-21 06:43:26 2025-07-21 06:43:26 2025-07-21 06:43:26 1001 118</span></span>
-<span><span class="co">#&gt; 5  644 2025-07-21 06:43:26 2025-07-21 06:43:26 2025-07-21 06:43:26 1001 118</span></span>
+<span><span class="co">#&gt; 1  644 2025-07-21 06:45:39 2025-07-21 06:45:39 2025-07-21 06:45:39 1001 118</span></span>
+<span><span class="co">#&gt; 2  644 2025-07-21 06:45:39 2025-07-21 06:45:39 2025-07-21 06:45:39 1001 118</span></span>
+<span><span class="co">#&gt; 3  644 2025-07-21 06:45:39 2025-07-21 06:45:39 2025-07-21 06:45:39 1001 118</span></span>
+<span><span class="co">#&gt; 4  644 2025-07-21 06:45:39 2025-07-21 06:45:39 2025-07-21 06:45:39 1001 118</span></span>
+<span><span class="co">#&gt; 5  644 2025-07-21 06:45:39 2025-07-21 06:45:39 2025-07-21 06:45:39 1001 118</span></span>
 <span><span class="co">#&gt;    uname grname index</span></span>
 <span><span class="co">#&gt; 1 runner docker     1</span></span>
 <span><span class="co">#&gt; 2 runner docker     2</span></span>
@@ -781,7 +781,7 @@ the newly created Logger:</p>
 <span><span class="co">#&gt; &lt;Logger&gt; [<span style="color: #808080;">all</span>] mypackage</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; appenders:</span></span>
-<span><span class="co">#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/Rtmpie2nLU/file206310a2e5e0</span></span>
+<span><span class="co">#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/Rtmpy8vkda/file201a7563bebd</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; inherited appenders:</span></span>
 <span><span class="co">#&gt;   console: &lt;AppenderConsole&gt; [info] -&gt; console</span></span></code></pre></div>
@@ -805,7 +805,7 @@ inherit any Appenders anymore</p>
 <span><span class="co">#&gt; &lt;Logger&gt; [<span style="color: #808080;">all</span>] mypackage</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; appenders:</span></span>
-<span><span class="co">#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/Rtmpie2nLU/file206310a2e5e0</span></span></code></pre></div>
+<span><span class="co">#&gt;   [[1]]: &lt;AppenderFile&gt; [all] -&gt; /tmp/Rtmpy8vkda/file201a7563bebd</span></span></code></pre></div>
 <p>Consequently, <code>lg</code> no longer outputs log messages to he
 console</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
