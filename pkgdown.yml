@@ -3,7 +3,7 @@ pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   lgr: lgr.html
-last_built: 2025-07-21T11:26Z
+last_built: 2025-07-22T09:24Z
 urls:
   reference: https://s-fleck.github.io/lgr/reference
   article: https://s-fleck.github.io/lgr/articles
