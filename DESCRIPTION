@@ -9,12 +9,12 @@ Authors@R:
            email = "stefan.b.fleck@gmail.com",
            comment = c(ORCID = "0000-0003-3344-9851"))
 Maintainer: Stefan Fleck <stefan.b.fleck@gmail.com>
-Description: A flexible, feature-rich yet light-weight logging
+Description: A flexible, light-weight logging
     framework based on 'R6' classes. It supports hierarchical loggers,
-    custom log levels, arbitrary data fields in log events, logging to
-    plaintext, 'JSON', (rotating) files, memory buffers. For extra
-    appenders that support logging to databases, email and push
-    notifications see the the package lgr.app.
+    structured logging, output to  plaintext, 'JSON', (rotating) files,
+    and memory buffers. Additional appenders for Elasticsearch, Dynatrace, 
+    databases, email and push notifications, and more are available
+    in the lgrExtra package.
 License: MIT + file LICENSE
 URL: https://s-fleck.github.io/lgr/
 BugReports: https://github.com/s-fleck/lgr/issues/
