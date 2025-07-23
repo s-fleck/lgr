@@ -36,7 +36,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Print or Format Logging Data</h1>
-      <small class="dont-index">Source: <a href="https://github.com/s-fleck/lgr/blob/0.5.0/R/LogEvent.R" class="external-link"><code>R/LogEvent.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/s-fleck/lgr/blob/master/R/LogEvent.R" class="external-link"><code>R/LogEvent.R</code></a></small>
       <div class="d-none name"><code>print.LogEvent.Rd</code></div>
     </div>
 
@@ -173,11 +173,11 @@ have <strong>jsonlite</strong> installed and does not support colors as opposed 
 <span class="r-in"><span>  level <span class="op">=</span> <span class="fl">300</span>, msg <span class="op">=</span> <span class="st">"a test event"</span>, caller <span class="op">=</span> <span class="st">"testfun()"</span>, logger <span class="op">=</span> <span class="va">lgr</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:33:57] a test event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:40:37] a test event</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, fmt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"%t (%p) %c: %n - %m"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2025-07-23 06:33:57 (7249) testfun(): 300 - a test event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2025-07-23 06:40:37 (7318) testfun(): 300 - a test event</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, colors <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:33:57] a test event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:40:37] a test event</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># custom values</span></span></span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va"><a href="LogEvent.html">LogEvent</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
@@ -187,13 +187,13 @@ have <strong>jsonlite</strong> installed and does not support colors as opposed 
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># default output with %f</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:33:57] a gps track  {waypoints: `10`, location: `Austria`}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:40:37] a gps track  {waypoints: `10`, location: `Austria`}</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># proper JSON output with %j</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"jsonlite"</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span>, fmt <span class="op">=</span> <span class="st">"%L [%t] %m  %j"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:33:57] a gps track  {"waypoints":10,"location":"Austria"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:40:37] a gps track  {"waypoints":10,"location":"Austria"}</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -42,7 +42,7 @@ LayoutJson."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Log to a file</h1>
-      <small class="dont-index">Source: <a href="https://github.com/s-fleck/lgr/blob/0.5.0/R/Appender.R" class="external-link"><code>R/Appender.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/s-fleck/lgr/blob/master/R/Appender.R" class="external-link"><code>R/Appender.R</code></a></small>
       <div class="d-none name"><code>AppenderFile.Rd</code></div>
     </div>
 
@@ -236,14 +236,14 @@ that should be displayed.</p></dd>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"A test message"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [06:33:47.786] A test message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [06:40:25.908] A test message</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">default</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "INFO  [2025-07-23 06:33:47.786] A test message"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "INFO  [2025-07-23 06:40:25.908] A test message"</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">fancy</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "[2025-07-23 06:33:47.786] eval(): INFO  A test message"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "[2025-07-23 06:40:25.908] eval(): INFO  A test message"</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">json</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "{\"level\":400,\"timestamp\":\"2025-07-23 06:33:47\",\"logger\":\"test\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "{\"level\":400,\"timestamp\":\"2025-07-23 06:40:25\",\"logger\":\"test\",\"caller\":\"eval\",\"msg\":\"A test message\"}"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># cleanup</span></span></span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">config</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span></span>
@@ -263,12 +263,12 @@ that should be displayed.</p></dd>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"A test message %s strings"</span>, <span class="st">"with format strings"</span>, and <span class="op">=</span> <span class="st">"custom_fields"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">show</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"level":400,"timestamp":"2025-07-23 06:33:47","logger":"test","caller":"eval","msg":"A test message"}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"level":400,"timestamp":"2025-07-23 06:33:47","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"level":400,"timestamp":"2025-07-23 06:40:25","logger":"test","caller":"eval","msg":"A test message"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"level":400,"timestamp":"2025-07-23 06:40:25","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}</span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="va">appenders</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   level           timestamp logger caller</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2025-07-23 06:33:47   test   eval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   400 2025-07-23 06:33:47   test   eval</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2025-07-23 06:40:25   test   eval</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   400 2025-07-23 06:40:25   test   eval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                          msg           and</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                             A test message          &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 A test message with format strings strings custom_fields</span>

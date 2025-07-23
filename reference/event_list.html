@@ -42,7 +42,7 @@ their own Appenders."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>A List of LogEvents</h1>
-      <small class="dont-index">Source: <a href="https://github.com/s-fleck/lgr/blob/0.5.0/R/event_list.R" class="external-link"><code>R/event_list.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/s-fleck/lgr/blob/master/R/event_list.R" class="external-link"><code>R/event_list.R</code></a></small>
       <div class="d-none name"><code>event_list.Rd</code></div>
     </div>
 
@@ -143,26 +143,26 @@ exist for event lists.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">e</span> <span class="op">&lt;-</span> <span class="va"><a href="LogEvent.html">LogEvent</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>level <span class="op">=</span> <span class="fl">300</span>, msg <span class="op">=</span> <span class="st">"a"</span>, logger <span class="op">=</span> <span class="va">lgr</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">as_event_list</span><span class="op">(</span><span class="va">e</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:33:56] a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:40:35] a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "event_list" "list"      </span>
 <span class="r-in"><span><span class="fu">as_event_list</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">e</span>, <span class="va">e</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:33:56] a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:40:35] a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:33:56] a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:40:35] a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "event_list" "list"      </span>
 <span class="r-in"><span><span class="co"># nested lists get automatically unnested</span></span></span>
 <span class="r-in"><span><span class="fu">as_event_list</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">e</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>nested_event <span class="op">=</span> <span class="va">e</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:33:56] a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:40:35] a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nested_event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:33:56] a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:40:35] a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "event_list" "list"      </span>
@@ -171,17 +171,17 @@ exist for event lists.</p>
 <span class="r-in"><span><span class="va">e</span> <span class="op">&lt;-</span> <span class="va"><a href="LogEvent.html">LogEvent</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>level <span class="op">=</span> <span class="fl">300</span>, msg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, logger <span class="op">=</span> <span class="va">lgr</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">as_event_list</span><span class="op">(</span><span class="va">e</span>, scalarize <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:33:56] A</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:33:56] B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:40:35] A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:40:35] B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "event_list" "list"      </span>
 <span class="r-in"><span><span class="fu">as_event_list</span><span class="op">(</span><span class="va">e</span>, scalarize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:33:56] A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:40:35] A</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:33:56] B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2025-07-23 06:40:35] B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "event_list" "list"      </span>
