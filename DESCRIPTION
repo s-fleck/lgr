@@ -1,7 +1,7 @@
 Type: Package
 Package: lgr
 Title: A Fully Featured Logging Framework
-Version: 0.5.1
+Version: 0.5.2
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -12,9 +12,9 @@ Maintainer: Stefan Fleck <stefan.b.fleck@gmail.com>
 Description: A flexible, light-weight logging
     framework based on 'R6' classes. It supports hierarchical loggers,
     structured logging, output to  plaintext, 'JSON', (rotating) files,
-    and memory buffers. Additional appenders for Elasticsearch, Dynatrace, 
+    and memory buffers. Additional appenders for 'Elasticsearch', 'Dynatrace', 
     databases, email and push notifications, and more are available
-    in the lgrExtra package.
+    in the 'lgrExtra' package.
 License: MIT + file LICENSE
 URL: https://s-fleck.github.io/lgr/
 BugReports: https://github.com/s-fleck/lgr/issues/

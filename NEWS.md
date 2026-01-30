@@ -1,3 +1,8 @@
+# lgr 0.5.2
+
+- Quote 'Dynatrace' and 'lgrExtra' in DESCRIPTION 
+
+
 # lgr 0.5.1
 
 - Fix doc problem for CRAN
