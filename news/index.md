@@ -2,6 +2,8 @@
 
 ## lgr 0.5.2
 
+CRAN release: 2026-01-30
+
 - Quote ‘Dynatrace’ and ‘lgrExtra’ in DESCRIPTION
 
 ## lgr 0.5.1

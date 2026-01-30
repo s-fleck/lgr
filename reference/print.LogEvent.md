@@ -138,11 +138,11 @@ x <- LogEvent$new(
   level = 300, msg = "a test event", caller = "testfun()", logger = lgr
 )
 print(x)
-#> WARN  [2026-01-30 11:47:36] a test event
+#> WARN  [2026-01-30 13:41:55] a test event
 print(x, fmt = c("%t (%p) %c: %n - %m"))
-#> 2026-01-30 11:47:36 (7011) testfun(): 300 - a test event
+#> 2026-01-30 13:41:55 (7042) testfun(): 300 - a test event
 print(x, colors = NULL)
-#> WARN  [2026-01-30 11:47:36] a test event
+#> WARN  [2026-01-30 13:41:55] a test event
 
 # custom values
 y <- LogEvent$new(
@@ -152,11 +152,11 @@ y <- LogEvent$new(
 
 # default output with %f
 print(y)
-#> WARN  [2026-01-30 11:47:36] a gps track  {waypoints: `10`, location: `Austria`}
+#> WARN  [2026-01-30 13:41:55] a gps track  {waypoints: `10`, location: `Austria`}
 
 # proper JSON output with %j
 if (requireNamespace("jsonlite")){
 print(y, fmt = "%L [%t] %m  %j")
 }
-#> WARN  [2026-01-30 11:47:36] a gps track  {"waypoints":10,"location":"Austria"}
+#> WARN  [2026-01-30 13:41:55] a gps track  {"waypoints":10,"location":"Austria"}
 ```
