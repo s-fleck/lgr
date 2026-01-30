@@ -553,19 +553,19 @@ programmatically
 ``` r
 # lgr::lgr is the root logger that is always available
 lgr$info("Today is a good day")
-#> INFO  [13:41:50.174] Today is a good day
+#> INFO  [13:43:55.275] Today is a good day
 lgr$fatal("This is a serious error")
-#> FATAL [13:41:50.175] This is a serious error
+#> FATAL [13:43:55.276] This is a serious error
 
 # Loggers use sprintf() for string formatting by default
 lgr$info("Today is %s", Sys.Date() )
-#> INFO  [13:41:50.177] Today is 2026-01-30
+#> INFO  [13:43:55.277] Today is 2026-01-30
 
 # If no unnamed `...` are present, msg is not passed through sprintf()
 lgr$fatal("100% bad")  # so this works
-#> FATAL [13:41:50.178] 100% bad
+#> FATAL [13:43:55.279] 100% bad
 lgr$fatal("%s%% bad", 100)  # if you use unnamed arguments, you must escape %
-#> FATAL [13:41:50.179] 100% bad
+#> FATAL [13:43:55.280] 100% bad
 
 # You can create new loggers with get_logger()
 tf <- tempfile()
@@ -575,9 +575,9 @@ lg <- get_logger("mylogger")$set_appenders(AppenderFile$new(tf))
 # logger, which is by default the root logger. This is why the following
 # writes not only the file 'tf', but also to the console.
 lg$fatal("blubb")
-#> FATAL [13:41:50.183] blubb
+#> FATAL [13:43:55.283] blubb
 readLines(tf)
-#> [1] "FATAL [2026-01-30 13:41:50.183] blubb"
+#> [1] "FATAL [2026-01-30 13:43:55.283] blubb"
 
 # This logger's print() method depicts this relationship.
 child <- get_logger("lg/child")
@@ -593,12 +593,12 @@ print(child$name)
 tf2 <- tempfile()
 lg$add_appender(AppenderFile$new(tf2, layout = LayoutJson$new()))
 lg$info("Not all %s support custom fields", "appenders", type = "test")
-#> INFO  [13:41:50.190] Not all appenders support custom fields {type: `test`}
+#> INFO  [13:43:55.290] Not all appenders support custom fields {type: `test`}
 cat(readLines(tf), sep = "\n")
-#> FATAL [2026-01-30 13:41:50.183] blubb
-#> INFO  [2026-01-30 13:41:50.190] Not all appenders support custom fields {"type":"test"}
+#> FATAL [2026-01-30 13:43:55.283] blubb
+#> INFO  [2026-01-30 13:43:55.290] Not all appenders support custom fields {"type":"test"}
 cat(readLines(tf2), sep = "\n")
-#> {"level":400,"timestamp":"2026-01-30 13:41:50","logger":"mylogger","caller":"eval","msg":"Not all appenders support custom fields","type":"test"}
+#> {"level":400,"timestamp":"2026-01-30 13:43:55","logger":"mylogger","caller":"eval","msg":"Not all appenders support custom fields","type":"test"}
 
 # cleanup
 unlink(c(tf, tf2))
@@ -623,8 +623,8 @@ if (requireNamespace("glue")){
   get_logger("glue", reset = TRUE)
 
 }
-#> FATAL [13:41:50.214] blah fizz is set to: buzz {foo: `bar`, fizz: `buzz`}
-#> FATAL [13:41:50.246] blah fizz is set to: buzz {foo: `bar`}
+#> FATAL [13:43:55.314] blah fizz is set to: buzz {foo: `bar`, fizz: `buzz`}
+#> FATAL [13:43:55.345] blah fizz is set to: buzz {foo: `bar`}
 #> <Logger> [info] glue
 #> 
 #> inherited appenders:
@@ -695,7 +695,7 @@ lg$config(NULL)
 
 lg <- get_logger("test")
 lg$list_log(list(level = 400, msg = "example"))
-#> INFO  [13:41:50.262] example
+#> INFO  [13:43:55.360] example
 
 ## ------------------------------------------------
 ## Method `Logger$add_appender`
@@ -723,5 +723,5 @@ lg$config(NULL)  # reset config
 ## ------------------------------------------------
 
 lgr$info(stop("this produces a warning instead of an error"))
-#> Warning: [2026-01-30 13:41:50.277] root ~ error in `lgr$info(stop("this produces a warning instead of an error"))`: this produces a warning instead of an error
+#> Warning: [2026-01-30 13:43:55.375] root ~ error in `lgr$info(stop("this produces a warning instead of an error"))`: this produces a warning instead of an error
 ```

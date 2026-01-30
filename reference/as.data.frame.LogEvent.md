@@ -82,16 +82,16 @@ as_tibble.LogEvent(
 ``` r
 lg <- get_logger("test")
 lg$info("lorem ipsum")
-#> INFO  [13:41:52.175] lorem ipsum
+#> INFO  [13:43:57.452] lorem ipsum
 as.data.frame(lg$last_event)
 #>   level           timestamp logger caller         msg      rawMsg
-#> 1   400 2026-01-30 13:41:52   test   eval lorem ipsum lorem ipsum
+#> 1   400 2026-01-30 13:43:57   test   eval lorem ipsum lorem ipsum
 
 lg$info("LogEvents can store any custom log values", df = iris)
-#> INFO  [13:41:52.178] LogEvents can store any custom log values {df: <data.frame 150x5>}
+#> INFO  [13:43:57.455] LogEvents can store any custom log values {df: <data.frame 150x5>}
 as.data.frame(lg$last_event)
 #>   level           timestamp logger caller
-#> 1   400 2026-01-30 13:41:52   test   eval
+#> 1   400 2026-01-30 13:43:57   test   eval
 #>                                         msg
 #> 1 LogEvents can store any custom log values
 #>                                      rawMsg           df
@@ -109,73 +109,73 @@ head(as.data.frame(lg$last_event)$df[[1]])
 
 # by default non-scalars are boxed
 lg$info("letters", letters = letters)
-#> INFO  [13:41:52.184] letters {letters: (a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z)}
+#> INFO  [13:43:57.461] letters {letters: (a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z)}
 as.data.frame(lg$last_event)
 #>   level           timestamp logger caller     msg  rawMsg      letters
-#> 1   400 2026-01-30 13:41:52   test   eval letters letters a, b, c,....
+#> 1   400 2026-01-30 13:43:57   test   eval letters letters a, b, c,....
 
 # this behaviour can be modified by supplying a custom boxing function
 as.data.frame(lg$last_event, box_if = function(.) FALSE)
 #>    level           timestamp logger caller     msg  rawMsg letters
-#> 1    400 2026-01-30 13:41:52   test   eval letters letters       a
-#> 2    400 2026-01-30 13:41:52   test   eval letters letters       b
-#> 3    400 2026-01-30 13:41:52   test   eval letters letters       c
-#> 4    400 2026-01-30 13:41:52   test   eval letters letters       d
-#> 5    400 2026-01-30 13:41:52   test   eval letters letters       e
-#> 6    400 2026-01-30 13:41:52   test   eval letters letters       f
-#> 7    400 2026-01-30 13:41:52   test   eval letters letters       g
-#> 8    400 2026-01-30 13:41:52   test   eval letters letters       h
-#> 9    400 2026-01-30 13:41:52   test   eval letters letters       i
-#> 10   400 2026-01-30 13:41:52   test   eval letters letters       j
-#> 11   400 2026-01-30 13:41:52   test   eval letters letters       k
-#> 12   400 2026-01-30 13:41:52   test   eval letters letters       l
-#> 13   400 2026-01-30 13:41:52   test   eval letters letters       m
-#> 14   400 2026-01-30 13:41:52   test   eval letters letters       n
-#> 15   400 2026-01-30 13:41:52   test   eval letters letters       o
-#> 16   400 2026-01-30 13:41:52   test   eval letters letters       p
-#> 17   400 2026-01-30 13:41:52   test   eval letters letters       q
-#> 18   400 2026-01-30 13:41:52   test   eval letters letters       r
-#> 19   400 2026-01-30 13:41:52   test   eval letters letters       s
-#> 20   400 2026-01-30 13:41:52   test   eval letters letters       t
-#> 21   400 2026-01-30 13:41:52   test   eval letters letters       u
-#> 22   400 2026-01-30 13:41:52   test   eval letters letters       v
-#> 23   400 2026-01-30 13:41:52   test   eval letters letters       w
-#> 24   400 2026-01-30 13:41:52   test   eval letters letters       x
-#> 25   400 2026-01-30 13:41:52   test   eval letters letters       y
-#> 26   400 2026-01-30 13:41:52   test   eval letters letters       z
+#> 1    400 2026-01-30 13:43:57   test   eval letters letters       a
+#> 2    400 2026-01-30 13:43:57   test   eval letters letters       b
+#> 3    400 2026-01-30 13:43:57   test   eval letters letters       c
+#> 4    400 2026-01-30 13:43:57   test   eval letters letters       d
+#> 5    400 2026-01-30 13:43:57   test   eval letters letters       e
+#> 6    400 2026-01-30 13:43:57   test   eval letters letters       f
+#> 7    400 2026-01-30 13:43:57   test   eval letters letters       g
+#> 8    400 2026-01-30 13:43:57   test   eval letters letters       h
+#> 9    400 2026-01-30 13:43:57   test   eval letters letters       i
+#> 10   400 2026-01-30 13:43:57   test   eval letters letters       j
+#> 11   400 2026-01-30 13:43:57   test   eval letters letters       k
+#> 12   400 2026-01-30 13:43:57   test   eval letters letters       l
+#> 13   400 2026-01-30 13:43:57   test   eval letters letters       m
+#> 14   400 2026-01-30 13:43:57   test   eval letters letters       n
+#> 15   400 2026-01-30 13:43:57   test   eval letters letters       o
+#> 16   400 2026-01-30 13:43:57   test   eval letters letters       p
+#> 17   400 2026-01-30 13:43:57   test   eval letters letters       q
+#> 18   400 2026-01-30 13:43:57   test   eval letters letters       r
+#> 19   400 2026-01-30 13:43:57   test   eval letters letters       s
+#> 20   400 2026-01-30 13:43:57   test   eval letters letters       t
+#> 21   400 2026-01-30 13:43:57   test   eval letters letters       u
+#> 22   400 2026-01-30 13:43:57   test   eval letters letters       v
+#> 23   400 2026-01-30 13:43:57   test   eval letters letters       w
+#> 24   400 2026-01-30 13:43:57   test   eval letters letters       x
+#> 25   400 2026-01-30 13:43:57   test   eval letters letters       y
+#> 26   400 2026-01-30 13:43:57   test   eval letters letters       z
 as.data.frame(lg$last_event, cols_expand = "letters")
 #>    level           timestamp logger caller     msg  rawMsg letters
-#> 1    400 2026-01-30 13:41:52   test   eval letters letters       a
-#> 2    400 2026-01-30 13:41:52   test   eval letters letters       b
-#> 3    400 2026-01-30 13:41:52   test   eval letters letters       c
-#> 4    400 2026-01-30 13:41:52   test   eval letters letters       d
-#> 5    400 2026-01-30 13:41:52   test   eval letters letters       e
-#> 6    400 2026-01-30 13:41:52   test   eval letters letters       f
-#> 7    400 2026-01-30 13:41:52   test   eval letters letters       g
-#> 8    400 2026-01-30 13:41:52   test   eval letters letters       h
-#> 9    400 2026-01-30 13:41:52   test   eval letters letters       i
-#> 10   400 2026-01-30 13:41:52   test   eval letters letters       j
-#> 11   400 2026-01-30 13:41:52   test   eval letters letters       k
-#> 12   400 2026-01-30 13:41:52   test   eval letters letters       l
-#> 13   400 2026-01-30 13:41:52   test   eval letters letters       m
-#> 14   400 2026-01-30 13:41:52   test   eval letters letters       n
-#> 15   400 2026-01-30 13:41:52   test   eval letters letters       o
-#> 16   400 2026-01-30 13:41:52   test   eval letters letters       p
-#> 17   400 2026-01-30 13:41:52   test   eval letters letters       q
-#> 18   400 2026-01-30 13:41:52   test   eval letters letters       r
-#> 19   400 2026-01-30 13:41:52   test   eval letters letters       s
-#> 20   400 2026-01-30 13:41:52   test   eval letters letters       t
-#> 21   400 2026-01-30 13:41:52   test   eval letters letters       u
-#> 22   400 2026-01-30 13:41:52   test   eval letters letters       v
-#> 23   400 2026-01-30 13:41:52   test   eval letters letters       w
-#> 24   400 2026-01-30 13:41:52   test   eval letters letters       x
-#> 25   400 2026-01-30 13:41:52   test   eval letters letters       y
-#> 26   400 2026-01-30 13:41:52   test   eval letters letters       z
+#> 1    400 2026-01-30 13:43:57   test   eval letters letters       a
+#> 2    400 2026-01-30 13:43:57   test   eval letters letters       b
+#> 3    400 2026-01-30 13:43:57   test   eval letters letters       c
+#> 4    400 2026-01-30 13:43:57   test   eval letters letters       d
+#> 5    400 2026-01-30 13:43:57   test   eval letters letters       e
+#> 6    400 2026-01-30 13:43:57   test   eval letters letters       f
+#> 7    400 2026-01-30 13:43:57   test   eval letters letters       g
+#> 8    400 2026-01-30 13:43:57   test   eval letters letters       h
+#> 9    400 2026-01-30 13:43:57   test   eval letters letters       i
+#> 10   400 2026-01-30 13:43:57   test   eval letters letters       j
+#> 11   400 2026-01-30 13:43:57   test   eval letters letters       k
+#> 12   400 2026-01-30 13:43:57   test   eval letters letters       l
+#> 13   400 2026-01-30 13:43:57   test   eval letters letters       m
+#> 14   400 2026-01-30 13:43:57   test   eval letters letters       n
+#> 15   400 2026-01-30 13:43:57   test   eval letters letters       o
+#> 16   400 2026-01-30 13:43:57   test   eval letters letters       p
+#> 17   400 2026-01-30 13:43:57   test   eval letters letters       q
+#> 18   400 2026-01-30 13:43:57   test   eval letters letters       r
+#> 19   400 2026-01-30 13:43:57   test   eval letters letters       s
+#> 20   400 2026-01-30 13:43:57   test   eval letters letters       t
+#> 21   400 2026-01-30 13:43:57   test   eval letters letters       u
+#> 22   400 2026-01-30 13:43:57   test   eval letters letters       v
+#> 23   400 2026-01-30 13:43:57   test   eval letters letters       w
+#> 24   400 2026-01-30 13:43:57   test   eval letters letters       x
+#> 25   400 2026-01-30 13:43:57   test   eval letters letters       y
+#> 26   400 2026-01-30 13:43:57   test   eval letters letters       z
 
 # The `msg` argument of a log event is always vectorized
 lg$info(c("a vectorized", "log message"))
-#> INFO  [13:41:52.192] a vectorized
-#> INFO  [13:41:52.192] log message
+#> INFO  [13:43:57.468] a vectorized
+#> INFO  [13:43:57.468] log message
 as.data.frame(lg$last_event)
 #>   level    timestamp logger caller msg.c..a.vectorized....log.message..
 #> 1   400 2026-01-....   test   eval                         a vectorized

@@ -38,7 +38,7 @@ the default exception handler used by Loggers."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Demote an exception to a warning</h1>
-      <small class="dont-index">Source: <a href="https://github.com/s-fleck/lgr/blob/master/R/default_functions.R" class="external-link"><code>R/default_functions.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/s-fleck/lgr/blob/0.5.2/R/default_functions.R" class="external-link"><code>R/default_functions.R</code></a></small>
       <div class="d-none name"><code>default_exception_handler.Rd</code></div>
     </div>
 
@@ -68,7 +68,7 @@ the default exception handler used by <a href="Logger.html">Loggers</a>.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"an error has occurred"</span><span class="op">)</span>, error <span class="op">=</span> <span class="va">default_exception_handler</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[2026-01-30 13:41:53.066] NULL ~ error in `doTryCatch(return(expr), name, parentenv, handler)`: an error has occurred</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[2026-01-30 13:43:58.333] NULL ~ error in `doTryCatch(return(expr), name, parentenv, handler)`: an error has occurred</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

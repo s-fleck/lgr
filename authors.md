@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/s-fleck/lgr/blob/master/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/s-fleck/lgr/blob/0.5.2/DESCRIPTION)
 
 Fleck S (2026). *lgr: A Fully Featured Logging Framework*. R package
 version 0.5.2, <https://s-fleck.github.io/lgr/>.
