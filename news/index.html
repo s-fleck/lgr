@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">lgr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,11 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.5.0" id="lgr-050">lgr 0.5.0<a class="anchor" aria-label="anchor" href="#lgr-050"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.5.1" id="lgr-051">lgr 0.5.1<a class="anchor" aria-label="anchor" href="#lgr-051"></a></h2>
+<ul><li>Fix doc problem for CRAN</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.5.0" id="lgr-050">lgr 0.5.0<a class="anchor" aria-label="anchor" href="#lgr-050"></a></h2><p class="text-muted">CRAN release: 2025-07-23</p>
 <ul><li><p>Added <code>rawMsg</code> property to LogEvents to store message without string interpolation (i.e. the original string that still contains the placeholders from either <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code> or <code><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue()</a></code>) (<a href="https://github.com/s-fleck/lgr/issues/60" class="external-link">#60</a>)</p></li>
 <li><p>Updated <code>AppenderConsole</code> to accept a <code>connection</code> argument. If called from a <a href="https://yihui.org/knitr/" class="external-link">knitr</a> rendering process, log messages are now output to <code>stderr</code> instead of <code>stdout</code> by default. This avoids polluting markdown documents (<a href="https://github.com/s-fleck/lgr/issues/62" class="external-link">#62</a>, thx <a href="https://github.com/gadenbuie" class="external-link">@gadenbuie</a>).</p></li>
 <li><p>Replace <code>NULL</code> values and empty characters in logging by the string <code>"&lt;NULL&gt;"</code>. Before, <code>NULL</code> values would have resulted in empty log messages. (<a href="https://github.com/s-fleck/lgr/issues/51" class="external-link">#51</a>)</p></li>
@@ -161,7 +165,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

@@ -11,7 +11,7 @@ most common configurations to a single line of code."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">lgr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -130,7 +130,7 @@ that logs to a memory buffer, see also <code><a href="simple_logging.html">show_
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;LoggerRoot&gt; [info] root</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> appenders:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/RtmpXzyffJ/file1c966d61af5c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/RtmpvVC3jW/file1bf71147d18e</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [all] -&gt; console</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">file</span><span class="op">$</span><span class="va">file</span><span class="op">)</span>  <span class="co"># cleanup</span></span></span>
 <span class="r-in"><span></span></span>
@@ -138,7 +138,7 @@ that logs to a memory buffer, see also <code><a href="simple_logging.html">show_
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;LoggerRoot&gt; [info] root</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> appenders:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/RtmpXzyffJ/file1c9640d04ec3jsonl</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/RtmpvVC3jW/file1bf71de5cc43jsonl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [all] -&gt; console</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">file</span><span class="op">$</span><span class="va">file</span><span class="op">)</span>  <span class="co"># cleanup</span></span></span>
 <span class="r-in"><span></span></span>
@@ -150,11 +150,11 @@ that logs to a memory buffer, see also <code><a href="simple_logging.html">show_
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [info] -&gt; console</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   memory : &lt;AppenderBuffer&gt;  [ all] -&gt; 0 child Appenders</span>
 <span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"an info message"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [06:40:34.623] an info message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [11:27:39.884] an info message</span>
 <span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">debug</span><span class="op">(</span><span class="st">"a hidden message"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="simple_logging.html">show_log</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [06:40:34] an info message</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DEBUG [06:40:34] a hidden message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [11:27:39] an info message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DEBUG [11:27:39] a hidden message</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># reset to default config</span></span></span>
 <span class="r-in"><span><span class="fu">basic_config</span><span class="op">(</span><span class="op">)</span></span></span>
@@ -173,7 +173,7 @@ that logs to a memory buffer, see also <code><a href="simple_logging.html">show_
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

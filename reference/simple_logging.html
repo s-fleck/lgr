@@ -53,7 +53,7 @@ to the root logger with basic_config(memory = TRUE)."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">lgr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -199,7 +199,7 @@ a <code>data.table</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 200</span>
 <span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"this will be supressed"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"an important error message"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [06:40:38.186] an important error message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [11:27:43.398] an important error message</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># you can also specify a target to modify other loggers</span></span></span>
 <span class="r-in"><span><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span></span>
@@ -234,7 +234,7 @@ a <code>data.table</code>.</p>
 <span class="r-in"><span><span class="co"># add Appenders to a Logger</span></span></span>
 <span class="r-in"><span><span class="fu">add_appender</span><span class="op">(</span><span class="va"><a href="AppenderConsole.html">AppenderConsole</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>, <span class="st">"second_console_appender"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="st">"Multiple console appenders are a bad idea"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [06:40:38.195] Multiple console appenders are a bad idea</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> FATAL [11:27:43.408] Multiple console appenders are a bad idea</span>
 <span class="r-in"><span><span class="fu">remove_appender</span><span class="op">(</span><span class="st">"second_console_appender"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Good that we defined an appender name, so it's easy to remove"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -248,17 +248,17 @@ a <code>data.table</code>.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># log some messages</span></span></span>
 <span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"a log message"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [06:40:38.200] a log message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [11:27:43.413] a log message</span>
 <span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"another message with data"</span>, data <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [06:40:38.202] another message with data {data: (1, 2, 3)}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [11:27:43.415] another message with data {data: (1, 2, 3)}</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">show_log</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [06:40:38] a log message</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [06:40:38] another message with data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [11:27:43] a log message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [11:27:43] another message with data</span>
 <span class="r-in"><span><span class="fu">show_data</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   level           timestamp logger caller                       msg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2025-07-23 06:40:38   root   eval             a log message</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   400 2025-07-23 06:40:38   root   eval another message with data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2026-01-30 11:27:43   root   eval             a log message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   400 2026-01-30 11:27:43   root   eval another message with data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      rawMsg    data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1             a log message    NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 another message with data 1, 2, 3</span>
@@ -277,7 +277,7 @@ a <code>data.table</code>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
