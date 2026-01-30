@@ -9,7 +9,7 @@ or tibbles."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">lgr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -124,16 +124,16 @@ rows in the result (rather than a single list-column row). This defaults to
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">lg</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_logger.html">get_logger</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"lorem ipsum"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [11:27:39.495] lorem ipsum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [11:47:33.974] lorem ipsum</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   level           timestamp logger caller         msg      rawMsg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2026-01-30 11:27:39   test   eval lorem ipsum lorem ipsum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2026-01-30 11:47:33   test   eval lorem ipsum lorem ipsum</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"LogEvents can store any custom log values"</span>, df <span class="op">=</span> <span class="va">iris</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [11:27:39.498] LogEvents can store any custom log values {df: &lt;data.frame 150x5&gt;}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [11:47:33.978] LogEvents can store any custom log values {df: &lt;data.frame 150x5&gt;}</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   level           timestamp logger caller</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2026-01-30 11:27:39   test   eval</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2026-01-30 11:47:33   test   eval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                         msg</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 LogEvents can store any custom log values</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                      rawMsg           df</span>
@@ -151,73 +151,73 @@ rows in the result (rather than a single list-column row). This defaults to
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># by default non-scalars are boxed</span></span></span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"letters"</span>, letters <span class="op">=</span> <span class="va">letters</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [11:27:39.504] letters {letters: (a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z)}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [11:47:33.984] letters {letters: (a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z)}</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   level           timestamp logger caller     msg  rawMsg      letters</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2026-01-30 11:27:39   test   eval letters letters a, b, c,....</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2026-01-30 11:47:33   test   eval letters letters a, b, c,....</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># this behaviour can be modified by supplying a custom boxing function</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span>, box_if <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    level           timestamp logger caller     msg  rawMsg letters</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    400 2026-01-30 11:27:39   test   eval letters letters       a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    400 2026-01-30 11:27:39   test   eval letters letters       b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    400 2026-01-30 11:27:39   test   eval letters letters       c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    400 2026-01-30 11:27:39   test   eval letters letters       d</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    400 2026-01-30 11:27:39   test   eval letters letters       e</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    400 2026-01-30 11:27:39   test   eval letters letters       f</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    400 2026-01-30 11:27:39   test   eval letters letters       g</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8    400 2026-01-30 11:27:39   test   eval letters letters       h</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9    400 2026-01-30 11:27:39   test   eval letters letters       i</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   400 2026-01-30 11:27:39   test   eval letters letters       j</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11   400 2026-01-30 11:27:39   test   eval letters letters       k</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12   400 2026-01-30 11:27:39   test   eval letters letters       l</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13   400 2026-01-30 11:27:39   test   eval letters letters       m</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14   400 2026-01-30 11:27:39   test   eval letters letters       n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15   400 2026-01-30 11:27:39   test   eval letters letters       o</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16   400 2026-01-30 11:27:39   test   eval letters letters       p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17   400 2026-01-30 11:27:39   test   eval letters letters       q</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18   400 2026-01-30 11:27:39   test   eval letters letters       r</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19   400 2026-01-30 11:27:39   test   eval letters letters       s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20   400 2026-01-30 11:27:39   test   eval letters letters       t</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21   400 2026-01-30 11:27:39   test   eval letters letters       u</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22   400 2026-01-30 11:27:39   test   eval letters letters       v</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23   400 2026-01-30 11:27:39   test   eval letters letters       w</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24   400 2026-01-30 11:27:39   test   eval letters letters       x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25   400 2026-01-30 11:27:39   test   eval letters letters       y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26   400 2026-01-30 11:27:39   test   eval letters letters       z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    400 2026-01-30 11:47:33   test   eval letters letters       a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    400 2026-01-30 11:47:33   test   eval letters letters       b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    400 2026-01-30 11:47:33   test   eval letters letters       c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    400 2026-01-30 11:47:33   test   eval letters letters       d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    400 2026-01-30 11:47:33   test   eval letters letters       e</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    400 2026-01-30 11:47:33   test   eval letters letters       f</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    400 2026-01-30 11:47:33   test   eval letters letters       g</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    400 2026-01-30 11:47:33   test   eval letters letters       h</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    400 2026-01-30 11:47:33   test   eval letters letters       i</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   400 2026-01-30 11:47:33   test   eval letters letters       j</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11   400 2026-01-30 11:47:33   test   eval letters letters       k</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12   400 2026-01-30 11:47:33   test   eval letters letters       l</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   400 2026-01-30 11:47:33   test   eval letters letters       m</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14   400 2026-01-30 11:47:33   test   eval letters letters       n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15   400 2026-01-30 11:47:33   test   eval letters letters       o</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16   400 2026-01-30 11:47:33   test   eval letters letters       p</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17   400 2026-01-30 11:47:33   test   eval letters letters       q</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18   400 2026-01-30 11:47:33   test   eval letters letters       r</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19   400 2026-01-30 11:47:33   test   eval letters letters       s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20   400 2026-01-30 11:47:33   test   eval letters letters       t</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21   400 2026-01-30 11:47:33   test   eval letters letters       u</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22   400 2026-01-30 11:47:33   test   eval letters letters       v</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23   400 2026-01-30 11:47:33   test   eval letters letters       w</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24   400 2026-01-30 11:47:33   test   eval letters letters       x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25   400 2026-01-30 11:47:33   test   eval letters letters       y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26   400 2026-01-30 11:47:33   test   eval letters letters       z</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span>, cols_expand <span class="op">=</span> <span class="st">"letters"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    level           timestamp logger caller     msg  rawMsg letters</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    400 2026-01-30 11:27:39   test   eval letters letters       a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    400 2026-01-30 11:27:39   test   eval letters letters       b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    400 2026-01-30 11:27:39   test   eval letters letters       c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    400 2026-01-30 11:27:39   test   eval letters letters       d</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    400 2026-01-30 11:27:39   test   eval letters letters       e</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    400 2026-01-30 11:27:39   test   eval letters letters       f</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    400 2026-01-30 11:27:39   test   eval letters letters       g</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8    400 2026-01-30 11:27:39   test   eval letters letters       h</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9    400 2026-01-30 11:27:39   test   eval letters letters       i</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   400 2026-01-30 11:27:39   test   eval letters letters       j</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11   400 2026-01-30 11:27:39   test   eval letters letters       k</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12   400 2026-01-30 11:27:39   test   eval letters letters       l</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13   400 2026-01-30 11:27:39   test   eval letters letters       m</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14   400 2026-01-30 11:27:39   test   eval letters letters       n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15   400 2026-01-30 11:27:39   test   eval letters letters       o</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16   400 2026-01-30 11:27:39   test   eval letters letters       p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17   400 2026-01-30 11:27:39   test   eval letters letters       q</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18   400 2026-01-30 11:27:39   test   eval letters letters       r</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19   400 2026-01-30 11:27:39   test   eval letters letters       s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20   400 2026-01-30 11:27:39   test   eval letters letters       t</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21   400 2026-01-30 11:27:39   test   eval letters letters       u</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22   400 2026-01-30 11:27:39   test   eval letters letters       v</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23   400 2026-01-30 11:27:39   test   eval letters letters       w</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24   400 2026-01-30 11:27:39   test   eval letters letters       x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25   400 2026-01-30 11:27:39   test   eval letters letters       y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26   400 2026-01-30 11:27:39   test   eval letters letters       z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    400 2026-01-30 11:47:33   test   eval letters letters       a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    400 2026-01-30 11:47:33   test   eval letters letters       b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    400 2026-01-30 11:47:33   test   eval letters letters       c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    400 2026-01-30 11:47:33   test   eval letters letters       d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    400 2026-01-30 11:47:33   test   eval letters letters       e</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    400 2026-01-30 11:47:33   test   eval letters letters       f</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    400 2026-01-30 11:47:33   test   eval letters letters       g</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    400 2026-01-30 11:47:33   test   eval letters letters       h</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    400 2026-01-30 11:47:33   test   eval letters letters       i</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   400 2026-01-30 11:47:33   test   eval letters letters       j</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11   400 2026-01-30 11:47:33   test   eval letters letters       k</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12   400 2026-01-30 11:47:33   test   eval letters letters       l</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   400 2026-01-30 11:47:33   test   eval letters letters       m</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14   400 2026-01-30 11:47:33   test   eval letters letters       n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15   400 2026-01-30 11:47:33   test   eval letters letters       o</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16   400 2026-01-30 11:47:33   test   eval letters letters       p</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17   400 2026-01-30 11:47:33   test   eval letters letters       q</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18   400 2026-01-30 11:47:33   test   eval letters letters       r</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19   400 2026-01-30 11:47:33   test   eval letters letters       s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20   400 2026-01-30 11:47:33   test   eval letters letters       t</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21   400 2026-01-30 11:47:33   test   eval letters letters       u</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22   400 2026-01-30 11:47:33   test   eval letters letters       v</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23   400 2026-01-30 11:47:33   test   eval letters letters       w</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24   400 2026-01-30 11:47:33   test   eval letters letters       x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25   400 2026-01-30 11:47:33   test   eval letters letters       y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26   400 2026-01-30 11:47:33   test   eval letters letters       z</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># The `msg` argument of a log event is always vectorized</span></span></span>
 <span class="r-in"><span><span class="va">lg</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a vectorized"</span>, <span class="st">"log message"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [11:27:39.511] a vectorized</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [11:27:39.511] log message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [11:47:33.991] a vectorized</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [11:47:33.991] log message</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">lg</span><span class="op">$</span><span class="va">last_event</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   level    timestamp logger caller msg.c..a.vectorized....log.message..</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   400 2026-01-....   test   eval                         a vectorized</span>
