@@ -1,3 +1,8 @@
+# lgr 0.5.1
+
+- Fix doc problem for CRAN
+
+
 # lgr 0.5.0
 
 - Added `rawMsg` property to LogEvents to store message without

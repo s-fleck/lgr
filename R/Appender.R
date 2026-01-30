@@ -1177,14 +1177,18 @@ AppenderFileRotating <- R6::R6Class(
 # AppenderFileRotatingTime ------------------------------------------------
 
 #' Log to a time-stamped rotating file
+#'
+#' An extension of [AppenderFile] that rotates logfiles based on certain
+#' conditions. Please refer to the documentation of [rotor::rotate_time()] for
+#' the meanings of the extra arguments
+#'
 #' @family Appenders
 #' @seealso [AppenderFileRotatingDate], [AppenderFileRotating], [rotor::rotate()]
 #' @export
 AppenderFileRotatingTime <- R6::R6Class(
-  "AppenderFileRotating",
+  "AppenderFileRotatingTime",
   inherit = AppenderFileRotating,
   public = list(
-
 
   #' @description
   #' @param  size,age,max_backups,compression,backup_dir,fmt,overwrite,cache_backups
@@ -1350,6 +1354,7 @@ AppenderFileRotatingTime <- R6::R6Class(
 #'
 #' This is a simpler version of AppenderFileRotatingTime when the timestamps
 #' do not need to include sub-day accuracy.
+#'
 #' @family Appenders
 #' @seealso [AppenderFileRotatingTime], [AppenderFileRotating], [rotor::rotate()]
 #' @export

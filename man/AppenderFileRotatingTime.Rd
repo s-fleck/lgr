@@ -8,6 +8,11 @@ Log to a time-stamped rotating file
 
 Log to a time-stamped rotating file
 }
+\details{
+An extension of \link{AppenderFile} that rotates logfiles based on certain
+conditions. Please refer to the documentation of \code{\link[rotor:rotate]{rotor::rotate_time()}} for
+the meanings of the extra arguments
+}
 \seealso{
 \link{AppenderFileRotatingDate}, \link{AppenderFileRotating}, \code{\link[rotor:rotate]{rotor::rotate()}}
 
@@ -22,7 +27,7 @@ Other Appenders:
 }
 \concept{Appenders}
 \section{Super classes}{
-\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{\link[lgr:AppenderFile]{lgr::AppenderFile}} -> \code{\link[lgr:AppenderFileRotating]{lgr::AppenderFileRotating}} -> \code{AppenderFileRotating}
+\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{\link[lgr:AppenderFile]{lgr::AppenderFile}} -> \code{\link[lgr:AppenderFileRotating]{lgr::AppenderFileRotating}} -> \code{AppenderFileRotatingTime}
 }
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
@@ -39,14 +44,14 @@ with the backups.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-AppenderFileRotating-new}{\code{AppenderFileRotatingTime$new()}}
-\item \href{#method-AppenderFileRotating-rotate}{\code{AppenderFileRotatingTime$rotate()}}
-\item \href{#method-AppenderFileRotating-set_age}{\code{AppenderFileRotatingTime$set_age()}}
-\item \href{#method-AppenderFileRotating-set_fmt}{\code{AppenderFileRotatingTime$set_fmt()}}
-\item \href{#method-AppenderFileRotating-set_overwrite}{\code{AppenderFileRotatingTime$set_overwrite()}}
-\item \href{#method-AppenderFileRotating-set_cache_backups}{\code{AppenderFileRotatingTime$set_cache_backups()}}
-\item \href{#method-AppenderFileRotating-format}{\code{AppenderFileRotatingTime$format()}}
-\item \href{#method-AppenderFileRotating-clone}{\code{AppenderFileRotatingTime$clone()}}
+\item \href{#method-AppenderFileRotatingTime-new}{\code{AppenderFileRotatingTime$new()}}
+\item \href{#method-AppenderFileRotatingTime-rotate}{\code{AppenderFileRotatingTime$rotate()}}
+\item \href{#method-AppenderFileRotatingTime-set_age}{\code{AppenderFileRotatingTime$set_age()}}
+\item \href{#method-AppenderFileRotatingTime-set_fmt}{\code{AppenderFileRotatingTime$set_fmt()}}
+\item \href{#method-AppenderFileRotatingTime-set_overwrite}{\code{AppenderFileRotatingTime$set_overwrite()}}
+\item \href{#method-AppenderFileRotatingTime-set_cache_backups}{\code{AppenderFileRotatingTime$set_cache_backups()}}
+\item \href{#method-AppenderFileRotatingTime-format}{\code{AppenderFileRotatingTime$format()}}
+\item \href{#method-AppenderFileRotatingTime-clone}{\code{AppenderFileRotatingTime$clone()}}
 }
 }
 \if{html}{\out{
@@ -71,8 +76,8 @@ with the backups.}
 </details>
 }}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AppenderFileRotating-new"></a>}}
-\if{latex}{\out{\hypertarget{method-AppenderFileRotating-new}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotatingTime-new"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotatingTime-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$new(
@@ -102,8 +107,8 @@ with the backups.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AppenderFileRotating-rotate"></a>}}
-\if{latex}{\out{\hypertarget{method-AppenderFileRotating-rotate}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotatingTime-rotate"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotatingTime-rotate}{}}}
 \subsection{Method \code{rotate()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$rotate(force = FALSE, now = Sys.time())}\if{html}{\out{</div>}}
@@ -111,8 +116,8 @@ with the backups.}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AppenderFileRotating-set_age"></a>}}
-\if{latex}{\out{\hypertarget{method-AppenderFileRotating-set_age}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotatingTime-set_age"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotatingTime-set_age}{}}}
 \subsection{Method \code{set_age()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$set_age(x)}\if{html}{\out{</div>}}
@@ -120,8 +125,8 @@ with the backups.}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AppenderFileRotating-set_fmt"></a>}}
-\if{latex}{\out{\hypertarget{method-AppenderFileRotating-set_fmt}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotatingTime-set_fmt"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotatingTime-set_fmt}{}}}
 \subsection{Method \code{set_fmt()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$set_fmt(x)}\if{html}{\out{</div>}}
@@ -129,8 +134,8 @@ with the backups.}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AppenderFileRotating-set_overwrite"></a>}}
-\if{latex}{\out{\hypertarget{method-AppenderFileRotating-set_overwrite}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotatingTime-set_overwrite"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotatingTime-set_overwrite}{}}}
 \subsection{Method \code{set_overwrite()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$set_overwrite(x)}\if{html}{\out{</div>}}
@@ -138,8 +143,8 @@ with the backups.}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AppenderFileRotating-set_cache_backups"></a>}}
-\if{latex}{\out{\hypertarget{method-AppenderFileRotating-set_cache_backups}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotatingTime-set_cache_backups"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotatingTime-set_cache_backups}{}}}
 \subsection{Method \code{set_cache_backups()}}{
 set the \code{cache_backups} flag.
 \subsection{Usage}{
@@ -155,8 +160,8 @@ set the \code{cache_backups} flag.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AppenderFileRotating-format"></a>}}
-\if{latex}{\out{\hypertarget{method-AppenderFileRotating-format}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotatingTime-format"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotatingTime-format}{}}}
 \subsection{Method \code{format()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$format(color = FALSE, ...)}\if{html}{\out{</div>}}
@@ -164,8 +169,8 @@ set the \code{cache_backups} flag.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AppenderFileRotating-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-AppenderFileRotating-clone}{}}}
+\if{html}{\out{<a id="method-AppenderFileRotatingTime-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotatingTime-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

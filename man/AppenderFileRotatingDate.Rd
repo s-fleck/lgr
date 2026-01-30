@@ -26,7 +26,7 @@ Other Appenders:
 }
 \concept{Appenders}
 \section{Super classes}{
-\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{\link[lgr:AppenderFile]{lgr::AppenderFile}} -> \code{\link[lgr:AppenderFileRotating]{lgr::AppenderFileRotating}} -> \code{AppenderFileRotatingDate}
+\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{\link[lgr:AppenderFile]{lgr::AppenderFile}} -> \code{\link[lgr:AppenderFileRotating]{lgr::AppenderFileRotating}} -> \code{\link[lgr:AppenderFileRotatingTime]{lgr::AppenderFileRotatingTime}} -> \code{AppenderFileRotatingDate}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -53,12 +53,12 @@ Other Appenders:
 <li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_file"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_file'><code>lgr::AppenderFileRotating$set_file()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_max_backups"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_max_backups'><code>lgr::AppenderFileRotating$set_max_backups()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_size"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_size'><code>lgr::AppenderFileRotating$set_size()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="format"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-format'><code>lgr::AppenderFileRotating$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="rotate"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-rotate'><code>lgr::AppenderFileRotating$rotate()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_age"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_age'><code>lgr::AppenderFileRotating$set_age()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_cache_backups"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_cache_backups'><code>lgr::AppenderFileRotating$set_cache_backups()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_fmt"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_fmt'><code>lgr::AppenderFileRotating$set_fmt()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_overwrite"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_overwrite'><code>lgr::AppenderFileRotating$set_overwrite()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotatingTime" data-id="format"><a href='../../lgr/html/AppenderFileRotatingTime.html#method-AppenderFileRotatingTime-format'><code>lgr::AppenderFileRotatingTime$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotatingTime" data-id="rotate"><a href='../../lgr/html/AppenderFileRotatingTime.html#method-AppenderFileRotatingTime-rotate'><code>lgr::AppenderFileRotatingTime$rotate()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotatingTime" data-id="set_age"><a href='../../lgr/html/AppenderFileRotatingTime.html#method-AppenderFileRotatingTime-set_age'><code>lgr::AppenderFileRotatingTime$set_age()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotatingTime" data-id="set_cache_backups"><a href='../../lgr/html/AppenderFileRotatingTime.html#method-AppenderFileRotatingTime-set_cache_backups'><code>lgr::AppenderFileRotatingTime$set_cache_backups()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotatingTime" data-id="set_fmt"><a href='../../lgr/html/AppenderFileRotatingTime.html#method-AppenderFileRotatingTime-set_fmt'><code>lgr::AppenderFileRotatingTime$set_fmt()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotatingTime" data-id="set_overwrite"><a href='../../lgr/html/AppenderFileRotatingTime.html#method-AppenderFileRotatingTime-set_overwrite'><code>lgr::AppenderFileRotatingTime$set_overwrite()</code></a></span></li>
 </ul>
 </details>
 }}
