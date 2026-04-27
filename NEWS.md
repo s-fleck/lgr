@@ -1,12 +1,14 @@
+# lgr 0.6.0
+
+- Add SKILL.md for usage of lgr in R packages
+
 # lgr 0.5.2
 
-- Quote 'Dynatrace' and 'lgrExtra' in DESCRIPTION 
-
+- Quote 'Dynatrace' and 'lgrExtra' in DESCRIPTION
 
 # lgr 0.5.1
 
 - Fix doc problem for CRAN
-
 
 # lgr 0.5.0
 
@@ -24,10 +26,8 @@
 - Support transformers for `LoggerGlue` (see `?glue::glue`) (#51)
 
 - Add `excluded_fields` to `Layout` for excluding fields from logging.
-  
-- Add `transform_event` and `transform_event_names` to `LayoutJson` to make 
+- Add `transform_event` and `transform_event_names` to `LayoutJson` to make
   it more flexible. Exclude `rawMsg` by default for backwards compatibility.
-
 
 # lgr 0.4.4
 
@@ -46,7 +46,6 @@
 
 - rebuild docs for R 4.2.0
 
-
 # lgr 0.4.3
 
 - `logger_index()` returns a `data.frame` with metadata on all registered
@@ -56,7 +55,6 @@
 - The `$log()` method of Logger and LoggerGlue now unpacks conditions (except
   if they are supplied as a named argument) (#45, thanks @mmuurr)
 - Fix some timezone related tests for CRAN
-
 
 # lgr 0.4.2
 
@@ -68,7 +66,6 @@
 
 - drop tests for deprecated [future](https://cran.r-project.org/package=future)
   plans to ensure compatibility with upcoming versions of future (#43)
-
 
 # lgr 0.4.1
 
@@ -115,11 +112,9 @@
 - complete rewrite of the documentation to use the new roxygen2 features for
   R6 classes.
 
-
 # lgr 0.3.4
 
 - Hotfix for compatibility with R < 3.6.0 (#32)
-
 
 # lgr 0.3.3
 
@@ -127,12 +122,10 @@
   notably affected the performance of "do-nothing" logging (e.g. when a
   log message is discarded because it is below a loggers' threshold)
 
-
 # lgr 0.3.2
 
 - Added AppenderSyslog for logging to syslog via
   [rsyslog](https://github.com/atheriel/rsyslog) (thanks to atheriel)
-
 
 # lgr 0.3.1
 
@@ -148,7 +141,6 @@
 
 - `AppenderMemory`: `$buffer_dt()` and `$show()` now handle custom fields
   containing atomic vectors correctly
-
 
 # lgr 0.3.0
 
@@ -166,7 +158,6 @@
 - added `reset` argument to `get_logger()`. This completely resets the
   configuration of the logger and also replaces special loggers (such as
   `LoggerGlue`) with vanilla ones.
-
 
 # lgr 0.2.2
 
@@ -188,13 +179,11 @@
 
 - Deprecated `FATAL()`, `ERROR()`. Use `lgr$fatal()`, `lgr$error()`, ... instead.
 
-
 # lgr 0.2.1
 
 - Emergency fix that ensures test suite cleans up temporary files
 
 - Removed .rd file for the unexported LoggerRoot class
-
 
 # lgr 0.2.0
 
@@ -216,7 +205,6 @@
 - added `with_logging()`, the opposite of `without_logging()`. This can be
   handy for automated tests where you might want so switch logging off/on only
   for specific unit tests.
-
 
 # lgr 0.1.1
 
