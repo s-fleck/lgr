@@ -1,0 +1,4 @@
+{"level":400,"timestamp":"2026-04-27 11:09:35","logger":"root","caller":"(shell)","msg":"This is an info message"}
+{"level":300,"timestamp":"2026-04-27 11:09:36","logger":"root","caller":"(shell)","msg":"This is a warning message"}
+{"level":200,"timestamp":"2026-04-27 11:09:36","logger":"root","caller":"(shell)","msg":"This is an error message"}
+{"level":400,"timestamp":"2026-04-27 11:09:36","logger":"mypkg","caller":"(shell)","msg":"Package info message"}

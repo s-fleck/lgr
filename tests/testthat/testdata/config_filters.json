@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "layouts": {
+    "compact": {
+      "class": "LayoutFormat",
+      "fmt": "[%L] %m"
+    },
+    "verbose": {
+      "class": "LayoutFormat",
+      "fmt": "[%L] %t - %c - %m"
+    }
+  },
+  "filters": {
+    "info_level": {
+      "class": "FilterForceLevel",
+      "level": "info"
+    },
+    "error_level": {
+      "class": "FilterForceLevel",
+      "level": "error"
+    }
+  },
+  "appenders": {
+    "console": {
+      "class": "AppenderConsole",
+      "threshold": "info",
+      "layout": "compact"
+    },
+    "buffer_errors": {
+      "class": "AppenderBuffer",
+      "threshold": "error",
+      "layout": "verbose",
+      "buffer_size": 100
+    }
+  },
+  "loggers": {
+    "root": {
+      "threshold": "info",
+      "appenders": ["console"]
+    },
+    "myapp": {
+      "threshold": "debug",
+      "appenders": ["buffer_errors"],
+      "filters": ["error_level"]
+    }
+  }
+}

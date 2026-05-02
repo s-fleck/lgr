@@ -1,0 +1,36 @@
+version: 1
+disable_existing_loggers: true
+
+layouts:
+  text:
+    class: LayoutFormat
+    fmt: "%L [%t] %c - %m"
+  json:
+    class: LayoutJson
+
+filters:
+  force_info:
+    class: FilterForceLevel
+    level: info
+
+appenders:
+  console:
+    class: AppenderConsole
+    threshold: info
+    layout: text
+
+  json_file:
+    class: AppenderFile
+    threshold: all
+    file: logs/application.jsonl
+    layout: json
+
+loggers:
+  root:
+    threshold: info
+    appenders: [console, json_file]
+
+  mypkg:
+    propagate: false
+    filters: [force_info]
+    appenders: [json_file]

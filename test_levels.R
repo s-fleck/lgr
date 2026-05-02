@@ -1,0 +1,8 @@
+library(lgr)
+print(getOption("lgr.log_levels"))
+cat("\nChecking threshold values:\n")
+cat("'error' = ", lgr:::standardize_threshold("error"), "\n")
+cat("'warn' = ", lgr:::standardize_threshold("warn"), "\n")
+cat("'info' = ", lgr:::standardize_threshold("info"), "\n")
+cat("'debug' = ", lgr:::standardize_threshold("debug"), "\n")
+cat("'trace' = ", lgr:::standardize_threshold("trace"), "\n")

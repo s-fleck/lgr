@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "disable_existing_loggers": true,
+  "layouts": {
+    "msg_only": {
+      "class": "LayoutFormat",
+      "fmt": "%m"
+    },
+    "compact": {
+      "class": "LayoutFormat",
+      "fmt": "%L: %m"
+    },
+    "comprehensive": {
+      "class": "LayoutFormat",
+      "fmt": "%L [%t] <%c:%n> %m"
+    },
+    "json": {
+      "class": "LayoutJson"
+    }
+  },
+  "appenders": {
+    "console_msg": {
+      "class": "AppenderConsole",
+      "threshold": "info",
+      "layout": "msg_only"
+    },
+    "console_compact": {
+      "class": "AppenderConsole",
+      "threshold": "debug",
+      "layout": "compact"
+    },
+    "console_comprehensive": {
+      "class": "AppenderConsole",
+      "threshold": "all",
+      "layout": "comprehensive"
+    },
+    "buffer_json": {
+      "class": "AppenderBuffer",
+      "threshold": "all",
+      "buffer_size": 100,
+      "layout": "json"
+    }
+  },
+  "loggers": {
+    "root": {
+      "threshold": "all",
+      "appenders": ["console_msg", "buffer_json"]
+    },
+    "app/service": {
+      "threshold": "debug",
+      "appenders": ["console_comprehensive"],
+      "propagate": false
+    }
+  }
+}

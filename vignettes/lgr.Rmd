@@ -86,7 +86,7 @@ lgr$appenders$file$set_layout(LayoutFormat$new(timestamp_fmt = "%B %d %T"))
 lgr$info("No, I am quite serious")
 readLines(tf)
 
-#cleanup
+# cleanup
 unlink(tf)
 ```
 
@@ -98,7 +98,7 @@ your logs later, it's much better to log to a format like JSON:
 
 ```{r}
 # cleanup behind the old Appender
-unlink(tf)  
+unlink(tf)
 lgr$remove_appender("file")
 
 # setup a JSON appender
@@ -124,9 +124,9 @@ binding convenience, and so you do not have to call `readLines()` & co manually.
 # to show
 lgr$appenders$json$show()
 
-# $data always returns a data.frame if available. It is an active binding 
+# $data always returns a data.frame if available. It is an active binding
 # rather than a method, so no extra arguments are possible
-lgr$appenders$json$data  
+lgr$appenders$json$data
 ```
 
 Please note that under the hood, `AppenderJson` is just an `AppenderFile` with 
@@ -146,9 +146,9 @@ above is particularly good at handling most R objects.
 # The default console appender displays custom fields as pseudo-json after the message
 lgr$info("Styria has", poultry = c("capons", "turkeys"))
 
-# JSON can store most R objects quite naturally 
+# JSON can store most R objects quite naturally
 read_json_lines(tf)
-read_json_lines(tf)$poultry[[2]]  # works because poultry is a list column
+read_json_lines(tf)$poultry[[2]] # works because poultry is a list column
 ```
 
 ```{r echo = FALSE}
@@ -238,7 +238,7 @@ ll <- data.frame(
     "An even finer grained message than debug ([more info](https://softwareengineering.stackexchange.com/questions/279690/why-does-the-trace-level-exist-and-when-should-i-use-it-rather-than-debug))",
     "Tells a Logger or Appender to process all log events"
   )
-) 
+)
 
 knitr::kable(ll)
 ```
@@ -272,7 +272,6 @@ lgr$fatal("This is an important message about %s going wrong", "->something<-")
 lgr$trace("Trace messages are still hidden")
 lgr$set_threshold("trace")
 lgr$trace("Unless we lower the threshold")
-
 ```
 
 ### Formatting strings 
@@ -292,8 +291,8 @@ by a Logger is stored in its `last_event` field.
 
 ```{r}
 lgr$info("Vampire stories are generally located in Styria")
-lgr$last_event  # a summary output of the event
-lgr$last_event$values  # all values stored in the event as a list
+lgr$last_event # a summary output of the event
+lgr$last_event$values # all values stored in the event as a list
 ```
 
 LogEvents can contain not only these standard values, but an arbitrary number
@@ -315,7 +314,6 @@ tf <- tempfile()
 lgr$add_appender(AppenderJson$new(tf), "json")
 lgr$info("Processing track", file = "track.gpx", waypoints = 32)
 lgr$appenders$json$data
-
 ```
 ```{r echo = FALSE}
 lgr$remove_appender("json")
@@ -345,7 +343,9 @@ not necessary.
 
 examples:
 ```{r}
-f1 <- function(event) { grepl("bird", event$msg) }
+f1 <- function(event) {
+  grepl("bird", event$msg)
+}
 lgr$set_filters(list(f1))
 
 lgr$info("is it a plane?")
@@ -454,11 +454,10 @@ To take advantage of glue, simply create a new LoggerGlue like this:
 lg <- get_logger_glue("glue/logger")
 
 lg$info(
-  "glue automatically ", 
+  "glue automatically ",
   "pastes together unnamed arguments ",
   "and evaluates arbitray expressions inside braces {Sys.Date()}"
 )
-
 ```
 
 Glue lets you define temporary variables inside the `glue()` call.
@@ -482,7 +481,7 @@ There are several different ways to configure loggers. The most straight
 forward one is to use *setters* to specify the Loggers properties.
 ```{r}
 lg <- get_logger("test")
-lg$config(NULL)  # resets logger to unconfigured state
+lg$config(NULL) # resets logger to unconfigured state
 lg$set_threshold("fatal")
 ```
 
@@ -525,6 +524,33 @@ cfg <- "
         threshold: info
 "
 lg$config(cfg)
+```
+
+For production setups with multiple named loggers, reusable appenders/layouts,
+and clear references (similar to python logging or NLog style configs), use
+the extended schema and apply it to the root logger:
+
+```{r eval = FALSE}
+lgr$config(
+  "version: 1
+disable_existing_loggers: true
+layouts:
+  text:
+    class: LayoutFormat
+    fmt: '%L [%t] %c - %m'
+appenders:
+  console:
+    class: AppenderConsole
+    threshold: info
+    layout: text
+loggers:
+  root:
+    threshold: info
+    appenders: [console]
+  mypkg:
+    propagate: false
+"
+)
 ```
 
 
@@ -589,7 +615,6 @@ lg$set_propagate(FALSE)
 lg$info("JSON naturally ", field = "custom")
 lg$info("supports custom", numbers = 1:3)
 lg$info("log fields", use = "JSON")
-
 ```
 
 JSON is easy to parse and analyse with R. lgr provides the function
@@ -599,7 +624,7 @@ read the logfile.
 
 ```{r eval = FALSE}
 lg$appenders$json$data
-# same as 
+# same as
 read_json_lines(tf)
 ```
 ```{r echo = FALSE}
@@ -637,10 +662,10 @@ tf <- tempfile(fileext = ".log")
 lg <- get_logger("test")$
   set_propagate(FALSE)$
   set_appenders(list(rotating = AppenderFileRotating$new(
-    file = tf, 
-    size = "10 kb",
-    max_backups = 5))
-  )
+  file = tf,
+  size = "10 kb",
+  max_backups = 5
+)))
 
 for (i in 1:100) lg$info(paste(LETTERS, sep = "-"))
 
@@ -651,7 +676,7 @@ lg$appenders$rotating$backups
 invisible(lg$appenders$rotating$prune(0))
 lg$appenders$rotating$backups
 
-#cleanup
+# cleanup
 unlink(tf)
 ```
 
@@ -668,7 +693,7 @@ package.
 # The logger name should be the same as the package name
 tf <- tempfile()
 lg <- get_logger("mypackage")
-lg$add_appender(AppenderFile$new(tf))  
+lg$add_appender(AppenderFile$new(tf))
 ```
 
 The `print()` method for Loggers gives a nice overview of the newly created
@@ -730,14 +755,15 @@ lg$
   set_threshold(NA)$
   set_propagate(FALSE)$
   set_appenders(
-    AppenderBuffer$new(
+  AppenderBuffer$new(
     threshold = NA,
     buffer_size = 5, # can hold 5 events, the 6th will trigger flushing
     flush_on_exit = FALSE,
     flush_on_rotate = FALSE,
     flush_threshold = "error",
     appenders = AppenderConsole$new(threshold = NA)
-  ))
+  )
+)
 
 # The for loop below stores 8 log events in the Buffer
 for (nm in month.name[1:8]) lg$debug("%s", nm)
@@ -764,13 +790,13 @@ lg <- get_logger("db_logger")
 lg$
   set_propagate(FALSE)$
   add_appender(
-    name = "db", 
-    lgrExtra::AppenderDbi$new(
-      conn = DBI::dbConnect(RSQLite::SQLite()),
-      table = "log",
-      buffer_size = 2L
-    )
+  name = "db",
+  lgrExtra::AppenderDbi$new(
+    conn = DBI::dbConnect(RSQLite::SQLite()),
+    table = "log",
+    buffer_size = 2L
   )
+)
 
 lg$info("Logging to databases uses a buffer")
 lg$info("As the buffer size is 2, no insert took place till now")
@@ -789,11 +815,11 @@ calls.
 
 ```{r}
 # setup an example function
-clean   <- function() lgr$info("cleaning data")
+clean <- function() lgr$info("cleaning data")
 process <- function() lgr$info("processing data")
-output  <- function() lgr$info("outputing data")
+output <- function() lgr$info("outputing data")
 
-analyze <- function(){
+analyze <- function() {
   clean()
   process()
   output()
@@ -804,7 +830,7 @@ analyze <- function(){
 calls.
 ```{r eval = FALSE}
 with_log_value(
-  list(dataset_id = "dataset1"), 
+  list(dataset_id = "dataset1"),
   analyze()
 )
 ```
@@ -813,10 +839,10 @@ An alternative way to achieve the same is to use one of the preconfigured
 Filters that come with lgr. This approach is more more comfortable for 
 use within functions.
 ```{r eval = FALSE}
-analyze <- function(id = "dataset1"){
+analyze <- function(id = "dataset1") {
   lgr$add_filter(FilterInject$new(dataset_id = id), name = "inject")
   on.exit(lgr$remove_filter("inject"))
-  
+
   clean()
   process()
   output()
@@ -826,7 +852,7 @@ analyze()
 The result is the same in both cases:
 ```{r, echo = FALSE}
 with_log_value(
-  list(dataset_id = "dataset1"), 
+  list(dataset_id = "dataset1"),
   analyze()
 )
 ```
@@ -859,14 +885,13 @@ inside the `R/` directory of your package:
 
 ```{r}
 # mypackage/R/mypackage-package.R
-.onLoad <- function(...){
+.onLoad <- function(...) {
   assign(
-    "lg",  # the recommended name for a logger object
-    lgr::get_logger(name = "mypackage"),  # should be the same as the package name
+    "lg", # the recommended name for a logger object
+    lgr::get_logger(name = "mypackage"), # should be the same as the package name
     envir = parent.env(environment())
   )
 }
-
 ```
 
 You can also just use `lgr::use_logger()` to generate the appropriate code for 
@@ -894,10 +919,13 @@ package. This solution works in most scenarios, but not in all
 # install.packages("this.path")
 
 lg <- get_logger("srcfile")
-lg$add_filter(function(event){
-  tryCatch({
-    event$srcfile <- this.path::this.path()
-  }, error = function(e) NULL)
+lg$add_filter(function(event) {
+  tryCatch(
+    {
+      event$srcfile <- this.path::this.path()
+    },
+    error = function(e) NULL
+  )
   TRUE
 })
 ```
