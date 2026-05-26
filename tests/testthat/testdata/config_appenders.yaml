@@ -15,11 +15,11 @@ layouts:
     fmt: "%L [%t] (%c) {%n} %m"
 
 filters:
-  error_only:
+  force_error_level:
     class: FilterForceLevel
     level: error
 
-  trace_only:
+  force_trace_level:
     class: FilterForceLevel
     level: trace
 
@@ -49,7 +49,18 @@ loggers:
     threshold: debug
     appenders: [buffer_json]
     propagate: true
-    filters: [trace_only]
+
+  testing/force_error_level:
+    threshold: debug
+    appenders: [buffer_json]
+    propagate: true
+    filters: [force_error_level]
+
+  testing/force_trace_level:
+    threshold: debug
+    appenders: [buffer_json]
+    propagate: true
+    filters: [force_trace_level]
 
   testing/unit:
     threshold: info
