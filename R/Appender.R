@@ -995,6 +995,7 @@ AppenderBuffer <- R6::R6Class(
 AppenderFileRotating <- R6::R6Class(
   "AppenderFileRotating",
   inherit = AppenderFile,
+  cloneable = FALSE,
   public = list(
 
     #' @description
@@ -1187,6 +1188,7 @@ AppenderFileRotating <- R6::R6Class(
 #' @export
 AppenderFileRotatingTime <- R6::R6Class(
   "AppenderFileRotatingTime",
+  cloneable = FALSE,
   inherit = AppenderFileRotating,
   public = list(
 
@@ -1361,6 +1363,7 @@ AppenderFileRotatingTime <- R6::R6Class(
 AppenderFileRotatingDate <- R6::R6Class(
   "AppenderFileRotatingDate",
   inherit = AppenderFileRotatingTime,
+  cloneable = FALSE,
   public = list(
 
 
@@ -1521,17 +1524,19 @@ standardize_should_flush_output <- function(
   x
 ){
   if (isTRUE(x)){
-    TRUE
+    return(TRUE)
+
   } else if (isFALSE(x)){
-    FALSE
-  } else {
-    warning(ValueIsNotBoolWarning(paste0(
-      "`$should_flush()` did not return `TRUE` or `FALSE` but ",
-      string_repr(x), ". ",
-      "Please set a valid filter function with `$set_should_flush()`."
-    )))
-    FALSE
+    return(FALSE)
   }
+
+  warning(ValueIsNotBoolWarning(paste0(
+    "`$should_flush()` did not return `TRUE` or `FALSE` but ",
+    string_repr(x), ". ",
+    "Please set a valid filter function with `$set_should_flush()`."
+  )))
+
+  FALSE
 }
 
 

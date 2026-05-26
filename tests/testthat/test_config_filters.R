@@ -1,5 +1,3 @@
-context("config_filters")
-
 test_that("filters are configured and applied correctly", {
   skip_if_not_installed("yaml")
 

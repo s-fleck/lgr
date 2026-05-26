@@ -1,9 +1,10 @@
-context("Filter")
-
-
 test_that("FilterForceLevel and FilterInject work as expected", {
+  on.exit(get_logger("foo", reset = TRUE))
 
-  l <- Logger$new("foo")
+  l <- Logger$new("foo")$
+    set_threshold("info")$
+    add_appender(AppenderConsole$new())$
+    set_propagate(FALSE)
 
   l$add_filter(FilterForceLevel$new("fatal"))
   l$add_filter(FilterInject$new(iris = iris, .list = list(cars = "foo")))
@@ -17,7 +18,12 @@ test_that("FilterForceLevel and FilterInject work as expected", {
 
 
 test_that(".obj() works as expected", {
-  l <- Logger$new("foo")
+  on.exit(get_logger("foo", reset = TRUE))
+
+  l <- Logger$new("foo")$
+    set_threshold("info")$
+    add_appender(AppenderConsole$new())$
+    set_propagate(FALSE)
 
   f <- function(event) {
     cat(class_fmt(.obj()))

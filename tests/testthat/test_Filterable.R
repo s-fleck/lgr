@@ -1,6 +1,3 @@
-context("Filterable")
-
-
 test_that("is_filter() works", {
   fil <- function(event) { blubb }
   expect_true(is_filter(fil))

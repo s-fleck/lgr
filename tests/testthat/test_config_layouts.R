@@ -1,5 +1,3 @@
-context("config_layouts")
-
 test_that("layout configurations are applied correctly from YAML", {
   skip_if_not_installed("yaml")
 
@@ -95,6 +93,7 @@ test_that("LayoutFormat with different format strings are parsed correctly", {
 
 test_that("JSON layout is applied correctly from config", {
   skip_if_not_installed("jsonlite")
+  on.exit(lgr$config(NULL))
 
   config_file <- rprojroot::find_testthat_root_file(
     "testdata",
@@ -111,11 +110,8 @@ test_that("JSON layout is applied correctly from config", {
   lgr$info("test message")
 
   # The buffer should have the event
-  events <- buffer_app$data
+  events <- buffer_app$buffer_events
   expect_length(events, 1)
-
-  # Cleanup
-  lgr$config(NULL)
 })
 
 

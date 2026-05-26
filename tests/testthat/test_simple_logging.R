@@ -1,18 +1,16 @@
-context("simple_logging")
+local_simple_logging_fixture <- function(env = parent.frame()) {
 
-setup({
+  basic_config(console = "info")
   lgr$add_appender(AppenderBuffer$new(threshold = NA), "memory")
-  get_logger("test")$config(NULL)
-})
 
-teardown({
-  basic_config()
-})
-
-
+  withr::defer(basic_config(), envir = env)
+  invisible()
+}
 
 
 test_that("threshold(), console_threshold() and log_exception() work as expected", {
+  local_simple_logging_fixture()
+
   expect_identical(threshold(), lgr$threshold)
   expect_identical(console_threshold(), lgr$appenders$console$threshold)
 
@@ -37,9 +35,13 @@ test_that("threshold(), console_threshold() and log_exception() work as expected
 })
 
 
-
-
 test_that("show_log()", {
+  local_simple_logging_fixture()
+
+  expect_output(lgr$info("test1"))
+  expect_output(lgr$info("test2"))
+  expect_output(lgr$info("test3"))
+
   expect_output(show_log())
   expect_true(nrow(show_data()) > 2)
   expect_output(
@@ -53,9 +55,9 @@ test_that("show_log()", {
 })
 
 
-
-
 test_that("add_appender() and remove_appender() work", {
+  local_simple_logging_fixture()
+
   tlg <- Logger$new("test", propagate = FALSE)
 
   add_appender(AppenderConsole$new(), target = tlg)
@@ -66,9 +68,9 @@ test_that("add_appender() and remove_appender() work", {
 })
 
 
-
-
 test_that("Option 'lgr.log_file' works", {
+  local_simple_logging_fixture()
+
   old <- getOption("lgr.log_file")
   on.exit(options("lgr.log_file" = old))
 
@@ -103,9 +105,9 @@ test_that("Option 'lgr.log_file' works", {
 })
 
 
-
-
 test_that("show_data() works", {
+  local_simple_logging_fixture()
+
   basic_config(memory = TRUE)
   on.exit(basic_config())
 
@@ -123,9 +125,10 @@ test_that("show_data() works", {
 })
 
 
-
-
 test_that("basic_config can set the console output format", {
+  local_simple_logging_fixture()
+
   basic_config(console_fmt = "foobar %L [%t] %c: %m")
   expect_output(lgr$info("baz"), "foobar")
 })
+

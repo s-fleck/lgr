@@ -1,6 +1,3 @@
-context("simple_logging")
-
-
 test_that("add_log_levels(), get_log_levels() works as expected", {
   ml <- Logger$new("dummy")
 

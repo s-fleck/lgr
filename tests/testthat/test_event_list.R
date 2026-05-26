@@ -1,6 +1,3 @@
-context("event_list")
-
-
 test_that("event_list works as expected", {
   x <- LogEvent$new(msg = LETTERS, logger = lgr)
   expect_length(as_event_list(x), 1L)

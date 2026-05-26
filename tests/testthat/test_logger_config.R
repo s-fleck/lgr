@@ -1,6 +1,3 @@
-context("logger_config")
-
-
 test_that("logger_config() works as expected", {
   cfg <- logger_config(
     appenders = list("Appender" = list()),

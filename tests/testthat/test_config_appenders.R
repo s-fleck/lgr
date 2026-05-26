@@ -1,5 +1,3 @@
-context("config_appenders")
-
 test_that("appender thresholds are configured correctly", {
   skip_if_not_installed("yaml")
 

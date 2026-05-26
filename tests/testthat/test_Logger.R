@@ -1,6 +1,3 @@
-context("Logger")
-
-
 # Logger ------------------------------------------------------------------
 
 
@@ -38,7 +35,13 @@ test_that("set_threshold()", {
 
 
 test_that("$log() & co work", {
-  ml <- Logger$new("test_logger", appenders = list(memory = AppenderBuffer$new()))
+  on.exit(get_logger("test", reset = TRUE))
+
+  ml <- Logger$new("test")$
+    set_threshold("info")$
+    set_appenders(AppenderConsole$new(threshold = "info"))$
+    set_propagate(FALSE)
+
   ts <- structure(1540486764.41946, class = c("POSIXct", "POSIXt"))
 
   testfun <- function(){
@@ -114,7 +117,12 @@ test_that("set_threshold() works for Loggers and Appenders", {
 
 
 test_that("threshold of `0` suspends logging", {
-  ml <- Logger$new("test_logger")
+  on.exit(get_logger("test", reset = TRUE))
+
+  ml <- LoggerGlue$new("test")$
+    set_threshold("info")$
+    set_appenders(AppenderConsole$new(threshold = "info"))$
+    set_propagate(FALSE)
 
   expect_output(ml$info("blubb"), "blubb")
 
@@ -212,6 +220,7 @@ test_that("Exceptions are cought and turned into warnings", {
 
 
 test_that("Inheritance and event propagation works", {
+  # arrange
   on.exit({
     c1$config(NULL)
     c2$config(NULL)
@@ -232,7 +241,10 @@ test_that("Inheritance and event propagation works", {
   c3  <- Logger$new("c1/c2/c3")
   c3$add_appender(AppenderFile$new(tf3))
 
-  expect_output(c3$fatal("blubb"), "FATAL.*blubb")
+  # act
+  c3$fatal("blubb")
+
+  # assert
   expect_match(readLines(tf1), "FATAL.*blubb")
   expect_identical(readLines(tf1), readLines(tf2))
   expect_identical(readLines(tf1), readLines(tf3))
@@ -301,10 +313,16 @@ test_that("Unnamed inherited appenders are displayed correctly", {
 
 
 test_that("threshold works", {
-  c1  <- Logger$new("c1")
-  expect_output(c1$error("blubb"), "ERROR")
-  c1$set_threshold(100)
-  expect_silent(c1$error("blubb"))
+  on.exit(get_logger("test", reset = TRUE))
+
+  l <- LoggerGlue$new("test")$
+    set_threshold("info")$
+    set_appenders(AppenderConsole$new(threshold = "info"))$
+    set_propagate(FALSE)
+
+  expect_output(l$error("blubb"), "ERROR")
+  l$set_threshold(100)
+  expect_silent(l$error("blubb"))
 })
 
 
@@ -344,7 +362,12 @@ test_that("Logger handles null values along with named parameters", {
 # LoggerGlue --------------------------------------------------------------
 
 test_that("LoggerGlue supports custom fields", {
-  l <- LoggerGlue$new("glue")
+  on.exit(get_logger("test", reset = TRUE))
+
+  l <- LoggerGlue$new("test")$
+    set_threshold("info")$
+    set_appenders(AppenderConsole$new(threshold = "info"))$
+    set_propagate(FALSE)
 
   expect_output(l$fatal("test", "test"), glue::glue("test", "test"))
 
@@ -443,8 +466,9 @@ test_that("Logger$log() dispatches to all appenders, even if some throw an error
 
   AppErr <- R6::R6Class(
     inherit = AppenderConsole,
+    cloneable = FALSE,
     public = list(
-      append = function(...) stop("error")
+      append = function(...) stop("triggered test error")
     )
   )
 
@@ -460,8 +484,8 @@ test_that("Logger$log() dispatches to all appenders, even if some throw an error
     file = AppenderFile$new(file = tf)
   ))
 
-  expect_warning(ln$info("test_normal"), class = "appendingFailedWarning")
-  expect_warning(ln$info("test_glue"), class = "appendingFailedWarning")
+  expect_warning(ln$info("test_normal"), class = "AppenderWarning")
+  expect_warning(ln$info("test_glue"), class = "AppenderWarning")
 
   expect_true(any(grepl("test_normal", readLines(tf))))
   expect_true(any(grepl("test_glue", readLines(tf))))
@@ -498,6 +522,7 @@ test_that("Appender error contains useful call object", {
   AppenderFail <- R6::R6Class(
     "AppenderFail",
     inherit = Appender,
+    cloneable = FALSE,
     public = list(
       append = function(e) stop("bummer")
     )

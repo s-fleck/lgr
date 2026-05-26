@@ -1,16 +1,11 @@
-context("Appender")
-
-
 event <- LogEvent$new(
   logger = Logger$new("dummy"),
   level = 200L,
-  timestamp = structure(1541175573.9308, class = c("POSIXct", "POSIXt")),
+  timestamp = as.POSIXct(1541175573.9308, origin = "1970-01-01"),
   caller = NA_character_,
   msg = "foo bar",
   rawMsg = "foo raw"
 )
-
-
 
 
 # Appender --------------------------------------------------------------------
@@ -33,8 +28,6 @@ test_that("Appender: $set_threshold() works", {
 })
 
 
-
-
 # AppenderFile ---------------------------------------------------------
 test_that("AppenderFile: logging with LayoutFormat", {
   tf <- tempfile()
@@ -50,19 +43,35 @@ test_that("AppenderFile: logging with LayoutFormat", {
 
 
 test_that("AppenderFile: logging with LayoutJson", {
+  # arrange
   tf <- tempfile()
   on.exit(unlink(tf))
 
+  event <- LogEvent$new(
+    logger = Logger$new("dummy"),
+    level = 200L,
+    timestamp = as.POSIXct(1541175573.9308),
+    caller = NA_character_,
+    msg = "foo bar",
+    rawMsg = "foo raw"
+  )
+
+  # act
   app <- AppenderFile$new(file = tf, layout = LayoutJson$new())
   app$append(event)
   app$append(event)
   tres <- read_json_lines(tf)
   eres <- data.table::rbindlist(list(event$values, event$values))
 
+  # assert
   expect_identical(tres[["level"]], eres[["level"]])
   expect_identical(tres[["msg"]], eres[["msg"]])
   expect_true(all(is.na(tres[["caller"]])) && all(is.na(eres[["caller"]])))
-  expect_equal(as.POSIXct(tres[["timestamp"]]), eres[["timestamp"]], tolerance = 1)
+  expect_equal(
+    tres[["timestamp"]],
+    eres[["timestamp"]],
+    tolerance = 1
+  )
 })
 
 
@@ -71,7 +80,7 @@ test_that("AppenderFile: creates empty log file on init", {
   on.exit(unlink(tf))
 
   expect_error(AppenderFile$new(
-    file = file.path(tempdir(), "non", "existing", "directory" )
+    file = file.path(tempdir(), "non", "existing", "directory")
   ))
 
   AppenderFile$new(file = file.path(tf))
@@ -86,13 +95,12 @@ test_that("AppenderFile: $show() works", {
   tf2 <- tempfile()
   on.exit(unlink(tf2), add = TRUE)
 
-  lg <- get_logger("test")$
-    set_propagate(FALSE)$
-    set_threshold(NA)$
-    set_appenders(list(
-      char = AppenderFile$new(file = tf),
-      num  = AppenderFile$new(file = tf2, layout = LayoutFormat$new("%n %m"))
-    ))
+  lg <- get_logger("test")$set_propagate(FALSE)$set_threshold(
+    NA
+  )$set_appenders(list(
+    char = AppenderFile$new(file = tf),
+    num = AppenderFile$new(file = tf2, layout = LayoutFormat$new("%n %m"))
+  ))
 
   on.exit(get_logger("test", reset = TRUE), add = TRUE)
 
@@ -117,10 +125,9 @@ test_that("AppenderFile$data throws an error", {
   tf <- tempfile()
   on.exit(unlink(tf))
 
-  lg <- get_logger("test")$
-    set_propagate(FALSE)$
-    set_threshold(NA)$
-    set_appenders(list(file = AppenderFile$new(file = tf)))
+  lg <- get_logger("test")$set_propagate(FALSE)$set_threshold(
+    NA
+  )$set_appenders(list(file = AppenderFile$new(file = tf)))
 
   on.exit(get_logger("test", reset = TRUE), add = TRUE)
 
@@ -138,9 +145,9 @@ test_that("AppenderFile: creates empty log file on init", {
   app <- AppenderFile$new(file = tf)
 
   lg <-
-    get_logger("lgr/testAppenderFileCreatesEmptyLogFile")$
-    set_appenders(app)$
-    set_propagate(FALSE)
+    get_logger("lgr/testAppenderFileCreatesEmptyLogFile")$set_appenders(
+      app
+    )$set_propagate(FALSE)
 
   lg$fatal("foo", foo = "bar")
 
@@ -158,12 +165,13 @@ test_that("AppenderJson: AppenderFile with LayoutJson$show() and $data() work", 
   # with default format
   app <- AppenderFile$new(file = tf, layout = LayoutJson$new())
 
-  for (i in 1:10)
+  for (i in 1:10) {
     app$append(event)
+  }
 
   # show shows the correct number of lines
   r <- utils::capture.output(app$show(n = 3))
-  expect_true(grepl( "(level.*){3}", paste(r, collapse = "\n")))
+  expect_true(grepl("(level.*){3}", paste(r, collapse = "\n")))
   expect_false(grepl("(level.*){4}", paste(r, collapse = "\n")))
 
   r <- utils::capture.output(app$show(threshold = 100))
@@ -231,31 +239,31 @@ test_that("AppenderConsole: chooses stderr by default when in knitr", {
 
 
 test_that("AppenderConsole: rawMessage visible when set in layout", {
-
   lo <- LayoutFormat$new("%m -- %r")
   app <- AppenderConsole$new(layout = lo)
 
   expect_match(
     capture.output(app$append(event)),
-    "foo bar -- foo raw")
+    "foo bar -- foo raw"
+  )
 })
 
 
 # AppenderBuffer ----------------------------------------------------
 # Tests must be executed in sequence
 # setup
-  buffer_log <- tempfile()
-  teardown(unlink(buffer_log))
-  l <- Logger$new(
-    "dummy",
-    appenders = list(
-      buffer = AppenderBuffer$new(
-        appenders = list(file = AppenderFile$new(file = buffer_log)),
-        buffer_size = 10,
-        flush_threshold = "fatal"
-      )
-    ), propagate = FALSE
-  )
+buffer_log <- withr::local_tempfile()
+l <- Logger$new(
+  "dummy",
+  appenders = list(
+    buffer = AppenderBuffer$new(
+      appenders = list(file = AppenderFile$new(file = buffer_log)),
+      buffer_size = 10,
+      flush_threshold = "fatal"
+    )
+  ),
+  propagate = FALSE
+)
 
 
 test_that("AppenderBuffer: FATAL log level triggers flush", {
@@ -276,10 +284,11 @@ test_that("AppenderBuffer: FATAL log level triggers flush", {
   l$fatal("x")
   expect_identical(length(readLines(buffer_log)), 11L)
   expect_identical(l$appenders$buffer$buffer_events, event_list())
-  expect_match(paste(readLines(buffer_log), collapse = "#"), ".*A#.*B#.*C#.*a#.*b#.*c#.*x")
+  expect_match(
+    paste(readLines(buffer_log), collapse = "#"),
+    ".*A#.*B#.*C#.*a#.*b#.*c#.*x"
+  )
 })
-
-
 
 
 test_that("AppenderBuffer: buffer cycling triggers flush", {
@@ -295,8 +304,6 @@ test_that("AppenderBuffer: buffer cycling triggers flush", {
 })
 
 
-
-
 test_that("AppenderBuffer: manual flush trigger works", {
   l$info(c("y", "y", "y"))
   l$appenders$buffer$flush()
@@ -306,12 +313,12 @@ test_that("AppenderBuffer: manual flush trigger works", {
 })
 
 
-
-
 test_that("AppenderBuffer: flush on buffer cycling can be suppressed", {
   eres <- readLines(buffer_log)
   l$appenders$buffer$set_flush_on_rotate(FALSE)
-  for (i in 1:15) l$info(i)
+  for (i in 1:15) {
+    l$info(i)
+  }
 
   # theres a 10% tolerance for flushing if no flush on rotate is set
   expect_true(length(l$appenders$buffer$buffer_events) >= 10L)
@@ -320,12 +327,10 @@ test_that("AppenderBuffer: flush on buffer cycling can be suppressed", {
 })
 
 
-
-
 test_that("AppenderBuffer: object destruction triggers flush", {
   # this test also cleans up behind the logger created at the beginning
   # of this section
-  l$appenders$buffer$flush()  # ensure empty appender
+  l$appenders$buffer$flush() # ensure empty appender
   l$info(c("destruction", "destruction"))
   expect_identical(length(l$appenders$buffer$buffer_events), 1L)
   rm(l, inherits = TRUE)
@@ -336,8 +341,6 @@ test_that("AppenderBuffer: object destruction triggers flush", {
   )
   try(file.remove(buffer_log), silent = TRUE)
 })
-
-
 
 
 # the following AppenderBuffer tests are self contained again
@@ -366,10 +369,8 @@ test_that("AppenderBuffer: flush on object destruction can be suppressed", {
 })
 
 
-
-
 test_that("AppenderBuffer: $add_appender()/$remove_appender()", {
-  sapp  <- AppenderBuffer$new()
+  sapp <- AppenderBuffer$new()
   app1 <- AppenderConsole$new(threshold = 100)
   app2 <- AppenderConsole$new(threshold = 300)
 
@@ -397,8 +398,6 @@ test_that("AppenderBuffer: $add_appender()/$remove_appender()", {
 })
 
 
-
-
 test_that("AppenderBuffer: $show()", {
   l <- Logger$new(
     "buffer test",
@@ -413,9 +412,11 @@ test_that("AppenderBuffer: $show()", {
 
   expect_identical(nrow(l$appenders[[1]]$buffer_df), 6L)
   expect_identical(nrow(l$appenders[[1]]$buffer_dt), 6L)
-  expect_length(capture.output(l$appenders[[1]]$show(n = 5, threshold = "warn")), 3L)
+  expect_length(
+    capture.output(l$appenders[[1]]$show(n = 5, threshold = "warn")),
+    3L
+  )
 })
-
 
 
 test_that("AppenderBuffer: cycling works", {
@@ -436,8 +437,6 @@ test_that("AppenderBuffer: cycling works", {
     paste0("test", 2:5)
   )
 })
-
-
 
 
 test_that("AppenderBuffer: Custom $should_flush works", {
@@ -474,14 +473,15 @@ test_that("AppenderBuffer: Custom $should_flush works", {
 })
 
 
-
-
 # self contained buffer tests
 test_that("AppenderBuffer: buffer_size 0 works as expected", {
   l <- Logger$new(
     "0 buffer test",
-    appenders = list(buffer = AppenderBuffer$new()$
-      set_appenders(list(file = AppenderFile$new(file = tempfile())))),
+    appenders = list(
+      buffer = AppenderBuffer$new()$set_appenders(list(
+        file = AppenderFile$new(file = tempfile())
+      ))
+    ),
     propagate = FALSE
   )
   on.exit(unlink(l$appenders$buffer$appenders$file$file))
@@ -498,8 +498,6 @@ test_that("AppenderBuffer: buffer_size 0 works as expected", {
 })
 
 
-
-
 # utils -------------------------------------------------------------------
 
 test_that("default_file_reader() works", {
@@ -509,24 +507,27 @@ test_that("default_file_reader() works", {
   expect_error(expect_warning(default_file_reader(tf, threshold = NA, n = 0)))
 
   writeLines(LETTERS, tf)
-  expect_identical(default_file_reader(tf, threshold = NA, n = 3), c("X", "Y", "Z"))
+  expect_identical(
+    default_file_reader(tf, threshold = NA, n = 3),
+    c("X", "Y", "Z")
+  )
 
   writeLines(LETTERS, tf)
   expect_warning(default_file_reader(tf, threshold = 4, n = 3))
 })
 
 
-
-
 test_that("standardize_should_flush_output() works", {
   expect_identical(standardize_should_flush_output(TRUE), TRUE)
   expect_identical(standardize_should_flush_output(FALSE), FALSE)
+
   expect_warning(
     expect_identical(standardize_should_flush_output(NA), FALSE),
-    class = "ValueIsNotBoolError"
+    class = "ValueIsNotBoolWarning"
   )
+
   expect_warning(
     expect_identical(standardize_should_flush_output(iris), FALSE),
-    class = "ValueIsNotBoolError"
+    class = "ValueIsNotBoolWarning"
   )
 })
