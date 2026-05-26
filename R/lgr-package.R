@@ -165,6 +165,7 @@ get_envar_suspend_logging <- function(){
   if (identical(envar_suspend_logging, "TRUE")){
     TRUE
   } else if (
+    is.na(envar_suspend_logging) ||
     identical(envar_suspend_logging, "FALSE") ||
     is_blank(envar_suspend_logging)
   ){

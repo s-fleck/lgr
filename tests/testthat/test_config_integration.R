@@ -1,4 +1,5 @@
 test_that("complete logging configuration works end-to-end", {
+
   skip_if_not_installed("yaml")
 
   tf <- tempfile(fileext = ".log")
@@ -43,15 +44,25 @@ test_that("complete logging configuration works end-to-end", {
 
   lgr$config(cfg)
 
-  # Log messages at different levels
-  lgr$debug("debug message")
-  lgr$info("info message")
-  lgr$warn("warning message")
-  lgr$error("error message")
+  # act
+  debug_output <- capture.output(lgr$debug("debug message"))
+  info_output <- capture.output(lgr$info("info message"))
+  warn_output <- capture.output(lgr$warn("warning message"))
+  error_output <- capture.output(lgr$error("error message"))
 
   myapp <- get_logger("myapp")
   myapp$info("myapp info")
   myapp$debug("myapp debug")  # Should not appear due to threshold
+
+
+  # assert
+
+  # Check console output
+  expect_length(debug_output, 0)  # below threshold
+  expect_match(info_output, "info message")
+  expect_match(warn_output, "warning message")
+  expect_match(error_output, "error message")
+
 
   # Check root logger
   expect_identical(lgr$threshold, 500L)
@@ -65,7 +76,7 @@ test_that("complete logging configuration works end-to-end", {
 
   # Check buffer
   buffer_app <- lgr$appenders[[3]]
-  expect_length(buffer_app$data, 5)
+  expect_length(buffer_app$buffer_events, 5)
 
   # Check myapp logger
   expect_identical(myapp$threshold, 400L)
