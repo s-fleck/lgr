@@ -1,8 +1,3 @@
-context("get_logger")
-
-
-
-
 test_that("get_logger(): works as expected", {
 
   lg <- get_logger("blubb")
@@ -130,6 +125,9 @@ test_that("get_logger(reset == TRUE) completely resets logger", {
 
 
 test_that("get_logger(reset == TRUE) invalidates old Logger", {
+  on.exit(get_logger("log/ger/reset", reset = TRUE))
+
+  # configure logger and then reset itto invalidate the reference
   lg1 <- get_logger("log/ger/reset", reset = TRUE)
   lg1$set_threshold("fatal")
 
@@ -139,18 +137,26 @@ test_that("get_logger(reset == TRUE) invalidates old Logger", {
     set_propagate(FALSE)
 
   expect_true(!identical(lg1, lg2))
-  expect_warning(lg1$fatal("test"), "log/ger/reset")
+  expect_warning(lg1$fatal("test"), "log/ger/reset.*no longer valid")
   expect_output(lg2$info("test"))
+})
 
 
-  # invalidation works with logger glue
-  get_logger("log/ger/reset", reset = TRUE)
+
+
+test_that("get_logger(reset == TRUE) invalidates old Logger for LoggerGlue", {
+  on.exit(get_logger("log/ger/reset", reset = TRUE))
+
+  # configure logger and then reset itto invalidate the reference
   lg1 <- get_logger_glue("log/ger/reset")
   lg1$set_threshold("fatal")
+  lg2 <- get_logger("log/ger/reset", reset = TRUE)$
+    set_threshold("info")$
+    add_appender(AppenderConsole$new())$
+    set_propagate(FALSE)
 
-  lg2 <- get_logger("log/ger/reset", reset = TRUE)
   expect_true(!identical(lg1, lg2))
-  expect_warning(lg1$fatal("test"), "log/ger/reset")
+
+  expect_warning(lg1$fatal("test"), "log/ger/reset.*no longer valid")
   expect_output(lg2$info("test"))
-  get_logger("log/ger/reset", reset = TRUE)
 })

@@ -1,7 +1,3 @@
-context("print_LogEvent")
-
-
-
 test_that("format.LogEvent works as expected", {
   x <- LogEvent$new(
     logger = lgr::lgr,
@@ -23,9 +19,9 @@ test_that("format.LogEvent works as expected", {
 
 
 test_that("format.LogEvent works with colored %k and %K paramters", {
-  old <- Sys.getenv("R_CLI_NUM_COLORS")
-  Sys.setenv(R_CLI_NUM_COLORS = "256")
-  on.exit(Sys.setenv(R_CLI_NUM_COLORS = as.character(old)))
+  testthat::skip_if_not(crayon::has_color())
+
+  withr::local_envvar(R_CLI_NUM_COLORS = "256")
 
   x <- LogEvent$new(
     level = 200,

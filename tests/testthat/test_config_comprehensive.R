@@ -1,5 +1,3 @@
-context("config_comprehensive")
-
 test_that("comprehensive config loads and applies correctly", {
   cfg <- list(
     version = 1,

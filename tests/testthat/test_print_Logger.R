@@ -1,7 +1,3 @@
-context("format")
-
-
-
 test_that("print.Logger() works as expected", {
 
   tf1 <- tempfile()

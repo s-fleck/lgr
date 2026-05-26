@@ -1,25 +1,26 @@
-context("logger_tree")
-
-
-testthat::setup(remove_all_loggers())
-testthat::teardown(remove_all_loggers())
+local_logger_tree_fixture <- function(env = parent.frame()) {
+  remove_all_loggers()
+  withr::defer(remove_all_loggers(), envir = env)
+  invisible()
+}
 
 
 test_that("logger_tree() works as expected", {
-  on.exit(remove_all_loggers())
+  local_logger_tree_fixture()
 
   get_logger("blah/blubb/foo")
   get_logger("blah/blubb/bar")
-  expect_setequal(logger_tree()$parent, c("root", "blah", "blubb", "foo", "bar"))
+  expect_setequal(
+    logger_tree()$parent,
+    c("root", "blah", "blubb", "foo", "bar")
+  )
   remove_all_loggers()
   expect_identical(logger_tree()$parent, "root")
 })
 
 
-
-
 test_that("logger_tree() detects logger properties", {
-  on.exit(remove_all_loggers())
+  local_logger_tree_fixture()
   get_logger("blah/blubb/foo")
   get_logger("blah/blubb/bar")
 
@@ -38,21 +39,18 @@ test_that("logger_tree() detects logger properties", {
 })
 
 
-
-
 test_that("logger_tree() doc examples", {
-  on.exit(remove_all_loggers())
+  local_logger_tree_fixture()
 
   get_logger("fancymodel")
-  get_logger("fancymodel/shiny")$
-    set_propagate(FALSE)
+  get_logger("fancymodel/shiny")$set_propagate(FALSE)
 
-  get_logger("fancymodel/shiny/ui")$
-    set_appenders(AppenderConsole$new())
+  get_logger("fancymodel/shiny/ui")$set_appenders(AppenderConsole$new())
 
-  get_logger("fancymodel/shiny/server")$
-    set_appenders(list(AppenderConsole$new(), AppenderConsole$new()))$
-    set_threshold("trace")
+  get_logger("fancymodel/shiny/server")$set_appenders(list(
+    AppenderConsole$new(),
+    AppenderConsole$new()
+  ))$set_threshold("trace")
 
   get_logger("fancymodel/plumber")
 

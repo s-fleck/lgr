@@ -1,5 +1,3 @@
-context("config_integration")
-
 test_that("complete logging configuration works end-to-end", {
   skip_if_not_installed("yaml")
 
@@ -27,7 +25,7 @@ test_that("complete logging configuration works end-to-end", {
       buffer = list(
         class = "AppenderBuffer",
         threshold = "all",
-        n = 100
+        buffer_size = 100
       )
     ),
     loggers = list(
@@ -289,7 +287,7 @@ test_that("appender references are properly resolved", {
     disable_existing_loggers = TRUE,
     appenders = list(
       shared_console = list(class = "AppenderConsole", threshold = "info"),
-      shared_buffer = list(class = "AppenderBuffer", threshold = "all", n = 50)
+      shared_buffer = list(class = "AppenderBuffer", threshold = "all", buffer_size = 50)
     ),
     loggers = list(
       root = list(threshold = "all", appenders = c("shared_console", "shared_buffer")),

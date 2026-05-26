@@ -1,22 +1,11 @@
-context("AppenderFileRotating")
-
-setup({
-  td <- file.path(tempdir(), "lgr")
-  assign("td", td, parent.env(environment()))
-  dir.create(td, recursive = TRUE)
-})
-
-
-teardown({
-  unlink(td, recursive = TRUE)
-})
+td <- withr::local_tempdir(pattern = "lgr")
 
 # AppenderFileRotating -----------------------------------------------------
 
 test_that("AppenderFileRotating: works as expected", {
   skip_if_not_installed("rotor", "0.3.0")
 
-  if (!is_zipcmd_available()){
+  if (!is_zipcmd_available()) {
     skip("Test requires a workings system zip command")
   }
 
@@ -24,9 +13,7 @@ test_that("AppenderFileRotating: works as expected", {
   app <- AppenderFileRotating$new(file = tf, size = "1tb")
 
   lg <-
-    lgr::get_logger("test")$
-    set_propagate(FALSE)$
-    set_appenders(app)
+    lgr::get_logger("test")$set_propagate(FALSE)$set_appenders(app)
 
   on.exit({
     lg$config(NULL)
@@ -68,7 +55,6 @@ test_that("AppenderFileRotating: works as expected", {
 })
 
 
-
 test_that("AppenderFileRotating: works with different backup_dir", {
   if (!is_zipcmd_available()) {
     skip("Test requires a workings system zip command")
@@ -76,7 +62,7 @@ test_that("AppenderFileRotating: works with different backup_dir", {
 
   skip_if_not_installed("rotor", "0.3.0")
 
-  tf     <- file.path(td, "test.log")
+  tf <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
 
   # backup_dir does not exist
@@ -92,16 +78,13 @@ test_that("AppenderFileRotating: works with different backup_dir", {
     backup_dir = bu_dir,
     size = 10
   )
-  lg <- get_logger("test")$
-    set_propagate(FALSE)$
-    add_appender(app)
+  lg <- get_logger("test")$set_propagate(FALSE)$add_appender(app)
 
   on.exit({
     app$prune(0)
     lg$config(NULL)
     unlink(c(tf, bu_dir), recursive = TRUE)
   })
-
 
   # triggers rotation because resulting file will is bigger than 100 byte
   lg$info(paste(LETTERS, collapse = "-"))
@@ -112,8 +95,8 @@ test_that("AppenderFileRotating: works with different backup_dir", {
   expect_equal(file.size(tf), 0)
   expect_equal(list.files(bu_dir), basename(app$backups$path))
   expect_setequal(app$backups$ext, c("log.zip", "log"))
-  expect_match(app$backups$path[[1]], "lgr/backups")
-  expect_match(app$backups$path[[2]], "lgr/backups")
+  expect_match(app$backups$path[[1]], "lgr.*/backups")
+  expect_match(app$backups$path[[2]], "lgr.*/backups")
 
   # file contents are as expected
   con <- unz(app$backups$path[[1]], filename = "test.log")
@@ -121,54 +104,48 @@ test_that("AppenderFileRotating: works with different backup_dir", {
   expect_match(readLines(con), "a-b-.*-y-z")
   expect_match(readLines(app$backups$path[[2]]), "A-B-.*-Y-Z")
 
-
   file.remove(app$backups$path)
 })
 
 
-
-
 test_that("AppenderFileRotating: `size` argument works as expected", {
-
   skip_if_not_installed("rotor", "0.3.0")
 
   #setup
-    tf <- file.path(td, "test.log")
-    app <- AppenderFileRotating$new(file = tf)$set_size(-1)
-    saveRDS(iris, app$file)
-    on.exit({
-      unlink(tf)
-      app$prune(0)
-    })
+  tf <- file.path(td, "test.log")
+  app <- AppenderFileRotating$new(file = tf)$set_size(-1)
+  saveRDS(iris, app$file)
+  on.exit({
+    unlink(tf)
+    app$prune(0)
+  })
 
   # logic
-    app$set_size("3 KiB")
-    app$rotate()
-    expect_identical(nrow(app$backups), 0L)
+  app$set_size("3 KiB")
+  app$rotate()
+  expect_identical(nrow(app$backups), 0L)
 
-    app$set_size("0.5 KiB")
-    app$rotate()
-    expect_identical(nrow(app$backups), 1L)
-    expect_gt(app$backups$size[[1]], 10)
-    expect_equal(file.size(app$file), 0)
+  app$set_size("0.5 KiB")
+  app$rotate()
+  expect_identical(nrow(app$backups), 1L)
+  expect_gt(app$backups$size[[1]], 10)
+  expect_equal(file.size(app$file), 0)
 })
-
 
 
 # AppenderFileRotatingDate ----------------------------------------------------
 
 test_that("AppenderFileRotatingDate: works as expected", {
-  if (!is_zipcmd_available())
+  if (!is_zipcmd_available()) {
     skip("Test requires a workings system zip command")
+  }
 
   skip_if_not_installed("rotor", "0.3.0")
 
   tf <- file.path(td, "test.log")
   app <- AppenderFileRotatingDate$new(file = tf, size = "1tb")
   lg <-
-    lgr::get_logger("test")$
-    set_propagate(FALSE)$
-    set_appenders(app)
+    lgr::get_logger("test")$set_propagate(FALSE)$set_appenders(app)
 
   on.exit({
     lg$config(NULL)
@@ -200,14 +177,17 @@ test_that("AppenderFileRotatingDate: works as expected", {
   expect_match(app$backups$path[[1]], "2019-01-02")
 
   # compression works
-  app$set_age("10000 years")  # prevent rotation on log
+  app$set_age("10000 years") # prevent rotation on log
   lg$fatal("test938")
   app$set_age("1 day")
   lg$appenders[[1]]$set_compression(TRUE)
   lg$appenders[[1]]$rotate(now = as.Date("2019-01-03"))
   expect_identical(nrow(app$backups), 3L)
   expect_identical(app$backups$ext, c("log.zip", "log", "log"))
-  expect_identical(lg$appenders[[1]]$backups$sfx, c("2019-01-03", "2019-01-02", "2019-01-01"))
+  expect_identical(
+    lg$appenders[[1]]$backups$sfx,
+    c("2019-01-03", "2019-01-02", "2019-01-01")
+  )
   con <- unz(app$backups$path[[1]], filename = "test.log")
   on.exit(close(con), add = TRUE)
   expect_match(readLines(con), "test938")
@@ -217,13 +197,14 @@ test_that("AppenderFileRotatingDate: works as expected", {
 })
 
 
-
-
 test_that("AppenderFileRotatingDate: works with different backup_dir", {
-  skip_if_not(is_zipcmd_available(), "Test requires a workings system zip command")
+  skip_if_not(
+    is_zipcmd_available(),
+    "Test requires a workings system zip command"
+  )
   skip_if_not_installed("rotor", "0.3.0")
 
-  tf     <- file.path(td, "test.log")
+  tf <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
 
   # backup_dir does not exist
@@ -247,7 +228,6 @@ test_that("AppenderFileRotatingDate: works with different backup_dir", {
     lg$config(NULL)
   })
 
-
   # rotating to different dir works
   app$set_age(-1)$set_size(-1)
   lg$info(paste(LETTERS))
@@ -260,8 +240,6 @@ test_that("AppenderFileRotatingDate: works with different backup_dir", {
   expect_setequal(app$backups$ext, c("log.zip", "log"))
   file.remove(app$backups$path)
 })
-
-
 
 
 test_that("AppenderFileRotatingDate: `size` and `age` arguments work as expected", {
@@ -296,20 +274,19 @@ test_that("AppenderFileRotatingDate: `size` and `age` arguments work as expected
 })
 
 
-
-
 # AppenderFileRotatingTime ----------------------------------------------------
 
 test_that("AppenderFileRotatingTime: works as expected", {
-  skip_if_not(is_zipcmd_available(), "Test requires a workings system zip command")
+  skip_if_not(
+    is_zipcmd_available(),
+    "Test requires a workings system zip command"
+  )
   skip_if_not_installed("rotor", "0.3.0")
 
   tf <- file.path(td, "test.log")
   app <- AppenderFileRotatingTime$new(file = tf)
   lg <-
-    lgr::get_logger("test")$
-    set_propagate(FALSE)$
-    set_appenders(app)
+    lgr::get_logger("test")$set_propagate(FALSE)$set_appenders(app)
 
   on.exit({
     app$prune(0)
@@ -344,13 +321,14 @@ test_that("AppenderFileRotatingTime: works as expected", {
 })
 
 
-
-
 test_that("AppenderFileRotatingTime: works with different backup_dir", {
-  skip_if_not(is_zipcmd_available(), "Test requires a workings system zip command")
+  skip_if_not(
+    is_zipcmd_available(),
+    "Test requires a workings system zip command"
+  )
   skip_if_not_installed("rotor", "0.3.0")
 
-  tf     <- file.path(td, "test.log")
+  tf <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
 
   # backup_dir does not exist
@@ -366,9 +344,7 @@ test_that("AppenderFileRotatingTime: works with different backup_dir", {
     size = 100,
     age = -1
   )
-  lg <- get_logger("test")$
-    set_propagate(FALSE)$
-    add_appender(app)
+  lg <- get_logger("test")$set_propagate(FALSE)$add_appender(app)
 
   on.exit({
     app$prune(0)
@@ -376,11 +352,10 @@ test_that("AppenderFileRotatingTime: works with different backup_dir", {
     lg$config(NULL)
   })
 
-
   # rotating to different dir works
   lg$info(paste(LETTERS))
   app$set_compression(TRUE)
-  Sys.sleep(1)  # for sort order of backups
+  Sys.sleep(1) # for sort order of backups
   lg$info(paste(LETTERS))
 
   expect_equal(file.size(tf), 0)
@@ -391,10 +366,7 @@ test_that("AppenderFileRotatingTime: works with different backup_dir", {
 })
 
 
-
-
 test_that("AppenderFileRotatingTime: `size` and `age` arguments work as expected", {
-
   skip_if_not_installed("rotor", "0.3.0")
 
   #setup
@@ -453,18 +425,18 @@ test_that("AppenderFileRotatingTime: `size` and `age` arguments work as expected
     app$prune(0)
   })
 
-  lg <- get_logger("test_issue_39")$
-    set_propagate(FALSE)$
-    set_appenders(list(rotating = app))
+  lg <- get_logger("test_issue_39")$set_propagate(FALSE)$set_appenders(list(
+    rotating = app
+  ))
 
   # push log messages until rotation is triggered, should only take a few iterations
-  for (i in 1:100){
+  for (i in 1:100) {
     lg$info("test")
-    if (nrow(lg$appenders$rotating$backups) >= 1)
+    if (nrow(lg$appenders$rotating$backups) >= 1) {
       break
+    }
   }
 
   expect_identical(nrow(lg$appenders$rotating$backups), 1L)
   expect_length(list.files(log_dir), 1)
 })
-

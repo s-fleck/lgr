@@ -1,6 +1,3 @@
-context("logger_index")
-
-
 test_that("logger_index works as expected", {
 
   remove_all_loggers()

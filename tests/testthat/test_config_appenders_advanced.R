@@ -1,5 +1,3 @@
-context("config_appenders_advanced")
-
 test_that("multiple appenders on single logger work correctly", {
   cfg <- list(
     version = 1,

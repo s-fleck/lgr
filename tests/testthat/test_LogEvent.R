@@ -1,8 +1,16 @@
-context("LogEvent")
+get_local_console_logger <- function(env = parent.frame()) {
+  withr::defer(get_logger("test", reset = TRUE), envir = env)
+
+  lg <- get_logger("test", reset = TRUE)
+  lg$add_appender(AppenderConsole$new(threshold = NA), "console")
+  lg
+}
 
 
 test_that("LogEvent can have custom fields", {
-  l  <- Logger$new("l")
+
+  l <- get_local_console_logger()
+
 
   expect_output(l$log(100, "blubb", user_agent = "007"))
   expect_identical(l$last_event$values$user_agent, "007")
@@ -20,9 +28,11 @@ test_that("LogEvent can have custom fields", {
 
 
 test_that("LogEvents preserves field order", {
-  l  <- Logger$new("l", propagate = FALSE)
+  l <- get_local_console_logger()
 
-  l$fatal("test", c = "1", a = "2", b = "3")
+  capture.output(
+    l$fatal("test", c = "1", a = "2", b = "3")
+  )
 
   # Order depends on the internal implementation of environments I guess...
   # let's see if this will break one day.
@@ -46,10 +56,13 @@ as_funs <- list(
 
 for (nm in names(as_funs)){
 
-  l  <- Logger$new("l", propagate = FALSE)
-
   test_that(paste0(nm, "() works as expected"), {
-    l$fatal("test", df = iris, root_logger = lgr)
+    l <- get_local_console_logger()
+
+    capture.output(
+      l$fatal("test", df = iris, root_logger = lgr)
+    )
+
     res <- as_funs[[nm]](l$last_event)
 
     expect_identical(nrow(res), 1L)
@@ -60,8 +73,11 @@ for (nm in names(as_funs)){
 
 
   test_that(paste0(nm, "() vectorizes over msg"), {
-    l  <- Logger$new("l", propagate = FALSE)
-    l$fatal(c("test", "test2"), letters = letters, df = iris, root_logger = lgr)
+    l <- get_local_console_logger()
+
+    capture.output(
+      l$fatal(c("test", "test2"), letters = letters, df = iris, root_logger = lgr)
+    )
 
     res <- as_funs[[nm]](l$last_event)
 

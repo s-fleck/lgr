@@ -1,7 +1,3 @@
-
-context("utils")
-
-
 test_that("utils works as expected", {
 
   foo <- function() get_caller(-1L)

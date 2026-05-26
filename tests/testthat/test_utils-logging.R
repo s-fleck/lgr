@@ -1,8 +1,3 @@
-context("utils-logging")
-
-
-
-
 test_that("log suppression", {
   lg <- get_logger("test")
 

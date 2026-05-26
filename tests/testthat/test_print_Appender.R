@@ -1,8 +1,3 @@
-context("print_Appender")
-
-
-
-
 test_that("all Appenders print() without failure", {
   skip_if_not_installed("rotor")
 

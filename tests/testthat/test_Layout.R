@@ -1,6 +1,3 @@
-context("Layout")
-
-
 tevent <- LogEvent$new(
   logger = Logger$new("dummy"),
   level = 200L,

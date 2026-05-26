@@ -1,6 +1,3 @@
-context("logging_config")
-
-
 test_that("root logger can apply multi-logger configs", {
   old <- get_logger("old/logger")
   old$set_threshold("fatal")
