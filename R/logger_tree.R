@@ -140,7 +140,7 @@ format.logger_tree <- function(
 
   if (!color){
     style_fatal <- identity
-    style_color <- identity
+    style_subtle <- identity
   }
 
   label <- ifelse(x$configured, x$parent, style_subtle(x$parent))
