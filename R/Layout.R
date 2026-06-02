@@ -201,9 +201,9 @@ LayoutFormat <- R6::R6Class(
 
         } else {
           warning(sprintf(paste(
-            "A threshold of `%s` was but the Layout's format specification",
+            "A threshold of `%s` was given but the Layout's format specification",
             "('%s') does not support filtering by log level."
-          )), threshold_ori, self$fmt )
+          ), threshold_ori, self$fmt))
         }
       }
 
