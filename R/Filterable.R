@@ -68,7 +68,7 @@ Filterable <- R6::R6Class(
     #' @param pos `character` or `integer` scalar. The name or index of the
     #' Filter to be removed.
     remove_filter = function(pos){
-      if (is.numeric(pos)) sort(pos, decreasing = TRUE)
+      if (is.numeric(pos)) pos <- sort(pos, decreasing = TRUE)
       for (p in pos){
         private[[".filters"]][[p]] <- NULL
       }
