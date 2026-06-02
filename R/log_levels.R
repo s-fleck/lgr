@@ -83,7 +83,7 @@ add_log_levels <- function(
   if (length(levels_upd)){
     message(
       "Replacing existing log levels '",
-      fmt_log_levels(levels_new[levels_new %in% levels_cur]),
+      fmt_log_levels(levels_cur[levels_cur %in% levels_new]),
       "' with '",
       fmt_log_levels(levels_upd), "'"
     )
