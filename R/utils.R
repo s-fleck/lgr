@@ -220,7 +220,7 @@ CannotInitializeAbstractClassError <- function(
   class = parent.frame(2)[["classes"]]
 ){
   error(
-    paste(fmt_class(class), "is an abstract class and cannot be initlized"),
+    paste(fmt_class(class), "is an abstract class and cannot be initialized"),
     class = c("CannotInitializeAbstractClassError", "NotImplementedError"),
     call = NULL
   )
@@ -240,7 +240,7 @@ isFALSE <- function(x){
 last_n <- function(x, n){
   assert(
     is_n0(n),
-    "`n` must be a postive integer >= 0, not ", string_repr(n)
+    "`n` must be a positive integer >= 0, not ", string_repr(n)
   )
 
   len <- length(x)
