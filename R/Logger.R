@@ -536,7 +536,7 @@ Logger <- R6::R6Class(
           length(private$.appenders), ")"
         )
 
-        pos <- as.integer(pos)
+        pos <- sort(as.integer(pos), decreasing = TRUE)
       } else if (is.character(pos)) {
         assert(
           all(pos %in% names(private$.appenders)),
