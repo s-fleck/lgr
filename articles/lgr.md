@@ -49,7 +49,7 @@ tf <- tempfile(fileext = ".info")
 lgr$add_appender(AppenderFile$new(tf), name = "file")
 lgr$info("You must think I am joking")
 readLines(tf)
-#> [1] "INFO  [2026-06-03 05:04:31.087] You must think I am joking"
+#> [1] "INFO  [2026-06-03 05:07:38.292] You must think I am joking"
 ```
 
 The various Appenders available in lgr are R6 classes. To instantiate an
@@ -67,8 +67,8 @@ exactly one:
 lgr$appenders$file$set_layout(LayoutFormat$new(timestamp_fmt = "%B %d %T"))
 lgr$info("No, I am quite serious")
 readLines(tf)
-#> [1] "INFO  [2026-06-03 05:04:31.087] You must think I am joking"
-#> [2] "INFO  [June 03 05:04:31] No, I am quite serious"
+#> [1] "INFO  [2026-06-03 05:07:38.292] You must think I am joking"
+#> [2] "INFO  [June 03 05:07:38] No, I am quite serious"
 
 #cleanup
 unlink(tf)
@@ -95,7 +95,7 @@ JSON is still somewhat human readable
 ``` r
 
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2026-06-03 05:04:31","logger":"root","caller":"eval","msg":"We lived in Styria"}
+#> {"level":400,"timestamp":"2026-06-03 05:07:38","logger":"root","caller":"eval","msg":"We lived in Styria"}
 ```
 
 and easy for machines to parse
@@ -104,7 +104,7 @@ and easy for machines to parse
 
 read_json_lines(tf)
 #>   level           timestamp logger caller                msg
-#> 1   400 2026-06-03 05:04:31   root   eval We lived in Styria
+#> 1   400 2026-06-03 05:07:38   root   eval We lived in Styria
 ```
 
 Many Appenders provide either a `$show()` method and a `$data` active
@@ -116,13 +116,13 @@ binding convenience, and so you do not have to call
 # show is a method and takes some extra arguments, like maximum number of lines
 # to show
 lgr$appenders$json$show()
-#> {"level":400,"timestamp":"2026-06-03 05:04:31","logger":"root","caller":"eval","msg":"We lived in Styria"}
+#> {"level":400,"timestamp":"2026-06-03 05:07:38","logger":"root","caller":"eval","msg":"We lived in Styria"}
 
 # $data always returns a data.frame if available. It is an active binding 
 # rather than a method, so no extra arguments are possible
 lgr$appenders$json$data  
 #>   level           timestamp logger caller                msg
-#> 1   400 2026-06-03 05:04:31   root   eval We lived in Styria
+#> 1   400 2026-06-03 05:07:38   root   eval We lived in Styria
 ```
 
 Please note that under the hood, `AppenderJson` is just an
@@ -144,8 +144,8 @@ lgr$info("Styria has", poultry = c("capons", "turkeys"))
 # JSON can store most R objects quite naturally 
 read_json_lines(tf)
 #>   level           timestamp logger caller                msg         poultry
-#> 1   400 2026-06-03 05:04:31   root   eval We lived in Styria            NULL
-#> 2   400 2026-06-03 05:04:31   root   eval         Styria has capons, turkeys
+#> 1   400 2026-06-03 05:07:38   root   eval We lived in Styria            NULL
+#> 2   400 2026-06-03 05:07:38   root   eval         Styria has capons, turkeys
 read_json_lines(tf)$poultry[[2]]  # works because poultry is a list column
 #> [1] "capons"  "turkeys"
 ```
@@ -281,13 +281,13 @@ last event produced by a Logger is stored in its `last_event` field.
 
 lgr$info("Vampire stories are generally located in Styria")
 lgr$last_event  # a summary output of the event
-#> INFO  [2026-06-03 05:04:31] Vampire stories are generally located in Styria
+#> INFO  [2026-06-03 05:07:39] Vampire stories are generally located in Styria
 lgr$last_event$values  # all values stored in the event as a list
 #> $level
 #> [1] 400
 #> 
 #> $timestamp
-#> [1] "2026-06-03 05:04:31 UTC"
+#> [1] "2026-06-03 05:07:39 UTC"
 #> 
 #> $logger
 #> [1] "root"
@@ -324,7 +324,7 @@ lgr$add_appender(AppenderJson$new(tf), "json")
 lgr$info("Processing track", file = "track.gpx", waypoints = 32)
 lgr$appenders$json$data
 #>   level           timestamp logger caller              msg      file waypoints
-#> 1   400 2026-06-03 05:04:31   root   eval Processing track track.gpx        32
+#> 1   400 2026-06-03 05:07:39   root   eval Processing track track.gpx        32
 ```
 
 ### Thresholds & Filters: controlling output detail
@@ -381,8 +381,8 @@ lgr$info("Another informational message")
 lgr$debug("A debug message not shown by the console appender")
 
 readLines(tf)
-#> [1] "INFO  [2026-06-03 05:04:32.164] Another informational message"                    
-#> [2] "DEBUG [2026-06-03 05:04:32.166] A debug message not shown by the console appender"
+#> [1] "INFO  [2026-06-03 05:07:39.381] Another informational message"                    
+#> [2] "DEBUG [2026-06-03 05:07:39.383] A debug message not shown by the console appender"
 
 # Remove the appender again
 lgr$remove_appender("file")
@@ -640,9 +640,9 @@ read_json_lines(tf)
 ```
 
     #>   level           timestamp logger caller             msg  field numbers  use
-    #> 1   400 2026-06-03 05:04:32   test   eval JSON naturally  custom    NULL <NA>
-    #> 2   400 2026-06-03 05:04:32   test   eval supports custom   <NA> 1, 2, 3 <NA>
-    #> 3   400 2026-06-03 05:04:32   test   eval      log fields   <NA>    NULL JSON
+    #> 1   400 2026-06-03 05:07:40   test   eval JSON naturally  custom    NULL <NA>
+    #> 2   400 2026-06-03 05:07:40   test   eval supports custom   <NA> 1, 2, 3 <NA>
+    #> 3   400 2026-06-03 05:07:40   test   eval      log fields   <NA>    NULL JSON
 
 JSON is also human readable, though this vignette does not transport
 that fact very well because of the lack of horizontal space.
@@ -654,9 +654,9 @@ lg$appenders$json$show()
 cat(readLines(tf), sep = "\n")
 ```
 
-    #> {"level":400,"timestamp":"2026-06-03 05:04:32","logger":"test","caller":"eval","msg":"JSON naturally ","field":"custom"}
-    #> {"level":400,"timestamp":"2026-06-03 05:04:32","logger":"test","caller":"eval","msg":"supports custom","numbers":[1,2,3]}
-    #> {"level":400,"timestamp":"2026-06-03 05:04:32","logger":"test","caller":"eval","msg":"log fields","use":"JSON"}
+    #> {"level":400,"timestamp":"2026-06-03 05:07:40","logger":"test","caller":"eval","msg":"JSON naturally ","field":"custom"}
+    #> {"level":400,"timestamp":"2026-06-03 05:07:40","logger":"test","caller":"eval","msg":"supports custom","numbers":[1,2,3]}
+    #> {"level":400,"timestamp":"2026-06-03 05:07:40","logger":"test","caller":"eval","msg":"log fields","use":"JSON"}
 
 ``` r
 
@@ -694,17 +694,17 @@ for (i in 1:100) lg$info(paste(LETTERS, sep = "-"))
 # display info on the backups of tf
 lg$appenders$rotating$backups
 #>                                     path             name sfx ext  size isdir
-#> 1 /tmp/RtmpcrC1vN/file1e024e402ec0.1.log file1e024e402ec0   1 log 10608 FALSE
-#> 2 /tmp/RtmpcrC1vN/file1e024e402ec0.2.log file1e024e402ec0   2 log 10608 FALSE
-#> 3 /tmp/RtmpcrC1vN/file1e024e402ec0.3.log file1e024e402ec0   3 log 10608 FALSE
-#> 4 /tmp/RtmpcrC1vN/file1e024e402ec0.4.log file1e024e402ec0   4 log 10608 FALSE
-#> 5 /tmp/RtmpcrC1vN/file1e024e402ec0.5.log file1e024e402ec0   5 log 10608 FALSE
+#> 1 /tmp/RtmpWnvDIh/file1e2c4a9342d6.1.log file1e2c4a9342d6   1 log 10608 FALSE
+#> 2 /tmp/RtmpWnvDIh/file1e2c4a9342d6.2.log file1e2c4a9342d6   2 log 10608 FALSE
+#> 3 /tmp/RtmpWnvDIh/file1e2c4a9342d6.3.log file1e2c4a9342d6   3 log 10608 FALSE
+#> 4 /tmp/RtmpWnvDIh/file1e2c4a9342d6.4.log file1e2c4a9342d6   4 log 10608 FALSE
+#> 5 /tmp/RtmpWnvDIh/file1e2c4a9342d6.5.log file1e2c4a9342d6   5 log 10608 FALSE
 #>   mode               mtime               ctime               atime  uid  gid
-#> 1  644 2026-06-03 05:04:33 2026-06-03 05:04:33 2026-06-03 05:04:33 1001 1001
-#> 2  644 2026-06-03 05:04:33 2026-06-03 05:04:33 2026-06-03 05:04:33 1001 1001
-#> 3  644 2026-06-03 05:04:33 2026-06-03 05:04:33 2026-06-03 05:04:33 1001 1001
-#> 4  644 2026-06-03 05:04:33 2026-06-03 05:04:33 2026-06-03 05:04:33 1001 1001
-#> 5  644 2026-06-03 05:04:33 2026-06-03 05:04:33 2026-06-03 05:04:33 1001 1001
+#> 1  644 2026-06-03 05:07:40 2026-06-03 05:07:40 2026-06-03 05:07:40 1001 1001
+#> 2  644 2026-06-03 05:07:40 2026-06-03 05:07:40 2026-06-03 05:07:40 1001 1001
+#> 3  644 2026-06-03 05:07:40 2026-06-03 05:07:40 2026-06-03 05:07:40 1001 1001
+#> 4  644 2026-06-03 05:07:40 2026-06-03 05:07:40 2026-06-03 05:07:40 1001 1001
+#> 5  644 2026-06-03 05:07:40 2026-06-03 05:07:40 2026-06-03 05:07:40 1001 1001
 #>    uname grname index
 #> 1 runner runner     1
 #> 2 runner runner     2
@@ -747,7 +747,7 @@ print(lg)
 #> <Logger> [all] mypackage
 #> 
 #> appenders:
-#>   [[1]]: <AppenderFile> [all] -> /tmp/RtmpcrC1vN/file1e023c683e24
+#>   [[1]]: <AppenderFile> [all] -> /tmp/RtmpWnvDIh/file1e2c39bcce97
 #> 
 #> inherited appenders:
 #>   console: <AppenderConsole> [info] -> console
@@ -784,7 +784,7 @@ print(lg)
 #> <Logger> [all] mypackage
 #> 
 #> appenders:
-#>   [[1]]: <AppenderFile> [all] -> /tmp/RtmpcrC1vN/file1e023c683e24
+#>   [[1]]: <AppenderFile> [all] -> /tmp/RtmpWnvDIh/file1e2c39bcce97
 ```
 
 Consequently, `lg` no longer outputs log messages to he console
