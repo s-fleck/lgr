@@ -131,6 +131,7 @@ LayoutJson <- R6::R6Class(
         "`transform_event_names` must be a named character vector or function with a single mandatory argument (optional arguments are OK)")
 
       private[[".transform_event_names"]] <- x
+      invisible(self)
     },
 
     #  . . methods ----------------------------------------------------------------
