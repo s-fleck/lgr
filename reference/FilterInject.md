@@ -76,9 +76,9 @@ analyse <- function(){
 }
 
 analyse()
-#> ERROR [05:02:19.142] an error with forced custom 'type'-field {type: `analysis`}
+#> ERROR [05:04:18.245] an error with forced custom 'type'-field {type: `analysis`}
 lg$error("an normal error")
-#> ERROR [05:02:19.147] an normal error
+#> ERROR [05:04:18.250] an normal error
 lg$config(NULL)  # reset config
 #> <Logger> [info] test
 #> 

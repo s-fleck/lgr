@@ -67,7 +67,7 @@ standardize_log_level("info")
 # all is a valid threshold, but not a valid log level
 try(is.na(standardize_log_level("all")))
 #> Error in standardize_log_level("all") : 
-#>   '"all"' must either the numeric or character representation of one of the following log levels: fatal (100), error (200), warn (300), info (400), debug (500), trace (600)
+#>   '"all"' must be either the numeric or character representation of one of the following log levels: fatal (100), error (200), warn (300), info (400), debug (500), trace (600)
 is_log_level("all")
 #> [1] FALSE
 
