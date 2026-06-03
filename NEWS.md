@@ -1,3 +1,8 @@
+# lgr (dev)
+
+- Various small cleanups & fixes (thx @m-muecke)
+
+
 # lgr 0.5.2
 
 - Quote 'Dynatrace' and 'lgrExtra' in DESCRIPTION 
