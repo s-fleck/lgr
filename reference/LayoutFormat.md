@@ -263,5 +263,5 @@ event <- LogEvent$new(
 )
 lo <- LayoutFormat$new()
 lo$format_event(event)
-#> [1] "ERROR [2026-01-30 13:43:53.878] a test message"
+#> [1] "ERROR [2026-06-03 05:02:19.655] a test message"
 ```

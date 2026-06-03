@@ -23,6 +23,7 @@ the root Logger will suffice.
 #### Logging to the console
 
 ``` r
+
 # the root logger is called "lgr"
 lgr$info("Vampire stories are generally located in Styria.")
 ```
@@ -31,6 +32,7 @@ You can use formatting strings that are passed on to
 [`sprintf()`](https://rdrr.io/r/base/sprintf.html) in lgr.
 
 ``` r
+
 lgr$error("Vampires generally arrive in carriages drawn by %i black horses.", 2)
 ```
 
@@ -42,11 +44,12 @@ preconfigured with a console Appender (that is why we see output in the
 console). Let’s add a file Appender:
 
 ``` r
+
 tf <- tempfile(fileext = ".info")
 lgr$add_appender(AppenderFile$new(tf), name = "file")
 lgr$info("You must think I am joking")
 readLines(tf)
-#> [1] "INFO  [2026-01-30 13:44:05.709] You must think I am joking"
+#> [1] "INFO  [2026-06-03 05:02:31.866] You must think I am joking"
 ```
 
 The various Appenders available in lgr are R6 classes. To instantiate an
@@ -60,11 +63,12 @@ Appender. Formatting is handled by **Layouts**, and each Appender has
 exactly one:
 
 ``` r
+
 lgr$appenders$file$set_layout(LayoutFormat$new(timestamp_fmt = "%B %d %T"))
 lgr$info("No, I am quite serious")
 readLines(tf)
-#> [1] "INFO  [2026-01-30 13:44:05.709] You must think I am joking"
-#> [2] "INFO  [January 30 13:44:05] No, I am quite serious"
+#> [1] "INFO  [2026-06-03 05:02:31.866] You must think I am joking"
+#> [2] "INFO  [June 03 05:02:31] No, I am quite serious"
 
 #cleanup
 unlink(tf)
@@ -76,6 +80,7 @@ If you log to files, you should not log normal text. If you want to
 analyse your logs later, it’s much better to log to a format like JSON:
 
 ``` r
+
 # cleanup behind the old Appender
 unlink(tf)  
 lgr$remove_appender("file")
@@ -88,16 +93,18 @@ lgr$info("We lived in Styria")
 JSON is still somewhat human readable
 
 ``` r
+
 cat(readLines(tf))
-#> {"level":400,"timestamp":"2026-01-30 13:44:05","logger":"root","caller":"eval","msg":"We lived in Styria"}
+#> {"level":400,"timestamp":"2026-06-03 05:02:31","logger":"root","caller":"eval","msg":"We lived in Styria"}
 ```
 
 and easy for machines to parse
 
 ``` r
+
 read_json_lines(tf)
 #>   level           timestamp logger caller                msg
-#> 1   400 2026-01-30 13:44:05   root   eval We lived in Styria
+#> 1   400 2026-06-03 05:02:31   root   eval We lived in Styria
 ```
 
 Many Appenders provide either a `$show()` method and a `$data` active
@@ -105,16 +112,17 @@ binding convenience, and so you do not have to call
 [`readLines()`](https://rdrr.io/r/base/readLines.html) & co manually.
 
 ``` r
+
 # show is a method and takes some extra arguments, like maximum number of lines
 # to show
 lgr$appenders$json$show()
-#> {"level":400,"timestamp":"2026-01-30 13:44:05","logger":"root","caller":"eval","msg":"We lived in Styria"}
+#> {"level":400,"timestamp":"2026-06-03 05:02:31","logger":"root","caller":"eval","msg":"We lived in Styria"}
 
 # $data always returns a data.frame if available. It is an active binding 
 # rather than a method, so no extra arguments are possible
 lgr$appenders$json$data  
 #>   level           timestamp logger caller                msg
-#> 1   400 2026-01-30 13:44:05   root   eval We lived in Styria
+#> 1   400 2026-06-03 05:02:31   root   eval We lived in Styria
 ```
 
 Please note that under the hood, `AppenderJson` is just an
@@ -129,14 +137,15 @@ Appenders can handle that well. The JSON appender we added above is
 particularly good at handling most R objects.
 
 ``` r
+
 # The default console appender displays custom fields as pseudo-json after the message
 lgr$info("Styria has", poultry = c("capons", "turkeys"))
 
 # JSON can store most R objects quite naturally 
 read_json_lines(tf)
 #>   level           timestamp logger caller                msg         poultry
-#> 1   400 2026-01-30 13:44:05   root   eval We lived in Styria            NULL
-#> 2   400 2026-01-30 13:44:06   root   eval         Styria has capons, turkeys
+#> 1   400 2026-06-03 05:02:31   root   eval We lived in Styria            NULL
+#> 2   400 2026-06-03 05:02:32   root   eval         Styria has capons, turkeys
 read_json_lines(tf)$poultry[[2]]  # works because poultry is a list column
 #> [1] "capons"  "turkeys"
 ```
@@ -207,16 +216,16 @@ really just nicknames for integer values, and you can use the
 use arbitrary integer values (greater than `0`), but you are encouraged
 to stick to the ones bellow.
 
-| Level | Name  | Description                                                                                                                                                                                      |
-|------:|:------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|     0 | off   | Tells a Logger or Appender to suspend all logging                                                                                                                                                |
-|   100 | fatal | Critical error that leads to program abort. Should always indicate a [`stop()`](https://rdrr.io/r/base/stop.html) or similar                                                                     |
-|   200 | error | A severe error that does not trigger program abort                                                                                                                                               |
-|   300 | warn  | A potentially harmful situation, like [`warning()`](https://rdrr.io/r/base/warning.html)                                                                                                         |
-|   400 | info  | An informational message on the progress of the application                                                                                                                                      |
-|   500 | debug | Finer grained informational messages that are mostly useful for debugging                                                                                                                        |
-|   600 | trace | An even finer grained message than debug ([more info](https://softwareengineering.stackexchange.com/questions/279690/why-does-the-trace-level-exist-and-when-should-i-use-it-rather-than-debug)) |
-|    NA | all   | Tells a Logger or Appender to process all log events                                                                                                                                             |
+| Level | Name | Description |
+|---:|:---|:---|
+| 0 | off | Tells a Logger or Appender to suspend all logging |
+| 100 | fatal | Critical error that leads to program abort. Should always indicate a [`stop()`](https://rdrr.io/r/base/stop.html) or similar |
+| 200 | error | A severe error that does not trigger program abort |
+| 300 | warn | A potentially harmful situation, like [`warning()`](https://rdrr.io/r/base/warning.html) |
+| 400 | info | An informational message on the progress of the application |
+| 500 | debug | Finer grained informational messages that are mostly useful for debugging |
+| 600 | trace | An even finer grained message than debug ([more info](https://softwareengineering.stackexchange.com/questions/279690/why-does-the-trace-level-exist-and-when-should-i-use-it-rather-than-debug)) |
+| NA | all | Tells a Logger or Appender to process all log events |
 
 `off` and `all` are valid thresholds for Appenders and Loggers, but not
 valid levels for LogEvents; e.g. `lgr$set_threshold(NA)` makes sense,
@@ -244,6 +253,7 @@ lgr Loggers are R6 objects with *methods* (functions) for logging. You
 can refer to the *root* logger with `lgr`.
 
 ``` r
+
 lgr$fatal("This is an important message about %s going wrong", "->something<-")
 lgr$trace("Trace messages are still hidden")
 lgr$set_threshold("trace")
@@ -256,6 +266,7 @@ You can use [`sprintf()`](https://rdrr.io/r/base/sprintf.html) style
 formatting strings directly in log messages.
 
 ``` r
+
 lgr$info("The sky was the color of %s, tuned to a dead chanel", "television")
 ```
 
@@ -267,15 +278,16 @@ usually don’t utilize all the information present in a log event. The
 last event produced by a Logger is stored in its `last_event` field.
 
 ``` r
+
 lgr$info("Vampire stories are generally located in Styria")
 lgr$last_event  # a summary output of the event
-#> INFO  [2026-01-30 13:44:06] Vampire stories are generally located in Styria
+#> INFO  [2026-06-03 05:02:32] Vampire stories are generally located in Styria
 lgr$last_event$values  # all values stored in the event as a list
 #> $level
 #> [1] 400
 #> 
 #> $timestamp
-#> [1] "2026-01-30 13:44:06 UTC"
+#> [1] "2026-06-03 05:02:32 UTC"
 #> 
 #> $logger
 #> [1] "root"
@@ -302,6 +314,7 @@ output formats that support them (such as JSON), rather than producing
 elaborately formatted but hard to parse log messages.
 
 ``` r
+
 # bad
 lgr$info("Processing track '%s' with %s waypoints", "track.gpx", 32)
 
@@ -311,7 +324,7 @@ lgr$add_appender(AppenderJson$new(tf), "json")
 lgr$info("Processing track", file = "track.gpx", waypoints = 32)
 lgr$appenders$json$data
 #>   level           timestamp logger caller              msg      file waypoints
-#> 1   400 2026-01-30 13:44:06   root   eval Processing track track.gpx        32
+#> 1   400 2026-06-03 05:02:32   root   eval Processing track track.gpx        32
 ```
 
 ### Thresholds & Filters: controlling output detail
@@ -335,6 +348,7 @@ usually not necessary.
 examples:
 
 ``` r
+
 f1 <- function(event) { grepl("bird", event$msg) }
 lgr$set_filters(list(f1))
 
@@ -351,6 +365,7 @@ The root logger only logs to the console by default. If you want to
 redirect the output to a file you can just add a file appender to lgr.
 
 ``` r
+
 tf <- tempfile()
 
 # Add a new appender to a logger. We don't have to supply a name, but that
@@ -366,8 +381,8 @@ lgr$info("Another informational message")
 lgr$debug("A debug message not shown by the console appender")
 
 readLines(tf)
-#> [1] "INFO  [2026-01-30 13:44:06.784] Another informational message"                    
-#> [2] "DEBUG [2026-01-30 13:44:06.786] A debug message not shown by the console appender"
+#> [1] "INFO  [2026-06-03 05:02:32.855] Another informational message"                    
+#> [2] "DEBUG [2026-06-03 05:02:32.857] A debug message not shown by the console appender"
 
 # Remove the appender again
 lgr$remove_appender("file")
@@ -410,6 +425,7 @@ Example hierarchy for the package **fancymodel** that provides a model
 along with a plumber API and a shiny web-interface to the package.
 
 ``` r
+
 # prints a tree structure of all registered loggers
 logger_tree()
 ```
@@ -439,6 +455,7 @@ performance than [`sprintf()`](https://rdrr.io/r/base/sprintf.html)
 create a new LoggerGlue like this:
 
 ``` r
+
 # install.packages("glue")
 
 lg <- get_logger_glue("glue/logger")
@@ -455,6 +472,7 @@ Glue lets you define temporary variables inside the
 the normal Logger, named arguments get turned into custom fields.
 
 ``` r
+
 lg$info("For more info on glue see {website}", website = "https://glue.tidyverse.org/")
 ```
 
@@ -462,6 +480,7 @@ You can suppress this behaviour by making named argument start with a
 `"."`.
 
 ``` r
+
 lg$info("Glue is available from {.cran}", .cran = "https://CRAN.R-project.org/package=glue")
 ```
 
@@ -473,6 +492,7 @@ There are several different ways to configure loggers. The most straight
 forward one is to use *setters* to specify the Loggers properties.
 
 ``` r
+
 lg <- get_logger("test")
 lg$config(NULL)  # resets logger to unconfigured state
 #> <Logger> [all] test
@@ -486,6 +506,7 @@ lgr sets up Loggers in a way so that R6 piping with `$` is possible.
 This works similar to the magrittr (`#%>#`) pipes.
 
 ``` r
+
 lg$
   set_threshold("info")$
   set_appenders(AppenderConsole$new(threshold = "info"))$
@@ -495,6 +516,7 @@ lg$
 ### With a list object
 
 ``` r
+
 lg$config(list(
   threshold = "info",
   propagate = FALSE,
@@ -511,6 +533,7 @@ lg$config(list(
 You can use YAML and JSON config files with lgr.
 
 ``` r
+
 lg$config("path/to/config.yaml")
 lg$config("path/to/config.json")
 ```
@@ -519,6 +542,7 @@ You can also pass in YAML/JSON directly as a character string (or vector
 with one element per line)
 
 ``` r
+
 # Via YAML
 cfg <- "
   Logger:
@@ -545,6 +569,7 @@ Please refer to
 for the full list of available placeholders.
 
 ``` r
+
 lg <- get_logger("test")
 lg$set_appenders(list(cons = AppenderConsole$new()))
 lg$set_propagate(FALSE)
@@ -561,6 +586,7 @@ a bit more verbose, and `AppenderGlue` is a bit less performant than
 `AppenderFormat`, but the possibilities are endless.
 
 ``` r
+
 # install.packages("glue")
 library(glue)
 lg$appenders$cons$set_layout(LayoutGlue$new(
@@ -580,12 +606,13 @@ JavaScript Object Notation (JSON) is an open-standard file format that
 uses human-readable text to transmit data objects consisting of
 attribute–value pairs and array data types
 ([Wikipedia](https://en.wikipedia.org/wiki/JSON)). JSON is the
-**recommended text-based logging format when logging to files**
-[¹](#fn1), as it is human- as well as machine readable. You should only
-log to a different format if you have very good reasons for it. The
-easiest way to log to JSON files is with AppenderJson[²](#fn2)
+**recommended text-based logging format when logging to files** [^1], as
+it is human- as well as machine readable. You should only log to a
+different format if you have very good reasons for it. The easiest way
+to log to JSON files is with AppenderJson[^2]
 
 ``` r
+
 # install.packages("jsonlite")
 tf <- tempfile()
 
@@ -606,30 +633,33 @@ AppenderJson’s `$data` binding for an even more convenient method to
 read the logfile.
 
 ``` r
+
 lg$appenders$json$data
 # same as 
 read_json_lines(tf)
 ```
 
     #>   level           timestamp logger caller             msg  field numbers  use
-    #> 1   400 2026-01-30 13:44:07   test   eval JSON naturally  custom    NULL <NA>
-    #> 2   400 2026-01-30 13:44:07   test   eval supports custom   <NA> 1, 2, 3 <NA>
-    #> 3   400 2026-01-30 13:44:07   test   eval      log fields   <NA>    NULL JSON
+    #> 1   400 2026-06-03 05:02:33   test   eval JSON naturally  custom    NULL <NA>
+    #> 2   400 2026-06-03 05:02:33   test   eval supports custom   <NA> 1, 2, 3 <NA>
+    #> 3   400 2026-06-03 05:02:33   test   eval      log fields   <NA>    NULL JSON
 
 JSON is also human readable, though this vignette does not transport
 that fact very well because of the lack of horizontal space.
 
 ``` r
+
 lg$appenders$json$show()
 # same as
 cat(readLines(tf), sep = "\n")
 ```
 
-    #> {"level":400,"timestamp":"2026-01-30 13:44:07","logger":"test","caller":"eval","msg":"JSON naturally ","field":"custom"}
-    #> {"level":400,"timestamp":"2026-01-30 13:44:07","logger":"test","caller":"eval","msg":"supports custom","numbers":[1,2,3]}
-    #> {"level":400,"timestamp":"2026-01-30 13:44:07","logger":"test","caller":"eval","msg":"log fields","use":"JSON"}
+    #> {"level":400,"timestamp":"2026-06-03 05:02:33","logger":"test","caller":"eval","msg":"JSON naturally ","field":"custom"}
+    #> {"level":400,"timestamp":"2026-06-03 05:02:33","logger":"test","caller":"eval","msg":"supports custom","numbers":[1,2,3]}
+    #> {"level":400,"timestamp":"2026-06-03 05:02:33","logger":"test","caller":"eval","msg":"log fields","use":"JSON"}
 
 ``` r
+
 # cleanup
 lg$config(NULL)
 #> <Logger> [all] test
@@ -646,6 +676,7 @@ that is reset and backed-up once it reaches a size of 10kb. Only the
 last 5 backups of the logfile are kept.
 
 ``` r
+
 # install.packages("rotor")
 tf <- tempfile(fileext = ".log")
 
@@ -663,17 +694,17 @@ for (i in 1:100) lg$info(paste(LETTERS, sep = "-"))
 # display info on the backups of tf
 lg$appenders$rotating$backups
 #>                                     path             name sfx ext  size isdir
-#> 1 /tmp/Rtmp8xTiJj/file1f1d7d4a1a72.1.log file1f1d7d4a1a72   1 log 10608 FALSE
-#> 2 /tmp/Rtmp8xTiJj/file1f1d7d4a1a72.2.log file1f1d7d4a1a72   2 log 10608 FALSE
-#> 3 /tmp/Rtmp8xTiJj/file1f1d7d4a1a72.3.log file1f1d7d4a1a72   3 log 10608 FALSE
-#> 4 /tmp/Rtmp8xTiJj/file1f1d7d4a1a72.4.log file1f1d7d4a1a72   4 log 10608 FALSE
-#> 5 /tmp/Rtmp8xTiJj/file1f1d7d4a1a72.5.log file1f1d7d4a1a72   5 log 10608 FALSE
+#> 1 /tmp/RtmpI1hMnK/file1e857fe9fc15.1.log file1e857fe9fc15   1 log 10608 FALSE
+#> 2 /tmp/RtmpI1hMnK/file1e857fe9fc15.2.log file1e857fe9fc15   2 log 10608 FALSE
+#> 3 /tmp/RtmpI1hMnK/file1e857fe9fc15.3.log file1e857fe9fc15   3 log 10608 FALSE
+#> 4 /tmp/RtmpI1hMnK/file1e857fe9fc15.4.log file1e857fe9fc15   4 log 10608 FALSE
+#> 5 /tmp/RtmpI1hMnK/file1e857fe9fc15.5.log file1e857fe9fc15   5 log 10608 FALSE
 #>   mode               mtime               ctime               atime  uid  gid
-#> 1  644 2026-01-30 13:44:08 2026-01-30 13:44:08 2026-01-30 13:44:08 1001 1001
-#> 2  644 2026-01-30 13:44:08 2026-01-30 13:44:08 2026-01-30 13:44:08 1001 1001
-#> 3  644 2026-01-30 13:44:08 2026-01-30 13:44:08 2026-01-30 13:44:08 1001 1001
-#> 4  644 2026-01-30 13:44:08 2026-01-30 13:44:08 2026-01-30 13:44:08 1001 1001
-#> 5  644 2026-01-30 13:44:08 2026-01-30 13:44:08 2026-01-30 13:44:08 1001 1001
+#> 1  644 2026-06-03 05:02:34 2026-06-03 05:02:34 2026-06-03 05:02:34 1001 1001
+#> 2  644 2026-06-03 05:02:34 2026-06-03 05:02:34 2026-06-03 05:02:34 1001 1001
+#> 3  644 2026-06-03 05:02:34 2026-06-03 05:02:34 2026-06-03 05:02:34 1001 1001
+#> 4  644 2026-06-03 05:02:34 2026-06-03 05:02:34 2026-06-03 05:02:34 1001 1001
+#> 5  644 2026-06-03 05:02:34 2026-06-03 05:02:34 2026-06-03 05:02:34 1001 1001
 #>    uname grname index
 #> 1 runner runner     1
 #> 2 runner runner     2
@@ -700,6 +731,7 @@ logging. This way you can have separate Appenders (e.g logfiles) and
 thresholds for each package.
 
 ``` r
+
 # The logger name should be the same as the package name
 tf <- tempfile()
 lg <- get_logger("mypackage")
@@ -710,11 +742,12 @@ The [`print()`](https://rdrr.io/r/base/print.html) method for Loggers
 gives a nice overview of the newly created Logger:
 
 ``` r
+
 print(lg)
 #> <Logger> [all] mypackage
 #> 
 #> appenders:
-#>   [[1]]: <AppenderFile> [all] -> /tmp/Rtmp8xTiJj/file1f1dda67bf3
+#>   [[1]]: <AppenderFile> [all] -> /tmp/RtmpI1hMnK/file1e8530719583
 #> 
 #> inherited appenders:
 #>   console: <AppenderConsole> [info] -> console
@@ -730,6 +763,7 @@ We can use `lg$fatal()`, `lg$info()`, etc.. to log messages with this
 Logger:
 
 ``` r
+
 lg$info("A test message for lg")
 ```
 
@@ -737,6 +771,7 @@ If we do not want `lg` to dispatch to the root Logger, we can set
 `propagate` to `FALSE`.
 
 ``` r
+
 lg$set_propagate(FALSE)
 ```
 
@@ -744,20 +779,23 @@ When we take a look at the Logger again, we now see that it does not
 inherit any Appenders anymore
 
 ``` r
+
 print(lg)
 #> <Logger> [all] mypackage
 #> 
 #> appenders:
-#>   [[1]]: <AppenderFile> [all] -> /tmp/Rtmp8xTiJj/file1f1dda67bf3
+#>   [[1]]: <AppenderFile> [all] -> /tmp/RtmpI1hMnK/file1e8530719583
 ```
 
 Consequently, `lg` no longer outputs log messages to he console
 
 ``` r
+
 lg$info("Nothing to see here")
 ```
 
 ``` r
+
 # cleanup
 lg$config(NULL)
 #> <Logger> [all] mypackage
@@ -781,6 +819,7 @@ flushing. For example, the will output the last 5 LogEvents that
 happened before an `error` occurred.
 
 ``` r
+
 lg <- get_logger("buffer")
 
 lg$
@@ -815,6 +854,7 @@ to be installed separately. **Database logging is still somewhat
 experimental**.
 
 ``` r
+
 # install.packages("RSQLite")
 # install.packages("lgrExtra")
 lg <- get_logger("db_logger")
@@ -844,6 +884,7 @@ example for when this is useful is assigning a grouping identifier to a
 series of log calls.
 
 ``` r
+
 # setup an example function
 clean   <- function() lgr$info("cleaning data")
 process <- function() lgr$info("processing data")
@@ -860,6 +901,7 @@ analyze <- function(){
 provides a convenient wrapper to inject values into log calls.
 
 ``` r
+
 with_log_value(
   list(dataset_id = "dataset1"), 
   analyze()
@@ -871,6 +913,7 @@ preconfigured Filters that come with lgr. This approach is more more
 comfortable for use within functions.
 
 ``` r
+
 analyze <- function(id = "dataset1"){
   lgr$add_filter(FilterInject$new(dataset_id = id), name = "inject")
   on.exit(lgr$remove_filter("inject"))
@@ -895,6 +938,7 @@ Temporary disabling logging for portions of code is straight forward and
 easy with lgr:
 
 ``` r
+
 without_logging({
   lgr$warn("Oh Yeah?")
   lgr$fatal("Oh No")
@@ -911,6 +955,7 @@ following code to any `.R` file inside the `R/` directory of your
 package:
 
 ``` r
+
 # mypackage/R/mypackage-package.R
 .onLoad <- function(...){
   assign(
@@ -944,6 +989,7 @@ solution works in most scenarios, but not in all (for example, building
 this vignette).
 
 ``` r
+
 # install.packages("this.path")
 
 lg <- get_logger("srcfile")
@@ -962,10 +1008,8 @@ lg$add_filter(function(event){
 [Eric Stenbock: The True Story of A
 Vampire](https://gutenberg.net.au/ebooks06/0606601h.html)
 
-------------------------------------------------------------------------
-
-1.  Technically, the logger does not produce standard JSON files but
+[^1]: Technically, the logger does not produce standard JSON files but
     [JSON lines](https://jsonlines.org/)
 
-2.  AppenderJson is just an AppenderFile with LayotJson as default
+[^2]: AppenderJson is just an AppenderFile with LayotJson as default
     Layout and a few extra features

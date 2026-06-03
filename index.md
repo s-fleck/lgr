@@ -58,6 +58,7 @@ loggers that [glue](https://glue.tidyverse.org/) instead please refer to
 the vignette.
 
 ``` r
+
 lgr$fatal("A critical error")
 #> FATAL [11:32:48.843] A critical error
 lgr$error("A less severe error")
@@ -76,6 +77,7 @@ A Logger can have several Appenders. For example, we can add a JSON
 appender to log to a file with little effort.
 
 ``` r
+
 tf <- tempfile()
 lgr$add_appender(AppenderFile$new(tf, layout = LayoutJson$new()))
 lgr$info("cars has %s rows", nrow(cars))
@@ -90,6 +92,7 @@ logging perfectly, but JSON does. This way you can create logfiles that
 are machine as well as (somewhat) human readable.
 
 ``` r
+
 lgr$info("loading %s", "cars", rows = nrow(cars), cols = ncol(cars), vector = c(1, 2, 3))
 #> INFO  [11:32:48.893] loading cars {rows: `50`, cols: `2`, vector: (1, 2, 3)}
 cat(readLines(tf), sep = "\n")
@@ -107,6 +110,7 @@ lgr is used to govern console output in my shiny based csv editor
 [shed](https://github.com/s-fleck/shed)
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("s-fleck/shed")
 library(shed)
@@ -211,12 +215,14 @@ automated unit tests run by lgr.
 You can install lgr from CRAN
 
 ``` r
+
 install.packages("lgr")
 ```
 
 Or you can install the current development version directly from github
 
 ``` r
+
 #install.packages("remotes")
 remotes::install_github("s-fleck/lgr")
 ```

@@ -32,17 +32,17 @@ a named `character` vector of the globally available log levels
 lgr comes with the following predefined log levels that are identical to
 the log levels of log4j.
 
-|       |       |                                                                                                                              |
-|-------|-------|------------------------------------------------------------------------------------------------------------------------------|
-| Level | Name  | Description                                                                                                                  |
-| `0`   | off   | A log level of 0/off tells a Logger or Appender to suspend all logging                                                       |
+|  |  |  |
+|----|----|----|
+| Level | Name | Description |
+| `0` | off | A log level of 0/off tells a Logger or Appender to suspend all logging |
 | `100` | fatal | Critical error that leads to program abort. Should always indicate a [`stop()`](https://rdrr.io/r/base/stop.html) or similar |
-| `200` | error | A severe error that does not trigger program abort                                                                           |
-| `300` | warn  | A potentially harmful situation, like [`warning()`](https://rdrr.io/r/base/warning.html)                                     |
-| `400` | info  | An informational message on the progress of the application                                                                  |
-| `500` | debug | Finer grained informational messages that are mostly useful for debugging                                                    |
-| `600` | trace | An even finer grained message than debug                                                                                     |
-| `NA`  | all   | A log level of NA/all tells a Logger or Appender to process all log events                                                   |
+| `200` | error | A severe error that does not trigger program abort |
+| `300` | warn | A potentially harmful situation, like [`warning()`](https://rdrr.io/r/base/warning.html) |
+| `400` | info | An informational message on the progress of the application |
+| `500` | debug | Finer grained informational messages that are mostly useful for debugging |
+| `600` | trace | An even finer grained message than debug |
+| `NA` | all | A log level of NA/all tells a Logger or Appender to process all log events |
 
 ## Examples
 

@@ -52,6 +52,7 @@ Other docs relevant for extending lgr:
 ## Examples
 
 ``` r
+
 standardize_threshold("info")
 #> [1] 400
 standardize_threshold("all")
