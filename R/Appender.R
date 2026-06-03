@@ -1119,7 +1119,7 @@ AppenderFileRotating <- R6::R6Class(
 
 
     format = function(
-      color = false,
+      color = FALSE,
       ...
     ){
       res <- super$format(color = color, ...)
