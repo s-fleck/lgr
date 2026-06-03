@@ -66,7 +66,7 @@ basic_config <- function(
     is_scalar_character(timestamp_fmt),
     is_threshold(threshold),
     is_scalar_bool(console) || is_threshold(console),
-    is_scalar_bool(memory) || is_threshold(console),
+    is_scalar_bool(memory) || is_threshold(memory),
     is.null(appenders) || is.list(appenders) || inherits(appenders, "Appender")
   )
 
