@@ -24,5 +24,5 @@ The warning as `character` vector
 
 ``` r
 tryCatch(stop("an error has occurred"), error = default_exception_handler)
-#> Warning: [2026-06-03 05:07:30.897] NULL ~ error in `doTryCatch(return(expr), name, parentenv, handler)`: an error has occurred
+#> Warning: [2026-06-03 05:10:06.941] NULL ~ error in `doTryCatch(return(expr), name, parentenv, handler)`: an error has occurred
 ```
