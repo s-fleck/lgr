@@ -1099,7 +1099,7 @@ LoggerRoot <- R6::R6Class(
   "LoggerRoot",
   inherit = Logger,
   cloneable = FALSE,
-  public <- list(
+  public = list(
     config = function(
       cfg,
       file,
