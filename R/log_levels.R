@@ -329,7 +329,7 @@ error_msg_log_levels <- function(varname, log_levels){
     paste(sprintf("%s (%s)", names(log_levels), log_levels), collapse = ", ")
 
   paste0(
-    "'", varname, "' must either the numeric or character representation ",
+    "'", varname, "' must be either the numeric or character representation ",
     "of one of the following log levels: ", ll_text
   )
 }
@@ -394,7 +394,7 @@ unlabel_levels <- function(
 
   if (anyNA(labels) || any(!labels %in% c(names(log_levels), "all", "off")))
     warning(
-      "Some `labels` were not valid character log levels. Please",
+      "Some `labels` were not valid character log levels. Please ",
       "consider adding them to the global log levels with `?add_log_levels`"
     )
 

@@ -38,7 +38,7 @@ remove_all_loggers <- function(){
 #' # completely reset 'glue' to an unconfigured vanilla Logger
 #' get_logger("log/ger", reset = TRUE)
 #' # WARNING: this invalidates existing references to the Logger
-#' try(lg$info("lg has been invalidated an no longer works"))
+#' try(lg$info("lg has been invalidated and no longer works"))
 #'
 #' lg <- get_logger("log/ger")
 #' lg$info("now all is well again")
@@ -61,9 +61,9 @@ get_logger <- function(
   if (reset && is_Logger(res)){
     res$set_filters(function(event) stop(call. = FALSE, sprintf(paste(
       "Trying to log via a Logger reference that is no longer valid.",
-      "Logger references become invalid when you reset a when you reset a",
+      "Logger references become invalid when you reset a",
       "Logger with `get_logger(reset = TRUE)`. Please",
-      "re-create the Logger reference with with `get_logger(%s)`"), name
+      "re-create the Logger reference with `get_logger(%s)`"), name
     )))
     res <- NULL
   }

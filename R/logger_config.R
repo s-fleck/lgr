@@ -199,7 +199,7 @@ as_logger_config.character <- function(
       identical(tolower(tools::file_ext(x)), "json") &&
       requireNamespace("jsonlite", quietly = TRUE)
     ){
-      # if jsonliste is installed use jsonlite for yaml, otherwiese use the
+      # if jsonlite is installed use jsonlite for yaml, otherwise use the
       # yaml package (since JSON is also valid YAML)
       dd <- jsonlite::read_json(x, simplifyVector = TRUE)
 

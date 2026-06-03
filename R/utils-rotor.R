@@ -6,7 +6,7 @@ assert_valid_compression <- function(compression){
         is_bool(compression)
     ),
     '`compression` must be `TRUE`, `FALSE`, or an integer between 1 and 9',
-    'or the character scalers "base::zip" or "zip::zipr" not: ',
+    'or the character scalars "base::zip" or "zip::zipr" not: ',
     string_repr(compression)
   )
 }
