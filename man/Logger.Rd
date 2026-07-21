@@ -110,14 +110,14 @@ lg$config(cfg)
 lg$config(NULL)
 
 ## ------------------------------------------------
-## Method `Logger$list_log`
+## Method `Logger$list_log()`
 ## ------------------------------------------------
 
 lg <- get_logger("test")
 lg$list_log(list(level = 400, msg = "example"))
 
 ## ------------------------------------------------
-## Method `Logger$add_appender`
+## Method `Logger$add_appender()`
 ## ------------------------------------------------
 
 lg <- get_logger("test")
@@ -128,7 +128,7 @@ lg$remove_appender("myconsole")
 lg$config(NULL)  # reset config
 
 ## ------------------------------------------------
-## Method `Logger$set_exception_handler`
+## Method `Logger$set_exception_handler()`
 ## ------------------------------------------------
 
 lgr$info(stop("this produces a warning instead of an error"))
@@ -139,80 +139,81 @@ lgr$info(stop("this produces a warning instead of an error"))
 \code{\link[=get_logger]{get_logger()}}
 }
 \section{Super class}{
-\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{Logger}
+\code{\link[lgr:Filterable]{Filterable}} -> \code{Logger}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{name}}{A \code{character} scalar. The unique name of each logger,
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{name}}{A \code{character} scalar. The unique name of each logger,
 which also includes the names of its ancestors (separated by \code{/}).}
 
-\item{\code{threshold}}{\code{integer} scalar. The threshold of the \code{Logger}, or if it
+    \item{\code{threshold}}{\code{integer} scalar. The threshold of the \code{Logger}, or if it
 \code{NULL} the threshold it inherits from its closest ancestor with a
 non-\code{NULL} threshold}
 
-\item{\code{propagate}}{A \code{TRUE} or \code{FALSE}. Should a Logger propagate events
+    \item{\code{propagate}}{A \code{TRUE} or \code{FALSE}. Should a Logger propagate events
 to the Appenders of its ancestors?}
 
-\item{\code{ancestry}}{A named \code{logical} vector of containing the propagate value
+    \item{\code{ancestry}}{A named \code{logical} vector of containing the propagate value
 of each Logger upper the inheritance tree. The names are the names of
 the appenders. \code{ancestry} is an S3 class with a custom
 \code{format()}/\code{print()} method, so if you want to use the plain logical
 vector use \code{unclass(lg$ancestry)}}
 
-\item{\code{parent}}{a \code{Logger}. The direct ancestor of the \code{Logger}.}
+    \item{\code{parent}}{a \code{Logger}. The direct ancestor of the \code{Logger}.}
 
-\item{\code{last_event}}{The last LogEvent produced by the current Logger}
+    \item{\code{last_event}}{The last LogEvent produced by the current Logger}
 
-\item{\code{appenders}}{a \code{list} of all \link{Appenders} of the Logger}
+    \item{\code{appenders}}{a \code{list} of all \link{Appenders} of the Logger}
 
-\item{\code{inherited_appenders}}{A \code{list} of all appenders that the Logger
+    \item{\code{inherited_appenders}}{A \code{list} of all appenders that the Logger
 inherits from its ancestors}
 
-\item{\code{exception_handler}}{a \code{function}. See \verb{$set_exception_handler} and
+    \item{\code{replace_empty}}{The replacement value used for empty log message
+arguments (\code{NULL} or empty vectors). See \verb{$set_replace_empty()}.}
+
+    \item{\code{exception_handler}}{a \code{function}. See \verb{$set_exception_handler} and
 \verb{$handle_exception}}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-Logger-new}{\code{Logger$new()}}
-\item \href{#method-Logger-log}{\code{Logger$log()}}
-\item \href{#method-Logger-fatal}{\code{Logger$fatal()}}
-\item \href{#method-Logger-error}{\code{Logger$error()}}
-\item \href{#method-Logger-warn}{\code{Logger$warn()}}
-\item \href{#method-Logger-info}{\code{Logger$info()}}
-\item \href{#method-Logger-debug}{\code{Logger$debug()}}
-\item \href{#method-Logger-trace}{\code{Logger$trace()}}
-\item \href{#method-Logger-list_log}{\code{Logger$list_log()}}
-\item \href{#method-Logger-config}{\code{Logger$config()}}
-\item \href{#method-Logger-add_appender}{\code{Logger$add_appender()}}
-\item \href{#method-Logger-remove_appender}{\code{Logger$remove_appender()}}
-\item \href{#method-Logger-handle_exception}{\code{Logger$handle_exception()}}
-\item \href{#method-Logger-set_exception_handler}{\code{Logger$set_exception_handler()}}
-\item \href{#method-Logger-set_propagate}{\code{Logger$set_propagate()}}
-\item \href{#method-Logger-set_threshold}{\code{Logger$set_threshold()}}
-\item \href{#method-Logger-set_appenders}{\code{Logger$set_appenders()}}
-\item \href{#method-Logger-set_replace_empty}{\code{Logger$set_replace_empty()}}
-\item \href{#method-Logger-spawn}{\code{Logger$spawn()}}
+  \itemize{
+    \item \href{#method-Logger-initialize}{\code{Logger$new()}}
+    \item \href{#method-Logger-log}{\code{Logger$log()}}
+    \item \href{#method-Logger-fatal}{\code{Logger$fatal()}}
+    \item \href{#method-Logger-error}{\code{Logger$error()}}
+    \item \href{#method-Logger-warn}{\code{Logger$warn()}}
+    \item \href{#method-Logger-info}{\code{Logger$info()}}
+    \item \href{#method-Logger-debug}{\code{Logger$debug()}}
+    \item \href{#method-Logger-trace}{\code{Logger$trace()}}
+    \item \href{#method-Logger-list_log}{\code{Logger$list_log()}}
+    \item \href{#method-Logger-config}{\code{Logger$config()}}
+    \item \href{#method-Logger-add_appender}{\code{Logger$add_appender()}}
+    \item \href{#method-Logger-remove_appender}{\code{Logger$remove_appender()}}
+    \item \href{#method-Logger-handle_exception}{\code{Logger$handle_exception()}}
+    \item \href{#method-Logger-set_exception_handler}{\code{Logger$set_exception_handler()}}
+    \item \href{#method-Logger-set_propagate}{\code{Logger$set_propagate()}}
+    \item \href{#method-Logger-set_threshold}{\code{Logger$set_threshold()}}
+    \item \href{#method-Logger-set_appenders}{\code{Logger$set_appenders()}}
+    \item \href{#method-Logger-set_replace_empty}{\code{Logger$set_replace_empty()}}
+    \item \href{#method-Logger-spawn}{\code{Logger$spawn()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>Filterable$add_filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>Filterable$filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>Filterable$remove_filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>Filterable$set_filters()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Logger-new"></a>}}
-\if{latex}{\out{\hypertarget{method-Logger-new}{}}}
-\subsection{Method \code{new()}}{
-\strong{Loggers should never be instantiated directly with \code{Logger$new()}} but
+\if{html}{\out{<a id="method-Logger-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-Logger-initialize}{}}}
+\subsection{\code{Logger$new()}}{
+  \strong{Loggers should never be instantiated directly with \code{Logger$new()}} but
 rather via \code{\link[=get_logger]{get_logger("name")}}. This way new Loggers are
 registered in a global namespace which ensures uniqueness and
 facilitates inheritance between Loggers. If \code{"name"} does not exist, a
@@ -223,8 +224,9 @@ a Reference to the existing Logger.
 \code{foo/bar/baz}. Loggers further down the hierarchy are descendants of the
 loggers above and (by default) inherit \code{threshold} and \code{Appenders} from
 their ancestors.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$new(
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Logger$new(
   name = "(unnamed logger)",
   appenders = list(),
   threshold = NULL,
@@ -232,400 +234,429 @@ their ancestors.
   exception_handler = default_exception_handler,
   propagate = TRUE,
   replace_empty = "<NULL>"
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name, appenders, threshold, filters, exception_handler, propagate}}{See section Active bindings.}
+      \item{\code{replace_empty}}{The replacement value used for empty log message
+arguments (\code{NULL} or empty vectors). See \verb{$set_replace_empty()}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{name, appenders, threshold, filters, exception_handler, propagate}}{See section Active bindings.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-log"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-log}{}}}
-\subsection{Method \code{log()}}{
-Log an event.
+\subsection{\code{Logger$log()}}{
+  Log an event.
 
 If \code{level} passes the Logger's \code{threshold} a new \link{LogEvent} with \code{level},
 \code{msg}, \code{timestamp} and \code{caller} is created.  If the new LogEvent also
 passes the Loggers \link[=EventFilter]{Filters}, it is be dispatched to the
 relevant \link{Appenders}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{level}}{a \code{character} or \code{integer} scalar. See \link{log_levels}.}
-
-\item{\code{msg}}{\code{character}. A log message. If unnamed arguments are supplied
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Logger$log(level, msg, ..., timestamp = Sys.time(), caller = get_caller(-7))}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{level}}{a \code{character} or \code{integer} scalar. See \link{log_levels}.}
+      \item{\code{msg}}{\code{character}. A log message. If unnamed arguments are supplied
 in \code{...}, \code{msg} is passed on to \code{\link[base:sprintf]{base::sprintf()}} (which means \code{"\%"} have
 to be escaped), otherwise \code{msg} is left as-is.}
-
-\item{\code{...}}{\emph{unnamed} arguments in \code{...} must be \code{character} scalars and
+      \item{\code{...}}{\emph{unnamed} arguments in \code{...} must be \code{character} scalars and
 are passed to \code{\link[base:sprintf]{base::sprintf()}}. \emph{Named} arguments must have unique names
 but can be arbitrary \R objects that are passed to \code{\link[=LogEvent]{LogEvent$new()}} and
 will be turned into custom fields.}
+      \item{\code{timestamp}}{\link{POSIXct}. Timestamp of the event.}
+      \item{\code{caller}}{a \code{character} scalar. The name of the calling function.}
+    }
+    \if{html}{\out{</div>}}
+  }
+}
 
-\item{\code{timestamp}}{\link{POSIXct}. Timestamp of the event.}
-
-\item{\code{caller}}{a \code{character} scalar. The name of the calling function.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-fatal"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-fatal}{}}}
-\subsection{Method \code{fatal()}}{
-Log an Event fatal priority
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$fatal(msg, ..., caller = get_caller(-8L))}\if{html}{\out{</div>}}
+\subsection{\code{Logger$fatal()}}{
+  Log an Event fatal priority
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Logger$fatal(msg, ..., caller = get_caller(-8L))}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{msg, ..., caller}}{see \verb{$log()}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{msg, ..., caller}}{see \verb{$log()}}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-error"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-error}{}}}
-\subsection{Method \code{error()}}{
-Log an Event error priority
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$error(msg, ..., caller = get_caller(-8L))}\if{html}{\out{</div>}}
+\subsection{\code{Logger$error()}}{
+  Log an Event error priority
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Logger$error(msg, ..., caller = get_caller(-8L))}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{msg, ..., caller}}{see \verb{$log()}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{msg, ..., caller}}{see \verb{$log()}}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-warn"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-warn}{}}}
-\subsection{Method \code{warn()}}{
-Log an Event warn priority
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$warn(msg, ..., caller = get_caller(-8L))}\if{html}{\out{</div>}}
+\subsection{\code{Logger$warn()}}{
+  Log an Event warn priority
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Logger$warn(msg, ..., caller = get_caller(-8L))}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{msg, ..., caller}}{see \verb{$log()}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{msg, ..., caller}}{see \verb{$log()}}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-info"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-info}{}}}
-\subsection{Method \code{info()}}{
-Log an Event info priority
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$info(msg, ..., caller = get_caller(-8L))}\if{html}{\out{</div>}}
+\subsection{\code{Logger$info()}}{
+  Log an Event info priority
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Logger$info(msg, ..., caller = get_caller(-8L))}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{msg, ..., caller}}{see \verb{$log()}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{msg, ..., caller}}{see \verb{$log()}}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-debug"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-debug}{}}}
-\subsection{Method \code{debug()}}{
-Log an Event debug priority
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$debug(msg, ..., caller = get_caller(-8L))}\if{html}{\out{</div>}}
+\subsection{\code{Logger$debug()}}{
+  Log an Event debug priority
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Logger$debug(msg, ..., caller = get_caller(-8L))}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{msg, ..., caller}}{see \verb{$log()}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{msg, ..., caller}}{see \verb{$log()}}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-trace"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-trace}{}}}
-\subsection{Method \code{trace()}}{
-Log an Event trace priority
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$trace(msg, ..., caller = get_caller(-8L))}\if{html}{\out{</div>}}
+\subsection{\code{Logger$trace()}}{
+  Log an Event trace priority
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Logger$trace(msg, ..., caller = get_caller(-8L))}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{msg, ..., caller}}{see \verb{$log()}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{msg, ..., caller}}{see \verb{$log()}}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-list_log"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-list_log}{}}}
-\subsection{Method \code{list_log()}}{
-\code{list_log()} is a shortcut for \code{do.call(Logger$log, x)}.
+\subsection{\code{Logger$list_log()}}{
+  \code{list_log()} is a shortcut for \code{do.call(Logger$log, x)}.
 See \url{https://github.com/s-fleck/joblog} for an R package that
 leverages this feature to create custom log event types for tracking
 the status of cron jobs.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$list_log(x)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{a named \code{list} that must at least contain the named elements
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Logger$list_log(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{a named \code{list} that must at least contain the named elements
 \code{level} and \code{timestamp}}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{lg <- get_logger("test")
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Examples}{
+    \if{html}{\out{<div class="r example copy">}}
+    \preformatted{lg <- get_logger("test")
 lg$list_log(list(level = 400, msg = "example"))
 }
-\if{html}{\out{</div>}}
-
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-config"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-config}{}}}
-\subsection{Method \code{config()}}{
-Load a Logger configuration.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$config(cfg, file, text, list)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{cfg}}{\itemize{
+\subsection{\code{Logger$config()}}{
+  Load a Logger configuration.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Logger$config(cfg = NULL, file = NULL, text = NULL, list = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{cfg}}{\itemize{
 \item a special \code{list} object with any or all of the the following elements:
 \code{appenders}, \code{threshold}, \code{filters}, \code{propagate}, \code{exception_handler},
 \item the path to a \code{YAML}/\code{JSON} config file,
 \item a \code{character} scalar containing \code{YAML/JSON},
+\item a production-style logging config with reusable \code{layouts}, \code{appenders},
+\code{filters}, and named \code{loggers} (must be applied via the root logger),
 \item \code{NULL} (to reset the logger config to the default/unconfigured state)
 }}
-
-\item{\code{file, text, list}}{can be used as an alternative to
+      \item{\code{file, text, list}}{can be used as an alternative to
 \code{cfg} that  enforces that the  supplied  argument is of the specified
 type. See \link{logger_config} for details.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-add_appender"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-add_appender}{}}}
-\subsection{Method \code{add_appender()}}{
-Add an Appender to the Logger
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$add_appender(appender, name = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{appender}}{a single \link{Appender}}
-
-\item{\code{name}}{a \code{character} scalar. Optional but recommended.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{lg <- get_logger("test")
+\subsection{\code{Logger$add_appender()}}{
+  Add an Appender to the Logger
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Logger$add_appender(appender, name = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{appender}}{a single \link{Appender}}
+      \item{\code{name}}{a \code{character} scalar. Optional but recommended.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Examples}{
+    \if{html}{\out{<div class="r example copy">}}
+    \preformatted{lg <- get_logger("test")
 lg$add_appender(AppenderConsole$new(), name = "myconsole")
 lg$appenders[[1]]
 lg$appenders$myconsole
 lg$remove_appender("myconsole")
 lg$config(NULL)  # reset config
 }
-\if{html}{\out{</div>}}
-
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-remove_appender"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-remove_appender}{}}}
-\subsection{Method \code{remove_appender()}}{
-remove an appender
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$remove_appender(pos)}\if{html}{\out{</div>}}
+\subsection{\code{Logger$remove_appender()}}{
+  remove an appender
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Logger$remove_appender(pos)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{pos}}{\code{integer} index or \code{character} name of the Appender(s) to
+remove}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{pos}}{\code{integer} index or \code{character} name of the Appender(s) to
-remove}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-handle_exception"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-handle_exception}{}}}
-\subsection{Method \code{handle_exception()}}{
-To prevent errors in the logging logic from crashing the whole script,
+\subsection{\code{Logger$handle_exception()}}{
+  To prevent errors in the logging logic from crashing the whole script,
 Loggers pass errors they encounter to an exception handler. The default
 behaviour is to demote errors to \link{warnings}. See also
 \code{set_exception_handler()}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$handle_exception(expr)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Logger$handle_exception(expr)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{expr}}{expression to be evaluated.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{expr}}{expression to be evaluated.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-set_exception_handler"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-set_exception_handler}{}}}
-\subsection{Method \code{set_exception_handler()}}{
-Set the exception handler of a logger
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$set_exception_handler(fun)}\if{html}{\out{</div>}}
+\subsection{\code{Logger$set_exception_handler()}}{
+  Set the exception handler of a logger
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Logger$set_exception_handler(fun)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{fun}}{a \code{function} with the single argument \code{e} (an error \link{condition})}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Examples}{
+    \if{html}{\out{<div class="r example copy">}}
+    \preformatted{lgr$info(stop("this produces a warning instead of an error"))
+}
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{fun}}{a \code{function} with the single argument \code{e} (an error \link{condition})}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{lgr$info(stop("this produces a warning instead of an error"))
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-set_propagate"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-set_propagate}{}}}
-\subsection{Method \code{set_propagate()}}{
-Should a Logger propagate events to the Appenders of its ancestors?
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$set_propagate(x)}\if{html}{\out{</div>}}
+\subsection{\code{Logger$set_propagate()}}{
+  Should a Logger propagate events to the Appenders of its ancestors?
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Logger$set_propagate(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{\code{TRUE} or \code{FALSE}. Should \link{LogEvents} be passed on to the appenders
+of the ancestral Loggers?}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{\code{TRUE} or \code{FALSE}. Should \link{LogEvents} be passed on to the appenders
-of the ancestral Loggers?}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-set_threshold"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-set_threshold}{}}}
-\subsection{Method \code{set_threshold()}}{
-Set the minimum log level of events that a Logger should process
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$set_threshold(level)}\if{html}{\out{</div>}}
+\subsection{\code{Logger$set_threshold()}}{
+  Set the minimum log level of events that a Logger should process
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Logger$set_threshold(level)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{level}}{\code{character} or \code{integer} scalar. The minimum
+\link[=log_levels]{log level} that triggers this Logger}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{level}}{\code{character} or \code{integer} scalar. The minimum
-\link[=log_levels]{log level} that triggers this Logger}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-set_appenders"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-set_appenders}{}}}
-\subsection{Method \code{set_appenders()}}{
-Set the Logger's Appenders
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$set_appenders(x)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{single \link{Appender} or a \code{list} thereof. Appenders control the
+\subsection{\code{Logger$set_appenders()}}{
+  Set the Logger's Appenders
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Logger$set_appenders(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{single \link{Appender} or a \code{list} thereof. Appenders control the
 output of a Logger. Be aware that a Logger also inherits the Appenders
 of its ancestors (see \code{vignette("lgr", package = "lgr")} for more info
 about Logger inheritance).}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-set_replace_empty"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-set_replace_empty}{}}}
-\subsection{Method \code{set_replace_empty()}}{
-Set the replacement for empty values (\code{NULL} or empty
+\subsection{\code{Logger$set_replace_empty()}}{
+  Set the replacement for empty values (\code{NULL} or empty
 vectors)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$set_replace_empty(x)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Logger$set_replace_empty(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{should be a \code{character} vector, but other types of values are
+supported. use wisely.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{should be a \code{character} vector, but other types of values are
-supported. use wisely.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-spawn"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-spawn}{}}}
-\subsection{Method \code{spawn()}}{
-Spawn a child Logger.
+\subsection{\code{Logger$spawn()}}{
+  Spawn a child Logger.
 This is very similar to using \code{\link[=get_logger]{get_logger()}}, but
 can be useful in some cases where Loggers are created programmatically
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Logger$spawn(name)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{name}}{\code{character} vector. Name of the child logger
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Logger$spawn(name)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name}}{\code{character} vector. Name of the child logger
 \code{get_logger("foo/bar")$spawn("baz")} is equivalent
 to \code{get_logger("foo/bar/baz")}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 }

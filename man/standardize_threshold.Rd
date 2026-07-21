@@ -59,9 +59,9 @@ try(standardize_log_level(c("info", "fatal")))
 standardize_log_levels(c("info", "fatal"))
 }
 \seealso{
-Other docs relevant for extending lgr: 
+Other docs relevant for extending lgr:
 \code{\link{LogEvent}},
-\code{\link{as_LogEvent}()},
-\code{\link{event_list}()}
+\code{\link[=as_LogEvent]{as_LogEvent()}},
+\code{\link[=event_list]{event_list()}}
 }
 \concept{docs relevant for extending lgr}

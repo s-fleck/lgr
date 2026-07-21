@@ -38,13 +38,22 @@ Layout <- R6::R6Class(
     #' that an [Appender] can write to an output destination.
     #'
     #' @param event a [LogEvent]
+    #' @returns a `character` scalar (the formatted LogEvent), unless
+    #'   overridden by a subclass to return a different type.
     format_event = function(event){
       toString(event)
     },
 
+    #' @description Represent the Layout as a `character` scalar, e.g. for
+    #'   use in `print()` methods.
+    #' @returns a `character` scalar
     toString = function() fmt_class(class(self)[[1]]),
 
     # . . setters -----------------------------------------------------------------
+    #' @description Set fields to exclude from the final log output
+    #' @param x `NULL` or a `character` vector of field names. See the
+    #'   `excluded_fields` field.
+    #' @returns The Layout object, invisibly (for chaining).
     set_excluded_fields = function(x){
       assert(is.null(x) || is.character(x))
       private$.excluded_fields <- x
@@ -104,6 +113,11 @@ LayoutFormat <- R6::R6Class(
   "LayoutFormat",
   inherit = Layout,
   public = list(
+    #' @description
+    #' Create a new `LayoutFormat` object. All arguments are optional and
+    #' correspond to the identically named fields (see Active bindings).
+    #' @param excluded_fields see the `excluded_fields` field of the parent
+    #'   [Layout] class.
     initialize = function(
       fmt = "%L [%t] %m %j",
       timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
@@ -120,6 +134,7 @@ LayoutFormat <- R6::R6Class(
 
     #' @description Format a LogEvent
     #' @param event a [LogEvent]
+    #' @returns a `character` scalar
     format_event = function(
       event
     ){
@@ -133,21 +148,27 @@ LayoutFormat <- R6::R6Class(
       )
     },
 
-    #' @details see Fields
+    #' @description Set the `fmt` field
+    #' @param x see the `fmt` field
+    #' @returns The LayoutFormat object, invisibly (for chaining).
     set_fmt = function(x){
       assert(is_scalar_character(x))
       private$.fmt <- x
       invisible(self)
     },
 
-    #' @details see Fields
+    #' @description Set the `timestamp_fmt` field
+    #' @param x see the `timestamp_fmt` field
+    #' @returns The LayoutFormat object, invisibly (for chaining).
     set_timestamp_fmt = function(x){
       assert(is_scalar_character(x))
       private$.timestamp_fmt <- x
       invisible(self)
     },
 
-    #' @details see Fields
+    #' @description Set the `colors` field
+    #' @param x see the `colors` field
+    #' @returns The LayoutFormat object, invisibly (for chaining).
     set_colors = function(x){
       assert(
         is.null(x) || is.list(x),
@@ -158,22 +179,27 @@ LayoutFormat <- R6::R6Class(
       invisible(self)
     },
 
-    #' @details see Fields
+    #' @description Set the `pad_levels` field
+    #' @param x see the `pad_levels` field
+    #' @returns The LayoutFormat object, invisibly (for chaining).
     set_pad_levels = function(x){
       assert(is_scalar_character(x))
       private$.pad_levels <- x
       invisible(self)
     },
 
-    #' @details
+    #' @description
     #' Convert Layout to a `character` string
+    #' @returns a `character` scalar
     toString = function(){
       paste(fmt_class(class(self)[[1]]), self$fmt)
     },
 
-    #' Read a log file written using LayoutFormat
+    #' @description Read a log file written using LayoutFormat
+    #' @param file `character` scalar. Path to the log file.
     #' @param threshold a `character` or `integer` threshold
     #' @param n number of log entries to display
+    #' @returns a `character` vector of the (tail of the) matching log lines
     read = function(
       file,
       threshold = NA_integer_,
@@ -271,6 +297,8 @@ LayoutGlue <- R6::R6Class(
   "LayoutGlue",
   inherit = Layout,
   public = list(
+    #' @description
+    #' Create a new `LayoutGlue` object. Requires the package \pkg{glue}.
     initialize = function(
       fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)} [{timestamp}] {msg}"
     ){
@@ -279,6 +307,9 @@ LayoutGlue <- R6::R6Class(
     },
 
 
+    #' @description Format a LogEvent using [glue::glue()]
+    #' @param event a [LogEvent]
+    #' @returns a `character` scalar
     format_event = function(
       event
     ){
@@ -289,6 +320,9 @@ LayoutGlue <- R6::R6Class(
     },
 
 
+    #' @description Set the `fmt` field
+    #' @param x see the `fmt` field
+    #' @returns The LayoutGlue object, invisibly (for chaining).
     set_fmt = function(x){
       assert(is_scalar_character(x))
       private$.fmt <- x
@@ -296,6 +330,14 @@ LayoutGlue <- R6::R6Class(
     },
 
 
+    #' @description
+    #' Store a `list` of coloring functions for later use. `LayoutGlue` does
+    #' not apply these automatically within `$format_event()` — colorize log
+    #' levels directly in the glue template instead (e.g. via
+    #' [colorize_levels()], see the class examples).
+    #' @param x `NULL`, or a `list` of `functions` (like the ones provided by
+    #'   the package \pkg{crayon}).
+    #' @returns The LayoutGlue object, invisibly (for chaining).
     set_colors = function(x){
       assert(
         is.null(x) || is.list(x),
@@ -307,6 +349,8 @@ LayoutGlue <- R6::R6Class(
     },
 
 
+    #' @description Represent the Layout as a `character` scalar
+    #' @returns a `character` scalar
     toString = function() {
       paste(fmt_class(class(self)[[1]]), self$fmt)
     }

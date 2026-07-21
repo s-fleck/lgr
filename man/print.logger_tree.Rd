@@ -10,7 +10,7 @@
 \method{format}{logger_tree}(x, color = FALSE, ...)
 }
 \arguments{
-\item{x}{a \link[=logger_tree]{logger_tree}}
+\item{x}{a \link{logger_tree}}
 
 \item{color}{\code{logical} scalar. If \code{TRUE} terminal output is colorized via
 the package \pkg{crayon}?}

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:roxygen2.r-lib.org)",
+      "Bash(Rscript *)",
+      "PowerShell($r = Get-Command Rscript.exe -ErrorAction SilentlyContinue; if \\($r\\) { & $r.Source -e 'if \\(requireNamespace\\(\"roxygen2\", quietly=TRUE\\)\\) cat\\(as.character\\(packageVersion\\(\"roxygen2\"\\)\\)\\) else cat\\(\"not installed\"\\)' } else { \"Rscript not found on PATH\" })",
+      "PowerShell(& \"C:\\\\Program Files\\\\R\\\\R-4.5.1\\\\bin\\\\Rscript.exe\" -e 'if \\(requireNamespace\\(\"roxygen2\", quietly=TRUE\\)\\) cat\\(as.character\\(packageVersion\\(\"roxygen2\"\\)\\)\\) else cat\\(\"not installed\"\\)')",
+      "PowerShell(& \"C:\\\\Program Files\\\\R\\\\R-4.5.1\\\\bin\\\\Rscript.exe\" -e 'cat\\(as.character\\(packageVersion\\(\"devtools\"\\)\\), \"\\\\n\"\\); cat\\(R.version.string\\)')",
+      "Bash(openspec list *)",
+      "Bash(openspec status *)"
+    ]
+  }
+}

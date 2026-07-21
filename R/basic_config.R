@@ -33,7 +33,7 @@
 #' basic_config(file = tempfile())
 #' unlink(lgr$appenders$file$file)  # cleanup
 #'
-#  # log to a JSON file
+#' # log to a JSON file
 #' basic_config(file = tempfile(fileext = "jsonl"))
 #' unlink(lgr$appenders$file$file)  # cleanup
 #'

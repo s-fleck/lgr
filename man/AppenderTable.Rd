@@ -16,12 +16,12 @@ are \code{AppenderDbi}, \code{AppenderRjdbc} and \code{AppenderDt} from the
 \href{https://github.com/s-fleck/lgrExtra}{lgrExtra} package.
 }
 \seealso{
-Other abstract classes: 
+Other abstract classes:
 \code{\link{Appender}},
 \code{\link{AppenderMemory}},
 \code{\link{Filterable}}
 
-Other Appenders: 
+Other Appenders:
 \code{\link{Appender}},
 \code{\link{AppenderBuffer}},
 \code{\link{AppenderConsole}},
@@ -33,76 +33,101 @@ Other Appenders:
 \concept{Appenders}
 \concept{abstract classes}
 \section{Super classes}{
-\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{AppenderTable}
+\code{\link[lgr:Filterable]{Filterable}} -> \code{\link[lgr:Appender]{Appender}} -> \code{AppenderTable}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{data}}{\code{character} scalar. Contents of the table, parsed to a
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{data}}{\code{data.frame}. Contents of the table, parsed to a
 \code{data.frame}.}
 
-\item{\code{data}}{\code{character} scalar. Like \verb{$data}, but returns a \code{data.table}
-instead (requires the \strong{data.table} package).}
-}
-\if{html}{\out{</div>}}
+    \item{\code{dt}}{Like \verb{$data}, but returns a \code{data.table} instead (requires
+the \strong{data.table} package).}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-AppenderTable-new}{\code{AppenderTable$new()}}
-\item \href{#method-AppenderTable-show}{\code{AppenderTable$show()}}
-\item \href{#method-AppenderTable-format}{\code{AppenderTable$format()}}
+  \itemize{
+    \item \href{#method-AppenderTable-initialize}{\code{AppenderTable$new()}}
+    \item \href{#method-AppenderTable-show}{\code{AppenderTable$show()}}
+    \item \href{#method-AppenderTable-format}{\code{AppenderTable$format()}}
+  }
 }
-}
-\if{html}{\out{
-<details><summary>Inherited methods</summary>
+\if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="append"><a href='../../lgr/html/Appender.html#method-Appender-append'><code>lgr::Appender$append()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-Appender-set_layout'><code>lgr::Appender$set_layout()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-Appender-set_threshold'><code>lgr::Appender$set_threshold()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>Filterable$add_filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>Filterable$filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>Filterable$remove_filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>Filterable$set_filters()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="append"><a href='../../lgr/html/Appender.html#method-Appender-append'><code>Appender$append()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-Appender-set_layout'><code>Appender$set_layout()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-Appender-set_threshold'><code>Appender$set_threshold()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AppenderTable-new"></a>}}
-\if{latex}{\out{\hypertarget{method-AppenderTable-new}{}}}
-\subsection{Method \code{new()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderTable$new(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-AppenderTable-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderTable-initialize}{}}}
+\subsection{\code{AppenderTable$new()}}{
+  \code{AppenderTable} is an abstract class and cannot be
+instantiated directly; instantiate one of its subclasses (such as
+\code{AppenderDbi} from \href{https://github.com/s-fleck/lgrExtra}{lgrExtra})
+instead.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderTable$new(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{ignored}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderTable-show"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderTable-show}{}}}
-\subsection{Method \code{show()}}{
-Show recent log entries
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderTable$show(threshold = NA_integer_, n = 20L)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{threshold}}{an \code{integer} or \code{character} \link[=log_level]{threshold}.
+\subsection{\code{AppenderTable$show()}}{
+  Show recent log entries
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderTable$show(threshold = NA_integer_, n = 20L)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{threshold}}{an \code{integer} or \code{character} \link[=log_level]{threshold}.
 Only show events with a log level at or below this threshold.}
+      \item{\code{n}}{a positive \code{integer} scalar. Show at most that many entries}
+    }
+    \if{html}{\out{</div>}}
+  }
+}
 
-\item{\code{n}}{a positive \code{integer} scalar. Show at most that many entries}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderTable-format"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderTable-format}{}}}
-\subsection{Method \code{format()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderTable$format(color = FALSE, ...)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderTable$format()}}{
+  Format the Appender for printing (see also
+\code{\link[=print.Appender]{print.Appender()}}).
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderTable$format(color = FALSE, ...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{color}}{\code{TRUE} or \code{FALSE}. Output with color? Requires the
+package \strong{crayon}.}
+      \item{\code{...}}{ignored}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 }

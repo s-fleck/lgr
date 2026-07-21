@@ -57,5 +57,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Stefan Fleck \email{stefan.b.fleck@gmail.com} (\href{https://orcid.org/0000-0003-3344-9851}{ORCID})
 
+Authors:
+\itemize{
+  \item Stefan Fleck \email{stefan.b.fleck@gmail.com} (\href{https://orcid.org/0000-0003-3344-9851}{ORCID})
+}
+
 }
 \keyword{internal}

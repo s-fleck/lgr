@@ -4,11 +4,6 @@
 \alias{LoggerGlue}
 \title{LoggerGlue}
 \description{
-LoggerGlue
-
-LoggerGlue
-}
-\details{
 \code{LoggerGlue} uses \code{\link[glue:glue]{glue::glue()}} instead of \code{\link[base:sprintf]{base::sprintf()}} to construct
 log messages. \strong{glue} is a very well designed package for
 string interpolation. It makes composing log messages
@@ -22,49 +17,58 @@ start with a \code{"."}. Please refer to \code{vignette("lgr", package = "lgr")}
 examples.
 }
 \section{Super classes}{
-\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Logger]{lgr::Logger}} -> \code{LoggerGlue}
+\code{\link[lgr:Filterable]{Filterable}} -> \code{\link[lgr:Logger]{Logger}} -> \code{LoggerGlue}
+}
+\section{Active bindings}{
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{transformer}}{\code{NULL} or a \code{function}. The \code{.transformer} passed
+to \code{\link[glue:glue]{glue::glue()}} for string interpolation. See \verb{$set_transformer()}.}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-LoggerGlue-new}{\code{LoggerGlue$new()}}
-\item \href{#method-LoggerGlue-fatal}{\code{LoggerGlue$fatal()}}
-\item \href{#method-LoggerGlue-error}{\code{LoggerGlue$error()}}
-\item \href{#method-LoggerGlue-warn}{\code{LoggerGlue$warn()}}
-\item \href{#method-LoggerGlue-info}{\code{LoggerGlue$info()}}
-\item \href{#method-LoggerGlue-debug}{\code{LoggerGlue$debug()}}
-\item \href{#method-LoggerGlue-trace}{\code{LoggerGlue$trace()}}
-\item \href{#method-LoggerGlue-log}{\code{LoggerGlue$log()}}
-\item \href{#method-LoggerGlue-list_log}{\code{LoggerGlue$list_log()}}
-\item \href{#method-LoggerGlue-spawn}{\code{LoggerGlue$spawn()}}
-\item \href{#method-LoggerGlue-set_transformer}{\code{LoggerGlue$set_transformer()}}
+  \itemize{
+    \item \href{#method-LoggerGlue-initialize}{\code{LoggerGlue$new()}}
+    \item \href{#method-LoggerGlue-fatal}{\code{LoggerGlue$fatal()}}
+    \item \href{#method-LoggerGlue-error}{\code{LoggerGlue$error()}}
+    \item \href{#method-LoggerGlue-warn}{\code{LoggerGlue$warn()}}
+    \item \href{#method-LoggerGlue-info}{\code{LoggerGlue$info()}}
+    \item \href{#method-LoggerGlue-debug}{\code{LoggerGlue$debug()}}
+    \item \href{#method-LoggerGlue-trace}{\code{LoggerGlue$trace()}}
+    \item \href{#method-LoggerGlue-log}{\code{LoggerGlue$log()}}
+    \item \href{#method-LoggerGlue-list_log}{\code{LoggerGlue$list_log()}}
+    \item \href{#method-LoggerGlue-spawn}{\code{LoggerGlue$spawn()}}
+    \item \href{#method-LoggerGlue-set_transformer}{\code{LoggerGlue$set_transformer()}}
+  }
 }
-}
-\if{html}{\out{
-<details><summary>Inherited methods</summary>
+\if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="add_appender"><a href='../../lgr/html/Logger.html#method-Logger-add_appender'><code>lgr::Logger$add_appender()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="config"><a href='../../lgr/html/Logger.html#method-Logger-config'><code>lgr::Logger$config()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="handle_exception"><a href='../../lgr/html/Logger.html#method-Logger-handle_exception'><code>lgr::Logger$handle_exception()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="remove_appender"><a href='../../lgr/html/Logger.html#method-Logger-remove_appender'><code>lgr::Logger$remove_appender()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_appenders"><a href='../../lgr/html/Logger.html#method-Logger-set_appenders'><code>lgr::Logger$set_appenders()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_exception_handler"><a href='../../lgr/html/Logger.html#method-Logger-set_exception_handler'><code>lgr::Logger$set_exception_handler()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_propagate"><a href='../../lgr/html/Logger.html#method-Logger-set_propagate'><code>lgr::Logger$set_propagate()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_replace_empty"><a href='../../lgr/html/Logger.html#method-Logger-set_replace_empty'><code>lgr::Logger$set_replace_empty()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_threshold"><a href='../../lgr/html/Logger.html#method-Logger-set_threshold'><code>lgr::Logger$set_threshold()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>Filterable$add_filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>Filterable$filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>Filterable$remove_filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>Filterable$set_filters()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="add_appender"><a href='../../lgr/html/Logger.html#method-Logger-add_appender'><code>Logger$add_appender()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="config"><a href='../../lgr/html/Logger.html#method-Logger-config'><code>Logger$config()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="handle_exception"><a href='../../lgr/html/Logger.html#method-Logger-handle_exception'><code>Logger$handle_exception()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="remove_appender"><a href='../../lgr/html/Logger.html#method-Logger-remove_appender'><code>Logger$remove_appender()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_appenders"><a href='../../lgr/html/Logger.html#method-Logger-set_appenders'><code>Logger$set_appenders()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_exception_handler"><a href='../../lgr/html/Logger.html#method-Logger-set_exception_handler'><code>Logger$set_exception_handler()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_propagate"><a href='../../lgr/html/Logger.html#method-Logger-set_propagate'><code>Logger$set_propagate()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_replace_empty"><a href='../../lgr/html/Logger.html#method-Logger-set_replace_empty'><code>Logger$set_replace_empty()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Logger" data-id="set_threshold"><a href='../../lgr/html/Logger.html#method-Logger-set_threshold'><code>Logger$set_threshold()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LoggerGlue-new"></a>}}
-\if{latex}{\out{\hypertarget{method-LoggerGlue-new}{}}}
-\subsection{Method \code{new()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$new(
+\if{html}{\out{<a id="method-LoggerGlue-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-LoggerGlue-initialize}{}}}
+\subsection{\code{LoggerGlue$new()}}{
+  Create a new \code{LoggerGlue}. As with \link[=Logger]{Logger$new()}, you should
+not normally call this directly but use \code{\link[=get_logger_glue]{get_logger_glue()}} instead.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LoggerGlue$new(
   name = "(unnamed logger)",
   appenders = list(),
   threshold = NULL,
@@ -73,112 +77,278 @@ examples.
   propagate = TRUE,
   replace_empty = "<NULL>",
   transformer = NULL
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name, appenders, threshold, filters, exception_handler, propagate}}{See section Active bindings.}
+      \item{\code{replace_empty}}{The replacement value used for empty log message
+arguments (\code{NULL} or empty vectors). See \verb{$set_replace_empty()}.}
+      \item{\code{transformer}}{\code{NULL} or a \code{function} with two arguments (\code{text},
+\code{envir}) that is passed on to \code{\link[glue:glue]{glue::glue()}} as its \code{.transformer}
+argument to customize string interpolation. See \verb{$set_transformer()}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LoggerGlue-fatal"></a>}}
 \if{latex}{\out{\hypertarget{method-LoggerGlue-fatal}{}}}
-\subsection{Method \code{fatal()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$fatal(..., caller = get_caller(-8L), .envir = parent.frame())}\if{html}{\out{</div>}}
+\subsection{\code{LoggerGlue$fatal()}}{
+  Log an Event fatal priority using \code{glue::glue()} for
+string interpolation.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LoggerGlue$fatal(..., caller = get_caller(-8L), .envir = parent.frame())}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{unnamed \code{character} fragments are glued together with
+\code{\link[glue:glue]{glue::glue()}} to construct the log message; named arguments are
+turned into custom fields (a leading \code{.} in the name suppresses
+this). See the class description for details.}
+      \item{\code{.envir}}{the environment in which \code{glue()} evaluates \code{{expr}}
+placeholders. See \code{\link[glue:glue]{glue::glue()}}.}
+      \item{\code{msg, ..., caller}}{see \verb{$log()}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LoggerGlue-error"></a>}}
 \if{latex}{\out{\hypertarget{method-LoggerGlue-error}{}}}
-\subsection{Method \code{error()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$error(..., caller = get_caller(-8L), .envir = parent.frame())}\if{html}{\out{</div>}}
+\subsection{\code{LoggerGlue$error()}}{
+  Log an Event error priority using \code{glue::glue()} for
+string interpolation.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LoggerGlue$error(..., caller = get_caller(-8L), .envir = parent.frame())}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{unnamed \code{character} fragments are glued together with
+\code{\link[glue:glue]{glue::glue()}} to construct the log message; named arguments are
+turned into custom fields (a leading \code{.} in the name suppresses
+this). See the class description for details.}
+      \item{\code{.envir}}{the environment in which \code{glue()} evaluates \code{{expr}}
+placeholders. See \code{\link[glue:glue]{glue::glue()}}.}
+      \item{\code{msg, ..., caller}}{see \verb{$log()}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LoggerGlue-warn"></a>}}
 \if{latex}{\out{\hypertarget{method-LoggerGlue-warn}{}}}
-\subsection{Method \code{warn()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$warn(..., caller = get_caller(-8L), .envir = parent.frame())}\if{html}{\out{</div>}}
+\subsection{\code{LoggerGlue$warn()}}{
+  Log an Event warn priority using \code{glue::glue()} for
+string interpolation.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LoggerGlue$warn(..., caller = get_caller(-8L), .envir = parent.frame())}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{unnamed \code{character} fragments are glued together with
+\code{\link[glue:glue]{glue::glue()}} to construct the log message; named arguments are
+turned into custom fields (a leading \code{.} in the name suppresses
+this). See the class description for details.}
+      \item{\code{.envir}}{the environment in which \code{glue()} evaluates \code{{expr}}
+placeholders. See \code{\link[glue:glue]{glue::glue()}}.}
+      \item{\code{msg, ..., caller}}{see \verb{$log()}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LoggerGlue-info"></a>}}
 \if{latex}{\out{\hypertarget{method-LoggerGlue-info}{}}}
-\subsection{Method \code{info()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$info(..., caller = get_caller(-8L), .envir = parent.frame())}\if{html}{\out{</div>}}
+\subsection{\code{LoggerGlue$info()}}{
+  Log an Event info priority using \code{glue::glue()} for
+string interpolation.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LoggerGlue$info(..., caller = get_caller(-8L), .envir = parent.frame())}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{unnamed \code{character} fragments are glued together with
+\code{\link[glue:glue]{glue::glue()}} to construct the log message; named arguments are
+turned into custom fields (a leading \code{.} in the name suppresses
+this). See the class description for details.}
+      \item{\code{.envir}}{the environment in which \code{glue()} evaluates \code{{expr}}
+placeholders. See \code{\link[glue:glue]{glue::glue()}}.}
+      \item{\code{msg, ..., caller}}{see \verb{$log()}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LoggerGlue-debug"></a>}}
 \if{latex}{\out{\hypertarget{method-LoggerGlue-debug}{}}}
-\subsection{Method \code{debug()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$debug(..., caller = get_caller(-8L), .envir = parent.frame())}\if{html}{\out{</div>}}
+\subsection{\code{LoggerGlue$debug()}}{
+  Log an Event debug priority using \code{glue::glue()} for
+string interpolation.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LoggerGlue$debug(..., caller = get_caller(-8L), .envir = parent.frame())}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{unnamed \code{character} fragments are glued together with
+\code{\link[glue:glue]{glue::glue()}} to construct the log message; named arguments are
+turned into custom fields (a leading \code{.} in the name suppresses
+this). See the class description for details.}
+      \item{\code{.envir}}{the environment in which \code{glue()} evaluates \code{{expr}}
+placeholders. See \code{\link[glue:glue]{glue::glue()}}.}
+      \item{\code{msg, ..., caller}}{see \verb{$log()}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LoggerGlue-trace"></a>}}
 \if{latex}{\out{\hypertarget{method-LoggerGlue-trace}{}}}
-\subsection{Method \code{trace()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$trace(..., caller = get_caller(-8L), .envir = parent.frame())}\if{html}{\out{</div>}}
+\subsection{\code{LoggerGlue$trace()}}{
+  Log an Event trace priority using \code{glue::glue()} for
+string interpolation.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LoggerGlue$trace(..., caller = get_caller(-8L), .envir = parent.frame())}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{unnamed \code{character} fragments are glued together with
+\code{\link[glue:glue]{glue::glue()}} to construct the log message; named arguments are
+turned into custom fields (a leading \code{.} in the name suppresses
+this). See the class description for details.}
+      \item{\code{.envir}}{the environment in which \code{glue()} evaluates \code{{expr}}
+placeholders. See \code{\link[glue:glue]{glue::glue()}}.}
+      \item{\code{msg, ..., caller}}{see \verb{$log()}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LoggerGlue-log"></a>}}
 \if{latex}{\out{\hypertarget{method-LoggerGlue-log}{}}}
-\subsection{Method \code{log()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$log(
+\subsection{\code{LoggerGlue$log()}}{
+  Log an event, constructing the message with \code{glue::glue()} instead of
+\code{sprintf()}. Unlike \code{Logger$log()}, there is no dedicated \code{msg}
+argument: unnamed fragments in \code{...} are glued together to form the
+message, and named arguments are available to \code{glue()} as temporary
+variables (and become custom fields unless their name starts with
+\code{.}).
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LoggerGlue$log(
   level,
   ...,
   timestamp = Sys.time(),
   caller = get_caller(-7),
   .envir = parent.frame()
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{level}}{a \code{character} or \code{integer} scalar. See \link{log_levels}.}
+      \item{\code{...}}{unnamed \code{character} fragments are glued together with
+\code{\link[glue:glue]{glue::glue()}} to construct the log message; named arguments are
+turned into custom fields (a leading \code{.} in the name suppresses
+this).}
+      \item{\code{timestamp}}{\link{POSIXct}. Timestamp of the event.}
+      \item{\code{caller}}{a \code{character} scalar. The name of the calling function.}
+      \item{\code{.envir}}{the environment in which \code{glue()} evaluates \code{{expr}}
+placeholders. See \code{\link[glue:glue]{glue::glue()}}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LoggerGlue-list_log"></a>}}
 \if{latex}{\out{\hypertarget{method-LoggerGlue-list_log}{}}}
-\subsection{Method \code{list_log()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$list_log(x)}\if{html}{\out{</div>}}
+\subsection{\code{LoggerGlue$list_log()}}{
+  \code{list_log()} is a shortcut for \code{do.call(LoggerGlue$log, x)}. Unlike
+\code{Logger$list_log()}, an element named \code{msg} in \code{x} is treated as an
+unnamed \code{glue()} fragment rather than a dedicated message argument.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LoggerGlue$list_log(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{a named \code{list} that must at least contain the named elements
+\code{level} and \code{timestamp}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LoggerGlue-spawn"></a>}}
 \if{latex}{\out{\hypertarget{method-LoggerGlue-spawn}{}}}
-\subsection{Method \code{spawn()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$spawn(name)}\if{html}{\out{</div>}}
+\subsection{\code{LoggerGlue$spawn()}}{
+  Spawn a child \code{LoggerGlue}. Equivalent to
+\code{get_logger_glue(paste0(name, "/", child))}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LoggerGlue$spawn(name)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name}}{\code{character} vector. Name of the child logger
+\code{get_logger("foo/bar")$spawn("baz")} is equivalent
+to \code{get_logger("foo/bar/baz")}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LoggerGlue-set_transformer"></a>}}
 \if{latex}{\out{\hypertarget{method-LoggerGlue-set_transformer}{}}}
-\subsection{Method \code{set_transformer()}}{
-Set the transformer for glue string interpolation
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggerGlue$set_transformer(x)}\if{html}{\out{</div>}}
+\subsection{\code{LoggerGlue$set_transformer()}}{
+  Set the transformer for glue string interpolation
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LoggerGlue$set_transformer(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{single \link{function} taking two arguments. See \code{\link[glue:glue]{glue::glue()}}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{single \link{function} taking two arguments. See \code{\link[glue:glue]{glue::glue()}}.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

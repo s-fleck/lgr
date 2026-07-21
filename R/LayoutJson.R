@@ -83,6 +83,10 @@ LayoutJson <- R6::R6Class(
       self$set_excluded_fields(excluded_fields)
     },
 
+    #' @description Format a LogEvent as JSON
+    #' @param event a [LogEvent]
+    #' @returns a `character` scalar containing the JSON representation of
+    #'   `event`
     format_event = function(event) {
       values <- get(".transform_event", private)(event)
       values[["timestamp"]] <- apply_timestamp_formatter(values[["timestamp"]], get(".timestamp_fmt", private))

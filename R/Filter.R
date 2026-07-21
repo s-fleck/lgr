@@ -43,10 +43,10 @@ EventFilter <- R6::R6Class(
       self$filter <- fun
     },
 
-    #' @description filter The `filter` method of an event must return either
-    #'   `TRUE` or `FALSE`. If it returns `TRUE`, [Filterable]s such as
-    #'   [Appenders] or [Loggers] will continue processing the event, if `FALSE`
-    #'   the event will be discarded.
+    #' @field filter A `function` with a single argument `event` that must
+    #'   return either `TRUE` or `FALSE`. If it returns `TRUE`,
+    #'   [Filterable]s such as [Appenders] or [Loggers] will continue
+    #'   processing the event, if `FALSE` the event will be discarded.
     filter = NULL
   )
 )

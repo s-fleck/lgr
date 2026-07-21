@@ -23,55 +23,59 @@ lg$error("an normal error")
 lg$config(NULL)  # reset config
 }
 \section{Super class}{
-\code{\link[lgr:EventFilter]{lgr::EventFilter}} -> \code{FilterForceLevel}
+\code{\link[lgr:EventFilter]{EventFilter}} -> \code{FilterForceLevel}
 }
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{level}}{an \code{integer} \link[=log_level]{log level} used to override the log
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{level}}{an \code{integer} \link[=log_level]{log level} used to override the log
 levels of each \link{LogEvent} processed by this filter.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-FilterForceLevel-new}{\code{FilterForceLevel$new()}}
-\item \href{#method-FilterForceLevel-clone}{\code{FilterForceLevel$clone()}}
-}
+  \itemize{
+    \item \href{#method-FilterForceLevel-initialize}{\code{FilterForceLevel$new()}}
+    \item \href{#method-FilterForceLevel-clone}{\code{FilterForceLevel$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-FilterForceLevel-new"></a>}}
-\if{latex}{\out{\hypertarget{method-FilterForceLevel-new}{}}}
-\subsection{Method \code{new()}}{
-Initialize a new FilterForceLevel
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{FilterForceLevel$new(level)}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-FilterForceLevel-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-FilterForceLevel-initialize}{}}}
+\subsection{\code{FilterForceLevel$new()}}{
+  Initialize a new FilterForceLevel
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{FilterForceLevel$new(level)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{level}}{an \code{integer} or \code{character} \link[=log_level]{log level}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{level}}{an \code{integer} or \code{character} \link[=log_level]{log level}}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-FilterForceLevel-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-FilterForceLevel-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{FilterForceLevel$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{FilterForceLevel$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{FilterForceLevel$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

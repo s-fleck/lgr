@@ -766,6 +766,8 @@ Logger <- R6::R6Class(
       }
     },
 
+    #' @field replace_empty The replacement value used for empty log message
+    #'   arguments (`NULL` or empty vectors). See `$set_replace_empty()`.
     replace_empty = function() {
       get(".replace_empty", envir = private)
     },
@@ -785,10 +787,10 @@ Logger <- R6::R6Class(
       invisible(self)
     },
 
-    #' @description
-    #' Ensure all Appenders attached to a Logger are destroyed before the
-    #' Logger, so that the Appender's finalize method can access the logger if
-    #' it wants to
+    # Ensure all Appenders attached to a Logger are destroyed before the
+    # Logger, so that the Appender's finalize method can access the logger if
+    # it wants to. finalize() is private and never documented (see the R6
+    # skill guide, private members are not part of the public API).
     finalize = function() {
       for (i in rev(seq_along(self$appenders))) {
         self$remove_appender(i)
@@ -832,6 +834,13 @@ LoggerGlue <- R6::R6Class(
   cloneable = FALSE,
 
   public = list(
+    #' @description
+    #' Create a new `LoggerGlue`. As with [Logger$new()][Logger], you should
+    #' not normally call this directly but use [get_logger_glue()] instead.
+    #'
+    #' @param transformer `NULL` or a `function` with two arguments (`text`,
+    #'   `envir`) that is passed on to [glue::glue()] as its `.transformer`
+    #'   argument to customize string interpolation. See `$set_transformer()`.
     initialize = function(
       name = "(unnamed logger)",
       appenders = list(),
@@ -867,6 +876,15 @@ LoggerGlue <- R6::R6Class(
     },
 
     # .. methods --------------------------------------------------------------
+
+    #' @description Log an Event fatal priority using `glue::glue()` for
+    #'   string interpolation.
+    #' @param ... unnamed `character` fragments are glued together with
+    #'   [glue::glue()] to construct the log message; named arguments are
+    #'   turned into custom fields (a leading `.` in the name suppresses
+    #'   this). See the class description for details.
+    #' @param .envir the environment in which `glue()` evaluates `{expr}`
+    #'   placeholders. See [glue::glue()].
     fatal = function(..., caller = get_caller(-8L), .envir = parent.frame()) {
       if (isTRUE(get("threshold", envir = self) < 100L)) {
         return(invisible())
@@ -882,6 +900,14 @@ LoggerGlue <- R6::R6Class(
       )
     },
 
+    #' @description Log an Event error priority using `glue::glue()` for
+    #'   string interpolation.
+    #' @param ... unnamed `character` fragments are glued together with
+    #'   [glue::glue()] to construct the log message; named arguments are
+    #'   turned into custom fields (a leading `.` in the name suppresses
+    #'   this). See the class description for details.
+    #' @param .envir the environment in which `glue()` evaluates `{expr}`
+    #'   placeholders. See [glue::glue()].
     error = function(..., caller = get_caller(-8L), .envir = parent.frame()) {
       if (isTRUE(get("threshold", envir = self) < 200L)) {
         return(invisible())
@@ -896,6 +922,14 @@ LoggerGlue <- R6::R6Class(
       )
     },
 
+    #' @description Log an Event warn priority using `glue::glue()` for
+    #'   string interpolation.
+    #' @param ... unnamed `character` fragments are glued together with
+    #'   [glue::glue()] to construct the log message; named arguments are
+    #'   turned into custom fields (a leading `.` in the name suppresses
+    #'   this). See the class description for details.
+    #' @param .envir the environment in which `glue()` evaluates `{expr}`
+    #'   placeholders. See [glue::glue()].
     warn = function(..., caller = get_caller(-8L), .envir = parent.frame()) {
       if (isTRUE(get("threshold", envir = self) < 300L)) {
         return(invisible())
@@ -910,6 +944,14 @@ LoggerGlue <- R6::R6Class(
       )
     },
 
+    #' @description Log an Event info priority using `glue::glue()` for
+    #'   string interpolation.
+    #' @param ... unnamed `character` fragments are glued together with
+    #'   [glue::glue()] to construct the log message; named arguments are
+    #'   turned into custom fields (a leading `.` in the name suppresses
+    #'   this). See the class description for details.
+    #' @param .envir the environment in which `glue()` evaluates `{expr}`
+    #'   placeholders. See [glue::glue()].
     info = function(..., caller = get_caller(-8L), .envir = parent.frame()) {
       if (isTRUE(get("threshold", envir = self) < 400L)) {
         return(invisible())
@@ -924,6 +966,14 @@ LoggerGlue <- R6::R6Class(
       )
     },
 
+    #' @description Log an Event debug priority using `glue::glue()` for
+    #'   string interpolation.
+    #' @param ... unnamed `character` fragments are glued together with
+    #'   [glue::glue()] to construct the log message; named arguments are
+    #'   turned into custom fields (a leading `.` in the name suppresses
+    #'   this). See the class description for details.
+    #' @param .envir the environment in which `glue()` evaluates `{expr}`
+    #'   placeholders. See [glue::glue()].
     debug = function(..., caller = get_caller(-8L), .envir = parent.frame()) {
       if (isTRUE(get("threshold", envir = self) < 500L)) {
         return(invisible())
@@ -939,6 +989,14 @@ LoggerGlue <- R6::R6Class(
       )
     },
 
+    #' @description Log an Event trace priority using `glue::glue()` for
+    #'   string interpolation.
+    #' @param ... unnamed `character` fragments are glued together with
+    #'   [glue::glue()] to construct the log message; named arguments are
+    #'   turned into custom fields (a leading `.` in the name suppresses
+    #'   this). See the class description for details.
+    #' @param .envir the environment in which `glue()` evaluates `{expr}`
+    #'   placeholders. See [glue::glue()].
     trace = function(..., caller = get_caller(-8L), .envir = parent.frame()) {
       if (isTRUE(get("threshold", envir = self) < 600L)) {
         return(invisible())
@@ -954,6 +1012,20 @@ LoggerGlue <- R6::R6Class(
       )
     },
 
+    #' @description
+    #' Log an event, constructing the message with `glue::glue()` instead of
+    #' `sprintf()`. Unlike `Logger$log()`, there is no dedicated `msg`
+    #' argument: unnamed fragments in `...` are glued together to form the
+    #' message, and named arguments are available to `glue()` as temporary
+    #' variables (and become custom fields unless their name starts with
+    #' `.`).
+    #'
+    #' @param ... unnamed `character` fragments are glued together with
+    #'   [glue::glue()] to construct the log message; named arguments are
+    #'   turned into custom fields (a leading `.` in the name suppresses
+    #'   this).
+    #' @param .envir the environment in which `glue()` evaluates `{expr}`
+    #'   placeholders. See [glue::glue()].
     log = function(
       level,
       ...,
@@ -1088,12 +1160,20 @@ LoggerGlue <- R6::R6Class(
       )
     },
 
+    #' @description
+    #' `list_log()` is a shortcut for `do.call(LoggerGlue$log, x)`. Unlike
+    #' `Logger$list_log()`, an element named `msg` in `x` is treated as an
+    #' unnamed `glue()` fragment rather than a dedicated message argument.
+    #' @param x a named `list` that must at least contain the named elements
+    #'   `level` and `timestamp`
     list_log = function(x) {
       # TODO: Workaround until we have a better implementation of list_log
       names(x)[names(x) == "msg"] <- ""
       do.call(self$log, x)
     },
 
+    #' @description Spawn a child `LoggerGlue`. Equivalent to
+    #'   `get_logger_glue(paste0(name, "/", child))`.
     spawn = function(name) {
       get_logger_glue(c(private[[".name"]], name))
     },
@@ -1112,6 +1192,8 @@ LoggerGlue <- R6::R6Class(
 
   # .. active bindings ---------------------------------------------------
   active = list(
+    #' @field transformer `NULL` or a `function`. The `.transformer` passed
+    #'   to [glue::glue()] for string interpolation. See `$set_transformer()`.
     transformer = function() {
       get(".transformer", envir = private)
     }

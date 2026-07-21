@@ -154,6 +154,7 @@ as_logger_config <- function(x) {
 }
 
 
+#' @rdname logger_config
 #' @export
 as_logger_config.NULL <- function(x) {
   as_logger_config(list())

@@ -28,9 +28,9 @@ useful for developing Appenders.
 \strong{Note}: \code{as_LogEvent.data.frame()} only supports single-row \code{data.frames}
 }
 \seealso{
-Other docs relevant for extending lgr: 
+Other docs relevant for extending lgr:
 \code{\link{LogEvent}},
-\code{\link{event_list}()},
-\code{\link{standardize_threshold}()}
+\code{\link[=event_list]{event_list()}},
+\code{\link[=standardize_threshold]{standardize_threshold()}}
 }
 \concept{docs relevant for extending lgr}

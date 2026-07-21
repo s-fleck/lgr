@@ -4,11 +4,6 @@
 \alias{AppenderFileRotating}
 \title{Log to a rotating file}
 \description{
-Log to a rotating file
-
-Log to a rotating file
-}
-\details{
 An extension of \link{AppenderFile} that rotates logfiles based on certain
 conditions. Please refer to the documentation of \code{\link[rotor:rotate]{rotor::rotate()}} for
 the meanings of the extra arguments
@@ -16,7 +11,7 @@ the meanings of the extra arguments
 \seealso{
 \link{AppenderFileRotatingDate}, \link{AppenderFileRotatingTime}, \code{\link[rotor:rotate]{rotor::rotate()}}
 
-Other Appenders: 
+Other Appenders:
 \code{\link{Appender}},
 \code{\link{AppenderBuffer}},
 \code{\link{AppenderConsole}},
@@ -27,52 +22,65 @@ Other Appenders:
 }
 \concept{Appenders}
 \section{Super classes}{
-\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{\link[lgr:AppenderFile]{lgr::AppenderFile}} -> \code{AppenderFileRotating}
+\code{\link[lgr:Filterable]{Filterable}} -> \code{\link[lgr:Appender]{Appender}} -> \code{\link[lgr:AppenderFile]{AppenderFile}} -> \code{AppenderFileRotating}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{backups}}{A \code{data.frame} containing information on path, file size,
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{size}}{The maximum size of the log file that triggers rotation.
+See \verb{$set_size()}.}
+
+    \item{\code{create_file}}{Defunct, do not use.}
+
+    \item{\code{compression}}{Whether backups are compressed. See
+\verb{$set_compression()}.}
+
+    \item{\code{max_backups}}{The maximum number of backups to keep. See
+\verb{$set_max_backups()}.}
+
+    \item{\code{backups}}{A \code{data.frame} containing information on path, file size,
 etc... on the available backups of \code{file}.}
-}
-\if{html}{\out{</div>}}
+
+    \item{\code{backup_dir}}{The directory that backups are stored in. See
+\verb{$set_backup_dir()}.}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-AppenderFileRotating-new}{\code{AppenderFileRotating$new()}}
-\item \href{#method-AppenderFileRotating-append}{\code{AppenderFileRotating$append()}}
-\item \href{#method-AppenderFileRotating-rotate}{\code{AppenderFileRotating$rotate()}}
-\item \href{#method-AppenderFileRotating-prune}{\code{AppenderFileRotating$prune()}}
-\item \href{#method-AppenderFileRotating-set_file}{\code{AppenderFileRotating$set_file()}}
-\item \href{#method-AppenderFileRotating-set_size}{\code{AppenderFileRotating$set_size()}}
-\item \href{#method-AppenderFileRotating-set_max_backups}{\code{AppenderFileRotating$set_max_backups()}}
-\item \href{#method-AppenderFileRotating-set_compression}{\code{AppenderFileRotating$set_compression()}}
-\item \href{#method-AppenderFileRotating-set_create_file}{\code{AppenderFileRotating$set_create_file()}}
-\item \href{#method-AppenderFileRotating-set_backup_dir}{\code{AppenderFileRotating$set_backup_dir()}}
-\item \href{#method-AppenderFileRotating-format}{\code{AppenderFileRotating$format()}}
-\item \href{#method-AppenderFileRotating-clone}{\code{AppenderFileRotating$clone()}}
+  \itemize{
+    \item \href{#method-AppenderFileRotating-initialize}{\code{AppenderFileRotating$new()}}
+    \item \href{#method-AppenderFileRotating-append}{\code{AppenderFileRotating$append()}}
+    \item \href{#method-AppenderFileRotating-rotate}{\code{AppenderFileRotating$rotate()}}
+    \item \href{#method-AppenderFileRotating-prune}{\code{AppenderFileRotating$prune()}}
+    \item \href{#method-AppenderFileRotating-set_file}{\code{AppenderFileRotating$set_file()}}
+    \item \href{#method-AppenderFileRotating-set_size}{\code{AppenderFileRotating$set_size()}}
+    \item \href{#method-AppenderFileRotating-set_max_backups}{\code{AppenderFileRotating$set_max_backups()}}
+    \item \href{#method-AppenderFileRotating-set_compression}{\code{AppenderFileRotating$set_compression()}}
+    \item \href{#method-AppenderFileRotating-set_create_file}{\code{AppenderFileRotating$set_create_file()}}
+    \item \href{#method-AppenderFileRotating-set_backup_dir}{\code{AppenderFileRotating$set_backup_dir()}}
+    \item \href{#method-AppenderFileRotating-format}{\code{AppenderFileRotating$format()}}
+  }
 }
-}
-\if{html}{\out{
-<details><summary>Inherited methods</summary>
+\if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-Appender-set_layout'><code>lgr::Appender$set_layout()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-Appender-set_threshold'><code>lgr::Appender$set_threshold()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="show"><a href='../../lgr/html/AppenderFile.html#method-AppenderFile-show'><code>lgr::AppenderFile$show()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>Filterable$add_filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>Filterable$filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>Filterable$remove_filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>Filterable$set_filters()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-Appender-set_layout'><code>Appender$set_layout()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-Appender-set_threshold'><code>Appender$set_threshold()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="show"><a href='../../lgr/html/AppenderFile.html#method-AppenderFile-show'><code>AppenderFile$show()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AppenderFileRotating-new"></a>}}
-\if{latex}{\out{\hypertarget{method-AppenderFileRotating-new}{}}}
-\subsection{Method \code{new()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$new(
+\if{html}{\out{<a id="method-AppenderFileRotating-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotating-initialize}{}}}
+\subsection{\code{AppenderFileRotating$new()}}{
+  Create a new AppenderFileRotating.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFileRotating$new(
   file,
   threshold = NA_integer_,
   layout = LayoutFormat$new(),
@@ -82,123 +90,232 @@ etc... on the available backups of \code{file}.}
   compression = FALSE,
   backup_dir = dirname(file),
   create_file = NULL
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{file}}{\code{character} scalar. Path to the log file. If \code{file} does
+not exist it will be created.}
+      \item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
+that triggers this Appender. See \link{log_levels}.}
+      \item{\code{layout}}{A \link{Layout} that determines how \link[=LogEvent]{LogEvents} are
+formatted before being output by this Appender.}
+      \item{\code{filters}}{A \code{list} of \link[=EventFilter]{EventFilters} or predicate
+functions used to filter events for this Appender. See \link{Filterable}.}
+      \item{\code{size, max_backups, compression, backup_dir}}{see \code{\link[rotor:rotate]{rotor::rotate()}} for the meaning of these arguments. Note that
+\code{backup_dir} corresponds to \code{dir}.}
+      \item{\code{create_file}}{Defunct, do not use.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{size, max_backups, compression, backup_dir, fmt}}{see \code{\link[rotor:rotate]{rotor::rotate()}} for the meaning of these arguments. Note that
-\code{fmt} corresponds to \code{format} and \code{backup_dir} to \code{dir}.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderFileRotating-append"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderFileRotating-append}{}}}
-\subsection{Method \code{append()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$append(event)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderFileRotating$append()}}{
+  Process a \link{LogEvent} \code{event} by appending it to \verb{$file},
+then rotate the file if necessary (see \verb{$rotate()}). This method is
+usually not called by the user, but invoked by a \link{Logger}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFileRotating$append(event)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{event}}{a \link{LogEvent}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderFileRotating-rotate"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderFileRotating-rotate}{}}}
-\subsection{Method \code{rotate()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$rotate(force = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderFileRotating$rotate()}}{
+  Rotate the log file if it meets the rotation conditions
+(see \verb{$size}), or unconditionally if \code{force = TRUE}. See
+\code{\link[rotor:rotate]{rotor::rotate()}} for details.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFileRotating$rotate(force = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{force}}{\code{TRUE} or \code{FALSE}. Force rotation regardless of whether
+the rotation conditions are met.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderFileRotating-prune"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderFileRotating-prune}{}}}
-\subsection{Method \code{prune()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$prune(max_backups = self$max_backups)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderFileRotating$prune()}}{
+  Remove old backups so that at most \code{max_backups} remain.
+See \code{\link[rotor:rotate]{rotor::rotate()}}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFileRotating$prune(max_backups = self$max_backups)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{max_backups}}{\code{integer} scalar. Defaults to \verb{$max_backups}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderFileRotating-set_file"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderFileRotating-set_file}{}}}
-\subsection{Method \code{set_file()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$set_file(file)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderFileRotating$set_file()}}{
+  Set a log file
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFileRotating$set_file(file)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{file}}{\code{character} scalar. Path to the log file. If \code{file} does
+not exist it will be created.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderFileRotating-set_size"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderFileRotating-set_size}{}}}
-\subsection{Method \code{set_size()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$set_size(x)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderFileRotating$set_size()}}{
+  Set the maximum size of the log file that triggers
+rotation. See \code{\link[rotor:rotate]{rotor::rotate()}}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFileRotating$set_size(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{A \code{numeric} file size in bytes, a \code{character} scalar such as
+\code{"5mb"} (see \code{\link[rotor:rotate]{rotor::rotate()}}), or \code{Inf} to disable size-based
+rotation.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderFileRotating-set_max_backups"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderFileRotating-set_max_backups}{}}}
-\subsection{Method \code{set_max_backups()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$set_max_backups(x)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderFileRotating$set_max_backups()}}{
+  Set the maximum number of backups to keep. See
+\code{\link[rotor:rotate]{rotor::rotate()}}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFileRotating$set_max_backups(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{\code{integer} scalar \verb{>= 0}, or \code{Inf} to keep all backups.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderFileRotating-set_compression"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderFileRotating-set_compression}{}}}
-\subsection{Method \code{set_compression()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$set_compression(x)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderFileRotating$set_compression()}}{
+  Set whether backups should be compressed. See
+\code{\link[rotor:rotate]{rotor::rotate()}}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFileRotating$set_compression(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{\code{TRUE} or \code{FALSE}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderFileRotating-set_create_file"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderFileRotating-set_create_file}{}}}
-\subsection{Method \code{set_create_file()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$set_create_file(x)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderFileRotating$set_create_file()}}{
+  Defunct, do not use.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFileRotating$set_create_file(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{ignored}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderFileRotating-set_backup_dir"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderFileRotating-set_backup_dir}{}}}
-\subsection{Method \code{set_backup_dir()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$set_backup_dir(x)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderFileRotating$set_backup_dir()}}{
+  Set the directory that backups are stored in. See
+\code{\link[rotor:rotate]{rotor::rotate()}}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFileRotating$set_backup_dir(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{\code{character} scalar. Path to the backup directory.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderFileRotating-format"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderFileRotating-format}{}}}
-\subsection{Method \code{format()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$format(color = false, ...)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderFileRotating$format()}}{
+  Format the Appender for printing (see also
+\code{\link[=print.Appender]{print.Appender()}}).
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFileRotating$format(color = FALSE, ...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{color}}{\code{TRUE} or \code{FALSE}. Output with color? Requires the
+package \strong{crayon}.}
+      \item{\code{...}}{ignored}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AppenderFileRotating-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-AppenderFileRotating-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotating$clone(deep = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

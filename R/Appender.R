@@ -28,6 +28,13 @@ Appender <- R6::R6Class(
   # +- public --------------------------------------------------------------
   public = list(
 
+    #' @description Create a new Appender. Appenders are usually not
+    #'   instantiated directly, but through one of their non-abstract
+    #'   subclasses (such as [AppenderConsole] or [AppenderFile]).
+    #' @param layout A [Layout] that determines how [LogEvents][LogEvent] are
+    #'   formatted before being output by this Appender.
+    #' @param threshold `character` or `integer` scalar. The minimum log level
+    #'   that triggers this Appender. See [log_levels].
     initialize = function(
       layout = Layout$new(),
       threshold = NA_integer_
@@ -38,6 +45,7 @@ Appender <- R6::R6Class(
 
     #' @description Process a [LogEvent] `event`. This method is usually not
     #' called by the user, but invoked by a [Logger]
+    #' @param event a [LogEvent]
     append = function(event){
       private$.layout$format_event(event)
     },
@@ -55,6 +63,8 @@ Appender <- R6::R6Class(
 
     #' @description Set the `Layout` that this Appender will use for formatting
     #' `LogEvents`
+    #' @param layout A [Layout] that determines how [LogEvents][LogEvent] are
+    #'   formatted before being output by this Appender.
     set_layout = function(layout){
       if (is_scalar_list(layout)){
         # set_layout also accepts a list of length 1 containing a single Layout
@@ -70,6 +80,11 @@ Appender <- R6::R6Class(
       invisible(self)
     },
 
+    #' @description Format the Appender for printing (see also
+    #'   [print.Appender()]).
+    #' @param color `TRUE` or `FALSE`. Output with color? Requires the
+    #'   package **crayon**.
+    #' @param ... ignored
     format = function(
       color = FALSE,
       ...
@@ -112,8 +127,12 @@ Appender <- R6::R6Class(
 
   # +- active ---------------------------------------------------------------
   active = list(
+    #' @field threshold `integer` scalar. The minimum log level that
+    #'   triggers this Appender. See `$set_threshold()`.
     threshold = function() private$.threshold,
 
+    #' @field layout The [Layout] that this Appender uses to format
+    #'   [LogEvents][LogEvent]. See `$set_layout()`.
     layout = function() private$.layout,
 
     #' @field destination
@@ -139,10 +158,6 @@ Appender <- R6::R6Class(
 #' **crayon** installed log levels will be coloured by default
 #' (but you can modify this behaviour by passing a custom [Layout]).
 #'
-#' @param connection A connection or a `character` scalar. See the `file`
-#'   argument of [cat()] for more details. Defaults to [stdout()], except
-#'   inside \pkg{knitr} rendering processes where it defaults to [stderr()].
-#'
 #' @family Appenders
 #' @seealso [LayoutFormat]
 #' @export
@@ -165,6 +180,13 @@ AppenderConsole <- R6::R6Class(
   inherit = Appender,
   cloneable = FALSE,
   public = list(
+    #' @description Create a new AppenderConsole.
+    #' @param filters A `list` of [EventFilters][EventFilter] or predicate
+    #'   functions used to filter events for this Appender. See [Filterable].
+    #' @param connection A connection or a `character` scalar. See the `file`
+    #'   argument of [cat()] for more details. Defaults to [stdout()], except
+    #'   inside \pkg{knitr} rendering processes where it defaults to
+    #'   [stderr()].
     initialize = function(
       threshold = NA_integer_,
       layout = LayoutFormat$new(
@@ -184,10 +206,17 @@ AppenderConsole <- R6::R6Class(
       self$set_connection(connection)
     },
 
+    #' @description Process a [LogEvent] `event` by writing it to
+    #'   `$connection`. This method is usually not called by the user, but
+    #'   invoked by a [Logger].
+    #' @param event a [LogEvent]
     append = function(event){
       cat(private$.layout$format_event(event), sep = "\n", file = get(".connection", private))
     },
 
+    #' @description Set the connection that this Appender writes to.
+    #' @param connection A connection or a `character` scalar. See the `file`
+    #'   argument of [cat()] for more details.
     set_connection = function(connection){
       assert(
         inherits(connection, "connection") || is_scalar_character(connection)
@@ -199,6 +228,9 @@ AppenderConsole <- R6::R6Class(
 
   active = list(
     destination = function() "console",
+
+    #' @field connection The connection that this Appender writes to. See
+    #'   `$set_connection()`.
     connection = function() private[[".connection"]]
   ),
 
@@ -264,6 +296,15 @@ AppenderFile <- R6::R6Class(
   inherit = Appender,
   cloneable = FALSE,
   public = list(
+    #' @description Create a new AppenderFile.
+    #' @param file `character` scalar. Path to the log file. If `file` does
+    #'   not exist it will be created.
+    #' @param threshold `character` or `integer` scalar. The minimum log level
+    #'   that triggers this Appender. See [log_levels].
+    #' @param layout A [Layout] that determines how [LogEvents][LogEvent] are
+    #'   formatted before being output by this Appender.
+    #' @param filters A `list` of [EventFilters][EventFilter] or predicate
+    #'   functions used to filter events for this Appender. See [Filterable].
     initialize = function(
       file,
       threshold = NA_integer_,
@@ -276,6 +317,10 @@ AppenderFile <- R6::R6Class(
       self$set_filters(filters)
     },
 
+    #' @description Process a [LogEvent] `event` by appending it to `$file`.
+    #'   This method is usually not called by the user, but invoked by a
+    #'   [Logger].
+    #' @param event a [LogEvent]
     append = function(event){
       cat(
         private$.layout$format_event(event),
@@ -356,8 +401,8 @@ AppenderFile <- R6::R6Class(
       parser(self$file)
     },
 
-    #' @field data `character` scalar. Like `$data`, but returns a `data.table`
-    #' instead (requires the **data.table** package).
+    #' @field dt Like `$data`, but returns a `data.table` instead (requires
+    #' the **data.table** package).
     dt = function(){
       data.table::as.data.table(self$data)
     },
@@ -402,6 +447,16 @@ AppenderJson <- R6::R6Class(
   inherit = AppenderFile,
   cloneable = FALSE,
   public = list(
+    #' @description Create a new AppenderJson.
+    #' @param file `character` scalar. Path to the log file. If `file` does
+    #'   not exist it will be created.
+    #' @param threshold `character` or `integer` scalar. The minimum log level
+    #'   that triggers this Appender. See [log_levels].
+    #' @param layout A [Layout] that determines how [LogEvents][LogEvent] are
+    #'   formatted before being output by this Appender. Defaults to
+    #'   [LayoutJson].
+    #' @param filters A `list` of [EventFilters][EventFilter] or predicate
+    #'   functions used to filter events for this Appender. See [Filterable].
     initialize = function(
       file,
       threshold = NA_integer_,
@@ -441,6 +496,11 @@ AppenderTable <- R6::R6Class(
   cloneable = FALSE,
 
   public = list(
+    #' @description `AppenderTable` is an abstract class and cannot be
+    #'   instantiated directly; instantiate one of its subclasses (such as
+    #'   `AppenderDbi` from [lgrExtra](https://github.com/s-fleck/lgrExtra))
+    #'   instead.
+    #' @param ... ignored
     initialize = function(...){
       stop(CannotInitializeAbstractClassError())
     },
@@ -451,6 +511,8 @@ AppenderTable <- R6::R6Class(
     #'   Only show events with a log level at or below this threshold.
     show = function(threshold = NA_integer_, n = 20L) NULL,
 
+    #' @description Format the Appender for printing (see also
+    #'   [print.Appender()]).
     format = function(
       color = FALSE,
       ...
@@ -469,12 +531,12 @@ AppenderTable <- R6::R6Class(
   ),
 
   active = list(
-    #' @field data `character` scalar. Contents of the table, parsed to a
+    #' @field data `data.frame`. Contents of the table, parsed to a
     #' `data.frame`.
     data = function() as.data.frame(self$dt),
 
-    #' @field data `character` scalar. Like `$data`, but returns a `data.table`
-    #' instead (requires the **data.table** package).
+    #' @field dt Like `$data`, but returns a `data.table` instead (requires
+    #' the **data.table** package).
     dt   = function() data.table::as.data.table(self$data)
   )
 )
@@ -497,17 +559,25 @@ AppenderTable <- R6::R6Class(
 #'
 #' @export
 #' @seealso [LayoutFormat]
-#'
-#' @export
 AppenderMemory <- R6::R6Class(
   "AppenderMemory",
   inherit = Appender,
   cloneable = FALSE,
   public = list(
+    #' @description `AppenderMemory` is an abstract class and cannot be
+    #'   instantiated directly; instantiate one of its subclasses (such as
+    #'   [AppenderBuffer]) instead.
+    #' @param ... ignored
     initialize = function(...){
       stop(CannotInitializeAbstractClassError())
     },
 
+    #' @description Process a [LogEvent] `event` by inserting it into the
+    #'   in-memory buffer, flushing the buffer first if necessary (see
+    #'   `$should_flush`, `$flush_threshold`, `$flush_on_rotate`). This
+    #'   method is usually not called by the user, but invoked by a
+    #'   [Logger].
+    #' @param event a [LogEvent]
     append = function(event){
 
       i <- get("insert_pos", envir = private) + 1L
@@ -626,6 +696,8 @@ AppenderMemory <- R6::R6Class(
       invisible(dd)
     },
 
+    #' @description Format the Appender for printing (see also
+    #'   [print.Appender()]).
     format = function(
       color = FALSE,
       ...
@@ -695,22 +767,24 @@ AppenderMemory <- R6::R6Class(
       )
     },
 
+    #' @field data `data.frame`. Alias for `$buffer_df`.
     data = function(){
       self$buffer_df
     },
 
+    #' @field dt `data.table`. Alias for `$buffer_dt`.
     dt = function(){
       self$buffer_dt
     },
 
-    #' @field buffer_events A `data.frame`. Contents of the buffer converted
+    #' @field buffer_df A `data.frame`. Contents of the buffer converted
     #'   to a `data.frame`.
     buffer_df = function() {
       as.data.frame(self[["buffer_dt"]])
     },
 
-    #' @field buffer_events A `data.frame`. Contents of the buffer converted
-    #'   to a `data.table`.
+    #' @field buffer_dt A `data.table`. Contents of the buffer converted
+    #'   to a `data.table` (requires the **data.table** package).
     buffer_dt = function(){
       assert_namespace("data.table")
       as.data.table.event_list(get("buffer_events", self))
@@ -752,23 +826,9 @@ AppenderMemory <- R6::R6Class(
 #' An Appender that Buffers LogEvents in-memory and and redirects them to other
 #' Appenders once certain conditions are met.
 #'
-#' @section Fields:
-#'
-#' \describe{
-#'   \item{`appenders`, `set_appenders()`}{Like for a [Logger]. Buffered events
-#'     will be passed on to these Appenders once a flush is triggered}
-#'   \item{`flush_on_exit, set_flush_on_exit(x)`}{`TRUE` or `FALSE`: Whether the
-#'     buffer should be flushed when the Appender is garbage collected (f.e when
-#'     you close \R)}
-#'   \item{`flush_on_rotate, set_flush_on_rotate`}{`TRUE` or `FALSE`: Whether
-#'     the buffer should be flushed when the Buffer is full (f.e when you close
-#'     \R). Setting this to off can have slightly negative performance impacts.}
-#' }
-#'
 #' @export
 #' @seealso [LayoutFormat]
 #' @family Appenders
-#' @export
 AppenderBuffer <- R6::R6Class(
   "AppenderBuffer",
   inherit = AppenderMemory,
@@ -778,6 +838,20 @@ AppenderBuffer <- R6::R6Class(
     #' @description
     #' The [Layout] for this Appender is used only to format console output of
     #' its `$show()` method.
+    #' @param appenders single [Appender] or a `list` thereof to dispatch the
+    #'   buffered events to when the buffer is flushed. See `$set_appenders()`.
+    #' @param buffer_size an `integer` scalar `>= 0`. The maximum number of
+    #'   [LogEvents] to buffer. See `$set_buffer_size()`.
+    #' @param flush_threshold A `numeric` or `character` [threshold][log_level]
+    #'   that triggers flushing the buffer. See `$set_flush_threshold()`.
+    #' @param flush_on_exit A `logical` scalar. Should the buffer be flushed
+    #'   when the Appender is destroyed? See `$set_flush_on_exit()`.
+    #' @param flush_on_rotate A `logical` scalar. Should the buffer be flushed
+    #'   if `buffer_size` is exceeded? See `$set_flush_on_rotate()`.
+    #' @param should_flush A `function` with the single argument `event` that
+    #'   can trigger flushing the buffer, or `NULL`. See `$set_should_flush()`.
+    #' @param filters A `list` of [EventFilters][EventFilter] or predicate
+    #'   functions used to filter events for this Appender. See [Filterable].
     initialize = function(
       threshold = NA_integer_,
       layout = LayoutFormat$new(
@@ -860,15 +934,13 @@ AppenderBuffer <- R6::R6Class(
     },
 
 
-    #' @description Add an Appender to the AppenderBuffer
+    #' @description Add an [Appender] to the AppenderBuffer. Supplying a
+    #'   `name` is optional but recommended. After adding an Appender with
+    #'   `appender$add_appender(AppenderConsole$new(), name = "console")` you
+    #'   can refer to it via `appender$appenders$console`. `$remove_appender()`
+    #'   can remove an Appender by position or name.
     #' @param appender a single [Appender]
     #' @param name a `character` scalar. Optional but recommended.
-    #'
-    #' @description  Add or remove an [Appender]. Supplying a `name` is optional but
-    #'     recommended. After adding an Appender with
-    #'     `appender$add_appender(AppenderConsole$new(), name = "console")` you can
-    #'      refer to it via `appender$appenders$console`. `remove_appender()` can
-    #'  remove an Appender by position or name.
     add_appender = function(
       appender,
       name = NULL
@@ -915,6 +987,9 @@ AppenderBuffer <- R6::R6Class(
     },
 
 
+    #' @description Format the Appender for printing (see also
+    #'   [print.Appender()]).
+    #' @param ... ignored
     format = function(
       ...
     ){
@@ -934,6 +1009,9 @@ AppenderBuffer <- R6::R6Class(
 
   # +- active ---------------------------------------------------------------
   active = list(
+    #' @field appenders A `list` of [Appenders][Appender]. Like for a
+    #'   [Logger], buffered events will be passed on to these Appenders once
+    #'   a flush is triggered. See `$set_appenders()`.
     appenders = function(value){
       if (missing(value)) return(c(private$.appenders))
 
@@ -991,17 +1069,17 @@ AppenderBuffer <- R6::R6Class(
 #' @export
 #' @seealso [AppenderFileRotatingDate], [AppenderFileRotatingTime], [rotor::rotate()]
 #' @family Appenders
-#' @export
 AppenderFileRotating <- R6::R6Class(
   "AppenderFileRotating",
   inherit = AppenderFile,
   cloneable = FALSE,
   public = list(
 
-    #' @description
-    #' @param  size,max_backups,compression,backup_dir,fmt
+    #' @description Create a new AppenderFileRotating.
+    #' @param size,max_backups,compression,backup_dir
     #'   see [rotor::rotate()] for the meaning of these arguments. Note that
-    #'   `fmt` corresponds to `format` and `backup_dir` to `dir`.
+    #'   `backup_dir` corresponds to `dir`.
+    #' @param create_file Defunct, do not use.
     initialize = function(
       file,
       threshold = NA_integer_,
@@ -1039,12 +1117,21 @@ AppenderFileRotating <- R6::R6Class(
     },
 
 
+    #' @description Process a [LogEvent] `event` by appending it to `$file`,
+    #'   then rotate the file if necessary (see `$rotate()`). This method is
+    #'   usually not called by the user, but invoked by a [Logger].
+    #' @param event a [LogEvent]
     append = function(event){
       super$append(event)
       self$rotate()
     },
 
 
+    #' @description Rotate the log file if it meets the rotation conditions
+    #'   (see `$size`), or unconditionally if `force = TRUE`. See
+    #'   [rotor::rotate()] for details.
+    #' @param force `TRUE` or `FALSE`. Force rotation regardless of whether
+    #'   the rotation conditions are met.
     rotate = function(
       force   = FALSE
     ){
@@ -1063,12 +1150,18 @@ AppenderFileRotating <- R6::R6Class(
     },
 
 
+    #' @description Remove old backups so that at most `max_backups` remain.
+    #'   See [rotor::rotate()].
+    #' @param max_backups `integer` scalar. Defaults to `$max_backups`.
     prune = function(max_backups = self$max_backups){
       get("bq", envir = private)$prune(max_backups)
       self
     },
 
 
+    #' @description Set a log file
+    #' @param file `character` scalar. Path to the log file. If `file` does
+    #'   not exist it will be created.
     set_file = function(
       file
     ){
@@ -1078,6 +1171,11 @@ AppenderFileRotating <- R6::R6Class(
     },
 
 
+    #' @description Set the maximum size of the log file that triggers
+    #'   rotation. See [rotor::rotate()].
+    #' @param x A `numeric` file size in bytes, a `character` scalar such as
+    #'   `"5mb"` (see [rotor::rotate()]), or `Inf` to disable size-based
+    #'   rotation.
     set_size = function(
       x
     ){
@@ -1086,6 +1184,9 @@ AppenderFileRotating <- R6::R6Class(
     },
 
 
+    #' @description Set the maximum number of backups to keep. See
+    #'   [rotor::rotate()].
+    #' @param x `integer` scalar `>= 0`, or `Inf` to keep all backups.
     set_max_backups = function(
       x
     ){
@@ -1094,6 +1195,9 @@ AppenderFileRotating <- R6::R6Class(
     },
 
 
+    #' @description Set whether backups should be compressed. See
+    #'   [rotor::rotate()].
+    #' @param x `TRUE` or `FALSE`.
     set_compression = function(
       x
     ){
@@ -1102,6 +1206,8 @@ AppenderFileRotating <- R6::R6Class(
     },
 
 
+    #' @description Defunct, do not use.
+    #' @param x ignored
     set_create_file = function(
       x
     ){
@@ -1111,6 +1217,9 @@ AppenderFileRotating <- R6::R6Class(
     },
 
 
+    #' @description Set the directory that backups are stored in. See
+    #'   [rotor::rotate()].
+    #' @param x `character` scalar. Path to the backup directory.
     set_backup_dir = function(
       x
     ){
@@ -1119,6 +1228,8 @@ AppenderFileRotating <- R6::R6Class(
     },
 
 
+    #' @description Format the Appender for printing (see also
+    #'   [print.Appender()]).
     format = function(
       color = FALSE,
       ...
@@ -1152,17 +1263,27 @@ AppenderFileRotating <- R6::R6Class(
 
 
   active = list(
+    #' @field size The maximum size of the log file that triggers rotation.
+    #'   See `$set_size()`.
     size = function() get(".size", private),
+
+    #' @field create_file Defunct, do not use.
     create_file = function() get(".create_file", private),
 
+    #' @field compression Whether backups are compressed. See
+    #'   `$set_compression()`.
     compression = function() get("bq", private)$compression,
+
+    #' @field max_backups The maximum number of backups to keep. See
+    #'   `$set_max_backups()`.
     max_backups = function() get("bq", private)$max_backups,
 
     #' @field backups A `data.frame` containing information on path, file size,
     #'     etc... on the available backups of `file`.
     backups     = function() get("bq", private)$files,
 
-
+    #' @field backup_dir The directory that backups are stored in. See
+    #'   `$set_backup_dir()`.
     backup_dir  = function() get("bq", private)$dir
   ),
 
@@ -1192,10 +1313,11 @@ AppenderFileRotatingTime <- R6::R6Class(
   inherit = AppenderFileRotating,
   public = list(
 
-  #' @description
-  #' @param  size,age,max_backups,compression,backup_dir,fmt,overwrite,cache_backups
-  #'   see [rotor::rotate_time()] for the meaning of these arguments. Note that
-  #'   `fmt` corresponds to `format` and `backup_dir` to `dir`.
+  #' @description Create a new AppenderFileRotatingTime.
+  #' @param age,size,max_backups,compression,backup_dir,fmt,overwrite,cache_backups
+  #'   see [rotor::rotate_time()] for the meaning of these arguments. Note
+  #'   that `backup_dir` corresponds to `dir`.
+  #' @param create_file Defunct, do not use.
     initialize = function(
       file,
       threshold = NA_integer_,
@@ -1241,6 +1363,13 @@ AppenderFileRotatingTime <- R6::R6Class(
     },
 
 
+    #' @description Rotate the log file if it meets the rotation conditions
+    #'   (see `$size`, `$age`), or unconditionally if `force = TRUE`. See
+    #'   [rotor::rotate_time()] for details.
+    #' @param force `TRUE` or `FALSE`. Force rotation regardless of whether
+    #'   the rotation conditions are met.
+    #' @param now A `POSIXct` scalar. The timestamp to use for naming the new
+    #'   backup and for evaluating `$age`.
     rotate = function(
       force = FALSE,
       now   = Sys.time()
@@ -1269,6 +1398,10 @@ AppenderFileRotatingTime <- R6::R6Class(
     },
 
 
+    #' @description Set the maximum age of the log file that triggers
+    #'   rotation. See [rotor::rotate_time()].
+    #' @param x A `difftime` or `numeric` scalar (interpreted as days), or
+    #'   `Inf` to disable age-based rotation.
     set_age = function(
       x
     ){
@@ -1277,6 +1410,9 @@ AppenderFileRotatingTime <- R6::R6Class(
     },
 
 
+    #' @description Set the `strftime()`-style timestamp format used for
+    #'   naming backups. See [rotor::rotate_time()].
+    #' @param x `character` scalar.
     set_fmt = function(
       x
     ){
@@ -1285,6 +1421,9 @@ AppenderFileRotatingTime <- R6::R6Class(
     },
 
 
+    #' @description Set whether an existing backup for the same timestamp
+    #'   may be overwritten. See [rotor::rotate_time()].
+    #' @param x `TRUE` or `FALSE`.
     set_overwrite = function(
       x
     ){
@@ -1303,6 +1442,8 @@ AppenderFileRotatingTime <- R6::R6Class(
       self
     },
 
+    #' @description Format the Appender for printing (see also
+    #'   [print.Appender()]).
     format = function(
       color = FALSE,
       ...
@@ -1327,8 +1468,16 @@ AppenderFileRotatingTime <- R6::R6Class(
 
 
   active = list(
+    #' @field age The maximum age of the log file that triggers rotation.
+    #'   See `$set_age()`.
     age = function() get(".age", private),
+
+    #' @field overwrite Whether an existing backup for the same timestamp
+    #'   may be overwritten. See `$set_overwrite()`.
     overwrite = function() get(".overwrite", private),
+
+    #' @field fmt The `strftime()`-style timestamp format used for naming
+    #'   backups. See `$set_fmt()`.
     fmt = function() get("bq", private)$fmt,
 
     #' @field cache_backups
@@ -1367,11 +1516,11 @@ AppenderFileRotatingDate <- R6::R6Class(
   public = list(
 
 
-    #' @description
-    #' @param  size,age,max_backups,compression,backup_dir,fmt,overwrite,cache_backups
-    #'   see [rotor::rotate_date()] for the meaning of these arguments. Note that
-    #'   `fmt` corresponds to `format` (because `$format` has a special meaning
-    #'   for R6 classes).
+    #' @description Create a new AppenderFileRotatingDate.
+    #' @param age,size,max_backups,compression,backup_dir,fmt,overwrite,cache_backups
+    #'   see [rotor::rotate_date()] for the meaning of these arguments. Note
+    #'   that `backup_dir` corresponds to `dir`.
+    #' @param create_file Defunct, do not use.
     initialize = function(
       file,
       threshold = NA_integer_,
@@ -1502,7 +1651,7 @@ appender_summary <- function(x){
 #'   that supports thresholds.
 #' @param n an `integer` scalar > 0
 #'
-#' @return
+#' @return a `character` vector of the last `n` matching log lines.
 #' @noRd
 default_file_reader <- function(file, threshold, n){
   assert(

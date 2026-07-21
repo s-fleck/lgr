@@ -6,8 +6,6 @@
 #'   up the call stack
 #'
 #' @seealso [base::sys.call()]
-#' @export
-#'
 #' @rdname system_infos
 #' @export
 #'

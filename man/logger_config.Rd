@@ -3,6 +3,7 @@
 \name{logger_config}
 \alias{logger_config}
 \alias{as_logger_config}
+\alias{as_logger_config.NULL}
 \alias{as_logger_config.list}
 \alias{as_logger_config.character}
 \title{Logger Configuration Objects}
@@ -16,6 +17,8 @@ logger_config(
 )
 
 as_logger_config(x)
+
+\method{as_logger_config}{`NULL`}(x)
 
 \method{as_logger_config}{list}(x)
 

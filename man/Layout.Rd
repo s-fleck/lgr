@@ -5,11 +5,6 @@
 \alias{Layouts}
 \title{Abstract Class for Layouts}
 \description{
-Abstract Class for Layouts
-
-Abstract Class for Layouts
-}
-\details{
 \link{Appenders} pass \link[=LogEvent]{LogEvents} to a Layout which formats it for
 output. For the Layouts included in lgr that means turning the LogEvent
 into a \code{character} string.
@@ -28,81 +23,110 @@ and \verb{$data} active bindings respectively (see source code of \link{Appender
 }
 
 \seealso{
-Other Layouts: 
+Other Layouts:
 \code{\link{LayoutFormat}},
 \code{\link{LayoutGlue}},
 \code{\link{LayoutJson}}
 }
 \concept{Layouts}
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{excluded_fields}}{fields to exclude from the final log}
-}
-\if{html}{\out{</div>}}
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{excluded_fields}}{fields to exclude from the final log}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-Layout-format_event}{\code{Layout$format_event()}}
-\item \href{#method-Layout-toString}{\code{Layout$toString()}}
-\item \href{#method-Layout-set_excluded_fields}{\code{Layout$set_excluded_fields()}}
-\item \href{#method-Layout-clone}{\code{Layout$clone()}}
-}
+  \itemize{
+    \item \href{#method-Layout-format_event}{\code{Layout$format_event()}}
+    \item \href{#method-Layout-toString}{\code{Layout$toString()}}
+    \item \href{#method-Layout-set_excluded_fields}{\code{Layout$set_excluded_fields()}}
+    \item \href{#method-Layout-clone}{\code{Layout$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Layout-format_event"></a>}}
 \if{latex}{\out{\hypertarget{method-Layout-format_event}{}}}
-\subsection{Method \code{format_event()}}{
-Format a log event
+\subsection{\code{Layout$format_event()}}{
+  Format a log event
 
 Function that the Layout uses to transform a \link{LogEvent} into something
 that an \link{Appender} can write to an output destination.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Layout$format_event(event)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Layout$format_event(event)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{event}}{a \link{LogEvent}}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    a \code{character} scalar (the formatted LogEvent), unless
+overridden by a subclass to return a different type.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{event}}{a \link{LogEvent}}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Layout-toString"></a>}}
 \if{latex}{\out{\hypertarget{method-Layout-toString}{}}}
-\subsection{Method \code{toString()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Layout$toString()}\if{html}{\out{</div>}}
+\subsection{\code{Layout$toString()}}{
+  Represent the Layout as a \code{character} scalar, e.g. for
+use in \code{print()} methods.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Layout$toString()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    a \code{character} scalar
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Layout-set_excluded_fields"></a>}}
 \if{latex}{\out{\hypertarget{method-Layout-set_excluded_fields}{}}}
-\subsection{Method \code{set_excluded_fields()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Layout$set_excluded_fields(x)}\if{html}{\out{</div>}}
+\subsection{\code{Layout$set_excluded_fields()}}{
+  Set fields to exclude from the final log output
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Layout$set_excluded_fields(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{\code{NULL} or a \code{character} vector of field names. See the
+\code{excluded_fields} field.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The Layout object, invisibly (for chaining).
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Layout-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-Layout-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Layout$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{Layout$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Layout$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }
