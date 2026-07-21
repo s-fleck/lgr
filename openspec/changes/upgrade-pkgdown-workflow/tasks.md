@@ -17,3 +17,11 @@
 - [ ] 3.1 If R + pkgdown are available locally, run `pkgdown::build_site()` (or `check_pkgdown()`) to confirm `_pkgdown.yml` is valid and the site builds without new warnings — **blocked: no local R available in this environment; needs to be run by a maintainer**
 - [x] 3.2 Validate the updated workflow YAML for syntax correctness — manually reviewed structure against upstream template (no `actionlint`/YAML linter available in this environment); no automated linter was run
 - [ ] 3.3 After merging, confirm the next push triggers a successful build + deploy to the `gh-pages` branch and that `https://s-fleck.github.io/lgr` serves the freshly built site — post-merge step, not yet done
+
+## 4. PR preview deploys
+
+- [x] 4.1 Widen the `pull_request` trigger to `types: [opened, synchronize, reopened, closed]` and gate the main `pkgdown` job on `github.event.action != 'closed'`
+- [x] 4.2 Add a "Deploy PR preview" step (reusing the already-built `docs/` output) that deploys to `target-folder: preview/pr-<number>` with `clean: true`, guarded to same-repo (non-fork) PRs only
+- [x] 4.3 Add a step using `actions/github-script` to create-or-update a single PR comment with the preview URL, guarded the same way
+- [x] 4.4 Add a `pkgdown-preview-cleanup` job gated on PR-closed that checks out `gh-pages`, removes `preview/pr-<number>/` if present, and pushes the removal commit
+- [ ] 4.5 Verify end-to-end on a real PR after merging: preview builds, comment appears/updates, and the folder disappears from `gh-pages` on close — post-merge step, not yet done

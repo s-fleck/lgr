@@ -31,6 +31,18 @@ Update `.github/workflows/pkgdown.yaml` to be identical in substance to the live
 ### No GitHub Pages settings changes needed
 Since the deployment mechanism (`gh-pages` branch) is unchanged, there is no repo-settings step required. The site continues to be served exactly as it is today.
 
+### PR previews are keyed to open pull requests, not arbitrary branch pushes
+A pushed feature branch with no open PR has no stable, bounded identifier and no natural place to surface a preview link, so previews are built only for `pull_request` events (`opened`/`synchronize`/`reopened`), not for `push` to arbitrary non-master branches. In practice this covers the scenario that prompted the question — a page to look at while reviewing work on a branch — since that work is reviewed through a PR.
+
+- Reuse the same `pkgdown` job's already-built `docs/` output (don't rebuild) — add a second `JamesIves/github-pages-deploy-action` step deploying to `target-folder: preview/pr-<number>` with `clean: true` (scoped to that target folder only, per the action's v4 semantics — it does not touch the site root or other PRs' preview folders).
+- Guard both the preview deploy and PR comment steps on `github.event.pull_request.head.repo.fork == false`: `GITHUB_TOKEN` is force-read-only on workflows triggered by fork PRs (a GitHub security measure that cannot be overridden from workflow YAML), so a deploy attempt from a fork PR would just fail. Skipping it outright avoids a permanently-red required check for external contributions.
+- Post a PR comment with the preview URL via `actions/github-script` (first-party, no new third-party action to trust), upserting a single comment (matched by an HTML marker) rather than posting a new one on every push.
+- **Alternative considered**: a separate `netlify`/Vercel-style preview service. Rejected — no such integration exists for this repo today, and reusing the existing `gh-pages` branch avoids new external accounts/secrets.
+
+### Preview cleanup on PR close
+Widen the `pull_request` trigger to include `types: [opened, synchronize, reopened, closed]` and add a separate `pkgdown-preview-cleanup` job gated on `github.event.action == 'closed'` that checks out the `gh-pages` branch, removes `preview/pr-<number>/` if present, and pushes a commit removing it. The main `pkgdown` job is gated on `github.event.action != 'closed'` so it doesn't redundantly build/deploy when a PR is merely closed.
+- **Alternative considered**: leave stale preview folders on `gh-pages` forever. Rejected — unbounded growth of the branch and stale/misleading previews reachable by URL after the PR is gone.
+
 ### `_pkgdown.yml`: keep structure, refresh contents
 Keep the existing Bootstrap 5 + `light-switch: true` template config (already current best practice) and the existing hand-curated `reference` sections (Logger, Appenders, Layouts, LogEvent, Filters, Utilities, Abstract Classes, Exceptions) rather than replacing them with an auto-generated index — the curated grouping is a UX intentional choice worth preserving. Concretely:
 - Diff the `reference` list against current `NAMESPACE`/`man/` exports to catch anything added or removed since the list was last touched, and fix any drift.

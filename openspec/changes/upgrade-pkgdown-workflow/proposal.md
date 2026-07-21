@@ -8,6 +8,7 @@ The pkgdown setup for `lgr` is stale: the deploy workflow builds to a git-ignore
 - Update `_pkgdown.yml` to current pkgdown conventions: keep Bootstrap 5 + light-switch, add favicons generation, review/complete the `reference` index for completeness (all exported objects covered, no stale/removed entries).
 - Regenerate favicons (`pkgdown::build_favicons()`) and commit them to `pkgdown/favicon/`.
 - Verify articles/vignette and `NEWS.md`/changelog render correctly under the refreshed config.
+- Add pull-request preview deployments: build the pkgdown site for each open, same-repo (non-fork) PR and publish it to `preview/pr-<number>/` under the same `gh-pages` branch, so reviewers can see the built site without checking out the branch. Post (and keep updated) a PR comment with the preview link. Remove the preview folder automatically when the PR is closed.
 
 ## Capabilities
 
@@ -19,7 +20,8 @@ The pkgdown setup for `lgr` is stale: the deploy workflow builds to a git-ignore
 
 ## Impact
 
-- `.github/workflows/pkgdown.yaml`: action versions and trigger config updated to match the current r-lib template; deployment mechanism (gh-pages branch) unchanged.
+- `.github/workflows/pkgdown.yaml`: action versions and trigger config updated to match the current r-lib template (deployment mechanism, gh-pages branch, unchanged), plus new steps/job for PR preview deploy, PR comment, and preview cleanup on close.
 - `_pkgdown.yml`: updated with current best-practice keys and a reviewed reference index.
 - `pkgdown/favicon/*`: new generated favicon assets.
+- `gh-pages` branch: gains a `preview/pr-<number>/` subfolder per open PR (auto-removed on close); root site content is unaffected.
 - No changes to package R code, exports, or runtime behavior. No GitHub repository settings changes needed.
