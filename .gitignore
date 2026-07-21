@@ -8,3 +8,4 @@ CRAN-RELEASE
 docs/
 /doc/
 /Meta/
+logs/**
