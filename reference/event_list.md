@@ -101,26 +101,26 @@ Other docs relevant for extending lgr:
 e <- LogEvent$new(level = 300, msg = "a", logger = lgr)
 as_event_list(e)
 #> [[1]]
-#> WARN  [2026-06-03 05:10:07] a
+#> WARN  [2026-07-21 13:35:39] a
 #> 
 #> attr(,"class")
 #> [1] "event_list" "list"      
 as_event_list(c(e, e))
 #> [[1]]
-#> WARN  [2026-06-03 05:10:07] a
+#> WARN  [2026-07-21 13:35:39] a
 #> 
 #> [[2]]
-#> WARN  [2026-06-03 05:10:07] a
+#> WARN  [2026-07-21 13:35:39] a
 #> 
 #> attr(,"class")
 #> [1] "event_list" "list"      
 # nested lists get automatically unnested
 as_event_list(c(e, list(nested_event = e)))
 #> [[1]]
-#> WARN  [2026-06-03 05:10:07] a
+#> WARN  [2026-07-21 13:35:39] a
 #> 
 #> $nested_event
-#> WARN  [2026-06-03 05:10:07] a
+#> WARN  [2026-07-21 13:35:39] a
 #> 
 #> attr(,"class")
 #> [1] "event_list" "list"      
@@ -129,17 +129,17 @@ as_event_list(c(e, list(nested_event = e)))
 e <- LogEvent$new(level = 300, msg = c("A", "B"), logger = lgr)
 as_event_list(e, scalarize = FALSE)
 #> [[1]]
-#> WARN  [2026-06-03 05:10:07] A
-#> WARN  [2026-06-03 05:10:07] B
+#> WARN  [2026-07-21 13:35:39] A
+#> WARN  [2026-07-21 13:35:39] B
 #> 
 #> attr(,"class")
 #> [1] "event_list" "list"      
 as_event_list(e, scalarize = TRUE)
 #> [[1]]
-#> WARN  [2026-06-03 05:10:07] A
+#> WARN  [2026-07-21 13:35:39] A
 #> 
 #> [[2]]
-#> WARN  [2026-06-03 05:10:07] B
+#> WARN  [2026-07-21 13:35:39] B
 #> 
 #> attr(,"class")
 #> [1] "event_list" "list"      
