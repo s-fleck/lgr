@@ -2,7 +2,7 @@ config_with_file_fixture <- function(config_file, env = parent.frame()) {
 
   basic_config(console = "info")
 
-  lgr$config(file = config_file)
+  lgr$config(config_file)
 
   withr::defer({
     basic_config()
@@ -99,11 +99,12 @@ test_that("FilterForceLevel properties are accessible", {
 test_that("logger - with FilterForceLevel - overrides log level", {
   skip_if_not_installed("yaml")
 
-
   # arrange
+  config_file <- rprojroot::find_testthat_root_file(
+    "testdata",
+    "config_appenders.yaml"
+  )
   config_with_file_fixture(config_file)
-
-  lgr$config(file = config_file)
 
   testing_force_error <- get_logger("testing/force_error_level")
 
@@ -126,17 +127,12 @@ test_that("logger - with FilterForceLevel - overrides log level", {
 test_that("logger thresholds and filters interact correctly", {
   skip_if_not_installed("yaml")
 
-  # Cleanup
-  config_with_file_fixture(config_file)
-
   # arrange
   config_file <- rprojroot::find_testthat_root_file(
     "testdata",
     "config_appenders.yaml"
   )
-
-  lgr$config(file = config_file)
-
+  config_with_file_fixture(config_file)
 
   # act
   testing_force_error <- get_logger("testing/force_error_level")
@@ -154,12 +150,11 @@ test_that("logger thresholds and filters interact correctly", {
   expect_identical(testing_force_error$filters[[1]]$level, 200L)
 
   # Verify logging behavior
-  # Events at trace level should be captured by the filter
-
   # filters are applied after the threshold, so the 600 (trace) event is
-  # *not* filtered out despite the loggers threshold being 500 (debug)
+  # *not* filtered out despite the loggers threshold being 500 (debug); the
+  # FilterForceLevel instead relabels the event's level
   trace_event <- testing_force_trace$last_event
-  expect_identical(error_event$level, 600L)
+  expect_identical(trace_event$level, 600L)
 
   error_event <- testing_force_error$last_event
   expect_identical(error_event$level, 200L)

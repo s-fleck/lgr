@@ -160,3 +160,35 @@ test_that("get_logger(reset == TRUE) invalidates old Logger for LoggerGlue", {
   expect_warning(lg1$fatal("test"), "log/ger/reset.*no longer valid")
   expect_output(lg2$info("test"))
 })
+
+
+test_that("get_logger('root', reset = TRUE) resets in place instead of replacing the object", {
+  lgr$set_threshold("fatal")
+  lgr$add_appender(AppenderConsole$new(), name = "extra")
+
+  res <- get_logger("root", reset = TRUE)
+
+  # the root Logger's *identity* must be preserved: `lgr` is a singleton
+  # binding, so a reset must never desync it from `get_logger("root")`
+  expect_identical(res, lgr)
+  expect_true(is_Logger(lgr))
+  expect_false(inherits(lgr, "LoggerGlue"))
+
+  # and its fields must actually be back to the default state
+  expect_length(lgr$appenders, 0)
+  expect_length(lgr$filters, 0)
+  expect_true(lgr$propagate)
+  expect_identical(lgr$exception_handler, default_exception_handler)
+  expect_identical(lgr$threshold, as.integer(getOption("lgr.default_threshold", 400L)))
+
+  lgr$config(NULL)
+})
+
+
+test_that("get_logger('root', class = LoggerGlue) errors instead of silently ignoring class", {
+  expect_error(
+    get_logger("root", class = LoggerGlue, reset = TRUE),
+    "LoggerGlue"
+  )
+  lgr$config(NULL)
+})

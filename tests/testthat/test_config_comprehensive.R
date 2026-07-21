@@ -97,7 +97,7 @@ test_that("comprehensive JSON config loads and applies correctly", {
   )
   expect_true(file.exists(config_file))
 
-  lgr$config(file = config_file)
+  lgr$config(config_file)
 
   # Test root logger configuration
   expect_identical(lgr$threshold, 500L)

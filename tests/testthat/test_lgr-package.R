@@ -19,15 +19,11 @@ test_that("get_envar_suspend_logging works as expected", {
 test_that("get_envar_default_config works as expected", {
   withr::local_envvar(c(LGR_DEFAULT_CONFIG = NA_character_))
 
-  Sys.setenv(
-    "LGR_DEFAULT_CONFIG" = system.file(
-      "configs/recommended.yaml",
-      package = "lgr"
-    )
-  )
-  expect_s3_class(get_envar_default_config(), "logger_config")
+  cfg_file <- system.file("configs/recommended.yaml", package = "lgr")
+  Sys.setenv("LGR_DEFAULT_CONFIG" = cfg_file)
+  expect_identical(get_envar_default_config(), cfg_file)
 
-  Sys.setenv("LGR_DEFAULT_CONFIG" = FALSE)
+  Sys.setenv("LGR_DEFAULT_CONFIG" = "path/that/does/not/exist.yaml")
   expect_warning(expect_null(get_envar_default_config()))
 
   Sys.setenv("LGR_DEFAULT_CONFIG" = "")

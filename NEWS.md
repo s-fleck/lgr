@@ -1,5 +1,30 @@
 # lgr 0.6.0
 
+- **BREAKING**: Replaced the two undocumented, unexported config dialects
+  (the `Logger:` shorthand and the hidden multi-logger `logging_config`
+  format) with a single, documented, exported declarative configuration
+  format (`version: 1`). See `vignette("lgr", package = "lgr")` and `?config`
+  for the format reference and a migration guide. In short: drop the
+  top-level `Logger:` key and put settings under `loggers: { root: {...} }`;
+  replace implicit `ClassName:` keys with an explicit `class:` key (e.g.
+  `AppenderConsole: {threshold: info}` becomes
+  `{class: AppenderConsole, threshold: info}`). A plain `list` of
+  already-constructed objects passed to `Logger$config()` continues to work
+  unchanged for a single logger.
+- Added `${VAR}` / `${VAR:-default}` environment-variable interpolation in
+  declarative configs, with a `$${...}` escape for literal sequences.
+- Declarative config loading is now **safe by default**: config-supplied R
+  source (the `code:` form for `exception_handler`/filters) is rejected
+  unless `allow_code = TRUE` is passed to `config()`/`read_config()`/
+  `validate_config()`.
+- Added `read_config()` and `validate_config()` to parse/validate a
+  declarative config without applying it (e.g. for CI), and
+  `config_schema_file()` to locate the shipped JSON Schema
+  (`inst/lgr-config-schema.json`) for editor autocompletion/validation.
+- Validation errors now report the exact dotted/indexed path of the problem
+  (e.g. `loggers.app.appenders[2]`) with "did-you-mean" suggestions for
+  likely typos, and are collected together rather than stopping at the
+  first error.
 - Various small cleanups & fixes (thx @m-muecke)
 - Add SKILL.md for usage of lgr in R packages
 

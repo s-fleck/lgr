@@ -1,0 +1,147 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://s-fleck.github.io/lgr/lgr-config-schema.json",
+  "title": "lgr configuration",
+  "description": "Declarative configuration format for the lgr R package (version 1). See vignette('configuring-lgr', package = 'lgr') and ?lgr::config for the full reference.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "description": "Config schema version. Only version 1 is currently supported.",
+      "const": 1
+    },
+    "disable_existing_loggers": {
+      "description": "If true, resets every pre-existing non-root logger not named under `loggers` to its default state before applying this config.",
+      "type": "boolean"
+    },
+    "layouts": {
+      "description": "Named, reusable Layout definitions.",
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/componentDef" }
+    },
+    "filters": {
+      "description": "Named, reusable EventFilter definitions.",
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/componentDef" }
+    },
+    "appenders": {
+      "description": "Named, reusable Appender definitions.",
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/componentDef" }
+    },
+    "loggers": {
+      "description": "Mapping from logger name ('root', or '/'-separated descendant names) to logger definition.",
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/loggerDef" }
+    }
+  },
+  "definitions": {
+    "componentDef": {
+      "description": "An R6 component definition: `class` selects the constructor (optionally `pkg::ClassName`), all other keys are passed as constructor arguments.",
+      "type": "object",
+      "required": ["class"],
+      "properties": {
+        "class": {
+          "type": "string",
+          "description": "R6 class name to instantiate, e.g. 'AppenderConsole' or 'pkg::ClassName'."
+        },
+        "layout": { "$ref": "#/definitions/layoutRef" },
+        "filters": { "$ref": "#/definitions/filtersField" },
+        "appenders": { "$ref": "#/definitions/appendersField" }
+      }
+    },
+    "layoutRef": {
+      "description": "A named `layouts` reference, or an inline layout component definition.",
+      "oneOf": [
+        { "type": "string" },
+        { "$ref": "#/definitions/componentDef" }
+      ]
+    },
+    "appendersField": {
+      "description": "One or more appenders: a name reference, an inline component definition, or a list mixing both.",
+      "oneOf": [
+        { "type": "string" },
+        { "$ref": "#/definitions/componentDef" },
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "type": "string" },
+              { "$ref": "#/definitions/componentDef" }
+            ]
+          }
+        }
+      ]
+    },
+    "filtersField": {
+      "description": "One or more filters: a name reference into `filters`, a function-valued spec, or a list mixing both.",
+      "oneOf": [
+        { "$ref": "#/definitions/filterEntry" },
+        {
+          "type": "array",
+          "items": { "$ref": "#/definitions/filterEntry" }
+        }
+      ]
+    },
+    "filterEntry": {
+      "description": "A single filter entry.",
+      "oneOf": [
+        { "type": "string", "description": "A bare-string reference to a named `filters` component." },
+        { "$ref": "#/definitions/componentDef" },
+        { "$ref": "#/definitions/functionRef" },
+        { "$ref": "#/definitions/functionCode" }
+      ]
+    },
+    "functionRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref"],
+      "properties": {
+        "ref": {
+          "type": "string",
+          "description": "Name of an existing function to look up (optionally 'pkg::name'). Does not evaluate config-supplied source."
+        }
+      }
+    },
+    "functionCode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Inline R source evaluated to a function. Requires `allow_code = TRUE` when loading."
+        }
+      }
+    },
+    "loggerDef": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "type": "string",
+          "enum": ["Logger", "LoggerGlue"],
+          "description": "Logger subclass to instantiate. Defaults to 'Logger'. The root logger cannot be a 'LoggerGlue'."
+        },
+        "threshold": {
+          "description": "Minimum log level, e.g. 'info', 'debug', or an integer.",
+          "type": ["string", "integer"]
+        },
+        "appenders": { "$ref": "#/definitions/appendersField" },
+        "filters": { "$ref": "#/definitions/filtersField" },
+        "propagate": {
+          "type": "boolean",
+          "description": "Whether this logger passes events on to the appenders of its ancestors."
+        },
+        "exception_handler": {
+          "description": "A function-valued spec for handling errors raised while logging.",
+          "oneOf": [
+            { "type": "string", "description": "A bare-string reference to an existing function." },
+            { "$ref": "#/definitions/functionRef" },
+            { "$ref": "#/definitions/functionCode" }
+          ]
+        }
+      }
+    }
+  }
+}

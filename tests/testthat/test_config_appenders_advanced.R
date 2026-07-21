@@ -91,7 +91,7 @@ test_that("appender names are accessible", {
     "config_comprehensive.yaml"
   )
 
-  lgr$config(file = config_file)
+  lgr$config(config_file)
 
   # Check appender names in root logger
   appender_names <- names(lgr$appenders)

@@ -90,18 +90,21 @@
 #'
 #' lg$config(NULL)  # resets logger to unconfigured state
 #'
-#' # Via YAML
+#' # Via a declarative config (see ?config for the full format)
 #' cfg <- "
-#' Logger:
-#'   threshold: error
-#'   propagate: false
-#'   appenders:
-#'     AppenderConsole:
-#'       threshold: info
+#' loggers:
+#'   test:
+#'     threshold: error
+#'     propagate: false
+#'     appenders:
+#'       console:
+#'         class: AppenderConsole
+#'         threshold: info
 #' "
 #'
-#' lg$config(cfg)
+#' lgr$config(cfg)
 #' lg$config(NULL)
+#' lgr$config(NULL)
 NULL
 
 
@@ -442,99 +445,76 @@ Logger <- R6::R6Class(
       do.call(self$log, x)
     },
 
-    #' @description Load a Logger configuration.
+    #' @description Load a Logger configuration. See [config] for the
+    #'   declarative configuration format.
     #'
     #' @param cfg
-    #' * a special `list` object with any or all of the the following elements:
-    #'     `appenders`, `threshold`, `filters`, `propagate`, `exception_handler`,
-    #'
-    #' * the path to a `YAML`/`JSON` config file,
-    #'
-    #' * a `character` scalar containing `YAML/JSON`,
-    #' * a production-style logging config with reusable `layouts`, `appenders`,
-    #'   `filters`, and named `loggers` (must be applied via the root logger),
-    #'
-    #' * `NULL` (to reset the logger config to the default/unconfigured state)
-    #'
-    #' @param file,text,list can be used as an alternative to
-    #'   `cfg` that  enforces that the  supplied  argument is of the specified
-    #'   type. See [logger_config] for details.
+    #' * `NULL` (to reset the logger config to the default/unconfigured state);
+    #' * a plain `list` of already-constructed values with any or all of the
+    #'   elements `appenders`, `threshold`, `filters`, `propagate`,
+    #'   `exception_handler` (applicable to any Logger); or
+    #' * a declarative config: the path to a YAML/JSON config file, a
+    #'   `character` scalar containing YAML/JSON, or a `list` following the
+    #'   schema described in [config] (must be applied via the root logger,
+    #'   e.g. `lgr$config(...)`).
+    #' @param allow_code `TRUE` or `FALSE`. Whether to permit the inline
+    #'   `code:` form in a declarative config, which evaluates
+    #'   config-supplied R source. Only relevant for declarative configs. See
+    #'   [config].
     config = function(
       cfg = NULL,
-      file = NULL,
-      text = NULL,
-      list = NULL
+      allow_code = FALSE
     ) {
-      # Check that only one parameter is non-NULL (or all are NULL for default behavior)
-      specified <- c(
-        cfg_specified = !is.null(cfg),
-        file_specified = !is.null(file),
-        text_specified = !is.null(text),
-        list_specified = !is.null(list)
+      assert(is_scalar_bool(allow_code))
+
+      if (is.null(cfg)) {
+        # set directly rather than via `$set_threshold()`, which LoggerRoot
+        # overrides to reject `NULL` (root always re-applies its own default
+        # threshold right after resetting, see `LoggerRoot$config()`)
+        private[[".threshold"]] <- NULL
+        self$set_appenders(list())
+        self$set_propagate(TRUE)
+        self$set_filters(list())
+        self$set_exception_handler(default_exception_handler)
+        return(invisible(self))
+      }
+
+      if (is.list(cfg) && !is_full_config_list(cfg)) {
+        known <- c("threshold", "appenders", "filters", "propagate", "exception_handler")
+        assert(
+          all(names(cfg) %in% known),
+          "Unknown element(s) in `cfg`: ",
+          paste(setdiff(names(cfg), known), collapse = ", ")
+        )
+
+        if ("threshold" %in% names(cfg)) self$set_threshold(cfg$threshold)
+        if ("appenders" %in% names(cfg)) self$set_appenders(cfg$appenders)
+        if ("propagate" %in% names(cfg)) self$set_propagate(cfg$propagate)
+        if ("filters" %in% names(cfg)) self$set_filters(cfg$filters)
+        if ("exception_handler" %in% names(cfg)) self$set_exception_handler(cfg$exception_handler)
+        return(invisible(self))
+      }
+
+      raw <- read_config_source(cfg)
+      assert(
+        is_full_config_list(raw),
+        "A declarative lgr config must be a mapping containing at least one of ",
+        "`loggers`, `layouts`, `version`, or `disable_existing_loggers` at the ",
+        "top level. See ?config."
+      )
+      assert(
+        identical(self$name, "root"),
+        "Declarative multi-logger configs can only be applied via the root logger.",
+        " Please use `lgr$config(...)`.",
+        call. = FALSE
       )
 
-      # Special case: if all are NULL and we're being called with just no args,
-      # that's OK (use defaults). If any non-cfg parameter is specified, cfg must be NULL.
-      if (
-        sum(specified) > 1 ||
-          (specified["cfg_specified"] &&
-            any(specified[c(
-              "file_specified",
-              "text_specified",
-              "list_specified"
-            )]))
-      ) {
-        stop("You can only specify one of `cfg`, `file`, `text` and `list`.")
-      }
+      parsed <- interpolate_config(raw)
+      validate_config_list(parsed, allow_code = allow_code)
+      resolved <- resolve_config(parsed, allow_code = allow_code)
+      apply_config(resolved)
 
-      if (specified["cfg_specified"]) {
-        if (is.list(cfg)) {
-          cfg <- as_logging_config(cfg) %||% as_logger_config(cfg)
-        } else {
-          cfg <- as_any_logger_config(cfg)
-        }
-      } else if (specified["file_specified"]) {
-        assert(
-          is_scalar_character(file) && !grepl("\n", file) && file.exists(file),
-          "`file` is not a valid path to a readable file"
-        )
-        cfg <- as_any_logger_config(file)
-      } else if (specified["text_specified"]) {
-        assert(
-          is_scalar_character(text) && grepl("\n", text),
-          "`text` must be a character scalar containing valid YAML"
-        )
-        cfg <- as_any_logger_config(text)
-      } else if (specified["list_specified"]) {
-        cfg <- as_logging_config(list) %||% as_logger_config(list)
-      } else {
-        cfg <- as_logger_config()
-      }
-
-      if (is_logging_config(cfg)) {
-        if (!identical(self$name, "root")) {
-          stop(
-            "Multi-logger config objects can only be applied to the root logger.",
-            " Please use `lgr$config(...)`.",
-            call. = FALSE
-          )
-        }
-
-        return(apply_logging_config(cfg, logger_name = self$name))
-      }
-
-      if (is_logger_config(cfg)) {
-        cfg <- parse_logger_config(cfg)
-      }
-
-      assert(is_parsed_logger_config(cfg))
-      self$set_threshold(cfg$threshold)
-      self$set_appenders(cfg$appenders)
-      self$set_propagate(cfg$propagate)
-      self$set_filters(cfg$filters)
-      self$set_exception_handler(cfg$exception_handler)
-
-      self
+      invisible(get_logger(self$name))
     },
 
     #' @description Add an Appender to the Logger
@@ -1218,22 +1198,15 @@ LoggerRoot <- R6::R6Class(
   public = list(
     config = function(
       cfg = NULL,
-      file = NULL,
-      text = NULL,
-      list = NULL
+      allow_code = FALSE
     ) {
-      # Set default cfg only if no other parameters are specified
-      if (is.null(cfg) && is.null(file) && is.null(text) && is.null(list)) {
-        cfg <- logger_config()
-        cfg$threshold <- getOption("lgr.default_threshold", 400L)
+      if (is.null(cfg)) {
+        super$config(NULL)
+        self$set_threshold(getOption("lgr.default_threshold", 400L))
+        return(invisible(self))
       }
 
-      super$config(
-        cfg = cfg,
-        file = file,
-        text = text,
-        list = list
-      )
+      super$config(cfg, allow_code = allow_code)
     },
 
     set_threshold = function(level) {

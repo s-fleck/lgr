@@ -6,7 +6,7 @@ test_that("layout configurations are applied correctly from YAML", {
     "config_layouts.yaml"
   )
 
-  lgr$config(file = config_file)
+  lgr$config(config_file)
 
   # Check root logger appender layouts
   console_min <- lgr$appenders[[1]]
@@ -36,7 +36,7 @@ test_that("layout configurations are applied correctly from JSON", {
     "config_layouts.json"
   )
 
-  lgr$config(file = config_file)
+  lgr$config(config_file)
 
   # Check root logger layouts
   console_msg <- lgr$appenders[[1]]
@@ -100,7 +100,7 @@ test_that("JSON layout is applied correctly from config", {
     "config_layouts.json"
   )
 
-  lgr$config(file = config_file)
+  lgr$config(config_file)
 
   # Get buffer appender with JSON layout
   buffer_app <- lgr$appenders[[2]]
@@ -123,7 +123,7 @@ test_that("layout format strings contain expected format codes", {
     "config_layouts.yaml"
   )
 
-  lgr$config(file = config_file)
+  lgr$config(config_file)
 
   # Test each format string
   minimal_fmt <- lgr$appenders[[1]]$layout$fmt

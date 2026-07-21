@@ -96,18 +96,21 @@ lg$config(list(
 
 lg$config(NULL)  # resets logger to unconfigured state
 
-# Via YAML
+# Via a declarative config (see ?config for the full format)
 cfg <- "
-Logger:
-  threshold: error
-  propagate: false
-  appenders:
-    AppenderConsole:
-      threshold: info
+loggers:
+  test:
+    threshold: error
+    propagate: false
+    appenders:
+      console:
+        class: AppenderConsole
+        threshold: info
 "
 
-lg$config(cfg)
+lgr$config(cfg)
 lg$config(NULL)
+lgr$config(NULL)
 
 ## ------------------------------------------------
 ## Method `Logger$list_log()`
@@ -429,27 +432,30 @@ lg$list_log(list(level = 400, msg = "example"))
 \if{html}{\out{<a id="method-Logger-config"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-config}{}}}
 \subsection{\code{Logger$config()}}{
-  Load a Logger configuration.
+  Load a Logger configuration. See \link{config} for the
+declarative configuration format.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{Logger$config(cfg = NULL, file = NULL, text = NULL, list = NULL)}
+    \preformatted{Logger$config(cfg = NULL, allow_code = FALSE)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
       \item{\code{cfg}}{\itemize{
-\item a special \code{list} object with any or all of the the following elements:
-\code{appenders}, \code{threshold}, \code{filters}, \code{propagate}, \code{exception_handler},
-\item the path to a \code{YAML}/\code{JSON} config file,
-\item a \code{character} scalar containing \code{YAML/JSON},
-\item a production-style logging config with reusable \code{layouts}, \code{appenders},
-\code{filters}, and named \code{loggers} (must be applied via the root logger),
-\item \code{NULL} (to reset the logger config to the default/unconfigured state)
+\item \code{NULL} (to reset the logger config to the default/unconfigured state);
+\item a plain \code{list} of already-constructed values with any or all of the
+elements \code{appenders}, \code{threshold}, \code{filters}, \code{propagate},
+\code{exception_handler} (applicable to any Logger); or
+\item a declarative config: the path to a YAML/JSON config file, a
+\code{character} scalar containing YAML/JSON, or a \code{list} following the
+schema described in \link{config} (must be applied via the root logger,
+e.g. \code{lgr$config(...)}).
 }}
-      \item{\code{file, text, list}}{can be used as an alternative to
-\code{cfg} that  enforces that the  supplied  argument is of the specified
-type. See \link{logger_config} for details.}
+      \item{\code{allow_code}}{\code{TRUE} or \code{FALSE}. Whether to permit the inline
+\verb{code:} form in a declarative config, which evaluates
+config-supplied R source. Only relevant for declarative configs. See
+\link{config}.}
     }
     \if{html}{\out{</div>}}
   }

@@ -50,7 +50,7 @@ test_that("AppenderFile: logging with LayoutJson", {
   event <- LogEvent$new(
     logger = Logger$new("dummy"),
     level = 200L,
-    timestamp = as.POSIXct(1541175573.9308),
+    timestamp = as.POSIXct(1541175573.9308, origin = "1970-01-01"),
     caller = NA_character_,
     msg = "foo bar",
     rawMsg = "foo raw"

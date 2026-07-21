@@ -41,6 +41,7 @@ Suggests:
     tools,
     utils,
     whoami,
+    withr,
     yaml
 VignetteBuilder: 
     knitr
@@ -61,10 +62,10 @@ Collate:
     'Logger.R'
     'basic_config.R'
     'default_functions.R'
-    'event_list.R'
     'get_logger.R'
+    'config.R'
+    'event_list.R'
     'lgr-package.R'
-    'logger_config.R'
     'logger_index.R'
     'logger_tree.R'
     'read_json_lines.R'

@@ -55,7 +55,7 @@ test_that("FilterForceLevel and FilterInject work inside function", {
   }
   expect_output(analyse(), "INFO.*debug.*type.*INFO.*error.*type.*")
   expect_length(lgr$filters, 0)
-  lg$config(logger_config())
+  lg$config(NULL)
 })
 
 

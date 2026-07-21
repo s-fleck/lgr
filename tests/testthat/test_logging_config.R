@@ -71,12 +71,10 @@ loggers:
 })
 
 
-test_that("legacy logger config behavior remains unchanged", {
+test_that("programmatic single-logger list config accepts constructed objects", {
   cfg <- list(
     threshold = "error",
-    appenders = list(
-      AppenderConsole = list(threshold = "info")
-    ),
+    appenders = list(AppenderConsole$new(threshold = "info")),
     propagate = FALSE
   )
 
@@ -91,7 +89,17 @@ test_that("legacy logger config behavior remains unchanged", {
 })
 
 
-test_that("resolve_r6_ctors supports namespaced constructors", {
+test_that("programmatic single-logger list config rejects unknown keys", {
+  lg <- get_logger("legacy")
+  expect_error(
+    lg$config(list(thresholdd = "error")),
+    "Unknown element"
+  )
+  lg$config(NULL)
+})
+
+
+test_that("get0_R6Class supports namespaced constructors", {
   skip_if_not_installed("lgrExtra")
 
   ns <- asNamespace("lgrExtra")

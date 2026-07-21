@@ -407,9 +407,7 @@ test_that("$config works with lists", {
   )
 
   expect_identical(names(l$config(cfg)$appenders), "blubb")
-  expect_identical(names(l$config(list = cfg)$appenders), "blubb")
   expect_identical(l$config(cfg)$propagate, FALSE)
-  expect_error(l$config(cfg = cfg, list = cfg))
 
   l$config(NULL)
   expect_true(is_virgin_Logger(l, allow_subclass = TRUE))

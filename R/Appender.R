@@ -68,7 +68,8 @@ Appender <- R6::R6Class(
     set_layout = function(layout){
       if (is_scalar_list(layout)){
         # set_layout also accepts a list of length 1 containing a single Layout
-        # object. This is a workaround for resolve_r6_ctors. This behaviour is
+        # object. This is a workaround for declarative config resolution (see
+        # `instantiate_component()` in config.R). This behaviour is
         # intentionally not documented and you should not rely on it.
         layout <- layout[[1]]
       }

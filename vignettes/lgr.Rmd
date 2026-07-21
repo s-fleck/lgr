@@ -503,32 +503,37 @@ lg$config(list(
 ))
 ```
 
-## With YAML or JSON
+## With a declarative config (YAML or JSON)
 
-You can use YAML and JSON config files with lgr. 
+lgr has a single, canonical declarative configuration format that can
+express the entire logger hierarchy: the root logger, descendant loggers,
+and reusable named `layouts`, `filters` and `appenders`. It can be supplied
+as a file path, an in-memory YAML/JSON string, or an equivalent `list`, and
+must be applied via the root logger (`lgr$config(...)`).
+
 ```{r eval = FALSE}
-lg$config("path/to/config.yaml")
-lg$config("path/to/config.json")
+lgr$config("path/to/config.yaml")
+lgr$config("path/to/config.json")
 ```
 
-You can also pass in YAML/JSON directly as a character string (or vector with
-one element per line)
 ```{r}
-# Via YAML
 cfg <- "
-  Logger:
+loggers:
+  root:
     threshold: info
-    propagate: false
     appenders:
-      AppenderConsole:
-        threshold: info
+      console:
+        class: AppenderConsole
+  mypkg:
+    propagate: false
 "
-lg$config(cfg)
+lgr$config(cfg)
+lgr$config(NULL)  # reset
 ```
 
-For production setups with multiple named loggers, reusable appenders/layouts,
-and clear references (similar to python logging or NLog style configs), use
-the extended schema and apply it to the root logger:
+For production setups, define reusable named `layouts`/`filters`/`appenders`
+and reference them by name from one or more loggers (similar to Python
+`logging.config` or NLog-style configs):
 
 ```{r eval = FALSE}
 lgr$config(
@@ -552,6 +557,134 @@ loggers:
 "
 )
 ```
+
+### Format reference
+
+* `version`: optional, defaults to `1` (the only supported value).
+* `disable_existing_loggers`: optional `TRUE`/`FALSE`. If `TRUE`, every
+  pre-existing non-root logger not named under `loggers` is reset to its
+  default state before the config is applied.
+* `layouts`, `filters`, `appenders`: optional named mappings from a
+  user-chosen component name to a component definition — a mapping with a
+  `class` key (e.g. `class: AppenderConsole`, optionally namespaced as
+  `lgrExtra::AppenderSyslog`) plus the remaining keys as constructor
+  arguments. Named components can be referenced by name wherever an
+  appender/layout/filter is expected; a reference is resolved once and the
+  resulting object is shared across every logger that references it.
+  Appenders and filters can also be defined inline instead of by reference,
+  and the two styles can be mixed in the same list.
+* `loggers`: a mapping from logger name (`root`, or `/`-separated names such
+  as `app/db` for descendants) to a logger definition with `class` (`Logger`
+  or `LoggerGlue`, defaults to `Logger`), `threshold`, `appenders`,
+  `filters`, `propagate`, and `exception_handler`.
+
+A logger's `exception_handler`, and any filter entry, accept a small tagged
+union: a bare-string **name reference** (or `{ ref: name }`) resolved by
+lookup; an inline **`{ code: "<R source>" }`** form, the only form that
+evaluates config-supplied R source; and, for filters only, a **`{ class:
+FilterClass, ... }`** spec or a bare-string reference to a named `filters`
+component.
+
+```{r}
+cfg <- list(
+  filters = list(
+    only_warnings = list(class = "FilterForceLevel", level = "warn")
+  ),
+  loggers = list(
+    root = list(
+      threshold = "all",
+      filters = "only_warnings",             # named-component reference
+      exception_handler = "default_exception_handler"  # name reference
+    )
+  )
+)
+lgr$config(cfg)
+lgr$config(NULL)  # reset
+```
+
+### Environment variable interpolation
+
+Scalar string config values may contain `${VAR}` (substituted with the value
+of environment variable `VAR`) or `${VAR:-default}` (using `default` when
+`VAR` is unset or empty). A value produced *entirely* by interpolation is
+leniently coerced (a number-like string becomes a number, `true`/`false`
+becomes a logical), so `threshold: ${LOG_LEVEL:-info}` and `size: ${SIZE}`
+behave like their literal equivalents. A literal `${...}` sequence can be
+produced with the escape `$${...}`. Interpolation is never applied to
+`code:` payloads.
+
+```{r}
+Sys.setenv(LGR_EXAMPLE_LEVEL = "warn")
+cfg <- read_config(list(loggers = list(root = list(threshold = "${LGR_EXAMPLE_LEVEL:-info}"))))
+cfg$loggers$root$threshold
+Sys.unsetenv("LGR_EXAMPLE_LEVEL")
+```
+
+### Validation
+
+Every config is fully parsed, interpolated, and validated *before* any
+change is made to the logger hierarchy — an invalid config never leaves
+loggers half-configured. Validation errors identify the exact location of
+the problem with a dotted/indexed path and, for likely typos, a
+"did-you-mean" suggestion. Use [read_config()]/[validate_config()] to check
+a config (e.g. in CI) without applying it:
+
+```{r error = TRUE}
+validate_config(list(
+  appenders = list(console = list(class = "AppenderConsole")),
+  loggers = list(root = list(appenders = "consle"))
+))
+```
+
+lgr also ships a [JSON Schema](https://json-schema.org/) describing the
+config format (see `config_schema_file()`) for editor autocompletion and
+inline validation.
+
+### Safety: `allow_code`
+
+Loading a declarative config **never evaluates config-supplied R source by
+default**. The only form that does so is the inline `code:` form (see
+above); in the default "safe" mode it is rejected with an error naming the
+offending key:
+
+```{r error = TRUE}
+lgr$config(list(loggers = list(root = list(
+  exception_handler = list(code = "function(e) NULL")
+))))
+```
+
+Pass `allow_code = TRUE` to `config()`/`read_config()`/`validate_config()` to
+opt in. Do this only for configs you trust — `allow_code = TRUE` lets a
+config file run arbitrary R code, and `class:`-based component instantiation
+already runs the constructor code of any installed package (including
+extension packages via `pkg::ClassName`) regardless of `allow_code`.
+
+```{r}
+lgr$config(
+  list(loggers = list(root = list(
+    exception_handler = list(code = "function(e) NULL")
+  ))),
+  allow_code = TRUE
+)
+lgr$config(NULL)  # reset
+```
+
+### Migrating from the legacy `Logger:`/`logging_config` formats
+
+Older lgr versions supported two separate, undocumented config dialects: a
+`Logger:`-prefixed single-logger shorthand, and a hidden multi-logger
+`logging_config` dialect using implicit `ClassName:` keys (e.g. `appenders:
+{ AppenderConsole: { threshold: info } }`). Both are replaced by the single
+schema described above. To migrate:
+
+* Drop the top-level `Logger:` key; put your settings directly under a
+  `loggers: { root: { ... } }` (or a named logger) mapping instead.
+* Replace implicit `ClassName:` keys with an explicit `class:` key, e.g.
+  `AppenderConsole: { threshold: info }` becomes
+  `{ class: AppenderConsole, threshold: info }`.
+* A plain `list` of already-constructed objects passed directly to
+  `Logger$config()` (e.g. `lg$config(list(appenders = list(AppenderConsole$new())))`)
+  continues to work unchanged for a single logger.
 
 
 # Examples {#examples}
