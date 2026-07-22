@@ -29,102 +29,161 @@ lg$config(NULL)  # reset logger config
 lgr exports a number of formatting utility functions that are
 useful for layout glue: \code{\link[=colorize_levels]{colorize_levels()}}, \code{\link[=pad_left]{pad_left()}}, \code{\link[=pad_right]{pad_right()}}.
 
-Other Layouts: 
+Other Layouts:
 \code{\link{Layout}},
 \code{\link{LayoutFormat}},
 \code{\link{LayoutJson}}
 }
 \concept{Layouts}
 \section{Super class}{
-\code{\link[lgr:Layout]{lgr::Layout}} -> \code{LayoutGlue}
+\code{\link[lgr:Layout]{Layout}} -> \code{LayoutGlue}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{fmt}}{A string that will be interpreted by \code{\link[glue:glue]{glue::glue()}}}
-}
-\if{html}{\out{</div>}}
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{fmt}}{A string that will be interpreted by \code{\link[glue:glue]{glue::glue()}}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-LayoutGlue-new}{\code{LayoutGlue$new()}}
-\item \href{#method-LayoutGlue-format_event}{\code{LayoutGlue$format_event()}}
-\item \href{#method-LayoutGlue-set_fmt}{\code{LayoutGlue$set_fmt()}}
-\item \href{#method-LayoutGlue-set_colors}{\code{LayoutGlue$set_colors()}}
-\item \href{#method-LayoutGlue-toString}{\code{LayoutGlue$toString()}}
-\item \href{#method-LayoutGlue-clone}{\code{LayoutGlue$clone()}}
+  \itemize{
+    \item \href{#method-LayoutGlue-initialize}{\code{LayoutGlue$new()}}
+    \item \href{#method-LayoutGlue-format_event}{\code{LayoutGlue$format_event()}}
+    \item \href{#method-LayoutGlue-set_fmt}{\code{LayoutGlue$set_fmt()}}
+    \item \href{#method-LayoutGlue-set_colors}{\code{LayoutGlue$set_colors()}}
+    \item \href{#method-LayoutGlue-toString}{\code{LayoutGlue$toString()}}
+    \item \href{#method-LayoutGlue-clone}{\code{LayoutGlue$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Layout" data-id="set_excluded_fields"><a href='../../lgr/html/Layout.html#method-Layout-set_excluded_fields'><code>lgr::Layout$set_excluded_fields()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Layout" data-id="set_excluded_fields"><a href='../../lgr/html/Layout.html#method-Layout-set_excluded_fields'><code>Layout$set_excluded_fields()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LayoutGlue-new"></a>}}
-\if{latex}{\out{\hypertarget{method-LayoutGlue-new}{}}}
-\subsection{Method \code{new()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutGlue$new(
+\if{html}{\out{<a id="method-LayoutGlue-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutGlue-initialize}{}}}
+\subsection{\code{LayoutGlue$new()}}{
+  Create a new \code{LayoutGlue} object. Requires the package \pkg{glue}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutGlue$new(
   fmt = "{pad_right(colorize_levels(toupper(level_name)), 5)} [{timestamp}] {msg}"
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{fmt}}{A string that will be interpreted by \code{\link[glue:glue]{glue::glue()}}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutGlue-format_event"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutGlue-format_event}{}}}
-\subsection{Method \code{format_event()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutGlue$format_event(event)}\if{html}{\out{</div>}}
+\subsection{\code{LayoutGlue$format_event()}}{
+  Format a LogEvent using \code{\link[glue:glue]{glue::glue()}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutGlue$format_event(event)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{event}}{a \link{LogEvent}}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    a \code{character} scalar
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutGlue-set_fmt"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutGlue-set_fmt}{}}}
-\subsection{Method \code{set_fmt()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutGlue$set_fmt(x)}\if{html}{\out{</div>}}
+\subsection{\code{LayoutGlue$set_fmt()}}{
+  Set the \code{fmt} field
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutGlue$set_fmt(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{see the \code{fmt} field}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The LayoutGlue object, invisibly (for chaining).
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutGlue-set_colors"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutGlue-set_colors}{}}}
-\subsection{Method \code{set_colors()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutGlue$set_colors(x)}\if{html}{\out{</div>}}
+\subsection{\code{LayoutGlue$set_colors()}}{
+  Store a \code{list} of coloring functions for later use. \code{LayoutGlue} does
+not apply these automatically within \verb{$format_event()} — colorize log
+levels directly in the glue template instead (e.g. via
+\code{\link[=colorize_levels]{colorize_levels()}}, see the class examples).
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutGlue$set_colors(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{\code{NULL}, or a \code{list} of \code{functions} (like the ones provided by
+the package \pkg{crayon}).}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The LayoutGlue object, invisibly (for chaining).
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutGlue-toString"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutGlue-toString}{}}}
-\subsection{Method \code{toString()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutGlue$toString()}\if{html}{\out{</div>}}
+\subsection{\code{LayoutGlue$toString()}}{
+  Represent the Layout as a \code{character} scalar
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutGlue$toString()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    a \code{character} scalar
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutGlue-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutGlue-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutGlue$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{LayoutGlue$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutGlue$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

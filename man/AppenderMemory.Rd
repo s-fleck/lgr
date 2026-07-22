@@ -17,228 +17,284 @@ buffer, such as \link{AppenderBuffer} and \code{AppenderPushbullet} from the
 \seealso{
 \link{LayoutFormat}
 
-Other abstract classes: 
+Other abstract classes:
 \code{\link{Appender}},
 \code{\link{AppenderTable}},
 \code{\link{Filterable}}
 }
 \concept{abstract classes}
 \section{Super classes}{
-\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{AppenderMemory}
+\code{\link[lgr:Filterable]{Filterable}} -> \code{\link[lgr:Appender]{Appender}} -> \code{AppenderMemory}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{flush_on_exit}}{A \code{logical} scalar. Should the buffer be flushed if
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{flush_on_exit}}{A \code{logical} scalar. Should the buffer be flushed if
 the Appender is destroyed (e.g. because the \R session is terminated)?}
 
-\item{\code{flush_on_rotate}}{A \code{logical} scalar. Should the buffer be flushed when it is
+    \item{\code{flush_on_rotate}}{A \code{logical} scalar. Should the buffer be flushed when it is
 rotated because \verb{$buffer_size} is exceeded?}
 
-\item{\code{should_flush}}{A \code{function} with exactly one arguments: \code{event}.
+    \item{\code{should_flush}}{A \code{function} with exactly one arguments: \code{event}.
 \verb{$append()} calls this function internally on the current \link{LogEvent}
 and flushes the buffer if it evaluates to \code{TRUE}.}
 
-\item{\code{buffer_size}}{\code{integer} scalar \verb{>= 0}. Maximum number of \link{LogEvents}
+    \item{\code{buffer_size}}{\code{integer} scalar \verb{>= 0}. Maximum number of \link{LogEvents}
 to buffer.}
 
-\item{\code{flush_threshold}}{A \code{numeric} or \code{character} threshold. \link{LogEvents}
+    \item{\code{flush_threshold}}{A \code{numeric} or \code{character} threshold. \link{LogEvents}
 with a \link{log_level} equal to or lower than this threshold trigger
 flushing the buffer.}
 
-\item{\code{buffer_events}}{A \code{list} of \link{LogEvents}. Contents of the buffer.}
+    \item{\code{buffer_events}}{A \code{list} of \link{LogEvents}. Contents of the buffer.}
 
-\item{\code{buffer_events}}{A \code{data.frame}. Contents of the buffer converted
+    \item{\code{data}}{\code{data.frame}. Alias for \verb{$buffer_df}.}
+
+    \item{\code{dt}}{\code{data.table}. Alias for \verb{$buffer_dt}.}
+
+    \item{\code{buffer_df}}{A \code{data.frame}. Contents of the buffer converted
 to a \code{data.frame}.}
 
-\item{\code{buffer_events}}{A \code{data.frame}. Contents of the buffer converted
-to a \code{data.table}.}
-}
-\if{html}{\out{</div>}}
+    \item{\code{buffer_dt}}{A \code{data.table}. Contents of the buffer converted
+to a \code{data.table} (requires the \strong{data.table} package).}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-AppenderMemory-new}{\code{AppenderMemory$new()}}
-\item \href{#method-AppenderMemory-append}{\code{AppenderMemory$append()}}
-\item \href{#method-AppenderMemory-flush}{\code{AppenderMemory$flush()}}
-\item \href{#method-AppenderMemory-clear}{\code{AppenderMemory$clear()}}
-\item \href{#method-AppenderMemory-set_buffer_size}{\code{AppenderMemory$set_buffer_size()}}
-\item \href{#method-AppenderMemory-set_should_flush}{\code{AppenderMemory$set_should_flush()}}
-\item \href{#method-AppenderMemory-set_flush_on_exit}{\code{AppenderMemory$set_flush_on_exit()}}
-\item \href{#method-AppenderMemory-set_flush_on_rotate}{\code{AppenderMemory$set_flush_on_rotate()}}
-\item \href{#method-AppenderMemory-set_flush_threshold}{\code{AppenderMemory$set_flush_threshold()}}
-\item \href{#method-AppenderMemory-show}{\code{AppenderMemory$show()}}
-\item \href{#method-AppenderMemory-format}{\code{AppenderMemory$format()}}
+  \itemize{
+    \item \href{#method-AppenderMemory-initialize}{\code{AppenderMemory$new()}}
+    \item \href{#method-AppenderMemory-append}{\code{AppenderMemory$append()}}
+    \item \href{#method-AppenderMemory-flush}{\code{AppenderMemory$flush()}}
+    \item \href{#method-AppenderMemory-clear}{\code{AppenderMemory$clear()}}
+    \item \href{#method-AppenderMemory-set_buffer_size}{\code{AppenderMemory$set_buffer_size()}}
+    \item \href{#method-AppenderMemory-set_should_flush}{\code{AppenderMemory$set_should_flush()}}
+    \item \href{#method-AppenderMemory-set_flush_on_exit}{\code{AppenderMemory$set_flush_on_exit()}}
+    \item \href{#method-AppenderMemory-set_flush_on_rotate}{\code{AppenderMemory$set_flush_on_rotate()}}
+    \item \href{#method-AppenderMemory-set_flush_threshold}{\code{AppenderMemory$set_flush_threshold()}}
+    \item \href{#method-AppenderMemory-show}{\code{AppenderMemory$show()}}
+    \item \href{#method-AppenderMemory-format}{\code{AppenderMemory$format()}}
+  }
 }
-}
-\if{html}{\out{
-<details><summary>Inherited methods</summary>
+\if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-Appender-set_layout'><code>lgr::Appender$set_layout()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-Appender-set_threshold'><code>lgr::Appender$set_threshold()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>Filterable$add_filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>Filterable$filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>Filterable$remove_filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>Filterable$set_filters()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-Appender-set_layout'><code>Appender$set_layout()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-Appender-set_threshold'><code>Appender$set_threshold()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AppenderMemory-new"></a>}}
-\if{latex}{\out{\hypertarget{method-AppenderMemory-new}{}}}
-\subsection{Method \code{new()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$new(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-AppenderMemory-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderMemory-initialize}{}}}
+\subsection{\code{AppenderMemory$new()}}{
+  \code{AppenderMemory} is an abstract class and cannot be
+instantiated directly; instantiate one of its subclasses (such as
+\link{AppenderBuffer}) instead.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderMemory$new(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{ignored}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderMemory-append"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderMemory-append}{}}}
-\subsection{Method \code{append()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$append(event)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderMemory$append()}}{
+  Process a \link{LogEvent} \code{event} by inserting it into the
+in-memory buffer, flushing the buffer first if necessary (see
+\verb{$should_flush}, \verb{$flush_threshold}, \verb{$flush_on_rotate}). This
+method is usually not called by the user, but invoked by a
+\link{Logger}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderMemory$append(event)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{event}}{a \link{LogEvent}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderMemory-flush"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderMemory-flush}{}}}
-\subsection{Method \code{flush()}}{
-Sends the buffer's contents to all attached Appenders and
+\subsection{\code{AppenderMemory$flush()}}{
+  Sends the buffer's contents to all attached Appenders and
 then clears the Buffer
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$flush()}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderMemory$flush()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderMemory-clear"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderMemory-clear}{}}}
-\subsection{Method \code{clear()}}{
-Clears the buffer, discarding all buffered Events
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$clear()}\if{html}{\out{</div>}}
+\subsection{\code{AppenderMemory$clear()}}{
+  Clears the buffer, discarding all buffered Events
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderMemory$clear()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderMemory-set_buffer_size"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderMemory-set_buffer_size}{}}}
-\subsection{Method \code{set_buffer_size()}}{
-Set the maximum size of the buffer
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$set_buffer_size(x)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderMemory$set_buffer_size()}}{
+  Set the maximum size of the buffer
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderMemory$set_buffer_size(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{an \code{integer} scalar \verb{>= 0}. Number of \link{LogEvents} to buffer.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{an \code{integer} scalar \verb{>= 0}. Number of \link{LogEvents} to buffer.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderMemory-set_should_flush"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderMemory-set_should_flush}{}}}
-\subsection{Method \code{set_should_flush()}}{
-Set function that can trigger flushing the buffer
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$set_should_flush(x)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderMemory$set_should_flush()}}{
+  Set function that can trigger flushing the buffer
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderMemory$set_should_flush(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{A \code{function} with the single argument \code{event}. Setting \code{x} to
+\code{NULL} is a shortcut for \code{function(event) FALSE}. See active bindings.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{A \code{function} with the single argument \code{event}. Setting \code{x} to
-\code{NULL} is a shortcut for \code{function(event) FALSE}. See active bindings.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderMemory-set_flush_on_exit"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderMemory-set_flush_on_exit}{}}}
-\subsection{Method \code{set_flush_on_exit()}}{
-Should the buffer be flushed when the Appender is destroyed?
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$set_flush_on_exit(x)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderMemory$set_flush_on_exit()}}{
+  Should the buffer be flushed when the Appender is destroyed?
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderMemory$set_flush_on_exit(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{A \code{logical} scalar. See active bindings.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{A \code{logical} scalar. See active bindings.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderMemory-set_flush_on_rotate"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderMemory-set_flush_on_rotate}{}}}
-\subsection{Method \code{set_flush_on_rotate()}}{
-Should the buffer be flushed if \code{buffer_size} is exceeded?
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$set_flush_on_rotate(x)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderMemory$set_flush_on_rotate()}}{
+  Should the buffer be flushed if \code{buffer_size} is exceeded?
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderMemory$set_flush_on_rotate(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{A \code{logical} scalar. See active bindings.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{A \code{logical} scalar. See active bindings.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderMemory-set_flush_threshold"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderMemory-set_flush_threshold}{}}}
-\subsection{Method \code{set_flush_threshold()}}{
-Set threshold that triggers flushing
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$set_flush_threshold(level)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderMemory$set_flush_threshold()}}{
+  Set threshold that triggers flushing
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderMemory$set_flush_threshold(level)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{level}}{A \code{numeric} or \code{character} \link[=log_level]{threshold}. See
+active bindings.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{level}}{A \code{numeric} or \code{character} \link[=log_level]{threshold}. See
-active bindings.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderMemory-show"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderMemory-show}{}}}
-\subsection{Method \code{show()}}{
-Display the contents of the log table. Relies on the
+\subsection{\code{AppenderMemory$show()}}{
+  Display the contents of the log table. Relies on the
 \verb{$format_event} method of the \link{Layout} attached to this Appender.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$show(threshold = NA_integer_, n = 20L)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderMemory$show(threshold = NA_integer_, n = 20L)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
 that should be displayed.}
-
-\item{\code{n}}{\code{integer} scalar. Show only the last \code{n} log entries that match
+      \item{\code{n}}{\code{integer} scalar. Show only the last \code{n} log entries that match
 \code{threshold}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderMemory-format"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderMemory-format}{}}}
-\subsection{Method \code{format()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderMemory$format(color = FALSE, ...)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderMemory$format()}}{
+  Format the Appender for printing (see also
+\code{\link[=print.Appender]{print.Appender()}}).
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderMemory$format(color = FALSE, ...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{color}}{\code{TRUE} or \code{FALSE}. Output with color? Requires the
+package \strong{crayon}.}
+      \item{\code{...}}{ignored}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 }

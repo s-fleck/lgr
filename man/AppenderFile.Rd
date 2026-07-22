@@ -53,18 +53,7 @@ unlink(tf)
 \seealso{
 \link{LayoutFormat}, \link{LayoutJson}
 
-\link{LayoutFormat}, \link{LayoutJson}
-
-Other Appenders: 
-\code{\link{Appender}},
-\code{\link{AppenderBuffer}},
-\code{\link{AppenderConsole}},
-\code{\link{AppenderFileRotating}},
-\code{\link{AppenderFileRotatingDate}},
-\code{\link{AppenderFileRotatingTime}},
-\code{\link{AppenderTable}}
-
-Other Appenders: 
+Other Appenders:
 \code{\link{Appender}},
 \code{\link{AppenderBuffer}},
 \code{\link{AppenderConsole}},
@@ -75,145 +64,194 @@ Other Appenders:
 }
 \concept{Appenders}
 \section{Super classes}{
-\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{AppenderFile}
+\code{\link[lgr:Filterable]{Filterable}} -> \code{\link[lgr:Appender]{Appender}} -> \code{AppenderFile}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{file}}{\code{character} scalar. path to the log file}
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{file}}{\code{character} scalar. path to the log file}
 
-\item{\code{data}}{\code{data.frame}. Contents of \code{file} parsed to a
+    \item{\code{data}}{\code{data.frame}. Contents of \code{file} parsed to a
 \code{data.frame} if used with a \link{Layout} that supports parsing of log
 file data (notably \link{LayoutJson}). Will throw an error if \code{Layout} does
 not support parsing.}
 
-\item{\code{data}}{\code{character} scalar. Like \verb{$data}, but returns a \code{data.table}
-instead (requires the \strong{data.table} package).}
-}
-\if{html}{\out{</div>}}
+    \item{\code{dt}}{Like \verb{$data}, but returns a \code{data.table} instead (requires
+the \strong{data.table} package).}
+
+    \item{\code{destination}}{The output destination of the \code{Appender} in human-readable form. This
+is mainly used when printing information about the Appender itself.}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-AppenderFile-new}{\code{AppenderFile$new()}}
-\item \href{#method-AppenderFile-append}{\code{AppenderFile$append()}}
-\item \href{#method-AppenderFile-set_file}{\code{AppenderFile$set_file()}}
-\item \href{#method-AppenderFile-show}{\code{AppenderFile$show()}}
+  \itemize{
+    \item \href{#method-AppenderFile-initialize}{\code{AppenderFile$new()}}
+    \item \href{#method-AppenderFile-append}{\code{AppenderFile$append()}}
+    \item \href{#method-AppenderFile-set_file}{\code{AppenderFile$set_file()}}
+    \item \href{#method-AppenderFile-show}{\code{AppenderFile$show()}}
+  }
 }
-}
-\if{html}{\out{
-<details><summary>Inherited methods</summary>
+\if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="format"><a href='../../lgr/html/Appender.html#method-Appender-format'><code>lgr::Appender$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-Appender-set_layout'><code>lgr::Appender$set_layout()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-Appender-set_threshold'><code>lgr::Appender$set_threshold()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>Filterable$add_filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>Filterable$filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>Filterable$remove_filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>Filterable$set_filters()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="format"><a href='../../lgr/html/Appender.html#method-Appender-format'><code>Appender$format()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-Appender-set_layout'><code>Appender$set_layout()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-Appender-set_threshold'><code>Appender$set_threshold()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AppenderFile-new"></a>}}
-\if{latex}{\out{\hypertarget{method-AppenderFile-new}{}}}
-\subsection{Method \code{new()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFile$new(
+\if{html}{\out{<a id="method-AppenderFile-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFile-initialize}{}}}
+\subsection{\code{AppenderFile$new()}}{
+  Create a new AppenderFile.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFile$new(
   file,
   threshold = NA_integer_,
   layout = LayoutFormat$new(),
   filters = NULL
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{file}}{\code{character} scalar. Path to the log file. If \code{file} does
+not exist it will be created.}
+      \item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
+that triggers this Appender. See \link{log_levels}.}
+      \item{\code{layout}}{A \link{Layout} that determines how \link[=LogEvent]{LogEvents} are
+formatted before being output by this Appender.}
+      \item{\code{filters}}{A \code{list} of \link[=EventFilter]{EventFilters} or predicate
+functions used to filter events for this Appender. See \link{Filterable}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderFile-append"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderFile-append}{}}}
-\subsection{Method \code{append()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFile$append(event)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderFile$append()}}{
+  Process a \link{LogEvent} \code{event} by appending it to \verb{$file}.
+This method is usually not called by the user, but invoked by a
+\link{Logger}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFile$append(event)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{event}}{a \link{LogEvent}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderFile-set_file"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderFile-set_file}{}}}
-\subsection{Method \code{set_file()}}{
-Set a log file
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFile$set_file(file)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderFile$set_file()}}{
+  Set a log file
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFile$set_file(file)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{file}}{\code{character} scalar. Path to the log file. If \code{file} does not
+exist it will be created.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{file}}{\code{character} scalar. Path to the log file. If \code{file} does not
-exist it will be created.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderFile-show"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderFile-show}{}}}
-\subsection{Method \code{show()}}{
-Display the contents of the log file.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFile$show(threshold = NA_integer_, n = 20L)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
+\subsection{\code{AppenderFile$show()}}{
+  Display the contents of the log file.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFile$show(threshold = NA_integer_, n = 20L)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
 that should be displayed.}
-
-\item{\code{n}}{\code{integer} scalar. Show only the last \code{n} log entries that match
+      \item{\code{n}}{\code{integer} scalar. Show only the last \code{n} log entries that match
 \code{threshold}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 }
 \section{Super classes}{
-\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{\link[lgr:AppenderFile]{lgr::AppenderFile}} -> \code{AppenderJson}
+\code{\link[lgr:Filterable]{Filterable}} -> \code{\link[lgr:Appender]{Appender}} -> \code{\link[lgr:AppenderFile]{AppenderFile}} -> \code{AppenderJson}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-AppenderJson-new}{\code{AppenderJson$new()}}
+  \itemize{
+    \item \href{#method-AppenderJson-initialize}{\code{AppenderJson$new()}}
+  }
 }
-}
-\if{html}{\out{
-<details><summary>Inherited methods</summary>
+\if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="format"><a href='../../lgr/html/Appender.html#method-Appender-format'><code>lgr::Appender$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-Appender-set_layout'><code>lgr::Appender$set_layout()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-Appender-set_threshold'><code>lgr::Appender$set_threshold()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="append"><a href='../../lgr/html/AppenderFile.html#method-AppenderFile-append'><code>lgr::AppenderFile$append()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="set_file"><a href='../../lgr/html/AppenderFile.html#method-AppenderFile-set_file'><code>lgr::AppenderFile$set_file()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="show"><a href='../../lgr/html/AppenderFile.html#method-AppenderFile-show'><code>lgr::AppenderFile$show()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>Filterable$add_filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>Filterable$filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>Filterable$remove_filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>Filterable$set_filters()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="format"><a href='../../lgr/html/Appender.html#method-Appender-format'><code>Appender$format()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-Appender-set_layout'><code>Appender$set_layout()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-Appender-set_threshold'><code>Appender$set_threshold()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="append"><a href='../../lgr/html/AppenderFile.html#method-AppenderFile-append'><code>AppenderFile$append()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="set_file"><a href='../../lgr/html/AppenderFile.html#method-AppenderFile-set_file'><code>AppenderFile$set_file()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="show"><a href='../../lgr/html/AppenderFile.html#method-AppenderFile-show'><code>AppenderFile$show()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AppenderJson-new"></a>}}
-\if{latex}{\out{\hypertarget{method-AppenderJson-new}{}}}
-\subsection{Method \code{new()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderJson$new(
+\if{html}{\out{<a id="method-AppenderJson-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderJson-initialize}{}}}
+\subsection{\code{AppenderJson$new()}}{
+  Create a new AppenderJson.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderJson$new(
   file,
   threshold = NA_integer_,
   layout = LayoutJson$new(),
   filters = NULL
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{file}}{\code{character} scalar. Path to the log file. If \code{file} does
+not exist it will be created.}
+      \item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
+that triggers this Appender. See \link{log_levels}.}
+      \item{\code{layout}}{A \link{Layout} that determines how \link[=LogEvent]{LogEvents} are
+formatted before being output by this Appender. Defaults to
+\link{LayoutJson}.}
+      \item{\code{filters}}{A \code{list} of \link[=EventFilter]{EventFilters} or predicate
+functions used to filter events for this Appender. See \link{Filterable}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 }

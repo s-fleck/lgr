@@ -1,6 +1,3 @@
-context("utils-rd")
-
-
 test_that("utils-rd works as expected", {
 
   res <- r6_usage(AppenderFileRotating)

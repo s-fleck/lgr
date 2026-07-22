@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "disable_existing_loggers": true,
+  "layouts": {
+    "simple": {
+      "class": "LayoutFormat",
+      "fmt": "%L %m"
+    },
+    "detailed": {
+      "class": "LayoutFormat",
+      "fmt": "%L [%t] <%c> %m"
+    },
+    "json": {
+      "class": "LayoutJson"
+    }
+  },
+  "filters": {
+    "info_and_above": {
+      "class": "FilterForceLevel",
+      "level": "info"
+    },
+    "warn_and_above": {
+      "class": "FilterForceLevel",
+      "level": "warn"
+    },
+    "debug_and_above": {
+      "class": "FilterForceLevel",
+      "level": "debug"
+    }
+  },
+  "appenders": {
+    "console_info": {
+      "class": "AppenderConsole",
+      "threshold": "info",
+      "layout": "simple"
+    },
+    "console_debug": {
+      "class": "AppenderConsole",
+      "threshold": "debug",
+      "layout": "detailed"
+    },
+
+    "buffer": {
+      "class": "AppenderBuffer",
+      "threshold": "all",
+      "buffer_size": 100
+    }
+  },
+  "loggers": {
+    "root": {
+      "threshold": "debug",
+      "appenders": ["console_info", "buffer"],
+      "propagate": true
+    },
+    "app": {
+      "threshold": "info",
+      "appenders": ["console_debug", "buffer"],
+      "propagate": false
+    },
+    "app/db": {
+      "threshold": "warn",
+      "filters": ["warn_and_above"],
+      "appenders": ["buffer"],
+      "propagate": false
+    },
+    "app/api": {
+      "threshold": "all",
+      "appenders": ["buffer"],
+      "propagate": true
+    }
+  }
+}

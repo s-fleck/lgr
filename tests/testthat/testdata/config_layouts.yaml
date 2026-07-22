@@ -1,0 +1,59 @@
+version: 1
+disable_existing_loggers: true
+
+layouts:
+  minimal:
+    class: LayoutFormat
+    fmt: "%m"
+  
+  standard:
+    class: LayoutFormat
+    fmt: "%L - %m"
+  
+  detailed:
+    class: LayoutFormat
+    fmt: "[%L] (%t) {%c} %m"
+  
+  with_fields:
+    class: LayoutFormat
+    fmt: "%L | %t | %c | %n | %m"
+  
+  json_layout:
+    class: LayoutJson
+
+appenders:
+  console_minimal:
+    class: AppenderConsole
+    threshold: info
+    layout: minimal
+  
+  console_standard:
+    class: AppenderConsole
+    threshold: debug
+    layout: standard
+  
+  console_detailed:
+    class: AppenderConsole
+    threshold: all
+    layout: detailed
+  
+  buffer_json:
+    class: AppenderBuffer
+    threshold: all
+    buffer_size: 50
+    layout: json_layout
+
+loggers:
+  root:
+    threshold: all
+    appenders: [console_minimal, buffer_json]
+  
+  debug_logger:
+    threshold: all
+    appenders: [console_detailed]
+    propagate: false
+  
+  standard_logger:
+    threshold: info
+    appenders: [console_standard]
+    propagate: false

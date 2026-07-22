@@ -21,12 +21,12 @@ Please refer to the \emph{see also} section for actual implementations of this
 class.
 }
 \seealso{
-Other abstract classes: 
+Other abstract classes:
 \code{\link{AppenderMemory}},
 \code{\link{AppenderTable}},
 \code{\link{Filterable}}
 
-Other Appenders: 
+Other Appenders:
 \code{\link{AppenderBuffer}},
 \code{\link{AppenderConsole}},
 \code{\link{AppenderFile}},
@@ -39,92 +39,145 @@ Other Appenders:
 \concept{abstract classes}
 \keyword{internal}
 \section{Super class}{
-\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{Appender}
+\code{\link[lgr:Filterable]{Filterable}} -> \code{Appender}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{destination}}{The output destination of the \code{Appender} in human-readable form. This
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{threshold}}{\code{integer} scalar. The minimum log level that
+triggers this Appender. See \verb{$set_threshold()}.}
+
+    \item{\code{layout}}{The \link{Layout} that this Appender uses to format
+\link[=LogEvent]{LogEvents}. See \verb{$set_layout()}.}
+
+    \item{\code{destination}}{The output destination of the \code{Appender} in human-readable form. This
 is mainly used when printing information about the Appender itself.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-Appender-new}{\code{Appender$new()}}
-\item \href{#method-Appender-append}{\code{Appender$append()}}
-\item \href{#method-Appender-set_threshold}{\code{Appender$set_threshold()}}
-\item \href{#method-Appender-set_layout}{\code{Appender$set_layout()}}
-\item \href{#method-Appender-format}{\code{Appender$format()}}
+  \itemize{
+    \item \href{#method-Appender-initialize}{\code{Appender$new()}}
+    \item \href{#method-Appender-append}{\code{Appender$append()}}
+    \item \href{#method-Appender-set_threshold}{\code{Appender$set_threshold()}}
+    \item \href{#method-Appender-set_layout}{\code{Appender$set_layout()}}
+    \item \href{#method-Appender-format}{\code{Appender$format()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>Filterable$add_filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>Filterable$filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>Filterable$remove_filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>Filterable$set_filters()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Appender-new"></a>}}
-\if{latex}{\out{\hypertarget{method-Appender-new}{}}}
-\subsection{Method \code{new()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Appender$new(layout = Layout$new(), threshold = NA_integer_)}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-Appender-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-Appender-initialize}{}}}
+\subsection{\code{Appender$new()}}{
+  Create a new Appender. Appenders are usually not
+instantiated directly, but through one of their non-abstract
+subclasses (such as \link{AppenderConsole} or \link{AppenderFile}).
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Appender$new(layout = Layout$new(), threshold = NA_integer_)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{layout}}{A \link{Layout} that determines how \link[=LogEvent]{LogEvents} are
+formatted before being output by this Appender.}
+      \item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
+that triggers this Appender. See \link{log_levels}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Appender-append"></a>}}
 \if{latex}{\out{\hypertarget{method-Appender-append}{}}}
-\subsection{Method \code{append()}}{
-Process a \link{LogEvent} \code{event}. This method is usually not
+\subsection{\code{Appender$append()}}{
+  Process a \link{LogEvent} \code{event}. This method is usually not
 called by the user, but invoked by a \link{Logger}
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Appender$append(event)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Appender$append(event)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{event}}{a \link{LogEvent}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Appender-set_threshold"></a>}}
 \if{latex}{\out{\hypertarget{method-Appender-set_threshold}{}}}
-\subsection{Method \code{set_threshold()}}{
-Set the minimum log level that triggers this Appender. See
+\subsection{\code{Appender$set_threshold()}}{
+  Set the minimum log level that triggers this Appender. See
 \code{\link[=threshold]{threshold()}} for examples
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Appender$set_threshold(level)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Appender$set_threshold(level)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{level}}{\code{character} or \code{integer} scalar log level. See \link{log_levels}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{level}}{\code{character} or \code{integer} scalar log level. See \link{log_levels}.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Appender-set_layout"></a>}}
 \if{latex}{\out{\hypertarget{method-Appender-set_layout}{}}}
-\subsection{Method \code{set_layout()}}{
-Set the \code{Layout} that this Appender will use for formatting
+\subsection{\code{Appender$set_layout()}}{
+  Set the \code{Layout} that this Appender will use for formatting
 \code{LogEvents}
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Appender$set_layout(layout)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Appender$set_layout(layout)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{layout}}{A \link{Layout} that determines how \link[=LogEvent]{LogEvents} are
+formatted before being output by this Appender.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Appender-format"></a>}}
 \if{latex}{\out{\hypertarget{method-Appender-format}{}}}
-\subsection{Method \code{format()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Appender$format(color = FALSE, ...)}\if{html}{\out{</div>}}
+\subsection{\code{Appender$format()}}{
+  Format the Appender for printing (see also
+\code{\link[=print.Appender]{print.Appender()}}).
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Appender$format(color = FALSE, ...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{color}}{\code{TRUE} or \code{FALSE}. Output with color? Requires the
+package \strong{crayon}.}
+      \item{\code{...}}{ignored}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 }

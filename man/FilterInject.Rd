@@ -22,58 +22,62 @@ lg$error("an normal error")
 lg$config(NULL)  # reset config
 }
 \section{Super class}{
-\code{\link[lgr:EventFilter]{lgr::EventFilter}} -> \code{FilterInject}
+\code{\link[lgr:EventFilter]{EventFilter}} -> \code{FilterInject}
 }
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{values}}{a named \code{list} of values to be injected into each
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{values}}{a named \code{list} of values to be injected into each
 \link{LogEvent} processed by this filter}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-FilterInject-new}{\code{FilterInject$new()}}
-\item \href{#method-FilterInject-clone}{\code{FilterInject$clone()}}
-}
+  \itemize{
+    \item \href{#method-FilterInject-initialize}{\code{FilterInject$new()}}
+    \item \href{#method-FilterInject-clone}{\code{FilterInject$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-FilterInject-new"></a>}}
-\if{latex}{\out{\hypertarget{method-FilterInject-new}{}}}
-\subsection{Method \code{new()}}{
-Initialize a new FilterInject
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{FilterInject$new(..., .list = list())}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{..., .list}}{any number of named \R objects that will be injected as
+\if{html}{\out{<a id="method-FilterInject-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-FilterInject-initialize}{}}}
+\subsection{\code{FilterInject$new()}}{
+  Initialize a new FilterInject
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{FilterInject$new(..., .list = list())}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{..., .list}}{any number of named \R objects that will be injected as
 custom fields into all \link[=LogEvent]{LogEvents} processed by the
 Appender/Logger that this filter is attached to. See also
 \code{\link[=with_log_value]{with_log_value()}}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-FilterInject-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-FilterInject-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{FilterInject$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{FilterInject$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{FilterInject$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

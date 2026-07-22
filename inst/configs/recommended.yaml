@@ -1,8 +1,10 @@
-Logger:
-  threshold: all
-  appenders:
-    AppenderConsole:
-      threshold: info
-    AppenderBuffer:
-      threshold: all
-
+loggers:
+  root:
+    threshold: all
+    appenders:
+      console:
+        class: AppenderConsole
+        threshold: info
+      buffer:
+        class: AppenderBuffer
+        threshold: all

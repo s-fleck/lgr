@@ -1,10 +1,15 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+#
+# Deploys the site to https://s-fleck.github.io/lgr on pushes to main/master, releases,
+# and manual dispatch. Same-repo (non-fork) pull requests additionally get a preview at
+# https://s-fleck.github.io/lgr/preview/pr-<number>/, linked via a PR comment, which is
+# removed again once the PR is closed.
 on:
   push:
     branches: [main, master]
   pull_request:
-    branches: [main, master]
+    types: [opened, synchronize, reopened, closed]
   release:
     types: [published]
   workflow_dispatch:
@@ -15,6 +20,7 @@ permissions: read-all
 
 jobs:
   pkgdown:
+    if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     # Only restrict concurrency for non-PR jobs
     concurrency:
@@ -23,14 +29,13 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     permissions:
       contents: write
+      pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: r-lib/actions/setup-pandoc@v2
 
       - uses: r-lib/actions/setup-r@v2
-        with:
-          use-public-rspm: true
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
@@ -43,8 +48,71 @@ jobs:
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
-        uses: JamesIves/github-pages-deploy-action@v4.7.2
+        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4.8.0
         with:
           clean: false
           branch: gh-pages
           folder: docs
+
+      - name: Deploy PR preview 🔍
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false
+        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4.8.0
+        with:
+          clean: true
+          branch: gh-pages
+          folder: docs
+          target-folder: preview/pr-${{ github.event.pull_request.number }}
+
+      - name: Comment preview link
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const url = `https://s-fleck.github.io/lgr/preview/pr-${context.issue.number}/`
+            const marker = '<!-- pkgdown-preview-link -->'
+            const body = `${marker}\n📖 Preview of the pkgdown site for this PR: ${url}\n\n(updates automatically on new commits, and is removed when this PR is closed)`
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            })
+            const existing = comments.find((c) => c.body.includes(marker))
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              })
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              })
+            }
+
+  pkgdown-preview-cleanup:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: gh-pages
+
+      - name: Remove PR preview
+        run: |
+          set -e
+          target="preview/pr-${{ github.event.pull_request.number }}"
+          if [ -d "$target" ]; then
+            git rm -r --quiet "$target"
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git commit -m "Remove pkgdown preview for closed PR #${{ github.event.pull_request.number }}"
+            git push
+          else
+            echo "No preview folder to remove at $target"
+          fi

@@ -43,8 +43,8 @@ log levels (likely from \link[crayon:crayon]{crayon::crayon}).}
 \item{pad_levels}{\code{right}, \code{left} or \code{NULL}. Whether or not to pad the log
 level names to the same width on the left or right side, or not at all.}
 
-\item{excluded_fields}{a \code{character} vector of fields to exclude from \verb{\%j} and
-\verb{\%f}}
+\item{excluded_fields}{a \code{character} vector of fields to exclude from \verb{\%j}
+and \verb{\%f}}
 
 \item{...}{ignored}
 }
@@ -56,26 +56,23 @@ Print or Format Logging Data
 }
 \section{Format Tokens}{
 
-\describe{
-\item{\verb{\%t}}{The timestamp of the message, formatted according to
-\code{timestamp_fmt})}
-\item{\verb{\%l}}{the log level, lowercase \code{character} representation}
-\item{\verb{\%L}}{the log level, uppercase \code{character} representation}
-\item{\verb{\%k}}{the log level, first letter of lowercase \code{character} representation}
-\item{\verb{\%K}}{the log level, first letter of uppercase \code{character} representation}
-\item{\verb{\%n}}{the log level, \code{integer} representation}
-\item{\verb{\%g}}{the name of the logger}
-\item{\verb{\%p}}{the PID (process ID). Useful when logging code that uses
-multiple threads.}
-\item{\verb{\%c}}{the calling function}
-\item{\verb{\%m}}{the log message}
-\item{\verb{\%r}}{the raw log message (without string interpolation)}
-\item{\verb{\%f}}{all custom fields of \code{x} in a pseudo-JSON like format that is
-optimized for human readability and console output}
-\item{\verb{\%j}}{all custom fields of \code{x} in proper JSON. This requires that you
-have \strong{jsonlite} installed and does not support colors as opposed to
-\verb{\%f}
-}
+\itemize{
+\item \verb{\%t} The timestamp of the message, formatted according to \code{timestamp_fmt}
+\item \verb{\%l} the log level, lowercase \code{character} representation
+\item \verb{\%L} the log level, uppercase \code{character} representation
+\item \verb{\%k} the log level, first letter of lowercase \code{character} representation
+\item \verb{\%K} the log level, first letter of uppercase \code{character} representation
+\item \verb{\%n} the log level, \code{integer} representation
+\item \verb{\%g} the name of the logger
+\item \verb{\%p} the PID (process ID). Useful when logging code that uses multiple
+threads.
+\item \verb{\%c} the calling function
+\item \verb{\%m} the log message
+\item \verb{\%r} the raw log message (without string interpolation)
+\item \verb{\%f} all custom fields of \code{x} in a pseudo-JSON like format that is
+optimized for human readability and console output
+\item \verb{\%j} all custom fields of \code{x} in proper JSON. This requires that you have
+\strong{jsonlite} installed and does not support colors as opposed to \verb{\%f}
 }
 }
 

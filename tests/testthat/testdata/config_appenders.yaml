@@ -1,0 +1,71 @@
+version: 1
+disable_existing_loggers: false
+
+layouts:
+  msg_only:
+    class: LayoutFormat
+    fmt: "%m"
+
+  msg_time:
+    class: LayoutFormat
+    fmt: "%t - %m"
+
+  full:
+    class: LayoutFormat
+    fmt: "%L [%t] (%c) {%n} %m"
+
+filters:
+  force_error_level:
+    class: FilterForceLevel
+    level: error
+
+  force_trace_level:
+    class: FilterForceLevel
+    level: trace
+
+appenders:
+  console_simple:
+    class: AppenderConsole
+    threshold: info
+    layout: msg_only
+
+  buffer_large:
+    class: AppenderBuffer
+    threshold: all
+    buffer_size: 500
+
+  buffer_json:
+    class: AppenderBuffer
+    threshold: all
+    buffer_size: 100
+    layout: full
+
+loggers:
+  root:
+    threshold: all
+    appenders: [console_simple, buffer_large]
+
+  testing:
+    threshold: debug
+    appenders: [buffer_json]
+    propagate: true
+
+  testing/force_error_level:
+    threshold: debug
+    appenders: [buffer_json]
+    propagate: true
+    filters: [force_error_level]
+
+  testing/force_trace_level:
+    threshold: debug
+    appenders: [buffer_json]
+    propagate: true
+    filters: [force_trace_level]
+
+  testing/unit:
+    threshold: info
+    propagate: false
+
+  testing/integration:
+    threshold: all
+    propagate: false

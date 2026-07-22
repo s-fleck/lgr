@@ -36,17 +36,19 @@ Suggests:
     rmarkdown,
     rotor (>= 0.3.5),
     rprojroot,
-    testthat,
+    testthat (>= 3.0.0),
     tibble,
     tools,
     utils,
     whoami,
+    withr,
     yaml
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
+Config/roxygen2/markdown: TRUE
+Config/roxygen2/version: 8.0.0
+Config/testthat/edition: 3
 Collate: 
     'Filterable.R'
     'utils-sfmisc.R'
@@ -60,10 +62,10 @@ Collate:
     'Logger.R'
     'basic_config.R'
     'default_functions.R'
-    'event_list.R'
     'get_logger.R'
+    'config.R'
+    'event_list.R'
     'lgr-package.R'
-    'logger_config.R'
     'logger_index.R'
     'logger_tree.R'
     'read_json_lines.R'

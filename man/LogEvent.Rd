@@ -33,66 +33,67 @@ lg$config(NULL)  # reset logger config
 \seealso{
 \code{\link[=as.data.frame.LogEvent]{as.data.frame.LogEvent()}}
 
-Other docs relevant for extending lgr: 
-\code{\link{as_LogEvent}()},
-\code{\link{event_list}()},
-\code{\link{standardize_threshold}()}
+Other docs relevant for extending lgr:
+\code{\link[=as_LogEvent]{as_LogEvent()}},
+\code{\link[=event_list]{event_list()}},
+\code{\link[=standardize_threshold]{standardize_threshold()}}
 }
 \concept{docs relevant for extending lgr}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{level}}{\code{integer}. The \link{log_level} / priority of the LogEvent. Use the
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{level}}{\code{integer}. The \link{log_level} / priority of the LogEvent. Use the
 active binding \code{level_name} to get the \code{character} representation
 instead.}
 
-\item{\code{timestamp}}{\code{\link[base:DateTimeClasses]{POSIXct}}. The time when then the
+    \item{\code{timestamp}}{\code{\link[base:POSIXct]{POSIXct}}. The time when then the
 LogEvent was created.}
 
-\item{\code{caller}}{\code{character}. The name of the calling function.}
+    \item{\code{caller}}{\code{character}. The name of the calling function.}
 
-\item{\code{msg}}{\code{character}. The log message.}
+    \item{\code{msg}}{\code{character}. The log message.}
 
-\item{\code{.logger}}{\link{Logger}. A reference to the Logger that created the
+    \item{\code{.logger}}{\link{Logger}. A reference to the Logger that created the
 event (equivalent to \code{get_logger(event$logger)}).}
 
-\item{\code{rawMsg}}{\code{character}. The raw log message without string
+    \item{\code{rawMsg}}{\code{character}. The raw log message without string
 interpolation.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{values}}{\code{list}. All values stored in the \code{LogEvent}, including
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{values}}{\code{list}. All values stored in the \code{LogEvent}, including
 all \emph{custom fields}, but not including \code{event$.logger}.}
 
-\item{\code{level_name}}{\code{character}. The \link{log_level} / priority of the LogEvent labelled
+    \item{\code{level_name}}{\code{character}. The \link{log_level} / priority of the LogEvent labelled
 according to \code{getOption("lgr.log_levels")}}
 
-\item{\code{logger}}{\code{character} scalar. The name of the Logger that
+    \item{\code{logger}}{\code{character} scalar. The name of the Logger that
 created this event, equivalent to \code{event$.logger$name})}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-LogEvent-new}{\code{LogEvent$new()}}
-\item \href{#method-LogEvent-clone}{\code{LogEvent$clone()}}
-}
+  \itemize{
+    \item \href{#method-LogEvent-initialize}{\code{LogEvent$new()}}
+    \item \href{#method-LogEvent-clone}{\code{LogEvent$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LogEvent-new"></a>}}
-\if{latex}{\out{\hypertarget{method-LogEvent-new}{}}}
-\subsection{Method \code{new()}}{
-The arguments to \code{LogEvent$new()} directly translate to the fields stored
+\if{html}{\out{<a id="method-LogEvent-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-LogEvent-initialize}{}}}
+\subsection{\code{LogEvent$new()}}{
+  The arguments to \code{LogEvent$new()} directly translate to the fields stored
 in the \code{LogEvent}. Usually these values will be scalars, but (except for
 \code{"logger"}) they can also be vectors if they are all of the same length (or
 scalars that will be recycled). In this case the event will be treated by
 the \link{Appenders} and \link{Layouts} as if several separate events.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LogEvent$new(
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LogEvent$new(
   logger,
   level = 400,
   timestamp = Sys.time(),
@@ -100,36 +101,40 @@ the \link{Appenders} and \link{Layouts} as if several separate events.
   msg = NA,
   rawMsg = msg,
   ...
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{logger, level, timestamp, caller, msg}}{see \strong{Public fields}.}
-
-\item{\code{...}}{All named arguments in \code{...} will be added to the LogEvent
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{logger, level, timestamp, caller, msg}}{see \strong{Public fields}.}
+      \item{\code{rawMsg}}{\code{character}. The raw log message without string
+interpolation.}
+      \item{\code{...}}{All named arguments in \code{...} will be added to the LogEvent
 as \strong{custom fields}. You can store arbitrary \R objects in LogEvents
 this way, but not all Appenders will support them. See \link{AppenderJson} for}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LogEvent-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-LogEvent-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LogEvent$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{LogEvent$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LogEvent$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

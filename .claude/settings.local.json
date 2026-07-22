@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:roxygen2.r-lib.org)",
+      "Bash(Rscript *)",
+      "PowerShell($r = Get-Command Rscript.exe -ErrorAction SilentlyContinue; if \\($r\\) { & $r.Source -e 'if \\(requireNamespace\\(\"roxygen2\", quietly=TRUE\\)\\) cat\\(as.character\\(packageVersion\\(\"roxygen2\"\\)\\)\\) else cat\\(\"not installed\"\\)' } else { \"Rscript not found on PATH\" })",
+      "PowerShell(& \"C:\\\\Program Files\\\\R\\\\R-4.5.1\\\\bin\\\\Rscript.exe\" -e 'if \\(requireNamespace\\(\"roxygen2\", quietly=TRUE\\)\\) cat\\(as.character\\(packageVersion\\(\"roxygen2\"\\)\\)\\) else cat\\(\"not installed\"\\)')",
+      "PowerShell(& \"C:\\\\Program Files\\\\R\\\\R-4.5.1\\\\bin\\\\Rscript.exe\" -e 'cat\\(as.character\\(packageVersion\\(\"devtools\"\\)\\), \"\\\\n\"\\); cat\\(R.version.string\\)')",
+      "Bash(openspec list *)",
+      "Bash(openspec status *)",
+      "WebFetch(domain:cran.r-project.org)",
+      "WebFetch(domain:crandb.r-pkg.org)",
+      "Bash(git -C C:/src/r-pkgs/lgr log --oneline --all -i --grep=\"muecke\")",
+      "PowerShell(& \"C:\\\\Program Files\\\\R\\\\R-4.5.1\\\\bin\\\\Rscript.exe\" -e \"devtools::load_all\\(quiet=TRUE\\); testthat::test_dir\\('tests/testthat', filter='config'\\)\" 2>&1 | Select-Object -Last 100)",
+      "PowerShell(& \"C:\\\\Program Files\\\\R\\\\R-4.5.1\\\\bin\\\\Rscript.exe\" -e \"devtools::load_all\\(quiet=TRUE\\); testthat::test_file\\('tests/testthat/test_config_schema.R'\\)\" 2>&1 | Select-Object -Last 60)",
+      "PowerShell(& \"C:\\\\Program Files\\\\R\\\\R-4.5.1\\\\bin\\\\Rscript.exe\" -e \"devtools::load_all\\(quiet=TRUE\\); testthat::test_dir\\('tests/testthat'\\)\" 2>&1 | Select-Object -Last 40)",
+      "PowerShell(& \"C:\\\\Program Files\\\\R\\\\R-4.5.1\\\\bin\\\\Rscript.exe\" -e \"devtools::load_all\\(quiet=TRUE\\); testthat::test_dir\\('tests/testthat'\\)\" 2>&1 | Select-Object -Last 60)",
+      "PowerShell(& \"C:\\\\Program Files\\\\R\\\\R-4.5.1\\\\bin\\\\Rscript.exe\" -e \"devtools::load_all\\(quiet=TRUE\\); testthat::test_file\\('tests/testthat/test_logging_config.R'\\)\" 2>&1 | Select-Object -Last 60)"
+    ]
+  }
+}

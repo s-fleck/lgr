@@ -251,7 +251,7 @@ show_data <- function(
 #' Return the first Appender that has a method or field called `name`
 #'
 #' @param x a [Logger] or [Appender]
-#' @param name
+#' @param name `character` scalar. The name of the method or field to look for.
 #'
 #' @return an Appender
 #' @noRd

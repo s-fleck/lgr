@@ -4,19 +4,14 @@
 \alias{AppenderFileRotatingTime}
 \title{Log to a time-stamped rotating file}
 \description{
-Log to a time-stamped rotating file
-
-Log to a time-stamped rotating file
-}
-\details{
 An extension of \link{AppenderFile} that rotates logfiles based on certain
-conditions. Please refer to the documentation of \code{\link[rotor:rotate]{rotor::rotate_time()}} for
+conditions. Please refer to the documentation of \code{\link[rotor:rotate_time]{rotor::rotate_time()}} for
 the meanings of the extra arguments
 }
 \seealso{
 \link{AppenderFileRotatingDate}, \link{AppenderFileRotating}, \code{\link[rotor:rotate]{rotor::rotate()}}
 
-Other Appenders: 
+Other Appenders:
 \code{\link{Appender}},
 \code{\link{AppenderBuffer}},
 \code{\link{AppenderConsole}},
@@ -27,60 +22,68 @@ Other Appenders:
 }
 \concept{Appenders}
 \section{Super classes}{
-\code{\link[lgr:Filterable]{lgr::Filterable}} -> \code{\link[lgr:Appender]{lgr::Appender}} -> \code{\link[lgr:AppenderFile]{lgr::AppenderFile}} -> \code{\link[lgr:AppenderFileRotating]{lgr::AppenderFileRotating}} -> \code{AppenderFileRotatingTime}
+\code{\link[lgr:Filterable]{Filterable}} -> \code{\link[lgr:Appender]{Appender}} -> \code{\link[lgr:AppenderFile]{AppenderFile}} -> \code{\link[lgr:AppenderFileRotating]{AppenderFileRotating}} -> \code{AppenderFileRotatingTime}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{cache_backups}}{\code{TRUE} or \code{FALSE}. If \code{TRUE} (the default) the list of backups is cached,
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{age}}{The maximum age of the log file that triggers rotation.
+See \verb{$set_age()}.}
+
+    \item{\code{overwrite}}{Whether an existing backup for the same timestamp
+may be overwritten. See \verb{$set_overwrite()}.}
+
+    \item{\code{fmt}}{The \code{strftime()}-style timestamp format used for naming
+backups. See \verb{$set_fmt()}.}
+
+    \item{\code{cache_backups}}{\code{TRUE} or \code{FALSE}. If \code{TRUE} (the default) the list of backups is cached,
 if \code{FALSE} it is read from disk every time this appender triggers.
 Caching brings a significant speedup for checking whether to rotate or
 not based on the \code{age} of the last backup, but is only safe if
 there are no other programs/functions (except this appender) interacting
 with the backups.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-AppenderFileRotatingTime-new}{\code{AppenderFileRotatingTime$new()}}
-\item \href{#method-AppenderFileRotatingTime-rotate}{\code{AppenderFileRotatingTime$rotate()}}
-\item \href{#method-AppenderFileRotatingTime-set_age}{\code{AppenderFileRotatingTime$set_age()}}
-\item \href{#method-AppenderFileRotatingTime-set_fmt}{\code{AppenderFileRotatingTime$set_fmt()}}
-\item \href{#method-AppenderFileRotatingTime-set_overwrite}{\code{AppenderFileRotatingTime$set_overwrite()}}
-\item \href{#method-AppenderFileRotatingTime-set_cache_backups}{\code{AppenderFileRotatingTime$set_cache_backups()}}
-\item \href{#method-AppenderFileRotatingTime-format}{\code{AppenderFileRotatingTime$format()}}
-\item \href{#method-AppenderFileRotatingTime-clone}{\code{AppenderFileRotatingTime$clone()}}
+  \itemize{
+    \item \href{#method-AppenderFileRotatingTime-initialize}{\code{AppenderFileRotatingTime$new()}}
+    \item \href{#method-AppenderFileRotatingTime-rotate}{\code{AppenderFileRotatingTime$rotate()}}
+    \item \href{#method-AppenderFileRotatingTime-set_age}{\code{AppenderFileRotatingTime$set_age()}}
+    \item \href{#method-AppenderFileRotatingTime-set_fmt}{\code{AppenderFileRotatingTime$set_fmt()}}
+    \item \href{#method-AppenderFileRotatingTime-set_overwrite}{\code{AppenderFileRotatingTime$set_overwrite()}}
+    \item \href{#method-AppenderFileRotatingTime-set_cache_backups}{\code{AppenderFileRotatingTime$set_cache_backups()}}
+    \item \href{#method-AppenderFileRotatingTime-format}{\code{AppenderFileRotatingTime$format()}}
+  }
 }
-}
-\if{html}{\out{
-<details><summary>Inherited methods</summary>
+\if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>lgr::Filterable$add_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>lgr::Filterable$filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>lgr::Filterable$remove_filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>lgr::Filterable$set_filters()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-Appender-set_layout'><code>lgr::Appender$set_layout()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-Appender-set_threshold'><code>lgr::Appender$set_threshold()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="show"><a href='../../lgr/html/AppenderFile.html#method-AppenderFile-show'><code>lgr::AppenderFile$show()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="append"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-append'><code>lgr::AppenderFileRotating$append()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="prune"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-prune'><code>lgr::AppenderFileRotating$prune()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_backup_dir"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_backup_dir'><code>lgr::AppenderFileRotating$set_backup_dir()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_compression"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_compression'><code>lgr::AppenderFileRotating$set_compression()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_create_file"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_create_file'><code>lgr::AppenderFileRotating$set_create_file()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_file"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_file'><code>lgr::AppenderFileRotating$set_file()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_max_backups"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_max_backups'><code>lgr::AppenderFileRotating$set_max_backups()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_size"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_size'><code>lgr::AppenderFileRotating$set_size()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="add_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-add_filter'><code>Filterable$add_filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="filter"><a href='../../lgr/html/Filterable.html#method-Filterable-filter'><code>Filterable$filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="remove_filter"><a href='../../lgr/html/Filterable.html#method-Filterable-remove_filter'><code>Filterable$remove_filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Filterable" data-id="set_filters"><a href='../../lgr/html/Filterable.html#method-Filterable-set_filters'><code>Filterable$set_filters()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_layout"><a href='../../lgr/html/Appender.html#method-Appender-set_layout'><code>Appender$set_layout()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Appender" data-id="set_threshold"><a href='../../lgr/html/Appender.html#method-Appender-set_threshold'><code>Appender$set_threshold()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFile" data-id="show"><a href='../../lgr/html/AppenderFile.html#method-AppenderFile-show'><code>AppenderFile$show()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="append"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-append'><code>AppenderFileRotating$append()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="prune"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-prune'><code>AppenderFileRotating$prune()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_backup_dir"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_backup_dir'><code>AppenderFileRotating$set_backup_dir()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_compression"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_compression'><code>AppenderFileRotating$set_compression()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_create_file"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_create_file'><code>AppenderFileRotating$set_create_file()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_file"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_file'><code>AppenderFileRotating$set_file()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_max_backups"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_max_backups'><code>AppenderFileRotating$set_max_backups()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="AppenderFileRotating" data-id="set_size"><a href='../../lgr/html/AppenderFileRotating.html#method-AppenderFileRotating-set_size'><code>AppenderFileRotating$set_size()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AppenderFileRotatingTime-new"></a>}}
-\if{latex}{\out{\hypertarget{method-AppenderFileRotatingTime-new}{}}}
-\subsection{Method \code{new()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$new(
+\if{html}{\out{<a id="method-AppenderFileRotatingTime-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-AppenderFileRotatingTime-initialize}{}}}
+\subsection{\code{AppenderFileRotatingTime$new()}}{
+  Create a new AppenderFileRotatingTime.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFileRotatingTime$new(
   file,
   threshold = NA_integer_,
   layout = LayoutFormat$new(),
@@ -94,95 +97,152 @@ with the backups.}
   overwrite = FALSE,
   cache_backups = TRUE,
   create_file = NULL
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{file}}{\code{character} scalar. Path to the log file. If \code{file} does
+not exist it will be created.}
+      \item{\code{threshold}}{\code{character} or \code{integer} scalar. The minimum log level
+that triggers this Appender. See \link{log_levels}.}
+      \item{\code{layout}}{A \link{Layout} that determines how \link[=LogEvent]{LogEvents} are
+formatted before being output by this Appender.}
+      \item{\code{filters}}{A \code{list} of \link[=EventFilter]{EventFilters} or predicate
+functions used to filter events for this Appender. See \link{Filterable}.}
+      \item{\code{age, size, max_backups, compression, backup_dir, fmt, overwrite, cache_backups}}{see \code{\link[rotor:rotate_time]{rotor::rotate_time()}} for the meaning of these arguments. Note
+that \code{backup_dir} corresponds to \code{dir}.}
+      \item{\code{create_file}}{Defunct, do not use.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{size, age, max_backups, compression, backup_dir, fmt, overwrite, cache_backups}}{see \code{\link[rotor:rotate]{rotor::rotate_time()}} for the meaning of these arguments. Note that
-\code{fmt} corresponds to \code{format} and \code{backup_dir} to \code{dir}.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderFileRotatingTime-rotate"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderFileRotatingTime-rotate}{}}}
-\subsection{Method \code{rotate()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$rotate(force = FALSE, now = Sys.time())}\if{html}{\out{</div>}}
+\subsection{\code{AppenderFileRotatingTime$rotate()}}{
+  Rotate the log file if it meets the rotation conditions
+(see \verb{$size}, \verb{$age}), or unconditionally if \code{force = TRUE}. See
+\code{\link[rotor:rotate_time]{rotor::rotate_time()}} for details.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFileRotatingTime$rotate(force = FALSE, now = Sys.time())}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{force}}{\code{TRUE} or \code{FALSE}. Force rotation regardless of whether
+the rotation conditions are met.}
+      \item{\code{now}}{A \code{POSIXct} scalar. The timestamp to use for naming the new
+backup and for evaluating \verb{$age}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderFileRotatingTime-set_age"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderFileRotatingTime-set_age}{}}}
-\subsection{Method \code{set_age()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$set_age(x)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderFileRotatingTime$set_age()}}{
+  Set the maximum age of the log file that triggers
+rotation. See \code{\link[rotor:rotate_time]{rotor::rotate_time()}}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFileRotatingTime$set_age(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{A \code{difftime} or \code{numeric} scalar (interpreted as days), or
+\code{Inf} to disable age-based rotation.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderFileRotatingTime-set_fmt"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderFileRotatingTime-set_fmt}{}}}
-\subsection{Method \code{set_fmt()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$set_fmt(x)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderFileRotatingTime$set_fmt()}}{
+  Set the \code{strftime()}-style timestamp format used for
+naming backups. See \code{\link[rotor:rotate_time]{rotor::rotate_time()}}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFileRotatingTime$set_fmt(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{\code{character} scalar.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderFileRotatingTime-set_overwrite"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderFileRotatingTime-set_overwrite}{}}}
-\subsection{Method \code{set_overwrite()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$set_overwrite(x)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderFileRotatingTime$set_overwrite()}}{
+  Set whether an existing backup for the same timestamp
+may be overwritten. See \code{\link[rotor:rotate_time]{rotor::rotate_time()}}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFileRotatingTime$set_overwrite(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{\code{TRUE} or \code{FALSE}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderFileRotatingTime-set_cache_backups"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderFileRotatingTime-set_cache_backups}{}}}
-\subsection{Method \code{set_cache_backups()}}{
-set the \code{cache_backups} flag.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$set_cache_backups(x)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderFileRotatingTime$set_cache_backups()}}{
+  set the \code{cache_backups} flag.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFileRotatingTime$set_cache_backups(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{a \code{logical} scalar}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{a \code{logical} scalar}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AppenderFileRotatingTime-format"></a>}}
 \if{latex}{\out{\hypertarget{method-AppenderFileRotatingTime-format}{}}}
-\subsection{Method \code{format()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$format(color = FALSE, ...)}\if{html}{\out{</div>}}
+\subsection{\code{AppenderFileRotatingTime$format()}}{
+  Format the Appender for printing (see also
+\code{\link[=print.Appender]{print.Appender()}}).
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AppenderFileRotatingTime$format(color = FALSE, ...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{color}}{\code{TRUE} or \code{FALSE}. Output with color? Requires the
+package \strong{crayon}.}
+      \item{\code{...}}{ignored}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AppenderFileRotatingTime-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-AppenderFileRotatingTime-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AppenderFileRotatingTime$clone(deep = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

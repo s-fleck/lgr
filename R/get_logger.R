@@ -17,7 +17,11 @@ remove_all_loggers <- function(){
 #' @param reset a `logical` scalar. If `TRUE` the logger is reset to an
 #'   unconfigured state. Unlike `$config(NULL)` this also replaces a
 #'   `LoggerGlue` with vanilla `Logger`. Please note that this will invalidate
-#'   Logger references created before the reset call (see examples).
+#'   Logger references created before the reset call (see examples). The
+#'   root logger is the exception: since it is a package-level singleton
+#'   (`lgr`), `get_logger("root", reset = TRUE)` resets it in place (exactly
+#'   like `lgr$config(NULL)`) rather than replacing the object, so existing
+#'   `lgr` references remain valid.
 #'
 #' @return a [Logger]
 #' @export
@@ -56,7 +60,23 @@ get_logger <- function(
 
   nm_cur <- unlist(strsplit(name, "/", fixed = TRUE))
   name   <- paste(nm_cur, collapse = "/")
-  res    <- get0(name, envir = loggers, inherits = FALSE)
+
+  if (identical(name, "root")){
+    # The root Logger is a package-level singleton (also bound to `lgr`).
+    # Unlike other Loggers it is never destroyed/recreated: `reset` resets
+    # its fields in place (like `$config(NULL)`) instead of swapping in a
+    # new object, which would desync the `lgr` binding from `loggers$root`
+    # and leave existing `lgr` references pointing at a stale, orphaned
+    # Logger. Read from `loggers` directly (not the `lgr` binding) because
+    # `.onLoad()` calls `get_logger("root")` to *create* the `lgr` binding,
+    # before it exists.
+    assert(identical(class, Logger), "The root logger cannot be a `LoggerGlue`.")
+    res <- get0("root", envir = loggers, inherits = FALSE)
+    if (reset && !is.null(res)) res$config(NULL)
+    return(res)
+  }
+
+  res <- get0(name, envir = loggers, inherits = FALSE)
 
   if (reset && is_Logger(res)){
     res$set_filters(function(event) stop(call. = FALSE, sprintf(paste(

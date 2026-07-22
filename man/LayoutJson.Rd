@@ -42,241 +42,265 @@ lo$format_event(event)
 \seealso{
 \code{\link[=read_json_lines]{read_json_lines()}}, \url{https://jsonlines.org/}
 
-Other Layouts: 
+Other Layouts:
 \code{\link{Layout}},
 \code{\link{LayoutFormat}},
 \code{\link{LayoutGlue}}
 }
 \concept{Layouts}
 \section{Super class}{
-\code{\link[lgr:Layout]{lgr::Layout}} -> \code{LayoutJson}
+\code{\link[lgr:Layout]{Layout}} -> \code{LayoutJson}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{toJSON_args}}{a \code{list}}
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{toJSON_args}}{a \code{list}}
 
-\item{\code{timestamp_fmt}}{a \code{character} scalar or a \code{function} that accepts a \code{POSIXct}
+    \item{\code{timestamp_fmt}}{a \code{character} scalar or a \code{function} that accepts a \code{POSIXct}
 as its single argument}
 
-\item{\code{transform_event}}{a \code{function} that accepts a \code{LogEvent} as its single argument}
+    \item{\code{transform_event}}{a \code{function} that accepts a \code{LogEvent} as its single argument}
 
-\item{\code{transform_event_names}}{a named \code{character} vector or a function that accepts a
+    \item{\code{transform_event_names}}{a named \code{character} vector or a function that accepts a
 \code{character} vector of field names as its single argument.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-LayoutJson-new}{\code{LayoutJson$new()}}
-\item \href{#method-LayoutJson-format_event}{\code{LayoutJson$format_event()}}
-\item \href{#method-LayoutJson-set_toJSON_args}{\code{LayoutJson$set_toJSON_args()}}
-\item \href{#method-LayoutJson-set_timestamp_fmt}{\code{LayoutJson$set_timestamp_fmt()}}
-\item \href{#method-LayoutJson-set_transform_event}{\code{LayoutJson$set_transform_event()}}
-\item \href{#method-LayoutJson-set_transform_event_names}{\code{LayoutJson$set_transform_event_names()}}
-\item \href{#method-LayoutJson-toString}{\code{LayoutJson$toString()}}
-\item \href{#method-LayoutJson-parse}{\code{LayoutJson$parse()}}
-\item \href{#method-LayoutJson-read}{\code{LayoutJson$read()}}
-\item \href{#method-LayoutJson-clone}{\code{LayoutJson$clone()}}
+  \itemize{
+    \item \href{#method-LayoutJson-initialize}{\code{LayoutJson$new()}}
+    \item \href{#method-LayoutJson-format_event}{\code{LayoutJson$format_event()}}
+    \item \href{#method-LayoutJson-set_toJSON_args}{\code{LayoutJson$set_toJSON_args()}}
+    \item \href{#method-LayoutJson-set_timestamp_fmt}{\code{LayoutJson$set_timestamp_fmt()}}
+    \item \href{#method-LayoutJson-set_transform_event}{\code{LayoutJson$set_transform_event()}}
+    \item \href{#method-LayoutJson-set_transform_event_names}{\code{LayoutJson$set_transform_event_names()}}
+    \item \href{#method-LayoutJson-toString}{\code{LayoutJson$toString()}}
+    \item \href{#method-LayoutJson-parse}{\code{LayoutJson$parse()}}
+    \item \href{#method-LayoutJson-read}{\code{LayoutJson$read()}}
+    \item \href{#method-LayoutJson-clone}{\code{LayoutJson$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Layout" data-id="set_excluded_fields"><a href='../../lgr/html/Layout.html#method-Layout-set_excluded_fields'><code>lgr::Layout$set_excluded_fields()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Layout" data-id="set_excluded_fields"><a href='../../lgr/html/Layout.html#method-Layout-set_excluded_fields'><code>Layout$set_excluded_fields()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LayoutJson-new"></a>}}
-\if{latex}{\out{\hypertarget{method-LayoutJson-new}{}}}
-\subsection{Method \code{new()}}{
-Creates a new instance of this \link[R6:R6Class]{R6} class.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$new(
+\if{html}{\out{<a id="method-LayoutJson-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutJson-initialize}{}}}
+\subsection{\code{LayoutJson$new()}}{
+  Creates a new instance of this \link[R6:R6Class]{R6} class.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutJson$new(
   toJSON_args = list(auto_unbox = TRUE),
   timestamp_fmt = NULL,
   transform_event = function(event) event[["values"]],
   transform_event_names = NULL,
   excluded_fields = "rawMsg"
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{toJSON_args}}{a list of arguments passed to \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}},}
-
-\item{\code{timestamp_fmt}}{Format to be applied to the timestamp. This is
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{toJSON_args}}{a list of arguments passed to \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}},}
+      \item{\code{timestamp_fmt}}{Format to be applied to the timestamp. This is
 applied after \code{transform_event} but \verb{before transform_event_names}
 \itemize{
-\item \code{NULL}: formatting of the timestamp is left to \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}},
+\item \code{NULL}: formatting of the timestamp is left to \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}},
 \item a \code{character} scalar as for \code{\link[=format.POSIXct]{format.POSIXct()}}, or
 \item a \code{function} that returns a vector of the same length as its
 (\link{POSIXct}) input. The returned vector can be of any type
-supported by \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}}.
+supported by \code{\link[jsonlite:toJSON]{jsonlite::toJSON()}}.
 }}
-
-\item{\code{transform_event}}{a \code{function} with a single argument that
+      \item{\code{transform_event}}{a \code{function} with a single argument that
 takes a \link{LogEvent} object and returns a \code{list} of values.}
-
-\item{\code{transform_event_names}}{\itemize{
+      \item{\code{transform_event_names}}{\itemize{
 \item \code{NULL}: don't process names
 \item a named \code{character} vector of the format \code{new_name = old_name}
 \item or a \code{function} with a single mandatory argument that accepts a
 \code{character} vector of field names. Applied after \code{transform_event}.
 }}
-
-\item{\code{excluded_fields}}{A \code{character} vector of field names to exclude
+      \item{\code{excluded_fields}}{A \code{character} vector of field names to exclude
 from the final output. Applied after \code{transform_event_names}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutJson-format_event"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutJson-format_event}{}}}
-\subsection{Method \code{format_event()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$format_event(event)}\if{html}{\out{</div>}}
+\subsection{\code{LayoutJson$format_event()}}{
+  Format a LogEvent as JSON
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutJson$format_event(event)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{event}}{a \link{LogEvent}}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    a \code{character} scalar containing the JSON representation of
+\code{event}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutJson-set_toJSON_args"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutJson-set_toJSON_args}{}}}
-\subsection{Method \code{set_toJSON_args()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$set_toJSON_args(x)}\if{html}{\out{</div>}}
+\subsection{\code{LayoutJson$set_toJSON_args()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutJson$set_toJSON_args(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{a \code{list}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{a \code{list}}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutJson-set_timestamp_fmt"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutJson-set_timestamp_fmt}{}}}
-\subsection{Method \code{set_timestamp_fmt()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$set_timestamp_fmt(x)}\if{html}{\out{</div>}}
+\subsection{\code{LayoutJson$set_timestamp_fmt()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutJson$set_timestamp_fmt(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{a \code{character} scalar or a \code{function} that accepts a \code{POSIXct}
+as its single argument}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{a \code{character} scalar or a \code{function} that accepts a \code{POSIXct}
-as its single argument}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutJson-set_transform_event"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutJson-set_transform_event}{}}}
-\subsection{Method \code{set_transform_event()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$set_transform_event(x)}\if{html}{\out{</div>}}
+\subsection{\code{LayoutJson$set_transform_event()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutJson$set_transform_event(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{a \code{function} that accepts a \code{LogEvent} as its single argument}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{a \code{function} that accepts a \code{LogEvent} as its single argument}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutJson-set_transform_event_names"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutJson-set_transform_event_names}{}}}
-\subsection{Method \code{set_transform_event_names()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$set_transform_event_names(x)}\if{html}{\out{</div>}}
+\subsection{\code{LayoutJson$set_transform_event_names()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutJson$set_transform_event_names(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{a named \code{character} vector or a function that accepts a
+\code{character} vector of field names as its single argument.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{a named \code{character} vector or a function that accepts a
-\code{character} vector of field names as its single argument.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutJson-toString"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutJson-toString}{}}}
-\subsection{Method \code{toString()}}{
-Represent the \code{LayoutJson} class as a string
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$toString()}\if{html}{\out{</div>}}
+\subsection{\code{LayoutJson$toString()}}{
+  Represent the \code{LayoutJson} class as a string
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutJson$toString()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutJson-parse"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutJson-parse}{}}}
-\subsection{Method \code{parse()}}{
-Read and parse file written using this Layout
+\subsection{\code{LayoutJson$parse()}}{
+  Read and parse file written using this Layout
 
 This can be used by the \verb{$data} active binding of an \link{Appender}
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$parse(file)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutJson$parse(file)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{file}}{\code{character} scalar: path to a file}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{file}}{\code{character} scalar: path to a file}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutJson-read"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutJson-read}{}}}
-\subsection{Method \code{read()}}{
-Read a file written using this Layout (without parsing)
+\subsection{\code{LayoutJson$read()}}{
+  Read a file written using this Layout (without parsing)
 
 This can be used by the \verb{$show()} method of an \link{Appender}
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$read(file, threshold = NA_integer_, n = 20L)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{file}}{\code{character} scalar: path to a file}
-
-\item{\code{threshold}}{\code{character} Minimum log level to show. Requires parsing
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutJson$read(file, threshold = NA_integer_, n = 20L)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{file}}{\code{character} scalar: path to a file}
+      \item{\code{threshold}}{\code{character} Minimum log level to show. Requires parsing
 of the log file (but will still display unparsed output)}
+      \item{\code{n}}{\code{integer} number of lines to show}
+    }
+    \if{html}{\out{</div>}}
+  }
+}
 
-\item{\code{n}}{\code{integer} number of lines to show}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutJson-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutJson-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutJson$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{LayoutJson$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutJson$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }
