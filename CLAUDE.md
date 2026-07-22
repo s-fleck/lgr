@@ -9,7 +9,7 @@
 
 ## Changelog
 
-- Update the CHANGELOG.md file whenever we archive an openspec with /opsx-archive. Try to add only one or maximum two entries for a single spec. Follow docs/CHANGELOG_STYLE_GUIDE.md
+- Update the NEWS.md file whenever we archive an openspec with /opsx-archive. Try to add only one or maximum two entries for a single spec. Follow agent-docs/CHANGELOG_STYLE_GUIDE.md
 
 ## Version Bump
 
