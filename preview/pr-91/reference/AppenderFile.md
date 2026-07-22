@@ -257,14 +257,14 @@ lg$add_appender(
 )
 
 lg$info("A test message")
-#> INFO  [14:17:44.804] A test message
+#> INFO  [09:04:33.362] A test message
 
 readLines(default)
-#> [1] "INFO  [2026-07-21 14:17:44.804] A test message"
+#> [1] "INFO  [2026-07-22 09:04:33.362] A test message"
 readLines(fancy)
-#> [1] "[2026-07-21 14:17:44.804] eval(): INFO  A test message"
+#> [1] "[2026-07-22 09:04:33.362] eval(): INFO  A test message"
 readLines(json)
-#> [1] "{\"level\":400,\"timestamp\":\"2026-07-21 14:17:44\",\"logger\":\"test\",\"caller\":\"eval\",\"msg\":\"A test message\"}"
+#> [1] "{\"level\":400,\"timestamp\":\"2026-07-22 09:04:33\",\"logger\":\"test\",\"caller\":\"eval\",\"msg\":\"A test message\"}"
 
 # cleanup
 lg$config(NULL)
@@ -280,12 +280,12 @@ lg$info("A test message")
 lg$info("A test message %s strings", "with format strings", and = "custom_fields")
 
 lg$appenders[[1]]$show()
-#> {"level":400,"timestamp":"2026-07-21 14:17:44","logger":"test","caller":"eval","msg":"A test message"}
-#> {"level":400,"timestamp":"2026-07-21 14:17:44","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}
+#> {"level":400,"timestamp":"2026-07-22 09:04:33","logger":"test","caller":"eval","msg":"A test message"}
+#> {"level":400,"timestamp":"2026-07-22 09:04:33","logger":"test","caller":"eval","msg":"A test message with format strings strings","and":"custom_fields"}
 lg$appenders[[1]]$data
 #>   level           timestamp logger caller
-#> 1   400 2026-07-21 14:17:44   test   eval
-#> 2   400 2026-07-21 14:17:44   test   eval
+#> 1   400 2026-07-22 09:04:33   test   eval
+#> 2   400 2026-07-22 09:04:33   test   eval
 #>                                          msg           and
 #> 1                             A test message          <NA>
 #> 2 A test message with format strings strings custom_fields

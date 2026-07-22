@@ -130,7 +130,7 @@ that logs to a memory buffer, see also <code><a href="simple_logging.html">show_
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;LoggerRoot&gt; [info] root</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> appenders:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/Rtmpl27y6X/file18bf2373cbd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/RtmpIHRzgt/file19cd58884790</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [all] -&gt; console</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">file</span><span class="op">$</span><span class="va">file</span><span class="op">)</span>  <span class="co"># cleanup</span></span></span>
 <span class="r-in"><span></span></span>
@@ -139,7 +139,7 @@ that logs to a memory buffer, see also <code><a href="simple_logging.html">show_
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;LoggerRoot&gt; [info] root</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> appenders:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/Rtmpl27y6X/file18bf7e781dc8jsonl</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   file   : &lt;AppenderFile&gt;    [all] -&gt; /tmp/RtmpIHRzgt/file19cd5fbb1d2djsonl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [all] -&gt; console</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">lgr</span><span class="op">$</span><span class="va">appenders</span><span class="op">$</span><span class="va">file</span><span class="op">$</span><span class="va">file</span><span class="op">)</span>  <span class="co"># cleanup</span></span></span>
 <span class="r-in"><span></span></span>
@@ -151,11 +151,11 @@ that logs to a memory buffer, see also <code><a href="simple_logging.html">show_
 <span class="r-out co"><span class="r-pr">#&gt;</span>   console: &lt;AppenderConsole&gt; [info] -&gt; console</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   memory : &lt;AppenderBuffer&gt;  [ all] -&gt; 0 child Appenders</span>
 <span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"an info message"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [14:17:51.161] an info message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [09:04:40.571] an info message</span>
 <span class="r-in"><span><span class="va">lgr</span><span class="op">$</span><span class="fu">debug</span><span class="op">(</span><span class="st">"a hidden message"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="simple_logging.html">show_log</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [14:17:51] an info message</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DEBUG [14:17:51] a hidden message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [09:04:40] an info message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DEBUG [09:04:40] a hidden message</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># reset to default config</span></span></span>
 <span class="r-in"><span><span class="fu">basic_config</span><span class="op">(</span><span class="op">)</span></span></span>

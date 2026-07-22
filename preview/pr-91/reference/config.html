@@ -89,6 +89,39 @@ source and is therefore rejected unless the loader is called with
 to a named <code>filters</code> component.</p>
     </div>
     <div class="section level2">
+    <h2 id="applying-a-config-is-a-full-snapshot-not-a-patch">Applying a config is a full snapshot, not a patch<a class="anchor" aria-label="anchor" href="#applying-a-config-is-a-full-snapshot-not-a-patch"></a></h2>
+
+
+<p>A logger definition under <code>loggers</code> fully determines that logger's
+<code>threshold</code>, <code>appenders</code>, <code>filters</code>, <code>propagate</code> and <code>exception_handler</code>:
+any of these keys that are <em>not</em> given for a listed logger are reset to
+their default (no threshold/inherited, no appenders, no filters,
+<code>propagate: true</code>, the default exception handler) rather than left as they
+were before the config was applied. This makes re-applying the same
+declarative config (or switching between config files) reproducible and
+independent of whatever state a Logger happened to be in beforehand. Note
+that this differs from the plain (non-declarative) <code>list</code> form accepted by
+<a href="Logger.html">Logger$config()</a>, which only touches the elements it is given and
+leaves everything else untouched.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="disable-existing-loggers"><code>disable_existing_loggers</code><a class="anchor" aria-label="anchor" href="#disable-existing-loggers"></a></h2>
+
+
+<p>If <code>TRUE</code>, every pre-existing non-root logger <em>not</em> named under <code>loggers</code>
+is reset to its default/unconfigured state before the rest of the config
+is applied (loggers that <em>are</em> named under <code>loggers</code> are unaffected by
+this flag; they always end up in the state the config describes for them,
+per the previous section). Defaults to <code>FALSE</code>, so orphaned loggers are
+left alone unless you opt in.</p>
+<p><strong>Resetting is not the same as silencing.</strong> A reset logger gets
+<code>propagate = TRUE</code> and no appenders/threshold of its own, i.e. it now
+inherits its ancestors' appenders and threshold. If a logger was
+deliberately muted (e.g. <code>propagate: false</code> with no appenders) before the
+reset, this can make it <em>more</em> verbose afterwards, not less – it starts
+forwarding events to whichever ancestor appenders it now inherits from.</p>
+    </div>
+    <div class="section level2">
     <h2 id="environment-variable-interpolation">Environment variable interpolation<a class="anchor" aria-label="anchor" href="#environment-variable-interpolation"></a></h2>
 
 

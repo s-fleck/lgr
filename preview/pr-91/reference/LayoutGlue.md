@@ -179,7 +179,7 @@ lg <- get_logger("test")$
 
 lg$appenders[[1]]$set_layout(LayoutGlue$new())
 lg$fatal("test")
-#> FATAL [2026-07-21 14:17:48.044469] test
+#> FATAL [2026-07-22 09:04:36.79953] test
 
 
 # All fields of the LogEvent are available, even custom ones

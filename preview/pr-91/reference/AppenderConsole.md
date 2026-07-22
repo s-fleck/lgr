@@ -152,7 +152,7 @@ lg$add_appender(AppenderConsole$new(
 
 # Will output the message twice because we attached two console appenders
 lg$warn("A test message")
-#> WARN  [14:17:44.594] A test message
-#> [2026-07-21 14:17:44.594] eval(): [300] A test message
+#> WARN  [09:04:33.087] A test message
+#> [2026-07-22 09:04:33.087] eval(): [300] A test message
 lg$config(NULL) # reset config
 ```

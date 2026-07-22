@@ -94,7 +94,7 @@ basic_config(file = tempfile())
 #> <LoggerRoot> [info] root
 #> 
 #> appenders:
-#>   file   : <AppenderFile>    [all] -> /tmp/Rtmpl27y6X/file18bf2373cbd
+#>   file   : <AppenderFile>    [all] -> /tmp/RtmpIHRzgt/file19cd58884790
 #>   console: <AppenderConsole> [all] -> console
 unlink(lgr$appenders$file$file)  # cleanup
 
@@ -103,7 +103,7 @@ basic_config(file = tempfile(fileext = "jsonl"))
 #> <LoggerRoot> [info] root
 #> 
 #> appenders:
-#>   file   : <AppenderFile>    [all] -> /tmp/Rtmpl27y6X/file18bf7e781dc8jsonl
+#>   file   : <AppenderFile>    [all] -> /tmp/RtmpIHRzgt/file19cd5fbb1d2djsonl
 #>   console: <AppenderConsole> [all] -> console
 unlink(lgr$appenders$file$file)  # cleanup
 
@@ -115,11 +115,11 @@ basic_config(threshold = "all", memory = "all", console = "info")
 #>   console: <AppenderConsole> [info] -> console
 #>   memory : <AppenderBuffer>  [ all] -> 0 child Appenders
 lgr$info("an info message")
-#> INFO  [14:17:51.161] an info message
+#> INFO  [09:04:40.571] an info message
 lgr$debug("a hidden message")
 show_log()
-#> INFO  [14:17:51] an info message
-#> DEBUG [14:17:51] a hidden message
+#> INFO  [09:04:40] an info message
+#> DEBUG [09:04:40] a hidden message
 
 # reset to default config
 basic_config()

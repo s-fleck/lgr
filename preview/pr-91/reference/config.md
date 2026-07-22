@@ -39,6 +39,39 @@ source and is therefore rejected unless the loader is called with
 [EventFilter](https://s-fleck.github.io/lgr/reference/EventFilter.md))
 or a bare-string reference to a named `filters` component.
 
+## Applying a config is a full snapshot, not a patch
+
+A logger definition under `loggers` fully determines that logger's
+`threshold`, `appenders`, `filters`, `propagate` and
+`exception_handler`: any of these keys that are *not* given for a listed
+logger are reset to their default (no threshold/inherited, no appenders,
+no filters, `propagate: true`, the default exception handler) rather
+than left as they were before the config was applied. This makes
+re-applying the same declarative config (or switching between config
+files) reproducible and independent of whatever state a Logger happened
+to be in beforehand. Note that this differs from the plain
+(non-declarative) `list` form accepted by
+[Logger\$config()](https://s-fleck.github.io/lgr/reference/Logger.md),
+which only touches the elements it is given and leaves everything else
+untouched.
+
+## `disable_existing_loggers`
+
+If `TRUE`, every pre-existing non-root logger *not* named under
+`loggers` is reset to its default/unconfigured state before the rest of
+the config is applied (loggers that *are* named under `loggers` are
+unaffected by this flag; they always end up in the state the config
+describes for them, per the previous section). Defaults to `FALSE`, so
+orphaned loggers are left alone unless you opt in.
+
+**Resetting is not the same as silencing.** A reset logger gets
+`propagate = TRUE` and no appenders/threshold of its own, i.e. it now
+inherits its ancestors' appenders and threshold. If a logger was
+deliberately muted (e.g. `propagate: false` with no appenders) before
+the reset, this can make it *more* verbose afterwards, not less – it
+starts forwarding events to whichever ancestor appenders it now inherits
+from.
+
 ## Environment variable interpolation
 
 Scalar string values may contain `${VAR}` (substituted with the value of

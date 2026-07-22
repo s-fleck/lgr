@@ -40,137 +40,255 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.6.0" id="lgr-060">lgr 0.6.0<a class="anchor" aria-label="anchor" href="#lgr-060"></a></h2>
+<h2 class="pkg-version" data-toc-text="development version" id="lgr-development-version">lgr (development version)<a class="anchor" aria-label="anchor" href="#lgr-development-version"></a></h2>
+<div class="section level3">
+<h3 id="added-development-version">Added<a class="anchor" aria-label="anchor" href="#added-development-version"></a></h3>
+<ul><li><p><strong>Docs:</strong> Add a SKILL.md documenting how to use lgr in R packages</p></li>
+<li><p><strong>Docs:</strong> Complete rewrite of the code documentation and update ro roxygen2 8.0</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="changed-development-version">Changed<a class="anchor" aria-label="anchor" href="#changed-development-version"></a></h3>
 <ul><li>
-<strong>BREAKING</strong>: Replaced the two undocumented, unexported config dialects (the <code>Logger:</code> shorthand and the hidden multi-logger <code>logging_config</code> format) with a single, documented, exported declarative configuration format (<code>version: 1</code>). See <code><a href="../articles/lgr.html">vignette("lgr", package = "lgr")</a></code> and <code><a href="../reference/config.html">?config</a></code> for the format reference and a migration guide. In short: drop the top-level <code>Logger:</code> key and put settings under <code>loggers: { root: {...} }</code>; replace implicit <code>ClassName:</code> keys with an explicit <code>class:</code> key (e.g. <code>AppenderConsole: {threshold: info}</code> becomes <code>{class: AppenderConsole, threshold: info}</code>). A plain <code>list</code> of already-constructed objects passed to <code>Logger$config()</code> continues to work unchanged for a single logger.</li>
-<li>Added <code>${VAR}</code> / <code>${VAR:-default}</code> environment-variable interpolation in declarative configs, with a <code>$${...}</code> escape for literal sequences.</li>
-<li>Declarative config loading is now <strong>safe by default</strong>: config-supplied R source (the <code>code:</code> form for <code>exception_handler</code>/filters) is rejected unless <code>allow_code = TRUE</code> is passed to <code><a href="../reference/config.html">config()</a></code>/<code><a href="../reference/read_config.html">read_config()</a></code>/ <code><a href="../reference/read_config.html">validate_config()</a></code>.</li>
-<li>Added <code><a href="../reference/read_config.html">read_config()</a></code> and <code><a href="../reference/read_config.html">validate_config()</a></code> to parse/validate a declarative config without applying it (e.g. for CI), and <code><a href="../reference/config_schema_file.html">config_schema_file()</a></code> to locate the shipped JSON Schema (<code>inst/lgr-config-schema.json</code>) for editor autocompletion/validation.</li>
-<li>Validation errors now report the exact dotted/indexed path of the problem (e.g. <code>loggers.app.appenders[2]</code>) with “did-you-mean” suggestions for likely typos, and are collected together rather than stopping at the first error.</li>
-<li>Various small cleanups &amp; fixes (thx <a href="https://github.com/m-muecke" class="external-link">@m-muecke</a>)</li>
-<li>Add SKILL.md for usage of lgr in R packages</li>
+<strong>Breaking:</strong> Complete overhaul of the logging config file system. Replace the undocumented <code>Logger:</code> shorthand and hidden multi-logger <code>logging_config</code> format with a single, documented, exported declarative configuration format (<code>version: 1</code>). Drop the top-level <code>Logger:</code> key and put settings under <code>loggers: {root: {...}}</code>; replace implicit <code>ClassName:</code> keys with an explicit <code>class:</code> key (e.g. <code>AppenderConsole: {threshold: info}</code> becomes <code>{class: AppenderConsole, threshold: info}</code>). A plain <code>list</code> of already-constructed objects passed to <code>Logger$config()</code> continues to work unchanged for a single logger. See <code><a href="../articles/lgr.html">vignette("lgr", package = "lgr")</a></code> and <code><a href="../reference/config.html">?config</a></code> for the format reference and a migration guide</li>
 </ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.5.2" id="lgr-052">lgr 0.5.2<a class="anchor" aria-label="anchor" href="#lgr-052"></a></h2><p class="text-muted">CRAN release: 2026-01-30</p>
-<ul><li>Quote ‘Dynatrace’ and ‘lgrExtra’ in DESCRIPTION</li>
+<div class="section level3">
+<h3 id="fixed-development-version">Fixed<a class="anchor" aria-label="anchor" href="#fixed-development-version"></a></h3>
+<ul><li><p><strong>Appender:</strong> Fix <code>$remove_appenders()</code> removing the wrong appenders when removing multiple indices at once (thx <a href="https://github.com/m-muecke" class="external-link">@m-muecke</a>)</p></li>
+<li><p><strong>AppenderFileRotating:</strong> Fix <code>$format()</code> returning an invalid value instead of <code>FALSE</code> for the colour default (thx <a href="https://github.com/m-muecke" class="external-link">@m-muecke</a>)</p></li>
+<li><p><strong>Docs:</strong> Fix a couple of documentation typos (thx <a href="https://github.com/m-muecke" class="external-link">@m-muecke</a>)</p></li>
+<li><p><strong>Filter:</strong> Fix <code>$remove_filters()</code> removing the wrong filters when removing multiple indices at once (thx <a href="https://github.com/m-muecke" class="external-link">@m-muecke</a>)</p></li>
+<li><p><strong>Layout:</strong> Fix an incorrect <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code> call in the unknown-level warning of <code>LayoutFormat$read()</code> (thx <a href="https://github.com/m-muecke" class="external-link">@m-muecke</a>)</p></li>
+<li><p><strong>LayoutJson:</strong> Fix <code>$set_transform_event_names()</code> not returning <code>self</code>, which broke method chaining (thx <a href="https://github.com/m-muecke" class="external-link">@m-muecke</a>)</p></li>
+<li><p><strong>Logger:</strong> Fix <code><a href="../reference/get_log_levels.html">add_log_levels()</a></code> not showing the name of the overwritten level in its message (thx <a href="https://github.com/m-muecke" class="external-link">@m-muecke</a>)</p></li>
+<li><p><strong>Logger:</strong> Fix <code><a href="../reference/basic_config.html">basic_config()</a></code> not validating the <code>memory</code> argument against itself (thx <a href="https://github.com/m-muecke" class="external-link">@m-muecke</a>)</p></li>
+<li><p><strong>logger_tree:</strong> Fix subtle styling not being disabled when <code>color = FALSE</code> (thx <a href="https://github.com/m-muecke" class="external-link">@m-muecke</a>)</p></li>
 </ul></div>
+</div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.5.1" id="lgr-051">lgr 0.5.1<a class="anchor" aria-label="anchor" href="#lgr-051"></a></h2>
-<ul><li>Fix doc problem for CRAN</li>
+<h2 class="pkg-version" data-toc-text="0.5.2" id="lgr-052-2026-01-30">lgr 0.5.2 (2026-01-30)<a class="anchor" aria-label="anchor" href="#lgr-052-2026-01-30"></a></h2><p class="text-muted">CRAN release: 2026-01-30</p>
+<div class="section level3">
+<h3 id="fixed-0-5-2">Fixed<a class="anchor" aria-label="anchor" href="#fixed-0-5-2"></a></h3>
+<ul><li><p><strong>AppenderFileRotatingTime:</strong> Fix the class being registered as <code>AppenderFileRotating</code> instead of <code>AppenderFileRotatingTime</code>, which broke R6 class dispatch</p></li>
+<li><p><strong>DESCRIPTION:</strong> Quote ‘Dynatrace’ and ‘lgrExtra’ package names</p></li>
 </ul></div>
+</div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.5.0" id="lgr-050">lgr 0.5.0<a class="anchor" aria-label="anchor" href="#lgr-050"></a></h2><p class="text-muted">CRAN release: 2025-07-23</p>
-<ul><li><p>Added <code>rawMsg</code> property to LogEvents to store message without string interpolation (i.e. the original string that still contains the placeholders from either <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code> or <code><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue()</a></code>) (<a href="https://github.com/s-fleck/lgr/issues/60" class="external-link">#60</a>)</p></li>
-<li><p>Updated <code>AppenderConsole</code> to accept a <code>connection</code> argument. If called from a <a href="https://yihui.org/knitr/" class="external-link">knitr</a> rendering process, log messages are now output to <code>stderr</code> instead of <code>stdout</code> by default. This avoids polluting markdown documents (<a href="https://github.com/s-fleck/lgr/issues/62" class="external-link">#62</a>, thx <a href="https://github.com/gadenbuie" class="external-link">@gadenbuie</a>).</p></li>
-<li><p>Replace <code>NULL</code> values and empty characters in logging by the string <code>"&lt;NULL&gt;"</code>. Before, <code>NULL</code> values would have resulted in empty log messages. (<a href="https://github.com/s-fleck/lgr/issues/51" class="external-link">#51</a>)</p></li>
-<li><p>Support transformers for <code>LoggerGlue</code> (see <code><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">?glue::glue</a></code>) (<a href="https://github.com/s-fleck/lgr/issues/51" class="external-link">#51</a>)</p></li>
-<li><p>Add <code>excluded_fields</code> to <code>Layout</code> for excluding fields from logging.</p></li>
-<li><p>Add <code>transform_event</code> and <code>transform_event_names</code> to <code>LayoutJson</code> to make it more flexible. Exclude <code>rawMsg</code> by default for backwards compatibility.</p></li>
+<h2 class="pkg-version" data-toc-text="0.5.0" id="lgr-050-2025-07-23">lgr 0.5.0 (2025-07-23)<a class="anchor" aria-label="anchor" href="#lgr-050-2025-07-23"></a></h2><p class="text-muted">CRAN release: 2025-07-23</p>
+<div class="section level3">
+<h3 id="added-0-5-0">Added<a class="anchor" aria-label="anchor" href="#added-0-5-0"></a></h3>
+<ul><li><p><strong>Layout:</strong> Add <code>excluded_fields</code> for excluding fields from logging</p></li>
+<li><p><strong>LayoutGlue:</strong> Support transformers (see <code><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">?glue::glue</a></code>) (<a href="https://github.com/s-fleck/lgr/issues/51" class="external-link">#51</a>)</p></li>
+<li><p><strong>LayoutJson:</strong> Add <code>transform_event</code> and <code>transform_event_names</code> fields for more flexible event transformation; excludes <code>rawMsg</code> by default for backwards compatibility</p></li>
+<li><p><strong>LogEvent:</strong> Add a <code>rawMsg</code> property to store the message before string interpolation (i.e. the original string with unresolved <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code>/<code><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue()</a></code> placeholders) (<a href="https://github.com/s-fleck/lgr/issues/60" class="external-link">#60</a>)</p></li>
 </ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.4.4" id="lgr-044">lgr 0.4.4<a class="anchor" aria-label="anchor" href="#lgr-044"></a></h2><p class="text-muted">CRAN release: 2022-09-05</p>
-<ul><li><p><code>%k</code> and <code>%K</code> parameters in <code>format.LogEvent</code> now work as expected when using <strong>crayon</strong> terminal colours (<a href="https://github.com/s-fleck/lgr/issues/52" class="external-link">#52</a>).</p></li>
-<li><p>Fix default format string for <code>LayoutGlue</code> which was using <code>msg</code> instead of <code>{msg}</code> (<a href="https://github.com/s-fleck/lgr/issues/54" class="external-link">#54</a>, thx <a href="https://github.com/mmuurr" class="external-link">@mmuurr</a>)</p></li>
-<li><p>Update docs to use the more common term “structured logging” instead of “custom fields” where appropriate</p></li>
-<li><p><code>as_event_list.data.frame</code> now really returns a list of <code>LogEvents</code></p></li>
-<li><p>added <code><a href="../reference/as_LogEvent.html">as_LogEvent()</a></code> to coerce various event-like objects to <code>LogEvents</code></p></li>
-<li><p>rebuild docs for R 4.2.0</p></li>
+<div class="section level3">
+<h3 id="changed-0-5-0">Changed<a class="anchor" aria-label="anchor" href="#changed-0-5-0"></a></h3>
+<ul><li><p><strong>AppenderConsole:</strong> Accept a <code>connection</code> argument; defaults to <code>stderr</code> instead of <code>stdout</code> when called from a <strong>knitr</strong> rendering process, to avoid polluting markdown documents (<a href="https://github.com/s-fleck/lgr/issues/62" class="external-link">#62</a>, thx <a href="https://github.com/gadenbuie" class="external-link">@gadenbuie</a>)</p></li>
+<li><p><strong>Internals:</strong> Use <code><a href="https://rdrr.io/r/base/Logic.html" class="external-link">isTRUE()</a></code>/<code><a href="https://rdrr.io/r/base/Logic.html" class="external-link">isFALSE()</a></code> instead of <code>identical(x, TRUE)</code> for better performance (thx <a href="https://github.com/m-muecke" class="external-link">@m-muecke</a>)</p></li>
+<li><p><strong>Internals:</strong> Use <code><a href="https://rdrr.io/r/base/NA.html" class="external-link">anyNA()</a></code> and <code><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">anyDuplicated()</a></code> in more places for better performance (thx <a href="https://github.com/m-muecke" class="external-link">@m-muecke</a>)</p></li>
+<li><p><strong>Logging:</strong> Replace <code>NULL</code> values and empty strings with the string <code>"&lt;NULL&gt;"</code> instead of an empty log message (<a href="https://github.com/s-fleck/lgr/issues/51" class="external-link">#51</a>)</p></li>
 </ul></div>
+</div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.4.3" id="lgr-043">lgr 0.4.3<a class="anchor" aria-label="anchor" href="#lgr-043"></a></h2><p class="text-muted">CRAN release: 2021-09-16</p>
+<h2 class="pkg-version" data-toc-text="0.4.4" id="lgr-044-2022-09-05">lgr 0.4.4 (2022-09-05)<a class="anchor" aria-label="anchor" href="#lgr-044-2022-09-05"></a></h2><p class="text-muted">CRAN release: 2022-09-05</p>
+<div class="section level3">
+<h3 id="added-0-4-4">Added<a class="anchor" aria-label="anchor" href="#added-0-4-4"></a></h3>
 <ul><li>
-<code><a href="../reference/logger_index.html">logger_index()</a></code> returns a <code>data.frame</code> with metadata on all registered loggers (<a href="https://github.com/s-fleck/lgr/issues/47" class="external-link">#47</a>) (thanks <a href="https://github.com/Fuco1" class="external-link">@Fuco1</a>)</li>
-<li>export new <code><a href="../reference/string_repr.html">string_repr()</a></code> generic that is used to layout R objects for formatted log message output (<a href="https://github.com/s-fleck/lgr/issues/48" class="external-link">#48</a>, thanks <a href="https://github.com/mmuurr" class="external-link">@mmuurr</a>)</li>
-<li>The <code>$log()</code> method of Logger and LoggerGlue now unpacks conditions (except if they are supplied as a named argument) (<a href="https://github.com/s-fleck/lgr/issues/45" class="external-link">#45</a>, thanks <a href="https://github.com/mmuurr" class="external-link">@mmuurr</a>)</li>
-<li>Fix some timezone related tests for CRAN</li>
+<strong>LogEvent:</strong> Add <code><a href="../reference/as_LogEvent.html">as_LogEvent()</a></code> to coerce event-like objects to <code>LogEvent</code>s</li>
 </ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.4.2" id="lgr-042">lgr 0.4.2<a class="anchor" aria-label="anchor" href="#lgr-042"></a></h2><p class="text-muted">CRAN release: 2021-01-10</p>
-<ul><li><p>Deprecated the <code>create_file</code> argument of <code>AppenderFileRotating*</code>. This is now hardcoded to <code>TRUE</code> (because <code>FALSE</code> doesn’t really make sense here).</p></li>
-<li><p><code><a href="../reference/default_exception_handler.html">default_exception_handler()</a></code> now throws more informative warnings if an error is encountered during logging.</p></li>
-<li><p>drop tests for deprecated <a href="https://cran.r-project.org/package=future" class="external-link">future</a> plans to ensure compatibility with upcoming versions of future (<a href="https://github.com/s-fleck/lgr/issues/43" class="external-link">#43</a>)</p></li>
+<div class="section level3">
+<h3 id="changed-0-4-4">Changed<a class="anchor" aria-label="anchor" href="#changed-0-4-4"></a></h3>
+<ul><li><p><strong>Docs:</strong> Use the more common term “structured logging” instead of “custom fields” where appropriate</p></li>
+<li><p><strong>Docs:</strong> Rebuild documentation for compatibility with R 4.2.0</p></li>
 </ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.4.1" id="lgr-041">lgr 0.4.1<a class="anchor" aria-label="anchor" href="#lgr-041"></a></h2><p class="text-muted">CRAN release: 2020-10-20</p>
-<ul><li><p>Moved more complex Appenders to package <a href="https://github.com/s-fleck/lgrExtra" class="external-link">lgrExtra</a>. This includes database Appenders, email and push notifications and AppenderDt (in-memory <code>data.tables</code>).</p></li>
-<li><p><code>AppenderFile$show()</code> can now filter log files formatted by LayoutFormat by log level. Be aware that this just <code>greps</code> through the file and therefore will return false positives on lines where the log message contains strings that can be interpreted as log levels.</p></li>
-<li><p><code>AppenderFile$show()</code> and <code>AppenderFile$data</code> now dispatches to <code>Layout$read()</code> and <code>Layout$parse()</code>. This makes it possible to tie reading/parsing of log files to Layouts.</p></li>
-<li><p>Loggers gain a <code>list_log()</code> method. See <a href="https://github.com/s-fleck/joblog" class="external-link uri">https://github.com/s-fleck/joblog</a> for an R package that leverages this feature to create custom log event types for tracking the status of cron jobs.</p></li>
-<li><p>Export more utility functions that are useful for creating custom Appenders; such as <code><a href="../reference/standardize_threshold.html">standardize_threshold()</a></code> and <code><a href="../reference/event_list.html">event_list()</a></code>.</p></li>
-<li><p>AppenderBuffer now defaults to <code>flush_threshold = NULL</code> (never flush because of the log level of an event)</p></li>
-<li><p><code><a href="../reference/basic_config.html">basic_config()</a></code> now works as documented for .jsonl files</p></li>
-<li><p>AppenderMemory gains a <code>$clear()</code> method that clears the buffer without sending the events to it’s attached appenders</p></li>
-<li><p>LayoutJson gains a <code>timestamp_fmt</code> field that can be used for custom timestamp formats (<a href="https://github.com/s-fleck/lgr/issues/34" class="external-link">#34</a>)</p></li>
-<li><p>added <code><a href="../reference/toString.LogEvent.html">toString.LogEvent()</a></code> for compact representations of LogEvents</p></li>
-<li><p>lgr is now automatically tested for all major R version &gt;= 3.2.0</p></li>
-<li><p>AppenderMemory/AppenderBuffer: <code>flush_threshold</code> is now independent of <code>should_flush</code> function. <code>default_should_flush()</code> is no longer necessary and has been removed.</p></li>
-<li><p>Updated AppenderFileRotating and co for compatibility with <a href="https://github.com/s-fleck/rotor" class="external-link">rotor</a> 0.3.0</p></li>
-<li><p>Most errors now have appropriate subclasses</p></li>
-<li><p><code>Logger$log()</code> dispatches to all appenders - even if some throw an error - instead of aborting after the first Appender that throws an error</p></li>
-<li><p>complete rewrite of the documentation to use the new roxygen2 features for R6 classes.</p></li>
+<div class="section level3">
+<h3 id="fixed-0-4-4">Fixed<a class="anchor" aria-label="anchor" href="#fixed-0-4-4"></a></h3>
+<ul><li><p><strong>event_list:</strong> Fix <code><a href="../reference/event_list.html">as_event_list.data.frame()</a></code> not returning a list of <code>LogEvent</code>s</p></li>
+<li><p><strong>format.LogEvent:</strong> Fix <code>%k</code>/<code>%K</code> parameters not working as expected with <strong>crayon</strong> terminal colours (<a href="https://github.com/s-fleck/lgr/issues/52" class="external-link">#52</a>)</p></li>
+<li><p><strong>LayoutGlue:</strong> Fix the default format string using <code>msg</code> instead of <code>{msg}</code> (<a href="https://github.com/s-fleck/lgr/issues/54" class="external-link">#54</a>, thx <a href="https://github.com/mmuurr" class="external-link">@mmuurr</a>)</p></li>
 </ul></div>
+</div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.4" id="lgr-034">lgr 0.3.4<a class="anchor" aria-label="anchor" href="#lgr-034"></a></h2><p class="text-muted">CRAN release: 2020-03-20</p>
-<ul><li>Hotfix for compatibility with R &lt; 3.6.0 (<a href="https://github.com/s-fleck/lgr/issues/32" class="external-link">#32</a>)</li>
+<h2 class="pkg-version" data-toc-text="0.4.3" id="lgr-043-2021-09-16">lgr 0.4.3 (2021-09-16)<a class="anchor" aria-label="anchor" href="#lgr-043-2021-09-16"></a></h2><p class="text-muted">CRAN release: 2021-09-16</p>
+<div class="section level3">
+<h3 id="added-0-4-3">Added<a class="anchor" aria-label="anchor" href="#added-0-4-3"></a></h3>
+<ul><li><p><strong>logger_index:</strong> Add <code><a href="../reference/logger_index.html">logger_index()</a></code>, returning a <code>data.frame</code> with metadata on all registered loggers (<a href="https://github.com/s-fleck/lgr/issues/47" class="external-link">#47</a>, thanks <a href="https://github.com/Fuco1" class="external-link">@Fuco1</a>)</p></li>
+<li><p><strong>string_repr:</strong> Export the <code><a href="../reference/string_repr.html">string_repr()</a></code> generic used to format R objects for log message output (<a href="https://github.com/s-fleck/lgr/issues/48" class="external-link">#48</a>, thanks <a href="https://github.com/mmuurr" class="external-link">@mmuurr</a>)</p></li>
 </ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.3" id="lgr-033">lgr 0.3.3<a class="anchor" aria-label="anchor" href="#lgr-033"></a></h2><p class="text-muted">CRAN release: 2019-09-27</p>
-<ul><li>Fixed a performance regression when looking up the parent of a Logger. This notably affected the performance of “do-nothing” logging (e.g. when a log message is discarded because it is below a loggers’ threshold)</li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.2" id="lgr-032">lgr 0.3.2<a class="anchor" aria-label="anchor" href="#lgr-032"></a></h2><p class="text-muted">CRAN release: 2019-08-20</p>
-<ul><li>Added AppenderSyslog for logging to syslog via <a href="https://github.com/atheriel/rsyslog" class="external-link">rsyslog</a> (thanks to atheriel)</li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.1" id="lgr-031">lgr 0.3.1<a class="anchor" aria-label="anchor" href="#lgr-031"></a></h2><p class="text-muted">CRAN release: 2019-06-13</p>
-<ul><li><p>Added <code><a href="../reference/logger_tree.html">logger_tree()</a></code> which provides an overview of all registered loggers</p></li>
-<li><p>Added <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> and <code><a href="https://rdrr.io/r/base/format.html" class="external-link">format()</a></code> methods for Appenders</p></li>
-<li><p><code>AppenderMemory</code>: added <code>data</code> and <code>dt</code> active fields (which return the log as a data.frame or data.table)</p></li>
-<li><p>Removed deprecated functions <code>FATAL()</code>, <code>ERROR()</code>. Use <code>lgr$fatal()</code>, <code>lgr$error()</code>, … instead.</p></li>
-<li><p><code>AppenderMemory</code>: <code>$buffer_dt()</code> and <code>$show()</code> now handle custom fields containing atomic vectors correctly</p></li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.0" id="lgr-030">lgr 0.3.0<a class="anchor" aria-label="anchor" href="#lgr-030"></a></h2><p class="text-muted">CRAN release: 2019-05-30</p>
-<ul><li><p>Added support for rotating log files via <code>AppenderFileRotating</code>, <code>AppenderFileRotatingDate</code> and <code>AppenderFileRotatingTime</code>. Requires the package <a href="https://github.com/s-fleck/rotor" class="external-link">rotor</a>.</p></li>
-<li><p>functions like <code><a href="../reference/simple_logging.html">show_log()</a></code>, <code><a href="../reference/simple_logging.html">show_data()</a></code>,… now accept logger names as well as Logger or Appender objects as <code>target</code>.</p></li>
-<li><p><code>AppenderFile$new()</code> now creates an empty file, or fails if it can’t</p></li>
-<li><p>Improved support for RMariaDB and dropped support for RMySQL</p></li>
-<li><p>Improved support for RPostgres and dropped support for RPostgreSQL</p></li>
-<li><p>added <code>reset</code> argument to <code><a href="../reference/get_logger.html">get_logger()</a></code>. This completely resets the configuration of the logger and also replaces special loggers (such as <code>LoggerGlue</code>) with vanilla ones.</p></li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.2" id="lgr-022">lgr 0.2.2<a class="anchor" aria-label="anchor" href="#lgr-022"></a></h2>
-<ul><li><p>The root logger can now be configured via <code><a href="https://rdrr.io/r/base/options.html" class="external-link">options()</a></code> and/or environment variables (see <code><a href="../reference/lgr-package.html">?lgr</a></code>)</p></li>
-<li><p><code><a href="../reference/basic_config.html">basic_config()</a></code> now accepts thresholds (“info”, “fatal”) as arguments to <code>console</code> and <code>memory</code>.</p></li>
-<li><p>The default config of the root logger has changed. It now only has a console appender and a default threshold of <code>"info"</code>. To get back the old behaviour run <code>basic_config(threshold = "all", console = "info", memory = "all")</code>.</p></li>
-<li><p><code>$config(NULL)</code> now resets a Logger to its default/unconfigured state</p></li>
-<li><p><code>$config()</code> now accepts YAML as well as JSON files (or YAML/JSON as a character string)</p></li>
-<li><p><code><a href="../reference/with_log_level.html">with_log_level()</a></code> and <code><a href="../reference/with_log_level.html">with_log_value()</a></code> now accept logger names as well as Logger objects as the <code>logger</code> argument</p></li>
-<li><p><code><a href="../reference/get_logger.html">get_logger_glue()</a></code> now works as intended</p></li>
-<li><p>Deprecated <code>FATAL()</code>, <code>ERROR()</code>. Use <code>lgr$fatal()</code>, <code>lgr$error()</code>, … instead.</p></li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.1" id="lgr-021">lgr 0.2.1<a class="anchor" aria-label="anchor" href="#lgr-021"></a></h2><p class="text-muted">CRAN release: 2019-03-25</p>
-<ul><li><p>Emergency fix that ensures test suite cleans up temporary files</p></li>
-<li><p>Removed .rd file for the unexported LoggerRoot class</p></li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.0" id="lgr-020">lgr 0.2.0<a class="anchor" aria-label="anchor" href="#lgr-020"></a></h2><p class="text-muted">CRAN release: 2019-03-22</p>
+<div class="section level3">
+<h3 id="changed-0-4-3">Changed<a class="anchor" aria-label="anchor" href="#changed-0-4-3"></a></h3>
 <ul><li>
-<code>get_loggers()</code> registers new loggers in the lgr::loggers namespace, this is a more global and decoupled approach similar to how python logging handles loggers.</li>
-<li>removed <code>full_name</code> active binding for loggers. Loggers now only have qualified names and <code>name</code> is now identical to what <code>full_name</code> was before. For consistency the format method of <code>ancestry</code> has also been revised.</li>
-<li>Logger inheritance is now derived from the qualified name of a logger. Consequently <code>lg$parent</code> is now derived from <code>lg$name</code>, <code>lg$set_parent()</code> is no longer possible.</li>
-<li>If no threshold is set for a new Logger, it now inherits the threshold of its parent</li>
-<li>Depend on R6 &gt;= 2.4.0 which includes relevant fixes to finalizers. finalize methods are now private.</li>
-<li>Logger now have a <code>config</code> method that allows configuring Loggers with config objects and YAML files (experimental)</li>
-<li>added <code><a href="../reference/suspend_logging.html">with_logging()</a></code>, the opposite of <code><a href="../reference/suspend_logging.html">without_logging()</a></code>. This can be handy for automated tests where you might want so switch logging off/on only for specific unit tests.</li>
+<strong>Logger:</strong> <code>$log()</code> now unpacks conditions passed to it (except when supplied as a named argument), for both <code>Logger</code> and <code>LoggerGlue</code> (<a href="https://github.com/s-fleck/lgr/issues/45" class="external-link">#45</a>, thanks <a href="https://github.com/mmuurr" class="external-link">@mmuurr</a>)</li>
 </ul></div>
+<div class="section level3">
+<h3 id="fixed-0-4-3">Fixed<a class="anchor" aria-label="anchor" href="#fixed-0-4-3"></a></h3>
+<ul><li>
+<strong>Tests:</strong> Fix timezone-related test failures on CRAN</li>
+</ul></div>
+</div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.1" id="lgr-011">lgr 0.1.1<a class="anchor" aria-label="anchor" href="#lgr-011"></a></h2><p class="text-muted">CRAN release: 2019-02-22</p>
-<ul><li><p>Added <code><a href="../reference/simple_logging.html">show_data()</a></code> and <code><a href="../reference/simple_logging.html">show_dt()</a></code> for quick access to the root loggers in memory log as <code>data.frame</code> or <code>data.table</code> respectively</p></li>
-<li><p>numerous small fixes</p></li>
-<li><p>removed non-breaking-spaces from .RD files. This caused unforeseen problems with the compiling the .pdf manual during the CRAN submission process.</p></li>
+<h2 class="pkg-version" data-toc-text="0.4.2" id="lgr-042-2021-01-10">lgr 0.4.2 (2021-01-10)<a class="anchor" aria-label="anchor" href="#lgr-042-2021-01-10"></a></h2><p class="text-muted">CRAN release: 2021-01-10</p>
+<div class="section level3">
+<h3 id="changed-0-4-2">Changed<a class="anchor" aria-label="anchor" href="#changed-0-4-2"></a></h3>
+<ul><li>
+<strong>default_exception_handler:</strong> Throw more informative warnings when an error is encountered during logging</li>
 </ul></div>
+<div class="section level3">
+<h3 id="deprecated-0-4-2">Deprecated<a class="anchor" aria-label="anchor" href="#deprecated-0-4-2"></a></h3>
+<ul><li>
+<strong>AppenderFileRotating:</strong> Deprecate the <code>create_file</code> argument; file creation is now always enabled (hardcoded to <code>TRUE</code>, since <code>FALSE</code> never made sense)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="fixed-0-4-2">Fixed<a class="anchor" aria-label="anchor" href="#fixed-0-4-2"></a></h3>
+<ul><li>
+<strong>Tests:</strong> Drop tests for deprecated <strong>future</strong> plans to maintain compatibility with upcoming <strong>future</strong> versions (<a href="https://github.com/s-fleck/lgr/issues/43" class="external-link">#43</a>)</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.1" id="lgr-041-2020-10-20">lgr 0.4.1 (2020-10-20)<a class="anchor" aria-label="anchor" href="#lgr-041-2020-10-20"></a></h2><p class="text-muted">CRAN release: 2020-10-20</p>
+<div class="section level3">
+<h3 id="added-0-4-1">Added<a class="anchor" aria-label="anchor" href="#added-0-4-1"></a></h3>
+<ul><li><p><strong>AppenderFile:</strong> <code>$show()</code> can now filter log files formatted by <code>LayoutFormat</code> by log level (note: this greps the file, so it may return false positives when a log message itself contains level-like strings)</p></li>
+<li><p><strong>AppenderMemory:</strong> Add a <code>$clear()</code> method to clear the buffer without sending events to its attached appenders</p></li>
+<li><p><strong>LayoutJson:</strong> Add a <code>timestamp_fmt</code> field for custom timestamp formats (<a href="https://github.com/s-fleck/lgr/issues/34" class="external-link">#34</a>)</p></li>
+<li><p><strong>LogEvent:</strong> Add a <code><a href="https://rdrr.io/r/base/toString.html" class="external-link">toString()</a></code> method for a compact representation of <code>LogEvent</code>s</p></li>
+<li><p><strong>Logger:</strong> Add a <code>$list_log()</code> method</p></li>
+<li><p><strong>Utils:</strong> Export more utility functions useful for building custom Appenders, such as <code><a href="../reference/standardize_threshold.html">standardize_threshold()</a></code> and <code><a href="../reference/event_list.html">event_list()</a></code></p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="changed-0-4-1">Changed<a class="anchor" aria-label="anchor" href="#changed-0-4-1"></a></h3>
+<ul><li><p><strong>AppenderBuffer:</strong> Default <code>flush_threshold</code> to <code>NULL</code> (never flush based on the log level of an event); <code>flush_threshold</code> is now independent of <code>should_flush</code></p></li>
+<li><p><strong>AppenderFile:</strong> <code>$show()</code> and <code>$data</code> now dispatch to <code>Layout$read()</code>/<code>Layout$parse()</code>, tying log file reading/parsing to the Layout used</p></li>
+<li><p><strong>AppenderFileRotating:</strong> Update <code>AppenderFileRotating</code> and related appenders for compatibility with <a href="https://github.com/s-fleck/rotor" class="external-link">rotor</a> 0.3.0</p></li>
+<li><p><strong>Docs:</strong> Rewrite documentation to use the newer roxygen2 features for R6 classes</p></li>
+<li><p><strong>Errors:</strong> Give most errors appropriate subclasses</p></li>
+<li><p><strong>Tests:</strong> lgr is now automatically tested against all major R versions &gt;= 3.2.0</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="removed-0-4-1">Removed<a class="anchor" aria-label="anchor" href="#removed-0-4-1"></a></h3>
+<ul><li><p><strong>Breaking:</strong> Move the more complex Appenders to the new <a href="https://github.com/s-fleck/lgrExtra" class="external-link">lgrExtra</a> package, including database Appenders, email and push notifications, and <code>AppenderDt</code> (in-memory <code>data.table</code>)</p></li>
+<li><p><strong>AppenderBuffer:</strong> Remove <code>default_should_flush()</code>, made unnecessary now that <code>flush_threshold</code> is independent of <code>should_flush</code></p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="fixed-0-4-1">Fixed<a class="anchor" aria-label="anchor" href="#fixed-0-4-1"></a></h3>
+<ul><li><p><strong>basic_config:</strong> Fix <code>.jsonl</code> file handling to work as documented</p></li>
+<li><p><strong>Logger:</strong> <code>$log()</code> now dispatches to all appenders even if one throws an error, instead of aborting after the first failing appender</p></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.4" id="lgr-034-2020-03-20">lgr 0.3.4 (2020-03-20)<a class="anchor" aria-label="anchor" href="#lgr-034-2020-03-20"></a></h2><p class="text-muted">CRAN release: 2020-03-20</p>
+<div class="section level3">
+<h3 id="fixed-0-3-4">Fixed<a class="anchor" aria-label="anchor" href="#fixed-0-3-4"></a></h3>
+<ul><li>Fix compatibility with R &lt; 3.6.0 (<a href="https://github.com/s-fleck/lgr/issues/32" class="external-link">#32</a>)</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.3" id="lgr-033-2019-09-27">lgr 0.3.3 (2019-09-27)<a class="anchor" aria-label="anchor" href="#lgr-033-2019-09-27"></a></h2><p class="text-muted">CRAN release: 2019-09-27</p>
+<div class="section level3">
+<h3 id="fixed-0-3-3">Fixed<a class="anchor" aria-label="anchor" href="#fixed-0-3-3"></a></h3>
+<ul><li>
+<strong>Logger:</strong> Fix a performance regression in parent lookup that notably slowed down “do-nothing” logging (i.e. discarding a message below a logger’s threshold)</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.2" id="lgr-032-2019-08-20">lgr 0.3.2 (2019-08-20)<a class="anchor" aria-label="anchor" href="#lgr-032-2019-08-20"></a></h2><p class="text-muted">CRAN release: 2019-08-20</p>
+<div class="section level3">
+<h3 id="added-0-3-2">Added<a class="anchor" aria-label="anchor" href="#added-0-3-2"></a></h3>
+<ul><li>
+<strong>AppenderSyslog:</strong> Add <code>AppenderSyslog</code> for logging to syslog via <a href="https://github.com/atheriel/rsyslog" class="external-link">rsyslog</a> (thanks <a href="https://github.com/atheriel" class="external-link">@atheriel</a>)</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.1" id="lgr-031-2019-06-13">lgr 0.3.1 (2019-06-13)<a class="anchor" aria-label="anchor" href="#lgr-031-2019-06-13"></a></h2><p class="text-muted">CRAN release: 2019-06-13</p>
+<div class="section level3">
+<h3 id="added-0-3-1">Added<a class="anchor" aria-label="anchor" href="#added-0-3-1"></a></h3>
+<ul><li><p><strong>Appender:</strong> Add <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code>/<code><a href="https://rdrr.io/r/base/format.html" class="external-link">format()</a></code> methods</p></li>
+<li><p><strong>AppenderMemory:</strong> Add <code>data</code>/<code>dt</code> active fields to return the log as a <code>data.frame</code>/<code>data.table</code></p></li>
+<li><p><strong>logger_tree:</strong> Add <code><a href="../reference/logger_tree.html">logger_tree()</a></code> for an overview of all registered loggers</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="removed-0-3-1">Removed<a class="anchor" aria-label="anchor" href="#removed-0-3-1"></a></h3>
+<ul><li>
+<strong>Breaking:</strong> Remove the deprecated <code>FATAL()</code>/<code>ERROR()</code> functions; use <code>lgr$fatal()</code>/<code>lgr$error()</code> instead</li>
+</ul></div>
+<div class="section level3">
+<h3 id="fixed-0-3-1">Fixed<a class="anchor" aria-label="anchor" href="#fixed-0-3-1"></a></h3>
+<ul><li>
+<strong>AppenderMemory:</strong> Fix <code>$buffer_dt()</code>/<code>$show()</code> not handling custom fields containing atomic vectors correctly</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="lgr-030-2019-05-30">lgr 0.3.0 (2019-05-30)<a class="anchor" aria-label="anchor" href="#lgr-030-2019-05-30"></a></h2><p class="text-muted">CRAN release: 2019-05-30</p>
+<div class="section level3">
+<h3 id="added-0-3-0">Added<a class="anchor" aria-label="anchor" href="#added-0-3-0"></a></h3>
+<ul><li><p><strong>AppenderFileRotating:</strong> Add support for rotating log files via <code>AppenderFileRotating</code>, <code>AppenderFileRotatingDate</code>, and <code>AppenderFileRotatingTime</code> (requires the <a href="https://github.com/s-fleck/rotor" class="external-link">rotor</a> package)</p></li>
+<li><p><strong>basic_config:</strong> <code><a href="../reference/basic_config.html">basic_config()</a></code> now accepts thresholds (e.g. <code>"info"</code>, <code>"fatal"</code>) as arguments to <code>console</code> and <code>memory</code></p></li>
+<li><p><strong>Config:</strong> <code>$config()</code> now accepts YAML in addition to JSON, as files or as a character string</p></li>
+<li><p><strong>Config:</strong> <code>$config(NULL)</code> resets a Logger to its default/unconfigured state</p></li>
+<li><p><strong>get_logger:</strong> Add a <code>reset</code> argument to <code><a href="../reference/get_logger.html">get_logger()</a></code> that completely resets a Logger’s configuration and replaces special loggers (such as <code>LoggerGlue</code>) with vanilla ones</p></li>
+<li><p><strong>Root logger:</strong> The root logger can now be configured via <code><a href="https://rdrr.io/r/base/options.html" class="external-link">options()</a></code> and/or environment variables (see <code><a href="../reference/lgr-package.html">?lgr</a></code>)</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="changed-0-3-0">Changed<a class="anchor" aria-label="anchor" href="#changed-0-3-0"></a></h3>
+<ul><li><p><strong>AppenderFile:</strong> <code>$new()</code> now creates an empty file immediately, or fails if it can’t</p></li>
+<li><p><strong>Breaking:</strong> Change the default config of the root logger to have only a console appender with a default threshold of <code>"info"</code> (previously <code>"all"</code>). To restore the old behaviour, run <code>basic_config(threshold = "all", console = "info", memory = "all")</code></p></li>
+<li><p><strong>RMariaDB:</strong> Improve support for RMariaDB and drop support for RMySQL</p></li>
+<li><p><strong>RPostgres:</strong> Improve support for RPostgres and drop support for RPostgreSQL</p></li>
+<li><p><strong>show_log:</strong> <code><a href="../reference/simple_logging.html">show_log()</a></code>, <code><a href="../reference/simple_logging.html">show_data()</a></code>, and friends now accept logger names in addition to <code>Logger</code>/<code>Appender</code> objects as <code>target</code></p></li>
+<li><p><strong>with_log_level:</strong> <code><a href="../reference/with_log_level.html">with_log_level()</a></code> and <code><a href="../reference/with_log_level.html">with_log_value()</a></code> now accept logger names in addition to <code>Logger</code> objects as the <code>logger</code> argument</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="deprecated-0-3-0">Deprecated<a class="anchor" aria-label="anchor" href="#deprecated-0-3-0"></a></h3>
+<ul><li>Deprecate <code>FATAL()</code>/<code>ERROR()</code>; use <code>lgr$fatal()</code>/<code>lgr$error()</code> instead</li>
+</ul></div>
+<div class="section level3">
+<h3 id="fixed-0-3-0">Fixed<a class="anchor" aria-label="anchor" href="#fixed-0-3-0"></a></h3>
+<ul><li>
+<strong>get_logger_glue:</strong> Fix <code><a href="../reference/get_logger.html">get_logger_glue()</a></code> not working as intended</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.1" id="lgr-021-2019-03-25">lgr 0.2.1 (2019-03-25)<a class="anchor" aria-label="anchor" href="#lgr-021-2019-03-25"></a></h2><p class="text-muted">CRAN release: 2019-03-25</p>
+<div class="section level3">
+<h3 id="removed-0-2-1">Removed<a class="anchor" aria-label="anchor" href="#removed-0-2-1"></a></h3>
+<ul><li>
+<strong>Docs:</strong> Remove the <code>.Rd</code> file for the unexported <code>LoggerRoot</code> class</li>
+</ul></div>
+<div class="section level3">
+<h3 id="fixed-0-2-1">Fixed<a class="anchor" aria-label="anchor" href="#fixed-0-2-1"></a></h3>
+<ul><li>
+<strong>Tests:</strong> Fix the test suite not cleaning up temporary files</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="lgr-020-2019-03-22">lgr 0.2.0 (2019-03-22)<a class="anchor" aria-label="anchor" href="#lgr-020-2019-03-22"></a></h2><p class="text-muted">CRAN release: 2019-03-22</p>
+<div class="section level3">
+<h3 id="added-0-2-0">Added<a class="anchor" aria-label="anchor" href="#added-0-2-0"></a></h3>
+<ul><li><p><strong>Logger:</strong> Add an experimental <code>$config()</code> method for configuring Loggers via config objects and YAML files</p></li>
+<li><p><strong>Logger:</strong> New Loggers without an explicit threshold now inherit the threshold of their parent</p></li>
+<li><p><strong>with_logging:</strong> Add <code><a href="../reference/suspend_logging.html">with_logging()</a></code>, the opposite of <code><a href="../reference/suspend_logging.html">without_logging()</a></code>, for toggling logging on/off within specific unit tests</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="changed-0-2-0">Changed<a class="anchor" aria-label="anchor" href="#changed-0-2-0"></a></h3>
+<ul><li><p><strong>Breaking:</strong> Derive Logger inheritance from a Logger’s qualified name; <code>lg$parent</code> is now derived from <code>lg$name</code> and <code>lg$set_parent()</code> is no longer possible</p></li>
+<li><p><strong>Breaking:</strong> Remove the <code>full_name</code> active binding from Loggers; <code>name</code> is now always the fully qualified name (what <code>full_name</code> used to return); the <code>ancestry</code> format method was revised accordingly</p></li>
+<li><p><strong>Dependencies:</strong> Depend on R6 &gt;= 2.4.0, which includes relevant finalizer fixes; <code>finalize</code> methods are now private</p></li>
+<li><p><strong>get_loggers:</strong> <code>get_loggers()</code> now registers new loggers in the <code>lgr::loggers</code> namespace, a more global and decoupled approach similar to Python’s <code>logging</code> module</p></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.1" id="lgr-011-2019-02-22">lgr 0.1.1 (2019-02-22)<a class="anchor" aria-label="anchor" href="#lgr-011-2019-02-22"></a></h2><p class="text-muted">CRAN release: 2019-02-22</p>
+<div class="section level3">
+<h3 id="added-0-1-1">Added<a class="anchor" aria-label="anchor" href="#added-0-1-1"></a></h3>
+<ul><li>
+<strong>show_data:</strong> Add <code><a href="../reference/simple_logging.html">show_data()</a></code>/<code><a href="../reference/simple_logging.html">show_dt()</a></code> for quick access to the root logger’s in-memory log as a <code>data.frame</code>/<code>data.table</code> respectively</li>
+</ul></div>
+<div class="section level3">
+<h3 id="fixed-0-1-1">Fixed<a class="anchor" aria-label="anchor" href="#fixed-0-1-1"></a></h3>
+<ul><li><p><strong>Docs:</strong> Remove non-breaking spaces from <code>.Rd</code> files, which caused problems compiling the PDF manual during CRAN submission</p></li>
+<li><p>Numerous small fixes</p></li>
+</ul></div>
+</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

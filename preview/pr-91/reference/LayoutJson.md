@@ -293,14 +293,14 @@ event <- LogEvent$new(
 
 lo <- LayoutJson$new()
 lo$format_event(event)
-#> {"level":200,"timestamp":"2026-07-21 14:17:48","logger":"dummy logger","caller":null,"msg":"a test message","custom_field":"LayoutJson can handle arbitrary fields"} 
+#> {"level":200,"timestamp":"2026-07-22 09:04:37","logger":"dummy logger","caller":null,"msg":"a test message","custom_field":"LayoutJson can handle arbitrary fields"} 
 
 lo <- LayoutJson$new(
   transform_event_names = toupper,
   excluded_fields = c("RAWMSG", "CALLER"))
 
 lo$format_event(event)
-#> {"LEVEL":200,"TIMESTAMP":"2026-07-21 14:17:48","LOGGER":"dummy logger","MSG":"a test message","CUSTOM_FIELD":"LayoutJson can handle arbitrary fields"} 
+#> {"LEVEL":200,"TIMESTAMP":"2026-07-22 09:04:37","LOGGER":"dummy logger","MSG":"a test message","CUSTOM_FIELD":"LayoutJson can handle arbitrary fields"} 
 
 lo <- LayoutJson$new(
   transform_event = function(e) {
@@ -312,5 +312,5 @@ lo <- LayoutJson$new(
   excluded_fields = c("RAWMSG", "CALLER"))
 
 lo$format_event(event)
-#> {"level":200,"timestamp":"Tue Jul 21 14:17:48 2026","logger":"dummy logger","caller":null,"msg":"A TEST MESSAGE","rawMsg":"a test message","custom_field":"LayoutJson can handle arbitrary fields"} 
+#> {"level":200,"timestamp":"Wed Jul 22 09:04:37 2026","logger":"dummy logger","caller":null,"msg":"A TEST MESSAGE","rawMsg":"a test message","custom_field":"LayoutJson can handle arbitrary fields"} 
 ```
