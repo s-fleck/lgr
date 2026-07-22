@@ -86,6 +86,20 @@ test_that("validate_config - cyclic appender reference - errors naming the cycle
 })
 
 
+test_that("validate_config - cyclic filter reference - errors naming the cycle", {
+  expect_error(
+    validate_config(list(
+      filters = list(
+        a = list(class = "FilterForceLevel", level = "info", filters = "b"),
+        b = list(class = "FilterForceLevel", level = "info", filters = "a")
+      ),
+      loggers = list(root = list())
+    )),
+    "Cyclic"
+  )
+})
+
+
 test_that("validate_config - multiple errors - all are reported", {
   err <- tryCatch(
     validate_config(list(

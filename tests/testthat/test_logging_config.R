@@ -43,6 +43,52 @@ test_that("root logger can apply multi-logger configs", {
 })
 
 
+test_that("re-applying a declarative config resets fields omitted from a mentioned logger", {
+  sub <- get_logger("pkg/resettable")
+
+  lgr$config(
+    list(
+      version = 1,
+      loggers = list(
+        root = list(threshold = "warn"),
+        "pkg/resettable" = list(
+          threshold = "debug",
+          appenders = list(class = "AppenderConsole"),
+          propagate = FALSE,
+          exception_handler = list(code = "function(e) NULL")
+        )
+      )
+    ),
+    allow_code = TRUE
+  )
+
+  expect_identical(lgr$threshold, 300L)
+  expect_identical(sub$threshold, 500L)
+  expect_length(sub$appenders, 1)
+  expect_false(sub$propagate)
+  expect_false(identical(sub$exception_handler, default_exception_handler))
+
+  # a second config that mentions both loggers but omits every other field
+  # must reset them to their defaults, not preserve the previous state
+  lgr$config(list(
+    version = 1,
+    loggers = list(
+      root = list(),
+      "pkg/resettable" = list()
+    )
+  ))
+
+  expect_identical(lgr$threshold, 400L)
+  expect_true(is_threshold_inherited(sub))
+  expect_length(sub$appenders, 0)
+  expect_true(sub$propagate)
+  expect_identical(sub$exception_handler, default_exception_handler)
+
+  lgr$config(NULL)
+  sub$config(NULL)
+})
+
+
 test_that("multi-logger YAML config text works", {
   skip_if_not_installed("yaml")
 

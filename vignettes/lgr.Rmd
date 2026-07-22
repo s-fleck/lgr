@@ -561,9 +561,12 @@ loggers:
 ### Format reference
 
 * `version`: optional, defaults to `1` (the only supported value).
-* `disable_existing_loggers`: optional `TRUE`/`FALSE`. If `TRUE`, every
-  pre-existing non-root logger not named under `loggers` is reset to its
-  default state before the config is applied.
+* `disable_existing_loggers`: optional `TRUE`/`FALSE`, defaults to `FALSE`.
+  If `TRUE`, every pre-existing non-root logger not named under `loggers` is
+  reset to its default state before the config is applied. A reset logger
+  gets `propagate: true` and no appenders of its own, so it inherits its
+  ancestors' output -- resetting a logger that was deliberately muted (e.g.
+  `propagate: false` with no appenders) can make it *more* verbose, not less.
 * `layouts`, `filters`, `appenders`: optional named mappings from a
   user-chosen component name to a component definition — a mapping with a
   `class` key (e.g. `class: AppenderConsole`, optionally namespaced as

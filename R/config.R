@@ -35,6 +35,34 @@
 #' ... }` spec (constructing an R6 [EventFilter]) or a bare-string reference
 #' to a named `filters` component.
 #'
+#' @section Applying a config is a full snapshot, not a patch:
+#' A logger definition under `loggers` fully determines that logger's
+#' `threshold`, `appenders`, `filters`, `propagate` and `exception_handler`:
+#' any of these keys that are *not* given for a listed logger are reset to
+#' their default (no threshold/inherited, no appenders, no filters,
+#' `propagate: true`, the default exception handler) rather than left as they
+#' were before the config was applied. This makes re-applying the same
+#' declarative config (or switching between config files) reproducible and
+#' independent of whatever state a Logger happened to be in beforehand. Note
+#' that this differs from the plain (non-declarative) `list` form accepted by
+#' [Logger$config()][Logger], which only touches the elements it is given and
+#' leaves everything else untouched.
+#'
+#' @section `disable_existing_loggers`:
+#' If `TRUE`, every pre-existing non-root logger *not* named under `loggers`
+#' is reset to its default/unconfigured state before the rest of the config
+#' is applied (loggers that *are* named under `loggers` are unaffected by
+#' this flag; they always end up in the state the config describes for them,
+#' per the previous section). Defaults to `FALSE`, so orphaned loggers are
+#' left alone unless you opt in.
+#'
+#' **Resetting is not the same as silencing.** A reset logger gets
+#' `propagate = TRUE` and no appenders/threshold of its own, i.e. it now
+#' inherits its ancestors' appenders and threshold. If a logger was
+#' deliberately muted (e.g. `propagate: false` with no appenders) before the
+#' reset, this can make it *more* verbose afterwards, not less -- it starts
+#' forwarding events to whichever ancestor appenders it now inherits from.
+#'
 #' @section Environment variable interpolation:
 #' Scalar string values may contain `${VAR}` (substituted with the value of
 #' environment variable `VAR`) or `${VAR:-default}` (using `default` when
@@ -572,9 +600,16 @@ validate_logger_def <- function(def, path, defs, allow_code, errs, is_root = FAL
 
 
 validate_component_graph <- function(defs, errs) {
-  appenders <- defs$appenders
-  adj <- lapply(appenders, function(def) referenced_appender_names(def[["appenders"]]))
-  names(adj) <- names(appenders)
+  validate_reference_graph(defs$appenders, "appenders", errs)
+  validate_reference_graph(defs$filters, "filters", errs)
+}
+
+
+
+
+validate_reference_graph <- function(components, field, errs) {
+  adj <- lapply(components, function(def) referenced_component_names(def[[field]], field))
+  names(adj) <- names(components)
 
   visited <- character(0)
 
@@ -582,8 +617,8 @@ validate_component_graph <- function(defs, errs) {
     if (node %in% path_stack) {
       cyc <- c(path_stack[seq(which(path_stack == node), length(path_stack))], node)
       errs$add(
-        paste0("appenders.", node),
-        sprintf("Cyclic appender reference detected: %s", paste(cyc, collapse = " -> "))
+        paste0(field, ".", node),
+        sprintf("Cyclic %s reference detected: %s", field, paste(cyc, collapse = " -> "))
       )
       return(invisible())
     }
@@ -608,7 +643,10 @@ validate_component_graph <- function(defs, errs) {
 
 
 
-referenced_appender_names <- function(x) {
+# `field` is "appenders" or "filters": the field within a component definition
+# that may hold further references of the same kind, so that self-references
+# among named `appenders`/`filters` components can be detected before resolving.
+referenced_component_names <- function(x, field) {
   if (is.null(x)) {
     return(character(0))
   }
@@ -617,14 +655,17 @@ referenced_appender_names <- function(x) {
   }
   if (is.list(x)) {
     if (!is.null(x[["class"]])) {
-      return(referenced_appender_names(x[["appenders"]]))
+      return(referenced_component_names(x[[field]], field))
+    }
+    if (!is.null(x[["code"]]) || !is.null(x[["ref"]])) {
+      return(character(0))
     }
     out <- character(0)
     for (e in x) {
       if (is_scalar_character(e)) {
         out <- c(out, e)
       } else if (is.list(e)) {
-        out <- c(out, referenced_appender_names(e))
+        out <- c(out, referenced_component_names(e, field))
       }
     }
     return(out)
@@ -971,7 +1012,7 @@ get0_function <- function(x) {
 
 apply_config <- function(resolved) {
   if (isTRUE(resolved$disable_existing_loggers)) {
-    for (nm in setdiff(ls(envir = loggers), "root")) {
+    for (nm in setdiff(ls(envir = loggers), c("root", names(resolved$loggers)))) {
       get_logger(nm)$config(NULL)
     }
   }
@@ -993,13 +1034,16 @@ apply_config <- function(resolved) {
 
     if (!is.null(plan$threshold)) {
       lg$set_threshold(plan$threshold)
+    } else if (identical(nm, "root")) {
+      # LoggerRoot$set_threshold() rejects `NULL`; fall back to its own default
+      lg$set_threshold(getOption("lgr.default_threshold", 400L))
+    } else {
+      lg$set_threshold(NULL)
     }
     lg$set_appenders(plan$appenders)
     lg$set_propagate(plan$propagate)
     lg$set_filters(plan$filters)
-    if (!is.null(plan$exception_handler)) {
-      lg$set_exception_handler(plan$exception_handler)
-    }
+    lg$set_exception_handler(plan$exception_handler %||% default_exception_handler)
   }
 
   invisible(get_logger("root"))

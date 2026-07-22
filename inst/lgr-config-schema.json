@@ -11,7 +11,7 @@
       "const": 1
     },
     "disable_existing_loggers": {
-      "description": "If true, resets every pre-existing non-root logger not named under `loggers` to its default state before applying this config.",
+      "description": "If true, resets every pre-existing non-root logger not named under `loggers` to its default state before applying this config. Defaults to false. Note that a reset logger gets `propagate: true` and no appenders of its own, so it inherits its ancestors' output -- resetting a logger that was deliberately muted can make it more verbose, not less.",
       "type": "boolean"
     },
     "layouts": {

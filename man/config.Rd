@@ -39,6 +39,38 @@ source and is therefore rejected unless the loader is called with
 to a named \code{filters} component.
 }
 
+\section{Applying a config is a full snapshot, not a patch}{
+
+A logger definition under \code{loggers} fully determines that logger's
+\code{threshold}, \code{appenders}, \code{filters}, \code{propagate} and \code{exception_handler}:
+any of these keys that are \emph{not} given for a listed logger are reset to
+their default (no threshold/inherited, no appenders, no filters,
+\code{propagate: true}, the default exception handler) rather than left as they
+were before the config was applied. This makes re-applying the same
+declarative config (or switching between config files) reproducible and
+independent of whatever state a Logger happened to be in beforehand. Note
+that this differs from the plain (non-declarative) \code{list} form accepted by
+\link[=Logger]{Logger$config()}, which only touches the elements it is given and
+leaves everything else untouched.
+}
+
+\section{\code{disable_existing_loggers}}{
+
+If \code{TRUE}, every pre-existing non-root logger \emph{not} named under \code{loggers}
+is reset to its default/unconfigured state before the rest of the config
+is applied (loggers that \emph{are} named under \code{loggers} are unaffected by
+this flag; they always end up in the state the config describes for them,
+per the previous section). Defaults to \code{FALSE}, so orphaned loggers are
+left alone unless you opt in.
+
+\strong{Resetting is not the same as silencing.} A reset logger gets
+\code{propagate = TRUE} and no appenders/threshold of its own, i.e. it now
+inherits its ancestors' appenders and threshold. If a logger was
+deliberately muted (e.g. \code{propagate: false} with no appenders) before the
+reset, this can make it \emph{more} verbose afterwards, not less -- it starts
+forwarding events to whichever ancestor appenders it now inherits from.
+}
+
 \section{Environment variable interpolation}{
 
 Scalar string values may contain \verb{$\{VAR\}} (substituted with the value of
