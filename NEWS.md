@@ -1,242 +1,356 @@
-# lgr 0.6.0
+# lgr (development version)
 
-- **BREAKING**: Replaced the two undocumented, unexported config dialects
-  (the `Logger:` shorthand and the hidden multi-logger `logging_config`
-  format) with a single, documented, exported declarative configuration
-  format (`version: 1`). See `vignette("lgr", package = "lgr")` and `?config`
-  for the format reference and a migration guide. In short: drop the
-  top-level `Logger:` key and put settings under `loggers: { root: {...} }`;
-  replace implicit `ClassName:` keys with an explicit `class:` key (e.g.
-  `AppenderConsole: {threshold: info}` becomes
-  `{class: AppenderConsole, threshold: info}`). A plain `list` of
-  already-constructed objects passed to `Logger$config()` continues to work
-  unchanged for a single logger.
-- Added `${VAR}` / `${VAR:-default}` environment-variable interpolation in
-  declarative configs, with a `$${...}` escape for literal sequences.
-- Declarative config loading is now **safe by default**: config-supplied R
-  source (the `code:` form for `exception_handler`/filters) is rejected
-  unless `allow_code = TRUE` is passed to `config()`/`read_config()`/
-  `validate_config()`.
-- Added `read_config()` and `validate_config()` to parse/validate a
-  declarative config without applying it (e.g. for CI), and
-  `config_schema_file()` to locate the shipped JSON Schema
-  (`inst/lgr-config-schema.json`) for editor autocompletion/validation.
-- Validation errors now report the exact dotted/indexed path of the problem
-  (e.g. `loggers.app.appenders[2]`) with "did-you-mean" suggestions for
-  likely typos, and are collected together rather than stopping at the
-  first error.
-- Various small cleanups & fixes (thx @m-muecke)
-- Add SKILL.md for usage of lgr in R packages
+## Added
 
-# lgr 0.5.2
+- **Docs:** Add a SKILL.md documenting how to use lgr in R packages
 
-- Quote 'Dynatrace' and 'lgrExtra' in DESCRIPTION
+- **Docs:** Complete rewrite of the code documentation and update ro roxygen2 8.0
 
-# lgr 0.5.1
+## Changed
 
-- Fix doc problem for CRAN
+- **Breaking:** Complete overhaul of the logging config file system. Replace the
+undocumented `Logger:` shorthand and hidden multi-logger `logging_config`
+format with a single, documented, exported declarative configuration format
+(`version: 1`). Drop the top-level `Logger:` key and put settings under
+`loggers: {root: {...}}`; replace implicit `ClassName:` keys with an explicit
+`class:` key (e.g. `AppenderConsole: {threshold: info}` becomes `{class:
+AppenderConsole, threshold: info}`). A plain `list` of already-constructed
+objects passed to `Logger$config()` continues to work unchanged for a single
+logger. See `vignette("lgr", package = "lgr")` and `?config` for the format
+reference and a migration guide
 
-# lgr 0.5.0
+## Fixed
 
-- Added `rawMsg` property to LogEvents to store message without
-  string interpolation (i.e. the original string that still contains
-  the placeholders from either `sprintf()` or `glue()`) (#60)
+- **Appender:** Fix `$remove_appenders()` removing the wrong appenders when
+removing multiple indices at once (thx @m-muecke)
 
-- Updated `AppenderConsole` to accept a `connection` argument. If called from a
-  `{knitr}` rendering process, log messages are now output to `stderr` instead
-  of `stdout` by default. This avoids polluting markdown documents (#62, thx @gadenbuie).
+- **AppenderFileRotating:** Fix `$format()` returning an invalid value instead of
+`FALSE` for the colour default (thx @m-muecke)
 
-- Replace `NULL` values and empty characters in logging by the string `"<NULL>"`.
-  Before, `NULL` values would have resulted in empty log messages. (#51)
+- **Docs:** Fix a couple of documentation typos (thx @m-muecke)
 
-- Support transformers for `LoggerGlue` (see `?glue::glue`) (#51)
+- **Filter:** Fix `$remove_filters()` removing the wrong filters when removing
+multiple indices at once (thx @m-muecke)
 
-- Add `excluded_fields` to `Layout` for excluding fields from logging.
-- Add `transform_event` and `transform_event_names` to `LayoutJson` to make
-  it more flexible. Exclude `rawMsg` by default for backwards compatibility.
+- **Layout:** Fix an incorrect `sprintf()` call in the unknown-level warning of
+`LayoutFormat$read()` (thx @m-muecke)
 
-# lgr 0.4.4
+- **LayoutJson:** Fix `$set_transform_event_names()` not returning `self`, which
+broke method chaining (thx @m-muecke)
 
-- `%k` and `%K` parameters in `format.LogEvent` now work as expected when using
-  **crayon** terminal colours (#52).
+- **Logger:** Fix `add_log_levels()` not showing the name of the overwritten
+level in its message (thx @m-muecke)
 
-- Fix default format string for `LayoutGlue` which was using `msg`
-  instead of `{msg}` (#54, thx @mmuurr)
+- **Logger:** Fix `basic_config()` not validating the `memory` argument against
+itself (thx @m-muecke)
 
-- Update docs to use the more common term "structured logging" instead of
-  "custom fields" where appropriate
+- **logger_tree:** Fix subtle styling not being disabled when `color = FALSE`
+(thx @m-muecke)
 
-- `as_event_list.data.frame` now really returns a list of `LogEvents`
+# lgr 0.5.2 (2026-01-30)
 
-- added `as_LogEvent()` to coerce various event-like objects to `LogEvents`
+## Fixed
 
-- rebuild docs for R 4.2.0
+- **AppenderFileRotatingTime:** Fix the class being registered as
+`AppenderFileRotating` instead of `AppenderFileRotatingTime`, which broke R6
+class dispatch
 
-# lgr 0.4.3
+- **DESCRIPTION:** Quote 'Dynatrace' and 'lgrExtra' package names
 
-- `logger_index()` returns a `data.frame` with metadata on all registered
-  loggers (#47) (thanks @Fuco1)
-- export new `string_repr()` generic that is used to layout R objects for
-  formatted log message output (#48, thanks @mmuurr)
-- The `$log()` method of Logger and LoggerGlue now unpacks conditions (except
-  if they are supplied as a named argument) (#45, thanks @mmuurr)
-- Fix some timezone related tests for CRAN
+# lgr 0.5.0 (2025-07-23)
 
-# lgr 0.4.2
+## Added
 
-- Deprecated the `create_file` argument of `AppenderFileRotating*`. This
-  is now hardcoded to `TRUE` (because `FALSE` doesn't really make sense here).
+- **Layout:** Add `excluded_fields` for excluding fields from logging
 
-- `default_exception_handler()` now throws more informative warnings if an
-  error is encountered during logging.
+- **LayoutGlue:** Support transformers (see `?glue::glue`) (#51)
 
-- drop tests for deprecated [future](https://cran.r-project.org/package=future)
-  plans to ensure compatibility with upcoming versions of future (#43)
+- **LayoutJson:** Add `transform_event` and `transform_event_names` fields for
+more flexible event transformation; excludes `rawMsg` by default for backwards
+compatibility
 
-# lgr 0.4.1
+- **LogEvent:** Add a `rawMsg` property to store the message before string
+interpolation (i.e. the original string with unresolved `sprintf()`/`glue()`
+placeholders) (#60)
 
-- Moved more complex Appenders to package
-  [lgrExtra](https://github.com/s-fleck/lgrExtra). This includes database
-  Appenders, email and push notifications and AppenderDt (in-memory
-  `data.tables`).
-- `AppenderFile$show()` can now filter log files formatted by LayoutFormat
-  by log level. Be aware that this just `greps` through the file and therefore
-  will return false positives on lines where the log message contains strings
-  that can be interpreted as log levels.
-- `AppenderFile$show()` and `AppenderFile$data` now dispatches to
-  `Layout$read()` and `Layout$parse()`. This makes it possible to tie
-  reading/parsing of log files to Layouts.
+## Changed
 
-- Loggers gain a `list_log()` method. See https://github.com/s-fleck/joblog for
-  an R package that leverages this feature to create custom log event types for
-  tracking the status of cron jobs.
-- Export more utility functions that are useful for creating custom Appenders;
-  such as `standardize_threshold()` and `event_list()`.
-- AppenderBuffer now defaults to `flush_threshold = NULL`
-  (never flush because of the log level of an event)
-- `basic_config()` now works as documented for .jsonl files
+- **AppenderConsole:** Accept a `connection` argument; defaults to `stderr`
+instead of `stdout` when called from a **knitr** rendering process, to avoid
+polluting markdown documents (#62, thx @gadenbuie)
 
-- AppenderMemory gains a `$clear()` method that clears the buffer without
-  sending the events to it's attached appenders
+- **Internals:** Use `isTRUE()`/`isFALSE()` instead of `identical(x, TRUE)` for
+better performance (thx @m-muecke)
 
-- LayoutJson gains a `timestamp_fmt` field that can be used for custom
-  timestamp formats (#34)
-- added `toString.LogEvent()` for compact representations of LogEvents
+- **Internals:** Use `anyNA()` and `anyDuplicated()` in more places for better
+performance (thx @m-muecke)
 
-- lgr is now automatically tested for all major R version >= 3.2.0
+- **Logging:** Replace `NULL` values and empty strings with the string `"<NULL>"`
+instead of an empty log message (#51)
 
-- AppenderMemory/AppenderBuffer: `flush_threshold` is now independent of
-  `should_flush` function. `default_should_flush()` is no longer necessary
-  and has been removed.
-- Updated AppenderFileRotating and co for compatibility with
-  [rotor](https://github.com/s-fleck/rotor) 0.3.0
+# lgr 0.4.4 (2022-09-05)
 
-- Most errors now have appropriate subclasses
+## Added
 
-- `Logger$log()` dispatches to all appenders - even if some throw an error -
-  instead of aborting after the first Appender that throws an error
-- complete rewrite of the documentation to use the new roxygen2 features for
-  R6 classes.
+- **LogEvent:** Add `as_LogEvent()` to coerce event-like objects to `LogEvent`s
 
-# lgr 0.3.4
+## Changed
 
-- Hotfix for compatibility with R < 3.6.0 (#32)
+- **Docs:** Use the more common term "structured logging" instead of "custom
+fields" where appropriate
 
-# lgr 0.3.3
+- **Docs:** Rebuild documentation for compatibility with R 4.2.0
 
-- Fixed a performance regression when looking up the parent of a Logger. This
-  notably affected the performance of "do-nothing" logging (e.g. when a
-  log message is discarded because it is below a loggers' threshold)
+## Fixed
 
-# lgr 0.3.2
+- **event_list:** Fix `as_event_list.data.frame()` not returning a list of
+`LogEvent`s
 
-- Added AppenderSyslog for logging to syslog via
-  [rsyslog](https://github.com/atheriel/rsyslog) (thanks to atheriel)
+- **format.LogEvent:** Fix `%k`/`%K` parameters not working as expected with
+**crayon** terminal colours (#52)
 
-# lgr 0.3.1
+- **LayoutGlue:** Fix the default format string using `msg` instead of `{msg}`
+(#54, thx @mmuurr)
 
-- Added `logger_tree()` which provides an overview of all registered loggers
+# lgr 0.4.3 (2021-09-16)
 
-- Added `print()` and `format()` methods for Appenders
+## Added
 
-- `AppenderMemory`: added `data` and `dt` active fields (which return the
-  log as a data.frame or data.table)
+- **logger_index:** Add `logger_index()`, returning a `data.frame` with metadata
+on all registered loggers (#47, thanks @Fuco1)
 
-- Removed deprecated functions `FATAL()`, `ERROR()`. Use `lgr$fatal()`,
-  `lgr$error()`, ... instead.
+- **string_repr:** Export the `string_repr()` generic used to format R objects
+for log message output (#48, thanks @mmuurr)
 
-- `AppenderMemory`: `$buffer_dt()` and `$show()` now handle custom fields
-  containing atomic vectors correctly
+## Changed
 
-# lgr 0.3.0
+- **Logger:** `$log()` now unpacks conditions passed to it (except when supplied
+as a named argument), for both `Logger` and `LoggerGlue` (#45, thanks @mmuurr)
 
-- Added support for rotating log files via `AppenderFileRotating`,
-  `AppenderFileRotatingDate` and `AppenderFileRotatingTime`. Requires the
-  package [rotor](https://github.com/s-fleck/rotor).
-- functions like `show_log()`, `show_data()`,... now accept logger names as
-  well as Logger or Appender objects as `target`.
-- `AppenderFile$new()` now creates an empty file, or fails if it can't
+## Fixed
 
-- Improved support for RMariaDB and dropped support for RMySQL
+- **Tests:** Fix timezone-related test failures on CRAN
 
-- Improved support for RPostgres and dropped support for RPostgreSQL
+# lgr 0.4.2 (2021-01-10)
 
-- added `reset` argument to `get_logger()`. This completely resets the
-  configuration of the logger and also replaces special loggers (such as
-  `LoggerGlue`) with vanilla ones.
+## Changed
 
-# lgr 0.2.2
+- **default_exception_handler:** Throw more informative warnings when an error is
+encountered during logging
 
-- The root logger can now be configured via `options()` and/or environment
-  variables (see `?lgr`)
-- `basic_config()` now accepts thresholds ("info", "fatal") as arguments to
-  `console` and `memory`.
-- The default config of the root logger has changed. It now only has a
-  console appender and a default threshold of `"info"`. To get
-  back the old behaviour run
-  `basic_config(threshold = "all", console = "info", memory = "all")`.
-- `$config(NULL)` now resets a Logger to its default/unconfigured state
+## Deprecated
 
-- `$config()` now accepts YAML as well as JSON files (or YAML/JSON as a
-  character string)
-- `with_log_level()` and `with_log_value()` now accept logger names as well as
-  Logger objects as the `logger` argument
-- `get_logger_glue()` now works as intended
+- **AppenderFileRotating:** Deprecate the `create_file` argument; file creation
+is now always enabled (hardcoded to `TRUE`, since `FALSE` never made sense)
 
-- Deprecated `FATAL()`, `ERROR()`. Use `lgr$fatal()`, `lgr$error()`, ... instead.
+## Fixed
 
-# lgr 0.2.1
+- **Tests:** Drop tests for deprecated **future** plans to maintain compatibility
+with upcoming **future** versions (#43)
 
-- Emergency fix that ensures test suite cleans up temporary files
+# lgr 0.4.1 (2020-10-20)
 
-- Removed .rd file for the unexported LoggerRoot class
+## Added
 
-# lgr 0.2.0
+- **AppenderFile:** `$show()` can now filter log files formatted by
+`LayoutFormat` by log level (note: this greps the file, so it may return false
+positives when a log message itself contains level-like strings)
 
-- `get_loggers()` registers new loggers in the lgr::loggers namespace, this
-  is a more global and decoupled approach similar to how python logging handles
-  loggers.
-- removed `full_name` active binding for loggers. Loggers now only have
-  qualified names and `name` is now identical to what `full_name` was before.
-  For consistency the format method of `ancestry` has also been revised.
-- Logger inheritance is now derived from the qualified name of a logger.
-  Consequently `lg$parent` is now derived from `lg$name`, `lg$set_parent()`
-  is no longer possible.
-- If no threshold is set for a new Logger, it now inherits the threshold
-  of its parent
-- Depend on R6 >= 2.4.0 which includes relevant fixes to finalizers. finalize
-  methods are now private.
-- Logger now have a `config` method that allows configuring Loggers with config
-  objects and YAML files (experimental)
-- added `with_logging()`, the opposite of `without_logging()`. This can be
-  handy for automated tests where you might want so switch logging off/on only
-  for specific unit tests.
+- **AppenderMemory:** Add a `$clear()` method to clear the buffer without sending
+events to its attached appenders
 
-# lgr 0.1.1
+- **LayoutJson:** Add a `timestamp_fmt` field for custom timestamp formats (#34)
 
-- Added `show_data()` and `show_dt()` for quick access to the root loggers
-  in memory log as `data.frame` or `data.table` respectively
-- numerous small fixes
+- **LogEvent:** Add a `toString()` method for a compact representation of
+`LogEvent`s
 
-- removed non-breaking-spaces from .RD files. This caused unforeseen problems
-  with the compiling the .pdf manual during the CRAN submission process.
+- **Logger:** Add a `$list_log()` method
+
+- **Utils:** Export more utility functions useful for building custom Appenders,
+such as `standardize_threshold()` and `event_list()`
+
+## Changed
+
+- **AppenderBuffer:** Default `flush_threshold` to `NULL` (never flush based on
+the log level of an event); `flush_threshold` is now independent of
+`should_flush`
+
+- **AppenderFile:** `$show()` and `$data` now dispatch to
+`Layout$read()`/`Layout$parse()`, tying log file reading/parsing to the Layout
+used
+
+- **AppenderFileRotating:** Update `AppenderFileRotating` and related appenders
+for compatibility with [rotor](https://github.com/s-fleck/rotor) 0.3.0
+
+- **Docs:** Rewrite documentation to use the newer roxygen2 features for R6
+classes
+
+- **Errors:** Give most errors appropriate subclasses
+
+- **Tests:** lgr is now automatically tested against all major R versions >=
+3.2.0
+
+## Removed
+
+- **Breaking:** Move the more complex Appenders to the new
+[lgrExtra](https://github.com/s-fleck/lgrExtra) package, including database
+Appenders, email and push notifications, and `AppenderDt` (in-memory
+`data.table`)
+
+- **AppenderBuffer:** Remove `default_should_flush()`, made unnecessary now that
+`flush_threshold` is independent of `should_flush`
+
+## Fixed
+
+- **basic_config:** Fix `.jsonl` file handling to work as documented
+
+- **Logger:** `$log()` now dispatches to all appenders even if one throws an
+error, instead of aborting after the first failing appender
+
+# lgr 0.3.4 (2020-03-20)
+
+## Fixed
+
+- Fix compatibility with R < 3.6.0 (#32)
+
+# lgr 0.3.3 (2019-09-27)
+
+## Fixed
+
+- **Logger:** Fix a performance regression in parent lookup that notably slowed
+down "do-nothing" logging (i.e. discarding a message below a logger's
+threshold)
+
+# lgr 0.3.2 (2019-08-20)
+
+## Added
+
+- **AppenderSyslog:** Add `AppenderSyslog` for logging to syslog via
+[rsyslog](https://github.com/atheriel/rsyslog) (thanks @atheriel)
+
+# lgr 0.3.1 (2019-06-13)
+
+## Added
+
+- **Appender:** Add `print()`/`format()` methods
+
+- **AppenderMemory:** Add `data`/`dt` active fields to return the log as a
+`data.frame`/`data.table`
+
+- **logger_tree:** Add `logger_tree()` for an overview of all registered loggers
+
+## Removed
+
+- **Breaking:** Remove the deprecated `FATAL()`/`ERROR()` functions; use
+`lgr$fatal()`/`lgr$error()` instead
+
+## Fixed
+
+- **AppenderMemory:** Fix `$buffer_dt()`/`$show()` not handling custom fields
+containing atomic vectors correctly
+
+# lgr 0.3.0 (2019-05-30)
+
+## Added
+
+- **AppenderFileRotating:** Add support for rotating log files via
+`AppenderFileRotating`, `AppenderFileRotatingDate`, and
+`AppenderFileRotatingTime` (requires the
+[rotor](https://github.com/s-fleck/rotor) package)
+
+- **basic_config:** `basic_config()` now accepts thresholds (e.g. `"info"`,
+`"fatal"`) as arguments to `console` and `memory`
+
+- **Config:** `$config()` now accepts YAML in addition to JSON, as files or as a
+character string
+
+- **Config:** `$config(NULL)` resets a Logger to its default/unconfigured state
+
+- **get_logger:** Add a `reset` argument to `get_logger()` that completely resets
+a Logger's configuration and replaces special loggers (such as `LoggerGlue`)
+with vanilla ones
+
+- **Root logger:** The root logger can now be configured via `options()` and/or
+environment variables (see `?lgr`)
+
+## Changed
+
+- **AppenderFile:** `$new()` now creates an empty file immediately, or fails if
+it can't
+
+- **Breaking:** Change the default config of the root logger to have only a
+console appender with a default threshold of `"info"` (previously `"all"`). To
+restore the old behaviour, run `basic_config(threshold = "all", console =
+"info", memory = "all")`
+
+- **RMariaDB:** Improve support for RMariaDB and drop support for RMySQL
+
+- **RPostgres:** Improve support for RPostgres and drop support for RPostgreSQL
+
+- **show_log:** `show_log()`, `show_data()`, and friends now accept logger names
+in addition to `Logger`/`Appender` objects as `target`
+
+- **with_log_level:** `with_log_level()` and `with_log_value()` now accept logger
+names in addition to `Logger` objects as the `logger` argument
+
+## Deprecated
+
+- Deprecate `FATAL()`/`ERROR()`; use `lgr$fatal()`/`lgr$error()` instead
+
+## Fixed
+
+- **get_logger_glue:** Fix `get_logger_glue()` not working as intended
+
+# lgr 0.2.1 (2019-03-25)
+
+## Removed
+
+- **Docs:** Remove the `.Rd` file for the unexported `LoggerRoot` class
+
+## Fixed
+
+- **Tests:** Fix the test suite not cleaning up temporary files
+
+# lgr 0.2.0 (2019-03-22)
+
+## Added
+
+- **Logger:** Add an experimental `$config()` method for configuring Loggers via
+config objects and YAML files
+
+- **Logger:** New Loggers without an explicit threshold now inherit the threshold
+of their parent
+
+- **with_logging:** Add `with_logging()`, the opposite of `without_logging()`,
+for toggling logging on/off within specific unit tests
+
+## Changed
+
+- **Breaking:** Derive Logger inheritance from a Logger's qualified name;
+`lg$parent` is now derived from `lg$name` and `lg$set_parent()` is no longer
+possible
+
+- **Breaking:** Remove the `full_name` active binding from Loggers; `name` is now
+always the fully qualified name (what `full_name` used to return); the
+`ancestry` format method was revised accordingly
+
+- **Dependencies:** Depend on R6 >= 2.4.0, which includes relevant finalizer
+fixes; `finalize` methods are now private
+
+- **get_loggers:** `get_loggers()` now registers new loggers in the
+`lgr::loggers` namespace, a more global and decoupled approach similar to
+Python's `logging` module
+
+# lgr 0.1.1 (2019-02-22)
+
+## Added
+
+- **show_data:** Add `show_data()`/`show_dt()` for quick access to the root
+logger's in-memory log as a `data.frame`/`data.table` respectively
+
+## Fixed
+
+- **Docs:** Remove non-breaking spaces from `.Rd` files, which caused problems
+compiling the PDF manual during CRAN submission
+
+- Numerous small fixes
