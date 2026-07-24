@@ -2,7 +2,7 @@
 
 - [x] 1.1 Diff `_pkgdown.yml`'s `reference` sections against `NAMESPACE` exports; add any missing exported objects to an appropriate section and remove any that no longer exist
 - [x] 1.2 Review `_pkgdown.yml` against current pkgdown defaults/best practice (template, `development`, `home`, `navbar`) and add any missing but valuable keys; keep existing Bootstrap 5 + light-switch config and curated reference grouping
-- [ ] 1.3 Generate favicons locally with `pkgdown::build_favicons()` from `man/figures/yog-logo.svg` (or a suitable PNG derived from it) and commit the generated `pkgdown/favicon/` directory — **blocked: no local R/pkgdown/magick available in this environment**
+- [x] 1.3 Generate favicons locally with `pkgdown::build_favicons()` from `man/figures/yog-logo.svg` (or a suitable PNG derived from it) and commit the generated `pkgdown/favicon/` directory (copied to the standard `man/figures/logo.svg` path pkgdown requires for detection; generated via realfavicongenerator.net, no local `magick`/`rsvg` conversion needed)
 
 ## 2. Workflow update
 
@@ -14,7 +14,7 @@
 
 ## 3. Verification
 
-- [ ] 3.1 If R + pkgdown are available locally, run `pkgdown::build_site()` (or `check_pkgdown()`) to confirm `_pkgdown.yml` is valid and the site builds without new warnings — **blocked: no local R available in this environment; needs to be run by a maintainer**
+- [x] 3.1 If R + pkgdown are available locally, run `pkgdown::build_site()` (or `check_pkgdown()`) to confirm `_pkgdown.yml` is valid and the site builds without new warnings (ran locally after installing `magick`/portable Pandoc and reinstalling `lgr` from source via `devtools::install()` — the previously-installed package version predated the config rewrite and caused an unrelated build failure; site now builds cleanly to `docs/`, only a pre-existing unrelated vignette-title warning remains)
 - [x] 3.2 Validate the updated workflow YAML for syntax correctness — manually reviewed structure against upstream template (no `actionlint`/YAML linter available in this environment); no automated linter was run
 - [ ] 3.3 After merging, confirm the next push triggers a successful build + deploy to the `gh-pages` branch and that `https://s-fleck.github.io/lgr` serves the freshly built site — post-merge step, not yet done
 

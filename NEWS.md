@@ -2,9 +2,18 @@
 
 ## Added
 
-- **Docs:** Add a SKILL.md documenting how to use lgr in R packages
+- **Docs:** Add a SKILL.md documenting how to use lgr in R packages, and
+`use_skill()` to install it into a project's coding-agent config directory
+(auto-detecting `.claude/`, `.cursor/`, `.codex/`, and other supported
+presets, or accepting an explicit `agent`/`path`)
 
 - **Docs:** Complete rewrite of the code documentation and update ro roxygen2 8.0
+
+- **Docs:** Refresh the pkgdown site: update the CI workflow to match the
+current r-lib/actions template (newer action versions, SHA-pinned deploy
+action), regenerate favicons, review the reference index for completeness,
+and add per-pull-request preview site deployments with an auto-updating
+PR comment linking to the preview
 
 ## Changed
 

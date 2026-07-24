@@ -1,0 +1,15 @@
+loggers:
+  root:
+    threshold: ${LGR_DEMO_LEVEL:-info}
+    appenders:
+      console:
+        class: AppenderConsole
+        threshold: info
+      file:
+        class: AppenderFile
+        file: ${LGR_DEMO_LOG_DIR}/demo-${LGR_DEMO_LEVEL:-info}.jsonl
+        threshold: all
+      buffer:
+        class: AppenderBuffer
+        threshold: all
+        buffer_size: ${LGR_DEMO_BUFFER_SIZE}

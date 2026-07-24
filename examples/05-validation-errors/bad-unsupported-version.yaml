@@ -1,0 +1,5 @@
+version: 2
+
+loggers:
+  root:
+    threshold: info

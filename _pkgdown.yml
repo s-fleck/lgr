@@ -70,6 +70,7 @@ reference:
   - get_user
   - read_json_lines
   - use_logger
+  - use_skill
   - label_levels
   - colorize_levels
   - pad_right

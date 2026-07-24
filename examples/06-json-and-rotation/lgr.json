@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "disable_existing_loggers": true,
+  "appenders": {
+    "console": {
+      "class": "AppenderConsole",
+      "threshold": "info"
+    },
+    "rotating": {
+      "class": "AppenderFileRotating",
+      "threshold": "all",
+      "file": "logs/rotating-demo.log",
+      "size": "1K",
+      "max_backups": 3
+    }
+  },
+  "loggers": {
+    "root": {
+      "threshold": "all",
+      "appenders": ["console", "rotating"]
+    },
+    "glue_logger": {
+      "class": "LoggerGlue",
+      "threshold": "all",
+      "appenders": ["console"],
+      "propagate": false
+    }
+  }
+}

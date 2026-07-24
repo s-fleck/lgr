@@ -72,6 +72,7 @@ Collate:
     'simple_logging.R'
     'string_repr.R'
     'use_logger.R'
+    'use_skill.R'
     'utils-formatting.R'
     'utils-logging.R'
     'utils-rd.R'

@@ -1,0 +1,8 @@
+loggers:
+  root:
+    threshold: all
+    appenders:
+      console:
+        class: AppenderConsole
+        threshold: info
+    exception_handler: lgr::default_exception_handler
