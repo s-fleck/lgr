@@ -211,6 +211,8 @@ test_that("AppenderConsole - with connection = stderr() - outputs to stderr", {
 
 
 test_that("AppenderConsole: chooses stderr by default when in knitr", {
+  skip_if_not_installed("knitr")
+
   opts <- options(knitr.in.progress = TRUE)
   on.exit(options(opts), add = TRUE)
 
