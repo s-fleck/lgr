@@ -19,12 +19,6 @@
   completeness, and add per-pull-request preview site deployments with
   an auto-updating PR comment linking to the preview
 
-- **Filter:** Add `FilterInjectSystemInfo`, a `FilterInject` subclass
-  that automatically injects standard runtime metadata (`hostName`,
-  `rVersion`, `containerId` when running in Docker, `scriptFile` when
-  determinable) into every log event once at construction time, in
-  addition to any custom values supplied via `...`/`.list`
-
 ### Changed
 
 - **Breaking:** Complete overhaul of the logging config file system.
@@ -41,17 +35,6 @@
   and [`?config`](https://s-fleck.github.io/lgr/reference/config.md) for
   the format reference and a migration guide
 
-- **Config:** Function-valued constructor arguments (`ref:`/`code:`) are
-  no longer limited to a logger’s `exception_handler` and filter entries
-  – any `layouts`/`filters`/`appenders` constructor argument (e.g. a
-  `LayoutJson`’s `transform_event`) now accepts the same forms
-
-- **Config:** Add an `enabled` key to component and logger definitions
-  so a sink or logger can be toggled via `${VAR:-false}` interpolation
-  without adding or removing YAML blocks; a disabled logger is fully
-  reset to its default/unconfigured state, keeping re-application
-  idempotent regardless of prior state
-
 ### Fixed
 
 - **Appender:** Fix `$remove_appenders()` removing the wrong appenders
@@ -64,14 +47,6 @@
 
 - **Docs:** Fix a couple of documentation typos (thx
   [@m-muecke](https://github.com/m-muecke))
-
-- **Filter:** Fix `FilterInject$new()` erroring when called with values
-  supplied only via `.list` and no named `...` arguments
-
-- **LayoutJson:** Fix `$set_transform_event_names()` rejecting a named
-  `list` of scalar `character` values, as produced when a YAML/JSON
-  mapping is parsed (e.g. a `transform_event_names:` block in a
-  declarative config)
 
 - **Filter:** Fix `$remove_filters()` removing the wrong filters when
   removing multiple indices at once (thx
