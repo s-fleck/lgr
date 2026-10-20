@@ -1,22 +1,25 @@
 ---
-name: r-script-style-guide
+name: r-package-style-guide
 description: >
-  Enforce repository standards for R scripts. Use when creating or editing R
-  scripts in this repository to apply naming, structure, API/ES/db patterns,
-  and style conventions (pipes, env defaults, output, formatting).
-user-invocable: true
-disable-model-invocation: false
+  Code style conventions for R package code. Use when writing or refactoring
+  functions in an R package to apply company style rules (pipes, anonymous
+  functions, formatting, data.table, prohibited packages).
+metadata:
+  author: Stefan Fleck
+  version: "2.0"
 ---
 
-# R Style Guide Skill
+# R Package Style Guide
 
-Apply the repository R script conventions consistently when generating or modifying R code.
+Apply these conventions consistently when generating or modifying code in an R
+package. For workflow commands, testing, documentation and NAMESPACE rules see
+the `r-package-development` skill.
 
 ## When To Use
 
-- Creating a new R script in a package.
-- Refactoring an existing script to repository style.
-- Reviewing script style conformance.
+- Writing a new function in `R/`.
+- Refactoring existing package code to company style.
+- Reviewing package code for style conformance.
 
 ## AI Coding Directives
 
@@ -31,9 +34,9 @@ Apply the repository R script conventions consistently when generating or modify
 
 - **Pipe**: Always use `|>`, never `%>%`
 - **Anonymous functions**: Use `\(x) x + 1`, not `function(x)`
+- **URL building**: Use `sfmisc::url_tidy(...)`
 - **Indentation**: 2 spaces
-- **Formatter**: Apply air formatter to new scripts
-- **Environment default**: "qa" for safety; change to "prod" only when needed
+- **Formatter**: Run `air format .` after generating any code
 - **Prohibited packages** Never use the following packages: magrittr, elastic
 - Do not use `dplyr::case_match()`, use the modern replacement `dplyr::recode_values()` instead
 
@@ -48,19 +51,3 @@ data.table::setnames(iris, sfmisc::pascal_case(names(iris)))
 # Bad:
 iris |> data.table::setnames(sfmisc::pascal_case(names(iris)))
 ```
-
-## API Calls (httr2)
-
-```r
-response <- request(build_url("wikifolios/query")) |>
-  req_method("POST") |>
-  req_body_json(request_body) |>
-  req_perform()
-
-result <- resp_body_json(response)
-```
-
-## Persistence
-
-- **Default**: Save as `.rds`
-- **CSV**: Only if explicitly requested

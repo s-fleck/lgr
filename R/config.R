@@ -25,15 +25,35 @@
 #' references are resolved once and the resulting object is shared. Appenders
 #' and filters can also be defined inline instead of referenced by name.
 #'
-#' Function-valued positions (a logger's `exception_handler`, and filter
-#' entries) accept one of: a **name reference** (a bare `character` scalar
-#' for `exception_handler`, or an explicit `{ ref: <name> }`), resolved by
-#' lookup (`<pkg>::<name>` supported); an **inline code** form
-#' (`{ code: "<R source>" }`), the only form that evaluates config-supplied
-#' source and is therefore rejected unless the loader is called with
-#' `allow_code = TRUE`; and, for filters only, a `{ class: <FilterClass>,
-#' ... }` spec (constructing an R6 [EventFilter]) or a bare-string reference
-#' to a named `filters` component.
+#' Function-valued positions -- a logger's `exception_handler`, filter
+#' entries, and (as of the generalized form) **any** constructor argument of
+#' a `layouts`/`filters`/`appenders` component (e.g. a `LayoutJson`'s
+#' `transform_event`, or an appender's dynamic `index`) -- accept one of: a
+#' **name reference** (a bare `character` scalar for `exception_handler`, or
+#' an explicit `{ ref: <name> }`), resolved by lookup (`<pkg>::<name>`
+#' supported); an **inline code** form (`{ code: "<R source>" }`), the only
+#' form that evaluates config-supplied source and is therefore rejected
+#' unless the loader is called with `allow_code = TRUE`; and, for filters
+#' only, a `{ class: <FilterClass>, ... }` spec (constructing an R6
+#' [EventFilter]) or a bare-string reference to a named `filters` component.
+#' Outside of these explicit `{ ref: ... }`/`{ code: ... }` forms, a plain
+#' `character` scalar in an ordinary argument position is always a literal
+#' string, never an implicit function reference.
+#'
+#' @section `enabled`:
+#' Component definitions under `layouts`/`filters`/`appenders`, and logger
+#' definitions under `loggers`, accept an optional `enabled` key (a boolean,
+#' defaulting to `TRUE`) -- the natural target for `${VAR:-false}`
+#' interpolation, so a sink can be toggled per environment without adding or
+#' removing YAML blocks. When `enabled: false` on a *named* component, it is
+#' not instantiated, and any `appenders:`/`filters:` list entry elsewhere
+#' that references it by name is silently dropped rather than treated as an
+#' "unknown reference" error; an inline (unnamed) component definition with
+#' `enabled: false` is likewise dropped from whichever list it appears in.
+#' When `enabled: false` on a logger definition, that logger is fully reset
+#' to its default/unconfigured state (as if it had never been configured),
+#' regardless of whatever state it was in before -- this keeps re-applying
+#' the config idempotent, rather than depending on the logger's prior state.
 #'
 #' @section Applying a config is a full snapshot, not a patch:
 #' A logger definition under `loggers` fully determines that logger's
@@ -78,6 +98,30 @@
 #' unless the caller passes `allow_code = TRUE`. All other forms (name/`ref`
 #' references, `class` specs, named-component references) are data, not
 #' source, and are always available.
+#'
+#' @section Environment-layered configs:
+#' lgr's config format itself is deliberately *not* environment-aware -- it
+#' describes one logger hierarchy, not a `default`/`qa`/`prod` bundle of
+#' them. If you need different values per deployment stage, merge them
+#' *before* calling [read_config()]/[Logger$config()][Logger], rather than
+#' asking lgr to do the merging:
+#'
+#' * for simple cases, `${VAR}`/`${VAR:-default}` interpolation (see above)
+#'   is usually enough on its own -- e.g. `isEnabled: ${ELASTIC_ENABLED:-false}`;
+#' * for config files that look like:
+#'   ```yaml
+#'   default:
+#'     logger:
+#'       appenders: {...}
+#'   qa:
+#'     logger:
+#'       appenders: {...}
+#'   ```
+#'   (one `default` section plus per-environment overrides, a common pattern
+#'   e.g. with the \pkg{config} package), load and merge the relevant
+#'   sections yourself -- `config::get(file = "logger.yaml", config = "qa")`
+#'   or a plain `utils::modifyList(default_cfg, env_cfg)` -- and pass the
+#'   *already-merged* `list` to `read_config()`/`Logger$config()`.
 #'
 #' @name config
 #' @seealso [Logger], `vignette("configuring-lgr", package = "lgr")`
@@ -359,7 +403,7 @@ CONFIG_TOP_LEVEL_KEYS <- c(
   "version", "disable_existing_loggers", "layouts", "filters", "appenders", "loggers"
 )
 CONFIG_LOGGER_KEYS <- c(
-  "class", "threshold", "appenders", "filters", "propagate", "exception_handler"
+  "class", "threshold", "appenders", "filters", "propagate", "exception_handler", "enabled"
 )
 
 
@@ -436,6 +480,10 @@ validate_component_def <- function(def, path, defs, allow_code, errs, is_filter_
     errs$add(paste0(path, ".class"), "`class` must be a character scalar.")
   }
 
+  if (!is.null(def[["enabled"]]) && !is_scalar_bool(def[["enabled"]])) {
+    errs$add(paste0(path, ".enabled"), "Expected a boolean (true/false).")
+  }
+
   if (!is.null(def[["layout"]])) {
     validate_layout_field(def[["layout"]], paste0(path, ".layout"), defs, errs)
   }
@@ -446,8 +494,28 @@ validate_component_def <- function(def, path, defs, allow_code, errs, is_filter_
     validate_appenders_field(def[["appenders"]], paste0(path, ".appenders"), defs, allow_code, errs)
   }
 
+  for (nm in setdiff(names(def), CONFIG_COMPONENT_STRUCTURAL_KEYS)) {
+    if (is_function_value_spec(def[[nm]])) {
+      validate_function_value(def[[nm]], paste0(path, ".", nm), defs, allow_code, errs, is_filter_context = FALSE)
+    }
+  }
+
   invisible()
 }
+
+
+
+
+# a `{ ref: ... }` or `{ code: ... }` mapping in an ordinary constructor
+# argument position opts that argument into function-value resolution; any
+# other list (e.g. a plain named list like `transform_event_names`) is passed
+# through as a literal value
+is_function_value_spec <- function(x) {
+  is.list(x) && identical(length(x), 1L) && !is.null(names(x)) && names(x) %in% c("code", "ref")
+}
+
+
+CONFIG_COMPONENT_STRUCTURAL_KEYS <- c("class", "layout", "filters", "appenders", "enabled")
 
 
 
@@ -573,6 +641,10 @@ validate_logger_def <- function(def, path, defs, allow_code, errs, is_root = FAL
     } else if (is_root && identical(def[["class"]], "LoggerGlue")) {
       errs$add(paste0(path, ".class"), "The root logger cannot be a 'LoggerGlue'.")
     }
+  }
+
+  if (!is.null(def[["enabled"]]) && !is_scalar_bool(def[["enabled"]])) {
+    errs$add(paste0(path, ".enabled"), "Expected a boolean (true/false).")
   }
 
   if (!is.null(def[["threshold"]]) && !is_threshold(def[["threshold"]])) {
@@ -778,6 +850,7 @@ resolve_config <- function(parsed, allow_code = FALSE) {
     ldef <- loggers_cfg[[nm]] %||% list()
 
     logger_plans[[nm]] <- list(
+      enabled = !identical(ldef[["enabled"]], FALSE),
       class = ldef[["class"]] %||% "Logger",
       threshold = if (!is.null(ldef[["threshold"]])) standardize_threshold(ldef[["threshold"]]) else NULL,
       appenders = if (!is.null(ldef[["appenders"]])) {
@@ -820,10 +893,16 @@ new_config_resolvers <- function(defs, allow_code) {
     }
 
     assert(name %in% names(defs[[type]]), "Unknown `", type, "` reference: '", name, "'")
+
+    def <- defs[[type]][[name]]
+    if (identical(def[["enabled"]], FALSE)) {
+      return(NULL)
+    }
+
     assert(!(name %in% stack[[type]]), "Cyclic reference detected in `", type, "`: ", name)
 
     stack[[type]] <<- c(stack[[type]], name)
-    res <- instantiate_component(defs[[type]][[name]], defs, allow_code, self)
+    res <- instantiate_component(def, defs, allow_code, self)
     stack[[type]] <<- setdiff(stack[[type]], name)
 
     cache[[type]][[name]] <<- res
@@ -840,7 +919,7 @@ instantiate_component <- function(def, defs, allow_code, resolvers) {
   ctor <- get0_R6Class(def[["class"]])
   assert(!is.null(ctor), "Could not resolve R6 constructor '", def[["class"]], "'.")
 
-  args <- def[setdiff(names(def), "class")]
+  args <- def[setdiff(names(def), c("class", "enabled"))]
 
   if (!is.null(args[["layout"]])) {
     args[["layout"]] <- resolve_layout_field(args[["layout"]], defs, allow_code, resolvers)
@@ -850,6 +929,12 @@ instantiate_component <- function(def, defs, allow_code, resolvers) {
   }
   if (!is.null(args[["appenders"]])) {
     args[["appenders"]] <- resolve_appenders_field(args[["appenders"]], defs, allow_code, resolvers)
+  }
+
+  for (nm in setdiff(names(args), c("layout", "filters", "appenders"))) {
+    if (is_function_value_spec(args[[nm]])) {
+      args[[nm]] <- resolve_function_value(args[[nm]], defs, allow_code, resolvers, is_filter_context = FALSE)
+    }
   }
 
   do.call(ctor$new, args)
@@ -873,12 +958,14 @@ resolve_appenders_field <- function(x, defs, allow_code, resolvers) {
   res <- lapply(entries, function(e) {
     if (is_scalar_character(e)) {
       resolvers$resolve_named("appenders", e)
+    } else if (identical(e[["enabled"]], FALSE)) {
+      NULL
     } else {
       instantiate_component(e, defs, allow_code, resolvers)
     }
   })
   names(res) <- vapply(entries, function(e) if (is_scalar_character(e)) e else "", character(1))
-  res
+  res[!vapply(res, is.null, logical(1))]
 }
 
 
@@ -886,9 +973,10 @@ resolve_appenders_field <- function(x, defs, allow_code, resolvers) {
 
 resolve_filters_field <- function(x, defs, allow_code, resolvers) {
   entries <- normalize_config_entries(x)
-  lapply(entries, function(e) {
+  res <- lapply(entries, function(e) {
     resolve_function_value(e, defs, allow_code, resolvers, is_filter_context = TRUE)
   })
+  res[!vapply(res, is.null, logical(1))]
 }
 
 
@@ -901,6 +989,9 @@ resolve_function_value <- function(x, defs, allow_code, resolvers, is_filter_con
 
   if (is.list(x)) {
     if (!is.null(x[["class"]])) {
+      if (identical(x[["enabled"]], FALSE)) {
+        return(NULL)
+      }
       return(instantiate_component(x, defs, allow_code, resolvers))
     }
 
@@ -1019,6 +1110,14 @@ apply_config <- function(resolved) {
 
   for (nm in names(resolved$loggers)) {
     plan <- resolved$loggers[[nm]]
+
+    if (!plan$enabled) {
+      # fully reset, as if this logger had never been configured -- makes
+      # application idempotent regardless of the logger's prior state
+      get_logger(nm)$config(NULL)
+      next
+    }
+
     want_glue <- identical(plan$class, "LoggerGlue")
 
     if (identical(nm, "root")) {

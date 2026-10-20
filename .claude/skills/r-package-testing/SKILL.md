@@ -1,5 +1,5 @@
 ---
-name: testing-r-packages
+name: r-package-testing
 description: Best practices for writing R package tests using testthat version 3+. Use when writing, organizing, or improving tests for R packages. Covers test structure, expectations, fixtures, snapshots, mocking, and modern testthat 3 patterns including self-sufficient tests, proper cleanup with withr, and snapshot testing.
 metadata:
   author: Garrick Aden-Buie (@gadenbuie)
@@ -16,6 +16,7 @@ Modern best practices for R package testing using testthat 3+.
 - Each test file is named `test-<source-file>.R` matching the corresponding `R/<source-file>.R`
 - Every test uses `test_that("<function> - <scenario> - <expected outcome>", { ... })`
 - Follow Arrange / Act / Assert structure with comments
+- Use `:::` for internal (non-exported) functions
 - Test one behaviour per `test_that()` block
 - Keep tests deterministic and side-effect free
 - Run `devtools::test()` or `testthat::test_check("<pkg>")` to validate

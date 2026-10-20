@@ -29,14 +29,37 @@ Component names can be referenced by name wherever a \code{layouts}/\code{filter
 references are resolved once and the resulting object is shared. Appenders
 and filters can also be defined inline instead of referenced by name.
 
-Function-valued positions (a logger's \code{exception_handler}, and filter
-entries) accept one of: a \strong{name reference} (a bare \code{character} scalar
-for \code{exception_handler}, or an explicit \verb{\{ ref: <name> \}}), resolved by
-lookup (\verb{<pkg>::<name>} supported); an \strong{inline code} form
-(\code{{ code: "<R source>" }}), the only form that evaluates config-supplied
-source and is therefore rejected unless the loader is called with
-\code{allow_code = TRUE}; and, for filters only, a \verb{\{ class: <FilterClass>, ... \}} spec (constructing an R6 \link{EventFilter}) or a bare-string reference
-to a named \code{filters} component.
+Function-valued positions -- a logger's \code{exception_handler}, filter
+entries, and (as of the generalized form) \strong{any} constructor argument of
+a \code{layouts}/\code{filters}/\code{appenders} component (e.g. a \code{LayoutJson}'s
+\code{transform_event}, or an appender's dynamic \code{index}) -- accept one of: a
+\strong{name reference} (a bare \code{character} scalar for \code{exception_handler}, or
+an explicit \verb{\{ ref: <name> \}}), resolved by lookup (\verb{<pkg>::<name>}
+supported); an \strong{inline code} form (\code{{ code: "<R source>" }}), the only
+form that evaluates config-supplied source and is therefore rejected
+unless the loader is called with \code{allow_code = TRUE}; and, for filters
+only, a \verb{\{ class: <FilterClass>, ... \}} spec (constructing an R6
+\link{EventFilter}) or a bare-string reference to a named \code{filters} component.
+Outside of these explicit \code{{ ref: ... }}/\code{{ code: ... }} forms, a plain
+\code{character} scalar in an ordinary argument position is always a literal
+string, never an implicit function reference.
+}
+
+\section{\code{enabled}}{
+
+Component definitions under \code{layouts}/\code{filters}/\code{appenders}, and logger
+definitions under \code{loggers}, accept an optional \code{enabled} key (a boolean,
+defaulting to \code{TRUE}) -- the natural target for \verb{$\{VAR:-false\}}
+interpolation, so a sink can be toggled per environment without adding or
+removing YAML blocks. When \code{enabled: false} on a \emph{named} component, it is
+not instantiated, and any \verb{appenders:}/\verb{filters:} list entry elsewhere
+that references it by name is silently dropped rather than treated as an
+"unknown reference" error; an inline (unnamed) component definition with
+\code{enabled: false} is likewise dropped from whichever list it appears in.
+When \code{enabled: false} on a logger definition, that logger is fully reset
+to its default/unconfigured state (as if it had never been configured),
+regardless of whatever state it was in before -- this keeps re-applying
+the config idempotent, rather than depending on the logger's prior state.
 }
 
 \section{Applying a config is a full snapshot, not a patch}{
@@ -89,6 +112,34 @@ Only the \verb{code:} form does so, and it is rejected during validation
 unless the caller passes \code{allow_code = TRUE}. All other forms (name/\code{ref}
 references, \code{class} specs, named-component references) are data, not
 source, and are always available.
+}
+
+\section{Environment-layered configs}{
+
+lgr's config format itself is deliberately \emph{not} environment-aware -- it
+describes one logger hierarchy, not a \code{default}/\code{qa}/\code{prod} bundle of
+them. If you need different values per deployment stage, merge them
+\emph{before} calling \code{\link[=read_config]{read_config()}}/\link[=Logger]{Logger$config()}, rather than
+asking lgr to do the merging:
+\itemize{
+\item for simple cases, \verb{$\{VAR\}}/\verb{$\{VAR:-default\}} interpolation (see above)
+is usually enough on its own -- e.g. \verb{isEnabled: $\{ELASTIC_ENABLED:-false\}};
+\item for config files that look like:
+
+\if{html}{\out{<div class="sourceCode yaml">}}\preformatted{default:
+  logger:
+    appenders: \{...\}
+qa:
+  logger:
+    appenders: \{...\}
+}\if{html}{\out{</div>}}
+
+(one \code{default} section plus per-environment overrides, a common pattern
+e.g. with the \pkg{config} package), load and merge the relevant
+sections yourself -- \code{config::get(file = "logger.yaml", config = "qa")}
+or a plain \code{utils::modifyList(default_cfg, env_cfg)} -- and pass the
+\emph{already-merged} \code{list} to \code{read_config()}/\code{Logger$config()}.
+}
 }
 
 \seealso{

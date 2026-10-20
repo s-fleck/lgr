@@ -36,6 +36,7 @@ Suggests:
     rmarkdown,
     rotor (>= 0.3.5),
     rprojroot,
+    rstudioapi,
     testthat (>= 3.0.0),
     tibble,
     tools,
@@ -71,6 +72,7 @@ Collate:
     'read_json_lines.R'
     'simple_logging.R'
     'string_repr.R'
+    'system_info.R'
     'use_logger.R'
     'use_skill.R'
     'utils-formatting.R'

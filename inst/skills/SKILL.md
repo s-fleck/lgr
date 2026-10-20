@@ -46,7 +46,7 @@ Initialize shared logger `lg` in `.onLoad` in `R/<package_name>-package.R`:
 Always use structured logging with named fields for dynamic values.
 
 ```r
-lg$info("Create target index {indexName} on smartFeed cluster", indexName = index_name)
+lg$info("Create target index {indexName} on search cluster", indexName = index_name)
 lg$debug("Retrying bulk insert because of error: {errorMessage}", errorMessage = flatten_error_parents(error$message))
 ```
 

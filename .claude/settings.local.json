@@ -18,7 +18,11 @@
       "PowerShell(& \"C:\\\\Program Files\\\\R\\\\R-4.5.1\\\\bin\\\\Rscript.exe\" -e \"devtools::load_all\\(quiet=TRUE\\); testthat::test_file\\('tests/testthat/test_logging_config.R'\\)\" 2>&1 | Select-Object -Last 60)",
       "Bash(xargs grep -l \"use_\")",
       "Bash(openspec instructions *)",
-      "PowerShell(Rscript *)"
+      "PowerShell(Rscript *)",
+      "Bash(openspec new *)",
+      "Bash(openspec validate *)",
+      "Bash(openspec show *)",
+      "Bash(echo \"EXIT: $?\")"
     ]
   }
 }

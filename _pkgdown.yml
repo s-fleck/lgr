@@ -58,6 +58,7 @@ reference:
   - EventFilter
   - FilterForceLevel
   - FilterInject
+  - FilterInjectSystemInfo
   - is_filter
 - title: Utilities
   desc: General utility functions. Some may only be relevant to developers that want to extend lgr.

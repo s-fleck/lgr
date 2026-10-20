@@ -1,0 +1,56 @@
+# Native `lgr` config reproducing the console/file/Dynatrace portion of a
+# real production `logger:` config block. This is a point-in-time acceptance
+# fixture, not a synced copy of the real production config -- it demonstrates
+# that the same behavior is expressible with lgr's native `version: 1` format.
+# ElasticSearch is intentionally excluded (see the change's design.md).
+version: 1
+
+layouts:
+  dynatraceJson:
+    class: LayoutJson
+    transform_event: { ref: "lgrExtra::transform_event_dynatrace" }
+    transform_event_names:
+      content: msg
+      loglevel: level
+      logger: logger
+      callsite: caller
+      code.call: call
+      exception.message: errorMessage
+      "{originalformat}": rawMsg
+      release.id: releaseId
+      hostname: hostName
+      container.id: containerId
+      r.script.path: scriptFile
+      r.version: rVersion
+
+filters:
+  systemInfo:
+    class: FilterInjectSystemInfo
+    releaseId: "${RELEASE_ID:-}"
+    environment: "${APP_ENVIRONMENT:-DEV}"
+    service.name: "myService"
+    siteName: "myService"
+
+appenders:
+  console:
+    class: AppenderConsole
+    threshold: debug
+
+  file:
+    class: AppenderJson
+    file: "${APP_LOG_FILE}"
+    threshold: debug
+
+  dynatrace:
+    class: lgrExtra::AppenderDynatrace
+    enabled: true
+    url: "https://example-tenant.live.dynatrace.com/api/v2/logs/ingest"
+    api_key: "${DYNATRACE_API_KEY:-}"
+    layout: dynatraceJson
+    threshold: trace
+
+loggers:
+  root:
+    threshold: trace
+    appenders: [console, file, dynatrace]
+    filters: [systemInfo]

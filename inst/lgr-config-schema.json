@@ -37,13 +37,17 @@
   },
   "definitions": {
     "componentDef": {
-      "description": "An R6 component definition: `class` selects the constructor (optionally `pkg::ClassName`), all other keys are passed as constructor arguments.",
+      "description": "An R6 component definition: `class` selects the constructor (optionally `pkg::ClassName`); all other keys are passed as constructor arguments. Any argument may itself be a function-valued spec (`{ ref: <name> }` or `{ code: \"<R source>\" }`, see `functionRef`/`functionCode`), not just `layout`/`filters`/`appenders`/`exception_handler`.",
       "type": "object",
       "required": ["class"],
       "properties": {
         "class": {
           "type": "string",
           "description": "R6 class name to instantiate, e.g. 'AppenderConsole' or 'pkg::ClassName'."
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Defaults to true. When false, this component is not instantiated: a name reference to it elsewhere is silently dropped rather than treated as an error."
         },
         "layout": { "$ref": "#/definitions/layoutRef" },
         "filters": { "$ref": "#/definitions/filtersField" },
@@ -122,6 +126,10 @@
           "type": "string",
           "enum": ["Logger", "LoggerGlue"],
           "description": "Logger subclass to instantiate. Defaults to 'Logger'. The root logger cannot be a 'LoggerGlue'."
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Defaults to true. When false, this logger is fully reset to its default/unconfigured state (as if it had never been configured), regardless of any prior state."
         },
         "threshold": {
           "description": "Minimum log level, e.g. 'info', 'debug', or an integer.",

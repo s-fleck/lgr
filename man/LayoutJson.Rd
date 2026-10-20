@@ -220,8 +220,10 @@ as its single argument}
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{x}}{a named \code{character} vector or a function that accepts a
-\code{character} vector of field names as its single argument.}
+      \item{\code{x}}{a named \code{character} vector, a named \code{list} of scalar
+\code{character} values (as produced by parsing a YAML/JSON mapping, e.g.
+in a declarative \link{config}), or a function that accepts a \code{character}
+vector of field names as its single argument.}
     }
     \if{html}{\out{</div>}}
   }
