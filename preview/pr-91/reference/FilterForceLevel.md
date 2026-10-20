@@ -74,8 +74,8 @@ analyse <- function(){
 }
 
 analyse()
-#> INFO  [09:04:35.608] an error with forced log level INFO
+#> INFO  [15:02:37.892] an error with forced log level INFO
 lg$error("an normal error")
-#> ERROR [09:04:35.609] an normal error
+#> ERROR [15:02:37.893] an normal error
 lg$config(NULL)  # reset config
 ```

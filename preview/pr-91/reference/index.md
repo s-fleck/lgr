@@ -119,6 +119,9 @@ Filter events passed to Appenders or Loggers
   : Override the log level of all events processed by a Logger/Appender
 - [`FilterInject`](https://s-fleck.github.io/lgr/reference/FilterInject.md)
   : Inject values into all events processed by a Logger/Appender
+- [`FilterInjectSystemInfo`](https://s-fleck.github.io/lgr/reference/FilterInjectSystemInfo.md)
+  : Inject standard runtime metadata into all events processed by a
+  Logger/Appender
 - [`is_filter()`](https://s-fleck.github.io/lgr/reference/is_filter.md)
   : Check if an R Object is a Filter
 
@@ -151,6 +154,8 @@ want to extend lgr.
   : Read a JSON logfile
 - [`use_logger()`](https://s-fleck.github.io/lgr/reference/use_logger.md)
   : Setup a Simple Logger for a Package
+- [`use_skill()`](https://s-fleck.github.io/lgr/reference/use_skill.md)
+  : Install the lgr Skill File into a Project
 - [`label_levels()`](https://s-fleck.github.io/lgr/reference/label_levels.md)
   [`unlabel_levels()`](https://s-fleck.github.io/lgr/reference/label_levels.md)
   : Label/Unlabel Log Levels

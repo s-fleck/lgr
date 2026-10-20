@@ -21,6 +21,7 @@
 <url><loc>https://s-fleck.github.io/lgr/reference/EventFilter.html</loc></url>
 <url><loc>https://s-fleck.github.io/lgr/reference/FilterForceLevel.html</loc></url>
 <url><loc>https://s-fleck.github.io/lgr/reference/FilterInject.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/FilterInjectSystemInfo.html</loc></url>
 <url><loc>https://s-fleck.github.io/lgr/reference/Filterable.html</loc></url>
 <url><loc>https://s-fleck.github.io/lgr/reference/Layout.html</loc></url>
 <url><loc>https://s-fleck.github.io/lgr/reference/LayoutFormat.html</loc></url>
@@ -59,6 +60,7 @@
 <url><loc>https://s-fleck.github.io/lgr/reference/system_infos.html</loc></url>
 <url><loc>https://s-fleck.github.io/lgr/reference/toString.LogEvent.html</loc></url>
 <url><loc>https://s-fleck.github.io/lgr/reference/use_logger.html</loc></url>
+<url><loc>https://s-fleck.github.io/lgr/reference/use_skill.html</loc></url>
 <url><loc>https://s-fleck.github.io/lgr/reference/with_log_level.html</loc></url>
 </urlset>
 
