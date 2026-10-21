@@ -79,6 +79,6 @@ The objects of this class are cloneable with this method.
 lg <- get_logger("test")
 lg$add_filter(FilterInjectSystemInfo$new(), "systemInfo")
 lg$info("an event with hostName/rVersion/... attached")
-#> INFO  [21:16:05.215] an event with hostName/rVersion/... attached {scriptFile: `/home/runner/work/_temp/3aa88d64-bc79-47c3-be72-327ac7f98243`, rVersion: `R version 4.6.1 (2026-06-24)`, hostName: `runnervm8k3b6`}
+#> INFO  [21:18:07.855] an event with hostName/rVersion/... attached {scriptFile: `/home/runner/work/_temp/03ef929f-c091-45da-aa15-6a6e0e6fe946`, rVersion: `R version 4.6.1 (2026-06-24)`, hostName: `runnervmxehtw`}
 lg$config(NULL)  # reset config
 ```
