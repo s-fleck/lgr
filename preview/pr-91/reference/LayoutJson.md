@@ -202,8 +202,12 @@ a `character` scalar containing the JSON representation of `event`
 
 - `x`:
 
-  a named `character` vector or a function that accepts a `character`
-  vector of field names as its single argument.
+  a named `character` vector, a named `list` of scalar `character`
+  values (as produced by parsing a YAML/JSON mapping, e.g. in a
+  declarative
+  [config](https://s-fleck.github.io/lgr/reference/config.md)), or a
+  function that accepts a `character` vector of field names as its
+  single argument.
 
 ------------------------------------------------------------------------
 
@@ -293,14 +297,14 @@ event <- LogEvent$new(
 
 lo <- LayoutJson$new()
 lo$format_event(event)
-#> {"level":200,"timestamp":"2026-10-20 15:02:41","logger":"dummy logger","caller":null,"msg":"a test message","custom_field":"LayoutJson can handle arbitrary fields"} 
+#> {"level":200,"timestamp":"2026-10-21 21:16:06","logger":"dummy logger","caller":null,"msg":"a test message","custom_field":"LayoutJson can handle arbitrary fields"} 
 
 lo <- LayoutJson$new(
   transform_event_names = toupper,
   excluded_fields = c("RAWMSG", "CALLER"))
 
 lo$format_event(event)
-#> {"LEVEL":200,"TIMESTAMP":"2026-10-20 15:02:41","LOGGER":"dummy logger","MSG":"a test message","CUSTOM_FIELD":"LayoutJson can handle arbitrary fields"} 
+#> {"LEVEL":200,"TIMESTAMP":"2026-10-21 21:16:06","LOGGER":"dummy logger","MSG":"a test message","CUSTOM_FIELD":"LayoutJson can handle arbitrary fields"} 
 
 lo <- LayoutJson$new(
   transform_event = function(e) {
@@ -312,5 +316,5 @@ lo <- LayoutJson$new(
   excluded_fields = c("RAWMSG", "CALLER"))
 
 lo$format_event(event)
-#> {"level":200,"timestamp":"Tue Oct 20 15:02:41 2026","logger":"dummy logger","caller":null,"msg":"A TEST MESSAGE","rawMsg":"a test message","custom_field":"LayoutJson can handle arbitrary fields"} 
+#> {"level":200,"timestamp":"Wed Oct 21 21:16:06 2026","logger":"dummy logger","caller":null,"msg":"A TEST MESSAGE","rawMsg":"a test message","custom_field":"LayoutJson can handle arbitrary fields"} 
 ```

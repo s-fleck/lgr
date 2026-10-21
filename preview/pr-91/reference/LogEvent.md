@@ -141,17 +141,17 @@ The objects of this class are cloneable with this method.
 ``` r
 lg <- get_logger("test")
 lg$error("foo bar")
-#> ERROR [15:02:41.853] foo bar
+#> ERROR [21:16:07.183] foo bar
 
 # The last LogEvent produced by a Logger is stored in its `last_event` field
 lg$last_event  # formatted console output
-#> ERROR [2026-10-20 15:02:41] foo bar
+#> ERROR [2026-10-21 21:16:07] foo bar
 lg$last_event$values  # values stored in the event
 #> $level
 #> [1] 200
 #> 
 #> $timestamp
-#> [1] "2026-10-20 15:02:41 UTC"
+#> [1] "2026-10-21 21:16:07 UTC"
 #> 
 #> $logger
 #> [1] "test"

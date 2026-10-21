@@ -27,5 +27,5 @@ a `character` scalar
 
 ``` r
 toString(LogEvent$new(logger = lgr::lgr))
-#> [1] "$level: `400`, $timestamp: `2026-10-20 15:02:51.58711`, $logger: `root`, $caller: `NA`, $msg: `NA`, $rawMsg: `NA`"
+#> [1] "$level: `400`, $timestamp: `2026-10-21 21:16:16.400123`, $logger: `root`, $caller: `NA`, $msg: `NA`, $rawMsg: `NA`"
 ```

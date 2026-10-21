@@ -133,7 +133,7 @@ threshold()
 #> [1] 200
 lgr$info("this will be supressed")
 lgr$error("an important error message")
-#> ERROR [15:02:49.967] an important error message
+#> ERROR [21:16:14.461] an important error message
 
 # you can also specify a target to modify other loggers
 lg <- get_logger("test")
@@ -166,7 +166,7 @@ lg$config(NULL)
 # add Appenders to a Logger
 add_appender(AppenderConsole$new(), "second_console_appender")
 lgr$fatal("Multiple console appenders are a bad idea")
-#> FATAL [15:02:49.993] Multiple console appenders are a bad idea
+#> FATAL [21:16:14.468] Multiple console appenders are a bad idea
 remove_appender("second_console_appender")
 lgr$info("Good that we defined an appender name, so it's easy to remove")
 
@@ -180,17 +180,17 @@ basic_config(memory = TRUE)
 
 # log some messages
 lgr$info("a log message")
-#> INFO  [15:02:49.999] a log message
+#> INFO  [21:16:14.473] a log message
 lgr$info("another message with data", data = 1:3)
-#> INFO  [15:02:50.000] another message with data {data: (1, 2, 3)}
+#> INFO  [21:16:14.475] another message with data {data: (1, 2, 3)}
 
 show_log()
-#> INFO  [15:02:49] a log message
-#> INFO  [15:02:50] another message with data
+#> INFO  [21:16:14] a log message
+#> INFO  [21:16:14] another message with data
 show_data()
 #>   level           timestamp logger caller                       msg
-#> 1   400 2026-10-20 15:02:49   root   eval             a log message
-#> 2   400 2026-10-20 15:02:50   root   eval another message with data
+#> 1   400 2026-10-21 21:16:14   root   eval             a log message
+#> 2   400 2026-10-21 21:16:14   root   eval another message with data
 #>                      rawMsg    data
 #> 1             a log message    NULL
 #> 2 another message with data 1, 2, 3

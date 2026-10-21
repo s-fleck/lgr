@@ -78,14 +78,38 @@ Component names can be referenced by name wherever a <code>layouts</code>/<code>
 <code>appenders</code> value is expected (in another component, or in a logger); such
 references are resolved once and the resulting object is shared. Appenders
 and filters can also be defined inline instead of referenced by name.</p>
-<p>Function-valued positions (a logger's <code>exception_handler</code>, and filter
-entries) accept one of: a <strong>name reference</strong> (a bare <code>character</code> scalar
-for <code>exception_handler</code>, or an explicit <code>{ ref: &lt;name&gt; }</code>), resolved by
-lookup (<code>&lt;pkg&gt;::&lt;name&gt;</code> supported); an <strong>inline code</strong> form
-(<code>{ code: "&lt;R source&gt;" }</code>), the only form that evaluates config-supplied
-source and is therefore rejected unless the loader is called with
-<code>allow_code = TRUE</code>; and, for filters only, a <code>{ class: &lt;FilterClass&gt;, ... }</code> spec (constructing an R6 <a href="EventFilter.html">EventFilter</a>) or a bare-string reference
-to a named <code>filters</code> component.</p>
+<p>Function-valued positions – a logger's <code>exception_handler</code>, filter
+entries, and (as of the generalized form) <strong>any</strong> constructor argument of
+a <code>layouts</code>/<code>filters</code>/<code>appenders</code> component (e.g. a <code>LayoutJson</code>'s
+<code>transform_event</code>, or an appender's dynamic <code>index</code>) – accept one of: a
+<strong>name reference</strong> (a bare <code>character</code> scalar for <code>exception_handler</code>, or
+an explicit <code>{ ref: &lt;name&gt; }</code>), resolved by lookup (<code>&lt;pkg&gt;::&lt;name&gt;</code>
+supported); an <strong>inline code</strong> form (<code>{ code: "&lt;R source&gt;" }</code>), the only
+form that evaluates config-supplied source and is therefore rejected
+unless the loader is called with <code>allow_code = TRUE</code>; and, for filters
+only, a <code>{ class: &lt;FilterClass&gt;, ... }</code> spec (constructing an R6
+<a href="EventFilter.html">EventFilter</a>) or a bare-string reference to a named <code>filters</code> component.
+Outside of these explicit <code>{ ref: ... }</code>/<code>{ code: ... }</code> forms, a plain
+<code>character</code> scalar in an ordinary argument position is always a literal
+string, never an implicit function reference.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="enabled"><code>enabled</code><a class="anchor" aria-label="anchor" href="#enabled"></a></h2>
+
+
+<p>Component definitions under <code>layouts</code>/<code>filters</code>/<code>appenders</code>, and logger
+definitions under <code>loggers</code>, accept an optional <code>enabled</code> key (a boolean,
+defaulting to <code>TRUE</code>) – the natural target for <code>${VAR:-false}</code>
+interpolation, so a sink can be toggled per environment without adding or
+removing YAML blocks. When <code>enabled: false</code> on a <em>named</em> component, it is
+not instantiated, and any <code>appenders:</code>/<code>filters:</code> list entry elsewhere
+that references it by name is silently dropped rather than treated as an
+"unknown reference" error; an inline (unnamed) component definition with
+<code>enabled: false</code> is likewise dropped from whichever list it appears in.
+When <code>enabled: false</code> on a logger definition, that logger is fully reset
+to its default/unconfigured state (as if it had never been configured),
+regardless of whatever state it was in before – this keeps re-applying
+the config idempotent, rather than depending on the logger's prior state.</p>
     </div>
     <div class="section level2">
     <h2 id="applying-a-config-is-a-full-snapshot-not-a-patch">Applying a config is a full snapshot, not a patch<a class="anchor" aria-label="anchor" href="#applying-a-config-is-a-full-snapshot-not-a-patch"></a></h2>
@@ -142,6 +166,29 @@ unless the caller passes <code>allow_code = TRUE</code>. All other forms (name/<
 references, <code>class</code> specs, named-component references) are data, not
 source, and are always available.</p>
     </div>
+    <div class="section level2">
+    <h2 id="environment-layered-configs">Environment-layered configs<a class="anchor" aria-label="anchor" href="#environment-layered-configs"></a></h2>
+
+
+<p>lgr's config format itself is deliberately <em>not</em> environment-aware – it
+describes one logger hierarchy, not a <code>default</code>/<code>qa</code>/<code>prod</code> bundle of
+them. If you need different values per deployment stage, merge them
+<em>before</em> calling <code><a href="read_config.html">read_config()</a></code>/<a href="Logger.html">Logger$config()</a>, rather than
+asking lgr to do the merging:</p><ul><li><p>for simple cases, <code>${VAR}</code>/<code>${VAR:-default}</code> interpolation (see above)
+is usually enough on its own – e.g. <code>isEnabled: ${ELASTIC_ENABLED:-false}</code>;</p></li>
+<li><p>for config files that look like:</p>
+<p></p><div class="sourceCode yaml"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">default</span><span class="kw">:</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="at">  </span><span class="fu">logger</span><span class="kw">:</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="at">    </span><span class="fu">appenders</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="at">...</span><span class="kw">}</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="fu">qa</span><span class="kw">:</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="at">  </span><span class="fu">logger</span><span class="kw">:</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="at">    </span><span class="fu">appenders</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="at">...</span><span class="kw">}</span></span></code></pre><p></p></div>
+<p>(one <code>default</code> section plus per-environment overrides, a common pattern
+e.g. with the <span class="pkg">config</span> package), load and merge the relevant
+sections yourself – <code>config::get(file = "logger.yaml", config = "qa")</code>
+or a plain <code>utils::modifyList(default_cfg, env_cfg)</code> – and pass the
+<em>already-merged</em> <code>list</code> to <code><a href="read_config.html">read_config()</a></code>/<code>Logger$config()</code>.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><a href="Logger.html">Logger</a>, <code>vignette("configuring-lgr", package = "lgr")</code></p></div>

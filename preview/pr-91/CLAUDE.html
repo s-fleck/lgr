@@ -49,12 +49,22 @@
 </ul></div>
 <div class="section level2">
 <h2 id="changelog">Changelog<a class="anchor" aria-label="anchor" href="#changelog"></a></h2>
-<ul><li>Update the NEWS.md file whenever we archive an openspec with /opsx-archive. Try to add only one or maximum two entries for a single spec. Follow agent-docs/CHANGELOG_STYLE_GUIDE.md</li>
+<ul><li>Update the NEWS.md file whenever we archive an openspec with /opsx-archive. Try to add only one or maximum two entries for a single spec. Follow the <code>r-news-styleguide</code> skill.</li>
 </ul></div>
 <div class="section level2">
 <h2 id="version-bump">Version Bump<a class="anchor" aria-label="anchor" href="#version-bump"></a></h2>
-<p>See <code>agent-docs/VERSION_BUMP.md</code> when asked to bump the app version.</p>
-</div>
+<ul><li>Use the <code>lgr-release</code> skill when asked to cut a release or bump the package version.</li>
+</ul></div>
+<div class="section level2">
+<h2 id="skills">Skills<a class="anchor" aria-label="anchor" href="#skills"></a></h2>
+<ul><li>Agent tooling lives in <code>.claude/skills/&lt;name&gt;/SKILL.md</code> (read by Claude Code and opencode alike).</li>
+<li>
+<code>r-package-development</code>, <code>r-package-style-guide</code>, <code>r-package-testing</code>, <code>r-roxygen</code> — vendored from the agent-tools repo, byte-identical.</li>
+<li>
+<code>r-news-styleguide</code> — vendored from agent-tools and amended for lgr; its <code>variant</code> metadata records the upstream version and what changed.</li>
+<li>
+<code>lgr-release</code> — lgr-local: the release procedure.</li>
+</ul></div>
 </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
