@@ -1,3 +1,11 @@
+---
+name: r-roxygen
+description: Roxygen2 documentation conventions for R packages — roxygen block structure, @param/@return/@examples, @rdname and @inheritParams, R6 class docs, NAMESPACE imports, and DESCRIPTION Config/roxygen2 settings. Use when writing or reviewing roxygen comments, documenting a function or exported object, or fixing R CMD check documentation warnings.
+metadata:
+  author: Stefan Fleck
+  version: "1.0.0"
+---
+
 # R roxygen2 Documentation Skill Guide
 
 Use this guide to write consistent, idiomatic roxygen2 documentation for R packages.
@@ -208,6 +216,11 @@ Avoid copy-pasting identical `@param` descriptions. Use `@inheritParams` to reus
 
 Only the parameters that appear in the current function's signature are pulled in — unused params are silently ignored.
 
+**Gotcha: never `@inheritParams` from a `@noRd`/undocumented source.** The
+params don't resolve, so the *calling* function ends up undocumented and
+`R CMD check` reports `Undocumented arguments` — write `@param` directly on
+the exported wrapper instead.
+
 **roxygen2 8.0**: `@inheritParams` supports argument filtering — pull in only
 specific params, or all-but-some:
 
@@ -247,6 +260,11 @@ For the package-level documentation file (`R/<pkg>-package.R`), use `@keywords i
 | `\url{https://...}` | External URL                                     |
 | `\code{value}`      | Inline code (prefer backticks in modern roxygen) |
 
+**Gotcha: backticked internal calls auto-link.** `` `internal_fn()` `` in
+exported prose becomes `\link{internal_fn}` → *Rd cross-references* WARNING
+when the target is unexported/undocumented. Use plain prose or
+`\code{name}` without `()` instead.
+
 ```r
 #' @seealso
 #' - \url{https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-bulk}
@@ -281,6 +299,8 @@ Examples:
 - Do **not** write examples that require network access without `\dontrun{}`
 - Do **not** use `@importFrom <package> <function>`. always prefer `<package>::<function>` syntax.
 - Do **not** document parameters that don't exist in the function signature
+- Do **not** `@inheritParams` a `@noRd`/undocumented source — write `@param` on the exported wrapper instead (causes `Undocumented arguments` WARNING)
+- Do **not** reference internal helpers in exported prose as `` `fn()` `` — it auto-generates a broken `\link{}`; use plain prose/`\code{fn}` (see [Section 9](#9-links-and-cross-references))
 
 ---
 

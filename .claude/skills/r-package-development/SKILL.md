@@ -2,8 +2,8 @@
 name: r-package-development
 description: R package development with devtools, testthat, and roxygen2. Use when the user is working on an R package, running tests, writing documentation, or building package infrastructure.
 metadata:
-  author: Stefan Fleck
-  version: "1.2"
+  author: "Simon P. Couch (@simonpcouch), Stefan Fleck"
+  version: "1.3.0"
 ---
 
 # R Package Development
@@ -21,10 +21,11 @@ metadata:
 | Check pkgdown site                       | `Rscript -e "pkgdown::check_pkgdown()"`                                  |
 | Run R CMD check                          | `Rscript -e "devtools::check()"`                                         |
 | Format code                              | `air format .`                                                           |
+| Check formatting                         | `air format . --check`                                                   |
 
 ## Coding
 
-- Run `air format .` after generating any code.
+- Run `air format .` after generating any code. If the project has a clean `air format . --check` baseline (Air 0.12.0, typically pinned in CI), formatting whole files is safe; otherwise format only the files you touched.
 - Use the base pipe `|>`, not the magrittr pipe `%>%`.
 - Anonymous functions: use `\() ...` for single-line; use `function() { ... }` otherwise.
 

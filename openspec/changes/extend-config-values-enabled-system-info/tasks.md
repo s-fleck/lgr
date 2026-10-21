@@ -40,6 +40,6 @@
 ## 6. Wrap-up
 
 - [x] 6.1 Run full test suite and `R CMD check`. (`R CMD check --as-cran`: 0 ERRORs, 866 tests pass. Along the way, fixed two real test bugs surfaced only under a proper `R CMD check` run — an unqualified `lgrExtra::` reference flagged as an unstated test dependency, and a misuse of `is_virgin_Logger("root")`, which can never be `TRUE` for the root logger by design. Remaining WARNINGs/NOTEs are pre-existing and unrelated to this change: vignette pre-build, and `openspec/` not being in `.Rbuildignore`.)
-- [x] 6.2 Update `NEWS.md` per `agent-docs/CHANGELOG_STYLE_GUIDE.md`.
+- [x] 6.2 Update `NEWS.md` per the `r-news-styleguide` skill.
 - [x] 6.3 Summarize, outside this change, what remains for the originating production system to actually migrate off its hand-rolled `config_logging()` (this change proves feasibility; the migration itself is separate follow-up work). (Delivered as a conversational summary; not a file in this change.)
 - [x] 6.4 File a follow-up issue/change against `lgrExtra` to extend `AppenderElasticSearch` with primitive connection arguments (e.g. `host`) so `conn` becomes an ordinary constructor argument, unblocking ElasticSearch support in a native `lgr` config. (Recommended to the user as follow-up work; not actually filed — `lgrExtra` is a separate repo outside this session's scope/access.)

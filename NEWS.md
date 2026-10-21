@@ -47,6 +47,10 @@ prior state
 
 ## Fixed
 
+- **Docs:** Remove the `agent-docs/` folder, which R CMD check flagged as a
+non-standard top-level directory; the changelog and release conventions now
+live in the coding-agent skills
+
 - **Appender:** Fix `$remove_appenders()` removing the wrong appenders when
 removing multiple indices at once (thx @m-muecke)
 
