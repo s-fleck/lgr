@@ -14,110 +14,117 @@ Please refer to the \emph{see also} section for actual implementations of this
 class.
 }
 \seealso{
-Other abstract classes: 
+Other abstract classes:
 \code{\link{Appender}},
 \code{\link{AppenderMemory}},
 \code{\link{AppenderTable}}
 }
 \concept{abstract classes}
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{filters}}{a \code{list} of all attached Filters.}
-}
-\if{html}{\out{</div>}}
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{filters}}{a \code{list} of all attached Filters.}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-Filterable-filter}{\code{Filterable$filter()}}
-\item \href{#method-Filterable-add_filter}{\code{Filterable$add_filter()}}
-\item \href{#method-Filterable-remove_filter}{\code{Filterable$remove_filter()}}
-\item \href{#method-Filterable-set_filters}{\code{Filterable$set_filters()}}
-}
+  \itemize{
+    \item \href{#method-Filterable-filter}{\code{Filterable$filter()}}
+    \item \href{#method-Filterable-add_filter}{\code{Filterable$add_filter()}}
+    \item \href{#method-Filterable-remove_filter}{\code{Filterable$remove_filter()}}
+    \item \href{#method-Filterable-set_filters}{\code{Filterable$set_filters()}}
+  }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Filterable-filter"></a>}}
 \if{latex}{\out{\hypertarget{method-Filterable-filter}{}}}
-\subsection{Method \code{filter()}}{
-Determine whether the LogEvent \code{x} should be passed on to
+\subsection{\code{Filterable$filter()}}{
+  Determine whether the LogEvent \code{x} should be passed on to
 Appenders (\code{TRUE}) or not (\code{FALSE}). See also the active binding
 \code{filters}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Filterable$filter(event)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Filterable$filter(event)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{event}}{a \link{LogEvent}}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{event}}{a \link{LogEvent}}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Filterable-add_filter"></a>}}
 \if{latex}{\out{\hypertarget{method-Filterable-add_filter}{}}}
-\subsection{Method \code{add_filter()}}{
-Attach a filter
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Filterable$add_filter(filter, name = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{filter}}{\itemize{
+\subsection{\code{Filterable$add_filter()}}{
+  Attach a filter
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Filterable$add_filter(filter, name = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{filter}}{\itemize{
 \item a function with the single argument \code{event} that returns \code{TRUE}
 or \code{FALSE};
-\item an \link{EventFilter} \link[R6:R6Class]{R6::R6} object; or
+\item an \link{EventFilter} \link[R6:R6]{R6::R6} object; or
 \item any \R object with a \verb{$filter()} method.
 }
 
 If a Filter returns a non-\code{FALSE} value, will be interpreted as \code{TRUE}
 (= no filtering takes place) and a warning will be thrown.}
-
-\item{\code{name}}{\code{character} scalar or \code{NULL}. An optional
+      \item{\code{name}}{\code{character} scalar or \code{NULL}. An optional
 name which makes it easier to access (or remove) the filter}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Filterable-remove_filter"></a>}}
 \if{latex}{\out{\hypertarget{method-Filterable-remove_filter}{}}}
-\subsection{Method \code{remove_filter()}}{
-Remove a filter
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Filterable$remove_filter(pos)}\if{html}{\out{</div>}}
+\subsection{\code{Filterable$remove_filter()}}{
+  Remove a filter
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Filterable$remove_filter(pos)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{pos}}{\code{character} or \code{integer} scalar. The name or index of the
+Filter to be removed.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{pos}}{\code{character} or \code{integer} scalar. The name or index of the
-Filter to be removed.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Filterable-set_filters"></a>}}
 \if{latex}{\out{\hypertarget{method-Filterable-set_filters}{}}}
-\subsection{Method \code{set_filters()}}{
-Set or replace (all) Filters of parent object. See
+\subsection{\code{Filterable$set_filters()}}{
+  Set or replace (all) Filters of parent object. See
 \link{EventFilter} for how Filters work.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Filterable$set_filters(filters)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Filterable$set_filters(filters)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{filters}}{a \code{list} (named or unnamed) of \link[=EventFilter]{EventFilters}
+or predicate functions. See \code{\link[=is_filter]{is_filter()}}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{filters}}{a \code{list} (named or unnamed) of \link[=EventFilter]{EventFilters}
-or predicate functions. See \code{\link[=is_filter]{is_filter()}}.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

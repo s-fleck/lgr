@@ -1,0 +1,36 @@
+# Demonstrates three additions to the config format:
+#  - `enabled` on a component definition, typically driven by env-var
+#    interpolation so ops can toggle a sink per environment
+#  - a function-valued constructor argument (`ref:`) on an ordinary
+#    argument position, not just `exception_handler`/filter entries
+#  - `FilterInjectSystemInfo`, a built-in filter that injects standard
+#    runtime metadata (hostName, rVersion, ...) with no config-loader
+#    support needed beyond the existing `class:` extension mechanism
+version: 1
+
+layouts:
+  json:
+    class: LayoutJson
+    transform_event: { ref: "lgr::default_exception_handler" } # illustrative only
+
+filters:
+  systemInfo:
+    class: FilterInjectSystemInfo
+    environment: "${APP_ENVIRONMENT:-dev}"
+
+appenders:
+  console:
+    class: AppenderConsole
+    threshold: info
+
+  metrics:
+    class: AppenderFile
+    enabled: "${METRICS_ENABLED:-false}"
+    file: logs/metrics.jsonl
+    layout: json
+
+loggers:
+  root:
+    threshold: info
+    appenders: [console, metrics]
+    filters: [systemInfo]

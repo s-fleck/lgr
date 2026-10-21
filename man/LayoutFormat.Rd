@@ -4,51 +4,32 @@
 \alias{LayoutFormat}
 \title{Format Log Events as Text}
 \description{
-Format Log Events as Text
-
-Format Log Events as Text
-}
-\details{
 Format a \link{LogEvent} as human readable text using \code{\link[=format.LogEvent]{format.LogEvent()}}, which
 provides a quick and easy way to customize log messages. If you need
 more control and flexibility, consider using \link{LayoutGlue} instead.
-
-see Fields
-
-see Fields
-
-see Fields
-
-see Fields
-
-Convert Layout to a \code{character} string
-Read a log file written using LayoutFormat
 }
 \section{Format Tokens}{
 
 This is the same list of format tokens as for \code{\link[=format.LogEvent]{format.LogEvent()}}
 
 
-\describe{
-\item{\verb{\%t}}{The timestamp of the message, formatted according to
-\code{timestamp_fmt})}
-\item{\verb{\%l}}{the log level, lowercase \code{character} representation}
-\item{\verb{\%L}}{the log level, uppercase \code{character} representation}
-\item{\verb{\%k}}{the log level, first letter of lowercase \code{character} representation}
-\item{\verb{\%K}}{the log level, first letter of uppercase \code{character} representation}
-\item{\verb{\%n}}{the log level, \code{integer} representation}
-\item{\verb{\%g}}{the name of the logger}
-\item{\verb{\%p}}{the PID (process ID). Useful when logging code that uses
-multiple threads.}
-\item{\verb{\%c}}{the calling function}
-\item{\verb{\%m}}{the log message}
-\item{\verb{\%r}}{the raw log message (without string interpolation)}
-\item{\verb{\%f}}{all custom fields of \code{x} in a pseudo-JSON like format that is
-optimized for human readability and console output}
-\item{\verb{\%j}}{all custom fields of \code{x} in proper JSON. This requires that you
-have \strong{jsonlite} installed and does not support colors as opposed to
-\verb{\%f}
-}
+\itemize{
+\item \verb{\%t} The timestamp of the message, formatted according to \code{timestamp_fmt}
+\item \verb{\%l} the log level, lowercase \code{character} representation
+\item \verb{\%L} the log level, uppercase \code{character} representation
+\item \verb{\%k} the log level, first letter of lowercase \code{character} representation
+\item \verb{\%K} the log level, first letter of uppercase \code{character} representation
+\item \verb{\%n} the log level, \code{integer} representation
+\item \verb{\%g} the name of the logger
+\item \verb{\%p} the PID (process ID). Useful when logging code that uses multiple
+threads.
+\item \verb{\%c} the calling function
+\item \verb{\%m} the log message
+\item \verb{\%r} the raw log message (without string interpolation)
+\item \verb{\%f} all custom fields of \code{x} in a pseudo-JSON like format that is
+optimized for human readability and console output
+\item \verb{\%j} all custom fields of \code{x} in proper JSON. This requires that you have
+\strong{jsonlite} installed and does not support colors as opposed to \verb{\%f}
 }
 }
 
@@ -65,160 +46,246 @@ lo <- LayoutFormat$new()
 lo$format_event(event)
 }
 \seealso{
-Other Layouts: 
+Other Layouts:
 \code{\link{Layout}},
 \code{\link{LayoutGlue}},
 \code{\link{LayoutJson}}
 }
 \concept{Layouts}
 \section{Super class}{
-\code{\link[lgr:Layout]{lgr::Layout}} -> \code{LayoutFormat}
+\code{\link[lgr:Layout]{Layout}} -> \code{LayoutFormat}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{fmt}}{a \code{character} scalar containing format tokens. See \code{\link[=format.LogEvent]{format.LogEvent()}}.}
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{fmt}}{a \code{character} scalar containing format tokens. See \code{\link[=format.LogEvent]{format.LogEvent()}}.}
 
-\item{\code{timestamp_fmt}}{a \code{character} scalar. See \code{\link[base:strptime]{base::format.POSIXct()}}.}
+    \item{\code{timestamp_fmt}}{a \code{character} scalar. See \code{\link[base:format.POSIXct]{base::format.POSIXct()}}.}
 
-\item{\code{colors}}{a named \code{list} of functions (like the ones provided by
+    \item{\code{colors}}{a named \code{list} of functions (like the ones provided by
 the package \pkg{crayon}) passed on on \code{\link[=format.LogEvent]{format.LogEvent()}}.}
 
-\item{\code{pad_levels}}{\code{"right"}, \code{"left"} or \code{NULL}. See \code{\link[=format.LogEvent]{format.LogEvent()}}.}
-}
-\if{html}{\out{</div>}}
+    \item{\code{pad_levels}}{\code{"right"}, \code{"left"} or \code{NULL}. See \code{\link[=format.LogEvent]{format.LogEvent()}}.}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-LayoutFormat-new}{\code{LayoutFormat$new()}}
-\item \href{#method-LayoutFormat-format_event}{\code{LayoutFormat$format_event()}}
-\item \href{#method-LayoutFormat-set_fmt}{\code{LayoutFormat$set_fmt()}}
-\item \href{#method-LayoutFormat-set_timestamp_fmt}{\code{LayoutFormat$set_timestamp_fmt()}}
-\item \href{#method-LayoutFormat-set_colors}{\code{LayoutFormat$set_colors()}}
-\item \href{#method-LayoutFormat-set_pad_levels}{\code{LayoutFormat$set_pad_levels()}}
-\item \href{#method-LayoutFormat-toString}{\code{LayoutFormat$toString()}}
-\item \href{#method-LayoutFormat-read}{\code{LayoutFormat$read()}}
-\item \href{#method-LayoutFormat-clone}{\code{LayoutFormat$clone()}}
+  \itemize{
+    \item \href{#method-LayoutFormat-initialize}{\code{LayoutFormat$new()}}
+    \item \href{#method-LayoutFormat-format_event}{\code{LayoutFormat$format_event()}}
+    \item \href{#method-LayoutFormat-set_fmt}{\code{LayoutFormat$set_fmt()}}
+    \item \href{#method-LayoutFormat-set_timestamp_fmt}{\code{LayoutFormat$set_timestamp_fmt()}}
+    \item \href{#method-LayoutFormat-set_colors}{\code{LayoutFormat$set_colors()}}
+    \item \href{#method-LayoutFormat-set_pad_levels}{\code{LayoutFormat$set_pad_levels()}}
+    \item \href{#method-LayoutFormat-toString}{\code{LayoutFormat$toString()}}
+    \item \href{#method-LayoutFormat-read}{\code{LayoutFormat$read()}}
+    \item \href{#method-LayoutFormat-clone}{\code{LayoutFormat$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="lgr" data-topic="Layout" data-id="set_excluded_fields"><a href='../../lgr/html/Layout.html#method-Layout-set_excluded_fields'><code>lgr::Layout$set_excluded_fields()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="lgr" data-topic="Layout" data-id="set_excluded_fields"><a href='../../lgr/html/Layout.html#method-Layout-set_excluded_fields'><code>Layout$set_excluded_fields()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LayoutFormat-new"></a>}}
-\if{latex}{\out{\hypertarget{method-LayoutFormat-new}{}}}
-\subsection{Method \code{new()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$new(
+\if{html}{\out{<a id="method-LayoutFormat-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-LayoutFormat-initialize}{}}}
+\subsection{\code{LayoutFormat$new()}}{
+  Create a new \code{LayoutFormat} object. All arguments are optional and
+correspond to the identically named fields (see Active bindings).
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutFormat$new(
   fmt = "\%L [\%t] \%m \%j",
   timestamp_fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3",
   colors = NULL,
   pad_levels = "right",
   excluded_fields = NULL
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{fmt}}{a \code{character} scalar containing format tokens. See \code{\link[=format.LogEvent]{format.LogEvent()}}.}
+      \item{\code{timestamp_fmt}}{a \code{character} scalar. See \code{\link[base:format.POSIXct]{base::format.POSIXct()}}.}
+      \item{\code{colors}}{a named \code{list} of functions (like the ones provided by
+the package \pkg{crayon}) passed on on \code{\link[=format.LogEvent]{format.LogEvent()}}.}
+      \item{\code{pad_levels}}{\code{"right"}, \code{"left"} or \code{NULL}. See \code{\link[=format.LogEvent]{format.LogEvent()}}.}
+      \item{\code{excluded_fields}}{see the \code{excluded_fields} field of the parent
+\link{Layout} class.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutFormat-format_event"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutFormat-format_event}{}}}
-\subsection{Method \code{format_event()}}{
-Format a LogEvent
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$format_event(event)}\if{html}{\out{</div>}}
+\subsection{\code{LayoutFormat$format_event()}}{
+  Format a LogEvent
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutFormat$format_event(event)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{event}}{a \link{LogEvent}}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    a \code{character} scalar
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{event}}{a \link{LogEvent}}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutFormat-set_fmt"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutFormat-set_fmt}{}}}
-\subsection{Method \code{set_fmt()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_fmt(x)}\if{html}{\out{</div>}}
+\subsection{\code{LayoutFormat$set_fmt()}}{
+  Set the \code{fmt} field
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutFormat$set_fmt(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{see the \code{fmt} field}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The LayoutFormat object, invisibly (for chaining).
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutFormat-set_timestamp_fmt"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutFormat-set_timestamp_fmt}{}}}
-\subsection{Method \code{set_timestamp_fmt()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_timestamp_fmt(x)}\if{html}{\out{</div>}}
+\subsection{\code{LayoutFormat$set_timestamp_fmt()}}{
+  Set the \code{timestamp_fmt} field
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutFormat$set_timestamp_fmt(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{see the \code{timestamp_fmt} field}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The LayoutFormat object, invisibly (for chaining).
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutFormat-set_colors"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutFormat-set_colors}{}}}
-\subsection{Method \code{set_colors()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_colors(x)}\if{html}{\out{</div>}}
+\subsection{\code{LayoutFormat$set_colors()}}{
+  Set the \code{colors} field
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutFormat$set_colors(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{see the \code{colors} field}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The LayoutFormat object, invisibly (for chaining).
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutFormat-set_pad_levels"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutFormat-set_pad_levels}{}}}
-\subsection{Method \code{set_pad_levels()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$set_pad_levels(x)}\if{html}{\out{</div>}}
+\subsection{\code{LayoutFormat$set_pad_levels()}}{
+  Set the \code{pad_levels} field
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutFormat$set_pad_levels(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{see the \code{pad_levels} field}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The LayoutFormat object, invisibly (for chaining).
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutFormat-toString"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutFormat-toString}{}}}
-\subsection{Method \code{toString()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$toString()}\if{html}{\out{</div>}}
+\subsection{\code{LayoutFormat$toString()}}{
+  Convert Layout to a \code{character} string
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutFormat$toString()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    a \code{character} scalar
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutFormat-read"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutFormat-read}{}}}
-\subsection{Method \code{read()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$read(file, threshold = NA_integer_, n = 20L)}\if{html}{\out{</div>}}
+\subsection{\code{LayoutFormat$read()}}{
+  Read a log file written using LayoutFormat
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutFormat$read(file, threshold = NA_integer_, n = 20L)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{file}}{\code{character} scalar. Path to the log file.}
+      \item{\code{threshold}}{a \code{character} or \code{integer} threshold}
+      \item{\code{n}}{number of log entries to display}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    a \code{character} vector of the (tail of the) matching log lines
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{threshold}}{a \code{character} or \code{integer} threshold}
-
-\item{\code{n}}{number of log entries to display}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LayoutFormat-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-LayoutFormat-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LayoutFormat$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{LayoutFormat$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LayoutFormat$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

@@ -1,0 +1,14 @@
+filters:
+  a:
+    class: FilterForceLevel
+    level: info
+    filters: [b]
+  b:
+    class: FilterForceLevel
+    level: info
+    filters: [a]
+
+loggers:
+  root:
+    threshold: info
+    filters: [a]

@@ -20,3 +20,5 @@
 ^CRAN-SUBMISSION$
 ^doc$
 ^Meta$
+^\.claude$
+^examples$

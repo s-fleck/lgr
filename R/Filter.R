@@ -43,10 +43,10 @@ EventFilter <- R6::R6Class(
       self$filter <- fun
     },
 
-    #' @description filter The `filter` method of an event must return either
-    #'   `TRUE` or `FALSE`. If it returns `TRUE`, [Filterable]s such as
-    #'   [Appenders] or [Loggers] will continue processing the event, if `FALSE`
-    #'   the event will be discarded.
+    #' @field filter A `function` with a single argument `event` that must
+    #'   return either `TRUE` or `FALSE`. If it returns `TRUE`,
+    #'   [Filterable]s such as [Appenders] or [Loggers] will continue
+    #'   processing the event, if `FALSE` the event will be discarded.
     filter = NULL
   )
 )
@@ -87,7 +87,9 @@ FilterInject <- R6::R6Class(
     #'   [with_log_value()].
     initialize = function(..., .list = list()){
       vals <- list(...)
-      assert(!is.null(names(vals)) && is_equal_length(names(vals)), vals)
+      if (length(vals) > 0){
+        assert(!is.null(names(vals)) && is_equal_length(names(vals)), vals)
+      }
       if (length(.list) > 0){
         assert(!is.null(names(.list)) && is_equal_length(names(.list)), .list)
       }
@@ -154,6 +156,71 @@ FilterForceLevel <- R6::R6Class(
     #' @field level an `integer` [log level][log_level] used to override the log
     #' levels of each [LogEvent] processed by this filter.
     level = NULL
+  )
+)
+
+
+
+
+# FilterInjectSystemInfo ---------------------------------------------------
+
+#' Inject standard runtime metadata into all events processed by a Logger/Appender
+#'
+#' @description Like [FilterInject], but automatically computes and injects a
+#' bundle of standard runtime metadata once, at construction time: `hostName`
+#' and `rVersion` are always included; `containerId` is included only when
+#' running inside a Docker container; `scriptFile` is included only when the
+#' currently running script's path can be determined (via RStudio,
+#' `Rscript`/`R --file`, or `source()`). Any field that cannot be determined is
+#' omitted entirely, never set to `NA` or an empty string.
+#'
+#' Pass additional named values via `...`/`.list` exactly as with
+#' [FilterInject] -- they are injected alongside the computed bundle, and a
+#' name that matches one of the computed fields (`hostName`, `rVersion`,
+#' `containerId`, `scriptFile`) overrides the computed value rather than
+#' causing a duplicate-field error.
+#'
+#' Vendor/deployment-specific values (e.g. a release id from a CI/CD tool) are
+#' intentionally *not* part of the computed bundle -- inject them the same way
+#' as any other custom value, typically via environment variable
+#' interpolation in a declarative config (e.g.
+#' `releaseId: "${RELEASE_ID:-}"`).
+#'
+#' @export
+#' @examples
+#' lg <- get_logger("test")
+#' lg$add_filter(FilterInjectSystemInfo$new(), "systemInfo")
+#' lg$info("an event with hostName/rVersion/... attached")
+#' lg$config(NULL)  # reset config
+FilterInjectSystemInfo <- R6::R6Class(
+  "FilterInjectSystemInfo",
+  inherit = FilterInject,
+  public = list(
+
+    #' @description Initialize a new FilterInjectSystemInfo
+    #' @param ...,.list any number of named \R objects to inject in addition
+    #'   to (or, if same-named, instead of) the computed metadata bundle. See
+    #'   [FilterInject].
+    initialize = function(..., .list = list()){
+      defaults <- list(
+        hostName = as.character(Sys.info()[["nodename"]]),
+        rVersion = R.Version()[["version.string"]]
+      )
+
+      if (is_in_docker_container()) {
+        defaults[["containerId"]] <- as.character(Sys.info()[["nodename"]])
+      }
+
+      script_file <- get_current_scriptfile()
+      if (!is.null(script_file) && !is_blank(script_file)) {
+        defaults[["scriptFile"]] <- script_file
+      }
+
+      overrides <- c(list(...), .list)
+      vals <- utils::modifyList(defaults, overrides)
+
+      super$initialize(.list = vals)
+    }
   )
 )
 

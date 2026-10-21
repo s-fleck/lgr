@@ -1,8 +1,3 @@
-context("get_logger")
-
-
-
-
 test_that("get_logger(): works as expected", {
 
   lg <- get_logger("blubb")
@@ -130,6 +125,9 @@ test_that("get_logger(reset == TRUE) completely resets logger", {
 
 
 test_that("get_logger(reset == TRUE) invalidates old Logger", {
+  on.exit(get_logger("log/ger/reset", reset = TRUE))
+
+  # configure logger and then reset itto invalidate the reference
   lg1 <- get_logger("log/ger/reset", reset = TRUE)
   lg1$set_threshold("fatal")
 
@@ -139,18 +137,58 @@ test_that("get_logger(reset == TRUE) invalidates old Logger", {
     set_propagate(FALSE)
 
   expect_true(!identical(lg1, lg2))
-  expect_warning(lg1$fatal("test"), "log/ger/reset")
+  expect_warning(lg1$fatal("test"), "log/ger/reset.*no longer valid")
   expect_output(lg2$info("test"))
+})
 
 
-  # invalidation works with logger glue
-  get_logger("log/ger/reset", reset = TRUE)
+
+
+test_that("get_logger(reset == TRUE) invalidates old Logger for LoggerGlue", {
+  on.exit(get_logger("log/ger/reset", reset = TRUE))
+
+  # configure logger and then reset itto invalidate the reference
   lg1 <- get_logger_glue("log/ger/reset")
   lg1$set_threshold("fatal")
+  lg2 <- get_logger("log/ger/reset", reset = TRUE)$
+    set_threshold("info")$
+    add_appender(AppenderConsole$new())$
+    set_propagate(FALSE)
 
-  lg2 <- get_logger("log/ger/reset", reset = TRUE)
   expect_true(!identical(lg1, lg2))
-  expect_warning(lg1$fatal("test"), "log/ger/reset")
+
+  expect_warning(lg1$fatal("test"), "log/ger/reset.*no longer valid")
   expect_output(lg2$info("test"))
-  get_logger("log/ger/reset", reset = TRUE)
+})
+
+
+test_that("get_logger('root', reset = TRUE) resets in place instead of replacing the object", {
+  lgr$set_threshold("fatal")
+  lgr$add_appender(AppenderConsole$new(), name = "extra")
+
+  res <- get_logger("root", reset = TRUE)
+
+  # the root Logger's *identity* must be preserved: `lgr` is a singleton
+  # binding, so a reset must never desync it from `get_logger("root")`
+  expect_identical(res, lgr)
+  expect_true(is_Logger(lgr))
+  expect_false(inherits(lgr, "LoggerGlue"))
+
+  # and its fields must actually be back to the default state
+  expect_length(lgr$appenders, 0)
+  expect_length(lgr$filters, 0)
+  expect_true(lgr$propagate)
+  expect_identical(lgr$exception_handler, default_exception_handler)
+  expect_identical(lgr$threshold, as.integer(getOption("lgr.default_threshold", 400L)))
+
+  lgr$config(NULL)
+})
+
+
+test_that("get_logger('root', class = LoggerGlue) errors instead of silently ignoring class", {
+  expect_error(
+    get_logger("root", class = LoggerGlue, reset = TRUE),
+    "LoggerGlue"
+  )
+  lgr$config(NULL)
 })

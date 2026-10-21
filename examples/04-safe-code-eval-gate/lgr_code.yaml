@@ -1,0 +1,10 @@
+loggers:
+  root:
+    threshold: all
+    appenders:
+      console:
+        class: AppenderConsole
+        threshold: info
+    exception_handler:
+      code: |
+        function(e) cat("custom handler saw:", conditionMessage(e), "\n")

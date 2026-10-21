@@ -1,0 +1,45 @@
+## 1. Reproduce the production config as a native lgr config (acceptance fixture)
+
+- [x] 1.1 Write a native `version: 1` YAML fixture under `tests/testthat/` that reproduces a real production `logger:` block, minus ElasticSearch (deferred - see design.md): console + file (`AppenderJson`) + `lgrExtra::AppenderDynatrace`, using `class: pkg::ClassName` references. (`tests/testthat/testdata/config_production_equivalent.yml`.)
+- [x] 1.2 Reproduce the reference Dynatrace layout (custom `LayoutJson` with `transform_event`/`transform_event_names`) as a named `layouts` component in the fixture, using the widened function-value support from task group 3. (Also fixed a real gap this surfaced: `LayoutJson$set_transform_event_names()` rejected the named `list` produced by parsing a YAML mapping, only accepting a `character` vector — now coerces a list of scalar-character values.)
+- [x] 1.3 Reproduce system-metadata injection using `class: FilterInjectSystemInfo` (task group 2) for `rVersion`/`hostName`/`containerId`/`scriptFile`, plus `releaseId: "${RELEASE_ID:-}"` as an override/extra value on the same filter.
+- [x] 1.4 Write an integration test that applies the fixture via `Logger$config()`/`read_config()` and asserts the resolved logger tree (appender classes, thresholds, layout transform, injected filter values) matches what `config_logging()` would have produced for the equivalent input. (`tests/testthat/test_config_production_equivalent.R`; the live `AppenderDynatrace`'s threshold is silenced before logging the one end-to-end test event, so no real HTTP flush is attempted — matching design.md's "appender construction ... is what's under test.")
+
+## 2. Add `FilterInjectSystemInfo` (`R/Filter.R`)
+
+- [x] 2.1 Port/adapt the Docker/`hostName`/`containerId` detection (`file.exists("/.dockerenv")`, `Sys.info()[["nodename"]]`) and the `scriptFile` detection chain (`get_current_scriptfile_rstudio`/`_r`/`_rscript`/`_source`) from a reference `config_logging()` implementation into `R/Filter.R` (or a new `R/system_info.R`), as internal helpers. (Done in new `R/system_info.R`.)
+- [x] 2.2 Add `rstudioapi` to `Suggests`; gate its use with `requireNamespace("rstudioapi", quietly = TRUE)` so its absence degrades gracefully (skip that detection path, don't error).
+- [x] 2.3 Implement `FilterInjectSystemInfo` as an `R6::R6Class` inheriting `FilterInject`, computing `hostName`/`rVersion` unconditionally; `containerId` only when running in Docker, omitted (not blank/`NA`) otherwise; `scriptFile` only when determinable, omitted (not blank/`NA`) otherwise. Merge `...`/`.list` on top of these defaults (explicit values override same-named defaults) via a `modifyList()`-style merge, and delegate to `super$initialize()`. (Also fixed a pre-existing bug in `FilterInject$initialize()`: it rejected a fully empty `...` even when values were supplied via `.list` only, due to an incorrect assert on `names(list())`.)
+- [x] 2.4 Export `FilterInjectSystemInfo`, document it (`@export`, roxygen matching `FilterInject`'s style), and add it to `NAMESPACE`/`_pkgdown.yml` reference index. (Regenerated via `roxygen2::roxygenise()`; `_pkgdown.yml` reference index update still pending under task 5.)
+- [x] 2.5 Add unit tests: default fields present, `containerId` present/absent based on mocked Docker detection, `scriptFile` omitted (not erroring) when undeterminable, explicit override wins over a computed default, extra custom values injected alongside the bundle, works when `rstudioapi` is not installed. (The last one via mocking `rstudioapi::isAvailable()` returning `FALSE`, since testthat cannot mock the base `requireNamespace()` call directly.)
+- [x] 2.6 Add a unit test constructing it via `class: FilterInjectSystemInfo` in a declarative config, confirming no config-loader changes were needed.
+
+## 3. Generalize function-valued arguments (`R/config.R`)
+
+- [x] 3.1 Extend `instantiate_component()` so every constructor argument value is checked for the `{ ref: ... }`/`{ code: ... }` shape and, if present, resolved via `resolve_function_value(..., is_filter_context = FALSE)` before being passed to `do.call(ctor$new, args)`.
+- [x] 3.2 Extend `validate_component_def()` (or a new helper it calls) to run `validate_function_value()` over every argument value, gated by the same `allow_code` rule already used for filters/`exception_handler`.
+- [x] 3.3 Ensure a bare `character` scalar argument is never treated as an implicit function reference outside filter context (only the explicit `{ ref: ... }`/`{ code: ... }` mapping form opts in) — add a regression test for a literal string arg that happens to match a loaded function's name.
+- [x] 3.4 Add unit tests: `ref:` resolution in a layout argument, `code:` resolution in an appender argument with `allow_code = TRUE`, rejection without `allow_code`, and non-scalar `ref` rejected.
+
+## 4. Add `enabled` toggle for components and loggers (`R/config.R`)
+
+- [x] 4.1 Add `enabled` to `CONFIG_LOGGER_KEYS` and to the recognized keys for component definitions; validate it as a boolean when present (default `TRUE`).
+- [x] 4.2 In `new_config_resolvers()$resolve_named()`, return `NULL` (and skip instantiation) for a named component with `enabled: false`; ensure this is cached so repeated references don't re-evaluate.
+- [x] 4.3 In `resolve_appenders_field()`/`resolve_filters_field()`, drop any entry that resolves to a disabled named component or an inline definition with `enabled: false` from the resulting list, instead of erroring.
+- [x] 4.4 Relax `validate_appenders_field()`/`validate_filters_field()` reference checks so a reference to a component that exists but has `enabled: false` is not reported as an "unknown reference" — it must still error if the name doesn't exist in the section at all. (Already correct: both only check name existence in the section, independent of `enabled`; verified with a test.)
+- [x] 4.5 In `apply_config()`, when a logger definition has `enabled: false`, fully reset that logger to its default/unconfigured state (equivalent to `lg$config(NULL)`) instead of applying `threshold`/`appenders`/`filters`/`propagate`/`exception_handler` from the definition.
+- [x] 4.6 Add unit tests for: disabled named appender dropped from a referencing logger, disabled inline filter dropped from a list, disabled logger definition reset to default state regardless of prior configuration (and idempotent across repeated application), and `enabled: ${VAR:-false}` interpolation.
+
+## 5. Schema and docs
+
+- [x] 5.1 Update `inst/lgr-config-schema.json`: add `enabled` (boolean) to `componentDef` and `loggerDef`; extend the generic argument value schema to allow the `{ ref }`/`{ code }` shape anywhere a component argument is expected. (`componentDef` already had open `additionalProperties`, so any argument shape already validated; `enabled` added explicitly to both for editor autocomplete/docs, and is required on `loggerDef` since that definition has `additionalProperties: false`.)
+- [x] 5.2 Add/extend example configs under `inst/configs/` exercising `enabled`, a function-valued layout/appender argument, and `FilterInjectSystemInfo`, and confirm they validate against the shipped schema (`config-schema` "Example configs validate against the schema" scenario). (New `inst/configs/advanced.yaml`.)
+- [x] 5.3 Update the `?config` roxygen docs (`R/config.R` top-of-file `@description`/sections) to document the generalized function-value positions and the `enabled` key.
+- [x] 5.4 Add a documented example/pattern for environment-layered configs (pre-merge with the `config` package or `modifyList()` before calling `read_config()`), modeled on a real `default:`/`qa:`-style environment-aware config, to `?config` or `vignette("configuring-lgr")`. (New `?config` section "Environment-layered configs".)
+
+## 6. Wrap-up
+
+- [x] 6.1 Run full test suite and `R CMD check`. (`R CMD check --as-cran`: 0 ERRORs, 866 tests pass. Along the way, fixed two real test bugs surfaced only under a proper `R CMD check` run — an unqualified `lgrExtra::` reference flagged as an unstated test dependency, and a misuse of `is_virgin_Logger("root")`, which can never be `TRUE` for the root logger by design. Remaining WARNINGs/NOTEs are pre-existing and unrelated to this change: vignette pre-build, and `openspec/` not being in `.Rbuildignore`.)
+- [x] 6.2 Update `NEWS.md` per the `r-news-styleguide` skill.
+- [x] 6.3 Summarize, outside this change, what remains for the originating production system to actually migrate off its hand-rolled `config_logging()` (this change proves feasibility; the migration itself is separate follow-up work). (Delivered as a conversational summary; not a file in this change.)
+- [x] 6.4 File a follow-up issue/change against `lgrExtra` to extend `AppenderElasticSearch` with primitive connection arguments (e.g. `host`) so `conn` becomes an ordinary constructor argument, unblocking ElasticSearch support in a native `lgr` config. (Recommended to the user as follow-up work; not actually filed — `lgrExtra` is a separate repo outside this session's scope/access.)

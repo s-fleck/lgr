@@ -1,0 +1,37 @@
+version: 1
+disable_existing_loggers: true
+
+layouts:
+  text:
+    class: LayoutFormat
+    fmt: "%L [%c] %m"
+
+filters:
+  force_info:
+    class: FilterForceLevel
+    level: info
+
+appenders:
+  console:
+    class: AppenderConsole
+    threshold: info
+    layout: text
+  buffer:
+    class: AppenderBuffer
+    threshold: all
+
+loggers:
+  root:
+    threshold: info
+    appenders: [console, buffer]
+
+  app:
+    threshold: debug
+    appenders: [buffer]
+    propagate: true
+
+  app/db:
+    threshold: all
+    filters: [force_info]
+    appenders: [buffer]
+    propagate: false

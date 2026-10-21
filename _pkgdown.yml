@@ -19,8 +19,13 @@ reference:
   - simple_logging
   - basic_config
   - get_logger
-  - logger_config
   - default_exception_handler
+- title: Configuration
+  desc: Declarative logger configuration from YAML/JSON
+  contents:
+  - config
+  - read_config
+  - config_schema_file
 - title: Appenders
   desc: Output LogEvents to a destination
   contents:
@@ -53,6 +58,7 @@ reference:
   - EventFilter
   - FilterForceLevel
   - FilterInject
+  - FilterInjectSystemInfo
   - is_filter
 - title: Utilities
   desc: General utility functions. Some may only be relevant to developers that want to extend lgr.
@@ -65,6 +71,7 @@ reference:
   - get_user
   - read_json_lines
   - use_logger
+  - use_skill
   - label_levels
   - colorize_levels
   - pad_right
@@ -76,8 +83,12 @@ reference:
   - Filterable
   - AppenderTable
   - AppenderMemory
-- Exceptions:
+- title: Exceptions
   desc: Custom error classes this package may throw
   contents:
   - CannotInitializeAbstractClassError
+- title: Package
+  desc: Package overview
+  contents:
+  - lgr-package
 

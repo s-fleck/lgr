@@ -24,10 +24,10 @@
 #'    `lgr.default_config` if both are set.
 #'  }
 #'  \item{`lgr.default_config`}{
-#'    Default configuration for the root logger. Can either be a special list
-#'    object, a path to a YAML file, or a character scalar containing YAML
-#'    code. See [logger_config] for details. Defaults to the value of the
-#'    environment variable `LGR_DEFAULT_CONFIG` if it is set.
+#'    Default declarative configuration applied to the root logger on package
+#'    load: a path to a YAML/JSON file, a `character` scalar containing
+#'    YAML/JSON, or a `list`. See [config] for details. Defaults to the value
+#'    of the environment variable `LGR_DEFAULT_CONFIG` if it is set.
 #'  }
 #'  \item{`lgr.suspend_logging`}{`TRUE` or `FALSE`. Suspend all logging for
 #'    all loggers. Defaults to the `TRUE` if the environment variable
@@ -144,7 +144,7 @@ NULL
         lgr$config(default_config),
         error = function(e) {
           warning(
-            "The option 'lgr.default_config' is set to an invalid logger_config: ",
+            "The option 'lgr.default_config' is set to an invalid config: ",
             e$message, call. = FALSE
           )
         }
@@ -165,6 +165,7 @@ get_envar_suspend_logging <- function(){
   if (identical(envar_suspend_logging, "TRUE")){
     TRUE
   } else if (
+    is.na(envar_suspend_logging) ||
     identical(envar_suspend_logging, "FALSE") ||
     is_blank(envar_suspend_logging)
   ){
@@ -185,22 +186,19 @@ get_envar_default_config <- function(){
 
   if (is_blank(envar_default_config)){
     NULL
+  } else if (!is_scalar_character(envar_default_config)){
+    warning("Environment variable 'LGR_DEFAULT_CONFIG' must be a path to a YAML or JSON config file", call. = FALSE)
+    NULL
+  } else if (!file.exists(envar_default_config)){
+    warning(
+      "Environment variable 'LGR_DEFAULT_CONFIG' is set but '", envar_default_config,
+      "' is not a path to a readable file", call. = FALSE
+    )
+    NULL
   } else {
-    if (!is_scalar_character(envar_default_config)){
-      warning("Environment variable 'LGR_DEFAULT_CONFIG' must be a path to a YAML or JSON config file", call. = FALSE)
-      NULL
-    } else {
-      tryCatch(
-        as_logger_config(envar_default_config),
-        error = function(e){
-          warning(
-            "Environment variable 'LGR_DEFAULT_CONFIG' is set but '", envar_default_config,
-            "' is not a path to a valid YAML file", call. = FALSE
-          )
-          NULL
-        }
-      )
-    }
+    # the path is returned as-is; parsing/validation happens lazily when
+    # `lgr$config()` applies it (see `.onLoad()`)
+    envar_default_config
   }
 }
 

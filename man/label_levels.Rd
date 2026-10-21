@@ -33,7 +33,7 @@ unlabel_levels(x)
 \seealso{
 \code{\link[=get_log_levels]{get_log_levels()}}
 
-Other formatting utils: 
-\code{\link{colorize_levels}()}
+Other formatting utils:
+\code{\link[=colorize_levels]{colorize_levels()}}
 }
 \concept{formatting utils}

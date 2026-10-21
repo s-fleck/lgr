@@ -1,6 +1,3 @@
-context("string_repr")
-
-
 test_that("string_repr works as expected", {
 
   string_repr(mean)

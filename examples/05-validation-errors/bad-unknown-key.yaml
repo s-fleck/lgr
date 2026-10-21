@@ -1,0 +1,4 @@
+loggers:
+  root:
+    threshold: info
+    propogate: false

@@ -33,7 +33,7 @@ cat(colorize_levels(c("trace", "warn ", "DEBUG")))
 cat(colorize_levels(c("trace", "warn ", "DEBUG"), transform = function(x) strtrim(x, 1) ))
 }
 \seealso{
-Other formatting utils: 
-\code{\link{label_levels}()}
+Other formatting utils:
+\code{\link[=label_levels]{label_levels()}}
 }
 \concept{formatting utils}

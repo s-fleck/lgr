@@ -1,3 +1,24 @@
+standardize_appenders_list <- function(x){
+  if (is.null(x)) {
+    return(list())
+  }
+
+  if (inherits(x, "Appender")) {
+    x <- list(x)
+  }
+
+  assert(
+    is.list(x) && all(vapply(x, inherits, TRUE, "Appender")),
+    "'appenders' must either be a single Appender, a list thereof, or ",
+    "NULL for no appenders."
+  )
+
+  x
+}
+
+
+
+
 #' Information About the System
 #'
 #' `get_caller()` Tries to determine the calling functions based on `where`.
@@ -6,8 +27,6 @@
 #'   up the call stack
 #'
 #' @seealso [base::sys.call()]
-#' @export
-#'
 #' @rdname system_infos
 #' @export
 #'

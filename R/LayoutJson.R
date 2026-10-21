@@ -83,6 +83,10 @@ LayoutJson <- R6::R6Class(
       self$set_excluded_fields(excluded_fields)
     },
 
+    #' @description Format a LogEvent as JSON
+    #' @param event a [LogEvent]
+    #' @returns a `character` scalar containing the JSON representation of
+    #'   `event`
     format_event = function(event) {
       values <- get(".transform_event", private)(event)
       values[["timestamp"]] <- apply_timestamp_formatter(values[["timestamp"]], get(".timestamp_fmt", private))
@@ -123,9 +127,15 @@ LayoutJson <- R6::R6Class(
       invisible(self)
     },
 
-    #' @param x a named `character` vector or a function that accepts a
-    #'   `character` vector of field names as its single argument.
+    #' @param x a named `character` vector, a named `list` of scalar
+    #'   `character` values (as produced by parsing a YAML/JSON mapping, e.g.
+    #'   in a declarative [config]), or a function that accepts a `character`
+    #'   vector of field names as its single argument.
     set_transform_event_names = function(x){
+      if (is_scalar_character_list(x)) {
+        x <- unlist(x, use.names = TRUE)
+      }
+
       assert(
         is.null(x) || is_field_name_map(x) || (is.function(x) && length(formals(x)) >= 1L),
         "`transform_event_names` must be a named character vector or function with a single mandatory argument (optional arguments are OK)")
@@ -266,4 +276,16 @@ apply_field_exclusion <- function(x, f){
 
 is_field_name_map <- function(x){
   is.character(x) && !is.null(names(x)) && all(nzchar(names(x)))
+}
+
+
+
+
+# a named `list` of scalar `character` values, as produced when a YAML/JSON
+# mapping is parsed (e.g. `transform_event_names:` in a declarative config)
+is_scalar_character_list <- function(x){
+  is.list(x) &&
+    !is.null(names(x)) &&
+    all(nzchar(names(x))) &&
+    all(vapply(x, is_scalar_character, logical(1)))
 }

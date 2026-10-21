@@ -119,3 +119,22 @@ test_that("LayoutJson.format_event() - with field rename function - renames fiel
   expect_identical(res$LEVEL, 200L)
   expect_identical(res$LOGGER, "dum/my")
 })
+
+
+test_that("transform_event_names accepts a named list of scalar strings (as produced by YAML/JSON parsing)", {
+  lo <- LayoutJson$new()
+  lo$set_transform_event_names(list(msg = "message", logger = "logger_name"))
+
+  expect_true(is.character(lo$transform_event_names))
+  expect_identical(lo$transform_event_names[["msg"]], "message")
+  expect_identical(lo$transform_event_names[["logger"]], "logger_name")
+})
+
+
+test_that("transform_event_names rejects a list containing a non-scalar-character value", {
+  lo <- LayoutJson$new()
+  expect_error(
+    lo$set_transform_event_names(list(msg = "message", bad = 1)),
+    "transform_event_names"
+  )
+})

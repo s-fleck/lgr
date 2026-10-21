@@ -31,10 +31,10 @@ if it is set. This option overrides the threshold specified in
 \code{lgr.default_config} if both are set.
 }
 \item{\code{lgr.default_config}}{
-Default configuration for the root logger. Can either be a special list
-object, a path to a YAML file, or a character scalar containing YAML
-code. See \link{logger_config} for details. Defaults to the value of the
-environment variable \code{LGR_DEFAULT_CONFIG} if it is set.
+Default declarative configuration applied to the root logger on package
+load: a path to a YAML/JSON file, a \code{character} scalar containing
+YAML/JSON, or a \code{list}. See \link{config} for details. Defaults to the value
+of the environment variable \code{LGR_DEFAULT_CONFIG} if it is set.
 }
 \item{\code{lgr.suspend_logging}}{\code{TRUE} or \code{FALSE}. Suspend all logging for
 all loggers. Defaults to the \code{TRUE} if the environment variable
@@ -56,6 +56,11 @@ Useful links:
 }
 \author{
 \strong{Maintainer}: Stefan Fleck \email{stefan.b.fleck@gmail.com} (\href{https://orcid.org/0000-0003-3344-9851}{ORCID})
+
+Authors:
+\itemize{
+  \item Stefan Fleck \email{stefan.b.fleck@gmail.com} (\href{https://orcid.org/0000-0003-3344-9851}{ORCID})
+}
 
 }
 \keyword{internal}

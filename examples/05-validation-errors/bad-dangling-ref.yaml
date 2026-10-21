@@ -1,0 +1,8 @@
+appenders:
+  console:
+    class: AppenderConsole
+
+loggers:
+  root:
+    threshold: info
+    appenders: [console, consle]

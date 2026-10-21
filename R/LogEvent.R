@@ -318,32 +318,27 @@ as_tibble.LogEvent <- function(
 #' @inheritParams standardize_threshold
 #' @param pad_levels `right`, `left` or `NULL`. Whether or not to pad the log
 #'   level names to the same width on the left or right side, or not at all.
-#' @param excluded_fields a `character` vector of fields to exclude from `%j` and
-#'   `%f`
+#' @param excluded_fields a `character` vector of fields to exclude from `%j`
+#'   and `%f`
 #' @param ... ignored
 #'
 #' @section Format Tokens:
-#' \describe{
-#'   \item{`%t`}{The timestamp of the message, formatted according to
-#'     `timestamp_fmt`)}
-#'   \item{`%l`}{the log level, lowercase `character` representation}
-#'   \item{`%L`}{the log level, uppercase `character` representation}
-#'   \item{`%k`}{the log level, first letter of lowercase `character` representation}
-#'   \item{`%K`}{the log level, first letter of uppercase `character` representation}
-#'   \item{`%n`}{the log level, `integer` representation}
-#'   \item{`%g`}{the name of the logger}
-#'   \item{`%p`}{the PID (process ID). Useful when logging code that uses
-#'       multiple threads.}
-#'   \item{`%c`}{the calling function}
-#'   \item{`%m`}{the log message}
-#'   \item{`%r`}{the raw log message (without string interpolation)}
-#'   \item{`%f`}{all custom fields of `x` in a pseudo-JSON like format that is
-#'     optimized for human readability and console output}
-#'   \item{`%j`}{all custom fields of `x` in proper JSON. This requires that you
-#'     have **jsonlite** installed and does not support colors as opposed to
-#'     `%f`
-#'   }
-#' }
+#' * `%t` The timestamp of the message, formatted according to `timestamp_fmt`
+#' * `%l` the log level, lowercase `character` representation
+#' * `%L` the log level, uppercase `character` representation
+#' * `%k` the log level, first letter of lowercase `character` representation
+#' * `%K` the log level, first letter of uppercase `character` representation
+#' * `%n` the log level, `integer` representation
+#' * `%g` the name of the logger
+#' * `%p` the PID (process ID). Useful when logging code that uses multiple
+#'   threads.
+#' * `%c` the calling function
+#' * `%m` the log message
+#' * `%r` the raw log message (without string interpolation)
+#' * `%f` all custom fields of `x` in a pseudo-JSON like format that is
+#'   optimized for human readability and console output
+#' * `%j` all custom fields of `x` in proper JSON. This requires that you have
+#'   **jsonlite** installed and does not support colors as opposed to `%f`
 #'
 #' @return `x` for `print()` and a `character` scalar for `format()`
 #' @export
